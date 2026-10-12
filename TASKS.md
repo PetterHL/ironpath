@@ -1,6 +1,6 @@
 # Initial tasks
 
-Updated 12 October 2026. Only this file tracks initial work. **T1 passed static review with limited user-performed PC checks recorded below; T2's catalogue and static verification are complete; T3's local recommendation slice is implemented for review, with its live checks pending. T4/T5 have not started.** Petter has approved the public repository `PetterHL/ironpath`; the repository and documentation foundation are established on GitHub. Independent development is agreed; competitor benchmarking is optional.
+Updated 12 October 2026. Only this file tracks initial work. **T1 passed static review with limited user-performed PC checks recorded below; T2's catalogue and static verification are complete; T3's local recommendation slice is implemented, with its live checks pending. T4 is prepared with user testing pending; T5 has not started.** Petter has approved the public repository `PetterHL/ironpath`; the repository and documentation foundation are established on GitHub. Independent development is agreed; competitor benchmarking is optional.
 
 ## T1 — Small account and value experiment (ready for code review; in-game validation in progress)
 
@@ -213,9 +213,205 @@ build/launch commands, then:
    to the original character/profile and verify its saved choices return without
    carrying over bank observations.
 
-## T4 — Small user and maintenance trial
+## T4 — Small user and maintenance trial (prepared; user testing pending)
 
 Test with Petter and, if available and explicitly invited, one or two experienced Ironmen. No unsolicited outreach. Check whether they can find a recommendation without assistance, understand its explanation, inspect an alternative and skip a grind. Acceptance target: at least four of five scenarios yield an actionable or correctly abstaining result, zero critical ownership/access errors, and at least three recommendations the player considers useful for the supplied account. These are proposed acceptance criteria, not measured results. Simulate a relevant source change and time the review/update process. Do not automate discovery unless it saves observed repeated work.
+
+### T4 PC trial — instructions and pending results
+
+Baseline: `t3-local-advisor` at **`b3a93d9aa60f7661e49b970fc3b9272e7ad2df12`**,
+including the first-save directory and same-family CoX goal-status fixes. Petter
+reports T3 passed static review; specific T3 real-client checks remain pending.
+The trial branch is `t4-user-maintenance-trial`. It changes only this task file;
+plugin **0.2.0**, knowledge **t3-1**, schema **3** and the shipped catalogue remain
+unchanged. Earlier T1–T3 sections describe their historical task snapshots.
+
+Allow about **20–30 minutes**, plus restart/login time. Use JDK 11 and a standard
+Ironman on an ordinary permanent members world. Use anonymous account/profile
+labels (A/B, P/Q) in the results; record only the few facts needed to judge advice,
+not names, IDs, credentials, screenshots or bank dumps. Include an established
+raiding account. If a boundary cannot be exercised on the available accounts,
+record it as **unexercised / pending**, not passed; do not grind or acquire items
+just for this trial. Do not invite or contact anyone through Codex.
+
+Windows PowerShell, inside an existing `ironpath` clone with the client closed:
+
+```powershell
+git fetch origin
+git switch t4-user-maintenance-trial
+git pull --ff-only
+git merge-base --is-ancestor b3a93d9 HEAD
+if ($LASTEXITCODE -ne 0) { throw "Required T3 fixes are missing" }
+java -version
+javac -version
+.\gradlew.bat test build
+if ($LASTEXITCODE -ne 0) { throw "Fix the build before the PC trial" }
+# Perform the first manual step below before launching.
+.\gradlew.bat run
+```
+
+**First manual step, before `run`:** with RuneLite closed, rename
+`%USERPROFILE%\.runelite\plugin-data\ironpath-advisor` to a unique backup name
+if it exists. Preserve it and leave other RuneLite files alone. If it does not
+exist, leave it absent. This exercises `b3a93d9`'s first save into a missing
+directory. After the trial, close the client before moving the trial directory
+aside and restoring your backup. README contains Jagex Account development-login
+guidance; never include local credentials in the results.
+
+Run these five scenarios in order. Expected results describe the existing build,
+not new features or promises of full raid readiness.
+
+1. **Find useful advice.** Log in, wait two server ticks and for local preferences
+   to load. Before opening the bank, check **Bank unknown**. Open the bank, then
+   use **No goal**. Without help locating a card, choose a suggestion, explain why
+   it fits, inspect **Why and alternatives**, and decide a next action. Record
+   seconds to find it and any assistance. Repeat for up to three distinct useful
+   recommendations across supplied accounts, including an established raider.
+   **Expected:** at most three different families; matching levels/items and
+   provenance agree with the game; owned alternatives avoid redundant work. Unknown
+   storage cannot prove missing gear. Empty results explain limits; CG stays optional
+   and preparation never certifies access. A source button opens a pinned reference
+   without account data in the URL.
+2. **Goals and alternatives.** Set ordinary team CoX, expand **Goal prerequisites
+   and sources**, then try Rigour/Augury or the owned-parts upgrade and **Clear goal**.
+   With a supported observed three-style kit and defence-reduction weapon, inspect
+   the coordination card replacing broad planning. **Expected:** one optional goal;
+   that CoX alternative says **Available preparation action** and names coordination.
+   A genuinely missing prerequisite is separate from unknown ownership; no uncovered
+   acquisition grind is invented. Confirmed outcomes suppress redundant work;
+   clearing the goal returns to no-goal advice.
+3. **Skip and restore.** Skip a card and restore it. For a still-locked prayer goal,
+   also skip its unlock action under **Skips and manual confirmations**, then restore.
+   **Expected:** the card disappears and returns only if still eligible; a skipped
+   required unlock blocks the route without marking it unlocked or offering dependent
+   training. Restoring removes the skip block, leaving actual missing/unknown facts
+   intact. If both prayers are already unlocked, the locked-route subcheck stays pending.
+4. **Manual confirmations.** Temporarily set a supported item's positive and negative
+   confirmation, inspect its manual provenance/time, then clear it. Try manual absence
+   for a positively observed item and the opposite of a readable prayer unlock.
+   **Expected:** confirmations are reversible planning assumptions; positive observed
+   possession and readable unlock varbits take precedence. Manual ownership cannot
+   create charged, equipped or usable gear. Clear/reset restores live or unknown
+   state. After checking **Reset all planning choices**, set one goal, one skip and
+   one harmless temporary confirmation for scenario 5.
+5. **First save, restart and isolation.** Wait for **Preferences saved locally**;
+   confirm a JSON file now exists under the fresh plugin directory. Restart and
+   return to A/P. Before reopening the bank, check restored choices and unknown bank.
+   Switch to B/P, then A/Q; set different choices and wait for each save. Return to
+   each combination, then A/P. **Expected:** only its own goal/skip/manual fact returns;
+   bank/live observations clear at restart and character/profile transitions. Editing
+   waits for identity/preferences; save errors are visible. The local JSON contains
+   choices and manual values/times, no bank, levels, live unlocks or raw identity.
+   Keep it private and report only field names. Missing B or Q means isolation pending.
+
+Only mark a scenario passed after its applicable checks are exercised and the
+player judges the result actionable or correctly abstaining. An abstention needs
+a correct reason, not just an empty list. Pending subchecks do not count toward
+the four-of-five gate. False ownership, a false access/readiness claim, or any
+cross-character/profile leakage is a critical error and blocks acceptance.
+
+| Scenario | Status | Account/profile label; actual result; time/assistance; mismatch or unexercised check |
+|---|---|---|
+| 1. Recommendation usefulness | **Pending user testing** | Awaiting Petter's results |
+| 2. Goals / alternatives | **Pending user testing** | Awaiting Petter's results |
+| 3. Skip / restore | **Pending user testing** | Awaiting Petter's results |
+| 4. Manual confirmations | **Pending user testing** | Awaiting Petter's results |
+| 5. First save / restart / character and profile isolation | **Pending user testing** | Awaiting Petter's results |
+
+Record three **distinct** recommendations considered useful, with at least one
+from an established raiding account. Showing the same card again is not another
+usefulness vote; synthetic fixtures are not player evidence.
+
+| Recommendation title / ID | Anonymous account context | Useful? Why; understood alternative; chosen next action |
+|---|---|---|
+| Pending 1 | Awaiting user | Awaiting user |
+| Pending 2 | Awaiting user | Awaiting user |
+| Pending 3 | Awaiting user | Awaiting user |
+
+**Result fields:** test date/build commit/JDK: pending; scenarios actionable or
+correctly abstaining: pending / 5; critical ownership/access/isolation errors:
+pending (do not assume zero); distinct useful recommendations: pending; overall
+T4 acceptance: **pending user results**. Report failures with the control/action,
+expected and actual result and minimal relevant facts. This five-scenario trial
+does not silently pass other outstanding T1–T3 lifecycle/variant checks.
+
+### T4 maintenance rehearsal — 12 October 2026
+
+**Explicit simulation, not a real source/game update:** candidate `SIM-T4-001`
+assumes wearing normal and ornamented occult necklaces changes from 70 to 80
+Magic, with IDs/stats unchanged. No new source was discovered or endorsed. The
+rehearsal used an independent temporary clone of `b3a93d9` at
+`/tmp/ironpath-t4-rehearsal-be53n8lu`, with a local simulation ticket and temporary
+tests. It was never pushed or used in a game client.
+
+**Impact review:** source register entries `occult` (revision `15314514`) and
+`occult-or` (`15187781`) both point to **`review-occult-switch`**, the only affected
+decision. Change its level predicate, access/applicability text and the two neck
+records (IDs `12002`, `19720`) together. Check the charged-weapon matcher, manual
+ownership semantics, equipped completion and fury/ornamented alternatives.
+Other eight decisions, goals, dependency edges, ranking and item IDs are unchanged;
+below-level accounts should lose only the occult prompt. No Slayer/acquisition
+requirement or new grind follows from this hypothetical wield change.
+
+The temporary candidate changed those fields, marked its explanation and both
+source reuse notes **SIMULATION ONLY**, and bumped only its knowledge version to
+`t4-rehearsal-only`. Schema 3, stable IDs and the 12 October review date remained.
+Pinned real URLs/revisions were retained explicitly as **baseline evidence only**;
+they do not support the invented requirement. A real update would require verifying
+released mechanics and recording actual new revisions before accepting/publishing it.
+
+**Validation and rollback:** Temurin JDK `11.0.32.1`, RuneLite `1.13.1`, existing
+Gradle wrapper and the supported Cloud network/proxy/system-CA setup from T1:
+
+- Unmodified temporary baseline: `gradlew test build --no-daemon` passed,
+  **58 tests, zero failures**.
+- Two temporary simulation tests failed against the baseline as expected: advice
+  was still offered at 79 Magic and metadata still required 70.
+- Candidate validation covered normal/ornamented forms below/at 80, unknown Magic
+  and equipment, equipped completion, manual ownership failing to create usable
+  gear, consistent requirement text/metadata and independent Prayer advice. The
+  first candidate run exposed one **fixture mistake**: 79 Magic does not meet the
+  unchanged 80-Magic team baseline. Corrected that control to an already unlocked
+  Rigour/73-Prayer gap; no production code change was needed. Full candidate
+  `test build --no-daemon` then passed **60 tests, zero failures**, including all
+  original catalogue rejection tests and five representative account fixtures.
+- Reviewed the candidate diff: only one decision, two neck records, two simulation
+  source notes and the temporary knowledge version changed; `git diff --check`
+  passed. Restored the catalogue from `b3a93d9`, removed the temporary fixture,
+  and ran `CatalogValidationTest` plus `CoxAccountFixturesTest`: **10 tests,
+  zero failures**. The temporary clone has no tracked diff after rollback.
+
+**Measured effort:** agent elapsed time, measured with a monotonic clock for
+review/update windows and build-log timestamps for the candidate runs. These are
+observed rehearsal timings, not an estimate of human labour:
+
+| Rehearsal phase | Measured elapsed time |
+|---|---|
+| Impact/source-link/requirement review | 31.8 seconds |
+| Temporary fixture preparation and cold baseline build wait (overlapping work) | 145.2 seconds; Gradle itself reported 1m 34s |
+| Expected-failure check and candidate catalogue update | 66.8 seconds |
+| Inspect/correct the invalid control fixture | 72.1 seconds |
+| Two candidate validation runs | 19.1 seconds total (9.3 failed, 9.8 passed) |
+| Rollback and targeted validation command | 7.0 seconds |
+
+Selected rehearsal windows total **342.0 seconds (5m 42s)**: 170.7 seconds for
+impact review/update/fixture correction, 26.1 seconds for candidate validation
+and rollback, plus 145.2 seconds for fixture preparation/cold baseline wait.
+JDK download/setup, PC-checklist writing, report-writing gaps and GitHub handoff
+are excluded. Raw timing/build logs and the candidate patch remain under `/tmp`
+for this session; the durable evidence is this report. No live source retrieval,
+expert/player review or release submission was timed. One simulated change cannot
+validate the proposed 20–40 minute weekly triage budget or justify a watcher;
+measure real repeated reviews before adding automation.
+
+**Shipped result:** the working catalogue and rolled-back copy both match the
+baseline byte for byte, SHA-256
+`470268a6ed539afaa6932df6cd813498b00dec63dcda157cd90be8176560a84d`.
+Only `TASKS.md` differs from `b3a93d9` in the trial branch. The nine decisions,
+56 item IDs, 39 sources, plugin version and knowledge/schema versions are unchanged.
+No development client was launched. **Maintenance rehearsal complete**;
+**user trial and T4 acceptance remain pending**. No source watcher, new feature,
+outreach, T5 work or Plugin Hub submission is part of this preparation.
 
 ## T5 — Prepare distribution
 
