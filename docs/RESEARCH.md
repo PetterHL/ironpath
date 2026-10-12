@@ -1,3 +1,86 @@
+# IronPath research and evidence
+
+## Product-reset investigation — 12 October 2026
+
+This section records the current investigation. [DESIGN](DESIGN.md), [CATALOGUE](CATALOGUE.md), [UX](UX.md) and the active [backlog](../TASKS.md) control future work. Historical research below remains evidence, not a scope limit. No live account, new game client, current creator video or gated Discord strategy guide was inspected in this session. No application tests were rerun.
+
+### Independent conclusion
+
+The ambition is technically feasible within one free local RuneLite plugin. The present implementation is not yet a representative endgame advisor. The decisive shortcomings are tiny full-setup/model coverage, authored ranking disconnected from marginal calculations, and catalogue/schema limits that turn a vertical slice into a product ceiling. Retain the privacy/observation foundation and refactor these specific constraints. A wholesale rewrite, hosted inference or universal optimiser would increase maintenance without solving knowledge quality.
+
+Comprehensive coverage costs continuing editorial and mechanic-validation work. Rules cannot infer enjoyment, execution, team access or supply tolerance from a bank. The appropriate product offers contextual, explainable choices with confidence and trade-offs. It should not claim a mathematically optimal universal next grind. Quantity and uncertainty handling, realistic competing loadouts and honest model boundaries matter more than a sophisticated scoring formula.
+
+### Repository evidence
+
+Inspected real source at PR #7 head `b50b0a93e00a9388224af0f666708921f47dda6d`, remote branch relationships and PR metadata; DESIGN records all seven open PRs and exact short heads. Main does not contain the combined implementation. This reset is stacked on #7, avoiding a documentation PR full of unmerged implementation changes.
+
+| Finding from actual source | Product consequence |
+|---|---|
+| Account reader stores container item-ID sets, not quantities or slots | Cannot honestly count shards or reconstruct observed full equipment from these snapshots; extend typed observations |
+| `Advisor.upgrades()` orders authored band, optional goal, application count, availability, stable ID | Useful deterministic base, but numerical deltas do not affect priority; textual breadth is a weak proxy |
+| Relevance requires TRUE before a card is created | Keep readiness separate or valuable distant upgrades can disappear |
+| Knowledge loader caps upgrades at 12 (plus decision/source/activity/set caps) | Remove arbitrary content ceilings; keep justified resource protections |
+| Comparison schema names OCCULT/SWAMP, one fixed target/model; shared reward eligibility names delve | Generalise typed model/context/route contracts, not a universal executable DSL |
+| `PoweredMagic` supports a tiny gear vocabulary and rejects unsupported slots | Existing exact numbers are honest but not representative of real endgame kits |
+| Swing panel mixes rendering and calculation construction | Introduce immutable view models and small reusable components; preserve existing navigation/icon work |
+| Identity, preference migration and delayed-result guards already exist | Retain and extend; a rewrite risks losing valuable correctness |
+
+The P4a count/test baseline is historical, not newly verified execution. Runtime source data remains unchanged by this PR. In particular, newly discovered balance changes are research findings; existing active knowledge has not silently been refreshed.
+
+### Combat-calculation options and rights
+
+| Option | Evidence / benefits | Decision and limitations |
+|---|---|---|
+| [Wiki DPS calculator](https://github.com/weirdgloop/osrs-dps-calc/tree/89c3e25b344aea90d0189746e4b5f73dde0f0383) | Inspected repository, licence, `PlayerVsNPCCalc.ts`, item/type data and fixture structure. Mature TypeScript attack distributions, special mechanics and target-time infrastructure; 5,436 equipment records in this checkout help discover omissions | Valuable pinned differential reference. Not a Java library or safe drop-in RuneLite dependency. Data/seasonal entries need filtering and separate rights checks; code breadth does not prove current mechanics |
+| [Better DPS Calculator](https://github.com/mcdalcin/better-dps-calculator/tree/3fd61bb3d48bdb3c0cacc57032be4a7530242ee7) | Java 11 implementation demonstrates local feasibility. Inspected licence and [SYNC_STATUS](https://github.com/mcdalcin/better-dps-calculator/blob/3fd61bb3d48bdb3c0cacc57032be4a7530242ee7/SYNC_STATUS.md): reference `b6bc098…`, last verified 12 July 2026; documents incomplete parity and unsupported cases | Candidate engineering/reference source, not an approved dependency. Its sync report is upstream-reported evidence, not a test we ran; three-month-old parity is not October correctness. Inspect individual family correctness before any reuse |
+| Independent Java family core | Fits existing pure P4a architecture; explicit bounded mechanics and reusable primitives can support many upgrades | Selected approach. Implement integer rounding, distributions, model variants and interactions independently, with hand-derived and reference checks. More authoring effort; avoid rebuilding a complete simulator |
+| Runtime website, JavaScript engine, browser widget or remote API | Could expose a large external calculator | Reject as default architecture: dependencies, privacy, policy and integration complexity undermine one local maintainable plugin |
+
+The inspected Wiki and Better DPS repositories carry **GPL-3.0** licences. GPL software is usable in free open source, but copying/deriving or combining it can impose distribution/source/licence obligations on the combined work; it cannot simply be relabelled as BSD-2-Clause. This is a reuse decision to make explicitly, not a claim GPL is incompatible with RuneLite. Independently authored code plus development-only comparison is the selected path. If maintaining a family independently proves disproportionate, assess a clearly licensed extraction or deliberate project-licence change rather than covert copying. No such import or relicense occurs here.
+
+Pin every oracle run to commit + complete inputs. Record discrepancies and current official fixes; matching two stale implementations is not validation. Original synthetic input/output fixtures must have provenance; inspect rights before redistributing upstream test/data corpora. This session used reference item names for discovery, not a copied runtime dataset. Wiki article text, wiki datasets and game sprites have separate rights from calculator code. The historical Wiki policy discussion below is still qualified: its full current copyright page was inaccessible. Verify actual applicable terms before importing bulk facts or adapted text; attribution is not a substitute.
+
+**Practical calculation boundary:** complete baseline/candidate setups + target profiles feed shared attack distributions. Derive max hit, hit probability, expected damage/attack and theoretical sustained DPS only for supported mechanics. Shadow, tbow, Fang, Scythe and Soulreaper are family modules, not arbitrary authored bonuses. Expected specs/debuffs need a stated energy/HP/team scenario. Finite-target expected time needs overkill and timing; trip gains require incoming damage, resources, execution and policy checks. See DESIGN Q0–Q5 and the proposed R1 slice. Useful numbers remain required even when a difficult metric is deferred.
+
+### Current ecosystem and release research
+
+[CATALOGUE's evidence register](CATALOGUE.md#evidence-register) links eight official update/announcement pages read for this reset, with publication dates and scope. It captures important omissions from older BiS lists: rupture/kisten/Seeker families, Hallowfell, newer ranged equipment, fangs and elemental amulets, changed Inquisitor/spec behaviour and permanent penny handling. These are researched candidates with explicit gaps, not all validated implementation facts.
+
+Distinguish actual releases from proposed changes. The latest follow-up leaves elemental amulets unchanged despite a discussed adjustment. The Fractured Archive is announced for **20 October 2026**, after this research cut, so its named rewards belong to a future watchlist. Older CoX loot weighting must not be reused as current effort evidence after the August change. A source saying “best” or marketing a multi-target weapon is not an account-specific DPS model.
+
+Direct Wiki pages were blocked in this environment. Indexed snippets and the calculator's equipment inventory can identify candidates but do not constitute a current per-item audit. Catalogue D rows explicitly expose that limitation; they require full source/mechanic/path validation before promotion. The four V outcomes describe P4a implementation state, not a fresh expert endorsement of every retained claim. Review released changes against those facts during implementation.
+
+### Sources, experienced players and maintenance
+
+| Source | What was checked / appropriate use | Update and reuse limits |
+|---|---|---|
+| [Jagex news archive](https://secure.runescape.com/m=news/archive?oldschool=1) and linked individual updates | Release state, implemented balance changes, hotfixes and future watchlist | Inspect following fixes, not just launch; proposals may change. Link and write short original factual notes; no article/image replication |
+| Wiki item, mechanics and strategy pages; calculators | Strong mechanic/acquisition references, revisions and candidate discovery | Community edited; current full-page access incomplete here. Strategy is contextual; separate content/data/code/image rights |
+| [We Do Raids gear resources](https://wedoraids.com/resources/gear-guides/) | Public resource page directs to maintained Discord gear setups | Gated guides were not inspected. Mains' budget progression differs from Ironman acquisition; record actual encounter/version, not server reputation as proof. No copying community tables |
+| [Molgoatkirby community spotlight](https://secure.runescape.com/m=news/community-spotlight-molgoatkirby?oldschool=1) | Official 14 August interview identifies a relevant endgame theorycraft/speedrunning perspective | Discovery of an experienced source, not independent verification of a gear claim. Inspect primary videos/notes and assumptions before adoption; speedrun utility need not equal typical account priority |
+| [GearScape](https://gearscape.net/) | Public optimiser/tool as a complementary way to discover competing setups | Do not make it mandatory or upload accounts. Tool output needs mechanic/source/version checks; no assumption its code or data is licensed for reuse |
+| BRUHsailer and other efficient-Ironman guides (historical links below) | Long route dependencies and alternative progression hypotheses | Starting-account efficiency is not an endgame universal order; adaptation licence does not establish original guide rights |
+| Player feedback and specialist encounter communities | Identify missed alternatives, actual friction and contradictions | Record scenario and reproducible reason; popularity/consensus alone does not establish mechanics; do not harvest private messages |
+
+No creator endorsement or community consensus is claimed. Use sources according to claim type: official implemented change for release state; checked mechanics/formula for numbers; specialist experience for scenario relevance; player feedback for usefulness. Conflicting sources become a visible issue with the affected claim unavailable or conditional.
+
+**Maintenance policy:** each fact/context stores stable ID, source URL and revision where available, access/review dates, evidence type, affected items/models/routes, original summary, licence/reuse decision, confidence and known exceptions. Model versions identify rules, not just software builds. Review new game updates when they affect covered content; perform a regular lightweight inventory/staleness sweep (monthly starting cadence, adjusted to actual workload). Review age is a signal, not automatic proof a fact is wrong. Known invalidity disables the affected claim. Offline bundled knowledge cannot promise immediate hotfix freshness.
+
+Development-time scripts may diff permitted official announcements/API snapshots, RuneLite ItemID changes and pinned calculator revisions; CI can validate missing metadata, unresolved candidate rows, route cycles and regression fixtures. Fetch only permitted sources with caching/rate limits; a robots/access block is not permission to bypass it. Human review produces an ordinary bundled-data/code PR. No runtime scraping, hosted production service, user telemetry or per-account AI is required. Budget maintenance by prioritising impactful changed families and seeking contributions, not by hiding gaps behind a permanent catalogue cap.
+
+### Native UI and policy evidence
+
+Inspected [PluginPanel source](https://github.com/runelite/runelite/blob/master/runelite-client/src/main/java/net/runelite/client/ui/PluginPanel.java): a Swing panel with `PANEL_WIDTH=225`, scrollbar allowance 17 and border offset 6. Existing IronPath already uses `ItemManager`. [UX](UX.md) therefore specifies actual narrow Swing screens with client sprites and separate value/path views, rather than a browser mockup pretending to be implementable.
+
+Checked [Plugin Hub repository](https://github.com/runelite/plugin-hub) and [Rejected or Rolled Back Features](https://github.com/runelite/runelite/wiki/Rejected-or-Rolled-Back-Features) (page showed update 6 October 2026). Relevant restrictions include code/runtime APIs, client window/focus manipulation and content simulations; existing plugins may be grandfathered. Conventional local calculations are a defensible engineering direction, not a blanket Hub approval. Wider windows need current verification and Q5 must be assessed before any encounter-simulation-like feature ships. This uncertainty does not justify dropping Q1–Q4 quantitative work.
+
+## Historical foundation and implementation research
+
+The complete previous RESEARCH.md follows verbatim from `b50b0a9`. Earlier v0 scope, maintenance budgets and planned next steps are superseded; source findings and their stated limitations remain historical evidence. Current decisions are above and in DESIGN.
+
+<details>
+<summary>Expand earlier ecosystem, T2, P3 and P4a research and calculation evidence</summary>
+
 # Feasibility and source audit
 
 Researched 12 October 2026. This is a bounded source/code review, not an in-game evaluation, legal clearance, exhaustive competitor study or validated progression dataset.
@@ -282,3 +365,5 @@ and rolls exactly, hit chance within `1e-12` and DPS within `1e-10`. All 234 mat
 no discrepancy remains. The separate hand derivation agrees as well. Agreement
 with this pinned implementation is bounded validation, not proof of game
 correctness or a licence to expand into unsupported combat mechanics.
+
+</details>

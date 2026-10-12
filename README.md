@@ -15,26 +15,28 @@ No Plugin Hub submission or external service exists.
 
 The intended product is a free, open-source RuneLite sidebar that automatically identifies worthwhile Ironman PvM upgrades using observed account state: **which upgrades are worth pursuing, what difference will they make, and how do I obtain them?** Equipment, relevant prayers, skill levels and permanent unlocks are eligible. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
-## Decision
+## Product direction
 
-The **upgrade-first vertical slice** is implemented on the existing broad PvM foundation. Four outcomes have value, alternatives and route details; occult and swamp share a tested numerical model. The default experience works without a goal. Compact single-column cards open details with Back navigation, while goals, observations and administration are under Account and preferences. Unknown ownership remains provisional; access, preparation and equip requirements remain separate.
+IronPath is intended to become a comprehensive endgame PvM upgrade advisor, including BiS, meaningful specialist sidegrades, permanent rewards and the progression bridges needed to reach them. **The four-outcome P4a build is a foundation, not the product boundary.** There is no catalogue ceiling or requirement to select a goal.
 
-After testing and review, expand toward approximately 8–12 thoroughly researched upgrades, then according to usefulness. These are scope budgets, not quotas or permanent limits; retain useful existing content. Compare actual marginal value rather than recommending every missing item. Theoretical DPS requires an explicit reference setup/target and must not be presented as faster full encounters or more kills per trip. See docs/DESIGN.md for the bounded calculation model and limitations.
+The next increments will compare realistic complete reference setups, connect marginal value to recommendation ranking, and deliver major endgame outcomes early. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
 
-Personalised rules are technically feasible. The project will proceed independently, with usefulness and usability validated on representative accounts. Iron Compass remains a reference with overlapping features, not a reason to stop development or a required quality benchmark. Petter's experience is that its current workflow does not meet his usability needs; feature coverage alone does not establish a good user experience.
+Recommendations must explain what changes relative to owned alternatives, where it matters, when to defer, and how to obtain the upgrade. Strong alternatives and partial observations change the advice. An unread bank never proves an item is missing. Long-term upgrades remain visible alongside nearer opportunities.
 
-The product should make useful, encounter-specific trade-offs easy to understand: what improves the account's current options, what is merely convenient, when another grind is unnecessary, and which alternative remains sensible after the player skips a grind. A player should quickly find a few clear recommendations without navigating a large checklist.
+The architecture stays one local Java RuneLite plugin with bundled reviewed knowledge and native Swing UI. The main investment is accurate knowledge, reusable combat mechanics and useful presentation. We are not adding a backend, subscriptions or per-user AI. See the independent feasibility assessment and trade-offs in the design.
 
 ## Read and work
 
 | File | Purpose |
 |---|---|
-| [docs/RESEARCH.md](docs/RESEARCH.md) | Verified findings, source links, limitations and reuse assessment |
-| [docs/DESIGN.md](docs/DESIGN.md) | MVP, account-state semantics, small architecture and update policy |
-| [TASKS.md](TASKS.md) | Active P4a/P4b/P5 roadmap, implementation baselines, historical evidence and next Codex assignment |
-| [AGENTS.md](AGENTS.md) | Persistent instructions for AI-assisted development |
+| [docs/DESIGN.md](docs/DESIGN.md) | A: stable product vision; B: required capabilities and architecture; C: delivery principles |
+| [docs/CATALOGUE.md](docs/CATALOGUE.md) | Comprehensive initial coverage inventory, promotion criteria and visible research/model gaps |
+| [docs/UX.md](docs/UX.md) | Native RuneLite design and concrete sidebar wireframes |
+| [docs/RESEARCH.md](docs/RESEARCH.md) | Current evidence, source limits, calculator reuse/licensing and historical research |
+| [TASKS.md](TASKS.md) | Active R1–R8 assignments, quality criteria, next brief and preserved implementation/test history |
+| [AGENTS.md](AGENTS.md) | Persistent development instructions that protect the product vision |
 
-Use `TASKS.md` as the only task list initially. One developer, one repository, small commits. No Trello board, project board, separate knowledge service or additional planning documents. Once other contributors need issue discussions, move active tasks into GitHub Issues rather than maintaining two backlogs.
+TASKS.md is the only backlog. The catalogue is an evidence/coverage inventory, not a second task tracker. Implementation increments can be small; the intended product must not silently shrink to match them.
 
 ## Repository
 
@@ -46,14 +48,9 @@ Reuse the existing T1–P3 RuneLite implementation and preserve its licence noti
 
 ## Start here
 
-The implementation baseline combines PRs #1–#3 (including `b3a93d9`), PR #4's
-historical records and main's broad plan in PR #5. All five PRs were still open
-and unmerged when this documentation update was prepared. Recheck before work.
-P4a is delivered on `p4a-upgrade-advisor`, stacked on PR #6
-(`docs/upgrade-first-roadmap` at `2ef409a`), which contains PR #5
-(`eb22fef`). Main was rechecked at `c717927`; both PRs remained open and unmerged.
-This branch changes implementation, catalogue and validation documentation. P4b
-and publication remain separate assignments after review.
+The latest inspected implementation is PR #7, `p4a-upgrade-advisor`, at `b50b0a9`, stacked on PR #6 (`docs/upgrade-first-roadmap`, `2ef409a`) and PR #5 (`p1-p3-broad-pvm`, `eb22fef`). PR #5 consolidates earlier T1–T4 work. PRs #1–#7 remain open and unmerged; main is `c717927`. The complete relationship is recorded in the design. Recheck remote state before future work.
+
+This product-reset branch contains **documentation and wireframes only**, targeting #7's branch to keep review focused. It changes neither plugin behaviour nor the recorded test results. The next implementation assignment is **R1: realistic full-loadout magic and first endgame value**, described in TASKS.md. Old P4b counts and sequential planning/review gates are superseded. No existing PR is merged, closed or overwritten.
 
 The existing official RuneLite template, Gradle 8.10, Java release 11 and notices
 are retained; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). RuneLite resolves

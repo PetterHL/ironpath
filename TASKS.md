@@ -1,3 +1,124 @@
+# IronPath tasks
+
+Updated 12 October 2026. **This active R1–R8 backlog supersedes P4b/P5 and every older catalogue-size budget or sequential planning gate.** Historical briefs/results are preserved verbatim below and are not active instructions.
+
+## A. Product vision
+
+An established Ironman opens IronPath without selecting a goal and discovers worthwhile PvM upgrades, understands their account-specific value, sees meaningful supported numbers, and follows a clear acquisition path. Comprehensive maintained endgame/BiS and specialist coverage is the destination; implementation size is not a product limit. See [DESIGN](docs/DESIGN.md).
+
+## B. Capabilities and coverage
+
+Required: partial account observation; strong-alternative recognition; contextual ranking; full reference loadouts and local combat families; multi-step acquisition; native value-first UI; maintained sources and model coverage. [CATALOGUE](docs/CATALOGUE.md) inventories all relevant families, including current release candidates and future watchlist entries. D/R/V/Q are evidence/support states, not competing backlogs. [UX](docs/UX.md) gives concrete screens.
+
+**Current delivered baseline:** PR #7 `p4a-upgrade-advisor` at `b50b0a9`, plugin 0.4.0 / knowledge p4a-1 / schema 5. Four outcomes, nineteen decisions, 81 recognised forms, 84 sources, thirteen combat-item records. Historical 106 passing tests and 234 synthetic comparison cases; no new application tests or live checks were performed for this docs-only reset. Four outcomes are not comprehensive coverage. The complete open PR stack and architectural findings are in DESIGN. No existing PR was merged, closed or overwritten.
+
+## C. Incremental implementation
+
+Each assignment produces useful advice, reviewed knowledge, UI evidence and meaningful validation in the same PR. Do not create another planning-only phase before beginning R1. Source review and ordinary PR review are part of implementation, not serial approval gates between every small slice. A contributor may split an assignment into reviewable PRs without reducing its acceptance criteria or redefining the destination.
+
+| Milestone | Dependencies | Demonstrable result |
+|---|---|---|
+| R1 — Realistic magic and first endgame value | P4a + this reset | Full-loadout magic; Shadow/Ancestral early; numerical value influences advice; functional value/path views |
+| R2 — Ranged systems and major alternatives | R1 shared contracts | Bowfa, tbow and other ranged packages compared correctly; meaningful post-Bowfa advice |
+| R3 — Melee systems and major alternatives | R1 shared contracts; can overlap R2 | Fang, Scythe, Soulreaper and armour/specialist trade-offs with checked family models |
+| R4 — Specials and encounter specialists | Relevant R2/R3 models | Contextual specs/bolts/debuffs and specialist choices without fictitious sustained gains |
+| R5 — Acquisition and permanent-reward completeness | Route/quantity work starts in R1; extend alongside R2–R4 | Every active outcome has truthful remaining work; prayers/permanent rewards are first-class |
+| R6 — Endgame coverage closure and polished discovery | R2–R5 | No unexplained gaps in current inventory; developed accounts get useful advice or honest no-gain results |
+| R7 — Sustainable maintenance | Source schema in R1; begin before catalogue scale grows | Development-time change/impact checks and repeatable model validation; no runtime service |
+| R8 — Real-client usefulness and release readiness | Continuous UI checks from R1; broad R6 coverage for comprehensive claim | Evidence from representative accounts and native UI, accurate public coverage statement |
+
+These are capability milestones, not upgrade-count targets. R6 remains open while material inventory gaps exist; new releases extend the inventory. R7 and real-client feedback run alongside feature delivery. Q1–Q5 layers in DESIGN describe calculation dependencies, not a requirement to finish all standard formulas before implementing a high-value megarare.
+
+### R1 — Realistic full-loadout magic and first endgame value (next)
+
+Implement a working endgame improvement on P4a, rather than another small set of disconnected cards.
+
+- Extend immutable observations with equipment slots and supported container quantities/provenance; retain item-set consumers and all identity/IO protections. Add no persistent bank cache. A quantity remains unknown when unread.
+- Extract typed `CombatSetup`, `TargetProfile`, per-metric `ComparisonResult` and a comparison service. Remove OCCULT/SWAMP and Dharok-only schema constraints as required. Remove arbitrary content-count ceilings while retaining justified resource/depth safeguards. Keep pure deterministic evaluation and original formulas.
+- Support realistic magic reference gear: Ahrim/Virtus/Ancestral baselines as needed; occult, tormented bracelet, Magus ring, current supported boots/off-hands, prayers and boosts. Exact supported items/forms and mechanics must be reviewed. Do not quietly omit a damage-bearing slot or treat unsupported items as empty. Demonstrate two-handed weapon replacement removing an off-hand.
+- Deliver **Tumeken's shadow and Ancestral pieces** as real upgrade outcomes with complete routes, owned-alternative checks and defer explanations, alongside the existing occult/swamp outcomes. Add tormented bracelet/Magus as useful reusable accessory comparisons. This named slice establishes endgame value; it is not a ceiling. Research current superior/specialist alternatives from CATALOGUE before ranking; recognise them even where their new model remains unsupported.
+- Implement Shadow's current multipliers/caps and ToA distinction with independently checked rounding/interactions; support at least two reviewed non-identical target profiles and an explicit ToA scenario only if its scaling inputs are supported. No invented default invocation or raid level. If ToA scaling remains unsupported, label it and still ship checked non-ToA comparisons; keep the ToA gap active.
+- Propose a complete compatible reference from equipped/observed gear and labelled assumptions. Provide focused correction, preserve input provenance and invalidate stale confirmations. A useful reference is available without a goal or compulsory multi-step configuration.
+- Feed supported marginal changes and relevant alternatives into ranking. Separate relevance from access. Retain plan-ahead Shadow for appropriate accounts; Shadow ownership must stop routine swamp-grind advice. A small/no breakpoint accessory should not outrank a capability-changing option merely because it has more authored applications.
+- Deliver the UX overview and Value/Path detail structure with native icons, before/after summary, supported metrics, assumptions disclosure, compact prerequisites and Back preserving list position. Move calculation construction out of rendering. Show Zaryte's existing route with truthful component quantity when observed, otherwise unknown; this exercises the shared observation improvement.
+- Generalise source links to items/models/routes/contexts and allow reviewed official update evidence. Promote each shipped outcome only after its current facts, variants, routes and original explanations pass the catalogue contract. Preserve older useful content and source notices.
+
+**Acceptance:** realistic post-Bowfa magic account sees justified nearer options and Shadow/Ancestral plan-ahead value; Shadow owner receives relevant armour/accessory advice rather than swamp; two complete loadouts produce reproducible supported comparisons; zero breakpoints and unknown gear are honest. Show synthetic before/after scenarios with inputs, sources, model versions and ranking explanation. Preserve P4a valid numeric/ownership/lifecycle cases, investigate reference disagreements, run the build and meaningful regressions. Render overview, numeric detail, unsupported detail and route at native width. Record pending real-client checks without pretending screenshots establish usefulness. Do not implement universal optimisation, all combat families or encounter simulation in R1.
+
+### R2 — Ranged packages and post-Bowfa choices
+
+Implement shared ranged rolls, ammo/defence-type rules and reusable crystal/void/slayer/target effects, then Bowfa/crystal, twisted bow, blowpipe/rosewood alternatives, conventional crossbows and relevant ranged armour/jewellery. Include current Masori, quiver, anguish/rupture and ammunition candidates; verify Seeker restrictions/floor effects and revised gear rules. Promote supported bridging items from existing activity-only advice into outcomes when useful. Recognise two-handed/ammo/slot compatibility and upkeep. Review high-HP versus low-magic/low-defence contexts rather than treating tbow as universal.
+
+**Acceptance:** Bowfa+crystal does not receive Masori as a Bowfa damage upgrade; owned tbow does not erase useful Bowfa/blowpipe/spec niches; current superior jewellery/bolts/arrows affect baselines correctly; set replacement and ammunition assumptions are visible. Differential and hand tests cover scaling caps, breakpoints and invalid ammo. At least post-Bowfa and tbow-owned fixtures show changed priorities for documented reasons. Ship complete paths and native details for every new outcome.
+
+### R3 — Melee packages and endgame trade-offs
+
+Implement standard melee, attack types/styles, salve/task/demon/dragon conditions and family modules for Fang, Scythe and Soulreaper. Compare one-/two-handed packages, size, defence, encounter phase and resource/stack assumptions. Add Torva, current Inquisitor/mace, Oathplate, Ultor/Bellator, rancour/torture, defender/gloves/boots and meaningful crush/stab/slash bridges. Include halberd and multi-target candidates where evidence supports them; no universal Scythe/BiS ordering.
+
+**Acceptance:** small versus large targets change Scythe value; Fang behaviour inside/outside ToA is explicit; Soulreaper steady-state and ramp/lost-stack cases are not conflated; high-defence slash and crush examples show armour trade-offs; shields cannot coexist with two-handed proposals. Account profiles demonstrate meaningful value beyond missing gear. Keep sustain, defensive utility and damage as separate evidence.
+
+### R4 — Special attacks, specialist contexts and remaining quantitative gaps
+
+Model expected special-attack damage, ruby/diamond procs, defence reduction and a declared special-energy budget before attributing sustained DPS. Prioritise Zaryte crossbow, voidwaker, claws/burning claws, DWH/BGS/elder maul, tonalztics and relevant current specs such as Crimson kisten/Soulflame. Treat Lightbearer, Death Charge and surge effects through explicit cycles/team assumptions. Cover wilderness, demon/dragon/undead, multi-target, elemental and raid-specific sidegrades from the inventory. Update target profiles instead of making a bespoke engine for every item.
+
+**Acceptance:** tbow owner can receive Zaryte for its supported role; Zaryte is not presented as a generic bow replacement; low target HP, immunity, stat floors and competing spec use change results; a team debuff is not double-counted. Unsupported team/HP/phase models keep qualitative advice with a visible gap. Every promoted specialist names where it matters and when to defer.
+
+Investigate Q5 only after reusable attack distributions and a concrete useful scenario exist. Establish whether analytical target-time/resource modelling complies with current Hub rules; keep ordinary comparison delivery moving. Do not promise full-encounter times or kills/trip before validated assumptions, uncertainty ranges and policy clarity exist.
+
+### R5 — Acquisition and permanent rewards throughout the catalogue
+
+Paths ship with each outcome from R1; this assignment closes cross-catalogue gaps. Add needed supported quest/prayer/reward observations, component quantities, alternate activities/assembly and permanent-effect states. Cover prayer unlocks, infernal/quiver/MA2 rewards, relevant diary/CA unlocks, imbues and permanent Ghommal's penny behaviour. Record unobservable unlocks as unknown with targeted manual fallbacks; do not require Collection Log/KC or infer execution ability.
+
+**Acceptance:** Zaryte, fortified Masori, Torva, rancour and treads demonstrate multi-component paths; owned components remove only their own remaining work; ANY alternatives do not require every branch; inaccessible valuable upgrades remain visible; skips preserve other routes. Quantities are timestamped; no RNG completion bar or universal Bowfa-first order. Team/preparation is distinct from hard access. Prayer level never substitutes for consumed/unlocked prayer.
+
+### R6 — Comprehensive coverage and discoverability
+
+Audit every in-scope CATALOGUE row into current validated contexts or a specific documented reason for deferred/excluded status. Expand individual armour pieces, variants and relevant targets; do not count cosmetics as upgrades. Include recent equipment and substantive new releases after source validation. Close high-impact quantitative gaps for highly developed accounts instead of declaring qualitative catalogue presence sufficient.
+
+Finish searchable Browse, style/slot/encounter/readiness filters, owned/deferred explanations, accessible UI scaling and useful all-owned/unsupported states. Keep primary cards value-focused; diagnostics and research inventory are secondary.
+
+**Acceptance:** all major melee/ranged/magic weapon families, armour slots, prayers/permanent rewards and specialist categories have accounted-for coverage. Each active recommendation has baseline, context, value, alternatives, defer rule, complete path and review metadata. Publish separate recommendation/route/numeric support matrices and outstanding defects. No unexplained gap is hidden by a total count. Nearly complete accounts see justified remaining specialists or an honest no-meaningful-upgrade result, never padding.
+
+### R7 — Maintenance without a production service
+
+Add optional development scripts/CI that check source/model dependencies, stale review flags, item-ID/variant changes, broken references, inventory gaps, route cycles and known-invalid facts. Fetch only permitted endpoints or use saved permitted inputs; rate-limit/cache. Detect Jagex implemented changes separately from proposals. An optional maintainer-assisted research summary is not trusted runtime knowledge and must not upload accounts.
+
+**Acceptance:** replay a real recent change (for example July 2026 Inquisitor or September penny behaviour) and identify affected facts/models/routes/fixtures. A changed source creates a review finding, not an automatic recommendation. Known-invalid claims can be disabled without disabling unrelated knowledge. Document rights/revision/provenance for every imported asset if any. Benchmark realistic expanded catalogue startup/evaluation on the client; replace arbitrary quotas with justified safeguards. No hosted runtime dependency or scheduled-service requirement.
+
+### R8 — Real-client usefulness and release readiness
+
+Use the matrix below throughout delivery, then perform a focused end-to-end check across mature coverage. Preserve historical pending checks; do not rewrite them as successes. Verify native width/scaling, item icons, scrolling/Back, account switching, preference IO, bank refresh and calculation corrections. Observe a player finding useful upgrades, explaining their comparison and identifying a next acquisition step without opening diagnostics.
+
+**Acceptance:** recommendation disagreements are documented and important false positives/false negatives fixed; player can explain assumptions; no misleading ownership/route/numeric claims; performance remains usable with broad coverage. State actual supported modes, contexts, models and known gaps in README. Prepare Plugin Hub naming/policy/build/notice materials only when requested; submission/publication is separately authorised. A release can honestly be partial; a comprehensive product claim requires the coverage criteria above, not passing a fixed number of tests.
+
+## Recommendation-quality matrix
+
+Synthetic profiles have explicit positive/negative/unknown facts, complete reference setups and no selected goal. Keep expected examples contextual; do not encode one universal order as a golden test.
+
+| Profile | Useful behaviour to demonstrate | Unacceptable behaviour |
+|---|---|---|
+| Established midgame; no Bowfa; trident/whip-tier | Several viable gear/prayer bridges plus a relevant long-term option; declined CG gives sensible alternatives | Universal CG mandate; only quests; false absence from unread bank |
+| Post-Bowfa + crystal; partial magic/melee | Material magic/melee/megarare options; specialist ranged trade-offs | Masori as a Bowfa damage upgrade; endless tiny ranged accessories |
+| Tbow owned, no Shadow | Magic improvements and supported spec/specialist choices | Hiding all ranged specialist value; recommending tbow again |
+| Shadow owned, no tbow | Relevant ranged/melee options and actual magic gear breakpoints | Default swamp grind; fake gain from incompatible off-hand |
+| All three megarares; accessories/prayers/specialists missing | Smaller but defensible context-specific choices, upkeep/defer trade-offs | Only bridge items; every missing sidegrade called essential |
+| Nearly complete; strong specialist coverage | Honest small/no-gain outcomes and searchable deferred/coverage details | Three invented priorities just to fill the layout |
+| Partial or stale observations; conflicting manual fact | Targeted unknown labels and safe conditional advice | Unknown treated as missing; previous character data retained |
+| Owned parts, low access, skipped route | Completed component evidence, actual remaining step, alternative route | Already-owned grind, reward/access cycle, skip erases owned utility |
+
+For profiles with meaningful covered gaps, aim for at least three defensible, varied choices including long-term value where relevant; this is a usefulness check, not mandatory padding. Score each inspected recommendation on relevance, baseline correctness, value evidence, path correctness and comprehensibility (pass/conditional/fail with reason). Review both top results and important omissions. Change one fact at a time (gain Shadow, consume prayer, open bank, skip activity, change target) and verify the explanation changes coherently. Pair automated scenario assertions with native screenshots and focused player feedback; neither substitutes for the other.
+
+## Next Codex assignment — ready to use
+
+> Implement R1 from TASKS.md on a new branch based on the latest coherent P4a + product-reset state. Inspect the open PR stack first; do not merge or close existing work. Deliver realistic full-loadout magic comparison, Shadow/Ancestral endgame upgrade value and acquisition paths, meaningful marginal-value ranking, and native overview/Value/Path screens as specified in DESIGN, CATALOGUE and UX. Preserve privacy, unknown-state semantics and existing valid regressions. Research and validate each shipped mechanic, record unsupported contexts, and provide synthetic account demonstrations plus build/test and UI evidence. Open a reviewable implementation PR. Do not reduce the product vision to this slice, implement a universal simulator, or submit to Plugin Hub.
+
+## Historical task snapshots and results
+
+The following is the **complete pre-reset TASKS.md, preserved verbatim** from `b50b0a9`. Its “next task”, catalogue budgets, delivery order and review gates are superseded above. Its implementation reports, exact test evidence and unperformed live checks remain valid historical records. No new passing result is implied by this reset.
+
+<details>
+<summary>Expand historical T1–T4 and P1–P4a briefs/results (not active instructions)</summary>
+
 # Ironpath tasks
 
 Updated 12 October 2026. This is the single active backlog.
@@ -821,3 +942,5 @@ No development client was launched. **Maintenance rehearsal complete**;
 **user trial and T4 acceptance remain pending**. No source watcher, new feature,
 outreach, T5 work or Plugin Hub submission is part of this preparation.
 
+
+</details>
