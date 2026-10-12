@@ -6,7 +6,7 @@ Updated 12 October 2026. This is the single active backlog.
 
 Petter approved moving directly from the CoX experiment to broader Ironman PvM progression on 12 October 2026. CoX remains a supported activity and regression case. A separate CoX-only release and completion of the old T4 user trial are **not prerequisites for expansion**. Do not interpret this decision as proof that unperformed tests passed.
 
-At this planning update, main contains the documentation foundation; implementation is in the open stacked PRs below. Do not rebuild T1–T3 from scratch.
+At the original planning update, main contained the documentation foundation; implementation is in the open stacked PRs below. Do not rebuild T1–T3 from scratch.
 
 | Historical work | Verified repository state | Remaining qualification |
 |---|---|---|
@@ -22,7 +22,7 @@ Historical implementation/test reports are in [TASKS.md at the T4 baseline](http
 
 P1, P2 and P3 form the **next implementation assignment**. Deliver them together as a coherent PR, using small commits as useful. Do not introduce a new approval/review gate between these three tasks. P4 and P5 follow separately. No plugin implementation is part of this planning update.
 
-## P1 — Bring the existing foundation and current plan together (next)
+## P1 — Bring the existing foundation and current plan together (implemented)
 
 - Inspect current branch heads and open PRs before work. Start from the existing T3 implementation including `b3a93d9`; the recorded T4 branch already contains it.
 - Bring that implementation, T4 historical results and the current main planning documents together on a working branch. Resolve documentation conflicts in favour of this active P1–P5 plan while preserving accurate historical reports and useful build/login instructions.
@@ -31,7 +31,7 @@ P1, P2 and P3 form the **next implementation assignment**. Deliver them together
 
 **Done:** one working baseline includes existing implementation and current scope; earlier test evidence remains available; pending real-client checks remain pending.
 
-## P2 — Generalise only what the broad slice needs
+## P2 — Generalise only what the broad slice needs (implemented)
 
 Implement this alongside P3's real decisions, not as a standalone framework project.
 
@@ -48,7 +48,7 @@ Implement this alongside P3's real decisions, not as a standalone framework proj
 
 **Done:** P3 routes share the same small evaluation flow; existing supported advice remains correct or is deliberately migrated; adding a comparable reviewed decision does not require another boss-specific Java switch.
 
-## P3 — First useful broad PvM slice
+## P3 — First useful broad PvM slice (static delivery complete; PC checks pending)
 
 Target **12–16 meaningful reviewed decisions total**, including useful migrated existing decisions. The count is a budget, not a reason to pad the catalogue.
 
@@ -72,6 +72,128 @@ Target **12–16 meaningful reviewed decisions total**, including useful migrate
 8. Existing relevant tests and build pass. Report exact limitations and any real-client checks not performed.
 
 **Done:** present three concrete synthetic account examples with observed facts, selected goal, suggested activity, alternative and reasoning, including a declined-CG and a post-Bowfa case. Label synthetic evidence accurately. Record a short focused PC checklist; user testing is not a prerequisite for delivering this PR. Do not start P4 or Plugin Hub work in this assignment.
+
+### P1–P3 results — 12 October 2026
+
+Branch `p1-p3-broad-pvm` is a combined delivery against current main, based on
+`fad507f0b87f2e4f879c8810daad663f7dd3043f`. It contains T1/T2/T3 through
+`b3a93d9aa60f7661e49b970fc3b9272e7ad2df12`, including the first-save directory fix
+and CoX goal-status regression. Current main `c717927` was merged into this new
+working branch, with its broad scope taking precedence. PRs #1–#3's implementation
+and PR #4's historical documentation are incorporated; those PRs were not merged,
+closed or reset. T1–T4 text below remains verbatim, under an explicit historical
+heading. Main's AGENTS/design/plan and useful PC build/Jagex login instructions
+are retained. P4/P5/distribution were not started.
+
+**P1:** the combined baseline's `test build --no-daemon` passed **58 tests, zero
+failures** on Temurin JDK 11.0.32.1 / RuneLite 1.13.1. The cloud clone required the
+supported shell network permission to reach the proxy; the temporary JDK,
+configured proxy and system CA setup reused the documented T1 approach. No new
+foundation or repeat maintenance simulation was created.
+
+**P2:** all real decisions share the pure bounded evaluation flow. Reusable action
+types replace CoX kinds/unique-kind constraints; seven goals, activities, outcomes,
+contextual benefit bands, supported-goal breadth, qualitative effort and usable
+item packages live in bundled JSON. Hard access, suggested preparation, context
+and completion have separate predicates/labels. ALL/ANY and hard-cycle validation
+remain bounded; selected-goal routes rank before shared/other relevance, then
+contextual benefit, breadth, effort and stable ID. At most three different
+activities/families are shown. Activity skips exclude routes while retaining owned
+reward utility; individual old action skips remain available.
+
+The existing reader/controller/lifecycle/store were extended in place. Selected
+quest completion uses supported `Quest.getState` on the client thread; Deadeye and
+Mystic Vigour use permanent unlock varbits. Only selected progress events request a
+coalesced read. Unknown facts, time/provenance, positive live precedence, observed
+usable/charged distinctions, memory-only observations and character/profile guards
+remain. Acquisition absence needs a targeted explicit confirmation, including when
+an opened bank is empty. Schema 2 reads T3 schema 1, preserves all four old goal IDs,
+action skips and exact fact keys, keeps the same isolated identity/path, and drops
+retired IDs explicitly. No old skip is widened automatically.
+
+**P3:** plugin **0.3.0**, knowledge **p3-1**, catalogue schema **4**: **16 reviewed
+decisions / 61 exact item IDs / 62 sources / seven goals**. Retain the nine reviewed
+scroll/training/owned-kit/ordinary-team decisions; add a Slayer-87 milestone and
+six real acquisition/unlock choices covering CG, Zulrah, Slayer/cave krakens, ToA,
+Moons and Royal Titans. Post-Bowfa facts can support Zulrah, ToA and intermediate
+prayer choices. The magic-fang upgrade supports both raid goals; CG can be skipped
+in favour of Moons or an accurate unknown/blocked explanation. Owned advanced
+magic options suppress redundant trident routes without manufacturing charges.
+
+Full current pages were accessed for the bounded new access/acquisition/variant
+and alternative review; actual inspected revisions, original explanations,
+editorial preparation assumptions, dates and reuse/licence metadata are bundled.
+The review details and exact limitations are in docs/RESEARCH.md. There is no
+runtime scraping, new runtime dependency, backend, database, AI, KC/Collection Log,
+DPS optimiser, universal gear hierarchy or complete loadout planner.
+
+**Concrete fixes during generalisation:** regression tests caught a coordination
+preparation condition that had lost the retained CoX baseline, and alternative-route
+diagnostics that could turn bounded container absence into a missing global
+assembly input. Both were corrected. Observed relevant unconsumed Royal Titans
+scrolls also prevent another acquisition grind. When all remaining alternatives
+are blocked, the goal names a real route-specific access/preparation condition;
+an unknown alternative prevents claiming a universally missing requirement.
+
+**Final automated validation:** `test build --offline --no-daemon` on the same JDK
+and CA setup: **75 tests, zero failures/errors/skips**; `git diff --check` passes.
+All 58 existing cases remain, with assertions adapted only for the broader budget
+and generic explanation wording, plus 17 new cases covering broad goals/ranking,
+CG skip/restore, post-Bowfa and advanced accounts, shared upgrades, explicit target
+absence, open/unknown banks, manual/live precedence and non-usable ownership,
+Slayer milestone/task separation, ANY prayer alternatives, access versus preparation,
+owned scrolls, invalid references/package cycles, catalogue-defined goals, schema
+migration/restart and selected quest/unlock character isolation. The original
+first-save, serial IO, delayed callback, actual Swing listener and profile/character
+regressions still pass. These are synthetic fixtures and mocked API/UI events,
+not a live account trial. Non-fatal Fontconfig cache and Gradle deprecation warnings
+remain. No outstanding test/build blocker.
+
+### Three concrete synthetic examples
+
+These rows describe tested synthetic observations and explicit preferences. They
+are not captured account facts or player usefulness judgements. Skills meet the
+stated authored preparation baselines; the bank is positively observed, and only
+the relevant missing ownership targets are explicitly confirmed.
+
+| Synthetic context and goal | Suggested activity | Reviewed alternative and reason |
+|---|---|---|
+| Whip, rune crossbow, charged seas trident, base keris; 90 combat skills, required quests confirmed; Bowfa/twisted bow and atlatl targets confirmed absent. Goal: ranged options; **CG skipped**. | **Moons for an eclipse atlatl**; no CG card returns. | Keep the crossbow for appropriate low-level/team planning. Moons is a contextual alternative with melee/local-supply preparation, not a universal Bowfa equivalent. Restore CG and its reviewed route regains priority. |
+| Bowfa with default active crystal pieces, whip, seas trident and base keris; Rigour unlocked, Augury/Mystic Vigour locked; swamp/competing magic and fang gaps confirmed. **No goal**. | **Royal Titans, Zulrah and ToA** are three distinct choices. | The seas trident remains usable while deciding whether scale upkeep justifies Zulrah; current prayers remain available while deciding whether a duo unlock route is worthwhile. Bowfa suppresses another ranged acquisition without erasing the magic/prayer gaps. |
+| Bowfa/crystal, whip, observed charged Shadow and base keris; required access confirmed, higher prayers unlocked, fang absent. Goal: **ToA / fang**. | **Low-level ToA practice toward a fang**. | Ordinary team CoX planning with the observed kit remains available. Shadow ownership suppresses base/swamp trident grinds, while the fang remains a distinct supported melee objective; no success, supplies or solo/Expert readiness is inferred. |
+
+### Focused PC checklist — all pending
+
+Use README's JDK 11 build/launch commands on `p1-p3-broad-pvm`. No game client was
+launched in Cloud; `DISPLAY` is unset and no authenticated game session is available.
+Only earlier explicitly recorded T1 passes are established. Do not grind/acquire
+items just to exercise a boundary; label unexercised checks pending.
+
+1. **Observations:** before opening the bank, verify unknown storage. Open it and
+   compare displayed levels, selected quest completion and prayer unlocks with the
+   game, including an unavailable/uncovered variant. Confirm active/empty forms,
+   placeholders and provenance do not invent ownership/usability.
+2. **Goals and alternatives:** on supported facts, try no goal, ranged, magic and
+   ToA goals. Confirm up to three different activities, meaningful priority changes,
+   targeted ownership prompts and separate access/preparation/ANY explanations.
+   Open a pinned reference under Reviewed sources.
+3. **CG skip/restore:** skip CG at activity level. Check Moons appears when supported,
+   or an accurate blocked/unknown reason; no CG card returns. An already-owned
+   Bowfa/crystal kit must still support appropriate advice. Restore the activity.
+4. **Manual facts and persistence:** with the client closed, preserve a backup of
+   only the plugin directory before a fresh-directory check. Test a reversible
+   target absence, manual advanced ownership and clearing. Wait for Preferences
+   saved locally, restart and check restored choices plus unknown bank. If a T3
+   file is available, verify schema-1 choices survive and the next save is schema 2.
+5. **Isolation:** check another character and RuneLite profile, then return. Confirm
+   only each identity's choices restore, observations clear on transitions/hop/logout,
+   and stale UI/load/save callbacks cannot change the new identity. Keep local files
+   private; report anonymous labels and minimal facts only.
+
+Accuracy, source-button behavior, real-client save/restart, character/profile
+isolation and player usefulness remain **pending**. Zero live critical errors is
+not assumed. P4's approximately 35–45 decisions and P5/publication remain outside
+this delivery.
 
 ## P4 — Expand the first catalogue to approximately 35–45 decisions
 

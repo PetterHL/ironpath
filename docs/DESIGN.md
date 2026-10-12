@@ -73,6 +73,34 @@ Replace fixed CoX kinds, unique-kind checks, fixed gear-group assumptions and th
 
 Preserve stable goal/decision/activity/fact IDs where possible. Migrate or explicitly retire local preference identifiers when changing schemas, retaining character/profile isolation. Existing item-ID sets do not establish quantities, supplies or remaining charges; resource planning is deferred.
 
+### P3 implementation contract
+
+Plugin 0.3.0 / knowledge `p3-1` / catalogue schema 4 implements the 16-decision
+slice. The original reader, lifecycle/controller, Swing sidebar, local `Filepath`
+store and serial preference IO remain in place. Bounded predicates now cover
+selected facts, global planning possession, observed usable packages, levels and
+ALL/ANY composition; they cannot call APIs or execute catalogue strings.
+
+Goals, primary/shared route benefits, activities, outcomes, contextual benefit
+bands and wield/package conditions are bundled data. Ranking compares primary
+selected-goal routes, shared relevance, contextual benefit, supported-goal breadth,
+qualitative effort and stable ID. Activity/family diversity limits output to three.
+A long major route can precede a small owned-kit review. Preparation gates define
+where this slice makes a recommendation; labels distinguish them from access.
+
+Acquisition completion uses `POSSESSION`, whose false value requires an explicit
+target or exact-variant absence confirmation. Container absence stays globally
+unknown. Positive observations/manual ownership beat a conflicting target absence,
+while `USABLE` needs actual observed active/charged forms and wield/package levels.
+Historical owned-parts reminders retain their narrower storage-comparison semantics
+and warn about other storage. ANY diagnostics keep alternative routes grouped.
+
+Preference schema 2 reads schema 1 without changing the identity key or widening
+old decision skips. All four old goal IDs and exact item/unlock keys remain valid;
+retired identifiers are explicitly discarded. New activity skips and labelled
+ownership-target confirmations use the same local path and generation safeguards.
+No live observation, quest result or raw identity enters the preference document.
+
 ### State and privacy
 
 - Live inventory/equipment can establish positive possession. Bank results mean “observed in your bank at time T.” Absence means “not observed in supported storage,” not “never acquired.” Other storage requires manual confirmation or remains unknown.

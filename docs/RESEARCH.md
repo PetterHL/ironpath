@@ -146,3 +146,46 @@ This limited fact-and-link approach is not blanket permission for future copying
 All nine decisions and the five representative fixtures are documented under T2 in
 `TASKS.md`. The fixtures are synthetic; T1's passed static review does not establish
 RuneLite accuracy. Real-client checks and player judgement remain pending.
+
+
+## P3 bounded source review — 12 October 2026
+
+For this delivery, full current Wiki pages were fetched successfully through the
+configured network path. The source register now pins the actual inspected
+revisions, access/review date, author, affected decisions, licence and reuse basis.
+The nine existing decisions retain their reviewed T1/T2 evidence. New explanations
+and preparation bands are original editorial choices; this is a static fact and
+conditional strategy review, not expert/player endorsement or an in-game trial.
+No prose, equipment tables, images or progression dataset is imported.
+
+| New route | Reviewed evidence and important boundary |
+|---|---|
+| CG / Bowfa / crystal | The Gauntlet `15367929`, strategies `15359999`, Song of the Elves `15363333`, Bowfa `15366535`, crystal equipment `15355197`. SOTE access is distinct from the unobserved first regular completion needed before CG. NPC singing avoids a false mandatory Crafting/Smithing level. The route targets another enhanced seed only while its weapon gap is confirmed; it does not certify a complete crystal kit. |
+| Slayer to 87 / first trident | Cave kraken `15342837`, Kraken `15368743`, existing seas-trident evidence. Separate skill milestone from seeking a task/drop. Small cave krakens are a reviewed first-trident alternative to the boss; neither task nor completion probability is inferred. |
+| Zulrah / magic fang | Zulrah `15366227`, strategies `15356843`, Regicide `15369687`, retained fang/swamp evidence. The encounter page describes Port Tyras progress and sacrifice dialogue; the strategy page simplifies this to completed Regicide. Use completion as a conservative supported gate and explicitly leave dialogue/partial progress unobserved. Assembly's 59 Crafting is not Zulrah access. |
+| Low-level ToA / fang | Tombs `15356620`, strategies `15356953`, Beneath Cursed Sands `15363320`, base keris `15254688`, retained fang evidence. Raid access is BCS; fang/Bowfa/higher prayers are not entry requirements. The base keris and observed three-style baseline support planning only, not a full kit or a guaranteed useful raid level. |
+| Moons / atlatl | Moons `15357442`, strategies `15357348`, atlatl `15356407`. Perilous Moons unlocks chest claims. Herblore helps local supply preparation; atlatl damage uses strength context and ammunition. It remains a conditional alternative after CG is declined, rather than an equivalent weapon at every boss. |
+| Royal Titans / prayers | Titans `15357424`, strategies `15367754`, Deadeye `15222979`, Mystic Vigour `15335909`, and the two scroll revisions pinned in the register. No quest/skill entry gate; duo, spell and kit assumptions are visible. Deadeye/Mystic Vigour require 62/63 Prayer to read/use; their higher Rigour/Augury unlock alternatives satisfy the bounded target. Observed relevant unconsumed scrolls exclude further acquisition. |
+
+The three new weapon forms and two prayer-scroll IDs were checked against the
+Wiki item pages and RuneLite 1.13.1's supported generated item constants: base
+keris `25979`, atlatl `29000`, inactive Bowfa `25862`, scrolls `30626`/`30627`.
+The inactive Bowfa suppresses another enhanced-seed route without passing a usable
+weapon check. Existing reviewed charged/empty/cosmetic variants retain their
+separate meanings. The atlatl's full loadout and enhanced keris variants are outside
+this slice's observed preparation matcher.
+
+Selected quest completion uses `Quest.getState(Client)` on the client thread after
+initialisation. The compiled public API was inspected: it runs the supported quest
+status script; missing/unavailable results remain unknown. Relevant progress events
+use generated SOTE/BCS/PMOON/Regicide identifiers only to invalidate/coalesce a read,
+not to invent quest-completion thresholds. Deadeye/Mystic Vigour use the permanent
+unlock constants `PRAYER_DEADEYE_UNLOCKED` and
+`PRAYER_MYSTIC_VIGOUR_UNLOCKED`, distinct from active prayer state.
+
+Bundled coverage is 16 decisions / 61 exact IDs / 62 source records / seven goals.
+Six acquisition/unlock choices cover six non-CoX activities, alongside
+one Slayer milestone and the retained owned-parts/prayer/CoX decisions. Missing
+storage alone never activates an acquisition route. Source-page availability and
+static fixtures do not establish live observation accuracy, real-client usability,
+expert consensus, rights to redistribute source material, or Hub approval.
