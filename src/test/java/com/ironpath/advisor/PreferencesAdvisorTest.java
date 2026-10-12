@@ -32,20 +32,22 @@ public class PreferencesAdvisorTest
 		return new AccountSnapshot(fact(levels), base.inventory, base.equipment, base.bank, rigour, augury);
 	}
 
-	@Test public void selectedGoalChangesRankingButKeepsThreeDiverseChoices()
+	@Test public void higherValuePrecedesGoalPreferenceWhileGoalKeepsItsOwnNextAction()
 	{
 		AccountSnapshot account = account(70, Set.of(4151, 22978, 9185, 11907, 12932, 1755, 13576), fact(true), fact(true));
 		List<String> general = ids(account, Preferences.EMPTY);
 		assertEquals(3, general.size()); assertEquals("train-rigour", general.get(0));
 		Preferences augury = Preferences.EMPTY.goal("train-augury");
-		assertEquals("train-augury", ids(account, augury).get(0));
-		assertFalse(ids(account, augury).contains("train-rigour"));
+		assertEquals("train-rigour", ids(account, augury).get(0)); // Major value precedes the selected moderate goal.
+		assertTrue(advisor.goal(account, augury).nextAction.contains("Prayer to 77"));
+		assertTrue(advisor.availableActivities(account, augury).stream().anyMatch(r -> r.decision.id.equals("train-augury")));
 		Preferences cox = Preferences.EMPTY.goal("plan-team-cox");
-		assertEquals("coordinate-defence-reduction", ids(account, cox).get(0));
+		assertEquals("train-rigour", ids(account, cox).get(0));
+		assertTrue(advisor.goal(account, cox).nextAction.contains("defence-reduction"));
 		assertFalse(ids(account, cox).contains("plan-team-cox"));
 		assertEquals(ids(account, cox), ids(account, cox));
 		assertEquals(3, advisor.evaluate(account, cox).stream().map(r -> r.decision.family).distinct().count());
-		assertTrue(advisor.evaluate(account, augury).get(0).evidence.stream().anyMatch(e -> e.contains("directly supports selected goal")));
+		assertTrue(advisor.availableActivities(account, augury).stream().filter(r -> r.decision.id.equals("train-augury")).findFirst().orElseThrow().evidence.stream().anyMatch(e -> e.contains("directly supports selected goal")));
 	}
 
 	@Test public void teamGoalIsAvailableWhenSpecificCoordinationReplacesBroadPlanning()

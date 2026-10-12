@@ -21,23 +21,26 @@ public final class KnowledgeCatalog
 	public enum Benefit { MAJOR, MODERATE, MINOR, PLANNING }
 	public enum Test { ALL, ANY, LEVEL, ITEMS, EQUIPPED, RIGOUR, AUGURY, FACT, POSSESSION, USABLE, CONSTANT }
 	private static final Set<String> SKILLS = Set.of("ATTACK", "STRENGTH", "DEFENCE", "RANGED",
-		"MAGIC", "PRAYER", "HITPOINTS", "AGILITY", "CRAFTING", "SLAYER", "HERBLORE");
+		"MAGIC", "PRAYER", "HITPOINTS", "AGILITY", "CRAFTING", "SLAYER", "HERBLORE", "RUNECRAFT");
 	// This is the finite reader contract, not arbitrary client varbit/quest lookup from JSON.
 	private static final Set<String> FACTS = Set.of("rigour", "augury", "song-of-elves", "regicide",
-		"beneath-cursed-sands", "perilous-moons", "deadeye", "mystic-vigour");
+		"beneath-cursed-sands", "perilous-moons", "deadeye", "mystic-vigour", "final-dawn", "frozen-door",
+		"smoke-task", "smoke-protection", "nex-entry", "nex-team", "zaryte-context", "zaryte-shards", "doom-preparation", "treads-tears");
 	public final Map<String, Goal> goals;
 	public final Map<String, String> activities;
 	private final Map<String, String> ownershipLabels;
 	public final String version;
 	public final LocalDate reviewed;
 	public final List<Decision> decisions;
+	public final List<Upgrade> upgrades;
+	public final ComparisonSpec comparison;
 	public final Map<String, Source> sources;
 	final Map<String, List<Gear>> gear;
 	final Map<String, List<Integer>> itemSets;
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 4 || document.decisions == null
+		if (document.schemaVersion != 5 || document.decisions == null
 			|| document.decisions.isEmpty() || document.decisions.size() > 64)
 		{
 			throw new IllegalArgumentException("Unsupported or incomplete PvM catalogue");
@@ -81,7 +84,7 @@ public final class KnowledgeCatalog
 				|| decision.contextBenefits == null || decision.contextBenefits.size() > 8
 				|| decision.accessWhen == null || decision.prepWhen == null)
 			{ throw new IllegalArgumentException("Missing activity, preparation or benefit contract"); }
-			if (!Set.of("reviewed", "candidate").contains(decision.status)) { throw new IllegalArgumentException("Unknown review status"); }
+			if (!Set.of("reviewed", "candidate").contains(require(decision.status))) { throw new IllegalArgumentException("Unknown review status"); }
 			if (LocalDate.parse(require(decision.reviewed)).isAfter(reviewed))
 			{ throw new IllegalArgumentException("Inconsistent decision review date"); }
 			if (decision.sources == null || decision.sources.isEmpty() || !sources.keySet().containsAll(decision.sources))
@@ -205,6 +208,84 @@ public final class KnowledgeCatalog
 				} }
 		}
 		decisions = List.copyOf(document.decisions);
+		if (document.upgrades == null || document.upgrades.isEmpty() || document.upgrades.size() > 12)
+		{ throw new IllegalArgumentException("Missing bounded upgrade outcomes"); }
+		Set<String> upgradeIds = new HashSet<>();
+		for (Upgrade upgrade : document.upgrades)
+		{
+			if (upgrade == null) { throw new IllegalArgumentException("Missing upgrade outcome"); }
+			stableId(upgrade.id);
+			if (!upgradeIds.add(upgrade.id) || upgrade.benefitBand == null || !itemIds.contains(upgrade.itemId)
+				|| !Set.of("NONE", "OCCULT", "SWAMP").contains(require(upgrade.comparison))
+				|| upgrade.routes == null || upgrade.routes.isEmpty() || upgrade.routes.size() > 8
+				|| !ids.containsAll(upgrade.routes) || new HashSet<>(upgrade.routes).size() != upgrade.routes.size()
+				|| upgrade.goals == null || upgrade.goals.size() > 16 || new HashSet<>(upgrade.goals).size() != upgrade.goals.size()
+				|| !goalIds.containsAll(upgrade.goals) || upgrade.unknownSets == null || upgrade.unknownSets.size() > 8
+				|| !ownershipLabels.keySet().containsAll(upgrade.unknownSets))
+			{ throw new IllegalArgumentException("Invalid upgrade references"); }
+			require(upgrade.title); require(upgrade.valueReason); require(upgrade.alternatives);
+			require(upgrade.headline); require(upgrade.effortShort);
+			if (!Set.of("reviewed", "candidate").contains(require(upgrade.status))
+				|| LocalDate.parse(require(upgrade.reviewed)).isAfter(reviewed)) { throw new IllegalArgumentException("Unreviewed upgrade"); }
+			require(upgrade.remainingWork); require(upgrade.limitation);
+			evidence(upgrade.sources);
+			Decision contract = new Decision(); contract.sources = upgrade.sources;
+			validate(upgrade.when, contract, 0); validate(upgrade.ownedWhen, contract, 0);
+			validate(upgrade.equipWhen, contract, 0);
+			for (String route : upgrade.routes)
+			{ if (!byId.get(route).sources.containsAll(upgrade.sources)) { throw new IllegalArgumentException("Route lacks upgrade evidence"); } }
+			if (upgrade.applications == null || upgrade.applications.isEmpty() || upgrade.applications.size() > 6
+				|| upgrade.parts == null || upgrade.parts.size() > 8 || upgrade.shared == null || upgrade.shared.size() > 4
+				|| upgrade.contextBenefits == null || upgrade.contextBenefits.size() > 4)
+			{ throw new IllegalArgumentException("Invalid contextual value contract"); }
+			Set<String> applications = new HashSet<>();
+			for (Application application : upgrade.applications)
+			{
+				if (application == null) { throw new IllegalArgumentException("Missing application"); }
+				stableId(application.id); require(application.text); require(application.label);
+				if (!applications.add(application.id)) { throw new IllegalArgumentException("Duplicate encounter application"); }
+				validate(application.when, contract, 0);
+			}
+			for (Part part : upgrade.parts)
+			{ if (part == null) { throw new IllegalArgumentException("Missing component"); } require(part.label); validate(part.when, contract, 0); }
+			for (SharedReward reward : upgrade.shared)
+			{
+				if (reward == null) { throw new IllegalArgumentException("Missing shared reward"); }
+				require(reward.title); require(reward.detail); evidence(reward.sources);
+				if (!upgrade.sources.containsAll(reward.sources) || reward.minDelve < 2 || reward.minDelve > 4)
+				{ throw new IllegalArgumentException("Invalid shared reward evidence"); }
+				validate(reward.when, contract, 0); validate(reward.ownedWhen, contract, 0);
+			}
+			for (ContextBenefit benefit : upgrade.contextBenefits)
+			{
+				if (benefit == null || benefit.band == null) { throw new IllegalArgumentException("Unknown value band"); }
+				require(benefit.reason); validate(benefit.when, contract, 0);
+			}
+		}
+		upgrades = List.copyOf(document.upgrades);
+		comparison = document.comparison;
+		if (comparison == null || !"powered-magic-1".equals(comparison.modelVersion) || comparison.targetId != 1673
+			|| comparison.targetMagic != 1 || comparison.targetMagicDefence != -11 || comparison.attackTicks != 4
+			|| comparison.items == null || comparison.items.isEmpty() || comparison.items.size() > 32)
+		{ throw new IllegalArgumentException("Unsupported comparison contract"); }
+		require(comparison.targetName); evidence(comparison.sources);
+		Set<Integer> statIds = new HashSet<>();
+		for (CombatItem item : comparison.items)
+		{
+			if (item == null) { throw new IllegalArgumentException("Missing stat item"); }
+			if (!itemIds.contains(item.id) || !statIds.add(item.id) || !Set.of("weapon", "neck", "feet").contains(require(item.slot))
+				|| item.magicAttack < -64 || item.magicAttack > 100 || item.damagePercent < 0 || item.damagePercent > 10
+				|| (item.slot.equals("weapon") ? !Set.of("SEAS", "SWAMP").contains(item.weapon == null ? "" : item.weapon) : item.weapon != null))
+			{ throw new IllegalArgumentException("Invalid supported slot metadata"); }
+			require(item.label); evidence(item.sources);
+			if (!comparison.sources.containsAll(item.sources)) { throw new IllegalArgumentException("Missing stat evidence"); }
+		}
+	}
+
+	private void evidence(List<String> ids)
+	{
+		if (ids == null || ids.isEmpty() || new HashSet<>(ids).size() != ids.size() || !sources.keySet().containsAll(ids))
+		{ throw new IllegalArgumentException("Invalid evidence references"); }
 	}
 
 	/** Exact reviewed facts offered as reversible planning confirmations. */
@@ -215,6 +296,15 @@ public final class KnowledgeCatalog
 		choices.put("song-of-elves", "Song of the Elves completed"); choices.put("regicide", "Regicide completed");
 		choices.put("beneath-cursed-sands", "Beneath Cursed Sands completed"); choices.put("perilous-moons", "Perilous Moons completed");
 		choices.put("deadeye", "Deadeye unlock"); choices.put("mystic-vigour", "Mystic Vigour unlock");
+		choices.put("final-dawn", "The Final Dawn completed"); choices.put("frozen-door", "The Frozen Door completed");
+		choices.put("smoke-task", "Active smoke-devil Slayer task (manual current check)");
+		choices.put("smoke-protection", "Facemask or Slayer helmet available (manual check)");
+		choices.put("nex-entry", "Nex chamber killcount/key entry checked for this visit");
+		choices.put("nex-team", "Nex team and preparation reviewed (not game access)");
+		choices.put("zaryte-context", "Intended high-HP target allows ruby-bolt special utility");
+		choices.put("zaryte-shards", "250 nihil shards confirmed (manual quantity check)");
+		choices.put("doom-preparation", "Doom supplies/preparation reviewed (not delve capability)");
+		choices.put("treads-tears", "4,000 demon tears for one optional treads addition (manual quantity check)");
 		ownershipLabels.entrySet().stream().sorted(Map.Entry.comparingByKey())
 			.forEach(e -> choices.put("owns-" + e.getKey(), e.getValue()));
 		gear.values().stream().flatMap(List::stream).sorted(java.util.Comparator.comparing(g -> g.label))
@@ -344,6 +434,43 @@ public final class KnowledgeCatalog
 		Map<String, List<Integer>> itemSets;
 		Map<String, String> activities, ownershipLabels;
 		List<Goal> goals;
+		List<Upgrade> upgrades;
+		ComparisonSpec comparison;
+	}
+
+	public static final class Upgrade
+	{
+		public String id, title, valueReason, alternatives, remainingWork, limitation, comparison, headline, effortShort, status, reviewed;
+		public int itemId;
+		public Benefit benefitBand;
+		public Condition when, ownedWhen, equipWhen;
+		public List<String> routes, goals, sources, unknownSets;
+		public List<Application> applications;
+		public List<Part> parts;
+		public List<SharedReward> shared;
+		public List<ContextBenefit> contextBenefits = List.of();
+	}
+	public static final class Application { public String id, text, label; public Condition when; }
+	public static final class Part { public String label; public Condition when; public boolean optional; }
+	public static final class SharedReward
+	{
+		public String title, detail;
+		public int minDelve;
+		public Condition when, ownedWhen;
+		public List<String> sources;
+	}
+	public static final class ComparisonSpec
+	{
+		public String modelVersion, targetName;
+		public int targetId, targetMagic, targetMagicDefence, attackTicks;
+		public List<String> sources;
+		public List<CombatItem> items;
+	}
+	public static final class CombatItem
+	{
+		public int id, magicAttack, damagePercent;
+		public String label, slot, weapon;
+		public List<String> sources;
 	}
 
 	public static final class Decision

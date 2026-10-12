@@ -80,9 +80,9 @@ public class BroadPvmFixturesTest
 	{
 		AccountSnapshot a = account(BASE, 90, false, false);
 		Preferences p = gaps().goal("ranged-options").skip("cg", true);
-		assertEquals("seek-moons-atlatl", ids(a, p).get(0));
+		assertTrue(advisor.availableActivities(a, p).stream().anyMatch(r -> r.decision.id.equals("seek-moons-atlatl")));
 		assertTrue(advisor.evaluate(a, p).stream().noneMatch(r -> r.decision.activity.equals("cg")));
-		Advisor.Recommendation moons = advisor.evaluate(a, p).get(0);
+		Advisor.Recommendation moons = advisor.availableActivities(a, p).stream().filter(r -> r.decision.id.equals("seek-moons-atlatl")).findFirst().orElseThrow();
 		assertTrue(moons.decision.alternative.contains("not") || moons.decision.tradeoff.contains("not"));
 		assertTrue(moons.evidence.stream().anyMatch(e -> e.contains("manual planning confirmation (false)")));
 		assertEquals("Available preparation action", advisor.goal(a, p).status);
@@ -99,8 +99,8 @@ public class BroadPvmFixturesTest
 		assertTrue(general.contains("seek-toa-fang"));
 		assertTrue(general.contains("seek-titans-prayers"));
 		assertFalse(general.contains("pursue-bowfa")); assertFalse(general.contains("seek-moons-atlatl"));
-		assertTrue(ids(a, p.goal("plan-team-cox")).contains("plan-team-cox"));
-		assertTrue(advisor.evaluate(a, p.goal("plan-team-cox")).get(0).evidence.stream().anyMatch(e -> e.contains("Bow of faerdhinen")));
+		assertTrue(advisor.availableActivities(a, p.goal("plan-team-cox")).stream().anyMatch(r -> r.decision.id.equals("plan-team-cox")));
+		assertTrue(advisor.availableActivities(a, p.goal("plan-team-cox")).stream().filter(r -> r.decision.id.equals("plan-team-cox")).findFirst().orElseThrow().evidence.stream().anyMatch(e -> e.contains("Bow of faerdhinen")));
 		assertTrue(advisor.goal(a, p.goal("ranged-options")).status.startsWith("Satisfied"));
 	}
 
@@ -166,7 +166,7 @@ public class BroadPvmFixturesTest
 		Map<String, Observation<Boolean>> facts = new HashMap<>(a.facts); facts.put("song-of-elves", fact(false));
 		AccountSnapshot missingCg = changes(a, a.levels.value(), facts);
 		Preferences p = gaps().goal("ranged-options");
-		assertEquals("seek-moons-atlatl", ids(missingCg, p).get(0));
+		assertTrue(advisor.availableActivities(missingCg, p).stream().anyMatch(r -> r.decision.id.equals("seek-moons-atlatl")));
 		assertEquals("Available preparation action", advisor.goal(missingCg, p).status);
 		Map<String, Integer> levels = new HashMap<>(a.levels.value()); levels.put("HERBLORE", 49);
 		AccountSnapshot prepGap = changes(missingCg, levels, facts);

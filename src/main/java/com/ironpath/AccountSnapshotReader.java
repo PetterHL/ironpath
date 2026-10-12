@@ -39,6 +39,8 @@ final class AccountSnapshotReader
 		facts.put("regicide", quest(Quest.REGICIDE, now));
 		facts.put("beneath-cursed-sands", quest(Quest.BENEATH_CURSED_SANDS, now));
 		facts.put("perilous-moons", quest(Quest.PERILOUS_MOONS, now));
+		facts.put("final-dawn", quest(Quest.THE_FINAL_DAWN, now));
+		facts.put("frozen-door", quest(Quest.THE_FROZEN_DOOR, now));
 		facts.put("deadeye", unlock(VarbitID.PRAYER_DEADEYE_UNLOCKED, now, "Deadeye unlock varbit"));
 		facts.put("mystic-vigour", unlock(VarbitID.PRAYER_MYSTIC_VIGOUR_UNLOCKED, now, "Mystic Vigour unlock varbit"));
 		return new AccountSnapshot(Observation.observed(levels, now, "real skill levels"),

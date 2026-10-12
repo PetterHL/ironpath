@@ -39,7 +39,7 @@ public final class Advisor
 				&& r.decision.outcome.equals(d.outcome)).findFirst().orElse(null);
 			if (competing != null)
 			{
-				evidence.add("Competing route: " + competing.decision.title + ". Order follows goal relevance, contextual benefit, breadth, then effort and stable ID; both remain reviewed choices.");
+				evidence.add("Competing route: " + competing.decision.title + ". Order follows contextual benefit, optional goal relevance, then remaining effort and stable ID; both remain reviewed choices.");
 			}
 			result.add(new Recommendation(d, evidence));
 			if (result.size() == 3) { break; }
@@ -71,15 +71,142 @@ public final class Advisor
 			evidence.addAll(d.notes);
 			evidence.add("Selection: " + (preferences.goal == null ? "no selected goal" : goalRank(d, preferences.goal) < 2
 				? "directly supports selected goal" : "another supported activity") + "; " + benefitReason(d, account, preferences)
-				+ "; useful for " + d.goals.size() + " supported goals; effort band " + d.effortBand
+				+ "; effort band " + d.effortBand
 				+ ". Ties use stable decision ID. No efficiency score.");
 			candidates.add(new Recommendation(d, evidence.stream().distinct().collect(Collectors.toList())));
 		}
-		candidates.sort(Comparator.comparingInt((Recommendation r) -> goalRank(r.decision, preferences.goal))
-			.thenComparing(r -> benefit(r.decision, account, preferences))
-			.thenComparing(Comparator.comparingInt((Recommendation r) -> r.decision.goals.size()).reversed())
+		candidates.sort(Comparator.comparing((Recommendation r) -> benefit(r.decision, account, preferences))
+			.thenComparingInt(r -> goalRank(r.decision, preferences.goal))
 			.thenComparing(r -> r.decision.effortBand).thenComparing(r -> r.decision.id));
 		return candidates;
+	}
+
+	/** Substantial outcomes, independent of route availability and selected goals. */
+	public List<UpgradeView> upgrades(AccountSnapshot account, Preferences preferences)
+	{
+		List<UpgradeView> result = new ArrayList<>();
+		for (KnowledgeCatalog.Upgrade upgrade : catalog.upgrades)
+		{
+			if (!"reviewed".equals(upgrade.status) || truth(upgrade.when, account, preferences) != Truth.TRUE
+				|| truth(upgrade.ownedWhen, account, preferences) == Truth.TRUE) { continue; }
+			List<RouteView> routes = new ArrayList<>();
+			for (String id : upgrade.routes)
+			{
+				Decision route = decision(id);
+				if (skipped(route, preferences) || !"reviewed".equals(route.status)
+					|| completed(route, account, preferences) == Truth.TRUE) { continue; }
+				List<Requirement> requirements = new ArrayList<>();
+				addRequirements(route.accessWhen, account, preferences, requirements, false, "ACCESS");
+				addRequirements(route.when, account, preferences, requirements, false, "INPUTS / CONTEXT");
+				addRequirements(route.prepWhen, account, preferences, requirements, false, "SUGGESTED PREPARATION");
+				for (String dependency : route.requires)
+				{ addRequirements(decision(dependency).completeWhen, account, preferences, requirements,
+					skipped(decision(dependency), preferences), "PREREQUISITE"); }
+				Requirement next = requirements.stream().filter(r -> r.truth != Truth.TRUE || r.skipped).findFirst().orElse(null);
+				Truth access = truth(route.accessWhen, account, preferences);
+				String status = access == Truth.FALSE ? "Needs access prerequisite" : access == Truth.UNKNOWN ? "Access check needed"
+					: next == null ? "Supported planning route; recheck supplies and current access"
+					: next.role.equals("SUGGESTED PREPARATION") ? "Preparation to review" : "Inputs to check";
+				routes.add(new RouteView(route, status, next == null ? route.tradeoff
+					: next.role + ": " + next.label + " — " + (next.truth == Truth.FALSE ? "confirmed gap" : "unconfirmed planning input"), requirements, next == null));
+			}
+			if (routes.isEmpty()) { continue; }
+			routes.sort(Comparator.comparing((RouteView r) -> !r.available).thenComparing(r -> r.decision.effortBand).thenComparing(r -> r.decision.id));
+			List<String> evidence = new ArrayList<>(); collectEvidence(upgrade.when, account, preferences, evidence);
+			List<String> questions = new ArrayList<>();
+			if (truth(upgrade.ownedWhen, account, preferences) == Truth.UNKNOWN) { questions.addAll(ownershipQuestions(upgrade.ownedWhen, account, preferences)); }
+			for (String set : upgrade.unknownSets)
+			{ if (ownership(set, account, preferences) == Truth.UNKNOWN) { questions.add("owns-" + set); } }
+			List<String> applications = upgrade.applications.stream().filter(a -> truth(a.when, account, preferences) == Truth.TRUE)
+				.map(a -> a.text).collect(Collectors.toList());
+			KnowledgeCatalog.ContextBenefit context = upgrade.contextBenefits.stream()
+				.filter(b -> truth(b.when, account, preferences) == Truth.TRUE).findFirst().orElse(null);
+			KnowledgeCatalog.Benefit band = context == null ? upgrade.benefitBand : context.band;
+			List<Requirement> equip = new ArrayList<>(); addRequirements(upgrade.equipWhen, account, preferences, equip, false, "EQUIP");
+			List<Requirement> parts = new ArrayList<>();
+			for (KnowledgeCatalog.Part part : upgrade.parts)
+			{ parts.add(new Requirement(part.label, planningTruth(part.when, account, preferences), conditionEvidence(part.when, account, preferences), false,
+				part.optional ? "OPTIONAL ADDITION" : "COMPONENT / ASSEMBLY")); }
+			Requirement outstandingPart = parts.stream().filter(r -> r.role.equals("COMPONENT / ASSEMBLY") && r.truth != Truth.TRUE).findFirst().orElse(null);
+			if (outstandingPart != null)
+			{
+				for (int i = 0; i < routes.size(); i++)
+				{
+					RouteView route = routes.get(i);
+					if (route.available) { routes.set(i, new RouteView(route.decision, route.status,
+						"Component to " + (outstandingPart.truth == Truth.FALSE ? "obtain" : "confirm") + ": " + outstandingPart.label,
+						route.requirements, true)); }
+				}
+			}
+			List<String> shared = new ArrayList<>();
+			for (KnowledgeCatalog.SharedReward reward : upgrade.shared)
+			{
+				if (truth(reward.when, account, preferences) != Truth.TRUE || truth(reward.ownedWhen, account, preferences) == Truth.TRUE) { continue; }
+				shared.add(reward.title + " — eligible from completed delve " + reward.minDelve + ". "
+					+ (truth(reward.ownedWhen, account, preferences) == Truth.UNKNOWN ? "Ownership/alternatives unconfirmed. " : "Planning gap confirmed. ") + reward.detail);
+			}
+			String label = questions.isEmpty() ? "Planning gap confirmed" : "Ownership unconfirmed — if you do not already own the outcome/alternative";
+			if (routes.stream().noneMatch(r -> r.available)) { label += " · Plan ahead"; }
+			if (equip.stream().anyMatch(r -> r.truth != Truth.TRUE)) { label += " · Needs equip levels"; }
+			if (band == KnowledgeCatalog.Benefit.MINOR) { label += " · Contextual / consider deferring"; }
+			result.add(new UpgradeView(upgrade, label, context == null ? upgrade.valueReason : context.reason,
+				band, evidence, applications, questions.stream().distinct().collect(Collectors.toList()), routes, equip, parts, shared));
+		}
+		result.sort(Comparator.comparing((UpgradeView u) -> u.band)
+			.thenComparingInt(u -> preferences.goal != null && u.upgrade.goals.contains(preferences.goal) ? 0 : 1)
+			.thenComparing(Comparator.comparingInt((UpgradeView u) -> u.applications.size()).reversed())
+			.thenComparing(u -> u.routes.stream().noneMatch(r -> r.available)).thenComparing(u -> u.upgrade.id));
+		// Retain a supported available alternative beside longer blocked plans in the first three slots.
+		if (result.size() > 3 && result.subList(0, 3).stream().noneMatch(u -> u.routes.stream().anyMatch(r -> r.available)))
+		{
+			UpgradeView available = result.subList(3, result.size()).stream().filter(u -> u.routes.stream().anyMatch(r -> r.available)).findFirst().orElse(null);
+			if (available != null) { result.remove(available); result.add(2, available); }
+		}
+		return List.copyOf(result);
+	}
+
+	private List<String> ownershipQuestions(Condition c, AccountSnapshot a, Preferences p)
+	{
+		if (c.test == KnowledgeCatalog.Test.ALL || c.test == KnowledgeCatalog.Test.ANY)
+		{ return c.conditions.stream().flatMap(child -> ownershipQuestions(child, a, p).stream()).collect(Collectors.toList()); }
+		return c.test == KnowledgeCatalog.Test.POSSESSION && ownership(c.key, a, p) == Truth.UNKNOWN ? List.of("owns-" + c.key) : List.of();
+	}
+
+	/** Administrative steps do not occupy the primary outcome slots. */
+	public List<Recommendation> quickActions(AccountSnapshot a, Preferences p)
+	{
+		return candidates(a, p).stream().filter(r -> r.decision.kind == KnowledgeCatalog.Kind.READ
+			|| r.decision.kind == KnowledgeCatalog.Kind.ASSEMBLE || r.decision.kind == KnowledgeCatalog.Kind.REVIEW).collect(Collectors.toList());
+	}
+
+	public List<Recommendation> availableActivities(AccountSnapshot a, Preferences p)
+	{ return List.copyOf(candidates(a, p)); }
+
+	public static final class RouteView
+	{
+		public final Decision decision;
+		public final String status, next;
+		public final List<Requirement> requirements;
+		public final boolean available;
+		RouteView(Decision decision, String status, String next, List<Requirement> requirements, boolean available)
+		{ this.decision = decision; this.status = status; this.next = next; this.requirements = List.copyOf(requirements); this.available = available; }
+	}
+	public static final class UpgradeView
+	{
+		public final KnowledgeCatalog.Upgrade upgrade;
+		public final String label, value;
+		public final KnowledgeCatalog.Benefit band;
+		public final List<String> evidence, applications, questions, shared;
+		public final List<RouteView> routes;
+		public final List<Requirement> equip, parts;
+		UpgradeView(KnowledgeCatalog.Upgrade upgrade, String label, String value, KnowledgeCatalog.Benefit band,
+			List<String> evidence, List<String> applications, List<String> questions, List<RouteView> routes,
+			List<Requirement> equip, List<Requirement> parts, List<String> shared)
+		{
+			this.upgrade = upgrade; this.label = label; this.value = value; this.band = band;
+			this.evidence = List.copyOf(evidence); this.applications = List.copyOf(applications); this.questions = List.copyOf(questions);
+			this.routes = List.copyOf(routes); this.equip = List.copyOf(equip); this.parts = List.copyOf(parts); this.shared = List.copyOf(shared);
+		}
 	}
 
 	private boolean skipped(Decision d, Preferences p) { return p.skipped.contains(d.id) || p.skipped.contains(d.activity); }
@@ -124,8 +251,17 @@ public final class Advisor
 	{
 		Truth exact = Truth.any(catalog.itemSets.get(set).stream().map(id -> possession(a, p, id)).toArray(Truth[]::new));
 		if (exact == Truth.TRUE) { return Truth.TRUE; }
-		Preferences.Confirmation group = p.confirmations.get("owns-" + set);
-		return group == null ? exact : group.value ? Truth.TRUE : Truth.FALSE;
+		// Historical and new targets can name the same exact variant set. Their
+		// confirmations have the same meaning; a positive still wins a conflict.
+		List<Preferences.Confirmation> groups = p.confirmations.entrySet().stream()
+			.filter(e -> sameOwnershipSet(e.getKey(), set)).map(Map.Entry::getValue).collect(Collectors.toList());
+		if (groups.stream().anyMatch(c -> c.value)) { return Truth.TRUE; }
+		return groups.isEmpty() ? exact : Truth.FALSE;
+	}
+	private boolean sameOwnershipSet(String key, String set)
+	{
+		return key.startsWith("owns-") && catalog.itemSets.containsKey(key.substring(5))
+			&& new HashSet<>(catalog.itemSets.get(set)).equals(new HashSet<>(catalog.itemSets.get(key.substring(5))));
 	}
 	private Truth completionTruth(Condition c, AccountSnapshot a, Preferences p)
 	{
@@ -133,6 +269,7 @@ public final class Advisor
 		if (c.test == KnowledgeCatalog.Test.ANY) { return Truth.any(c.conditions.stream().map(x -> completionTruth(x, a, p)).toArray(Truth[]::new)); }
 		if (c.test == KnowledgeCatalog.Test.ITEMS)
 		{
+			if (ownership(c.key, a, p) == Truth.TRUE) { return Truth.TRUE; }
 			// Historical owned-parts/switch reminders use bounded storage absence, never an acquisition grind.
 			return Truth.any(catalog.itemSets.get(c.key).stream().map(id -> possession(a, p, id) == Truth.TRUE
 				? Truth.TRUE : a.observedItem(id)).toArray(Truth[]::new));
@@ -221,7 +358,8 @@ public final class Advisor
 			else if (p.confirmations.containsKey("item-" + item.id))
 			{ evidence.add(item.label + ": " + p.confirmations.get("item-" + item.id).evidence()); }
 		}
-		if (p.confirmations.containsKey("owns-" + c.key)) { evidence.add(p.confirmations.get("owns-" + c.key).evidence()); }
+		p.confirmations.entrySet().stream().filter(e -> sameOwnershipSet(e.getKey(), c.key)).sorted(Map.Entry.comparingByKey())
+			.forEach(e -> evidence.add(catalog.factChoices().get(e.getKey()) + ": " + e.getValue().evidence()));
 		if (c.test == KnowledgeCatalog.Test.USABLE)
 		{
 			for (Gear g : items(c.key))

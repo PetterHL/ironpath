@@ -37,6 +37,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.plugins.Plugin;
@@ -51,6 +52,7 @@ public class IronpathPlugin extends Plugin
 	@Inject ClientThread clientThread;
 	@Inject ConfigManager configManager;
 	@Inject ClientToolbar toolbar;
+	@Inject ItemManager itemManager;
 	@Inject AccountSnapshotReader reader;
 	@Inject Gson gson;
 	@Inject ScheduledExecutorService executor;
@@ -101,7 +103,7 @@ public class IronpathPlugin extends Plugin
 		SwingUtilities.invokeLater(() ->
 		{
 			if (!running || lifecycle != startup) { return; }
-			panel = new IronpathPanel();
+			panel = new IronpathPanel(itemManager);
 			panel.render(initialStatus, null, List.of(), catalog, null, Preferences.EMPTY, null, "", List.of());
 			if (!running || lifecycle != startup) { panel = null; return; }
 			navigation = NavigationButton.builder().tooltip("Ironpath").icon(icon()).priority(6).panel(panel).build();
@@ -148,7 +150,7 @@ public class IronpathPlugin extends Plugin
 		// Only selected quest progress invalidates quest facts. Script evaluation stays in the coalesced read.
 		boolean questChanged = Set.of(VarbitID.SOTE, VarbitID.BCS, VarbitID.PMOON_QUEST).contains(event.getVarbitId())
 			|| Set.of(VarPlayerID.SOTE_PRIMARY, VarPlayerID.BCS_PRIMARY, VarPlayerID.PMOON_MAIN,
-				VarPlayerID.REGICIDE_QUEST).contains(event.getVarpId());
+				VarPlayerID.REGICIDE_QUEST, VarPlayerID.NEX_PERM, VarPlayerID.VMQ4_PRIMARY).contains(event.getVarpId());
 		if (previous == null || !supported() || questChanged || !previous.rigour.known() || !previous.augury.known()
 			|| (previous.rigour.value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_RIGOUR_UNLOCKED)
 			|| (previous.augury.value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_AUGURY_UNLOCKED)
@@ -283,10 +285,12 @@ public class IronpathPlugin extends Plugin
 		boolean loaded = session.preferencesLoaded();
 		String storageStatus = session.storageStatus();
 		List<Advisor.Recommendation> recommendations = snapshot == null || !loaded ? List.of() : advisor.evaluate(snapshot, preferences);
+		List<Advisor.UpgradeView> upgrades = snapshot == null || !loaded ? List.of() : advisor.upgrades(snapshot, preferences);
+		com.ironpath.advisor.PoweredMagic.Setup reference = catalog == null ? null : session.reference(catalog);
 		Advisor.GoalView goal = snapshot == null || !loaded ? null : advisor.goal(snapshot, preferences);
 		List<String> reasons = snapshot == null || !loaded || !recommendations.isEmpty() ? List.of()
 			: advisor.explainNoAdvice(snapshot, preferences);
-		IronpathPanel.Actions actions = snapshot == null || !session.writable() ? null : new IronpathPanel.Actions()
+		IronpathPanel.Actions actions = snapshot == null || !loaded ? null : new IronpathPanel.Actions()
 		{
 			public void goal(String id)
 			{
@@ -301,11 +305,21 @@ public class IronpathPlugin extends Plugin
 				if (catalog.factChoices().containsKey(key)) { changePreferences(token, expectedIdentity, p -> p.confirm(key, value, Instant.now())); }
 			}
 			public void clear() { changePreferences(token, expectedIdentity, p -> Preferences.EMPTY); }
+			public boolean current() { return running && session.currentView(token, revision) && session.snapshot() == snapshot; }
+			public boolean canEdit() { return session.writable(); }
+			public void reference(String key, String value)
+			{
+				clientThread.invokeLater(() -> {
+					if (!running || !session.accepts(token, identity()) || !expectedIdentity.equals(identity())
+						|| !session.editReference(token, revision, expectedIdentity, snapshot, key, value, catalog)) { return; }
+					render("Reference updated in memory for this character/profile.", snapshot);
+				});
+			}
 		};
 		SwingUtilities.invokeLater(() ->
 		{
 			if (!running || panel == null || !session.currentView(token, revision) || session.snapshot() != snapshot) { return; }
-			panel.render(status, snapshot, recommendations, catalog, goal, preferences, actions, storageStatus, reasons);
+			panel.render(status, snapshot, recommendations, catalog, goal, preferences, actions, storageStatus, reasons, upgrades, reference);
 		});
 	}
 

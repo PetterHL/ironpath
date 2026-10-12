@@ -3,6 +3,7 @@ package com.ironpath;
 import com.ironpath.advisor.Advisor;
 import com.ironpath.advisor.Advisor.Recommendation;
 import com.ironpath.advisor.KnowledgeCatalog;
+import com.ironpath.advisor.PoweredMagic;
 import com.ironpath.model.AccountSnapshot;
 import com.ironpath.model.Observation;
 import com.ironpath.model.Truth;
@@ -15,76 +16,242 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import net.runelite.client.game.ItemManager;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.LinkBrowser;
 
 final class IronpathPanel extends PluginPanel
 {
+	private final ItemManager itemManager;
+	private String detail;
+	private long view;
+	private Runnable refresh;
+	IronpathPanel() { this(null); }
+	IronpathPanel(ItemManager itemManager) { this.itemManager = itemManager; }
+
 	interface Actions
 	{
 		void goal(String id);
 		void skip(String id, boolean skipped);
 		void confirm(String key, Boolean value);
 		void clear();
+		default void reference(String key, String value) {}
+		default boolean current() { return true; }
+		default boolean canEdit() { return true; }
 	}
 
 	void render(String status, AccountSnapshot snapshot, List<Recommendation> advice, KnowledgeCatalog catalog,
 		Advisor.GoalView goal, Preferences preferences, Actions actions, String storageStatus, List<String> reasons)
+	{ render(status, snapshot, advice, catalog, goal, preferences, actions, storageStatus, reasons, List.of(), null); }
+
+	void render(String status, AccountSnapshot snapshot, List<Recommendation> advice, KnowledgeCatalog catalog,
+		Advisor.GoalView goal, Preferences preferences, Actions actions, String storageStatus, List<String> reasons,
+		List<Advisor.UpgradeView> upgrades, PoweredMagic.Setup reference)
 	{
 		if (!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
-		removeAll();
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		long currentView = ++view;
+		refresh = () -> render(status, snapshot, advice, catalog, goal, preferences, actions, storageStatus, reasons, upgrades, reference);
+		if (snapshot == null || upgrades.stream().noneMatch(u -> u.upgrade.id.equals(detail))) { detail = null; }
+		removeAll(); setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
 		text(this, "Ironpath — Your path to endgame PvM");
-		text(this, "PvM progression · CG, Zulrah, ToA, Slayer, Moons, Royal Titans and ordinary team CoX. Standard Ironman; limited variants. Live validation is incomplete.");
 		text(this, status);
 		if (catalog != null)
 		{
 			text(this, "Knowledge " + catalog.version + " · reviewed " + catalog.reviewed);
 			if (ChronoUnit.DAYS.between(catalog.reviewed, LocalDate.now()) > 90)
-			{ text(this, "Catalogue review is over 90 days old. Check the sources before committing to a plan."); }
+			{ text(this, "Catalogue review is over 90 days old. Check sources before committing to a plan."); }
 		}
-		if (snapshot != null)
+		if (snapshot != null && catalog != null)
 		{
-			text(this, snapshot.bank.known() ? "Bank last observed this session: " + snapshot.bank.time()
-				: "Bank unknown. Open your bank to observe it, then return here.");
-			JPanel observations = section(this, "Account observations");
-			text(observations, "Real levels: Prayer " + level(snapshot, "PRAYER") + ", Defence " + level(snapshot, "DEFENCE")
-				+ ", Ranged " + level(snapshot, "RANGED") + ", Magic " + level(snapshot, "MAGIC") + ". " + snapshot.levels.evidence());
-			text(observations, "Rigour: " + unlock(snapshot.rigour) + "; Augury: " + unlock(snapshot.augury) + ". Client varbits.");
-			snapshot.facts.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(e ->
-				text(observations, catalog.factChoices().get(e.getKey()) + ": " + unlock(e.getValue()) + ". " + e.getValue().evidence()));
-			text(observations, "Inventory: " + snapshot.inventory.evidence() + "\nEquipment: " + snapshot.equipment.evidence());
-			text(observations, "Only observed storage is covered. Not observed does not mean never acquired. Check charges, ammunition, unnoting, access and supplies before use.");
-			text(this, storageStatus);
-			if (actions != null) { controls(catalog, preferences, snapshot, actions); }
-			if (goal != null) { goal(goal, catalog, actions); }
-			if (advice.isEmpty())
+			text(this, snapshot.bank.known() ? "Bank observed at " + java.time.format.DateTimeFormatter.ofPattern("HH:mm 'UTC'")
+				.withZone(java.time.ZoneOffset.UTC).format(snapshot.bank.time()) + " this session."
+				: "Bank unknown. Positive equipment/inventory can still support provisional advice.");
+			PoweredMagic model = new PoweredMagic(catalog);
+			Advisor.UpgradeView selected = upgrades.stream().filter(u -> u.upgrade.id.equals(detail)).findFirst().orElse(null);
+			if (selected != null)
 			{
-				text(this, "No supported available suggestion. Unknown facts do not establish a missing upgrade.");
-				if (!reasons.isEmpty())
-				{
-					JPanel explanation = section(this, "Why no suggestion");
-					for (String reason : reasons) { text(explanation, reason); }
-				}
+				button(this, "Back to upgrades", () -> navigate(null, currentView, actions));
+				upgradeDetails(selected, snapshot, preferences, catalog, actions, reference, model);
 			}
-			for (Recommendation recommendation : advice) { card(recommendation, catalog, actions); }
+			else
+			{
+				if (upgrades.isEmpty()) { text(this, "No supported substantial upgrade in this slice. Observe a supported magic weapon or boot/style baseline. Bowfa alone does not establish specialist need; unknown ownership is not a shopping list. Existing broad advice is below."); }
+				for (Advisor.UpgradeView upgrade : upgrades.subList(0, Math.min(3, upgrades.size())))
+				{ upgradeCard(this, upgrade, snapshot, preferences, reference, model, currentView, actions); }
+				if (upgrades.size() > 3)
+				{
+					JPanel more = section(this, "More supported upgrades");
+					for (Advisor.UpgradeView upgrade : upgrades.subList(3, upgrades.size()))
+					{ upgradeCard(more, upgrade, snapshot, preferences, reference, model, currentView, actions); }
+				}
+				List<Recommendation> quick = new Advisor(catalog).quickActions(snapshot, preferences);
+				if (!quick.isEmpty())
+				{
+					JPanel quickPanel = section(this, "Quick actions");
+					for (Recommendation recommendation : quick) { card(quickPanel, recommendation, catalog, actions); }
+				}
+				JPanel broad = section(this, "Existing broad PvM advice");
+				text(broad, "Reviewed activity/preparation advice across CG, Zulrah, ToA, Slayer, Moons, Titans and ordinary team CoX. These cases have no calculated upgrade benefit.");
+				for (Recommendation recommendation : advice) { card(broad, recommendation, catalog, actions); }
+				JPanel moreActivities = section(broad, "More available activities");
+				for (Recommendation recommendation : new Advisor(catalog).availableActivities(snapshot, preferences))
+				{
+					if (advice.stream().noneMatch(r -> r.decision.id.equals(recommendation.decision.id)))
+					{ card(moreActivities, recommendation, catalog, actions); }
+				}
+				for (String reason : reasons) { text(broad, reason); }
+				JPanel account = section(this, "Account and preferences");
+				observations(account, snapshot, catalog);
+				text(account, storageStatus);
+				if (actions != null && actions.canEdit()) { controls(account, catalog, preferences, snapshot, actions); }
+				if (goal != null) { goal(account, goal, catalog, actions); }
+			}
 		}
-		text(this, "Local evaluation. Observations clear on account transitions. Only your goal, skips and manual confirmations are saved locally for this character/profile. Source links carry no account data.");
+		text(this, "Local planning · live checks pending. Reference setups stay in memory; planning choices are saved locally.");
 		revalidate(); repaint();
 	}
 
-	private void controls(KnowledgeCatalog catalog, Preferences preferences, AccountSnapshot account, Actions actions)
+	private void navigate(String id, long expectedView, Actions actions)
 	{
-		text(this, "Optional goal (one at a time)");
+		if (view != expectedView || (actions != null && !actions.current())) { return; }
+		detail = id; refresh.run();
+	}
+
+	private void observations(JPanel parent, AccountSnapshot snapshot, KnowledgeCatalog catalog)
+	{
+		text(parent, "Real levels: Prayer " + level(snapshot, "PRAYER") + ", Defence " + level(snapshot, "DEFENCE")
+			+ ", Ranged " + level(snapshot, "RANGED") + ", Magic " + level(snapshot, "MAGIC") + ". " + snapshot.levels.evidence());
+		text(parent, "Rigour: " + unlock(snapshot.rigour) + "; Augury: " + unlock(snapshot.augury) + ". Client varbits.");
+		snapshot.facts.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(e ->
+			text(parent, catalog.factChoices().get(e.getKey()) + ": " + unlock(e.getValue()) + ". " + e.getValue().evidence()));
+		text(parent, "Inventory: " + snapshot.inventory.evidence() + "\nEquipment: " + snapshot.equipment.evidence());
+		text(parent, "Bank: " + snapshot.bank.evidence());
+		text(parent, "Not observed is not global absence. Manual current-task/access assumptions must be rechecked before play; their timestamps are planning provenance.");
+	}
+
+	private void upgradeCard(JPanel parent, Advisor.UpgradeView upgrade, AccountSnapshot a, Preferences p,
+		PoweredMagic.Setup setup, PoweredMagic model, long expectedView, Actions actions)
+	{
+		JPanel card = new JPanel(); card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+		card.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		card.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0), BorderFactory.createEtchedBorder()));
+		JLabel icon = new JLabel("◇"); icon.setToolTipText(upgrade.upgrade.title); icon.setForeground(ColorScheme.TEXT_COLOR);
+		if (itemManager != null) { itemManager.getImage(upgrade.upgrade.itemId).addTo(icon); }
+		card.add(icon); text(card, upgrade.upgrade.title);
+		text(card, (upgrade.questions.isEmpty() ? "Planning gap confirmed" : "Ownership unconfirmed")
+			+ (upgrade.routes.stream().noneMatch(r -> r.available) ? " · Plan ahead" : "")
+			+ (upgrade.equip.stream().anyMatch(r -> r.truth != Truth.TRUE) ? " · Needs equip levels" : "")
+			+ (upgrade.band == KnowledgeCatalog.Benefit.MINOR ? " · Contextual / defer" : ""));
+		PoweredMagic.Result result = model.compare(a, p, setup, upgrade.upgrade.comparison);
+		text(card, result.before == null ? upgrade.upgrade.headline : "Reference max hit " + result.before.maxHit + " → " + result.after.maxHit
+			+ "; theoretical DPS " + String.format(java.util.Locale.ROOT, "%.2f → %.2f", result.before.dps, result.after.dps)
+			+ " at ordinary Dharok. " + (setup.confirmed ? "Confirmed reference." : "Proposed reference; correct in details."));
+		if (!upgrade.applications.isEmpty()) { text(card, "Contexts: " + upgrade.upgrade.applications.stream()
+			.filter(application -> upgrade.applications.contains(application.text)).map(application -> application.label).collect(java.util.stream.Collectors.joining(" · "))); }
+		text(card, "Remaining: " + upgrade.upgrade.effortShort);
+		JButton open = button(card, "Open details", () -> navigate(upgrade.upgrade.id, expectedView, actions));
+		open.setName("open-upgrade-" + upgrade.upgrade.id); parent.add(card);
+	}
+
+	private void upgradeDetails(Advisor.UpgradeView view, AccountSnapshot a, Preferences p, KnowledgeCatalog catalog,
+		Actions actions, PoweredMagic.Setup setup, PoweredMagic model)
+	{
+		KnowledgeCatalog.Upgrade upgrade = view.upgrade;
+		text(this, upgrade.title + "\n" + view.label); text(this, view.value);
+		for (String evidence : view.evidence) { text(this, "Baseline evidence: " + evidence); }
+		PoweredMagic.Result comparison = model.compare(a, p, setup, upgrade.comparison);
+		text(this, comparison.summary());
+		if (!upgrade.comparison.equals("NONE"))
+		{
+			JPanel assumptions = section(this, "Reference setup and assumptions");
+			for (String assumption : comparison.assumptions) { text(assumptions, assumption); }
+			if (comparison.before == null && setup != null) { text(assumptions, "Selected slots: " + setup.slots + ". Zero denotes an explicitly empty reference slot. Prayer " + setup.prayer + ", boost " + setup.boost + ", style " + setup.style + "."); }
+			if (actions != null && actions.canEdit() && setup != null) { referenceControls(assumptions, a, setup, actions, model, comparison.before != null); }
+		}
+		text(this, "Alternative: " + upgrade.alternatives); text(this, "Limits: " + upgrade.limitation);
+		text(this, "Remaining work: " + upgrade.remainingWork + " Review: " + upgrade.reviewed + ".");
+		for (String application : view.applications) { text(this, application); }
+		java.util.Set<String> confirmationKeys = new java.util.LinkedHashSet<>();
+		if (upgrade.ownedWhen.test == KnowledgeCatalog.Test.POSSESSION) { confirmationKeys.add("owns-" + upgrade.ownedWhen.key); }
+		for (String set : upgrade.unknownSets) { confirmationKeys.add("owns-" + set); }
+		confirmationKeys.addAll(view.questions);
+		for (String key : confirmationKeys)
+		{
+			text(this, "Targeted ownership check: " + catalog.factChoices().get(key) + "? "
+				+ (p.confirmations.containsKey(key) ? p.confirmations.get(key).evidence() : "Unconfirmed outside observed storage.")
+				+ " Positive observed/manual possession takes precedence over an absence.");
+			if (actions != null)
+			{
+				button(this, "Already owned", () -> actions.confirm(key, true));
+				button(this, "Confirm not owned", () -> actions.confirm(key, false));
+				button(this, "Clear confirmation", () -> actions.confirm(key, null));
+			}
+		}
+		text(this, "Equip requirements (separate from acquisition)"); requirements(this, view.equip);
+		if (!view.parts.isEmpty()) { text(this, "Owned parts and additions — optional steps are labelled"); requirements(this, view.parts); }
+		text(this, "Acquisition paths — each outcome is grouped once");
+		for (Advisor.RouteView route : view.routes)
+		{
+			text(this, route.decision.title + "\n" + route.status + "\nNext: " + route.next);
+			JPanel steps = section(this, "Route requirements"); requirements(steps, route.requirements);
+			text(steps, route.decision.access); text(steps, "Suggested preparation: " + route.decision.preparation);
+			text(steps, "Trade-off: " + route.decision.tradeoff); text(steps, "Remaining effort: " + route.decision.effort);
+			if (actions != null && actions.canEdit()) { button(steps, "Skip this activity", () -> actions.skip(route.decision.activity, true)); }
+		}
+		if (!view.shared.isEmpty())
+		{
+			text(this, "Same Doom acquisition activity, separate conditional rewards. Treads require completed delve 4. Rewards are rolled separately; their benefits are not added and nothing certifies delve capability.");
+			for (String reward : view.shared) { text(this, reward); }
+		}
+		sources(this, upgrade.sources, catalog);
+	}
+
+	private void referenceControls(JPanel parent, AccountSnapshot a, PoweredMagic.Setup setup, Actions actions, PoweredMagic model, boolean supported)
+	{
+		text(parent, "Reference only. Empty slots are deliberate exclusions, not zero-valued unknown account gear. Prayer/boost are assumptions; quantities and remaining charges are not measured.");
+		button(parent, "Use minimal template", () -> actions.reference("template", "true"));
+		for (String slot : List.of("weapon", "neck", "feet"))
+		{
+			JComboBox<Choice> choice = choices(model.choices(slot, a), false); select(choice, Integer.toString(setup.slots.get(slot)));
+			choice.setName("reference-" + slot);
+			parent.add(choice);
+			JButton apply = button(parent, "Apply " + slot, () -> { if (choice.getSelectedItem() != null) { actions.reference(slot, ((Choice) choice.getSelectedItem()).id); } });
+			apply.setEnabled(choice.getItemCount() > 0);
+		}
+		for (String key : List.of("prayer", "boost", "style"))
+		{
+			Map<String, String> options = new java.util.LinkedHashMap<>();
+			if (key.equals("prayer")) { for (PoweredMagic.Prayer value : PoweredMagic.Prayer.values()) { options.put(value.name(), value.name()); } }
+			if (key.equals("boost")) { for (PoweredMagic.Boost value : PoweredMagic.Boost.values()) { options.put(value.name(), value.name()); } }
+			if (key.equals("style")) { for (PoweredMagic.Style value : PoweredMagic.Style.values()) { options.put(value.name(), value.name()); } }
+			JComboBox<Choice> choice = choices(options, false); select(choice, key.equals("prayer") ? setup.prayer.name() : key.equals("boost") ? setup.boost.name() : setup.style.name());
+			choice.setName("reference-" + key);
+			parent.add(choice); button(parent, "Apply " + key, () -> actions.reference(key, ((Choice) choice.getSelectedItem()).id));
+		}
+		if (supported) { button(parent, "Confirm reference", () -> actions.reference("confirm", "true")); }
+	}
+
+	private void requirements(JPanel parent, List<Advisor.Requirement> requirements)
+	{
+		for (Advisor.Requirement requirement : requirements)
+		{ text(parent, requirement.role + " · " + (requirement.truth == Truth.TRUE ? "Confirmed for planning" : requirement.truth == Truth.FALSE ? "Confirmed gap" : "Unknown")
+			+ ": " + requirement.label + ". " + requirement.evidence); }
+	}
+
+	private void controls(JPanel parent, KnowledgeCatalog catalog, Preferences preferences, AccountSnapshot account, Actions actions)
+	{
+		text(parent, "Optional goal (one at a time)");
 		JComboBox<Choice> goals = choices(Advisor.goalChoices(catalog), true);
 		select(goals, preferences.goal);
-		add(goals);
-		button(this, "Set goal", () -> actions.goal(((Choice) goals.getSelectedItem()).id));
-		JPanel choices = section(this, "Skips and manual confirmations");
+		parent.add(goals);
+		button(parent, "Set goal", () -> actions.goal(((Choice) goals.getSelectedItem()).id));
+		JPanel choices = section(parent, "Skips and manual confirmations");
 		text(choices, "Skip an activity to exclude its acquisition route. Owned rewards stay useful; skips never complete targets.");
 		JComboBox<Choice> activitySkip = choices(catalog.activities, false);
 		choices.add(activitySkip);
@@ -129,12 +296,12 @@ final class IronpathPanel extends PluginPanel
 		button(choices, "Reset all planning choices", actions::clear);
 	}
 
-	private void goal(Advisor.GoalView goal, KnowledgeCatalog catalog, Actions actions)
+	private void goal(JPanel parent, Advisor.GoalView goal, KnowledgeCatalog catalog, Actions actions)
 	{
-		text(this, "Goal: " + goal.title + "\n" + goal.status);
-		if (goal.nearestMissing != null) { text(this, "Nearest confirmed missing prerequisite: " + goal.nearestMissing); }
-		text(this, "Next: " + goal.nextAction);
-		JPanel requirements = section(this, "Goal prerequisites and sources");
+		text(parent, "Goal: " + goal.title + "\n" + goal.status);
+		if (goal.nearestMissing != null) { text(parent, "Nearest confirmed missing prerequisite: " + goal.nearestMissing); }
+		text(parent, "Next: " + goal.nextAction);
+		JPanel requirements = section(parent, "Goal prerequisites and sources");
 		for (Advisor.Requirement requirement : goal.requirements)
 		{
 			text(requirements, requirement.role + " · " + (requirement.truth == Truth.TRUE ? "Confirmed" : requirement.truth == Truth.FALSE ? "Missing" : "Unknown")
@@ -144,13 +311,14 @@ final class IronpathPanel extends PluginPanel
 		text(requirements, "Alternatives have their own access. Suggested preparation is an authored planning baseline, not a game entry requirement.");
 		text(requirements, "Alternative: " + goal.decision.alternative);
 		sources(requirements, goal.decision, catalog);
-		if (actions != null) { button(this, "Clear goal", () -> actions.goal(null)); }
+		if (actions != null && actions.canEdit()) { button(parent, "Clear goal", () -> actions.goal(null)); }
 	}
 
-	private void card(Recommendation recommendation, KnowledgeCatalog catalog, Actions actions)
+	private void card(JPanel parent, Recommendation recommendation, KnowledgeCatalog catalog, Actions actions)
 	{
 		KnowledgeCatalog.Decision decision = recommendation.decision;
 		JPanel card = new JPanel(); card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+		card.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		card.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0), BorderFactory.createEtchedBorder()));
 		text(card, decision.title); text(card, decision.why);
 		JPanel details = section(card, "Why and alternatives");
@@ -167,13 +335,16 @@ final class IronpathPanel extends PluginPanel
 			boolean route = decision.kind == KnowledgeCatalog.Kind.ACQUIRE || decision.activity.equals("slayer");
 			button(card, route ? "Skip this activity" : "Skip this action", () -> actions.skip(route ? decision.activity : decision.id, true));
 		}
-		add(card);
+		parent.add(card);
 	}
 
 	private void sources(JPanel panel, KnowledgeCatalog.Decision decision, KnowledgeCatalog catalog)
+	{ sources(panel, decision.sources, catalog); }
+
+	private void sources(JPanel panel, List<String> sourceIds, KnowledgeCatalog catalog)
 	{
-		JPanel references = section(panel, "Reviewed sources (" + decision.sources.size() + ")");
-		for (String id : decision.sources)
+		JPanel references = section(panel, "Reviewed sources (" + sourceIds.size() + ")");
+		for (String id : sourceIds)
 		{
 			KnowledgeCatalog.Source source = catalog.sources.get(id);
 			button(references, "Source: " + id, () -> LinkBrowser.browse(source.url));
@@ -183,6 +354,7 @@ final class IronpathPanel extends PluginPanel
 	private JPanel section(JPanel parent, String label)
 	{
 		JPanel details = new JPanel(); details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS)); details.setVisible(false);
+		details.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		button(parent, label, () -> { details.setVisible(!details.isVisible()); revalidate(); });
 		parent.add(details); return details;
 	}
@@ -210,20 +382,27 @@ final class IronpathPanel extends PluginPanel
 		@Override public String toString() { return label; }
 	}
 
-	private static void button(JPanel panel, String label, Runnable action)
+	private static JButton button(JPanel panel, String label, Runnable action)
 	{
 		JButton button = new JButton(label);
+		if (label.length() > 24)
+		{ button.setText("<html><div style='width:150px'>" + label.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;") + "</div></html>"); }
 		button.setToolTipText(label);
-		button.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 12, 28));
+		int height = Math.max(28, button.getPreferredSize().height);
+		button.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 12, height));
+		button.setMinimumSize(new Dimension(0, height));
 		button.setAlignmentX(LEFT_ALIGNMENT);
-		button.addActionListener(event -> action.run()); panel.add(button);
+		button.addActionListener(event -> action.run()); panel.add(button); return button;
 	}
 	private static String level(AccountSnapshot account, String skill) { return account.level(skill) == null ? "unknown" : account.level(skill).toString(); }
 	private static String unlock(Observation<Boolean> fact) { return !fact.known() ? "unknown" : fact.value() ? "unlocked" : "not unlocked"; }
 	private static void text(JPanel panel, String message)
 	{
 		JTextArea text = new JTextArea(message); text.setLineWrap(true); text.setWrapStyleWord(true);
+		text.setColumns(20);
+		text.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 12, Integer.MAX_VALUE));
 		text.setEditable(false); text.setOpaque(false);
+		text.setForeground(ColorScheme.TEXT_COLOR);
 		text.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); text.setAlignmentX(LEFT_ALIGNMENT);
 		panel.add(text);
 	}
