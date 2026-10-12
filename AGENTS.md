@@ -4,6 +4,7 @@
 
 - Keep code, UI text, documentation and commit messages in English. Discussion with Petter may be Norwegian.
 - Read README.md, docs/DESIGN.md and the active task in TASKS.md. Consult docs/RESEARCH.md for evidence. Do not expand the scope because an API or guide exists.
+- Current approved direction (12 October 2026): broad Ironman PvM progression. Follow active P1–P5 in TASKS.md; the next assignment is P1–P3 together. Reuse existing T1–T3 implementation. Historical CoX-only scope, 12-decision ceiling and T4-before-expansion instructions are superseded. Pending real-client tests remain pending and do not block expansion unless a concrete defect does.
 - Build this as an independent project. Iron Compass is an optional reference with overlapping features, not a required comparison gate or grounds for redirecting the work upstream. Validate our own usefulness and usability.
 - Use the official RuneLite Java plugin template and current supported public APIs. Keep one Gradle project and minimal dependencies. Do not build a web app, backend, database, AI integration or general-purpose rule engine.
 - Treat game state as partial observations. Unknown is not false or zero. Preserve observation time and provenance. Bank ownership, collection history and permanent unlocks are different facts.

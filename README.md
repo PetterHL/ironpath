@@ -2,15 +2,15 @@
 
 **Your path to endgame PvM**
 
-T3 development build · 12 October 2026 · plugin 0.2.0 · knowledge t3-1
+PvM progression roadmap · updated 12 October 2026
 
-**Status: T3 implements the local recommendation slice. Automated tests/build pass; T3 real-client checks remain pending.** Earlier user-performed T1 checks and T2 static results are recorded in `TASKS.md`. Petter reports that T2 works on his PC; this does not establish every accuracy/usefulness check. T4/T5 have not started. No Plugin Hub submission or external service has been created.
+**Status: development implementation in open PRs; broader PvM expansion is the next assignment.** At this update main contains the documentation foundation. T1–T3 implementation and T4 trial preparation are on stacked branches; see TASKS.md for exact baselines and pending checks. No Plugin Hub approval/submission or external service exists.
 
 The intended product is a free, open-source RuneLite sidebar that helps an Ironman choose a useful next PvM activity or equipment objective using observed account state. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
 ## Decision
 
-Proceed with a small proof of value, not a general OSRS progression platform. Start with **CoX-focused progression for midgame and established raiding accounts**, covering at most 12 curated decisions. General mode works without a selected goal, within this explicitly labelled catalogue. Optional goals refine those recommendations.
+Proceed directly to **broader Ironman PvM progression across midgame and endgame entry**. CoX remains one supported activity. The next delivery combines the existing foundation with a small model generalisation and 12–16 reviewed decisions across multiple activities; the first wider catalogue targets approximately 35–45 decisions. General mode works without a selected goal; one optional goal refines advice. Coverage remains explicit, not every boss or item. The old CoX-only release and user-trial gate no longer block expansion; unperformed tests remain pending.
 
 Personalised rules are technically feasible. The project will proceed independently, with usefulness and usability validated on representative accounts. Iron Compass remains a reference with overlapping features, not a reason to stop development or a required quality benchmark. Petter's experience is that its current workflow does not meet his usability needs; feature coverage alone does not establish a good user experience.
 
@@ -22,7 +22,7 @@ The product should make useful, encounter-specific trade-offs easy to understand
 |---|---|
 | [docs/RESEARCH.md](docs/RESEARCH.md) | Verified findings, source links, limitations and reuse assessment |
 | [docs/DESIGN.md](docs/DESIGN.md) | MVP, account-state semantics, small architecture and update policy |
-| [TASKS.md](TASKS.md) | Five ordered tasks, acceptance gates and the first Codex assignment |
+| [TASKS.md](TASKS.md) | Active P1–P5 roadmap, implementation baselines and next Codex assignment |
 | [AGENTS.md](AGENTS.md) | Persistent instructions for AI-assisted development |
 
 Use `TASKS.md` as the only task list initially. One developer, one repository, small commits. No Trello board, project board, separate knowledge service or additional planning documents. Once other contributors need issue discussions, move active tasks into GitHub Issues rather than maintaining two backlogs.
@@ -33,11 +33,11 @@ Approved repository name and visibility: **`PetterHL/ironpath`**, public, confir
 
 Naming note: Iron Compass already uses `ironpath` as its Plugin Hub manifest identifier. This is an independent project; keep the chosen product/repository name, avoid any implied affiliation, and choose a distinct Hub manifest identifier before submission.
 
-The T1 scaffold follows the official RuneLite example plugin at `46e14f2c448fab6cbc599df1015b9631dcf1fc52`, checked on 12 October 2026: Gradle 8.10 and Java release 11. The current `latest.release` dependency resolved to RuneLite `1.13.1` for this build. Original notices are retained; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Reuse the existing T1–T3 RuneLite implementation and preserve its licence notices. Use its build/login instructions and verify supported APIs when extending it. Do not scaffold the plugin again or request approval again for the already approved repository name and public visibility.
 
 ## Start here
 
-The first build is a narrow account-data and recommendation experiment. T1–T3 results and remaining checks are recorded in `TASKS.md`. The nine-decision catalogue stays bounded to CoX preparation. The wider design also describes later tasks.
+Run P1–P3 together as described at the end of `TASKS.md`. Bring the existing implementation and current main plan onto one working branch, then deliver real choices between PvM activities. No additional CoX-only polish or standalone architecture phase is required. Preserve useful build instructions and historical test results when combining branches.
 
 The design introduces no per-user hosted inference, storage or API expenses. Development and content review still cost time; free distribution does not make knowledge maintenance automatic.
 
