@@ -1,6 +1,6 @@
 # Initial tasks
 
-Updated 12 October 2026. Only this file tracks initial work. **T1 passed static review; its local RuneLite checks remain pending. T2's bounded catalogue and automated verification are complete; real-client accuracy/usefulness checks remain pending. T3–T5 are not started.** Petter has approved the public repository `PetterHL/ironpath`; the repository and documentation foundation are established on GitHub. Independent development is agreed; competitor benchmarking is optional.
+Updated 12 October 2026. Only this file tracks initial work. **T1 passed static review with limited user-performed PC checks recorded below; T2's catalogue and static verification are complete; T3's local recommendation slice is implemented for review, with its live checks pending. T4/T5 have not started.** Petter has approved the public repository `PetterHL/ironpath`; the repository and documentation foundation are established on GitHub. Independent development is agreed; competitor benchmarking is optional.
 
 ## T1 — Small account and value experiment (ready for code review; in-game validation in progress)
 
@@ -90,9 +90,87 @@ Branch `t2-cox-catalogue` builds on PR #1's unmerged head `ae9af8758016a7048302d
 
 **Limitations and remaining manual checks:** these fixtures are synthetic, not captured accounts, player judgement or RuneLite testing. No development client was launched; no authenticated game session was available. All T1 real-client checks remain pending. Additionally check fang assembly/uncharge and enhanced forms; default active versus inactive crystal pieces and supported Bowfa colours; empty versus charged Ayak/Sanguinesti/Shadow; ornamented neck/reduction gear; current equipment versus actual raid switches; and whether the four established-account prompts are useful or repetitive. Gear/skill baselines do not certify solo/Challenge Mode readiness or raid access. Unsupported items/variants need external review rather than inferred equivalence. No Plugin Hub submission, T3 implementation or T4 usefulness pass is claimed.
 
-## T3 — Complete the local recommendation slice
+## T3 — Complete the local recommendation slice (ready for review; in-game checks pending)
 
 Implement deterministic ranking, up to three diverse choices, optional single goal, nearest prerequisite, skip/restore and reversible manual confirmations. Keep one sidebar. Verify owned gear removes redundant grinds, source links carry no account data, skipped requirements do not become completed, unknowns do not fabricate advice, and preferences survive restart without leaking between characters.
+
+### T3 results — 12 October 2026
+
+Branch `t3-local-advisor` builds on T2's `e52728d5313552fd8b0bdaa5eefdcbaa4be00915`.
+It also integrates the existing T1 follow-up diagnostics and user-performed check
+records from `f224f410f23f8d4f33310a4520aded9e84518b23`. T1/T2 results above describe
+those earlier task snapshots; their historical statements about later tasks do not
+set the current T3 status. Petter authorised proceeding after reporting that T2
+appears to work. That general report is not a pass for specific T2 or T3 scenarios.
+
+- Implemented a pure comparator of selected-goal relevance, contextual benefit,
+  authored effort band and stable ID; no efficiency score or time/DPS estimates.
+  At most three choices and one per family remain. Owned competing gear suppresses
+  redundant assembly/comparisons; specific team coordination takes precedence over
+  broad team planning. No-goal mode works; only one optional goal is selected.
+- Added four bounded goals: ordinary team CoX learning/improvement, meeting
+  Rigour/Augury unlock/use levels, and reviewing an owned-parts swamp trident
+  upgrade. The sidebar separates confirmed, missing and unknown prerequisites,
+  nearest confirmed missing prerequisite, and the next supported action. A locked
+  prayer is still a blocked goal even if Prayer is already high enough. No covered
+  acquisition route means abstaining and asking for observation/confirmation,
+  not fabricated grind advice. Preparation remains distinct from game access.
+- Added skip/restore for all reviewed actions, including prerequisites not currently
+  offered as cards. A skipped unlock blocks training until restored or actually
+  confirmed complete; skipping never counts as completion. Unrelated viable CoX
+  actions can still be shown while one goal is blocked.
+- Added reversible exact-item and prayer-unlock confirmations with explicit manual
+  provenance/time, individual clear buttons and reset controls in the same sidebar.
+  Manual ownership can suppress redundant work and inform planning, but cannot
+  create charged/equipped/usable weapon evidence or observed assembly supplies.
+  Readable unlock varbits are authoritative; positive observed possession overrides
+  conflicting manual absence. Raw snapshots are never modified by confirmations.
+- Persisted only goal, skipped IDs and explicit confirmation values/times in local
+  schema-1 JSON using supported `Plugin.getPluginDirectory()` / `Filepath` APIs.
+  A SHA-256 key isolates configuration profile + RuneScape profile + character;
+  no username/raw identity or automatic account observation is serialized. Writes
+  use a temporary file and atomic replace with a supported non-atomic fallback.
+  Serial worker IO preserves accepted save/load order across disable/re-enable;
+  client-thread callbacks and UI actions check current identity/generation before
+  applying results. Corrupt/unsupported files disable editing; save failures are
+  visible, never falsely reported as saved. No ConfigManager writes or uploads.
+- Plugin version is **0.2.0**. Bundled schema **3**, knowledge **t3-1**, replaces
+  legacy priority metadata with the small reviewed effort bands. The same nine
+  reviewed decisions, 56 exact item IDs, 39 source records and source review dates
+  remain; T3 introduces no new source claim, rule-download path or catalogue expansion.
+  Current official RuneLite 1.13.1, Java release 11 and the existing template/notices
+  remain supported. T4/T5 and Plugin Hub submission were not started.
+
+**Automated validation:** `gradlew test build --no-daemon` on Temurin JDK
+`11.0.32.1`: **55 tests, zero failures**. This includes the original T1/T2 fixtures,
+T1 abstention explanations, goal ranking/diversity, skipped prerequisite versus
+actual completion, unknown ownership, manually owned alternatives, unusable manual
+gear, unlock precedence/provenance, fixed source URLs, real temporary-file restart
+round trips, character/profile separation, corrupt/oversized/retired preferences,
+serialized IO recovery, actual Swing control listeners with mocked client events,
+delayed load/action/save callbacks, disable/re-enable, and visible write failure.
+These tests use synthetic facts and isolated temporary storage, not live accounts.
+`git diff --check` passes.
+
+**Cloud constraints:** the documented network permission, proxy and system CA
+arguments from T1 were used; RuneLite remains 1.13.1. No outstanding test/build
+blocker. Non-fatal Fontconfig cache and Gradle deprecation warnings remain.
+`DISPLAY` is unset and no authenticated game session is available in Cloud, so
+Codex did not launch or interact with RuneLite in-game.
+
+| T3 real-client check | Status |
+|---|---|
+| No-goal / single-goal selection and clear; readable ranking/evidence | Pending |
+| Goal prerequisites and nearest missing requirement match game/manual facts | Pending |
+| Skip required unlock, blocked route, restore without false completion | Pending |
+| Manual positive/negative, provenance, observed-positive precedence, clear/reset | Pending |
+| PC file write and restart restore; bank remains unknown until reopened | Pending |
+| Two characters and RuneLite profiles; logout/hop/unsupported-world isolation | Pending |
+| Disable/re-enable, source buttons and catalogue usefulness | Pending |
+
+PC build/launch and a short T3 check sequence are in `README.md`. Wait for
+**Preferences saved locally** before restarting. No T3 in-game pass or T4 user-trial
+result is claimed. Earlier limited T1 user-performed passes remain recorded above.
 
 ## T4 — Small user and maintenance trial
 

@@ -25,6 +25,7 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.ConfigProfile;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.ui.ClientToolbar;
@@ -61,6 +62,15 @@ public class ObservationLifecycleTest
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getAccountHash()).thenReturn(1L);
 		when(config.getRSProfileKey()).thenReturn("synthetic-character-a");
+		ConfigProfile profile = mock(ConfigProfile.class);
+		when(profile.getId()).thenReturn(10L); when(config.getProfile()).thenReturn(profile);
+		plugin.executor = mock(java.util.concurrent.ScheduledExecutorService.class);
+		doAnswer(call -> { ((Runnable) call.getArgument(0)).run(); return null; }).when(plugin.executor).execute(any(Runnable.class));
+		plugin.preferenceStorage = new com.ironpath.preferences.PreferenceStorage()
+		{
+			public com.ironpath.preferences.Preferences read(String key) { return com.ironpath.preferences.Preferences.EMPTY; }
+			public void write(String key, com.ironpath.preferences.Preferences preferences) {}
+		};
 		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getVarbitValue(VarbitID.IRONMAN)).thenReturn(1);
 		when(client.getRealSkillLevel(any(Skill.class))).thenReturn(90);
@@ -103,7 +113,7 @@ public class ObservationLifecycleTest
 		loaded.setGroupId(InterfaceID.BANKMAIN);
 		plugin.onWidgetLoaded(loaded);
 		plugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.BANK, bank));
-		tick(); tick();
+		tick(); tick(); tick(); // Settle the queued preference load before comparing idle revisions.
 		assertTrue(plugin.session.snapshot().bank.known());
 	}
 

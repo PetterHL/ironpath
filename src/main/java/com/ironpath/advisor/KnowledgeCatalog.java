@@ -18,6 +18,7 @@ public final class KnowledgeCatalog
 {
 	public enum Kind { PLAN_TEAM, UNLOCK_RIGOUR, UNLOCK_AUGURY, TRAIN_RIGOUR, TRAIN_AUGURY,
 		ASSEMBLE_SWAMP, REVIEW_LANCE, COORDINATE_REDUCTION, REVIEW_OCCULT }
+	public enum Effort { SMALL, TRAINING }
 	public enum Test { ALL, ANY, LEVEL, ITEMS, EQUIPPED, RIGOUR, AUGURY }
 	private static final Set<String> SKILLS = Set.of("ATTACK", "STRENGTH", "DEFENCE", "RANGED",
 		"MAGIC", "PRAYER", "HITPOINTS", "AGILITY", "CRAFTING");
@@ -30,7 +31,7 @@ public final class KnowledgeCatalog
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 2 || document.decisions == null
+		if (document.schemaVersion != 3 || document.decisions == null
 			|| document.decisions.isEmpty() || document.decisions.size() > 12)
 		{
 			throw new IllegalArgumentException("Unsupported or incomplete CoX catalogue");
@@ -65,7 +66,7 @@ public final class KnowledgeCatalog
 		{
 			if (decision == null || !require(decision.id).matches("[a-z][a-z0-9-]*") || !ids.add(decision.id)
 				|| !kinds.add(decision.kind)) { throw new IllegalArgumentException("Invalid or duplicate decision ID"); }
-			if (decision.kind == null || decision.priority < 0 || decision.priority > 9)
+			if (decision.kind == null || decision.effortBand == null)
 			{ throw new IllegalArgumentException("Unsupported decision"); }
 			require(decision.title); require(decision.why); require(decision.alternative);
 			require(decision.tradeoff); require(decision.effort); require(decision.access);
@@ -165,6 +166,16 @@ public final class KnowledgeCatalog
 		decisions = List.copyOf(document.decisions);
 	}
 
+	/** Exact reviewed facts offered as reversible planning confirmations. */
+	public Map<String, String> factChoices()
+	{
+		Map<String, String> choices = new java.util.LinkedHashMap<>();
+		choices.put("rigour", "Rigour unlock"); choices.put("augury", "Augury unlock");
+		gear.values().stream().flatMap(List::stream).sorted(java.util.Comparator.comparing(g -> g.label))
+			.forEach(g -> choices.put("item-" + g.id, g.label));
+		return java.util.Collections.unmodifiableMap(choices);
+	}
+
 	private static void visit(String id, Map<String, Decision> decisions, Set<String> path, Set<String> visited)
 	{
 		if (visited.contains(id)) { return; }
@@ -254,7 +265,7 @@ public final class KnowledgeCatalog
 	{
 		public String id, title, why, alternative, tradeoff, effort, access, completion, applicability, family, status, reviewed;
 		public Kind kind;
-		public int priority;
+		public Effort effortBand;
 		public int itemId;
 		public List<String> sources;
 		public List<String> requires;

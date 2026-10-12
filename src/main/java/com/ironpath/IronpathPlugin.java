@@ -5,6 +5,12 @@ import com.ironpath.advisor.Advisor;
 import com.ironpath.advisor.KnowledgeCatalog;
 import com.ironpath.model.AccountSnapshot;
 import com.ironpath.model.Observation;
+import com.ironpath.preferences.Preferences;
+import com.ironpath.preferences.PreferenceStorage;
+import com.ironpath.preferences.PreferenceIO;
+import com.ironpath.preferences.LocalPreferences;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.UnaryOperator;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -46,6 +52,9 @@ public class IronpathPlugin extends Plugin
 	@Inject ClientToolbar toolbar;
 	@Inject AccountSnapshotReader reader;
 	@Inject Gson gson;
+	@Inject ScheduledExecutorService executor;
+	PreferenceStorage preferenceStorage;
+	private PreferenceIO preferenceIO;
 
 	final ObservationSession session = new ObservationSession();
 	private KnowledgeCatalog catalog;
@@ -74,6 +83,11 @@ public class IronpathPlugin extends Plugin
 		{
 			catalog = KnowledgeCatalog.load(gson);
 			advisor = new Advisor(catalog);
+			if (preferenceIO == null)
+			{
+				if (preferenceStorage == null) { preferenceStorage = new LocalPreferences(this::getPluginDirectory, gson, catalog); }
+				preferenceIO = new PreferenceIO(preferenceStorage, executor);
+			}
 			status = "Waiting for login and initial account observations.";
 		}
 		catch (Exception ex)
@@ -87,7 +101,7 @@ public class IronpathPlugin extends Plugin
 		{
 			if (!running || lifecycle != startup) { return; }
 			panel = new IronpathPanel();
-			panel.render(initialStatus, null, List.of(), List.of(), catalog);
+			panel.render(initialStatus, null, List.of(), catalog, null, Preferences.EMPTY, null, "", List.of());
 			if (!running || lifecycle != startup) { panel = null; return; }
 			navigation = NavigationButton.builder().tooltip("Ironpath").icon(icon()).priority(6).panel(panel).build();
 			toolbar.addNavigation(navigation);
@@ -104,7 +118,7 @@ public class IronpathPlugin extends Plugin
 		{
 			// UI ownership stays on the EDT, including cleanup of an in-flight startup.
 			if (navigation != null) { toolbar.removeNavigation(navigation); }
-			if (panel != null) { panel.render("Plugin disabled; observations cleared.", null, List.of(), List.of(), null); }
+			if (panel != null) { panel.render("Plugin disabled; observations cleared.", null, List.of(), null, null, Preferences.EMPTY, null, "", List.of()); }
 			navigation = null;
 			panel = null;
 		});
@@ -151,7 +165,7 @@ public class IronpathPlugin extends Plugin
 	private void invalidate(String reason)
 	{
 		session.clear(); // Immediate token invalidation even if a profile event arrives off-thread.
-		render(reason, null, List.of());
+		render(reason, null);
 		long token = session.generation();
 		clientThread.invokeLater(() ->
 		{
@@ -178,6 +192,7 @@ public class IronpathPlugin extends Plugin
 		{
 			dirty = true;
 			bankDirty = bankDirty && identity.equals(bankIdentity);
+			loadPreferences(session.generation(), identity);
 		}
 		if (!dirty) { return; }
 		long token = session.generation();
@@ -192,23 +207,25 @@ public class IronpathPlugin extends Plugin
 		AccountSnapshot snapshot = reader.read(bank);
 		if (!session.publish(token, identity(), snapshot)) { return; }
 		dirty = false;
-		render("Observed locally. Open a suggestion to inspect its evidence.", snapshot, advisor.evaluate(snapshot));
+		render("Observed locally. Open a suggestion to inspect its evidence.", snapshot);
 	}
 
 	private void clearUnavailable(String message)
 	{
-		if (session.snapshot() != null) { session.clear(); }
+		if (session.identity() != null) { session.clear(); }
 		bankDirty = false;
 		bankIdentity = null;
 		dirty = true;
-		render(message, null, List.of());
+		render(message, null);
 	}
 
 	private String identity()
 	{
 		String profile = configManager.getRSProfileKey();
 		long character = client.getAccountHash();
-		return profile == null || character == 0 || character == -1 ? null : profile + ":" + character;
+		net.runelite.client.config.ConfigProfile configProfile = configManager.getProfile();
+		return profile == null || configProfile == null || character == 0 || character == -1 ? null
+			: configProfile.getId() + ":" + profile + ":" + character;
 	}
 
 	private boolean supported()
@@ -218,16 +235,71 @@ public class IronpathPlugin extends Plugin
 			&& EnumSet.of(WorldType.MEMBERS, WorldType.SKILL_TOTAL).containsAll(client.getWorldType());
 	}
 
-	private void render(String status, AccountSnapshot snapshot, List<Advisor.Recommendation> recommendations)
+	private boolean current(long token, String expectedIdentity)
 	{
-		List<String> noAdviceReasons = snapshot != null && recommendations.isEmpty() && advisor != null
-			? advisor.explainNoAdvice(snapshot) : List.of();
+		return running && client.getGameState() == GameState.LOGGED_IN && supported()
+			&& session.accepts(token, expectedIdentity) && expectedIdentity.equals(identity());
+	}
+
+	private void loadPreferences(long token, String expectedIdentity)
+	{
+		preferenceIO.load(LocalPreferences.key(expectedIdentity)).whenComplete((preferences, error) -> clientThread.invokeLater(() ->
+		{
+			if (!current(token, expectedIdentity)) { return; }
+			if (session.loadPreferences(token, expectedIdentity, error == null ? preferences : Preferences.EMPTY, error == null))
+			{ render("Observed locally. Preferences apply only to this character and profile.", session.snapshot()); }
+		}));
+	}
+
+	private void changePreferences(long token, String expectedIdentity, UnaryOperator<Preferences> change)
+	{
+		clientThread.invokeLater(() ->
+		{
+			if (!current(token, expectedIdentity) || !session.writable()) { return; }
+			Preferences next = change.apply(session.preferences());
+			if (!session.editPreferences(token, expectedIdentity, next)) { return; }
+			render("Your planning choices were updated.", session.snapshot());
+			preferenceIO.save(LocalPreferences.key(expectedIdentity), next).whenComplete((ignored, error) -> clientThread.invokeLater(() ->
+			{
+				if (!current(token, expectedIdentity)) { return; }
+				session.saved(token, expectedIdentity, next, error == null);
+				render("Observed locally. Open a suggestion to inspect its evidence.", session.snapshot());
+			}));
+		});
+	}
+
+	private void render(String status, AccountSnapshot snapshot)
+	{
 		long token = session.generation();
 		long revision = session.revision();
+		String expectedIdentity = session.identity();
+		Preferences preferences = session.preferences();
+		boolean loaded = session.preferencesLoaded();
+		String storageStatus = session.storageStatus();
+		List<Advisor.Recommendation> recommendations = snapshot == null || !loaded ? List.of() : advisor.evaluate(snapshot, preferences);
+		Advisor.GoalView goal = snapshot == null || !loaded ? null : advisor.goal(snapshot, preferences);
+		List<String> reasons = snapshot == null || !loaded || !recommendations.isEmpty() ? List.of()
+			: advisor.explainNoAdvice(snapshot, preferences);
+		IronpathPanel.Actions actions = snapshot == null || !session.writable() ? null : new IronpathPanel.Actions()
+		{
+			public void goal(String id)
+			{
+				if (id == null || Advisor.goalChoices(catalog).containsKey(id)) { changePreferences(token, expectedIdentity, p -> p.goal(id)); }
+			}
+			public void skip(String id, boolean skipped)
+			{
+				if (catalog.decisions.stream().anyMatch(d -> d.id.equals(id))) { changePreferences(token, expectedIdentity, p -> p.skip(id, skipped)); }
+			}
+			public void confirm(String key, Boolean value)
+			{
+				if (catalog.factChoices().containsKey(key)) { changePreferences(token, expectedIdentity, p -> p.confirm(key, value, Instant.now())); }
+			}
+			public void clear() { changePreferences(token, expectedIdentity, p -> Preferences.EMPTY); }
+		};
 		SwingUtilities.invokeLater(() ->
 		{
 			if (!running || panel == null || !session.currentView(token, revision) || session.snapshot() != snapshot) { return; }
-			panel.render(status, snapshot, recommendations, noAdviceReasons, catalog);
+			panel.render(status, snapshot, recommendations, catalog, goal, preferences, actions, storageStatus, reasons);
 		});
 	}
 

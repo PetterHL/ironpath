@@ -77,6 +77,13 @@ public class CatalogValidationTest
 		rejects(d -> first(d).getAsJsonObject("when").getAsJsonArray("conditions").get(1).getAsJsonObject().addProperty("key", "missing-set"));
 	}
 
+	@Test public void rejectsUnreviewedEffortBandsAndOldSchema()
+	{
+		rejects(d -> first(d).remove("effortBand"));
+		rejects(d -> first(d).addProperty("effortBand", "FASTEST"));
+		rejects(d -> d.addProperty("schemaVersion", 2));
+	}
+
 	@Test public void rejectsHardDependencyCyclesAndRepeatablePrerequisites()
 	{
 		// Prayer training really requires the permanent unlock; reversing that edge is a cycle.

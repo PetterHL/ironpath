@@ -1,0 +1,92 @@
+package com.ironpath.preferences;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.ironpath.advisor.KnowledgeCatalog;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.time.Instant;
+import java.util.ArrayDeque;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import net.runelite.client.util.Filepath;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import static org.junit.Assert.*;
+
+public class LocalPreferencesTest
+{
+	@Rule public TemporaryFolder temporary = new TemporaryFolder();
+	private Filepath directory;
+	private KnowledgeCatalog catalog;
+	private LocalPreferences store;
+	private final String a = LocalPreferences.key("synthetic-config-10:rs-a:character-1");
+	private static final Instant TIME = Instant.parse("2026-10-12T12:00:00Z");
+	@Before public void setup() throws Exception
+	{
+		// Unchecked access is test-only, to give the supported store an isolated temporary root.
+		directory = Filepath.Unchecked.getRooted(temporary.getRoot().toPath());
+		catalog = KnowledgeCatalog.load(new Gson());
+		store = new LocalPreferences(() -> directory, new Gson(), catalog);
+	}
+
+	@Test public void restartRetainsOnlyUserChoicesAndDoesNotLeakAcrossCharacterOrProfile() throws Exception
+	{
+		Preferences preferences = Preferences.EMPTY.goal("train-rigour").skip("unlock-rigour", true).confirm("item-12932", false, TIME);
+		store.write(a, preferences);
+		LocalPreferences restarted = new LocalPreferences(() -> directory, new Gson(), catalog);
+		Preferences read = restarted.read(a);
+		assertEquals(preferences.goal, read.goal); assertEquals(preferences.skipped, read.skipped);
+		assertFalse(read.confirmations.get("item-12932").value); assertEquals(TIME, read.confirmations.get("item-12932").time);
+		assertTrue(restarted.read(LocalPreferences.key("synthetic-config-10:rs-b:character-2")).confirmations.isEmpty());
+		assertNull(restarted.read(LocalPreferences.key("synthetic-config-11:rs-a:character-1")).goal);
+		String text = Files.readString(temporary.getRoot().toPath().resolve(a + ".json"));
+		JsonObject json = new JsonParser().parse(text).getAsJsonObject();
+		assertEquals(Set.of("schemaVersion", "goal", "skipped", "confirmations"), json.keySet());
+		assertEquals(Set.of("value", "time"), json.getAsJsonObject("confirmations").getAsJsonObject("item-12932").keySet());
+		assertFalse(text.contains("synthetic-config")); assertFalse(text.contains("bank")); assertFalse(text.contains("levels"));
+		store.write(a, Preferences.EMPTY);
+		assertTrue(restarted.read(a).confirmations.isEmpty()); assertTrue(restarted.read(a).skipped.isEmpty()); assertNull(restarted.read(a).goal);
+		assertEquals(1, temporary.getRoot().list().length); // No abandoned temporary file.
+	}
+
+	private void raw(String text) throws Exception { try (Writer writer = directory.joinSegment(a + ".json").openWriter()) { writer.write(text); } }
+	@Test public void corruptUnsupportedAndOversizedFilesFailWithoutBeingOverwritten() throws Exception
+	{
+		for (String text : new String[]{"{broken", "{\"schemaVersion\":99}",
+			"{\"schemaVersion\":1,\"skipped\":[],\"confirmations\":{\"rigour\":{\"value\":true,\"time\":\"invalid\"}}}", " ".repeat(65537)})
+		{
+			raw(text); assertThrows(IOException.class, () -> store.read(a));
+			assertEquals(text, Files.readString(temporary.getRoot().toPath().resolve(a + ".json")));
+		}
+		assertThrows(IllegalArgumentException.class, () -> store.read("../outside"));
+	}
+
+	@Test public void retiredIdsAreDroppedAndUnsupportedChoicesCannotBeSaved() throws Exception
+	{
+		raw("{\"schemaVersion\":1,\"goal\":\"retired\",\"skipped\":[\"retired\",\"unlock-rigour\"],\"confirmations\":{\"retired\":{\"value\":true}}}");
+		Preferences read = store.read(a);
+		assertNull(read.goal); assertEquals(Set.of("unlock-rigour"), read.skipped); assertTrue(read.confirmations.isEmpty());
+		assertThrows(IllegalArgumentException.class, () -> store.write(a, Preferences.EMPTY.goal("arbitrary-goal")));
+	}
+
+	@Test public void serializedWritesAndLoadsPreserveOrderEvenAfterFailure() throws Exception
+	{
+		Queue<Runnable> tasks = new ArrayDeque<>();
+		PreferenceIO io = new PreferenceIO(store, tasks::add);
+		var failed = io.save("invalid-key", Preferences.EMPTY);
+		Preferences latest = Preferences.EMPTY.goal("train-augury");
+		var first = io.save(a, Preferences.EMPTY.goal("train-rigour"));
+		var second = io.save(a, latest);
+		var read = io.load(a);
+		assertFalse(read.isDone()); assertEquals(1, tasks.size());
+		while (!tasks.isEmpty()) { tasks.remove().run(); }
+		assertTrue(failed.isCompletedExceptionally()); assertFalse(first.isCompletedExceptionally());
+		assertFalse(second.isCompletedExceptionally()); assertEquals(latest.goal, read.join().goal);
+	}
+}
