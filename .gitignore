@@ -1,0 +1,9 @@
+.gradle/
+build/
+out/
+.idea/
+*.iml
+.DS_Store
+# Never commit personal account captures or local configuration.
+local-data/
+*.log
