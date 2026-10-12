@@ -162,12 +162,13 @@ the relevant missing ownership targets are explicitly confirmed.
 | Bowfa with default active crystal pieces, whip, seas trident and base keris; Rigour unlocked, Augury/Mystic Vigour locked; swamp/competing magic and fang gaps confirmed. **No goal**. | **Royal Titans, Zulrah and ToA** are three distinct choices. | The seas trident remains usable while deciding whether scale upkeep justifies Zulrah; current prayers remain available while deciding whether a duo unlock route is worthwhile. Bowfa suppresses another ranged acquisition without erasing the magic/prayer gaps. |
 | Bowfa/crystal, whip, observed charged Shadow and base keris; required access confirmed, higher prayers unlocked, fang absent. Goal: **ToA / fang**. | **Low-level ToA practice toward a fang**. | Ordinary team CoX planning with the observed kit remains available. Shadow ownership suppresses base/swamp trident grinds, while the fang remains a distinct supported melee objective; no success, supplies or solo/Expert readiness is inferred. |
 
-### Focused PC checklist — all pending
+### Focused PC checklist — limited flow reported working; detailed checks pending
 
 Use README's JDK 11 build/launch commands on `p1-p3-broad-pvm`. No game client was
 launched in Cloud; `DISPLAY` is unset and no authenticated game session is available.
-Only earlier explicitly recorded T1 passes are established. Do not grind/acquire
-items just to exercise a boundary; label unexercised checks pending.
+Earlier T1 passes and the limited P3 user report below have their stated evidence
+boundaries. Do not grind/acquire items just to exercise a boundary; label unexercised
+checks pending.
 
 1. **Observations:** before opening the bank, verify unknown storage. Open it and
    compare displayed levels, selected quest completion and prayer unlocks with the
@@ -194,6 +195,24 @@ Accuracy, source-button behavior, real-client save/restart, character/profile
 isolation and player usefulness remain **pending**. Zero live critical errors is
 not assumed. P4's approximately 35–45 decisions and P5/publication remain outside
 this delivery.
+
+### P3 user-reported PC flow — 12 October 2026
+
+After the short guided PC test and clarification of the Restore activity/action
+controls, Petter reported: “evrything works.” Record the guided flow as **reported
+working by the user**, rather than a Codex-observed pass for each assertion.
+The supplied sequence covered branch update/build/launch, Knowledge p3-1 and the
+bank-unknown/open-bank flow, no-goal suggestions, switching ranged/magic/ToA goals,
+and CG activity skip/restore. No screenshots, account facts, exact card results,
+build output or per-step measurements accompanied this report; those details
+are not inferred or stored.
+
+This provides a limited positive workflow report. Detailed level/quest/prayer and
+item-variant accuracy, alternative correctness and player usefulness judgements,
+source buttons, manual confirmation boundaries, first-save/schema migration,
+restart and character/profile isolation remain **pending**. It does not accept
+all five checklist scenarios, establish zero critical errors, or change any
+historical T1–T4 result. P4/distribution remain outside this assignment.
 
 ## P4 — Expand the first catalogue to approximately 35–45 decisions
 
