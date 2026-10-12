@@ -107,8 +107,13 @@ generation/revision guard reject stale callbacks and queued sidebar updates.
 Supported local persistence was checked against `Plugin.getPluginDirectory()`
 and `Filepath`; goals, skips, manual confirmations and their persistence are deferred.
 
-All real-client checks are **pending**: bank open/close/filter freshness;
-placeholders and charged/cosmetic variants; consumed scroll unlock timing;
-logout/hop/reconnect; two characters and RuneLite profiles; unsupported worlds;
-disable/re-enable cleanup; source buttons; and sidebar clarity with actual accounts.
-The test fixtures are synthetic and establish logic behavior, not player judgement.
+Initial user-performed Windows checks passed on 12 October 2026: local build,
+Jagex Account development login, sidebar opening and an unknown bank before its
+first opening. Evidence and limitations are recorded in [T1](TASKS.md).
+
+Remaining real-client checks are **pending**: displayed skill/unlock accuracy;
+bank open/close/filter freshness; placeholders and charged/cosmetic variants;
+consumed scroll unlock timing; logout/hop/reconnect; two characters and RuneLite
+profiles; unsupported worlds; disable/re-enable cleanup; source buttons; and
+recommendation usefulness. The test fixtures are synthetic and establish logic
+behavior, not player judgement.
