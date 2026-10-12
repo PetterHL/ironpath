@@ -12,8 +12,11 @@ RuneLite and development dependencies keep their own licences. The original
 Ironpath code, explanations and documentation use the repository's BSD-2-Clause
 licence; this does not relicense dependencies or evidence sources.
 
-The bundled sample source register links pinned OSRS Wiki revisions and records
-authors, access dates and reuse basis. Wiki content is CC BY-NC-SA 3.0. Only a
+The bundled catalogue source register links pinned OSRS Wiki revisions and the
+official RuneLite item definitions, recording authors, access/review dates,
+licences and reuse basis. Wiki content is CC BY-NC-SA 3.0; see the checked
+[Weird Gloop licensing policy](https://meta.weirdgloop.org/w/Licensing?oldid=1299).
+RuneLite's source is BSD-2-Clause. Only a
 small selection of checked mechanic facts informs original explanations; no
 Wiki prose, equipment tables, images, transcripts or third-party progression
 catalogue is redistributed. No competitor code or catalogue was used.

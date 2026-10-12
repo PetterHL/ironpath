@@ -104,3 +104,45 @@ The live Jagex archive on the research date explicitly separated an upcoming [Fr
 - **Effort:** measure how long one small catalogue update takes. Reduce coverage if the proposed weekly review budget is unrealistic.
 
 These uncertainties do not prevent implementation. They do prevent claiming a complete or validated advisor today.
+
+## T2 bounded review — 12 October 2026
+
+T2 fetched current full Wiki pages successfully and reviewed the relevant requirements,
+mechanics, alternatives and variants. This supersedes the foundation's access limitation
+for these selected sources only. The bundled [source register](../src/main/resources/com/ironpath/catalog.json)
+contains 38 exact Wiki revision links and the official RuneLite
+[item definitions](https://github.com/runelite/runelite/blob/42a6f17a6a2e8e478aa763890ecd0181a59dad38/runelite-api/src/main/java/net/runelite/api/gameval/ItemID.java).
+Access/review dates are 12 October 2026; source revision IDs and decision review dates
+are recorded separately. This is an editorial/mechanics review, not an expert consensus
+claim, live account audit or player-usefulness test.
+
+The current CoX equipment discussion includes Eye of Ayak and dragon hunter wand
+magic alternatives, scythe/Soulreaper melee options, and elder maul/BGS/DWH team
+coverage. These informed conservative suppression and original comparisons rather
+than an imported equipment ranking. Empty/enhanced/ornamented items are reviewed
+as explicit IDs. An empty staff can prevent redundant assembly without establishing
+a charged powered weapon; a dragon hunter wand does not establish an available
+spellbook or spell. Scythe/Soulreaper components do not count as assembled weapons.
+The lance's required Barbarian Training sections are named but remain unobserved.
+Default active crystal pieces are supported; coloured armour and other unlisted
+forms remain outside this bounded baseline. No boss-access quests or team loadouts
+were inferred from weapon possession.
+
+One attempted URL, `Holy_Sanguinesti_staff_(uncharged)`, returned HTTP 404.
+It is not an evidence source. The accessible full
+[holy staff page](https://oldschool.runescape.wiki/w/Holy_Sanguinesti_staff?oldid=15276380)
+shows both charge states and their IDs; the official definitions independently
+identify 25731/25733. No factual claim was adopted from the failed URL.
+
+The Wiki's copyright page is a soft redirect. Its linked
+[Weird Gloop licensing policy, revision 1299](https://meta.weirdgloop.org/w/Licensing?oldid=1299)
+was fetched and read, together with the page footers. They identify CC BY-NC-SA 3.0
+for the relevant current Wiki text, with separate media/additional terms.
+RuneLite's pinned root licence was also checked as BSD-2-Clause. Source records
+describe evidence/reuse scope; original Ironpath text and rules do not redistribute
+guide prose, tables, images, source code or a third-party progression dataset.
+This limited fact-and-link approach is not blanket permission for future copying.
+
+All nine decisions and the five representative fixtures are documented under T2 in
+`TASKS.md`. The fixtures are synthetic; T1's passed static review does not establish
+RuneLite accuracy. Real-client checks and player judgement remain pending.

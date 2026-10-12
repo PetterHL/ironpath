@@ -24,7 +24,7 @@ final class IronpathPanel extends PluginPanel
 		removeAll();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		text(this, "Ironpath — Your path to endgame PvM");
-		text(this, "T1 experiment: five CoX preparation samples. Standard Ironman, permanent members worlds. Ordinary teams; limited gear variants. Other account goals are outside coverage.");
+		text(this, "CoX preparation catalogue. Standard Ironman, permanent members worlds. Ordinary teams; limited gear variants. Other account goals are outside coverage. Real-client testing is pending.");
 		text(this, status);
 		if (catalog != null)
 		{
@@ -45,7 +45,7 @@ final class IronpathPanel extends PluginPanel
 			text(this, "Only observed storage is covered. Not observed does not mean never acquired. Stored gear may need charges, ammunition or unnoting; check before use.");
 			if (advice.isEmpty())
 			{
-				text(this, "No supported suggestion from these five samples. Observe your bank if needed. Unlocks, unrecognised variants and other storage remain unknown; no missing gear is inferred.");
+				text(this, "No supported suggestion from this catalogue. Observe your bank if needed. Unlocks, unrecognised variants and other storage remain unknown; no missing gear is inferred.");
 			}
 			for (Recommendation recommendation : advice) { card(recommendation, catalog); }
 		}
@@ -71,8 +71,8 @@ final class IronpathPanel extends PluginPanel
 		text(details, "Alternative: " + decision.alternative);
 		text(details, "Trade-off: " + decision.tradeoff);
 		text(details, "Effort: " + decision.effort);
-		text(details, "Selection: owned scroll actions first, then confirmed training gaps, then team planning; at most one training action and one choice per family. When both unlocked prayers have level gaps, Rigour's lower threshold is prioritised before Augury. This is authored ordering, not an efficiency score.");
-		text(details, "Sample review: " + decision.reviewed);
+		text(details, "Selection: owned scrolls, confirmed prayer-level gaps, owned-part assembly, then kit and team reviews. At most three choices and one per family; specific team coverage replaces broad team planning. Rigour's lower training threshold precedes Augury. This is authored ordering, not an efficiency score.");
+		text(details, "Decision review: " + decision.reviewed);
 		for (String id : decision.sources)
 		{
 			KnowledgeCatalog.Source source = catalog.sources.get(id);

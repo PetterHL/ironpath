@@ -1,6 +1,7 @@
 package com.ironpath.advisor;
 
 import com.ironpath.advisor.KnowledgeCatalog.Decision;
+import com.ironpath.advisor.KnowledgeCatalog.Condition;
 import com.ironpath.advisor.KnowledgeCatalog.Gear;
 import com.ironpath.model.AccountSnapshot;
 import com.ironpath.model.Observation;
@@ -23,6 +24,10 @@ public final class Advisor
 		for (Decision decision : catalog.decisions)
 		{
 			if (!"reviewed".equals(decision.status)) { continue; }
+			if (truth(decision.when, account) != Truth.TRUE || completed(decision, account) != Truth.FALSE) { continue; }
+			if (decision.requires.stream().anyMatch(id -> catalog.decisions.stream()
+				.filter(d -> d.id.equals(id)).anyMatch(d -> !"reviewed".equals(d.status) || completed(d, account) != Truth.TRUE)))
+			{ continue; }
 			List<String> evidence = match(decision, account);
 			if (evidence != null) { candidates.add(new Recommendation(decision, evidence)); }
 		}
@@ -46,8 +51,90 @@ public final class Advisor
 			case UNLOCK_AUGURY: return unlock(account, account.augury, decision.itemId, "Augury", "arcane prayer scroll", 77);
 			case TRAIN_RIGOUR: return train(account, account.rigour, "Rigour", 74);
 			case TRAIN_AUGURY: return train(account, account.augury, "Augury", 77);
+			case ASSEMBLE_SWAMP: return assembleSwamp(account);
+			case REVIEW_LANCE: return reviewLance(account);
+			case COORDINATE_REDUCTION: return coordinateReduction(account);
+			case REVIEW_OCCULT: return reviewOccult(account);
 			default: return null;
 		}
+	}
+
+	private Truth completed(Decision decision, AccountSnapshot account)
+	{
+		return decision.repeatable ? Truth.FALSE : truth(decision.completeWhen, account);
+	}
+
+	Truth truth(Condition condition, AccountSnapshot account)
+	{
+		switch (condition.test)
+		{
+			case ALL: return Truth.all(condition.conditions.stream().map(c -> truth(c, account)).toArray(Truth[]::new));
+			case ANY: return Truth.any(condition.conditions.stream().map(c -> truth(c, account)).toArray(Truth[]::new));
+			case LEVEL: return account.atLeast(condition.key, condition.minimum);
+			case ITEMS: return Truth.any(catalog.itemSets.get(condition.key).stream().map(account::observedItem).toArray(Truth[]::new));
+			case EQUIPPED: return !account.equipment.known() ? Truth.UNKNOWN
+				: catalog.itemSets.get(condition.key).stream().anyMatch(account.equipment.value()::contains) ? Truth.TRUE : Truth.FALSE;
+			case RIGOUR: return expected(Truth.of(account.rigour), condition.value);
+			case AUGURY: return expected(Truth.of(account.augury), condition.value);
+			default: return Truth.UNKNOWN;
+		}
+	}
+
+	private static Truth expected(Truth truth, boolean value)
+	{
+		return value || truth == Truth.UNKNOWN ? truth : truth == Truth.TRUE ? Truth.FALSE : Truth.TRUE;
+	}
+
+	private Gear observed(AccountSnapshot account, String set)
+	{
+		return catalog.gear.values().stream().flatMap(List::stream)
+			.filter(g -> catalog.itemSets.get(set).contains(g.id) && account.observedItem(g.id) == Truth.TRUE)
+			.sorted(Comparator.comparingInt(g -> catalog.itemSets.get(set).indexOf(g.id))).findFirst().orElseThrow();
+	}
+
+	private static String evidence(AccountSnapshot account, Gear item)
+	{
+		return item.label + " observed in " + account.itemEvidence(item.id);
+	}
+
+	private List<String> assembleSwamp(AccountSnapshot account)
+	{
+		return List.of(evidence(account, observed(account, "magicFang")), evidence(account, observed(account, "seasAssembly")),
+			"Crafting " + account.level("CRAFTING") + " >= 59; Magic " + account.level("MAGIC") + " >= 78: " + account.levels.evidence(),
+			"No recognised swamp trident or competing magic option observed in supported storage. Other storage remains unknown; check before assembly.");
+	}
+
+	private List<String> reviewLance(AccountSnapshot account)
+	{
+		return List.of(evidence(account, observed(account, "lance")), evidence(account, observed(account, "ordinaryMelee")),
+			"Attack " + account.level("ATTACK") + " >= 78: " + account.levels.evidence(),
+			"Lance is not currently equipped: " + account.equipment.evidence()
+				+ ". This does not establish your usual raid setup. Required Barbarian Training sections remain unobserved.");
+	}
+
+	private List<String> coordinateReduction(AccountSnapshot account)
+	{
+		List<String> evidence = planTeam(account);
+		if (evidence == null) { return null; }
+		evidence = new ArrayList<>(evidence);
+		for (int id : catalog.itemSets.get("reduction"))
+		{
+			Gear item = catalog.gear.get("reduction").stream().filter(g -> g.id == id).findFirst().orElseThrow();
+			if (usable(account, item)) { evidence.add(evidence(account, item)); }
+		}
+		evidence.add("Team coverage is unknown; this is repeatable pre-raid coordination, not evidence of missing teammate gear.");
+		return evidence;
+	}
+
+	private List<String> reviewOccult(AccountSnapshot account)
+	{
+		Gear staff = catalog.gear.get("magic").stream().filter(g -> usable(account, g)).findFirst().orElse(null);
+		if (staff == null) { return null; }
+		Gear neck = catalog.gear.get("neck").stream()
+			.filter(g -> catalog.itemSets.get("fury").contains(g.id) && account.equipment.value().contains(g.id)).findFirst().orElseThrow();
+		return List.of(evidence(account, observed(account, "occult")), evidence(account, staff),
+			neck.label + " currently equipped: " + account.equipment.evidence()
+				+ ". Your saved raid switches are not observed; review whether you already bring the occult.");
 	}
 
 	private List<String> unlock(AccountSnapshot account, Observation<Boolean> unlock, int scroll, String prayer, String label, int level)
@@ -97,6 +184,8 @@ public final class Advisor
 	private boolean usable(AccountSnapshot account, Gear gear)
 	{
 		if (account.observedItem(gear.id) != Truth.TRUE || account.atLeast(gear.skill, gear.level) != Truth.TRUE) { return false; }
+		if (catalog.gear.get("reduction").contains(gear) && (gear.id == 21003 || gear.id == 27100)
+			&& account.atLeast("STRENGTH", 75) != Truth.TRUE) { return false; }
 		if (!gear.crystal) { return true; }
 		return account.atLeast("AGILITY", 70) == Truth.TRUE && List.of("crystalBody", "crystalLegs", "crystalHelm").stream()
 			.allMatch(group -> catalog.gear.get(group).stream().anyMatch(g -> usable(account, g)));

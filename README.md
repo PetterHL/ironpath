@@ -2,9 +2,9 @@
 
 **Your path to endgame PvM**
 
-T1 development experiment · 12 October 2026
+T1/T2 development build · 12 October 2026
 
-**Status: T1 development build implemented; automated tests and build pass. In-game accuracy and usability checks are pending.** No Plugin Hub submission or external service has been created. T2–T5 have not started.
+**Status: T1 passed static review; T2's nine-decision catalogue is implemented. Automated tests and build pass; local RuneLite accuracy and usability checks remain pending.** No Plugin Hub submission or external service has been created. T3–T5 have not started.
 
 The intended product is a free, open-source RuneLite sidebar that helps an Ironman choose a useful next PvM activity or equipment objective using observed account state. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
@@ -47,12 +47,12 @@ Install a **JDK 11** (for example Temurin 11), Git, and set `JAVA_HOME` to that 
 Both `java -version` and `javac -version` should work. Gradle is included in the
 repository; internet access is needed for its first dependency download.
 
-Clone the repository and check out the T1 pull-request branch:
+Clone the repository and check out the T2 branch (built on the unmerged T1 PR):
 
 ```sh
 git clone https://github.com/PetterHL/ironpath.git
 cd ironpath
-git checkout t1-account-advisor
+git checkout t2-cox-catalogue
 ```
 
 Windows PowerShell:
@@ -79,12 +79,13 @@ On a **standard Ironman in an ordinary permanent members world**, enable Ironpat
 if necessary and open its toolbar button. Allow two server ticks for initial
 observations. Open your bank, then read a suggestion and expand **Why and
 alternatives**. A source button opens the pinned source revision in your browser.
-The samples cover reading an already observed Rigour/Augury scroll, training
+The catalogue covers reading an already observed Rigour/Augury scroll, training
 Prayer for an already unlocked prayer, and planning ordinary team CoX with
-recognised weapons. Team planning does not certify raid access or a complete
-usable loadout. No CG grind is required by these samples.
+recognised weapons, assembling an owned magic fang upgrade, and reviewing owned
+lance, defence-reduction and occult options. Team planning does not certify raid
+access or a complete usable loadout. No CG grind is required by this catalogue.
 
-## T1 privacy and coverage
+## Privacy and coverage
 
 Real levels, inventory, equipment, session bank observations and two permanent
 prayer unlock varbits are read on the client thread into immutable snapshots.
