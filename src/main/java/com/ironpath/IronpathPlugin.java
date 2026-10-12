@@ -87,7 +87,7 @@ public class IronpathPlugin extends Plugin
 		{
 			if (!running || lifecycle != startup) { return; }
 			panel = new IronpathPanel();
-			panel.render(initialStatus, null, List.of(), catalog);
+			panel.render(initialStatus, null, List.of(), List.of(), catalog);
 			if (!running || lifecycle != startup) { panel = null; return; }
 			navigation = NavigationButton.builder().tooltip("Ironpath").icon(icon()).priority(6).panel(panel).build();
 			toolbar.addNavigation(navigation);
@@ -104,7 +104,7 @@ public class IronpathPlugin extends Plugin
 		{
 			// UI ownership stays on the EDT, including cleanup of an in-flight startup.
 			if (navigation != null) { toolbar.removeNavigation(navigation); }
-			if (panel != null) { panel.render("Plugin disabled; observations cleared.", null, List.of(), null); }
+			if (panel != null) { panel.render("Plugin disabled; observations cleared.", null, List.of(), List.of(), null); }
 			navigation = null;
 			panel = null;
 		});
@@ -220,12 +220,14 @@ public class IronpathPlugin extends Plugin
 
 	private void render(String status, AccountSnapshot snapshot, List<Advisor.Recommendation> recommendations)
 	{
+		List<String> noAdviceReasons = snapshot != null && recommendations.isEmpty() && advisor != null
+			? advisor.explainNoAdvice(snapshot) : List.of();
 		long token = session.generation();
 		long revision = session.revision();
 		SwingUtilities.invokeLater(() ->
 		{
 			if (!running || panel == null || !session.currentView(token, revision) || session.snapshot() != snapshot) { return; }
-			panel.render(status, snapshot, recommendations, catalog);
+			panel.render(status, snapshot, recommendations, noAdviceReasons, catalog);
 		});
 	}
 

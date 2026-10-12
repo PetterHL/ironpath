@@ -2,7 +2,7 @@
 
 Updated 12 October 2026. Only this file tracks initial work. **T1 passed static review; its local RuneLite checks remain pending. T2's bounded catalogue and automated verification are complete; real-client accuracy/usefulness checks remain pending. T3–T5 are not started.** Petter has approved the public repository `PetterHL/ironpath`; the repository and documentation foundation are established on GitHub. Independent development is agreed; competitor benchmarking is optional.
 
-## T1 — Small account and value experiment (ready for code review; in-game checks pending)
+## T1 — Small account and value experiment (ready for code review; in-game validation in progress)
 
 **Outcome:** one narrow RuneLite development build that demonstrates reliable account observations and understandable recommendations.
 
@@ -26,7 +26,22 @@ Code review: [PR #1 — Implement T1 local account observations and CoX sidebar]
 - Raw observations and identity remain memory-only. No preference/manual-fact persistence was added. Supported local storage was verified in RuneLite's `Plugin.getPluginDirectory()` → `.runelite/plugin-data/[internalName]` and `Filepath.joinSegment`/reader/writer APIs; future character preferences must use that local path and character/profile identity rather than synced configuration. `internalName` is set. There are no HTTP clients, account lookups, uploads, runtime scraping, downloaded rules, reflection, subprocesses or gameplay input in production code. Browser source links are fixed, user-initiated and carry no account state.
 - All state clears on lifecycle/account/profile transitions, unsupported modes/worlds and disable; region loading also clears conservatively. Client callbacks and queued Swing views check generation/revision, current character/profile identity and current snapshot before applying results. Event changes are coalesced at the next server tick; idle ticks do not reevaluate the catalogue.
 
-**Automated validation:** `gradlew test` and `gradlew build` passed together on JDK `11.0.32.1`; **20 tests, zero failures**. Product fixtures and mocked RuneLite lifecycle tests are separate. Tests cover unopened banks/unknown completion, decline-CG alternatives, post-Bowfa and high-end accounts, consumed unlocks/spare scrolls, low-level scroll reading, inactive gear/components, individual wield levels, immutable evidence, three-valued conditions, unreviewed/invalid catalogue rejection, placeholders, cached-bank freshness, all game-state transitions, character/profile changes, changed identity without an event, unsupported modes/worlds, disable, stale result/view rejection and irrelevant-varbit coalescing. These are synthetic observations, not captured accounts or in-game tests.
+**Automated validation:** `gradlew test` and `gradlew build` passed together on JDK `11.0.32.1`; **23 tests, zero failures**. Product fixtures and mocked RuneLite lifecycle tests are separate. Tests cover unopened banks/unknown completion, decline-CG alternatives, post-Bowfa and high-end accounts, consumed unlocks/spare scrolls, low-level scroll reading, inactive gear/components, individual wield levels, immutable evidence, three-valued conditions, unreviewed/invalid catalogue rejection, placeholders, cached-bank freshness, all game-state transitions, character/profile changes, changed identity without an event, unsupported modes/worlds, disable, stale result/view rejection and irrelevant-varbit coalescing. Three additional synthetic checks cover empty-result explanations: an uncharged staff with otherwise supported weapons and completed prayer samples, unknown bank/skill evidence, and crystal-package/individual wield-level coverage. Observing the supported charged form enables the existing CoX sample. These are synthetic observations, not captured accounts or in-game tests.
+
+**User-performed Windows validation — 12 October 2026:** Petter reported `BUILD SUCCESSFUL` for the local `gradlew.bat test build` command, then logged into the development client with a Jagex Account. A supplied sidebar screenshot confirms that Ironpath opens and displays `Bank unknown` before the user has opened the bank. These checks were performed by the user on his PC; Codex did not interact with the game. No screenshot, account identifier, credential, bank content or raw account observation is stored in this repository. Displayed skill/unlock accuracy still needs comparison with the game UI.
+
+| Manual check | Status | Evidence / limitation |
+|---|---|---|
+| Windows local build/test command | Passed, user reported | `BUILD SUCCESSFUL`; local detailed test output was not supplied. |
+| Jagex Account development login and sidebar opening | Passed, user performed | User reported login; supplied image shows the active Ironpath sidebar. |
+| Bank remains unknown before first opening | Passed, user performed | User confirmed bank had not been opened; sidebar displays `Bank unknown`. |
+| First bank opening updates observation status | Passed, user performed | A subsequent sidebar image displays `Bank last observed this session`. This establishes the status transition, not full item-capture or close/filter accuracy. |
+| Positive team CoX suggestion is displayed | Passed, user performed | A later sidebar image shows `Plan ordinary team CoX with your observed weapons` after the earlier empty result. Actual item-capture, provenance accuracy and usefulness still need user verification. |
+| Expanded recommendation evidence renders | Passed, user performed | Supplied detail images show the expected three weapon labels, distinct storage provenance, observation times, preparation baseline, access distinction, alternative and trade-off text. Actual storage locations still need user confirmation; this is a rendering check, not an independent account-accuracy pass. |
+| Empty-result explanation | Failed in initial UI; correction awaiting user retest | After the bank status updated, the generic empty state did not identify the unmet sample condition. Added a `Why no suggestion` expansion using the same pure evaluator checks; no catalogue or recommendation eligibility was expanded. |
+| Displayed skill/unlock accuracy and remaining real-client behavior | Pending | Rendering alone does not establish that the values match the game. |
+
+The following representative profiles remain synthetic; their full product/usefulness checks are separate from the initial manual checks above.
 
 | Synthetic scenario | Concrete evidence and supported result | Product judgement / in-game status |
 |---|---|---|
@@ -47,7 +62,7 @@ JAVA_HOME=/tmp/ironpath-jdk11 GRADLE_USER_HOME=/workspace/.gradle ./gradlew \
   -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 test build --no-daemon
 ```
 
-**Pending real-client checks:** login initialisation and unlock varbits; unopened/opened/closed/filtered bank and observation times; placeholders and supported charged/cosmetic variants; consumed unlocks; logout, hop, reconnect and region-loading clears; two characters and RuneLite profile changes; unsupported modes/worlds; disable/re-enable; source links and sidebar usability. No player usefulness judgement, game accuracy pass or Hub approval is claimed. See README for simple Windows/macOS/Linux build and launch commands and Jagex Account login guidance. T2 remains unstarted; no Hub submission.
+**Pending real-client checks:** login initialisation and displayed skill/unlock accuracy; bank item-capture, close/filter freshness and observation times; placeholders and supported charged/cosmetic variants; the new empty-result explanation and the positive suggestion's expanded matching evidence; consumed unlocks; logout, hop, reconnect and region-loading clears; two characters and RuneLite profile changes; unsupported modes/worlds; disable/re-enable; source links and recommendation usefulness. Only the manual passes explicitly recorded above are established. No general game accuracy pass, player usefulness judgement or Hub approval is claimed. See README for simple Windows/macOS/Linux build and launch commands and Jagex Account login guidance. T2 remains unstarted; no Hub submission.
 
 ## T2 — Review the bounded catalogue (complete for static review; real-client checks pending)
 

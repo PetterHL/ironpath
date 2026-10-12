@@ -124,6 +124,47 @@ public class AdvisorTest
 		assertTrue(ids(account).isEmpty());
 	}
 
+	@Test public void noAdviceExplainsUnchargedMagicWithoutInventingMissingOwnership()
+	{
+		AccountSnapshot account = account(90, fact(Set.of(20997, 22978, 11908)), fact(true), fact(true));
+		assertTrue(advisor.evaluate(account).isEmpty());
+		List<String> reasons = advisor.explainNoAdvice(account);
+		assertTrue(reasons.stream().anyMatch(r -> r.contains("Rigour: already unlocked")));
+		assertTrue(reasons.stream().anyMatch(r -> r.contains("Augury: already unlocked")));
+		assertTrue(reasons.stream().anyMatch(r -> r.contains("magic weapon") && r.contains("charged powered-staff")));
+		assertTrue(reasons.stream().anyMatch(r -> r.contains("Other storage remains unknown")));
+		assertTrue(reasons.stream().noneMatch(r -> r.contains("melee weapon") || r.contains("ranged weapon")));
+		assertTrue(reasons.stream().noneMatch(r -> r.toLowerCase(java.util.Locale.ROOT).contains("obtain")));
+		// Observing a charged supported form enables the existing sample, not a new grind.
+		AccountSnapshot charged = account(90, fact(Set.of(20997, 22978, 11907)), fact(true), fact(true));
+		assertEquals(List.of("plan-team-cox"), ids(charged));
+		assertTrue(advisor.explainNoAdvice(charged).isEmpty());
+	}
+
+	@Test public void noAdvicePreservesUnknownBankAndSkillReasons()
+	{
+		AccountSnapshot original = account(90, Observation.unknown(), fact(true), fact(true));
+		Map<String, Integer> levels = new HashMap<>(original.levels.value());
+		levels.remove("ATTACK");
+		AccountSnapshot account = new AccountSnapshot(fact(levels), original.inventory, original.equipment, original.bank, original.rigour, original.augury);
+		List<String> reasons = advisor.explainNoAdvice(account);
+		assertTrue(reasons.stream().anyMatch(r -> r.contains("ATTACK unknown")));
+		assertTrue(reasons.stream().anyMatch(r -> r.contains("Unread containers remain unknown")));
+		assertTrue(reasons.stream().noneMatch(r -> r.contains("ATTACK 0")));
+	}
+
+	@Test public void noAdviceExplainsBowfaPackageCoverageAndOwnWieldLevel()
+	{
+		AccountSnapshot original = account(90, fact(Set.of(4151, 25867, 11907)), fact(true), fact(true));
+		List<String> bowfaReasons = advisor.explainNoAdvice(original);
+		assertTrue(bowfaReasons.stream().anyMatch(r -> r.contains("Bowfa observed") && r.contains("default-colour armour only")));
+		assertTrue(bowfaReasons.stream().noneMatch(r -> r.contains("no covered ranged weapon")));
+		Map<String, Integer> levels = new HashMap<>(original.levels.value());
+		levels.put("RANGED", 80);
+		AccountSnapshot lowLevel = new AccountSnapshot(fact(levels), fact(Set.of()), fact(Set.of()), fact(Set.of(4151, 20997, 11907)), fact(true), fact(true));
+		assertTrue(advisor.explainNoAdvice(lowLevel).stream().anyMatch(r -> r.contains("twisted bow observed") && r.contains("85 wield level")));
+	}
+
 	@Test public void immutableSnapshotKeepsOriginalEvidence()
 	{
 		Set<Integer> items = new HashSet<>(Set.of(21034));
