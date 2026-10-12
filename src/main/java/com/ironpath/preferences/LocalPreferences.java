@@ -95,6 +95,7 @@ public final class LocalPreferences implements PreferenceStorage
 			doc.confirmations.put(id, fact);
 		});
 		Filepath destination = file(key);
+		destination.getParent().createDirectories();
 		Filepath temporary = destination.getParent().createTempFile("preferences-", ".tmp");
 		try
 		{

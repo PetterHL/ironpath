@@ -55,6 +55,22 @@ public class LocalPreferencesTest
 		assertEquals(1, temporary.getRoot().list().length); // No abandoned temporary file.
 	}
 
+	@Test public void firstSaveCreatesMissingPluginDirectoryAndReloads() throws Exception
+	{
+		Filepath pluginDirectory = directory.joinSegment("plugin-data").joinSegment("ironpath-advisor");
+		LocalPreferences firstRun = new LocalPreferences(() -> pluginDirectory, new Gson(), catalog);
+		assertFalse(pluginDirectory.exists());
+		assertNull(firstRun.read(a).goal);
+		Preferences preferences = Preferences.EMPTY.goal("plan-team-cox").confirm("rigour", true, TIME);
+		firstRun.write(a, preferences);
+		assertTrue(pluginDirectory.isDirectory());
+		LocalPreferences restarted = new LocalPreferences(() -> pluginDirectory, new Gson(), catalog);
+		Preferences read = restarted.read(a);
+		assertEquals(preferences.goal, read.goal);
+		assertTrue(read.confirmations.get("rigour").value);
+		assertEquals(TIME, read.confirmations.get("rigour").time);
+	}
+
 	private void raw(String text) throws Exception { try (Writer writer = directory.joinSegment(a + ".json").openWriter()) { writer.write(text); } }
 	@Test public void corruptUnsupportedAndOversizedFilesFailWithoutBeingOverwritten() throws Exception
 	{

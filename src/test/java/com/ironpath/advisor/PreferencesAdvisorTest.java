@@ -48,6 +48,39 @@ public class PreferencesAdvisorTest
 		assertTrue(advisor.evaluate(account, augury).get(0).evidence.stream().anyMatch(e -> e.contains("directly supports selected goal")));
 	}
 
+	@Test public void teamGoalIsAvailableWhenSpecificCoordinationReplacesBroadPlanning()
+	{
+		AccountSnapshot account = account(90, Set.of(4151, 9185, 11907, 13576), fact(true), fact(true));
+		Preferences preferences = Preferences.EMPTY.goal("plan-team-cox");
+		assertEquals(List.of("coordinate-defence-reduction"), ids(account, preferences));
+		Advisor.GoalView goal = advisor.goal(account, preferences);
+		assertTrue(goal.requirements.stream().allMatch(r -> r.truth == Truth.TRUE));
+		assertNull(goal.nearestMissing);
+		assertEquals("Available preparation action", goal.status);
+		assertTrue(goal.nextAction.startsWith("Agree team defence-reduction coverage"));
+		assertTrue(goal.nextAction.contains("not certification of raid access"));
+	}
+
+	@Test public void teamGoalAlternativeDoesNotOverrideMissingUnknownOrSkippedPrerequisites()
+	{
+		AccountSnapshot account = account(90, Set.of(4151, 9185, 11907, 13576), fact(true), fact(true));
+		Preferences preferences = Preferences.EMPTY.goal("plan-team-cox");
+		Advisor.GoalView skipped = advisor.goal(account, preferences.skip("plan-team-cox", true));
+		assertTrue(skipped.status.startsWith("Blocked by a skipped action"));
+		assertTrue(skipped.nextAction.startsWith("Restore the skipped action"));
+		Advisor.GoalView missing = advisor.goal(account(69, account.bank.value(), fact(true), fact(true)), preferences);
+		assertTrue(missing.status.startsWith("Blocked:"));
+		assertEquals("PRAYER >= 70", missing.nearestMissing);
+		assertFalse(missing.nextAction.startsWith("Agree team defence-reduction coverage"));
+		AccountSnapshot unread = new AccountSnapshot(account.levels, account.inventory, account.equipment,
+			Observation.unknown(), account.rigour, account.augury);
+		Advisor.GoalView unknown = advisor.goal(unread, preferences);
+		assertTrue(unknown.status.startsWith("Needs observation or confirmation"));
+		assertNull(unknown.nearestMissing);
+		assertTrue(unknown.requirements.stream().anyMatch(r -> r.truth == Truth.UNKNOWN));
+		assertFalse(unknown.nextAction.startsWith("Agree team defence-reduction coverage"));
+	}
+
 	@Test public void skippedRequiredUnlockBlocksGoalAndRestoringItDoesNotCompleteIt()
 	{
 		AccountSnapshot account = account(70, Set.of(21034), fact(false), fact(true));

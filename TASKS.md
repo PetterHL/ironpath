@@ -144,7 +144,7 @@ appears to work. That general report is not a pass for specific T2 or T3 scenari
   remain supported. T4/T5 and Plugin Hub submission were not started.
 
 **Automated validation:** `gradlew test build --no-daemon` on Temurin JDK
-`11.0.32.1`: **55 tests, zero failures**. This includes the original T1/T2 fixtures,
+`11.0.32.1`: **58 tests, zero failures**. This includes the original T1/T2 fixtures,
 T1 abstention explanations, goal ranking/diversity, skipped prerequisite versus
 actual completion, unknown ownership, manually owned alternatives, unusable manual
 gear, unlock precedence/provenance, fixed source URLs, real temporary-file restart
@@ -173,6 +173,45 @@ Codex did not launch or interact with RuneLite in-game.
 PC build/launch and a short T3 check sequence are in `README.md`. Wait for
 **Preferences saved locally** before restarting. No T3 in-game pass or T4 user-trial
 result is claimed. Earlier limited T1 user-performed passes remain recorded above.
+
+
+### T3 review fixes — 12 October 2026
+
+Fixed the two findings from reviewed commit `3889580` on `t3-local-advisor`,
+updating the existing PR #3:
+
+- `LocalPreferences.write` now calls supported `Filepath.createDirectories()` on
+  the destination parent before creating its temporary file. A regression starts
+  with a nonexistent plugin subdirectory, saves for the first time and reloads
+  the goal/manual confirmation through a fresh store instance.
+- CoX goal status now recognises an available same-family preparation alternative
+  when defence-reduction coordination replaces broad team planning. Confirmed
+  missing, unknown and skipped prerequisites retain their existing status/guards;
+  the alternative does not certify raid access or complete the goal.
+
+Both bug regressions failed against `3889580` before the fixes. The added control
+fixture for missing/unknown/skipped prerequisites passed before and after the
+fixes. Full `gradlew test build --no-daemon` passes on the same supported JDK 11
+and RuneLite setup: **58 tests, zero failures**; `git diff --check` passes. No
+outstanding build blocker. These are synthetic logic/temporary-file tests;
+**no in-game testing was performed**. Catalogue, privacy/isolation rules and
+schemas are unchanged. T4/T5 remain unstarted.
+
+**Short PC checklist — all pending:** update `t3-local-advisor` and use README's
+build/launch commands, then:
+
+1. With the client closed, temporarily rename/back up only
+   `.runelite/plugin-data/ironpath-advisor` if it exists to exercise a fresh
+   directory. Launch, save a goal/manual confirmation, wait for **Preferences
+   saved locally**, restart and verify the choices return. Bank observations
+   should remain unknown until reopened. Preserve the backup.
+2. Select ordinary team CoX with a positively observed, supported three-style kit
+   and defence-reduction weapon. If the coordination card replaces broad planning,
+   the goal should say **Available preparation action** and name that next action.
+   Skip the selected goal action and restore it; its blocked status should reverse.
+3. Switch character and RuneLite profile: each should show its own choices. Return
+   to the original character/profile and verify its saved choices return without
+   carrying over bank observations.
 
 ## T4 — Small user and maintenance trial
 

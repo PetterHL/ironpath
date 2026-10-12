@@ -220,9 +220,12 @@ public final class Advisor
 		List<Recommendation> available = evaluate(raw, preferences);
 		Recommendation next = available.stream().filter(r -> r.decision.id.equals(goal.id) || goal.requires.contains(r.decision.id)
 			|| (goal.kind == KnowledgeCatalog.Kind.PLAN_TEAM && r.decision.family.equals("team-preparation"))).findFirst().orElse(null);
+		boolean goalActionAvailable = next != null && (next.decision.id.equals(goal.id)
+			|| (goal.kind == KnowledgeCatalog.Kind.PLAN_TEAM && next.decision.family.equals(goal.family)
+				&& requirements.stream().allMatch(r -> r.truth == Truth.TRUE)));
 		String status = completed ? "Satisfied by confirmed outcome or supported alternative"
 			: skipped || skippedRequirement ? "Blocked by a skipped action; skipping does not complete it"
-			: next != null && next.decision.id.equals(goal.id) ? "Available preparation action"
+			: goalActionAvailable ? "Available preparation action"
 			: nearest != null ? "Blocked: a confirmed prerequisite is missing"
 			: "Needs observation or confirmation; prerequisites remain unknown";
 		String nextAction = completed ? "No further action for this target. Clear the goal or choose another."
