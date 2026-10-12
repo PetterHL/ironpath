@@ -1,6 +1,6 @@
 # Product and implementation decisions
 
-Approved direction · updated 12 October 2026 · planned behaviour is separate from delivered and live-validated behaviour
+Approved direction · updated 12 October 2026 · P4a implemented; review and real-client validation pending
 
 ## Product
 
@@ -20,7 +20,7 @@ On 12 October 2026, `main` was `c717927cdf4e3fd8128d28b96e05690965f5a908`; [PR #
 
 The delivered baseline is plugin 0.3.0, knowledge `p3-1`, schema 4: 16 reviewed decisions, 61 exact item IDs, 62 sources and seven goals. Its 75-test result and limited user-reported PC flow are historical evidence in TASKS.md, not validation of the design below. Detailed observation, usefulness, variant, persistence and isolation checks remain pending.
 
-The next assignment is **P4a: approximately 3–4 representative upgrade experiences end to end**. Preserve useful existing content. After testing and review, P4b expands toward approximately 8–12 thoroughly researched upgrades, then follows demonstrated usefulness. These numbers budget new upgrade experiences; they neither delete the existing 16 decisions nor impose a permanent catalogue limit. The previous 35–45-decision expansion-first plan is superseded.
+**P4a is implemented on `p4a-upgrade-advisor`, based on PR #6 at `2ef409a` (including PR #5).** It delivers the four representative outcomes and the bounded reference model described here. TASKS.md records actual test/build/oracle results and pending PC checks. No P4b implementation or publication is included. The scope was **approximately 3–4 representative upgrade experiences end to end**. Preserve useful existing content. After testing and review, P4b expands toward approximately 8–12 thoroughly researched upgrades, then follows demonstrated usefulness. These numbers budget new upgrade experiences; they neither delete the existing 16 decisions nor impose a permanent catalogue limit. The previous 35–45-decision expansion-first plan is superseded.
 
 Keep standard Ironman/permanent main-game coverage. Defer UIM logistics, HCIM safety routing, GIM shared ownership, seasonal modes, exhaustive progression, general loadout optimisation, KC/Collection Log dependencies and complete encounter simulation.
 
@@ -95,7 +95,7 @@ P4a must deliver at least one account-aware tested numerical comparison and the 
 
 ### Existing calculator assessment
 
-Reviewed 12 October 2026; source inspection, not a fresh execution/parity audit:
+Reviewed 12 October 2026; source inspection, the original assessment below predates execution. P4a has since run original synthetic comparisons locally; see docs/RESEARCH.md and TASKS.md for the version, inputs, tolerances and exclusions:
 
 | Candidate | Evidence and decision |
 |---|---|
@@ -106,7 +106,7 @@ Code/data reuse is not approved merely by public availability. BSD original code
 
 ## Representative P4a upgrades and checked mechanics
 
-These are conditional examples, **not a top-four ranking for every account**. Final exact variants, acquisition predicates and source records must be validated in the implementation; this planning change does not activate catalogue entries.
+These are conditional examples, **not a top-four ranking for every account**. Final exact variants, acquisition predicates and source records must be validated in the implementation; the P4a delivery activates these four outcomes with source-reviewed variants/routes and the documented bounded comparisons. TASKS.md distinguishes synthetic validation from pending live checks.
 
 | Outcome | Personal-value case and acquisition boundary |
 |---|---|
