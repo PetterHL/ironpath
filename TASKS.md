@@ -96,6 +96,8 @@ Implement deterministic ranking, up to three diverse choices, optional single go
 
 ### T3 results — 12 October 2026
 
+Code review: [PR #3 — Implement T3 local goals, ranking and isolated preferences](https://github.com/PetterHL/ironpath/pull/3), stacked on PR #2.
+
 Branch `t3-local-advisor` builds on T2's `e52728d5313552fd8b0bdaa5eefdcbaa4be00915`.
 It also integrates the existing T1 follow-up diagnostics and user-performed check
 records from `f224f410f23f8d4f33310a4520aded9e84518b23`. T1/T2 results above describe
