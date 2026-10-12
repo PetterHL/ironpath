@@ -1,8 +1,8 @@
 # Initial tasks
 
-Updated 12 October 2026. Only this file tracks initial work. **T1 is implemented for review; automated checks pass and in-game checks are pending. T2–T5 are not started.** Petter has approved the public repository `PetterHL/ironpath`; the repository and documentation foundation are established on GitHub. Independent development is agreed; competitor benchmarking is optional.
+Updated 12 October 2026. Only this file tracks initial work. **T1 is implemented for review; automated checks pass and user-performed in-game validation has started. Remaining checks are pending. T2–T5 are not started.** Petter has approved the public repository `PetterHL/ironpath`; the repository and documentation foundation are established on GitHub. Independent development is agreed; competitor benchmarking is optional.
 
-## T1 — Small account and value experiment (ready for code review; in-game checks pending)
+## T1 — Small account and value experiment (ready for code review; in-game validation in progress)
 
 **Outcome:** one narrow RuneLite development build that demonstrates reliable account observations and understandable recommendations.
 
@@ -28,6 +28,17 @@ Code review: [PR #1 — Implement T1 local account observations and CoX sidebar]
 
 **Automated validation:** `gradlew test` and `gradlew build` passed together on JDK `11.0.32.1`; **20 tests, zero failures**. Product fixtures and mocked RuneLite lifecycle tests are separate. Tests cover unopened banks/unknown completion, decline-CG alternatives, post-Bowfa and high-end accounts, consumed unlocks/spare scrolls, low-level scroll reading, inactive gear/components, individual wield levels, immutable evidence, three-valued conditions, unreviewed/invalid catalogue rejection, placeholders, cached-bank freshness, all game-state transitions, character/profile changes, changed identity without an event, unsupported modes/worlds, disable, stale result/view rejection and irrelevant-varbit coalescing. These are synthetic observations, not captured accounts or in-game tests.
 
+**User-performed Windows validation — 12 October 2026:** Petter reported `BUILD SUCCESSFUL` for the local `gradlew.bat test build` command, then logged into the development client with a Jagex Account. A supplied sidebar screenshot confirms that Ironpath opens and displays `Bank unknown` before the user has opened the bank. These checks were performed by the user on his PC; Codex did not interact with the game. No screenshot, account identifier, credential, bank content or raw account observation is stored in this repository. Displayed skill/unlock accuracy still needs comparison with the game UI.
+
+| Manual check | Status | Evidence / limitation |
+|---|---|---|
+| Windows local build/test command | Passed, user reported | `BUILD SUCCESSFUL`; local detailed test output was not supplied. |
+| Jagex Account development login and sidebar opening | Passed, user performed | User reported login; supplied image shows the active Ironpath sidebar. |
+| Bank remains unknown before first opening | Passed, user performed | User confirmed bank had not been opened; sidebar displays `Bank unknown`. |
+| Displayed skill/unlock accuracy and remaining real-client behavior | Pending | Rendering alone does not establish that the values match the game. |
+
+The following representative profiles remain synthetic; their full product/usefulness checks are separate from the initial manual checks above.
+
 | Synthetic scenario | Concrete evidence and supported result | Product judgement / in-game status |
 |---|---|---|
 | Bank unopened | No observed weapons or scrolls; unlocks unknown. Abstain and explain bank observation rather than invent missing gear. | Pending |
@@ -47,7 +58,7 @@ JAVA_HOME=/tmp/ironpath-jdk11 GRADLE_USER_HOME=/workspace/.gradle ./gradlew \
   -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 test build --no-daemon
 ```
 
-**Pending real-client checks:** login initialisation and unlock varbits; unopened/opened/closed/filtered bank and observation times; placeholders and supported charged/cosmetic variants; consumed unlocks; logout, hop, reconnect and region-loading clears; two characters and RuneLite profile changes; unsupported modes/worlds; disable/re-enable; source links and sidebar usability. No player usefulness judgement, game accuracy pass or Hub approval is claimed. See README for simple Windows/macOS/Linux build and launch commands and Jagex Account login guidance. T2 remains unstarted; no Hub submission.
+**Pending real-client checks:** login initialisation and displayed skill/unlock accuracy; opened/closed/filtered bank and observation times; placeholders and supported charged/cosmetic variants; consumed unlocks; logout, hop, reconnect and region-loading clears; two characters and RuneLite profile changes; unsupported modes/worlds; disable/re-enable; source links and recommendation usefulness. Only the manual passes explicitly recorded above are established. No general game accuracy pass, player usefulness judgement or Hub approval is claimed. See README for simple Windows/macOS/Linux build and launch commands and Jagex Account login guidance. T2 remains unstarted; no Hub submission.
 
 ## T2 — Review the bounded catalogue
 
