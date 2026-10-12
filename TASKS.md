@@ -17,6 +17,8 @@ Updated 12 October 2026. Only this file tracks initial work. **T1 is implemented
 
 ### T1 results — 12 October 2026
 
+Code review: [PR #1 — Implement T1 local account observations and CoX sidebar](https://github.com/PetterHL/ironpath/pull/1), branch `t1-account-advisor`.
+
 - Implemented the official example-plugin scaffold at `46e14f2c448fab6cbc599df1015b9631dcf1fc52` with original notices, Gradle 8.10, Java release 11 and one Gradle project. Current official RuneLite APIs were checked at `42a6f17a6a2e8e478aa763890ecd0181a59dad38`; the build resolved `latest.release` to `1.13.1`. There are no extra runtime dependencies; Mockito is test-only.
 - Added immutable real-level, inventory/equipment, session-bank and Rigour/Augury unlock observations with time/provenance. Only a visible bank following a bank event is sampled; a stale cached container alone is insufficient. Zero-quantity placeholders are excluded. Missing data remains unknown; positive possession and permanent unlocks are separate.
 - Added five source-reviewed samples in bundled `catalog.json`: read an observed dexterous scroll, read an observed arcane scroll, train Prayer for unlocked Rigour, train Prayer for unlocked Augury, and plan ordinary team CoX with recognised observed weapons. The evaluator is pure Java with deterministic authored ordering and at most three diverse suggestions; duplicate Prayer-training actions are suppressed. These are limited original preparation explanations, not a reviewed full progression catalogue or an expert/player endorsement. No T2 content expansion was performed.
