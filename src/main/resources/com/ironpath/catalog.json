@@ -1,0 +1,507 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "t1-1",
+  "reviewed": "2026-10-12",
+  "sources": [
+    {
+      "id": "rigour",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Rigour?oldid=14954629",
+      "revision": "14954629",
+      "decisions": [
+        "unlock-rigour",
+        "train-rigour"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Mechanic facts checked from full page; original explanations and limited item selections. No copied prose, tables, images or guide dataset. Wiki content is CC BY-NC-SA 3.0; linked as evidence, not redistributed."
+    },
+    {
+      "id": "augury",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Augury?oldid=15362822",
+      "revision": "15362822",
+      "decisions": [
+        "unlock-augury",
+        "train-augury"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Mechanic facts checked from full page; original explanations and limited item selections. No copied prose, tables, images or guide dataset. Wiki content is CC BY-NC-SA 3.0; linked as evidence, not redistributed."
+    },
+    {
+      "id": "dex-scroll",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Dexterous_prayer_scroll?oldid=15188080",
+      "revision": "15188080",
+      "decisions": [
+        "unlock-rigour"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Mechanic facts checked from full page; original explanations and limited item selections. No copied prose, tables, images or guide dataset. Wiki content is CC BY-NC-SA 3.0; linked as evidence, not redistributed."
+    },
+    {
+      "id": "arcane-scroll",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Arcane_prayer_scroll?oldid=15188166",
+      "revision": "15188166",
+      "decisions": [
+        "unlock-augury"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Mechanic facts checked from full page; original explanations and limited item selections. No copied prose, tables, images or guide dataset. Wiki content is CC BY-NC-SA 3.0; linked as evidence, not redistributed."
+    },
+    {
+      "id": "cox-kit",
+      "type": "wiki encounter preparation",
+      "url": "https://oldschool.runescape.wiki/w/Chambers_of_Xeric/Strategies?oldid=15357585",
+      "revision": "15357585",
+      "decisions": [
+        "plan-team-cox"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Mechanic facts checked from full page; original explanations and limited item selections. No copied prose, tables, images or guide dataset. Wiki content is CC BY-NC-SA 3.0; linked as evidence, not redistributed."
+    },
+    {
+      "id": "bowfa",
+      "type": "wiki item mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Bow_of_faerdhinen?oldid=15366535",
+      "revision": "15366535",
+      "decisions": [
+        "plan-team-cox"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Limited wield/charge/variant facts checked from full page; original text, no copied guide prose, table or images. Wiki content is CC BY-NC-SA 3.0; evidence link only."
+    },
+    {
+      "id": "trident",
+      "type": "wiki item mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Trident_of_the_seas?oldid=15364129",
+      "revision": "15364129",
+      "decisions": [
+        "plan-team-cox"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Limited wield/charge/variant facts checked from full page; original text, no copied guide prose, table or images. Wiki content is CC BY-NC-SA 3.0; evidence link only."
+    },
+    {
+      "id": "swamp-trident",
+      "type": "wiki item mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Trident_of_the_swamp?oldid=15364128",
+      "revision": "15364128",
+      "decisions": [
+        "plan-team-cox"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Limited wield/charge/variant facts checked from full page; original text, no copied guide prose, table or images. Wiki content is CC BY-NC-SA 3.0; evidence link only."
+    },
+    {
+      "id": "shadow",
+      "type": "wiki item mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Tumeken%27s_shadow?oldid=15316596",
+      "revision": "15316596",
+      "decisions": [
+        "plan-team-cox"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Limited wield/charge/variant facts checked from full page; original text, no copied guide prose, table or images. Wiki content is CC BY-NC-SA 3.0; evidence link only."
+    },
+    {
+      "id": "sang",
+      "type": "wiki item mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Sanguinesti_staff?oldid=15336446",
+      "revision": "15336446",
+      "decisions": [
+        "plan-team-cox"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Limited wield/charge/variant facts checked from full page; original text, no copied guide prose, table or images. Wiki content is CC BY-NC-SA 3.0; evidence link only."
+    },
+    {
+      "id": "fang",
+      "type": "wiki item mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Osmumten%27s_fang?oldid=15236139",
+      "revision": "15236139",
+      "decisions": [
+        "plan-team-cox"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Limited wield/charge/variant facts checked from full page; original text, no copied guide prose, table or images. Wiki content is CC BY-NC-SA 3.0; evidence link only."
+    },
+    {
+      "id": "lance",
+      "type": "wiki item mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Dragon_hunter_lance?oldid=15264894",
+      "revision": "15264894",
+      "decisions": [
+        "plan-team-cox"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Limited wield/charge/variant facts checked from full page; original text, no copied guide prose, table or images. Wiki content is CC BY-NC-SA 3.0; evidence link only."
+    },
+    {
+      "id": "crossbow",
+      "type": "wiki item mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Rune_crossbow?oldid=15369406",
+      "revision": "15369406",
+      "decisions": [
+        "plan-team-cox"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Limited wield/charge/variant facts checked from full page; original text, no copied guide prose, table or images. Wiki content is CC BY-NC-SA 3.0; evidence link only."
+    },
+    {
+      "id": "crystal",
+      "type": "wiki item mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Crystal_equipment?oldid=15355197",
+      "revision": "15355197",
+      "decisions": [
+        "plan-team-cox"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reuseBasis": "Limited wield/charge/variant facts checked from full page; original text, no copied guide prose, table or images. Wiki content is CC BY-NC-SA 3.0; evidence link only."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "unlock-rigour",
+      "kind": "UNLOCK_RIGOUR",
+      "title": "Read your observed dexterous prayer scroll",
+      "family": "rigour",
+      "priority": 0,
+      "why": "The scroll can unlock Rigour, a permanent ranged prayer upgrade relevant to CoX, including accounts already using Bowfa or a twisted bow. Keeping the scroll in storage provides no permanent unlock.",
+      "alternative": "Keep using your currently available lower-level prayers and save the scroll if you deliberately want a spare. Another gear grind is not required to read this owned scroll.",
+      "tradeoff": "Reading consumes this scroll. The unlock remains after consumption; it does not prove that your levels already allow using the prayer.",
+      "effort": "Small one-off action once the observed scroll is retrieved and unnoted. No drop grind or time estimate.",
+      "access": "An observed scroll and confirmed locked prayer; no skill requirement to read. Retrieve from bank first if needed.",
+      "completion": "Rigour unlock varbit is true; scroll absence is never completion evidence.",
+      "applicability": "A positive inventory/equipment/session-bank observation of the exact scroll and a known false unlock.",
+      "sources": [
+        "rigour",
+        "dex-scroll"
+      ],
+      "itemId": 21034,
+      "status": "reviewed",
+      "reviewed": "2026-10-12"
+    },
+    {
+      "id": "train-rigour",
+      "kind": "TRAIN_RIGOUR",
+      "title": "Train Prayer to 74 for your unlocked Rigour",
+      "family": "prayer-training",
+      "priority": 1,
+      "why": "You already unlocked Rigour, a permanent ranged prayer upgrade relevant to CoX, including accounts already using Bowfa or a twisted bow. Prayer levels are the remaining confirmed gap to using it with your observed Defence level.",
+      "alternative": "Use your currently available lower-level prayers and practise team CoX while building supplies. You do not need another dexterous scroll.",
+      "tradeoff": "Training uses bones and other supplies that could support different account goals. This is an optional preparation upgrade, not a raid entry requirement.",
+      "effort": "Supply-dependent training; gathering and training method are outside this sample. No exact hours or RNG forecast.",
+      "access": "Ordinary Prayer training; the sample applies only with confirmed unlock and 70+ Defence.",
+      "completion": "Real Prayer level is at least 74.",
+      "applicability": "Confirmed permanent unlock, known Prayer below 74, and known Defence at least 70.",
+      "sources": [
+        "rigour"
+      ],
+      "itemId": 0,
+      "status": "reviewed",
+      "reviewed": "2026-10-12"
+    },
+    {
+      "id": "unlock-augury",
+      "kind": "UNLOCK_AUGURY",
+      "title": "Read your observed arcane prayer scroll",
+      "family": "augury",
+      "priority": 0,
+      "why": "The scroll can unlock Augury, a permanent magic prayer upgrade relevant to CoX, including accounts with a high-end powered staff. Keeping the scroll in storage provides no permanent unlock.",
+      "alternative": "Keep using your currently available lower-level prayers and save the scroll if you deliberately want a spare. Another gear grind is not required to read this owned scroll.",
+      "tradeoff": "Reading consumes this scroll. The unlock remains after consumption; it does not prove that your levels already allow using the prayer.",
+      "effort": "Small one-off action once the observed scroll is retrieved and unnoted. No drop grind or time estimate.",
+      "access": "An observed scroll and confirmed locked prayer; no skill requirement to read. Retrieve from bank first if needed.",
+      "completion": "Augury unlock varbit is true; scroll absence is never completion evidence.",
+      "applicability": "A positive inventory/equipment/session-bank observation of the exact scroll and a known false unlock.",
+      "sources": [
+        "augury",
+        "arcane-scroll"
+      ],
+      "itemId": 21079,
+      "status": "reviewed",
+      "reviewed": "2026-10-12"
+    },
+    {
+      "id": "train-augury",
+      "kind": "TRAIN_AUGURY",
+      "title": "Train Prayer to 77 for your unlocked Augury",
+      "family": "prayer-training",
+      "priority": 2,
+      "why": "You already unlocked Augury, a permanent magic prayer upgrade relevant to CoX, including accounts with a high-end powered staff. Prayer levels are the remaining confirmed gap to using it with your observed Defence level.",
+      "alternative": "Use your currently available lower-level prayers and practise team CoX while building supplies. You do not need another arcane scroll.",
+      "tradeoff": "Training uses bones and other supplies that could support different account goals. This is an optional preparation upgrade, not a raid entry requirement.",
+      "effort": "Supply-dependent training; gathering and training method are outside this sample. No exact hours or RNG forecast.",
+      "access": "Ordinary Prayer training; the sample applies only with confirmed unlock and 70+ Defence.",
+      "completion": "Real Prayer level is at least 77.",
+      "applicability": "Confirmed permanent unlock, known Prayer below 77, and known Defence at least 70.",
+      "sources": [
+        "augury"
+      ],
+      "itemId": 0,
+      "status": "reviewed",
+      "reviewed": "2026-10-12"
+    },
+    {
+      "id": "plan-team-cox",
+      "kind": "PLAN_TEAM",
+      "title": "Plan ordinary team CoX with your observed weapons",
+      "family": "team-preparation",
+      "priority": 3,
+      "why": "You have recognised weapons across three styles and meet this sample's stated skill baseline. Reviewing a team setup with these options can be more useful than postponing all practice for another weapon grind.",
+      "alternative": "An observed rune crossbow remains a planning option if you decline CG. An observed Bowfa with crystal armour or twisted bow avoids routing back to a basic ranged grind. Use a specialist gear planner for unrecognised items.",
+      "tradeoff": "A learner team must agree your setup and supply roles. This sample does not establish raid access, armour completeness, weapon access unlocks, charges, ammunition, supplies or player skill. It does not certify solo or Challenge Mode readiness.",
+      "effort": "Team coordination and practice; repeatable planning opportunity, not an inferred unfinished account unlock. Learning time varies.",
+      "access": "Planning has no game requirement. Entering CoX separately requires access to Great Kourend; that access is unknown here.",
+      "completion": "Repeatable planning prompt; no raid history is observed and no first-kill claim is made.",
+      "applicability": "80+ Attack/Strength/Ranged/Magic/Hitpoints and 70+ Defence/Prayer (authored preparation baseline, not game access); recognised positive weapons and their wield levels. Bowfa selection additionally needs observed active crystal pieces and 70 Agility.",
+      "sources": [
+        "cox-kit",
+        "bowfa",
+        "trident",
+        "swamp-trident",
+        "shadow",
+        "sang",
+        "fang",
+        "lance",
+        "crossbow",
+        "crystal"
+      ],
+      "itemId": 0,
+      "status": "reviewed",
+      "reviewed": "2026-10-12"
+    }
+  ],
+  "gear": {
+    "melee": [
+      {
+        "id": 22978,
+        "label": "dragon hunter lance",
+        "skill": "ATTACK",
+        "level": 78,
+        "crystal": false
+      },
+      {
+        "id": 26219,
+        "label": "Osmumten's fang",
+        "skill": "ATTACK",
+        "level": 82,
+        "crystal": false
+      },
+      {
+        "id": 27246,
+        "label": "Osmumten's fang (or)",
+        "skill": "ATTACK",
+        "level": 82,
+        "crystal": false
+      },
+      {
+        "id": 12006,
+        "label": "abyssal tentacle",
+        "skill": "ATTACK",
+        "level": 75,
+        "crystal": false
+      },
+      {
+        "id": 4151,
+        "label": "abyssal whip",
+        "skill": "ATTACK",
+        "level": 70,
+        "crystal": false
+      },
+      {
+        "id": 12773,
+        "label": "abyssal whip (lava)",
+        "skill": "ATTACK",
+        "level": 70,
+        "crystal": false
+      },
+      {
+        "id": 12774,
+        "label": "abyssal whip (ice)",
+        "skill": "ATTACK",
+        "level": 70,
+        "crystal": false
+      }
+    ],
+    "ranged": [
+      {
+        "id": 20997,
+        "label": "twisted bow",
+        "skill": "RANGED",
+        "level": 85,
+        "crystal": false
+      },
+      {
+        "id": 25865,
+        "label": "Bow of faerdhinen",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true
+      },
+      {
+        "id": 25867,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true
+      },
+      {
+        "id": 25884,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true
+      },
+      {
+        "id": 25886,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true
+      },
+      {
+        "id": 25888,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true
+      },
+      {
+        "id": 25890,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true
+      },
+      {
+        "id": 25892,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true
+      },
+      {
+        "id": 25894,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true
+      },
+      {
+        "id": 25896,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true
+      },
+      {
+        "id": 9185,
+        "label": "rune crossbow",
+        "skill": "RANGED",
+        "level": 61,
+        "crystal": false
+      }
+    ],
+    "magic": [
+      {
+        "id": 27275,
+        "label": "Tumeken's shadow",
+        "skill": "MAGIC",
+        "level": 85,
+        "crystal": false
+      },
+      {
+        "id": 22323,
+        "label": "Sanguinesti staff",
+        "skill": "MAGIC",
+        "level": 82,
+        "crystal": false
+      },
+      {
+        "id": 25731,
+        "label": "holy Sanguinesti staff",
+        "skill": "MAGIC",
+        "level": 82,
+        "crystal": false
+      },
+      {
+        "id": 12899,
+        "label": "trident of the swamp",
+        "skill": "MAGIC",
+        "level": 78,
+        "crystal": false
+      },
+      {
+        "id": 22292,
+        "label": "trident of the swamp (e)",
+        "skill": "MAGIC",
+        "level": 78,
+        "crystal": false
+      },
+      {
+        "id": 11905,
+        "label": "trident of the seas (full)",
+        "skill": "MAGIC",
+        "level": 75,
+        "crystal": false
+      },
+      {
+        "id": 11907,
+        "label": "trident of the seas",
+        "skill": "MAGIC",
+        "level": 75,
+        "crystal": false
+      },
+      {
+        "id": 22288,
+        "label": "trident of the seas (e)",
+        "skill": "MAGIC",
+        "level": 75,
+        "crystal": false
+      }
+    ],
+    "crystalBody": [
+      {
+        "id": 23975,
+        "label": "active crystal body",
+        "skill": "DEFENCE",
+        "level": 70,
+        "crystal": false
+      }
+    ],
+    "crystalLegs": [
+      {
+        "id": 23979,
+        "label": "active crystal legs",
+        "skill": "DEFENCE",
+        "level": 70,
+        "crystal": false
+      }
+    ],
+    "crystalHelm": [
+      {
+        "id": 23971,
+        "label": "active crystal helm",
+        "skill": "DEFENCE",
+        "level": 70,
+        "crystal": false
+      }
+    ]
+  }
+}

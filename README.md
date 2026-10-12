@@ -2,9 +2,9 @@
 
 **Your path to endgame PvM**
 
-Research and project foundation · 12 October 2026
+T1 development experiment · 12 October 2026
 
-**Status: proposal and implementation brief, not an implemented or approved RuneLite plugin.** The public repository is established. No Plugin Hub submission or external service has been created.
+**Status: T1 development build implemented; automated tests and build pass. In-game accuracy and usability checks are pending.** No Plugin Hub submission or external service has been created. T2–T5 have not started.
 
 The intended product is a free, open-source RuneLite sidebar that helps an Ironman choose a useful next PvM activity or equipment objective using observed account state. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
@@ -33,10 +33,82 @@ Approved repository name and visibility: **`PetterHL/ironpath`**, public, confir
 
 Naming note: Iron Compass already uses `ironpath` as its Plugin Hub manifest identifier. This is an independent project; keep the chosen product/repository name, avoid any implied affiliation, and choose a distinct Hub manifest identifier before submission.
 
-Add the current official RuneLite example-plugin scaffold during T1, preserving its licence notices. Recheck the supported toolchain then; the inspected template targets Java 11. Do not request approval again for the already approved repository name and public visibility.
+The T1 scaffold follows the official RuneLite example plugin at `46e14f2c448fab6cbc599df1015b9631dcf1fc52`, checked on 12 October 2026: Gradle 8.10 and Java release 11. The current `latest.release` dependency resolved to RuneLite `1.13.1` for this build. Original notices are retained; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Start here
 
-Run the assignment at the end of `TASKS.md`. The first build is a narrow account-data and recommendation experiment. It must produce an inspectable result before extending the catalogue or polishing the UI.
+The first build is a narrow account-data and recommendation experiment. Its results and remaining checks are recorded under T1 in `TASKS.md`. The wider design describes later tasks, not features already implemented.
 
 The design introduces no per-user hosted inference, storage or API expenses. Development and content review still cost time; free distribution does not make knowledge maintenance automatic.
+
+## Test locally on your PC
+
+Install a **JDK 11** (for example Temurin 11), Git, and set `JAVA_HOME` to that JDK.
+Both `java -version` and `javac -version` should work. Gradle is included in the
+repository; internet access is needed for its first dependency download.
+
+Clone the repository and check out the T1 pull-request branch:
+
+```sh
+git clone https://github.com/PetterHL/ironpath.git
+cd ironpath
+git checkout t1-account-advisor
+```
+
+Windows PowerShell:
+
+```powershell
+.\gradlew.bat test build
+.\gradlew.bat run
+```
+
+macOS / Linux:
+
+```sh
+./gradlew test build
+./gradlew run
+```
+
+The template's `run` task opens the RuneLite development client with Ironpath
+loaded and developer mode enabled. For a Jagex Account, follow RuneLite's
+[Using Jagex Accounts](https://github.com/runelite/runelite/wiki/Using-Jagex-Accounts)
+instructions to log into a development client. Do not put credentials in this
+repository. Close the client to stop it.
+
+On a **standard Ironman in an ordinary permanent members world**, enable Ironpath
+if necessary and open its toolbar button. Allow two server ticks for initial
+observations. Open your bank, then read a suggestion and expand **Why and
+alternatives**. A source button opens the pinned source revision in your browser.
+The samples cover reading an already observed Rigour/Augury scroll, training
+Prayer for an already unlocked prayer, and planning ordinary team CoX with
+recognised weapons. Team planning does not certify raid access or a complete
+usable loadout. No CG grind is required by these samples.
+
+## T1 privacy and coverage
+
+Real levels, inventory, equipment, session bank observations and two permanent
+prayer unlock varbits are read on the client thread into immutable snapshots.
+An unopened bank, unavailable container or missing skill is unknown. Permanent
+unlocks are separate from scroll possession; uncharged gear and components do
+not count as recognised charged weapons. Exact supported variants are bundled
+in `catalog.json`; other combinations can produce no advice.
+
+Observations and internal character/profile identity remain in memory. Ironpath
+does not write preferences or account facts, use synced configuration for facts,
+log account identifiers or bank contents, perform account lookups, download rules,
+or upload data. Evaluation uses bundled content and injected Gson. User-initiated
+source links contain no account state. RuneLite itself retains its normal network
+and configuration behaviour.
+
+Snapshots clear on logout, connection loss, world hop, profile/character changes,
+unsupported modes/worlds and plugin disable. T1 also clears on region loading, so
+you may need to reopen your bank after moving. The character identity and a
+generation/revision guard reject stale callbacks and queued sidebar updates.
+Supported local persistence was checked against `Plugin.getPluginDirectory()`
+and `Filepath`; goals, skips, manual confirmations and their persistence are deferred.
+
+All real-client checks are **pending**: bank open/close/filter freshness;
+placeholders and charged/cosmetic variants; consumed scroll unlock timing;
+logout/hop/reconnect; two characters and RuneLite profiles; unsupported worlds;
+disable/re-enable cleanup; source buttons; and sidebar clarity with actual accounts.
+The test fixtures are synthetic and establish logic behavior, not player judgement.
