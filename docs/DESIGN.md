@@ -1,113 +1,146 @@
 # Product and implementation decisions
 
-Approved development direction · updated 12 October 2026 · implementation and live validation remain separate
+Approved direction · updated 12 October 2026 · planned behaviour is separate from delivered and live-validated behaviour
 
-## Product test
+## Product
 
-**Question:** Can an established Ironman quickly understand and choose a useful next PvM action from a small set of account-aware recommendations?
+Ironpath is an **automatic, account-aware Ironman PvM upgrade advisor**. Its central question is:
 
-Decision updated on 12 October 2026: proceed independently. Petter reports that Iron Compass is difficult to use for his needs. Retain its technical overlap as research, but do not require a comparison against it or an upstream-contribution decision before implementation. Our acceptance criteria concern our own advice, clarity and ease of use.
+**Which upgrades are worth pursuing for my account, what difference will they make, and how do I obtain them?**
 
-The system can explain authored expertise without AI. It cannot derive good strategy merely by collecting item stats, drop tables and videos. Someone must decide when an upgrade is valuable, for which encounter and player context, and what alternatives are acceptable. This editorial work is the main cost and constraint.
+Open the sidebar to see useful upgrades inferred from supported account observations, without selecting a goal. An upgrade may be equipment, a prayer, a meaningful skill level or a permanent unlock. Missing an item is not evidence that obtaining it is worthwhile: compare its contextual value with the account's supported alternatives and the remaining work.
 
-The initial CoX slice established account observations, local preferences and explainable advice. Petter approved moving directly to broader PvM progression on 12 October 2026. The next delivery must compare real acquisition/activity choices across CG, Zulrah, ToA, Slayer, Moons/Royal Titans and CoX. Retain CoX as one activity and regression case. No separate CoX-only release or completed old T4 trial is required before expansion. Pending tests are not assumed passed. Do not implement a loadout/DPS optimiser.
+Goals are optional refinements. First versus efficient Inferno, first Colosseum completion, solo versus efficient solo versus CM CoX, and efficient ToB are possible future contexts, not a promised goal list for P4a. Existing supported goals remain available in secondary controls; their count does not measure usefulness. Do not infer intent, player skill, raid readiness or activity participation from ownership.
 
-## MVP boundary
+Continue independently, reusing the existing plugin. Iron Compass remains a reference, not a comparison gate. The hard part is maintaining defensible contextual advice, not collecting the most items. No owner-operated backend, paid AI, registration or runtime guide scraping is needed.
 
-| Implement | Defer or exclude |
+## Verified baseline and scope
+
+On 12 October 2026, `main` was `c717927cdf4e3fd8128d28b96e05690965f5a908`; [PR #5](https://github.com/PetterHL/ironpath/pull/5) remained open and unmerged at `eb22fef97aa899bac5611b3001462dfdbebe0b80` (`p1-p3-broad-pvm`). PRs #1–#4 also remained open; #5 incorporates their implementation/records. This documentation update is based on #5. Recheck heads before implementation or integration; do not infer merge status from a PR's synthetic merge commit.
+
+The delivered baseline is plugin 0.3.0, knowledge `p3-1`, schema 4: 16 reviewed decisions, 61 exact item IDs, 62 sources and seven goals. Its 75-test result and limited user-reported PC flow are historical evidence in TASKS.md, not validation of the design below. Detailed observation, usefulness, variant, persistence and isolation checks remain pending.
+
+The next assignment is **P4a: approximately 3–4 representative upgrade experiences end to end**. Preserve useful existing content. After testing and review, P4b expands toward approximately 8–12 thoroughly researched upgrades, then follows demonstrated usefulness. These numbers budget new upgrade experiences; they neither delete the existing 16 decisions nor impose a permanent catalogue limit. The previous 35–45-decision expansion-first plan is superseded.
+
+Keep standard Ironman/permanent main-game coverage. Defer UIM logistics, HCIM safety routing, GIM shared ownership, seasonal modes, exhaustive progression, general loadout optimisation, KC/Collection Log dependencies and complete encounter simulation.
+
+## Sidebar experience
+
+Use a **single column of compact cards**, initially three primary choices with a small secondary list when useful. A two-column grid wastes the narrow sidebar on wrapped titles and compressed comparisons. Retain RuneLite's normal Swing panel and visual conventions.
+
+Each card shows an item icon (or a simple prayer/skill/unlock symbol), upgrade name, one strongest supported effect/comparison, a few relevant PvM contexts, qualitative remaining effort, and a short confidence/access label. Use supported client item imagery; do not download a new image dataset. Examples of labels: `Reference setup`, `Ownership unconfirmed`, `Needs prerequisite`. Explain labels in plain language; colour alone is insufficient.
+
+Click through to a detail view with a clear Back control:
+
+1. Why this matters for this account, including the observed or confirmed baseline.
+2. Current versus upgraded performance for a named reference setup/target, or an explicit reason numbers are unavailable.
+3. Relevant encounters, secondary benefits, owned alternatives and situations where the upgrade is marginal or worse.
+4. Acquisition routes, already satisfied steps, remaining prerequisites and the nearest meaningful next step.
+5. Sources, review dates, calculation assumptions and small controls to correct the reference setup or a specific unknown.
+
+Put account observations, full diagnostics, manual confirmations, skip/restore and optional goals under secondary `Account and preferences` controls. A short bank freshness/status line may remain above cards; a long form must not. An empty or unopened bank should still allow relevant **provisional** cards when other evidence supports them. If nothing is supportable, show the specific observation/coverage gap, not invented advice.
+
+Keep `Quick actions` separate: reading an owned scroll, assembling already owned parts or reviewing a switch must not consume the main upgrade slots. A significant prayer unlock/training outcome can remain a primary recommendation while its final administrative step is a quick action. Existing broad activity/preparation advice remains accessible under secondary advice; do not silently discard it or pretend it has a calculated upgrade benefit.
+
+## Recommendation semantics
+
+Preserve the existing three-valued facts: `ALL` false dominates, otherwise unknown propagates; `ANY` true dominates, otherwise unknown propagates. An unread container, or absence from all observed containers, never proves global nonownership. Positive observed possession overrides a manual absence; readable live quest/unlock facts override manual fallback. Manual ownership does not prove charges, equipped state or usability.
+
+Evaluate **value, certainty and route access separately**:
+
+| Result | Required treatment |
 |---|---|
-| Standard Ironman, permanent main-game worlds | UIM logistics, HCIM safety routing, GIM shared ownership and seasonal modes |
-| Skills, worn/inventory items, bank observed this session, selected quests/unlocks | Complete Collection Log, historical boss KC, all Combat Achievements |
-| First broad slice: 12–16 reviewed decisions total; wider first catalogue: approximately 35–45 | Every boss/item, exhaustive early-game questing/skilling, universal optimal routing |
-| Up to three diverse actionable suggestions, each with why, trade-off, effort and source | A universal optimal route, numerical account quality or invented DPS gain |
-| No-goal mode; one optional supported activity, item or unlock goal; bounded raid/advanced preparation goals as coverage grows | Multiple goal queues, free-text goals, combat coaching or complete raid/challenge planners |
-| Skip/restore an activity; labelled manual possession/unlock confirmations | Arbitrary user-authored executable rules or broad plugin integrations |
-| One sidebar with detail expansion and ordinary source links | Overlays, live combat coaching, pathfinding, elaborate visual graphs |
-| Bundled, versioned knowledge; local evaluation | Runtime scraping, remote catalogues, automatic strategy ingestion |
+| Supported improvement with a confirmed gap | Explain marginal value against supported owned alternatives; show remaining route work. |
+| Relevant improvement, target/alternative ownership unknown | Label provisional; say “if you do not already own …”; request only the fact that could change this recommendation. Never write “you are missing …”. |
+| Relevant upgrade, access missing/unknown | Keep it eligible for a `Plan ahead` card/detail; name the nearest confirmed missing prerequisite or the access check needed. Do not label the grind available. This works without a selected goal. |
+| Owned equivalent or no meaningful contextual improvement | Suppress the acquisition or explain why to defer it; do not suppress distinct special-attack utility by a universal weapon tier. |
+| Unsupported baseline/mechanic | Retain a bounded qualitative explanation if justified; withhold the unsupported number. Otherwise explain coverage. |
 
-If an account/mode or item combination is outside coverage, say so. Do not present the catalogue as comprehensive advice for endgame OSRS.
+Use a small deterministic comparator: contextual marginal-value band first; optional goal/preference relevance within that band; distinct evidenced encounter applications; then remaining-work/access band and stable ID. Certainty/access labels remain visible rather than pretending all results are equally actionable. Primary selection should retain an available useful alternative beside a longer blocked route when both are supported. Validate ordering with account examples; neither ease nor goal choice should elevate trivial actions or irrelevant upgrades.
 
-### First catalogue budget
+Replace the P3 comparator's `decision.goals.size()` term and its “useful for N goals” claim. Benefits across encounters must describe distinct applications and their conditions, not count goal aliases or add DPS percentages from different targets. No weighted universal efficiency score. Source evidence should explain the value band and why an owned alternative changes it.
 
-TASKS.md P3 defines the next 12–16-decision broad slice; P4 defines the approximately 35–45-decision catalogue. Count meaningful decisions, not equipment tiers. Include acquisition choices, prerequisites, alternatives after declining a grind, and opportunities to start content with sufficient owned equipment. Existing scroll/assembly/switch reminders alone do not establish broader progression.
+Group duplicate outcomes across routes into one upgrade card. A shared activity can expose additional **separate** reward outcomes in its details; collapse repeated acquisition work without dropping reward-specific value. Do not add their benefits, assume simultaneous drops, or assign a faster completion time for “farming several upgrades together”. Respect activity skips while preserving the utility of already-owned rewards and other available routes. Do not let one-activity diversity filtering hide all shared-reward information.
 
-The wider candidate families cover shared PvM foundations, midgame equipment, ranged, magic/prayers, Slayer/specialist weapons, jewellery/armour, raids and a few advanced goals. These are research candidates, not a validated gear order. Verify current facts and strategy assumptions before activation; never pad the catalogue to meet a number. Recognising owned advanced gear to suppress redundant grinds does not require supporting its full acquisition route.
+Effort means remaining work: skill/quest gaps, components, solo/team coordination, repeated RNG acquisition, and charging/upkeep. Show owned parts as completed planning steps without inferring quantities or resources from item-ID sets. Use qualitative bands with assumptions; no exact hours, percentage-to-drop or improvement in ordinary independent drop odds from prior dry KC.
 
-The first broad slice must include useful non-CoX choices after Bowfa. Readiness means documented access and labelled preparation assumptions, never a promise of successful kills. Team/solo assumptions must be visible. Retained CoX advice concerns ordinary team raids, not solo or Challenge Mode certification.
+## Trustworthy comparisons
 
-## Recommendation behaviour
+### Reference setup and result contract
 
-1. Resolve each condition to `TRUE`, `FALSE` or `UNKNOWN`. For `ALL`, any false dominates; otherwise unknown propagates. For `ANY`, any true dominates; otherwise unknown propagates. An unread container never implies an absent item.
-2. Separate hard requirements, suggested preparation, completion and relevance. Do not encode a useful preparatory item as a game access requirement.
-3. Exclude completed, skipped, unsupported and unreviewed candidates from actionable advice. Unknown ownership never establishes a missing-item grind. Ask for targeted observation/confirmation; any conditional route preview must remain clearly separate from confirmed actionable recommendations. Avoid an account-wide questionnaire.
-4. Rank eligible actions with a small, explicit comparator: selected-goal relevance, contextual improvement over recognised owned alternatives, breadth of usefulness, then authored effort and stable ID tie-break. Important longer routes must not be displaced automatically by trivial quick actions. Review priority bands against fixtures; do not invent a precision-weighted efficiency formula.
-5. Show at most three materially different activity choices. Prefer a useful alternative over three rewards from the same grind. Blocked goals show the nearest confirmed missing prerequisite separately, not as an immediately available activity. Activity-level skip/restore excludes that acquisition route, not its completed outcome or the utility of already-owned equipment.
-6. Explain the actual matching account evidence, what this helps, what the player gives up, why a competing option was not prioritised, and uncertainty. If nothing useful is supported, return no recommendation.
+The current reader stores sets of item IDs and real levels, not complete loadouts, slot assignments, quantities, active prayers or boosts. The catalogue's `Gear` records provide wield/package checks, not combat stat vectors. Numerical comparisons therefore require an explicit small addition, not an assumption that the existing snapshot already contains all calculator inputs.
 
-Each decision needs a stable ID, activity ID, target/outcome, hard access conditions, suggested preparation, completion condition, contextual applicability/benefit, alternatives, qualitative effort with assumptions, source IDs, review status and last review date. Goals and activity routes are distinct: multiple reviewed activities may support one outcome, and one upgrade may support several goals. Keep reusable bounded action types in a small Java model plus bundled JSON, not a generic scripting language. Move catalogue-specific goal choices and benefit ordering out of hardcoded CoX switches.
+Propose one bounded reference setup from observed equipment and a reviewed template using supported owned alternatives. Use exact-ID slot/stat metadata only for supported pieces; resolve conflicting pieces with a deterministic contextual rule and a small choice when needed. Do not search every possible loadout. Display all selected slots (including deliberately empty slots), weapon, style, prayer and boost assumptions together. One confirmation and focused corrections should usually suffice. An unknown slot, unsupported bonus or incompatible setup must not silently contribute zero.
 
-Use explicit `all`/`any` prerequisites only where needed, including next-step explanations for alternative routes. Optional suggestions must not become dependency edges. Validate hard-dependency cycles; a raid can yield equipment useful in that same raid without requiring its own reward for access. Skipping a genuinely required prerequisite makes that route blocked; it does not silently mark it complete.
+Before confirmation, any number is explicitly a **proposed reference scenario using observed levels**, not the player's actual setup. After confirmation it is still a reference estimate, not observed combat performance. Unknown inputs that cannot be bounded suppress numbers, not the whole recommendation. Default to no temporary boost and no offensive prayer with visible labels; allow a small reviewed selection, and never assume an unlocked prayer is active. Do not add a full calculator form.
 
-For goals, show confirmed/missing/unknown prerequisites and the next viable action. A checklist fraction measures prerequisites only, never the probability of receiving a random drop. Broad effort labels are editorial estimates. Numerical hours are deferred; they would require activity rates, learning/setup time, supplies and RNG assumptions. Prior dry KC does not imply improved odds on ordinary independent drops.
+Keep reference proposals/corrections in memory for P4a. Relevant equipment/level/assumption changes invalidate confirmation and recalculate; logout/profile/character changes clear it with the existing generation guards. Persisting new setup profiles is outside this slice.
 
-## Small architecture
+Every numeric result carries baseline and candidate exact items/forms, slot stats, real and assumed effective skill levels, prayer/boost/style, target ID and phase/scaling/defence assumptions, supported and excluded mechanics, formula/model version, knowledge/source revision, and whether inputs were observed, manually confirmed or proposed. Return explicit `supported`, `conditional` or `unsupported` status with a reason. Render whole max hits, suitably rounded hit chance/DPS and distinguish percentage points from relative percent; never divide by a zero baseline or imply more accuracy than the model warrants.
 
-One Java RuneLite plugin, one Gradle project, four small responsibilities:
+### Smallest calculation decision
 
-| Component | Responsibility |
+P4a should independently implement **one bounded powered-magic model**, shared by the occult and trident cases: reviewed ordinary seas/swamp forms, supported flat gear bonuses, a small prayer/boost selection, exact integer rounding, attack interval, standard accuracy and successful-hit distribution. No general combat engine is needed. The initial target is ordinary Barrows **Dharok, NPC 1673**, during active attacks, without raid scaling, defence reduction, venom/poison, thralls, specials, set effects or movement. Do not apply his wind weakness to non-elemental trident attacks. Wind spells remain an important qualitative competing option; improving one trident over another is not proof the trident is the best Barrows strategy.
+
+A hand-checkable fixture: at 90 Magic, no boosts/prayer/damage bonuses, seas and swamp base max hits are **25 and 28**. The seas formula is `floor(Magic / 3) - 5`, swamp `floor(Magic / 3) - 2` within the supported wield-level range. Adding only an occult's 5% magic damage makes a 25 base max hit **26**, after flooring. These are scoped numerical expectations, not universal damage/DPS percentages or live-account results. Review and test accuracy, style adjustments and successful zero-hit handling independently before publishing DPS; `hit chance × max hit / 2` is not an adequate unexamined shortcut.
+
+P4a must deliver at least one account-aware tested numerical comparison and the bounded trident target-DPS case. Use a range of account levels and corrected reference setups, not a hardcoded showcase number. If the selected target has a concrete unmodelled mechanic, substitute another reviewed ordinary target within the same small model and document why. A model that cannot validate its advertised result is a real delivery blocker; adding a full external engine is not the default remedy.
+
+| Claim | Boundary |
 |---|---|
-| `AccountSnapshotReader` | Capture selected API facts on the client thread into immutable values; no UI or ranking |
-| `KnowledgeCatalog` | Load bundled JSON once; validate IDs, references, supported predicates and evidence |
-| `Advisor` | Pure Java evaluation of snapshot + catalogue + preferences; no RuneLite or Swing dependency |
-| Sidebar/controller | Event handling, up to three suggestions, goal/skip controls and source links |
+| Max hit / hit chance | Valid only for the specified attack, inputs and target where relevant. A stat increase can yield no max-hit breakpoint. |
+| Theoretical DPS | Expected damage per attack divided by the supported attack interval at uninterrupted attacks, with stated excluded effects. Not observed player DPS. |
+| Expected target kill time | Deferred: needs HP, hit distributions, overkill, attack timing and phase/HP mechanics. HP divided by DPS is only a crude proxy and must not be labelled expected kill time. |
+| Full encounter time / kills per trip / deeper delves | Deferred research: requires movement, phases, healing/resources, mechanics and player execution or suitable empirical evidence. Never extrapolate from the slice's DPS. |
 
-Read client state on the client thread. Coalesce relevant `StatChanged`, `ItemContainerChanged`, `VarbitChanged` and lifecycle changes; never rescan the entire catalogue every tick. Swing changes go through its event thread. Start with synchronous evaluation of a tiny immutable snapshot; add background evaluation only if measurement requires it. All delayed callbacks must carry/check an account-generation token.
+### Existing calculator assessment
 
-Reuse RuneLite dependency injection, event bus, `PluginPanel`/toolbar components, injected Gson, item definitions and supported browser utility. Use item variations cautiously: cosmetic variants may be equivalent, but charged/unusable, imbued/non-imbued, consumed and component forms may not be. Keep exact IDs and explicit reviewed equivalence sets. Exclude zero-quantity placeholders; do not infer possession of crafted gear from its unassembled components.
+Reviewed 12 October 2026; source inspection, not a fresh execution/parity audit:
 
-### Bounded generalisation
+| Candidate | Evidence and decision |
+|---|---|
+| [OSRS Wiki DPS calculator at `89c3e25`](https://github.com/weirdgloop/osrs-dps-calc/tree/89c3e25b344aea90d0189746e4b5f73dde0f0383) | TypeScript/Next application with separate calculation/distribution logic and tests. [Package](https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/package.json), [calculation source](https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/src/lib/PlayerVsNPCCalc.ts), [basic tests](https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/src/tests/calc/BasicRolls.test.ts) and [GPL-3.0 licence](https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/LICENSE) inspected. Not a drop-in Java library; embedding/porting creates runtime or maintenance work. Use pinned, locally run synthetic comparisons as a validation reference, alongside hand-derived expectations. |
+| [Better DPS Calculator at `3fd61bb`](https://github.com/mcdalcin/better-dps-calculator/tree/3fd61bb3d48bdb3c0cacc57032be4a7530242ee7) | Java 11 RuneLite plugin with a [GPL-3.0 licence](https://github.com/mcdalcin/better-dps-calculator/blob/3fd61bb3d48bdb3c0cacc57032be4a7530242ee7/LICENSE), not an established public library contract. Its [sync report](https://github.com/mcdalcin/better-dps-calculator/blob/3fd61bb3d48bdb3c0cacc57032be4a7530242ee7/SYNC_STATUS.md) records 150 fixtures against older upstream `b6bc098d`, but incomplete parity, special attacks and live spell/variant input coverage. Java compatibility alone does not solve correctness or upkeep. Do not couple to another plugin's internals. |
 
-Implement model changes with actual P3 decisions, not ahead of them as a separate framework. Extend selected quest/unlock observations using supported client APIs and the skills required by reviewed routes. Preserve evidence and tri-state semantics. Do not require Collection Log, boss KC or new plugin integrations.
+Code/data reuse is not approved merely by public availability. BSD original code can participate in GPL-compatible distribution, but copying/porting GPL calculator code cannot simply be shipped as BSD-only work; it would require an explicit distribution/licensing decision and notices. Wiki-derived datasets have separate reuse terms. For this narrow scope, original formulas from checked mechanics plus independent synthetic validation avoid importing an engine/dataset. Preserve provenance of our own fixtures; do not copy another test corpus by default. Inspect upstream differences when updating the pinned oracle; parity with one version is not proof of game correctness.
 
-Replace fixed CoX kinds, unique-kind checks, fixed gear-group assumptions and the 12-decision cap where required. Keep catalogue limits and validation for IDs, references, hard cycles, source consistency and supported predicates. Model context-specific alternatives rather than one universal gear hierarchy. Preserve exact reviewed usable/charged variants.
+## Representative P4a upgrades and checked mechanics
 
-Preserve stable goal/decision/activity/fact IDs where possible. Migrate or explicitly retire local preference identifiers when changing schemas, retaining character/profile isolation. Existing item-ID sets do not establish quantities, supplies or remaining charges; resource planning is deferred.
+These are conditional examples, **not a top-four ranking for every account**. Final exact variants, acquisition predicates and source records must be validated in the implementation; this planning change does not activate catalogue entries.
 
-### P3 implementation contract
+| Outcome | Personal-value case and acquisition boundary |
+|---|---|
+| **Occult necklace** | Reuse the current occult/fury recognition to compare a supported magic neck slot; calculate max-hit breakpoints with the same narrow magic model. Its [checked 5% damage bonus and 70 Magic requirement](https://oldschool.runescape.wiki/w/Occult_necklace?oldid=15314514) are not a guaranteed 5% DPS gain. Extend from an owned-switch reminder to the smoke-devil acquisition/Slayer prerequisite route; verify the 93 Slayer/task requirements in P4a. Retain an already-owned switch as a quick action. |
+| **Trident of the swamp** | Reuse magic-fang/Zulrah and owned-parts assembly routes; compare against an observed seas trident at the named Dharok reference target. [Swamp mechanics](https://oldschool.runescape.wiki/w/Trident_of_the_swamp?oldid=15364128) require 78 Magic to wield and 59 Crafting for assembly; scale upkeep and alternatives matter. [Seas mechanics](https://oldschool.runescape.wiki/w/Trident_of_the_seas?oldid=15364129) and [Dharok's ordinary form/weakness](https://oldschool.runescape.wiki/w/Dharok_the_Wretched?oldid=15316733) delimit the comparison. Recognised advanced staffs must prevent an irrelevant baseline recommendation; their full damage models are out of scope. |
+| **Zaryte crossbow** | Specialist/special-attack explanation, not a full bolt simulator. [Checked mechanics](https://oldschool.runescape.wiki/w/Zaryte_crossbow?oldid=15293439): 80 Ranged; assembly from Armadyl crossbow, nihil horn and 250 nihil shards; Evoke costs 75% energy, doubles accuracy and triggers the enchanted effect **if the attack hits**. Ruby effects depend on target current HP, caps and target-specific exceptions; 110 is not guaranteed on every shot. Compare the role with owned ranged weapons and competing special attacks; Bowfa/twisted bow ownership alone neither proves nor removes specialist value. Nex/team/access work remains explicit and needs current acquisition-source verification in P4a. |
+| **Base avernic treads / a relevant supported upgrade** | Test a shared activity and a potentially marginal upgrade, not an automatic best-in-slot grind. Compare the exact owned boots and relevant styles. [Treads](https://oldschool.runescape.wiki/w/Avernic_treads?oldid=15314043) require 80 Defence/Strength/Ranged/Magic; Cerberus boots can be added separately, requiring 80 Magic/60 Runecraft and 4,000 demon tears each. Base ownership does not imply max treads; item sets do not prove enough tears. Show the closest Final Dawn/access, equip-level or component step rather than promising readiness. |
 
-Plugin 0.3.0 / knowledge `p3-1` / catalogue schema 4 implements the 16-decision
-slice. The original reader, lifecycle/controller, Swing sidebar, local `Filepath`
-store and serial preference IO remain in place. Bounded predicates now cover
-selected facts, global planning possession, observed usable packages, levels and
-ALL/ANY composition; they cannot call APIs or execute catalogue strings.
+The [Doom reward mechanics reviewed at revision `15360840`](https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl?oldid=15360840) place cloth, Eye of Ayak and treads eligibility at delves 2, 3 and 4 respectively. Cloth upgrades a tormented bracelet; the Eye is a powered staff; treads are separate boots. Deeper attempts risk unclaimed rewards. Show cloth/Eye as separately conditional secondary opportunities on the treads' route, using existing advanced-weapon ownership recognition where appropriate. Do not add two more full acquisition/combat models just to populate that section, or assume missing components, simultaneous rewards, any delve capability or a guaranteed useful drop. If no distinct additional reward has supported value, omit that shared-benefit claim.
 
-Goals, primary/shared route benefits, activities, outcomes, contextual benefit
-bands and wield/package conditions are bundled data. Ranking compares primary
-selected-goal routes, shared relevance, contextual benefit, supported-goal breadth,
-qualitative effort and stable ID. Activity/family diversity limits output to three.
-A long major route can precede a small owned-kit review. Preparation gates define
-where this slice makes a recommendation; labels distinguish them from access.
+This covers Slayer, Zulrah, Barrows comparisons, Nex and Doom, while retaining CG, Moons, Titans, ToA and ordinary team CoX advice. Prayers/levels/unlocks remain first-class outcomes; retained prayer training/unlock cases exercise that behaviour without expanding P4a's main equipment sample. This is a bounded source review with original summaries; no guide prose, stat table, images or third-party code is imported.
 
-Acquisition completion uses `POSSESSION`, whose false value requires an explicit
-target or exact-variant absence confirmation. Container absence stays globally
-unknown. Positive observations/manual ownership beat a conflicting target absence,
-while `USABLE` needs actual observed active/charged forms and wield/package levels.
-Historical owned-parts reminders retain their narrower storage-comparison semantics
-and warn about other storage. ANY diagnostics keep alternative routes grouped.
+## Proportionate architecture
 
-Preference schema 2 reads schema 1 without changing the identity key or widening
-old decision skips. All four old goal IDs and exact item/unlock keys remain valid;
-retired identifiers are explicitly discarded. New activity skips and labelled
-ownership-target confirmations use the same local path and generation safeguards.
-No live observation, quest result or raw identity enters the preference document.
+Keep one Java/Gradle plugin and the existing boundaries:
 
-### State and privacy
+| Existing component | Reuse and minimum extension |
+|---|---|
+| `AccountSnapshotReader` / `AccountSnapshot` | Keep real levels, exact inventory/equipment/session-bank sets, selected quest/prayer facts, timestamps and provenance. Add only selected access facts needed by the chosen routes through supported APIs, with labelled manual fallback if unavailable. No all-quests reader or new storage scanner. |
+| `KnowledgeCatalog` | Retain source/variant/predicate validation. Give outcomes stable metadata and route references; existing `Decision.activity`, `outcome`, access/preparation/completion predicates and sources become the starting route representation. Add bounded contextual comparisons and reviewed stat/target facts only for this slice. One bundled catalogue remains sufficient. |
+| `Advisor` | Keep pure evaluation. Separate assessed upgrade value/certainty from route availability, group by outcome, expose useful blocked/provisional results and remove goal-count ranking. Reuse existing truth/ownership/usability and route diagnostics. |
+| Small comparison helper | Pure Java values in/out, versioned supported inputs and explicit unsupported reasons. A few records/classes beside Advisor suffice; no calculation framework, service container or expression language. |
+| `IronpathPanel` / controller | Reorder existing UI into compact cards/details/secondary controls. Keep RuneLite integration, event coalescing, Swing thread, and stale-view/generation protections, including reference-setup edits. |
+| Preferences / `ObservationSession` | Retain local Filepath path, hashed identity key, serial IO, schema-1-to-2 compatibility and first-save/restart guards. Preserve stable goals/skips/manual keys; map route identifiers explicitly if needed. No new persistent loadout subsystem. |
 
-- Live inventory/equipment can establish positive possession. Bank results mean “observed in your bank at time T.” Absence means “not observed in supported storage,” not “never acquired.” Other storage requires manual confirmation or remains unknown.
-- Keep bank observations in memory for the current session. Clear on logout, login/account transition, connection loss, world hop, profile change and plugin disable; require a new observation. Conservative clearing is acceptable for v0.
-- Manual confirmations include provenance and can be cleared. Positive live evidence can supersede a conflicting manual absence. “Owned manually” is a planning assumption, not evidence of immediately usable equipment or sufficient charges.
-- Persist selected goal, skips and manual confirmations only in a small plugin-owned local JSON file keyed by RuneLite's current character/profile identity; no username key, credentials, telemetry or auto-export. Reuse the implemented supported `Filepath` integration and its first-save/restart regression coverage. Ordinary UI settings may use ConfigManager, but account facts must not: RuneLite can sync profile configuration.
-- All calculations stay local. Opening a source link is ordinary user-initiated browser traffic with no account state in the URL. RuneLite itself still has its normal game/update/network behaviour; the plugin cannot promise that the whole client is offline.
+Model the three concepts distinctly in small values: **outcome** (what improves), **route** (how and under what prerequisites), **contextual benefit/comparison** (value over an alternative in a named situation). Use stable references and extend the current model in place. Do not build a general progression graph, database, optimiser or generic plugin API. Source validation must still reject malformed references, unsupported predicates and hard-dependency cycles; grouping cannot weaken it.
+
+Bank/live observations stay in memory and clear on existing lifecycle transitions. Source links use the supported browser utility, carry no account data and open only on user action. RuneLite has its own normal network behaviour; local evaluation is not a promise that the entire client is offline. Original English content and BSD-2-Clause notices remain; third-party evidence keeps its own terms.
+
+## Review and remaining decisions
+
+The slice is feasible without a rewrite because ownership/routes/UI already exist; the missing stat/reference-setup/comparison layer is deliberately small. Both numerical cases share it. Zaryte and Doom require conditional explanations and route work, not full simulators. Do not broaden into raid scaling or bolt/encounter modelling during this delivery.
+
+No outstanding product-architecture decision blocks implementation. Bounded source checks for new access/variant facts, independent numeric validation and truthful unsupported-input handling are delivery work in P4a, not separate approval gates. A concrete unresolvable source/formula mismatch blocks only the affected claim, but the mandatory numerical case must still pass. New discoveries justify a documented small substitution, not silently dropping that acceptance criterion. Existing real-client validation remains pending; it must not be represented as passed by this documentation review.
 
 ## Keeping knowledge current
 

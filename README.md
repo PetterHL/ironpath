@@ -4,13 +4,15 @@
 
 P1–P3 development build · 12 October 2026 · plugin 0.3.0 · knowledge p3-1
 
-**Status: P1–P3 implement the first broad PvM slice, reusing T1–T3 and T4's historical records.** Sixteen reviewed decisions span CG, Zulrah, ToA, Slayer, Moons, Royal Titans and ordinary team CoX. Automated results and the focused PC checklist are in TASKS.md; real-client checks remain pending. No Plugin Hub submission or external service exists.
+**Delivered baseline: P1–P3 implement the first broad PvM slice, reusing T1–T3 and T4's historical records.** Sixteen reviewed decisions span CG, Zulrah, ToA, Slayer, Moons, Royal Titans and ordinary team CoX. On 12 October 2026, PR #5 was open and unmerged at `eb22fef`; main remained `c717927`. TASKS.md preserves automated results, the limited user-reported PC flow and pending detailed checks. The upgrade-first experience described below is planned P4a work, not a shipped feature. No Plugin Hub submission or external service exists.
 
-The intended product is a free, open-source RuneLite sidebar that helps an Ironman choose a useful next PvM activity or equipment objective using observed account state. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
+The intended product is a free, open-source RuneLite sidebar that automatically identifies worthwhile Ironman PvM upgrades using observed account state: **which upgrades are worth pursuing, what difference will they make, and how do I obtain them?** Equipment, relevant prayers, skill levels and permanent unlocks are eligible. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
 ## Decision
 
-Proceed directly to **broader Ironman PvM progression across midgame and endgame entry**. CoX remains one supported activity. The next delivery combines the existing foundation with a small model generalisation and 12–16 reviewed decisions across multiple activities; the first wider catalogue targets approximately 35–45 decisions. General mode works without a selected goal; one optional goal refines advice. Coverage remains explicit, not every boss or item. The old CoX-only release and user-trial gate no longer block expansion; unperformed tests remain pending.
+Proceed with an **upgrade-first vertical slice** on the existing broad PvM foundation. P4a covers approximately 3–4 representative upgrades end to end, including a tested account-aware numerical comparison, supported alternatives and acquisition prerequisites. The default experience works without a goal; optional goals remain secondary. Compact single-column cards lead to value/comparison/route details, with clearly labelled provisional advice when ownership is unknown. Detailed observations and administration move behind secondary controls.
+
+After testing and review, expand toward approximately 8–12 thoroughly researched upgrades, then according to usefulness. These are scope budgets, not quotas or permanent limits; retain useful existing content. Compare actual marginal value rather than recommending every missing item. Theoretical DPS requires an explicit reference setup/target and must not be presented as faster full encounters or more kills per trip. See docs/DESIGN.md for the bounded calculation model and limitations.
 
 Personalised rules are technically feasible. The project will proceed independently, with usefulness and usability validated on representative accounts. Iron Compass remains a reference with overlapping features, not a reason to stop development or a required quality benchmark. Petter's experience is that its current workflow does not meet his usability needs; feature coverage alone does not establish a good user experience.
 
@@ -22,7 +24,7 @@ The product should make useful, encounter-specific trade-offs easy to understand
 |---|---|
 | [docs/RESEARCH.md](docs/RESEARCH.md) | Verified findings, source links, limitations and reuse assessment |
 | [docs/DESIGN.md](docs/DESIGN.md) | MVP, account-state semantics, small architecture and update policy |
-| [TASKS.md](TASKS.md) | Active P1–P5 roadmap, implementation baselines and next Codex assignment |
+| [TASKS.md](TASKS.md) | Active P4a/P4b/P5 roadmap, implementation baselines, historical evidence and next Codex assignment |
 | [AGENTS.md](AGENTS.md) | Persistent instructions for AI-assisted development |
 
 Use `TASKS.md` as the only task list initially. One developer, one repository, small commits. No Trello board, project board, separate knowledge service or additional planning documents. Once other contributors need issue discussions, move active tasks into GitHub Issues rather than maintaining two backlogs.
@@ -33,13 +35,15 @@ Approved repository name and visibility: **`PetterHL/ironpath`**, public, confir
 
 Naming note: Iron Compass already uses `ironpath` as its Plugin Hub manifest identifier. This is an independent project; keep the chosen product/repository name, avoid any implied affiliation, and choose a distinct Hub manifest identifier before submission.
 
-Reuse the existing T1–T3 RuneLite implementation and preserve its licence notices. Use its build/login instructions and verify supported APIs when extending it. Do not scaffold the plugin again or request approval again for the already approved repository name and public visibility.
+Reuse the existing T1–P3 RuneLite implementation and preserve its licence notices. Use its build/login instructions and verify supported APIs when extending it. Do not scaffold the plugin again or request approval again for the already approved repository name and public visibility.
 
 ## Start here
 
-This branch combines PRs #1–#3 (including `b3a93d9`), PR #4's historical records,
-and main's broad plan. Earlier PRs remain open and unmerged. P4's wider catalogue
-and distribution work are separate assignments.
+The implementation baseline combines PRs #1–#3 (including `b3a93d9`), PR #4's
+historical records and main's broad plan in PR #5. All five PRs were still open
+and unmerged when this documentation update was prepared. Recheck before work.
+The next implementation assignment is P4a in TASKS.md. P4b and publication follow
+separately; this update changes documentation only.
 
 The existing official RuneLite template, Gradle 8.10, Java release 11 and notices
 are retained; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). RuneLite resolves
@@ -98,7 +102,11 @@ then read a suggestion and expand **Why and alternatives**. Pinned source links
 are under **Reviewed sources**. Advice is planning, not a complete loadout or a
 promise of successful kills.
 
-## Use the broad slice
+## Use the delivered P1–P3 build
+
+The following describes the current implementation, including its targeted-absence
+confirmation requirement. P4a will introduce upgrade-first/provisional cards and
+reference comparisons; those features are not present in the commands above.
 
 1. **No goal** gives up to three materially different activities. Select one
    optional goal to refine priority: ordinary team CoX, Rigour/Augury use levels,
