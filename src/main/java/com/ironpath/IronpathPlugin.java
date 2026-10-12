@@ -32,6 +32,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -43,7 +44,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 
-@PluginDescriptor(name = "Ironpath", internalName = "ironpath-advisor", description = "Local CoX preparation experiment for standard Ironmen", tags = {"ironman", "cox", "progression"})
+@PluginDescriptor(name = "Ironpath", internalName = "ironpath-advisor", description = "Local PvM progression advisor for standard Ironmen", tags = {"ironman", "cox", "progression"})
 public class IronpathPlugin extends Plugin
 {
 	@Inject Client client;
@@ -144,12 +145,17 @@ public class IronpathPlugin extends Plugin
 	@Subscribe public void onVarbitChanged(VarbitChanged event)
 	{
 		AccountSnapshot previous = session.snapshot();
-		if (previous == null || !supported() || !previous.rigour.known() || !previous.augury.known()
+		// Only selected quest progress invalidates quest facts. Script evaluation stays in the coalesced read.
+		boolean questChanged = Set.of(VarbitID.SOTE, VarbitID.BCS, VarbitID.PMOON_QUEST).contains(event.getVarbitId())
+			|| Set.of(VarPlayerID.SOTE_PRIMARY, VarPlayerID.BCS_PRIMARY, VarPlayerID.PMOON_MAIN,
+				VarPlayerID.REGICIDE_QUEST).contains(event.getVarpId());
+		if (previous == null || !supported() || questChanged || !previous.rigour.known() || !previous.augury.known()
 			|| (previous.rigour.value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_RIGOUR_UNLOCKED)
-			|| (previous.augury.value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_AUGURY_UNLOCKED))
-		{
-			dirty = true;
-		}
+			|| (previous.augury.value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_AUGURY_UNLOCKED)
+			|| !previous.fact("deadeye").known() || !previous.fact("mystic-vigour").known()
+			|| (previous.fact("deadeye").value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_DEADEYE_UNLOCKED)
+			|| (previous.fact("mystic-vigour").value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_MYSTIC_VIGOUR_UNLOCKED))
+		{ dirty = true; }
 	}
 	@Subscribe public void onWidgetLoaded(WidgetLoaded event)
 	{
@@ -288,7 +294,7 @@ public class IronpathPlugin extends Plugin
 			}
 			public void skip(String id, boolean skipped)
 			{
-				if (catalog.decisions.stream().anyMatch(d -> d.id.equals(id))) { changePreferences(token, expectedIdentity, p -> p.skip(id, skipped)); }
+				if (catalog.activities.containsKey(id) || catalog.decisions.stream().anyMatch(d -> d.id.equals(id))) { changePreferences(token, expectedIdentity, p -> p.skip(id, skipped)); }
 			}
 			public void confirm(String key, Boolean value)
 			{

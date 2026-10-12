@@ -129,9 +129,9 @@ public class AdvisorTest
 		AccountSnapshot account = account(90, fact(Set.of(20997, 22978, 11908)), fact(true), fact(true));
 		assertTrue(advisor.evaluate(account).isEmpty());
 		List<String> reasons = advisor.explainNoAdvice(account);
-		assertTrue(reasons.stream().anyMatch(r -> r.contains("Rigour: already unlocked")));
-		assertTrue(reasons.stream().anyMatch(r -> r.contains("Augury: already unlocked")));
-		assertTrue(reasons.stream().anyMatch(r -> r.contains("magic weapon") && r.contains("charged powered-staff")));
+		assertFalse(ids(account).contains("unlock-rigour"));
+		assertFalse(ids(account).contains("unlock-augury"));
+		assertTrue(reasons.stream().anyMatch(r -> r.contains("magic option") && r.contains("active/charged forms")));
 		assertTrue(reasons.stream().anyMatch(r -> r.contains("Other storage remains unknown")));
 		assertTrue(reasons.stream().noneMatch(r -> r.contains("melee weapon") || r.contains("ranged weapon")));
 		assertTrue(reasons.stream().noneMatch(r -> r.toLowerCase(java.util.Locale.ROOT).contains("obtain")));
@@ -148,7 +148,7 @@ public class AdvisorTest
 		levels.remove("ATTACK");
 		AccountSnapshot account = new AccountSnapshot(fact(levels), original.inventory, original.equipment, original.bank, original.rigour, original.augury);
 		List<String> reasons = advisor.explainNoAdvice(account);
-		assertTrue(reasons.stream().anyMatch(r -> r.contains("ATTACK unknown")));
+		assertTrue(reasons.stream().anyMatch(r -> r.contains("Attack unknown")));
 		assertTrue(reasons.stream().anyMatch(r -> r.contains("Unread containers remain unknown")));
 		assertTrue(reasons.stream().noneMatch(r -> r.contains("ATTACK 0")));
 	}
@@ -157,7 +157,7 @@ public class AdvisorTest
 	{
 		AccountSnapshot original = account(90, fact(Set.of(4151, 25867, 11907)), fact(true), fact(true));
 		List<String> bowfaReasons = advisor.explainNoAdvice(original);
-		assertTrue(bowfaReasons.stream().anyMatch(r -> r.contains("Bowfa observed") && r.contains("default-colour armour only")));
+		assertTrue(bowfaReasons.stream().anyMatch(r -> r.contains("Bow of faerdhinen") && r.contains("package needs") && r.contains("crystalBody")));
 		assertTrue(bowfaReasons.stream().noneMatch(r -> r.contains("no covered ranged weapon")));
 		Map<String, Integer> levels = new HashMap<>(original.levels.value());
 		levels.put("RANGED", 80);

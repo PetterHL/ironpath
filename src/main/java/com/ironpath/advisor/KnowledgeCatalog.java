@@ -13,15 +13,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** Bounded, bundled CoX decisions with a small set of observation predicates. */
+/** Bounded, bundled PvM decisions with a small set of observation predicates. */
 public final class KnowledgeCatalog
 {
-	public enum Kind { PLAN_TEAM, UNLOCK_RIGOUR, UNLOCK_AUGURY, TRAIN_RIGOUR, TRAIN_AUGURY,
-		ASSEMBLE_SWAMP, REVIEW_LANCE, COORDINATE_REDUCTION, REVIEW_OCCULT }
-	public enum Effort { SMALL, TRAINING }
-	public enum Test { ALL, ANY, LEVEL, ITEMS, EQUIPPED, RIGOUR, AUGURY }
+	public enum Kind { READ, TRAIN, ASSEMBLE, REVIEW, PLAN, ACQUIRE }
+	public enum Effort { SMALL, TRAINING, GRIND }
+	public enum Benefit { MAJOR, MODERATE, MINOR, PLANNING }
+	public enum Test { ALL, ANY, LEVEL, ITEMS, EQUIPPED, RIGOUR, AUGURY, FACT, POSSESSION, USABLE, CONSTANT }
 	private static final Set<String> SKILLS = Set.of("ATTACK", "STRENGTH", "DEFENCE", "RANGED",
-		"MAGIC", "PRAYER", "HITPOINTS", "AGILITY", "CRAFTING");
+		"MAGIC", "PRAYER", "HITPOINTS", "AGILITY", "CRAFTING", "SLAYER", "HERBLORE");
+	// This is the finite reader contract, not arbitrary client varbit/quest lookup from JSON.
+	private static final Set<String> FACTS = Set.of("rigour", "augury", "song-of-elves", "regicide",
+		"beneath-cursed-sands", "perilous-moons", "deadeye", "mystic-vigour");
+	public final Map<String, Goal> goals;
+	public final Map<String, String> activities;
+	private final Map<String, String> ownershipLabels;
 	public final String version;
 	public final LocalDate reviewed;
 	public final List<Decision> decisions;
@@ -31,14 +37,14 @@ public final class KnowledgeCatalog
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 3 || document.decisions == null
-			|| document.decisions.isEmpty() || document.decisions.size() > 12)
+		if (document.schemaVersion != 4 || document.decisions == null
+			|| document.decisions.isEmpty() || document.decisions.size() > 64)
 		{
-			throw new IllegalArgumentException("Unsupported or incomplete CoX catalogue");
+			throw new IllegalArgumentException("Unsupported or incomplete PvM catalogue");
 		}
 		version = require(document.knowledgeVersion);
 		reviewed = LocalDate.parse(require(document.reviewed));
-		if (document.sources == null || document.gear == null || document.itemSets == null)
+		if (document.sources == null || document.sources.size() > 256 || document.gear == null || document.itemSets == null)
 		{ throw new IllegalArgumentException("Missing evidence"); }
 		Set<String> sourceIds = new HashSet<>();
 		for (Source source : document.sources)
@@ -61,21 +67,20 @@ public final class KnowledgeCatalog
 		}
 		sources = Map.copyOf(document.sources.stream().collect(Collectors.toMap(s -> s.id, s -> s)));
 		Set<String> ids = new HashSet<>();
-		Set<Kind> kinds = new HashSet<>();
+
 		for (Decision decision : document.decisions)
 		{
-			if (decision == null || !require(decision.id).matches("[a-z][a-z0-9-]*") || !ids.add(decision.id)
-				|| !kinds.add(decision.kind)) { throw new IllegalArgumentException("Invalid or duplicate decision ID"); }
-			if (decision.kind == null || decision.effortBand == null)
+			if (decision == null || !require(decision.id).matches("[a-z][a-z0-9-]*") || !ids.add(decision.id)) { throw new IllegalArgumentException("Invalid or duplicate decision ID"); }
+			if (decision.kind == null || decision.effortBand == null || decision.benefitBand == null)
 			{ throw new IllegalArgumentException("Unsupported decision"); }
 			require(decision.title); require(decision.why); require(decision.alternative);
 			require(decision.tradeoff); require(decision.effort); require(decision.access);
 			require(decision.completion); require(decision.applicability); require(decision.family);
-			if ((decision.kind == Kind.UNLOCK_RIGOUR && decision.itemId != 21034)
-				|| (decision.kind == Kind.UNLOCK_AUGURY && decision.itemId != 21079))
-			{
-				throw new IllegalArgumentException("Unreviewed scroll mapping");
-			}
+			require(decision.activity); require(decision.outcome); require(decision.benefitReason); require(decision.preparation);
+			if (decision.goals == null || decision.goals.size() > 16 || decision.notes == null || decision.notes.size() > 12
+				|| decision.contextBenefits == null || decision.contextBenefits.size() > 8
+				|| decision.accessWhen == null || decision.prepWhen == null)
+			{ throw new IllegalArgumentException("Missing activity, preparation or benefit contract"); }
 			if (!Set.of("reviewed", "candidate").contains(decision.status)) { throw new IllegalArgumentException("Unknown review status"); }
 			if (LocalDate.parse(require(decision.reviewed)).isAfter(reviewed))
 			{ throw new IllegalArgumentException("Inconsistent decision review date"); }
@@ -119,15 +124,13 @@ public final class KnowledgeCatalog
 		Map<String, Decision> byId = document.decisions.stream().collect(Collectors.toMap(d -> d.id, d -> d));
 		Set<String> visited = new HashSet<>();
 		for (String id : ids) { visit(id, byId, new HashSet<>(), visited); }
-		if (!document.gear.keySet().equals(Set.of("melee", "ranged", "magic", "crystalBody", "crystalLegs", "crystalHelm",
-			"components", "otherMagic", "otherMelee", "neck", "reduction")))
-		{
-			throw new IllegalArgumentException("Unsupported gear groups");
-		}
+		if (document.gear.isEmpty() || document.gear.size() > 32 || document.itemSets.size() > 96)
+		{ throw new IllegalArgumentException("Unsupported gear budget"); }
+		for (String group : document.gear.keySet()) { if (!require(group).matches("[A-Za-z][A-Za-z0-9]*")) { throw new IllegalArgumentException("Invalid gear group"); } }
 		Set<Integer> itemIds = new HashSet<>();
 		for (List<Gear> group : document.gear.values())
 		{
-			if (group == null || group.isEmpty()) { throw new IllegalArgumentException("Empty gear group"); }
+			if (group == null || group.isEmpty() || group.size() > 128) { throw new IllegalArgumentException("Empty gear group"); }
 			for (Gear item : group)
 			{
 				if (item == null || item.id <= 0 || !itemIds.add(item.id) || item.level < 1 || item.level > 99
@@ -144,24 +147,62 @@ public final class KnowledgeCatalog
 		gear = Map.copyOf(document.gear.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()))));
 		for (Map.Entry<String, List<Integer>> entry : document.itemSets.entrySet())
 		{
-			require(entry.getKey());
+			if (!entry.getKey().matches("[A-Za-z][A-Za-z0-9]*")) { throw new IllegalArgumentException("Invalid set ID"); }
 			List<Integer> set = entry.getValue();
-			if (set == null || set.isEmpty() || new HashSet<>(set).size() != set.size() || !itemIds.containsAll(set))
+			if (set == null || set.isEmpty() || set.size() > 128 || new HashSet<>(set).size() != set.size() || !itemIds.containsAll(set))
 			{ throw new IllegalArgumentException("Invalid item set reference"); }
 		}
 		itemSets = Map.copyOf(document.itemSets.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()))));
+		if (document.activities == null || document.goals == null || document.goals.isEmpty() || document.goals.size() > 16
+			|| document.ownershipLabels == null)
+		{ throw new IllegalArgumentException("Missing planning choices"); }
+		document.activities.forEach((id, label) -> { stableId(id); require(label); });
+		if (document.activities.size() > 32) { throw new IllegalArgumentException("Too many activities"); }
+		activities = java.util.Collections.unmodifiableMap(new java.util.LinkedHashMap<>(document.activities));
+		if (!itemSets.keySet().containsAll(document.ownershipLabels.keySet()))
+		{ throw new IllegalArgumentException("Unknown ownership set"); }
+		document.ownershipLabels.values().forEach(KnowledgeCatalog::require);
+		ownershipLabels = Map.copyOf(document.ownershipLabels);
+		Set<String> goalIds = new HashSet<>();
+		for (Goal goal : document.goals)
+		{
+			if (goal == null) { throw new IllegalArgumentException("Missing goal"); }
+			stableId(goal.id); require(goal.title);
+			if (!Set.of("ACCESS", "PREPARATION", "USE", "INPUTS", "CONTEXT").contains(require(goal.whenRole)))
+			{ throw new IllegalArgumentException("Unsupported goal requirement role"); }
+			if (!goalIds.add(goal.id) || !ids.contains(goal.decisionId) || goal.routes == null || goal.routes.isEmpty()
+				|| !ids.containsAll(goal.routes) || goal.routes.size() > 16 || new HashSet<>(goal.routes).size() != goal.routes.size()
+				|| goal.requires == null || !ids.containsAll(goal.requires)
+				|| new HashSet<>(goal.requires).size() != goal.requires.size())
+			{ throw new IllegalArgumentException("Invalid goal routes"); }
+			Decision evidence = byId.get(goal.decisionId);
+			validate(goal.when, evidence, 0); validate(goal.completeWhen, evidence, 0);
+			goal.routes = List.copyOf(goal.routes); goal.requires = List.copyOf(goal.requires);
+		}
+		goals = java.util.Collections.unmodifiableMap(document.goals.stream().collect(Collectors.toMap(g -> g.id, g -> g,
+			(a, b) -> a, java.util.LinkedHashMap::new)));
 		for (Decision decision : document.decisions)
 		{
-			validate(decision.when, decision, 0);
+			if (!activities.containsKey(decision.activity) || !goalIds.containsAll(decision.goals))
+			{ throw new IllegalArgumentException("Unknown activity or benefit goal"); }
+			decision.goals = List.copyOf(decision.goals); decision.notes = List.copyOf(decision.notes);
+			validate(decision.when, decision, 0); validate(decision.accessWhen, decision, 0); validate(decision.prepWhen, decision, 0);
 			if (decision.completeWhen != null) { validate(decision.completeWhen, decision, 0); }
-			// These fixed matchers also select gear beyond the explicit condition sets.
-			List<String> groups = decision.kind == Kind.PLAN_TEAM || decision.kind == Kind.COORDINATE_REDUCTION
-				? List.of("melee", "ranged", "magic", "crystalBody", "crystalLegs", "crystalHelm")
-				: decision.kind == Kind.REVIEW_OCCULT ? List.of("magic") : List.of();
-			for (String group : groups)
+			for (ContextBenefit benefit : decision.contextBenefits)
 			{
-				for (Gear item : gear.get(group)) { requireItemEvidence(item, decision); }
+				if (benefit == null || benefit.band == null) { throw new IllegalArgumentException("Unsupported benefit"); }
+				require(benefit.reason); validate(benefit.when, decision, 0);
 			}
+			decision.contextBenefits = List.copyOf(decision.contextBenefits);
+		}
+		for (List<Gear> group : gear.values())
+		{
+			for (Gear item : group) { if (item.useWhen != null)
+				{
+					validateGearCondition(item.useWhen, 0, new HashSet<>());
+					Decision evidence = new Decision(); evidence.sources = List.copyOf(sources.keySet());
+					validate(item.useWhen, evidence, 0);
+				} }
 		}
 		decisions = List.copyOf(document.decisions);
 	}
@@ -171,6 +212,11 @@ public final class KnowledgeCatalog
 	{
 		Map<String, String> choices = new java.util.LinkedHashMap<>();
 		choices.put("rigour", "Rigour unlock"); choices.put("augury", "Augury unlock");
+		choices.put("song-of-elves", "Song of the Elves completed"); choices.put("regicide", "Regicide completed");
+		choices.put("beneath-cursed-sands", "Beneath Cursed Sands completed"); choices.put("perilous-moons", "Perilous Moons completed");
+		choices.put("deadeye", "Deadeye unlock"); choices.put("mystic-vigour", "Mystic Vigour unlock");
+		ownershipLabels.entrySet().stream().sorted(Map.Entry.comparingByKey())
+			.forEach(e -> choices.put("owns-" + e.getKey(), e.getValue()));
 		gear.values().stream().flatMap(List::stream).sorted(java.util.Comparator.comparing(g -> g.label))
 			.forEach(g -> choices.put("item-" + g.id, g.label));
 		return java.util.Collections.unmodifiableMap(choices);
@@ -206,14 +252,25 @@ public final class KnowledgeCatalog
 					|| condition.minimum < 1 || condition.minimum > 99 || condition.value != null)
 				{ throw new IllegalArgumentException("Invalid level condition"); }
 				break;
-			case ITEMS: case EQUIPPED:
-				if (condition.key == null || !itemSets.containsKey(condition.key) || condition.minimum != null || condition.value != null)
+			case ITEMS: case EQUIPPED: case USABLE: case POSSESSION:
+				if (condition.key == null || !itemSets.containsKey(condition.key) || condition.minimum != null || (condition.test != Test.POSSESSION && condition.test != Test.ITEMS && condition.value != null))
 				{ throw new IllegalArgumentException("Invalid item condition"); }
+				if (condition.test == Test.POSSESSION && !ownershipLabels.containsKey(condition.key))
+				{ throw new IllegalArgumentException("Ownership target has no confirmation label"); }
 				for (int id : itemSets.get(condition.key))
 				{
 					Gear item = gear.values().stream().flatMap(List::stream).filter(g -> g.id == id).findFirst().orElseThrow();
 					requireItemEvidence(item, decision);
+					if (condition.test == Test.USABLE && item.useWhen != null) { validate(item.useWhen, decision, depth + 1); }
 				}
+				break;
+			case FACT:
+				if (condition.key == null || !FACTS.contains(condition.key) || condition.value == null || condition.minimum != null)
+				{ throw new IllegalArgumentException("Invalid fact condition"); }
+				break;
+			case CONSTANT:
+				if (condition.value == null || condition.key != null || condition.minimum != null)
+				{ throw new IllegalArgumentException("Invalid constant"); }
 				break;
 			case RIGOUR: case AUGURY:
 				if (condition.value == null || condition.key != null || condition.minimum != null)
@@ -222,6 +279,32 @@ public final class KnowledgeCatalog
 			default: throw new IllegalArgumentException("Unsupported condition");
 		}
 		if (condition.conditions != null) { throw new IllegalArgumentException("Leaf condition has children"); }
+	}
+
+	private static void stableId(String id)
+	{ if (!require(id).matches("[a-z][a-z0-9-]*")) { throw new IllegalArgumentException("Invalid stable ID"); } }
+
+	// Only observation/level package conditions; reject recursive usable-item packages.
+	private void validateGearCondition(Condition condition, int depth, Set<String> path)
+	{
+		if (condition == null || condition.test == null || depth > 8) { throw new IllegalArgumentException("Invalid gear package"); }
+		if (condition.test == Test.ALL || condition.test == Test.ANY)
+		{
+			if (condition.conditions == null || condition.conditions.isEmpty()) { throw new IllegalArgumentException("Empty gear package"); }
+			for (Condition child : condition.conditions) { validateGearCondition(child, depth + 1, path); }
+		}
+		else if (condition.test == Test.USABLE)
+		{
+			if (!itemSets.containsKey(condition.key) || !path.add(condition.key)) { throw new IllegalArgumentException("Gear package cycle"); }
+			for (int id : itemSets.get(condition.key))
+			{
+				Gear item = gear.values().stream().flatMap(List::stream).filter(g -> g.id == id).findFirst().orElseThrow();
+				if (item.useWhen != null) { validateGearCondition(item.useWhen, depth + 1, path); }
+			}
+			path.remove(condition.key);
+		}
+		else if (condition.test != Test.LEVEL && condition.test != Test.ITEMS && condition.test != Test.FACT)
+		{ throw new IllegalArgumentException("Unsupported gear package predicate"); }
 	}
 
 	private static void requireItemEvidence(Gear item, Decision decision)
@@ -259,18 +342,38 @@ public final class KnowledgeCatalog
 		List<Source> sources;
 		Map<String, List<Gear>> gear;
 		Map<String, List<Integer>> itemSets;
+		Map<String, String> activities, ownershipLabels;
+		List<Goal> goals;
 	}
 
 	public static final class Decision
 	{
 		public String id, title, why, alternative, tradeoff, effort, access, completion, applicability, family, status, reviewed;
+		public String activity, outcome, preparation, benefitReason;
 		public Kind kind;
+		public Benefit benefitBand;
+		public List<String> goals, notes;
+		public List<ContextBenefit> contextBenefits;
 		public Effort effortBand;
 		public int itemId;
 		public List<String> sources;
 		public List<String> requires;
-		public Condition when, completeWhen;
+		public Condition when, completeWhen, accessWhen, prepWhen;
 		public boolean repeatable;
+	}
+
+	public static final class Goal
+	{
+		public String id, title, decisionId, whenRole;
+		public List<String> routes, requires;
+		public Condition when, completeWhen;
+	}
+
+	public static final class ContextBenefit
+	{
+		public Condition when;
+		public Benefit band;
+		public String reason;
 	}
 
 	public static final class Condition
@@ -292,7 +395,7 @@ public final class KnowledgeCatalog
 	{
 		int id, level;
 		String label, skill;
-		boolean crystal;
+		Condition useWhen;
 		List<String> sources;
 	}
 }

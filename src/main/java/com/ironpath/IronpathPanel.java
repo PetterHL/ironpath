@@ -39,7 +39,7 @@ final class IronpathPanel extends PluginPanel
 		removeAll();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		text(this, "Ironpath — Your path to endgame PvM");
-		text(this, "CoX preparation · Standard Ironman, permanent members worlds. Ordinary teams; limited gear variants. Live validation is incomplete.");
+		text(this, "PvM progression · CG, Zulrah, ToA, Slayer, Moons, Royal Titans and ordinary team CoX. Standard Ironman; limited variants. Live validation is incomplete.");
 		text(this, status);
 		if (catalog != null)
 		{
@@ -55,6 +55,8 @@ final class IronpathPanel extends PluginPanel
 			text(observations, "Real levels: Prayer " + level(snapshot, "PRAYER") + ", Defence " + level(snapshot, "DEFENCE")
 				+ ", Ranged " + level(snapshot, "RANGED") + ", Magic " + level(snapshot, "MAGIC") + ". " + snapshot.levels.evidence());
 			text(observations, "Rigour: " + unlock(snapshot.rigour) + "; Augury: " + unlock(snapshot.augury) + ". Client varbits.");
+			snapshot.facts.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(e ->
+				text(observations, catalog.factChoices().get(e.getKey()) + ": " + unlock(e.getValue()) + ". " + e.getValue().evidence()));
 			text(observations, "Inventory: " + snapshot.inventory.evidence() + "\nEquipment: " + snapshot.equipment.evidence());
 			text(observations, "Only observed storage is covered. Not observed does not mean never acquired. Check charges, ammunition, unnoting, access and supplies before use.");
 			text(this, storageStatus);
@@ -83,7 +85,17 @@ final class IronpathPanel extends PluginPanel
 		add(goals);
 		button(this, "Set goal", () -> actions.goal(((Choice) goals.getSelectedItem()).id));
 		JPanel choices = section(this, "Skips and manual confirmations");
-		text(choices, "Skipping hides an action. A skipped requirement blocks its route until restored or actually completed.");
+		text(choices, "Skip an activity to exclude its acquisition route. Owned rewards stay useful; skips never complete targets.");
+		JComboBox<Choice> activitySkip = choices(catalog.activities, false);
+		choices.add(activitySkip);
+		button(choices, "Skip selected activity", () -> actions.skip(((Choice) activitySkip.getSelectedItem()).id, true));
+		catalog.activities.forEach((id, label) -> {
+			if (preferences.skipped.contains(id)) {
+				text(choices, "Skipped activity: " + label);
+				button(choices, "Restore activity", () -> actions.skip(id, false));
+			}
+		});
+		text(choices, "Individual reminders can also be skipped without excluding their whole activity.");
 		Map<String, String> activities = new java.util.LinkedHashMap<>();
 		catalog.decisions.stream().filter(d -> "reviewed".equals(d.status)).forEach(d -> activities.put(d.id, d.title));
 		JComboBox<Choice> activity = choices(activities, false);
@@ -95,7 +107,7 @@ final class IronpathPanel extends PluginPanel
 			text(choices, "Skipped: " + decision.title);
 			button(choices, "Restore action", () -> actions.skip(decision.id, false));
 		}
-		text(choices, "Manual ownership/unlocks are reversible planning assumptions. They do not confirm charged, worn or usable gear. Readable unlock varbits take precedence; positive observed possession overrides manual absence.");
+		text(choices, "Manual ownership/unlocks are reversible planning assumptions. They do not confirm charged, worn or usable gear. Readable client quest/unlock facts take precedence; positive observed possession overrides manual absence.");
 		JComboBox<Choice> fact = choices(catalog.factChoices(), false);
 		choices.add(fact);
 		button(choices, "Owned / unlocked", () -> actions.confirm(((Choice) fact.getSelectedItem()).id, true));
@@ -109,7 +121,7 @@ final class IronpathPanel extends PluginPanel
 			if (entry.getKey().startsWith("item-") && !entry.getValue().value
 				&& account.observedItem(Integer.parseInt(entry.getKey().substring(5))) == Truth.TRUE)
 			{ precedence = " Positive observed possession takes precedence."; }
-			if (entry.getKey().equals("rigour") && account.rigour.known() || entry.getKey().equals("augury") && account.augury.known())
+			if (account.fact(entry.getKey()).known())
 			{ precedence = " Readable client unlock takes precedence."; }
 			text(choices, label + ": " + entry.getValue().evidence() + "." + precedence);
 			button(choices, "Clear confirmation", () -> actions.confirm(entry.getKey(), null));
@@ -125,10 +137,11 @@ final class IronpathPanel extends PluginPanel
 		JPanel requirements = section(this, "Goal prerequisites and sources");
 		for (Advisor.Requirement requirement : goal.requirements)
 		{
-			text(requirements, (requirement.truth == Truth.TRUE ? "Confirmed" : requirement.truth == Truth.FALSE ? "Missing" : "Unknown")
+			text(requirements, requirement.role + " · " + (requirement.truth == Truth.TRUE ? "Confirmed" : requirement.truth == Truth.FALSE ? "Missing" : "Unknown")
 				+ (requirement.skipped ? " / skipped" : "") + ": " + requirement.label + ". " + requirement.evidence);
 		}
-		text(requirements, "Access / requirements: " + goal.decision.access);
+		text(requirements, "Reference route access / requirements: " + goal.decision.access);
+		text(requirements, "Alternatives have their own access. Suggested preparation is an authored planning baseline, not a game entry requirement.");
 		text(requirements, "Alternative: " + goal.decision.alternative);
 		sources(requirements, goal.decision, catalog);
 		if (actions != null) { button(this, "Clear goal", () -> actions.goal(null)); }
@@ -143,21 +156,27 @@ final class IronpathPanel extends PluginPanel
 		JPanel details = section(card, "Why and alternatives");
 		for (String evidence : recommendation.evidence) { text(details, "Evidence: " + evidence); }
 		text(details, "Access / requirements: " + decision.access);
+		text(details, "Suggested preparation (not access): " + decision.preparation);
 		text(details, "Alternative: " + decision.alternative);
 		text(details, "Trade-off: " + decision.tradeoff);
 		text(details, "Effort: " + decision.effort);
-		text(details, "At most three choices, one per family. Manual possession cannot establish usable weapons. Decision review: " + decision.reviewed);
+		text(details, "At most three materially different activities. Manual possession cannot establish usable weapons. Decision review: " + decision.reviewed);
 		sources(details, decision, catalog);
-		if (actions != null) { button(card, "Skip this action", () -> actions.skip(decision.id, true)); }
+		if (actions != null)
+		{
+			boolean route = decision.kind == KnowledgeCatalog.Kind.ACQUIRE || decision.activity.equals("slayer");
+			button(card, route ? "Skip this activity" : "Skip this action", () -> actions.skip(route ? decision.activity : decision.id, true));
+		}
 		add(card);
 	}
 
 	private void sources(JPanel panel, KnowledgeCatalog.Decision decision, KnowledgeCatalog catalog)
 	{
+		JPanel references = section(panel, "Reviewed sources (" + decision.sources.size() + ")");
 		for (String id : decision.sources)
 		{
 			KnowledgeCatalog.Source source = catalog.sources.get(id);
-			button(panel, "Source: " + id, () -> LinkBrowser.browse(source.url));
+			button(references, "Source: " + id, () -> LinkBrowser.browse(source.url));
 		}
 	}
 

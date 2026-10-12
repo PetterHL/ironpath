@@ -32,6 +32,7 @@ public final class LocalPreferences implements PreferenceStorage
 		this.directory = directory;
 		this.gson = gson;
 		decisions = catalog.decisions.stream().map(d -> d.id).collect(Collectors.toSet());
+		decisions.addAll(catalog.activities.keySet());
 		goals = Advisor.goalChoices(catalog).keySet();
 		facts = catalog.factChoices().keySet();
 	}
@@ -63,10 +64,11 @@ public final class LocalPreferences implements PreferenceStorage
 		try (Reader reader = file.openReader())
 		{
 			Document doc = gson.fromJson(reader, Document.class);
-			if (doc == null || doc.schemaVersion != 1 || doc.skipped == null || doc.confirmations == null
-				|| doc.skipped.size() > 12 || doc.confirmations.size() > 64)
+			if (doc == null || (doc.schemaVersion != 1 && doc.schemaVersion != 2) || doc.skipped == null || doc.confirmations == null
+				|| doc.skipped.size() > 80 || doc.confirmations.size() > 128)
 			{ throw new IllegalArgumentException("Unsupported preferences"); }
-			// Retired catalogue IDs are dropped, never executed or converted into observations.
+			// Schema 1 retains its action skips, goals and exact fact keys. Schema 2 additionally supports activity/set IDs.
+			// Retired IDs are explicitly dropped; no old skip is widened to an entire activity.
 			String goal = goals.contains(doc.goal) ? doc.goal : null;
 			Set<String> skipped = new HashSet<>(doc.skipped); skipped.retainAll(decisions);
 			Map<String, Preferences.Confirmation> confirmations = new HashMap<>();
@@ -87,7 +89,7 @@ public final class LocalPreferences implements PreferenceStorage
 		if ((preferences.goal != null && !goals.contains(preferences.goal)) || !decisions.containsAll(preferences.skipped)
 			|| !facts.containsAll(preferences.confirmations.keySet())) { throw new IllegalArgumentException("Unsupported preferences"); }
 		Document doc = new Document();
-		doc.schemaVersion = 1; doc.goal = preferences.goal; doc.skipped = preferences.skipped;
+		doc.schemaVersion = 2; doc.goal = preferences.goal; doc.skipped = preferences.skipped;
 		doc.confirmations = new HashMap<>();
 		preferences.confirmations.forEach((id, confirmation) ->
 		{

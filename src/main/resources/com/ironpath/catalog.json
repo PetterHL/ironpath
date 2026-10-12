@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 3,
-  "knowledgeVersion": "t3-1",
+  "schemaVersion": 4,
+  "knowledgeVersion": "p3-1",
   "reviewed": "2026-10-12",
   "sources": [
     {
@@ -10,7 +10,8 @@
       "revision": "14954629",
       "decisions": [
         "unlock-rigour",
-        "train-rigour"
+        "train-rigour",
+        "seek-titans-prayers"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -25,7 +26,8 @@
       "revision": "15362822",
       "decisions": [
         "unlock-augury",
-        "train-augury"
+        "train-augury",
+        "seek-titans-prayers"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -86,7 +88,12 @@
       "revision": "15366535",
       "decisions": [
         "plan-team-cox",
-        "coordinate-defence-reduction"
+        "coordinate-defence-reduction",
+        "pursue-bowfa",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -103,7 +110,11 @@
         "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "review-occult-switch"
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -120,7 +131,11 @@
         "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "review-occult-switch"
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -137,7 +152,11 @@
         "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "review-occult-switch"
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -154,7 +173,11 @@
         "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "review-occult-switch"
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -170,7 +193,10 @@
       "decisions": [
         "plan-team-cox",
         "review-olm-lance",
-        "coordinate-defence-reduction"
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -186,7 +212,10 @@
       "decisions": [
         "plan-team-cox",
         "review-olm-lance",
-        "coordinate-defence-reduction"
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -201,7 +230,11 @@
       "revision": "15369406",
       "decisions": [
         "plan-team-cox",
-        "coordinate-defence-reduction"
+        "coordinate-defence-reduction",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -234,7 +267,8 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "assemble-swamp-trident"
+        "assemble-swamp-trident",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -320,7 +354,10 @@
       "decisions": [
         "plan-team-cox",
         "review-olm-lance",
-        "coordinate-defence-reduction"
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -336,7 +373,10 @@
       "decisions": [
         "plan-team-cox",
         "review-olm-lance",
-        "coordinate-defence-reduction"
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -351,7 +391,12 @@
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
         "plan-team-cox",
-        "coordinate-defence-reduction"
+        "coordinate-defence-reduction",
+        "pursue-bowfa",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -365,7 +410,10 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "assemble-swamp-trident"
+        "assemble-swamp-trident",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -382,7 +430,11 @@
         "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "review-occult-switch"
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang"
       ]
     },
     {
@@ -497,7 +549,11 @@
         "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "review-occult-switch"
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang"
       ]
     },
     {
@@ -514,7 +570,11 @@
         "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "review-occult-switch"
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang"
       ]
     },
     {
@@ -531,7 +591,11 @@
         "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "review-occult-switch"
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang"
       ]
     },
     {
@@ -546,7 +610,11 @@
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
         "plan-team-cox",
-        "coordinate-defence-reduction"
+        "coordinate-defence-reduction",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -561,7 +629,11 @@
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
         "plan-team-cox",
-        "coordinate-defence-reduction"
+        "coordinate-defence-reduction",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -576,7 +648,11 @@
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
         "plan-team-cox",
-        "coordinate-defence-reduction"
+        "coordinate-defence-reduction",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -596,14 +672,346 @@
         "assemble-swamp-trident",
         "review-olm-lance",
         "coordinate-defence-reduction",
-        "review-occult-switch"
+        "review-occult-switch",
+        "pursue-bowfa",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-zulrah-magic-fang",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
+    },
+    {
+      "id": "gauntlet-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/The_Gauntlet?oldid=15367929",
+      "revision": "15367929",
+      "decisions": [
+        "pursue-bowfa"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "gauntlet-strategy",
+      "type": "wiki strategy",
+      "url": "https://oldschool.runescape.wiki/w/The_Gauntlet/Strategies?oldid=15359999",
+      "revision": "15359999",
+      "decisions": [
+        "pursue-bowfa"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "sote-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Song_of_the_Elves?oldid=15363333",
+      "revision": "15363333",
+      "decisions": [
+        "pursue-bowfa"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "bowfa-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Bow_of_faerdhinen?oldid=15366535",
+      "revision": "15366535",
+      "decisions": [
+        "pursue-bowfa",
+        "seek-moons-atlatl"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "crystal-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Crystal_armour?oldid=15355197",
+      "revision": "15355197",
+      "decisions": [
+        "pursue-bowfa"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "cave-kraken-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Cave_kraken?oldid=15342837",
+      "revision": "15342837",
+      "decisions": [
+        "train-slayer-trident",
+        "seek-seas-trident"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "kraken-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Kraken?oldid=15368743",
+      "revision": "15368743",
+      "decisions": [
+        "seek-seas-trident"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "zulrah-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Zulrah?oldid=15366227",
+      "revision": "15366227",
+      "decisions": [
+        "seek-zulrah-magic-fang"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "zulrah-strategy",
+      "type": "wiki strategy",
+      "url": "https://oldschool.runescape.wiki/w/Zulrah/Strategies?oldid=15356843",
+      "revision": "15356843",
+      "decisions": [
+        "seek-zulrah-magic-fang"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "regicide-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Regicide?oldid=15369687",
+      "revision": "15369687",
+      "decisions": [
+        "seek-zulrah-magic-fang"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "toa-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Tombs_of_Amascut?oldid=15356620",
+      "revision": "15356620",
+      "decisions": [
+        "seek-toa-fang"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "toa-strategy",
+      "type": "wiki strategy",
+      "url": "https://oldschool.runescape.wiki/w/Tombs_of_Amascut/Strategies?oldid=15356953",
+      "revision": "15356953",
+      "decisions": [
+        "seek-toa-fang"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "bcs-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Beneath_Cursed_Sands?oldid=15363320",
+      "revision": "15363320",
+      "decisions": [
+        "seek-toa-fang"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "keris",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Keris_partisan?oldid=15254688",
+      "revision": "15254688",
+      "decisions": [
+        "seek-toa-fang"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "moons-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Moons_of_Peril?oldid=15357442",
+      "revision": "15357442",
+      "decisions": [
+        "seek-moons-atlatl"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "moons-strategy",
+      "type": "wiki strategy",
+      "url": "https://oldschool.runescape.wiki/w/Moons_of_Peril/Strategies?oldid=15357348",
+      "revision": "15357348",
+      "decisions": [
+        "seek-moons-atlatl"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "atlatl",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Eclipse_atlatl?oldid=15356407",
+      "revision": "15356407",
+      "decisions": [
+        "pursue-bowfa",
+        "seek-moons-atlatl"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "titans-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Royal_Titans?oldid=15357424",
+      "revision": "15357424",
+      "decisions": [
+        "seek-titans-prayers"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "titans-strategy",
+      "type": "wiki strategy",
+      "url": "https://oldschool.runescape.wiki/w/Royal_Titans/Strategies?oldid=15367754",
+      "revision": "15367754",
+      "decisions": [
+        "seek-titans-prayers"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "deadeye-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Deadeye?oldid=15222979",
+      "revision": "15222979",
+      "decisions": [
+        "seek-titans-prayers"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "vigour-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Mystic_Vigour?oldid=15335909",
+      "revision": "15335909",
+      "decisions": [
+        "seek-titans-prayers"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "deadeye-scroll-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Deadeye_prayer_scroll?oldid=15193033",
+      "revision": "15193033",
+      "decisions": [
+        "seek-titans-prayers"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "vigour-scroll-route",
+      "type": "wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Mystic_vigour_prayer_scroll?oldid=15285526",
+      "revision": "15285526",
+      "decisions": [
+        "seek-titans-prayers"
+      ],
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
     }
   ],
   "decisions": [
     {
       "id": "unlock-rigour",
-      "kind": "UNLOCK_RIGOUR",
+      "kind": "READ",
       "title": "Read your observed dexterous prayer scroll",
       "family": "rigour",
       "effortBand": "SMALL",
@@ -614,18 +1022,60 @@
       "access": "An observed scroll and confirmed locked prayer; no skill requirement to read. Retrieve from bank first if needed.",
       "completion": "Rigour unlock varbit is true; scroll absence is never completion evidence.",
       "applicability": "A positive inventory/equipment/session-bank observation of the exact scroll and a known false unlock.",
-      "sources": ["dex-scroll", "item-ids", "rigour"],
+      "sources": [
+        "dex-scroll",
+        "item-ids",
+        "rigour"
+      ],
       "itemId": 21034,
       "status": "reviewed",
       "reviewed": "2026-10-12",
       "requires": [],
       "repeatable": false,
-      "when": {"test": "ALL", "conditions": [{"test": "RIGOUR", "value": false}, {"test": "ITEMS", "key": "rigourScroll"}]},
-      "completeWhen": {"test": "RIGOUR", "value": true}
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "RIGOUR",
+            "value": false
+          },
+          {
+            "test": "ITEMS",
+            "key": "rigourScroll"
+          }
+        ]
+      },
+      "completeWhen": {
+        "test": "RIGOUR",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "goals": [
+        "plan-team-cox",
+        "toa-entry",
+        "ranged-options",
+        "magic-upgrade"
+      ],
+      "notes": [
+        "Reading has no skill requirement; using the prayer needs its documented Prayer and Defence levels. Scroll possession and permanent unlocks are different facts."
+      ],
+      "contextBenefits": [],
+      "outcome": "rigour",
+      "preparation": "A positive inventory/equipment/session-bank observation of the exact scroll and a known false unlock.",
+      "activity": "rigour-scroll",
+      "benefitBand": "MAJOR",
+      "benefitReason": "Confirmed locked permanent prayer with an observed scroll."
     },
     {
       "id": "train-rigour",
-      "kind": "TRAIN_RIGOUR",
+      "kind": "TRAIN",
       "title": "Train Prayer to 74 for your unlocked Rigour",
       "family": "prayer-training",
       "effortBand": "TRAINING",
@@ -636,18 +1086,60 @@
       "access": "Ordinary Prayer training; the catalogue applies only with confirmed unlock and 70+ Defence.",
       "completion": "Real Prayer level is at least 74.",
       "applicability": "Confirmed permanent unlock, known Prayer below 74, and known Defence at least 70.",
-      "sources": ["rigour"],
+      "sources": [
+        "rigour"
+      ],
       "itemId": 0,
       "status": "reviewed",
       "reviewed": "2026-10-12",
-      "requires": ["unlock-rigour"],
+      "requires": [
+        "unlock-rigour"
+      ],
       "repeatable": false,
-      "when": {"test": "ALL", "conditions": [{"test": "RIGOUR", "value": true}, {"test": "LEVEL", "key": "DEFENCE", "minimum": 70}]},
-      "completeWhen": {"test": "LEVEL", "key": "PRAYER", "minimum": 74}
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "RIGOUR",
+            "value": true
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          }
+        ]
+      },
+      "completeWhen": {
+        "test": "LEVEL",
+        "key": "PRAYER",
+        "minimum": 74
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "goals": [
+        "plan-team-cox",
+        "toa-entry",
+        "ranged-options",
+        "magic-upgrade"
+      ],
+      "notes": [],
+      "contextBenefits": [],
+      "outcome": "prayer-training",
+      "preparation": "Confirmed permanent unlock, known Prayer below 74, and known Defence at least 70.",
+      "activity": "prayer-training",
+      "benefitBand": "MAJOR",
+      "benefitReason": "Confirmed Prayer gap for an unlocked prayer; a selected goal can put its own training first."
     },
     {
       "id": "unlock-augury",
-      "kind": "UNLOCK_AUGURY",
+      "kind": "READ",
       "title": "Read your observed arcane prayer scroll",
       "family": "augury",
       "effortBand": "SMALL",
@@ -658,18 +1150,60 @@
       "access": "An observed scroll and confirmed locked prayer; no skill requirement to read. Retrieve from bank first if needed.",
       "completion": "Augury unlock varbit is true; scroll absence is never completion evidence.",
       "applicability": "A positive inventory/equipment/session-bank observation of the exact scroll and a known false unlock.",
-      "sources": ["arcane-scroll", "augury", "item-ids"],
+      "sources": [
+        "arcane-scroll",
+        "augury",
+        "item-ids"
+      ],
       "itemId": 21079,
       "status": "reviewed",
       "reviewed": "2026-10-12",
       "requires": [],
       "repeatable": false,
-      "when": {"test": "ALL", "conditions": [{"test": "AUGURY", "value": false}, {"test": "ITEMS", "key": "auguryScroll"}]},
-      "completeWhen": {"test": "AUGURY", "value": true}
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "AUGURY",
+            "value": false
+          },
+          {
+            "test": "ITEMS",
+            "key": "auguryScroll"
+          }
+        ]
+      },
+      "completeWhen": {
+        "test": "AUGURY",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "goals": [
+        "plan-team-cox",
+        "toa-entry",
+        "ranged-options",
+        "magic-upgrade"
+      ],
+      "notes": [
+        "Reading has no skill requirement; using the prayer needs its documented Prayer and Defence levels. Scroll possession and permanent unlocks are different facts."
+      ],
+      "contextBenefits": [],
+      "outcome": "augury",
+      "preparation": "A positive inventory/equipment/session-bank observation of the exact scroll and a known false unlock.",
+      "activity": "augury-scroll",
+      "benefitBand": "MAJOR",
+      "benefitReason": "Confirmed locked permanent prayer with an observed scroll."
     },
     {
       "id": "train-augury",
-      "kind": "TRAIN_AUGURY",
+      "kind": "TRAIN",
       "title": "Train Prayer to 77 for your unlocked Augury",
       "family": "prayer-training",
       "effortBand": "TRAINING",
@@ -680,18 +1214,70 @@
       "access": "Ordinary Prayer training; the catalogue applies only with confirmed unlock and 70+ Defence.",
       "completion": "Real Prayer level is at least 77.",
       "applicability": "Confirmed permanent unlock, known Prayer below 77, and known Defence at least 70.",
-      "sources": ["augury"],
+      "sources": [
+        "augury"
+      ],
       "itemId": 0,
       "status": "reviewed",
       "reviewed": "2026-10-12",
-      "requires": ["unlock-augury"],
+      "requires": [
+        "unlock-augury"
+      ],
       "repeatable": false,
-      "when": {"test": "ALL", "conditions": [{"test": "AUGURY", "value": true}, {"test": "LEVEL", "key": "DEFENCE", "minimum": 70}]},
-      "completeWhen": {"test": "LEVEL", "key": "PRAYER", "minimum": 77}
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "AUGURY",
+            "value": true
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          }
+        ]
+      },
+      "completeWhen": {
+        "test": "LEVEL",
+        "key": "PRAYER",
+        "minimum": 77
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "goals": [
+        "plan-team-cox",
+        "toa-entry",
+        "ranged-options",
+        "magic-upgrade"
+      ],
+      "notes": [],
+      "contextBenefits": [
+        {
+          "when": {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 74
+          },
+          "band": "MAJOR",
+          "reason": "Rigour threshold already met; the remaining Augury level is a focused prayer gap."
+        }
+      ],
+      "outcome": "prayer-training",
+      "preparation": "Confirmed permanent unlock, known Prayer below 77, and known Defence at least 70.",
+      "activity": "prayer-training",
+      "benefitBand": "MODERATE",
+      "benefitReason": "Confirmed Prayer gap for an unlocked prayer; a selected goal can put its own training first."
     },
     {
       "id": "plan-team-cox",
-      "kind": "PLAN_TEAM",
+      "kind": "PLAN",
       "title": "Plan ordinary team CoX with your observed weapons",
       "family": "team-preparation",
       "effortBand": "SMALL",
@@ -702,17 +1288,115 @@
       "access": "Planning has no game requirement. CoX entry separately needs access to Great Kourend, which is unobserved. Equipping a lance additionally needs the Firemaking (not pyre), Fishing and Smithing sections of Barbarian Training; these unlocks are unobserved. Crystal equipment has quest requirements; this catalogue does not verify them.",
       "completion": "Repeatable planning prompt; no raid history is observed and no first-kill claim is made.",
       "applicability": "80+ Attack/Strength/Ranged/Magic/Hitpoints and 70+ Defence/Prayer (authored preparation baseline, not game access); recognised positive weapons and their wield levels. Bowfa selection additionally needs observed active crystal pieces and 70 Agility.",
-      "sources": ["ayak", "bowfa", "cox-kit", "crossbow", "crystal", "crystal-body", "crystal-helm", "crystal-legs", "fang", "item-ids", "lance", "sang", "sang-holy", "shadow", "swamp-e", "swamp-trident", "tentacle", "trident", "trident-e", "twisted-bow", "whip"],
+      "sources": [
+        "ayak",
+        "bowfa",
+        "cox-kit",
+        "crossbow",
+        "crystal",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "fang",
+        "item-ids",
+        "lance",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "tentacle",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "whip"
+      ],
       "itemId": 0,
       "status": "reviewed",
       "reviewed": "2026-10-12",
       "requires": [],
       "repeatable": true,
-      "when": {"test": "ALL", "conditions": [{"test": "LEVEL", "key": "ATTACK", "minimum": 80}, {"test": "LEVEL", "key": "STRENGTH", "minimum": 80}, {"test": "LEVEL", "key": "RANGED", "minimum": 80}, {"test": "LEVEL", "key": "MAGIC", "minimum": 80}, {"test": "LEVEL", "key": "HITPOINTS", "minimum": 80}, {"test": "LEVEL", "key": "DEFENCE", "minimum": 70}, {"test": "LEVEL", "key": "PRAYER", "minimum": 70}]}
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "ATTACK",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "STRENGTH",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "MAGIC",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "HITPOINTS",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "DEFENCE",
+                "minimum": 70
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 70
+              }
+            ]
+          },
+          {
+            "test": "USABLE",
+            "key": "melee"
+          },
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          },
+          {
+            "test": "USABLE",
+            "key": "magic"
+          }
+        ]
+      },
+      "goals": [
+        "plan-team-cox"
+      ],
+      "notes": [
+        "The checked skill and three-style baseline is authored preparation, not game access. Team roles, full raid switches, supplies and actual access remain unverified."
+      ],
+      "contextBenefits": [],
+      "outcome": "team-preparation",
+      "preparation": "80+ Attack/Strength/Ranged/Magic/Hitpoints and 70+ Defence/Prayer (authored preparation baseline, not game access); recognised positive weapons and their wield levels. Bowfa selection additionally needs observed active crystal pieces and 70 Agility.",
+      "activity": "cox",
+      "benefitBand": "PLANNING",
+      "benefitReason": "Recognised three-style kit supports ordinary team preparation."
     },
     {
       "id": "assemble-swamp-trident",
-      "kind": "ASSEMBLE_SWAMP",
+      "kind": "ASSEMBLE",
       "title": "Assemble a swamp trident from your observed magic fang",
       "family": "magic-weapon",
       "effortBand": "SMALL",
@@ -723,17 +1407,82 @@
       "access": "Assembly requires 59 Crafting, a chisel, magic fang and uncharged seas trident; enhanced seas tridents also work. Charging and wielding the result requires 78 Magic. Known real levels meet the thresholds; temporary boosts are not modelled.",
       "completion": "A recognised swamp trident (including uncharged/enhanced) or competing owned magic option ends this bounded assembly suggestion; this is not a claim that every alternative is best everywhere.",
       "applicability": "Positive fang, chisel and seas-trident observations; known Crafting 59+ and Magic 78+; completion must be confirmed false in supported storage. Unobserved containers keep completion unknown.",
-      "sources": ["ayak", "cox-kit", "item-ids", "magic-fang", "sang", "sang-holy", "shadow", "swamp-e", "swamp-trident", "trident", "trident-e", "wand"],
+      "sources": [
+        "ayak",
+        "cox-kit",
+        "item-ids",
+        "magic-fang",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e",
+        "wand"
+      ],
       "status": "reviewed",
       "reviewed": "2026-10-12",
       "requires": [],
       "repeatable": false,
-      "when": {"test": "ALL", "conditions": [{"test": "ITEMS", "key": "magicFang"}, {"test": "ITEMS", "key": "chisel"}, {"test": "ITEMS", "key": "seasAssembly"}, {"test": "LEVEL", "key": "CRAFTING", "minimum": 59}, {"test": "LEVEL", "key": "MAGIC", "minimum": 78}]},
-      "completeWhen": {"test": "ITEMS", "key": "competingMagic"}
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "ITEMS",
+            "key": "magicFang"
+          },
+          {
+            "test": "ITEMS",
+            "key": "chisel"
+          },
+          {
+            "test": "ITEMS",
+            "key": "seasAssembly"
+          },
+          {
+            "test": "LEVEL",
+            "key": "CRAFTING",
+            "minimum": 59
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 78
+          }
+        ]
+      },
+      "completeWhen": {
+        "test": "ITEMS",
+        "key": "competingMagic"
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "goals": [
+        "assemble-swamp-trident",
+        "plan-team-cox",
+        "toa-entry",
+        "magic-upgrade"
+      ],
+      "notes": [
+        "No recognised competing magic option observed in supported storage; other storage remains unknown. Check before assembly."
+      ],
+      "contextBenefits": [],
+      "outcome": "magic-weapon",
+      "preparation": "Positive fang, chisel and seas-trident observations; known Crafting 59+ and Magic 78+; completion must be confirmed false in supported storage. Unobserved containers keep completion unknown.",
+      "activity": "owned-magic",
+      "benefitBand": "MODERATE",
+      "benefitReason": "Owned parts, no supported observed/manual competing magic option."
     },
     {
       "id": "review-olm-lance",
-      "kind": "REVIEW_LANCE",
+      "kind": "REVIEW",
       "title": "Compare your owned lance for the Olm melee role",
       "family": "melee-kit",
       "effortBand": "SMALL",
@@ -744,17 +1493,73 @@
       "access": "Comparing equipment has no game requirement. Wielding a lance requires 78 Attack plus the Firemaking (not pyre), Fishing and Smithing sections of Barbarian Training; the levels are checked, the miniquest sections are unknown. Actual raid access and other kit preparation remain unverified.",
       "completion": "Currently equipped lance or observed scythe/Soulreaper axe suppresses this comparison. This is a temporary loadout state, not permanent account completion.",
       "applicability": "Owned lance and a recognised ordinary melee alternative, Attack 78+, known equipment without lance, and no recognised competing melee weapon in observed storage.",
-      "sources": ["cox-kit", "fang", "item-ids", "lance", "scythe", "soulreaper", "tentacle", "whip"],
+      "sources": [
+        "cox-kit",
+        "fang",
+        "item-ids",
+        "lance",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
       "status": "reviewed",
       "reviewed": "2026-10-12",
       "requires": [],
       "repeatable": false,
-      "when": {"test": "ALL", "conditions": [{"test": "ITEMS", "key": "lance"}, {"test": "ITEMS", "key": "ordinaryMelee"}, {"test": "LEVEL", "key": "ATTACK", "minimum": 78}]},
-      "completeWhen": {"test": "ANY", "conditions": [{"test": "EQUIPPED", "key": "lance"}, {"test": "ITEMS", "key": "competingMelee"}]}
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "ITEMS",
+            "key": "lance"
+          },
+          {
+            "test": "ITEMS",
+            "key": "ordinaryMelee"
+          },
+          {
+            "test": "LEVEL",
+            "key": "ATTACK",
+            "minimum": 78
+          }
+        ]
+      },
+      "completeWhen": {
+        "test": "ANY",
+        "conditions": [
+          {
+            "test": "EQUIPPED",
+            "key": "lance"
+          },
+          {
+            "test": "ITEMS",
+            "key": "competingMelee"
+          }
+        ]
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "goals": [
+        "plan-team-cox"
+      ],
+      "notes": [],
+      "contextBenefits": [],
+      "outcome": "melee-kit",
+      "preparation": "Owned lance and a recognised ordinary melee alternative, Attack 78+, known equipment without lance, and no recognised competing melee weapon in observed storage.",
+      "activity": "owned-melee",
+      "benefitBand": "MODERATE",
+      "benefitReason": "Owned dragonbane alternative for the Olm melee role."
     },
     {
       "id": "coordinate-defence-reduction",
-      "kind": "COORDINATE_REDUCTION",
+      "kind": "PLAN",
       "title": "Agree team defence-reduction coverage with your owned gear",
       "family": "team-preparation",
       "effortBand": "SMALL",
@@ -765,16 +1570,167 @@
       "access": "Planning has no game requirement. DWH wielding requires 60 Strength; BGS 75 Attack; elder maul 75 Attack and 75 Strength. The authored three-style planning baseline is preparation, not raid entry. Actual CoX access remains unverified.",
       "completion": "Repeatable team coordination; no team history or permanent completion is inferred.",
       "applicability": "The same recognised weapon and skill baseline as team planning, plus an observed reduction option and its wield levels. This more specific prompt shares the broad team-planning family.",
-      "sources": ["ayak", "bowfa", "cox-kit", "crossbow", "crystal-body", "crystal-helm", "crystal-legs", "fang", "godsword", "godsword-or", "item-ids", "lance", "maul", "maul-or", "sang", "sang-holy", "shadow", "swamp-e", "swamp-trident", "tentacle", "trident", "trident-e", "twisted-bow", "warhammer", "warhammer-cr", "whip"],
+      "sources": [
+        "ayak",
+        "bowfa",
+        "cox-kit",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "fang",
+        "godsword",
+        "godsword-or",
+        "item-ids",
+        "lance",
+        "maul",
+        "maul-or",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "tentacle",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "warhammer",
+        "warhammer-cr",
+        "whip"
+      ],
       "status": "reviewed",
       "reviewed": "2026-10-12",
       "requires": [],
       "repeatable": true,
-      "when": {"test": "ANY", "conditions": [{"test": "ALL", "conditions": [{"test": "ITEMS", "key": "maul"}, {"test": "LEVEL", "key": "ATTACK", "minimum": 75}, {"test": "LEVEL", "key": "STRENGTH", "minimum": 75}]}, {"test": "ALL", "conditions": [{"test": "ITEMS", "key": "warhammer"}, {"test": "LEVEL", "key": "STRENGTH", "minimum": 60}]}, {"test": "ALL", "conditions": [{"test": "ITEMS", "key": "godsword"}, {"test": "LEVEL", "key": "ATTACK", "minimum": 75}]}]}
+      "when": {
+        "test": "ANY",
+        "conditions": [
+          {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "ITEMS",
+                "key": "maul"
+              },
+              {
+                "test": "LEVEL",
+                "key": "ATTACK",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "STRENGTH",
+                "minimum": 75
+              }
+            ]
+          },
+          {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "ITEMS",
+                "key": "warhammer"
+              },
+              {
+                "test": "LEVEL",
+                "key": "STRENGTH",
+                "minimum": 60
+              }
+            ]
+          },
+          {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "ITEMS",
+                "key": "godsword"
+              },
+              {
+                "test": "LEVEL",
+                "key": "ATTACK",
+                "minimum": 75
+              }
+            ]
+          }
+        ]
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "ATTACK",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "STRENGTH",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "MAGIC",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "HITPOINTS",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "DEFENCE",
+                "minimum": 70
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 70
+              }
+            ]
+          },
+          {
+            "test": "USABLE",
+            "key": "melee"
+          },
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          },
+          {
+            "test": "USABLE",
+            "key": "magic"
+          }
+        ]
+      },
+      "goals": [
+        "plan-team-cox"
+      ],
+      "notes": [
+        "The checked skill and three-style baseline is authored preparation, not game access. Team roles, full raid switches, supplies and actual access remain unverified."
+      ],
+      "contextBenefits": [],
+      "outcome": "team-preparation",
+      "preparation": "The same recognised weapon and skill baseline as team planning, plus an observed reduction option and its wield levels. This more specific prompt shares the broad team-planning family.",
+      "activity": "cox",
+      "benefitBand": "MINOR",
+      "benefitReason": "Specific observed team coverage before general team planning."
     },
     {
       "id": "review-occult-switch",
-      "kind": "REVIEW_OCCULT",
+      "kind": "REVIEW",
       "title": "Review an owned occult switch for your CoX mage kit",
       "family": "magic-neck",
       "effortBand": "SMALL",
@@ -785,110 +1741,2243 @@
       "access": "Wearing the occult requires 70 Magic. A recognised magic weapon and its wield level are checked. Owning an occult does not impose a Slayer requirement; acquiring it from smoke devils is outside this owned-kit comparison.",
       "completion": "Occult currently equipped suppresses this prompt; no usual raid setup or permanent loadout completion is inferred.",
       "applicability": "Positive occult observation, currently equipped normal/ornamented fury, Magic 70+, recognised charged magic weapon with its level. Empty or unknown equipment produces no suggestion.",
-      "sources": ["ayak", "cox-kit", "fury", "fury-or", "item-ids", "occult", "occult-or", "sang", "sang-holy", "shadow", "swamp-e", "swamp-trident", "trident", "trident-e"],
+      "sources": [
+        "ayak",
+        "cox-kit",
+        "fury",
+        "fury-or",
+        "item-ids",
+        "occult",
+        "occult-or",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e"
+      ],
       "status": "reviewed",
       "reviewed": "2026-10-12",
       "requires": [],
       "repeatable": false,
-      "when": {"test": "ALL", "conditions": [{"test": "ITEMS", "key": "occult"}, {"test": "EQUIPPED", "key": "fury"}, {"test": "LEVEL", "key": "MAGIC", "minimum": 70}]},
-      "completeWhen": {"test": "EQUIPPED", "key": "occult"}
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "ITEMS",
+            "key": "occult"
+          },
+          {
+            "test": "EQUIPPED",
+            "key": "fury"
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 70
+          }
+        ]
+      },
+      "completeWhen": {
+        "test": "EQUIPPED",
+        "key": "occult"
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "USABLE",
+        "key": "magic"
+      },
+      "goals": [
+        "plan-team-cox",
+        "toa-entry",
+        "magic-upgrade"
+      ],
+      "notes": [],
+      "contextBenefits": [],
+      "outcome": "magic-neck",
+      "preparation": "Positive occult observation, currently equipped normal/ornamented fury, Magic 70+, recognised charged magic weapon with its level. Empty or unknown equipment produces no suggestion.",
+      "activity": "owned-neck",
+      "benefitBand": "MODERATE",
+      "benefitReason": "Owned specialised magic alternative to the equipped hybrid necklace."
+    },
+    {
+      "status": "reviewed",
+      "reviewed": "2026-10-12",
+      "requires": [],
+      "repeatable": false,
+      "goals": [
+        "ranged-options",
+        "toa-entry",
+        "plan-team-cox"
+      ],
+      "notes": [],
+      "contextBenefits": [],
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "FACT",
+        "key": "song-of-elves",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "LEVEL",
+            "key": "ATTACK",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "STRENGTH",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "HITPOINTS",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 85
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 85
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 70
+          }
+        ]
+      },
+      "benefitBand": "MAJOR",
+      "effortBand": "GRIND",
+      "id": "pursue-bowfa",
+      "kind": "ACQUIRE",
+      "activity": "cg",
+      "outcome": "ranged-options",
+      "family": "ranged-options",
+      "title": "Consider CG for a Bowfa and crystal-armour route",
+      "why": "You have confirmed the covered Bowfa/twisted-bow gap. CG offers an enhanced seed and armour seeds without consuming your outside combat supplies. This is an optional long ranged route for several supported activities.",
+      "alternative": "If CG is unwelcome, Moons offers an eclipse atlatl route when its access and your melee preparation are supported. A rune crossbow also remains a planning option for low-level ToA and ordinary team CoX; an atlatl is not a universal Bowfa substitute.",
+      "tradeoff": "Repeated solo encounters and learning compete with Slayer, Zulrah and raid practice. Crystal armour and shard upkeep matter; no player skill or RNG progress is inferred.",
+      "effort": "Long variable drop grind plus learning and shards. Start with regular Gauntlet if learning; CG first requires one regular completion, which is not observed. No hours or completion probability.",
+      "access": "Song of the Elves completion permits Gauntlet access. This is a route starting with the regular unlock, not proof CG is already enterable. Weapons and supplies are made inside. Bowfa creation needs the seed/shards; NPC singing is available for extra shards instead of mandatory Crafting/Smithing levels.",
+      "completion": "A supported Bowfa form or twisted bow owned suppresses another enhanced-seed route. It does not establish complete crystal armour or usable charges.",
+      "preparation": "Authored learning baseline: 80 Attack/Strength/Defence/Hitpoints, 85 Ranged/Magic, 70 Prayer. Higher prayers are helpful, not access requirements. Crystal body/legs/helm and 70 Agility need checking before using the reward.",
+      "applicability": "Only a confirmed target gap and positively supported conditions make this actionable; unknown ownership abstains.",
+      "benefitReason": "You have confirmed the covered Bowfa/twisted-bow gap. CG offers an enhanced seed and armour seeds without consuming your outside combat supplies. This is an optional long ranged route for several supported activities.",
+      "sources": [
+        "atlatl",
+        "bowfa",
+        "bowfa-route",
+        "crystal-route",
+        "gauntlet-route",
+        "gauntlet-strategy",
+        "item-ids",
+        "sote-route",
+        "twisted-bow"
+      ],
+      "completeWhen": {
+        "test": "POSSESSION",
+        "key": "bowfaOrBetter",
+        "value": true
+      }
+    },
+    {
+      "status": "reviewed",
+      "reviewed": "2026-10-12",
+      "requires": [],
+      "repeatable": false,
+      "goals": [
+        "magic-upgrade",
+        "toa-entry",
+        "plan-team-cox"
+      ],
+      "notes": [],
+      "contextBenefits": [],
+      "when": {
+        "test": "POSSESSION",
+        "key": "seasOrBetter",
+        "value": false
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "LEVEL",
+        "key": "MAGIC",
+        "minimum": 75
+      },
+      "benefitBand": "MAJOR",
+      "effortBand": "TRAINING",
+      "id": "train-slayer-trident",
+      "kind": "TRAIN",
+      "activity": "slayer",
+      "outcome": "magic-upgrade",
+      "family": "magic-upgrade",
+      "title": "Train Slayer toward 87 for the first seas trident route",
+      "why": "A confirmed powered-staff gap can make Slayer progression a shared investment for ToA and ordinary team CoX. Reaching 87 opens the cave-kraken task route; the level alone does not award a trident.",
+      "alternative": "Continue with reviewed owned spell options and lower-level content, or use Royal Titans for a prayer upgrade. Zulrah upgrades a seas trident; it is not a source of the base seas trident.",
+      "tradeoff": "A long skill and task route delays immediate boss practice. No efficient universal task list, supplies or task availability are inferred.",
+      "effort": "Supply- and task-dependent training; no exact hours. This milestone is a prerequisite, not random-drop completion.",
+      "access": "Ordinary Slayer training. Obtaining cave kraken tasks later requires 87 Slayer and 50 Magic; task assignment and current tasks are not read.",
+      "completion": "Real Slayer at least 87 completes this training step, while actual trident acquisition remains a separate decision.",
+      "preparation": "Authored scope: known Slayer level and 75 Magic to make the future seas-trident objective meaningful. Task-specific gear, access and supplies need separate review.",
+      "applicability": "Only a confirmed target gap and positively supported conditions make this actionable; unknown ownership abstains.",
+      "benefitReason": "A confirmed powered-staff gap can make Slayer progression a shared investment for ToA and ordinary team CoX. Reaching 87 opens the cave-kraken task route; the level alone does not award a trident.",
+      "sources": [
+        "ayak",
+        "cave-kraken-route",
+        "item-ids",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e",
+        "wand"
+      ],
+      "completeWhen": {
+        "test": "LEVEL",
+        "key": "SLAYER",
+        "minimum": 87
+      }
+    },
+    {
+      "status": "reviewed",
+      "reviewed": "2026-10-12",
+      "requires": [
+        "train-slayer-trident"
+      ],
+      "repeatable": false,
+      "goals": [
+        "magic-upgrade",
+        "toa-entry",
+        "plan-team-cox"
+      ],
+      "notes": [],
+      "contextBenefits": [],
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "LEVEL",
+            "key": "SLAYER",
+            "minimum": 87
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 50
+          }
+        ]
+      },
+      "prepWhen": {
+        "test": "LEVEL",
+        "key": "MAGIC",
+        "minimum": 75
+      },
+      "benefitBand": "MAJOR",
+      "effortBand": "GRIND",
+      "id": "seek-seas-trident",
+      "kind": "ACQUIRE",
+      "activity": "slayer",
+      "outcome": "magic-upgrade",
+      "family": "magic-upgrade",
+      "title": "Seek a cave-kraken task for your first seas trident",
+      "why": "You meet the task-level thresholds and confirmed that no covered seas trident or competing magic option is owned. Small cave krakens offer a first-trident route useful to multiple raid goals.",
+      "alternative": "The Kraken boss can also drop a charged trident on the same task, with a different reward mix; small cave krakens are a credible first-trident choice. An owned swamp/Sanguinesti/Ayak/Shadow/wand option avoids this bounded grind.",
+      "tradeoff": "Task assignment and the weapon drop are both uncertain. A task is required to fight the monsters; this card asks you to seek one and does not claim an active task.",
+      "effort": "Variable task/drop route. Charge the eventual weapon with its required runes and coins; no charges or quantities are inferred.",
+      "access": "87 Slayer and 50 Magic permit cave-kraken task assignment. Killing cave krakens also needs that task. The current task is unobserved. Seas trident use requires 75 Magic; do not infer it from components.",
+      "completion": "A supported seas trident or competing magic option owned ends this acquisition route, including uncharged forms for ownership only.",
+      "preparation": "Authored route scope: 75 Magic for eventual use. Arrange a usable magic spell setup and task supplies; the card does not claim a combat loadout.",
+      "applicability": "Only a confirmed target gap and positively supported conditions make this actionable; unknown ownership abstains.",
+      "benefitReason": "You meet the task-level thresholds and confirmed that no covered seas trident or competing magic option is owned. Small cave krakens offer a first-trident route useful to multiple raid goals.",
+      "sources": [
+        "ayak",
+        "cave-kraken-route",
+        "item-ids",
+        "kraken-route",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e",
+        "wand"
+      ],
+      "completeWhen": {
+        "test": "POSSESSION",
+        "key": "seasOrBetter",
+        "value": true
+      }
+    },
+    {
+      "status": "reviewed",
+      "reviewed": "2026-10-12",
+      "requires": [],
+      "repeatable": false,
+      "goals": [
+        "magic-upgrade",
+        "toa-entry",
+        "plan-team-cox"
+      ],
+      "notes": [],
+      "contextBenefits": [],
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "FACT",
+        "key": "regicide",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 75
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "HITPOINTS",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 45
+          },
+          {
+            "test": "USABLE",
+            "key": "seasUsable"
+          },
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          }
+        ]
+      },
+      "benefitBand": "MAJOR",
+      "effortBand": "GRIND",
+      "id": "seek-zulrah-magic-fang",
+      "kind": "ACQUIRE",
+      "activity": "zulrah",
+      "outcome": "magic-upgrade",
+      "family": "magic-upgrade",
+      "title": "Consider Zulrah for a magic-fang upgrade",
+      "why": "Your observed seas trident can support a Zulrah route toward a swamp trident. A Bowfa account can still have this magic gap; the upgrade helps both supported raid goals.",
+      "alternative": "Keep the seas trident if scale upkeep or Zulrah is unwelcome. Review an owned competing magic option first; Royal Titans offers a prayer route without requiring this fang.",
+      "tradeoff": "Solo learning and scale/rune upkeep compete with raid practice and Slayer. A magic fang is not a guaranteed drop, and stronger magic equipment is not always necessary to start raids.",
+      "effort": "Variable solo drop grind, learning and recurring supplies. Fang assembly is a separate small action once the parts are owned.",
+      "access": "The game requires Regicide progress through reaching Port Tyras and the sacrifice dialogue. This slice conservatively confirms completed Regicide; partial progress/dialogue remain unobserved. Assembly later requires 59 Crafting and a chisel; these are not Zulrah entry requirements.",
+      "completion": "A swamp trident or supported competing magic option owned suppresses this weapon route. An already observed magic fang also suppresses further fang acquisition.",
+      "preparation": "Authored hybrid baseline: 75 Magic, 80 Ranged, 70 Defence, 80 Hitpoints and 45 Prayer; observed usable seas trident plus ranged alternative. Supplies, venom handling, spellbook and switches still need review.",
+      "applicability": "Only a confirmed target gap and positively supported conditions make this actionable; unknown ownership abstains.",
+      "benefitReason": "Your observed seas trident can support a Zulrah route toward a swamp trident. A Bowfa account can still have this magic gap; the upgrade helps both supported raid goals.",
+      "sources": [
+        "ayak",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "item-ids",
+        "magic-fang",
+        "regicide-route",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "wand",
+        "zulrah-route",
+        "zulrah-strategy"
+      ],
+      "completeWhen": {
+        "test": "ANY",
+        "conditions": [
+          {
+            "test": "POSSESSION",
+            "key": "swampOrBetter",
+            "value": true
+          },
+          {
+            "test": "POSSESSION",
+            "key": "magicFang",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "status": "reviewed",
+      "reviewed": "2026-10-12",
+      "requires": [],
+      "repeatable": false,
+      "goals": [
+        "toa-entry"
+      ],
+      "notes": [],
+      "contextBenefits": [],
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "FACT",
+        "key": "beneath-cursed-sands",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "LEVEL",
+            "key": "ATTACK",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "STRENGTH",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 75
+          },
+          {
+            "test": "USABLE",
+            "key": "keris"
+          },
+          {
+            "test": "USABLE",
+            "key": "melee"
+          },
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          },
+          {
+            "test": "USABLE",
+            "key": "magic"
+          }
+        ]
+      },
+      "benefitBand": "MAJOR",
+      "effortBand": "GRIND",
+      "id": "seek-toa-fang",
+      "kind": "ACQUIRE",
+      "activity": "toa",
+      "outcome": "toa-melee",
+      "family": "toa-acquisition",
+      "title": "Start low-level ToA practice toward a fang",
+      "why": "Your supported observed three-style options and access allow planning low-level ToA practice while working toward its fang reward. Bowfa is optional and the raid reward is not an entry prerequisite.",
+      "alternative": "Use the owned base keris partisan for its specialist role and a reviewed melee alternative elsewhere. Stay at a comfortable raid level or choose Zulrah/Slayer/Royal Titans for shared upgrades first; none guarantees raid success.",
+      "tradeoff": "Practice, supplies and random rewards compete with targeted gear routes. Entry-level learning is useful without promising an efficient fang grind or solo/Expert readiness.",
+      "effort": "Repeat practice followed by a variable reward route. Learning/team size/raid level change effort; no drop or hour estimate. Team or solo low-level assumptions must be agreed by the player.",
+      "access": "Beneath Cursed Sands completion is the raid access requirement. Fang ownership, Bowfa, Rigour, Augury and defence-reduction weapons are not entry requirements.",
+      "completion": "An owned normal or ornamented Osmumten's fang ends this bounded acquisition goal; ownership does not certify levels, supply readiness or a completed raid.",
+      "preparation": "Authored low-level planning baseline: 70 Attack/Strength/Defence/Prayer, 80 Ranged and 75 Magic; observed base keris partisan, melee, ranged and powered-magic alternatives. Other keris forms and full loadouts are outside this slice.",
+      "applicability": "Only a confirmed target gap and positively supported conditions make this actionable; unknown ownership abstains.",
+      "benefitReason": "Your supported observed three-style options and access allow planning low-level ToA practice while working toward its fang reward. Bowfa is optional and the raid reward is not an entry prerequisite.",
+      "sources": [
+        "ayak",
+        "bcs-route",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "fang",
+        "item-ids",
+        "keris",
+        "lance",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "tentacle",
+        "toa-route",
+        "toa-strategy",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "whip"
+      ],
+      "completeWhen": {
+        "test": "POSSESSION",
+        "key": "fang",
+        "value": true
+      }
+    },
+    {
+      "status": "reviewed",
+      "reviewed": "2026-10-12",
+      "requires": [],
+      "repeatable": false,
+      "goals": [
+        "ranged-options",
+        "toa-entry",
+        "plan-team-cox"
+      ],
+      "notes": [],
+      "contextBenefits": [
+        {
+          "when": {
+            "test": "USABLE",
+            "key": "ranged"
+          },
+          "band": "MODERATE",
+          "reason": "An observed ranged alternative already supports some planning; the atlatl is a contextual additional option."
+        }
+      ],
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "FACT",
+        "key": "perilous-moons",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "LEVEL",
+            "key": "ATTACK",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "STRENGTH",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "HITPOINTS",
+            "minimum": 75
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 75
+          },
+          {
+            "test": "LEVEL",
+            "key": "HERBLORE",
+            "minimum": 50
+          },
+          {
+            "test": "USABLE",
+            "key": "melee"
+          }
+        ]
+      },
+      "benefitBand": "MAJOR",
+      "effortBand": "GRIND",
+      "id": "seek-moons-atlatl",
+      "kind": "ACQUIRE",
+      "activity": "moons",
+      "outcome": "ranged-options",
+      "family": "ranged-options",
+      "title": "Consider Moons for an eclipse atlatl alternative",
+      "why": "With a confirmed ranged gap and supported melee preparation, Moons offers an eclipse atlatl acquisition route without CG. Its ranged accuracy and strength-based damage make it a contextual option, not a universal weapon ladder.",
+      "alternative": "Keep the rune crossbow for shield/bolt setups or choose CG for Bowfa and crystal. Existing Bowfa/twisted-bow ownership suppresses this narrow alternative grind. Atlatl ammunition and strength gear need review for each encounter.",
+      "tradeoff": "The atlatl is a random chest reward. Moons favours defensive melee gear and uses local food/potions, but complete armour and supplies are not inferred. The atlatl does not replace Bowfa at every boss.",
+      "effort": "Variable chest grind and learning. Local supply gathering can reduce outside consumable costs; no exact time or RNG percentage.",
+      "access": "Complete Perilous Moons to claim the Lunar Chest. Atlatl use needs 75 Ranged, 50 Attack and 50 Strength; these are reward wield requirements, not chest access requirements.",
+      "completion": "An owned atlatl or supported Bowfa/twisted-bow alternative ends this optional ranged route. Charges, armour, ammo and usability remain separate.",
+      "preparation": "Authored baseline: 70 Attack/Strength/Defence, 75 Hitpoints/Ranged, 50 Herblore and a supported observed melee weapon. Herblore helps local potion supplies; it is optional preparation, not dungeon access.",
+      "applicability": "Only a confirmed target gap and positively supported conditions make this actionable; unknown ownership abstains.",
+      "benefitReason": "With a confirmed ranged gap and supported melee preparation, Moons offers an eclipse atlatl acquisition route without CG. Its ranged accuracy and strength-based damage make it a contextual option, not a universal weapon ladder.",
+      "sources": [
+        "atlatl",
+        "bowfa",
+        "bowfa-route",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "fang",
+        "item-ids",
+        "lance",
+        "moons-route",
+        "moons-strategy",
+        "tentacle",
+        "twisted-bow",
+        "whip"
+      ],
+      "completeWhen": {
+        "test": "ANY",
+        "conditions": [
+          {
+            "test": "POSSESSION",
+            "key": "atlatl",
+            "value": true
+          },
+          {
+            "test": "POSSESSION",
+            "key": "bowfaOrBetter",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "status": "reviewed",
+      "reviewed": "2026-10-12",
+      "requires": [],
+      "repeatable": false,
+      "goals": [
+        "toa-entry",
+        "plan-team-cox",
+        "ranged-options",
+        "magic-upgrade"
+      ],
+      "notes": [
+        "Read a positively observed relevant intermediate-prayer scroll before starting another acquisition route. Unknown other storage still needs checking."
+      ],
+      "contextBenefits": [],
+      "when": {
+        "test": "ANY",
+        "conditions": [
+          {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "deadeye",
+                "value": false
+              },
+              {
+                "test": "RIGOUR",
+                "value": false
+              },
+              {
+                "test": "ITEMS",
+                "key": "deadeyeScroll",
+                "value": false
+              }
+            ]
+          },
+          {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "mystic-vigour",
+                "value": false
+              },
+              {
+                "test": "AUGURY",
+                "value": false
+              },
+              {
+                "test": "ITEMS",
+                "key": "vigourScroll",
+                "value": false
+              }
+            ]
+          }
+        ]
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "LEVEL",
+            "key": "ATTACK",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "STRENGTH",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "HITPOINTS",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 75
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 63
+          },
+          {
+            "test": "USABLE",
+            "key": "melee"
+          },
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          }
+        ]
+      },
+      "benefitBand": "MAJOR",
+      "effortBand": "GRIND",
+      "id": "seek-titans-prayers",
+      "kind": "ACQUIRE",
+      "activity": "royal-titans",
+      "outcome": "shared-prayers",
+      "family": "shared-prayers",
+      "title": "Consider Royal Titans for intermediate prayer unlocks",
+      "why": "A confirmed intermediate-prayer gap can help both magic and ranged preparation without a CoX scroll drop. Bowfa ownership does not remove the usefulness of better available prayers.",
+      "alternative": "Use currently unlocked prayers or work toward Rigour/Augury through CoX. If the stronger prayer is already unlocked for a style, target the other useful style instead. Do not treat intermediate prayers as mandatory raid entry.",
+      "tradeoff": "Duo contribution and random rewards affect effort. Loot Eldric for Deadeye and Branda for Mystic Vigour; an owned scroll should be read instead of farming another. Higher prayers can make the intermediate route unnecessary.",
+      "effort": "Variable duo drop route plus a one-off read. No exact hours; this card assumes a partner, not inferred solo ability.",
+      "access": "Royal Titans have no quest/skill entry requirement. Using Deadeye needs 62 Prayer and Mystic Vigour 63; the authored kit baseline is optional preparation. 60 Agility is a shortcut, not entry.",
+      "completion": "For each style, the intermediate prayer or its higher Rigour/Augury unlock satisfies this bounded target. Permanent unlock facts, not consumed-scroll absence, determine completion.",
+      "preparation": "Authored duo baseline: 70 Attack/Strength/Defence/Ranged/Hitpoints, 75 Magic and 63 Prayer, supported observed melee/ranged options. Arrange standard elemental spells, runes and supplies; a powered staff alone does not establish the required spell setup.",
+      "applicability": "Only a confirmed target gap and positively supported conditions make this actionable; unknown ownership abstains.",
+      "benefitReason": "A confirmed intermediate-prayer gap can help both magic and ranged preparation without a CoX scroll drop. Bowfa ownership does not remove the usefulness of better available prayers.",
+      "sources": [
+        "augury",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "deadeye-route",
+        "deadeye-scroll-route",
+        "fang",
+        "item-ids",
+        "lance",
+        "rigour",
+        "tentacle",
+        "titans-route",
+        "titans-strategy",
+        "twisted-bow",
+        "vigour-route",
+        "vigour-scroll-route",
+        "whip"
+      ],
+      "completeWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "ANY",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "deadeye",
+                "value": true
+              },
+              {
+                "test": "RIGOUR",
+                "value": true
+              }
+            ]
+          },
+          {
+            "test": "ANY",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "mystic-vigour",
+                "value": true
+              },
+              {
+                "test": "AUGURY",
+                "value": true
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "gear": {
     "melee": [
-      {"id": 22978, "label": "dragon hunter lance", "skill": "ATTACK", "level": 78, "crystal": false, "sources": ["lance", "item-ids"]},
-      {"id": 26219, "label": "Osmumten's fang", "skill": "ATTACK", "level": 82, "crystal": false, "sources": ["fang", "item-ids"]},
-      {"id": 27246, "label": "Osmumten's fang (or)", "skill": "ATTACK", "level": 82, "crystal": false, "sources": ["fang", "item-ids"]},
-      {"id": 12006, "label": "abyssal tentacle", "skill": "ATTACK", "level": 75, "crystal": false, "sources": ["tentacle", "item-ids"]},
-      {"id": 4151, "label": "abyssal whip", "skill": "ATTACK", "level": 70, "crystal": false, "sources": ["whip", "item-ids"]},
-      {"id": 12773, "label": "abyssal whip (lava)", "skill": "ATTACK", "level": 70, "crystal": false, "sources": ["whip", "item-ids"]},
-      {"id": 12774, "label": "abyssal whip (ice)", "skill": "ATTACK", "level": 70, "crystal": false, "sources": ["whip", "item-ids"]}
+      {
+        "id": 22978,
+        "label": "dragon hunter lance",
+        "skill": "ATTACK",
+        "level": 78,
+        "crystal": false,
+        "sources": [
+          "lance",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 26219,
+        "label": "Osmumten's fang",
+        "skill": "ATTACK",
+        "level": 82,
+        "crystal": false,
+        "sources": [
+          "fang",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27246,
+        "label": "Osmumten's fang (or)",
+        "skill": "ATTACK",
+        "level": 82,
+        "crystal": false,
+        "sources": [
+          "fang",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12006,
+        "label": "abyssal tentacle",
+        "skill": "ATTACK",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "tentacle",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 4151,
+        "label": "abyssal whip",
+        "skill": "ATTACK",
+        "level": 70,
+        "crystal": false,
+        "sources": [
+          "whip",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12773,
+        "label": "abyssal whip (lava)",
+        "skill": "ATTACK",
+        "level": 70,
+        "crystal": false,
+        "sources": [
+          "whip",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12774,
+        "label": "abyssal whip (ice)",
+        "skill": "ATTACK",
+        "level": 70,
+        "crystal": false,
+        "sources": [
+          "whip",
+          "item-ids"
+        ]
+      }
     ],
     "ranged": [
-      {"id": 20997, "label": "twisted bow", "skill": "RANGED", "level": 85, "crystal": false, "sources": ["twisted-bow", "item-ids"]},
-      {"id": 25865, "label": "Bow of faerdhinen", "skill": "RANGED", "level": 80, "crystal": true, "sources": ["bowfa", "item-ids"]},
-      {"id": 25867, "label": "Bow of faerdhinen (corrupted)", "skill": "RANGED", "level": 80, "crystal": true, "sources": ["bowfa", "item-ids"]},
-      {"id": 25884, "label": "Bow of faerdhinen (corrupted)", "skill": "RANGED", "level": 80, "crystal": true, "sources": ["bowfa", "item-ids"]},
-      {"id": 25886, "label": "Bow of faerdhinen (corrupted)", "skill": "RANGED", "level": 80, "crystal": true, "sources": ["bowfa", "item-ids"]},
-      {"id": 25888, "label": "Bow of faerdhinen (corrupted)", "skill": "RANGED", "level": 80, "crystal": true, "sources": ["bowfa", "item-ids"]},
-      {"id": 25890, "label": "Bow of faerdhinen (corrupted)", "skill": "RANGED", "level": 80, "crystal": true, "sources": ["bowfa", "item-ids"]},
-      {"id": 25892, "label": "Bow of faerdhinen (corrupted)", "skill": "RANGED", "level": 80, "crystal": true, "sources": ["bowfa", "item-ids"]},
-      {"id": 25894, "label": "Bow of faerdhinen (corrupted)", "skill": "RANGED", "level": 80, "crystal": true, "sources": ["bowfa", "item-ids"]},
-      {"id": 25896, "label": "Bow of faerdhinen (corrupted)", "skill": "RANGED", "level": 80, "crystal": true, "sources": ["bowfa", "item-ids"]},
-      {"id": 9185, "label": "rune crossbow", "skill": "RANGED", "level": 61, "crystal": false, "sources": ["crossbow", "item-ids"]}
+      {
+        "id": 20997,
+        "label": "twisted bow",
+        "skill": "RANGED",
+        "level": 85,
+        "crystal": false,
+        "sources": [
+          "twisted-bow",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 25865,
+        "label": "Bow of faerdhinen",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true,
+        "sources": [
+          "bowfa",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "ALL",
+          "conditions": [
+            {
+              "test": "LEVEL",
+              "key": "AGILITY",
+              "minimum": 70
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalBody"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalLegs"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalHelm"
+            }
+          ]
+        }
+      },
+      {
+        "id": 25867,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true,
+        "sources": [
+          "bowfa",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "ALL",
+          "conditions": [
+            {
+              "test": "LEVEL",
+              "key": "AGILITY",
+              "minimum": 70
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalBody"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalLegs"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalHelm"
+            }
+          ]
+        }
+      },
+      {
+        "id": 25884,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true,
+        "sources": [
+          "bowfa",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "ALL",
+          "conditions": [
+            {
+              "test": "LEVEL",
+              "key": "AGILITY",
+              "minimum": 70
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalBody"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalLegs"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalHelm"
+            }
+          ]
+        }
+      },
+      {
+        "id": 25886,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true,
+        "sources": [
+          "bowfa",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "ALL",
+          "conditions": [
+            {
+              "test": "LEVEL",
+              "key": "AGILITY",
+              "minimum": 70
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalBody"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalLegs"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalHelm"
+            }
+          ]
+        }
+      },
+      {
+        "id": 25888,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true,
+        "sources": [
+          "bowfa",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "ALL",
+          "conditions": [
+            {
+              "test": "LEVEL",
+              "key": "AGILITY",
+              "minimum": 70
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalBody"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalLegs"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalHelm"
+            }
+          ]
+        }
+      },
+      {
+        "id": 25890,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true,
+        "sources": [
+          "bowfa",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "ALL",
+          "conditions": [
+            {
+              "test": "LEVEL",
+              "key": "AGILITY",
+              "minimum": 70
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalBody"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalLegs"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalHelm"
+            }
+          ]
+        }
+      },
+      {
+        "id": 25892,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true,
+        "sources": [
+          "bowfa",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "ALL",
+          "conditions": [
+            {
+              "test": "LEVEL",
+              "key": "AGILITY",
+              "minimum": 70
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalBody"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalLegs"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalHelm"
+            }
+          ]
+        }
+      },
+      {
+        "id": 25894,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true,
+        "sources": [
+          "bowfa",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "ALL",
+          "conditions": [
+            {
+              "test": "LEVEL",
+              "key": "AGILITY",
+              "minimum": 70
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalBody"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalLegs"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalHelm"
+            }
+          ]
+        }
+      },
+      {
+        "id": 25896,
+        "label": "Bow of faerdhinen (corrupted)",
+        "skill": "RANGED",
+        "level": 80,
+        "crystal": true,
+        "sources": [
+          "bowfa",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "ALL",
+          "conditions": [
+            {
+              "test": "LEVEL",
+              "key": "AGILITY",
+              "minimum": 70
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalBody"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalLegs"
+            },
+            {
+              "test": "USABLE",
+              "key": "crystalHelm"
+            }
+          ]
+        }
+      },
+      {
+        "id": 9185,
+        "label": "rune crossbow",
+        "skill": "RANGED",
+        "level": 61,
+        "crystal": false,
+        "sources": [
+          "crossbow",
+          "item-ids"
+        ]
+      }
     ],
     "magic": [
-      {"id": 27275, "label": "Tumeken's shadow", "skill": "MAGIC", "level": 85, "crystal": false, "sources": ["shadow", "item-ids"]},
-      {"id": 31113, "label": "Eye of Ayak (charged)", "skill": "MAGIC", "level": 83, "crystal": false, "sources": ["ayak", "item-ids"]},
-      {"id": 22323, "label": "Sanguinesti staff", "skill": "MAGIC", "level": 82, "crystal": false, "sources": ["sang", "item-ids"]},
-      {"id": 25731, "label": "holy Sanguinesti staff", "skill": "MAGIC", "level": 82, "crystal": false, "sources": ["sang-holy", "item-ids"]},
-      {"id": 12899, "label": "trident of the swamp", "skill": "MAGIC", "level": 78, "crystal": false, "sources": ["swamp-trident", "item-ids"]},
-      {"id": 22292, "label": "trident of the swamp (e)", "skill": "MAGIC", "level": 78, "crystal": false, "sources": ["swamp-e", "item-ids"]},
-      {"id": 11905, "label": "trident of the seas (full)", "skill": "MAGIC", "level": 75, "crystal": false, "sources": ["trident", "item-ids"]},
-      {"id": 11907, "label": "trident of the seas", "skill": "MAGIC", "level": 75, "crystal": false, "sources": ["trident", "item-ids"]},
-      {"id": 22288, "label": "trident of the seas (e)", "skill": "MAGIC", "level": 75, "crystal": false, "sources": ["trident-e", "item-ids"]}
+      {
+        "id": 27275,
+        "label": "Tumeken's shadow",
+        "skill": "MAGIC",
+        "level": 85,
+        "crystal": false,
+        "sources": [
+          "shadow",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 31113,
+        "label": "Eye of Ayak (charged)",
+        "skill": "MAGIC",
+        "level": 83,
+        "crystal": false,
+        "sources": [
+          "ayak",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22323,
+        "label": "Sanguinesti staff",
+        "skill": "MAGIC",
+        "level": 82,
+        "crystal": false,
+        "sources": [
+          "sang",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 25731,
+        "label": "holy Sanguinesti staff",
+        "skill": "MAGIC",
+        "level": 82,
+        "crystal": false,
+        "sources": [
+          "sang-holy",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12899,
+        "label": "trident of the swamp",
+        "skill": "MAGIC",
+        "level": 78,
+        "crystal": false,
+        "sources": [
+          "swamp-trident",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22292,
+        "label": "trident of the swamp (e)",
+        "skill": "MAGIC",
+        "level": 78,
+        "crystal": false,
+        "sources": [
+          "swamp-e",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11905,
+        "label": "trident of the seas (full)",
+        "skill": "MAGIC",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "trident",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11907,
+        "label": "trident of the seas",
+        "skill": "MAGIC",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "trident",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22288,
+        "label": "trident of the seas (e)",
+        "skill": "MAGIC",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "trident-e",
+          "item-ids"
+        ]
+      }
     ],
     "crystalBody": [
-      {"id": 23975, "label": "active crystal body", "skill": "DEFENCE", "level": 70, "crystal": false, "sources": ["crystal-body", "item-ids"]}
+      {
+        "id": 23975,
+        "label": "active crystal body",
+        "skill": "DEFENCE",
+        "level": 70,
+        "crystal": false,
+        "sources": [
+          "crystal-body",
+          "item-ids"
+        ]
+      }
     ],
     "crystalLegs": [
-      {"id": 23979, "label": "active crystal legs", "skill": "DEFENCE", "level": 70, "crystal": false, "sources": ["crystal-legs", "item-ids"]}
+      {
+        "id": 23979,
+        "label": "active crystal legs",
+        "skill": "DEFENCE",
+        "level": 70,
+        "crystal": false,
+        "sources": [
+          "crystal-legs",
+          "item-ids"
+        ]
+      }
     ],
     "crystalHelm": [
-      {"id": 23971, "label": "active crystal helm", "skill": "DEFENCE", "level": 70, "crystal": false, "sources": ["crystal-helm", "item-ids"]}
+      {
+        "id": 23971,
+        "label": "active crystal helm",
+        "skill": "DEFENCE",
+        "level": 70,
+        "crystal": false,
+        "sources": [
+          "crystal-helm",
+          "item-ids"
+        ]
+      }
     ],
     "components": [
-      {"id": 21034, "label": "dexterous prayer scroll", "skill": "PRAYER", "level": 1, "crystal": false, "sources": ["dex-scroll", "item-ids"]},
-      {"id": 21079, "label": "arcane prayer scroll", "skill": "PRAYER", "level": 1, "crystal": false, "sources": ["arcane-scroll", "item-ids"]},
-      {"id": 12932, "label": "magic fang", "skill": "CRAFTING", "level": 59, "crystal": false, "sources": ["magic-fang", "item-ids"]},
-      {"id": 1755, "label": "chisel", "skill": "CRAFTING", "level": 1, "crystal": false, "sources": ["magic-fang", "item-ids"]},
-      {"id": 11908, "label": "uncharged trident of the seas", "skill": "MAGIC", "level": 75, "crystal": false, "sources": ["trident", "item-ids"]},
-      {"id": 22290, "label": "uncharged trident of the seas (e)", "skill": "MAGIC", "level": 75, "crystal": false, "sources": ["trident-e", "item-ids"]}
+      {
+        "id": 21034,
+        "label": "dexterous prayer scroll",
+        "skill": "PRAYER",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "dex-scroll",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 21079,
+        "label": "arcane prayer scroll",
+        "skill": "PRAYER",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "arcane-scroll",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12932,
+        "label": "magic fang",
+        "skill": "CRAFTING",
+        "level": 59,
+        "crystal": false,
+        "sources": [
+          "magic-fang",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 1755,
+        "label": "chisel",
+        "skill": "CRAFTING",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "magic-fang",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11908,
+        "label": "uncharged trident of the seas",
+        "skill": "MAGIC",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "trident",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22290,
+        "label": "uncharged trident of the seas (e)",
+        "skill": "MAGIC",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "trident-e",
+          "item-ids"
+        ]
+      }
     ],
     "otherMagic": [
-      {"id": 12900, "label": "uncharged toxic trident", "skill": "MAGIC", "level": 78, "crystal": false, "sources": ["swamp-trident", "item-ids"]},
-      {"id": 22294, "label": "uncharged toxic trident (e)", "skill": "MAGIC", "level": 78, "crystal": false, "sources": ["swamp-e", "item-ids"]},
-      {"id": 22481, "label": "uncharged Sanguinesti staff", "skill": "MAGIC", "level": 82, "crystal": false, "sources": ["sang", "item-ids"]},
-      {"id": 25733, "label": "uncharged holy Sanguinesti staff", "skill": "MAGIC", "level": 82, "crystal": false, "sources": ["sang-holy", "item-ids"]},
-      {"id": 27277, "label": "uncharged Tumeken's shadow", "skill": "MAGIC", "level": 85, "crystal": false, "sources": ["shadow", "item-ids"]},
-      {"id": 31115, "label": "uncharged Eye of Ayak", "skill": "MAGIC", "level": 83, "crystal": false, "sources": ["ayak", "item-ids"]},
-      {"id": 30070, "label": "dragon hunter wand", "skill": "MAGIC", "level": 65, "crystal": false, "sources": ["wand", "item-ids"]}
+      {
+        "id": 12900,
+        "label": "uncharged toxic trident",
+        "skill": "MAGIC",
+        "level": 78,
+        "crystal": false,
+        "sources": [
+          "swamp-trident",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22294,
+        "label": "uncharged toxic trident (e)",
+        "skill": "MAGIC",
+        "level": 78,
+        "crystal": false,
+        "sources": [
+          "swamp-e",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22481,
+        "label": "uncharged Sanguinesti staff",
+        "skill": "MAGIC",
+        "level": 82,
+        "crystal": false,
+        "sources": [
+          "sang",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 25733,
+        "label": "uncharged holy Sanguinesti staff",
+        "skill": "MAGIC",
+        "level": 82,
+        "crystal": false,
+        "sources": [
+          "sang-holy",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27277,
+        "label": "uncharged Tumeken's shadow",
+        "skill": "MAGIC",
+        "level": 85,
+        "crystal": false,
+        "sources": [
+          "shadow",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 31115,
+        "label": "uncharged Eye of Ayak",
+        "skill": "MAGIC",
+        "level": 83,
+        "crystal": false,
+        "sources": [
+          "ayak",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 30070,
+        "label": "dragon hunter wand",
+        "skill": "MAGIC",
+        "level": 65,
+        "crystal": false,
+        "sources": [
+          "wand",
+          "item-ids"
+        ]
+      }
     ],
     "otherMelee": [
-      {"id": 22325, "label": "Scythe of Vitur (charged)", "skill": "ATTACK", "level": 80, "crystal": false, "sources": ["scythe", "item-ids"]},
-      {"id": 22486, "label": "Scythe of Vitur (uncharged)", "skill": "ATTACK", "level": 80, "crystal": false, "sources": ["scythe", "item-ids"]},
-      {"id": 28338, "label": "Soulreaper axe", "skill": "ATTACK", "level": 80, "crystal": false, "sources": ["soulreaper", "item-ids"]}
+      {
+        "id": 22325,
+        "label": "Scythe of Vitur (charged)",
+        "skill": "ATTACK",
+        "level": 80,
+        "crystal": false,
+        "sources": [
+          "scythe",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22486,
+        "label": "Scythe of Vitur (uncharged)",
+        "skill": "ATTACK",
+        "level": 80,
+        "crystal": false,
+        "sources": [
+          "scythe",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 28338,
+        "label": "Soulreaper axe",
+        "skill": "ATTACK",
+        "level": 80,
+        "crystal": false,
+        "sources": [
+          "soulreaper",
+          "item-ids"
+        ]
+      }
     ],
     "neck": [
-      {"id": 12002, "label": "occult necklace", "skill": "MAGIC", "level": 70, "crystal": false, "sources": ["occult", "item-ids"]},
-      {"id": 19720, "label": "occult necklace (or)", "skill": "MAGIC", "level": 70, "crystal": false, "sources": ["occult-or", "item-ids"]},
-      {"id": 6585, "label": "amulet of fury", "skill": "DEFENCE", "level": 1, "crystal": false, "sources": ["fury", "item-ids"]},
-      {"id": 12436, "label": "amulet of fury (or)", "skill": "DEFENCE", "level": 1, "crystal": false, "sources": ["fury-or", "item-ids"]}
+      {
+        "id": 12002,
+        "label": "occult necklace",
+        "skill": "MAGIC",
+        "level": 70,
+        "crystal": false,
+        "sources": [
+          "occult",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 19720,
+        "label": "occult necklace (or)",
+        "skill": "MAGIC",
+        "level": 70,
+        "crystal": false,
+        "sources": [
+          "occult-or",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 6585,
+        "label": "amulet of fury",
+        "skill": "DEFENCE",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "fury",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12436,
+        "label": "amulet of fury (or)",
+        "skill": "DEFENCE",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "fury-or",
+          "item-ids"
+        ]
+      }
     ],
     "reduction": [
-      {"id": 21003, "label": "elder maul", "skill": "ATTACK", "level": 75, "crystal": false, "sources": ["maul", "item-ids"]},
-      {"id": 27100, "label": "elder maul (or)", "skill": "ATTACK", "level": 75, "crystal": false, "sources": ["maul-or", "item-ids"]},
-      {"id": 13576, "label": "dragon warhammer", "skill": "STRENGTH", "level": 60, "crystal": false, "sources": ["warhammer", "item-ids"]},
-      {"id": 28035, "label": "dragon warhammer (cr)", "skill": "STRENGTH", "level": 60, "crystal": false, "sources": ["warhammer-cr", "item-ids"]},
-      {"id": 11804, "label": "Bandos godsword", "skill": "ATTACK", "level": 75, "crystal": false, "sources": ["godsword", "item-ids"]},
-      {"id": 20370, "label": "Bandos godsword (or)", "skill": "ATTACK", "level": 75, "crystal": false, "sources": ["godsword-or", "item-ids"]}
+      {
+        "id": 21003,
+        "label": "elder maul",
+        "skill": "ATTACK",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "maul",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "LEVEL",
+          "key": "STRENGTH",
+          "minimum": 75
+        }
+      },
+      {
+        "id": 27100,
+        "label": "elder maul (or)",
+        "skill": "ATTACK",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "maul-or",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "LEVEL",
+          "key": "STRENGTH",
+          "minimum": 75
+        }
+      },
+      {
+        "id": 13576,
+        "label": "dragon warhammer",
+        "skill": "STRENGTH",
+        "level": 60,
+        "crystal": false,
+        "sources": [
+          "warhammer",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 28035,
+        "label": "dragon warhammer (cr)",
+        "skill": "STRENGTH",
+        "level": 60,
+        "crystal": false,
+        "sources": [
+          "warhammer-cr",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11804,
+        "label": "Bandos godsword",
+        "skill": "ATTACK",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "godsword",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 20370,
+        "label": "Bandos godsword (or)",
+        "skill": "ATTACK",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "godsword-or",
+          "item-ids"
+        ]
+      }
+    ],
+    "routes": [
+      {
+        "id": 29000,
+        "label": "eclipse atlatl",
+        "skill": "RANGED",
+        "level": 75,
+        "sources": [
+          "atlatl",
+          "item-ids"
+        ],
+        "useWhen": {
+          "test": "ALL",
+          "conditions": [
+            {
+              "test": "LEVEL",
+              "key": "ATTACK",
+              "minimum": 50
+            },
+            {
+              "test": "LEVEL",
+              "key": "STRENGTH",
+              "minimum": 50
+            }
+          ]
+        }
+      },
+      {
+        "id": 25979,
+        "label": "keris partisan",
+        "skill": "ATTACK",
+        "level": 65,
+        "sources": [
+          "keris",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 25862,
+        "label": "Bow of faerdhinen (inactive)",
+        "skill": "RANGED",
+        "level": 80,
+        "sources": [
+          "bowfa-route",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 30626,
+        "label": "deadeye prayer scroll",
+        "skill": "PRAYER",
+        "level": 62,
+        "sources": [
+          "deadeye-scroll-route",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 30627,
+        "label": "mystic vigour prayer scroll",
+        "skill": "PRAYER",
+        "level": 63,
+        "sources": [
+          "vigour-scroll-route",
+          "item-ids"
+        ]
+      }
     ]
   },
   "itemSets": {
-    "rigourScroll": [21034],
-    "auguryScroll": [21079],
-    "maul": [21003, 27100],
-    "warhammer": [13576, 28035],
-    "godsword": [11804, 20370],
-    "magicFang": [12932],
-    "chisel": [1755],
-    "seasAssembly": [11905, 11907, 11908, 22288, 22290],
-    "competingMagic": [12899, 12900, 22292, 22294, 22323, 22481, 25731, 25733, 27275, 27277, 31113, 31115, 30070],
-    "lance": [22978],
-    "ordinaryMelee": [4151, 12773, 12774, 12006, 26219, 27246],
-    "competingMelee": [22325, 22486, 28338],
-    "occult": [12002, 19720],
-    "fury": [6585, 12436],
-    "reduction": [21003, 27100, 13576, 28035, 11804, 20370]
-  }
+    "rigourScroll": [
+      21034
+    ],
+    "auguryScroll": [
+      21079
+    ],
+    "maul": [
+      21003,
+      27100
+    ],
+    "warhammer": [
+      13576,
+      28035
+    ],
+    "godsword": [
+      11804,
+      20370
+    ],
+    "magicFang": [
+      12932
+    ],
+    "chisel": [
+      1755
+    ],
+    "seasAssembly": [
+      11905,
+      11907,
+      11908,
+      22288,
+      22290
+    ],
+    "competingMagic": [
+      12899,
+      12900,
+      22292,
+      22294,
+      22323,
+      22481,
+      25731,
+      25733,
+      27275,
+      27277,
+      31113,
+      31115,
+      30070
+    ],
+    "lance": [
+      22978
+    ],
+    "ordinaryMelee": [
+      4151,
+      12773,
+      12774,
+      12006,
+      26219,
+      27246
+    ],
+    "competingMelee": [
+      22325,
+      22486,
+      28338
+    ],
+    "occult": [
+      12002,
+      19720
+    ],
+    "fury": [
+      6585,
+      12436
+    ],
+    "reduction": [
+      21003,
+      27100,
+      13576,
+      28035,
+      11804,
+      20370
+    ],
+    "melee": [
+      22978,
+      26219,
+      27246,
+      12006,
+      4151,
+      12773,
+      12774
+    ],
+    "ranged": [
+      20997,
+      25865,
+      25867,
+      25884,
+      25886,
+      25888,
+      25890,
+      25892,
+      25894,
+      25896,
+      9185
+    ],
+    "magic": [
+      27275,
+      31113,
+      22323,
+      25731,
+      12899,
+      22292,
+      11905,
+      11907,
+      22288
+    ],
+    "crystalBody": [
+      23975
+    ],
+    "crystalLegs": [
+      23979
+    ],
+    "crystalHelm": [
+      23971
+    ],
+    "atlatl": [
+      29000
+    ],
+    "keris": [
+      25979
+    ],
+    "fang": [
+      26219,
+      27246
+    ],
+    "bowfaOrBetter": [
+      20997,
+      25865,
+      25867,
+      25884,
+      25886,
+      25888,
+      25890,
+      25892,
+      25894,
+      25896,
+      25862
+    ],
+    "swampOrBetter": [
+      12899,
+      12900,
+      22292,
+      22294,
+      22323,
+      22481,
+      25731,
+      25733,
+      27275,
+      27277,
+      31113,
+      31115,
+      30070
+    ],
+    "seasOrBetter": [
+      11905,
+      11907,
+      11908,
+      22288,
+      22290,
+      12899,
+      12900,
+      22292,
+      22294,
+      22323,
+      22481,
+      25731,
+      25733,
+      27275,
+      27277,
+      31113,
+      31115,
+      30070
+    ],
+    "seasUsable": [
+      11905,
+      11907,
+      22288
+    ],
+    "deadeyeScroll": [
+      30626
+    ],
+    "vigourScroll": [
+      30627
+    ]
+  },
+  "activities": {
+    "rigour-scroll": "Read an owned Rigour scroll",
+    "augury-scroll": "Read an owned Augury scroll",
+    "prayer-training": "Prayer training",
+    "cox": "Ordinary team CoX planning",
+    "owned-magic": "Owned magic-weapon assembly",
+    "owned-melee": "Owned melee-kit review",
+    "owned-neck": "Owned magic-neck review",
+    "cg": "Corrupted Gauntlet",
+    "zulrah": "Zulrah",
+    "slayer": "Slayer / cave krakens",
+    "toa": "Tombs of Amascut",
+    "moons": "Moons of Peril",
+    "royal-titans": "Royal Titans"
+  },
+  "ownershipLabels": {
+    "bowfaOrBetter": "Bowfa (any reviewed form) or twisted bow owned",
+    "atlatl": "Eclipse atlatl owned",
+    "swampOrBetter": "Swamp trident or supported competing magic weapon owned",
+    "seasOrBetter": "Seas trident or supported stronger magic option owned",
+    "fang": "Osmumten's fang owned",
+    "magicFang": "Magic fang owned (unassembled component)"
+  },
+  "goals": [
+    {
+      "id": "plan-team-cox",
+      "title": "Learn / improve ordinary team CoX",
+      "decisionId": "plan-team-cox",
+      "routes": [
+        "plan-team-cox",
+        "coordinate-defence-reduction"
+      ],
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "ATTACK",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "STRENGTH",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "MAGIC",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "HITPOINTS",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "DEFENCE",
+                "minimum": 70
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 70
+              }
+            ]
+          },
+          {
+            "test": "USABLE",
+            "key": "melee"
+          },
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          },
+          {
+            "test": "USABLE",
+            "key": "magic"
+          }
+        ]
+      },
+      "completeWhen": {
+        "test": "CONSTANT",
+        "value": false
+      },
+      "requires": [],
+      "whenRole": "PREPARATION"
+    },
+    {
+      "id": "train-rigour",
+      "title": "Unlock and meet Rigour's use levels",
+      "decisionId": "train-rigour",
+      "routes": [
+        "train-rigour",
+        "unlock-rigour"
+      ],
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 74
+          }
+        ]
+      },
+      "completeWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "RIGOUR",
+            "value": true
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 74
+          }
+        ]
+      },
+      "requires": [
+        "unlock-rigour"
+      ],
+      "whenRole": "USE"
+    },
+    {
+      "id": "train-augury",
+      "title": "Unlock and meet Augury's use levels",
+      "decisionId": "train-augury",
+      "routes": [
+        "train-augury",
+        "unlock-augury"
+      ],
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 77
+          }
+        ]
+      },
+      "completeWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "AUGURY",
+            "value": true
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 77
+          }
+        ]
+      },
+      "requires": [
+        "unlock-augury"
+      ],
+      "whenRole": "USE"
+    },
+    {
+      "id": "assemble-swamp-trident",
+      "title": "Review an owned-parts swamp trident upgrade",
+      "decisionId": "assemble-swamp-trident",
+      "routes": [
+        "assemble-swamp-trident"
+      ],
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "ITEMS",
+            "key": "magicFang"
+          },
+          {
+            "test": "ITEMS",
+            "key": "chisel"
+          },
+          {
+            "test": "ITEMS",
+            "key": "seasAssembly"
+          },
+          {
+            "test": "LEVEL",
+            "key": "CRAFTING",
+            "minimum": 59
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 78
+          }
+        ]
+      },
+      "completeWhen": {
+        "test": "ITEMS",
+        "key": "competingMagic"
+      },
+      "requires": [],
+      "whenRole": "INPUTS"
+    },
+    {
+      "id": "ranged-options",
+      "title": "Review optional ranged acquisition routes",
+      "decisionId": "pursue-bowfa",
+      "routes": [
+        "pursue-bowfa",
+        "seek-moons-atlatl"
+      ],
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "completeWhen": {
+        "test": "ANY",
+        "conditions": [
+          {
+            "test": "POSSESSION",
+            "key": "bowfaOrBetter",
+            "value": true
+          },
+          {
+            "test": "POSSESSION",
+            "key": "atlatl",
+            "value": true
+          }
+        ]
+      },
+      "requires": [],
+      "whenRole": "CONTEXT"
+    },
+    {
+      "id": "magic-upgrade",
+      "title": "Progress the covered powered-magic routes",
+      "decisionId": "seek-zulrah-magic-fang",
+      "routes": [
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident"
+      ],
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "completeWhen": {
+        "test": "POSSESSION",
+        "key": "swampOrBetter",
+        "value": true
+      },
+      "requires": [],
+      "whenRole": "CONTEXT"
+    },
+    {
+      "id": "toa-entry",
+      "title": "Low-level ToA practice / fang objective",
+      "decisionId": "seek-toa-fang",
+      "routes": [
+        "seek-toa-fang"
+      ],
+      "when": {
+        "test": "FACT",
+        "key": "beneath-cursed-sands",
+        "value": true
+      },
+      "completeWhen": {
+        "test": "POSSESSION",
+        "key": "fang",
+        "value": true
+      },
+      "requires": [],
+      "whenRole": "ACCESS"
+    }
+  ]
 }

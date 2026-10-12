@@ -13,11 +13,21 @@ public final class AccountSnapshot
 	public final Observation<Set<Integer>> bank;
 	public final Observation<Boolean> rigour;
 	public final Observation<Boolean> augury;
+	public final Map<String, Observation<Boolean>> facts;
 
 	public AccountSnapshot(Observation<Map<String, Integer>> levels,
 		Observation<Set<Integer>> inventory, Observation<Set<Integer>> equipment,
 		Observation<Set<Integer>> bank, Observation<Boolean> rigour, Observation<Boolean> augury)
 	{
+		this(levels, inventory, equipment, bank, rigour, augury, Map.of());
+	}
+
+	public AccountSnapshot(Observation<Map<String, Integer>> levels,
+		Observation<Set<Integer>> inventory, Observation<Set<Integer>> equipment,
+		Observation<Set<Integer>> bank, Observation<Boolean> rigour, Observation<Boolean> augury,
+		Map<String, Observation<Boolean>> facts)
+	{
+		this.facts = Map.copyOf(facts);
 		this.levels = copyLevels(levels);
 		this.inventory = copyItems(inventory);
 		this.equipment = copyItems(equipment);
@@ -34,6 +44,13 @@ public final class AccountSnapshot
 	private static Observation<Set<Integer>> copyItems(Observation<Set<Integer>> fact)
 	{
 		return fact.known() ? Observation.observed(Set.copyOf(fact.value()), fact.time(), fact.source()) : fact;
+	}
+
+	public Observation<Boolean> fact(String key)
+	{
+		if (key.equals("rigour")) { return rigour; }
+		if (key.equals("augury")) { return augury; }
+		return facts.getOrDefault(key, Observation.unknown());
 	}
 
 	public Integer level(String skill)

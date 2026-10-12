@@ -12,6 +12,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Skill;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarbitID;
 
@@ -32,11 +34,29 @@ final class AccountSnapshotReader
 			int level = client.getRealSkillLevel(skill);
 			if (level > 0) { levels.put(skill.name(), level); }
 		}
+		Map<String, Observation<Boolean>> facts = new HashMap<>();
+		facts.put("song-of-elves", quest(Quest.SONG_OF_THE_ELVES, now));
+		facts.put("regicide", quest(Quest.REGICIDE, now));
+		facts.put("beneath-cursed-sands", quest(Quest.BENEATH_CURSED_SANDS, now));
+		facts.put("perilous-moons", quest(Quest.PERILOUS_MOONS, now));
+		facts.put("deadeye", unlock(VarbitID.PRAYER_DEADEYE_UNLOCKED, now, "Deadeye unlock varbit"));
+		facts.put("mystic-vigour", unlock(VarbitID.PRAYER_MYSTIC_VIGOUR_UNLOCKED, now, "Mystic Vigour unlock varbit"));
 		return new AccountSnapshot(Observation.observed(levels, now, "real skill levels"),
 			container(client.getItemContainer(InventoryID.INV), now, "inventory"),
 			container(client.getItemContainer(InventoryID.WORN), now, "equipment"), bank,
 			unlock(VarbitID.PRAYER_RIGOUR_UNLOCKED, now, "Rigour unlock varbit"),
-			unlock(VarbitID.PRAYER_AUGURY_UNLOCKED, now, "Augury unlock varbit"));
+			unlock(VarbitID.PRAYER_AUGURY_UNLOCKED, now, "Augury unlock varbit"), facts);
+	}
+
+	private Observation<Boolean> quest(Quest quest, Instant time)
+	{
+		try
+		{
+			QuestState state = quest.getState(client);
+			return state == null ? Observation.unknown() : Observation.observed(state == QuestState.FINISHED, time,
+				quest.getName() + " completion via Quest.getState");
+		}
+		catch (RuntimeException unavailable) { return Observation.unknown(); } // Script/state not ready: never false.
 	}
 
 	private Observation<Boolean> unlock(int id, Instant time, String source)

@@ -234,4 +234,37 @@ public class ObservationLifecycleTest
 		tick();
 		assertFalse(plugin.session.snapshot().augury.value());
 	}
+	@Test public void selectedQuestScriptsAndPrayerFactsRefreshWithoutLeakingAcrossCharacters()
+	{
+		when(client.getIntStack()).thenReturn(new int[]{2}); // Quest.getState's supported script result: finished.
+		observeBank();
+		assertTrue(plugin.session.snapshot().fact("song-of-elves").value());
+		assertTrue(plugin.session.snapshot().fact("beneath-cursed-sands").source().contains("Quest.getState"));
+		when(client.getIntStack()).thenReturn(new int[]{1});
+		VarbitChanged changed = new VarbitChanged(); changed.setVarbitId(VarbitID.BCS);
+		plugin.onVarbitChanged(changed); tick();
+		assertFalse(plugin.session.snapshot().fact("beneath-cursed-sands").value());
+		when(client.getVarbitValue(VarbitID.PRAYER_DEADEYE_UNLOCKED)).thenReturn(1);
+		plugin.onVarbitChanged(new VarbitChanged()); tick();
+		assertTrue(plugin.session.snapshot().fact("deadeye").value());
+		when(client.getAccountHash()).thenReturn(2L);
+		when(config.getRSProfileKey()).thenReturn("synthetic-character-b");
+		plugin.onRuneScapeProfileChanged(new RuneScapeProfileChanged("synthetic-character-a", "synthetic-character-b"));
+		assertNull(plugin.session.snapshot());
+		when(client.getIntStack()).thenReturn(null); when(client.getVarbitValue(VarbitID.PRAYER_DEADEYE_UNLOCKED)).thenReturn(0);
+		tick(); tick();
+		assertFalse(plugin.session.snapshot().bank.known());
+		assertFalse(plugin.session.snapshot().fact("song-of-elves").known());
+		assertFalse(plugin.session.snapshot().fact("deadeye").value());
+	}
+
+	@Test public void unavailableQuestScriptRemainsUnknownAndReaderRequiresClientThread()
+	{
+		when(client.getIntStack()).thenReturn(null);
+		AccountSnapshot snapshot = plugin.reader.read(com.ironpath.model.Observation.unknown());
+		assertFalse(snapshot.fact("regicide").known());
+		when(client.isClientThread()).thenReturn(false);
+		assertThrows(IllegalStateException.class, () -> plugin.reader.read(com.ironpath.model.Observation.unknown()));
+	}
+
 }

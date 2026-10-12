@@ -105,4 +105,25 @@ public class LocalPreferencesTest
 		assertTrue(failed.isCompletedExceptionally()); assertFalse(first.isCompletedExceptionally());
 		assertFalse(second.isCompletedExceptionally()); assertEquals(latest.goal, read.join().goal);
 	}
+	@Test public void t3SchemaMigratesStableIdsAndNewActivityChoicesSurviveRestartInIsolation() throws Exception
+	{
+		raw("{\"schemaVersion\":1,\"goal\":\"assemble-swamp-trident\",\"skipped\":[\"unlock-rigour\",\"retired\"],\"confirmations\":{\"item-27277\":{\"value\":true,\"time\":\"2026-10-12T12:00:00Z\"}}}");
+		Preferences migrated = store.read(a);
+		assertEquals("assemble-swamp-trident", migrated.goal);
+		assertEquals(Set.of("unlock-rigour"), migrated.skipped);
+		assertTrue(migrated.confirmations.get("item-27277").value);
+		assertEquals(TIME, migrated.confirmations.get("item-27277").time);
+		store.write(a, migrated.goal("ranged-options").skip("cg", true).confirm("owns-bowfaOrBetter", false, TIME));
+		LocalPreferences restarted = new LocalPreferences(() -> directory, new Gson(), catalog);
+		Preferences reloaded = restarted.read(a);
+		assertEquals(Set.of("unlock-rigour", "cg"), reloaded.skipped);
+		assertEquals("ranged-options", reloaded.goal);
+		assertFalse(reloaded.confirmations.get("owns-bowfaOrBetter").value);
+		JsonObject doc = new JsonParser().parse(Files.readString(temporary.getRoot().toPath().resolve(a + ".json"))).getAsJsonObject();
+		assertEquals(2, doc.get("schemaVersion").getAsInt());
+		assertEquals(Set.of("schemaVersion", "goal", "skipped", "confirmations"), doc.keySet());
+		assertTrue(restarted.read(LocalPreferences.key("synthetic-config-11:rs-a:character-1")).skipped.isEmpty());
+		assertTrue(restarted.read(LocalPreferences.key("synthetic-config-10:rs-b:character-2")).confirmations.isEmpty());
+	}
+
 }
