@@ -84,6 +84,10 @@ Prayer for an already unlocked prayer, and planning ordinary team CoX with
 recognised weapons. Team planning does not certify raid access or a complete
 usable loadout. No CG grind is required by these samples.
 
+If no recommendation appears, expand **Why no suggestion** to inspect completed
+prayer samples and unconfirmed skill/weapon conditions. An uncharged staff does
+not satisfy the charged magic-weapon sample; unobserved storage remains unknown.
+
 ## T1 privacy and coverage
 
 Real levels, inventory, equipment, session bank observations and two permanent
@@ -108,11 +112,13 @@ Supported local persistence was checked against `Plugin.getPluginDirectory()`
 and `Filepath`; goals, skips, manual confirmations and their persistence are deferred.
 
 Initial user-performed Windows checks passed on 12 October 2026: local build,
-Jagex Account development login, sidebar opening and an unknown bank before its
-first opening. Evidence and limitations are recorded in [T1](TASKS.md).
+Jagex Account development login, sidebar opening, an unknown bank before its
+first opening and the bank observation status transition after opening.
+Evidence and limitations are recorded in [T1](TASKS.md).
 
 Remaining real-client checks are **pending**: displayed skill/unlock accuracy;
-bank open/close/filter freshness; placeholders and charged/cosmetic variants;
+bank item-capture and close/filter freshness; the empty-result explanation and
+a positive recommendation; placeholders and charged/cosmetic variants;
 consumed scroll unlock timing; logout/hop/reconnect; two characters and RuneLite
 profiles; unsupported worlds; disable/re-enable cleanup; source buttons; and
 recommendation usefulness. The test fixtures are synthetic and establish logic

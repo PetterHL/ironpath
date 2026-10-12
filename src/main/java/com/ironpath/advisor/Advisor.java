@@ -70,16 +70,72 @@ public final class Advisor
 
 	private List<String> planTeam(AccountSnapshot account)
 	{
+		TeamPlan plan = assessTeam(account);
+		return plan.blockers.isEmpty() ? plan.evidence : null;
+	}
+
+	/** Explains abstention using observed facts, without asking the player to obtain gear. */
+	public List<String> explainNoAdvice(AccountSnapshot account)
+	{
+		if (!evaluate(account).isEmpty()) { return List.of(); }
+		List<String> reasons = new ArrayList<>();
+		prayerReason(reasons, account, account.rigour, "Rigour", 74, KnowledgeCatalog.Kind.UNLOCK_RIGOUR);
+		prayerReason(reasons, account, account.augury, "Augury", 77, KnowledgeCatalog.Kind.UNLOCK_AUGURY);
+		if (catalog.decisions.stream().anyMatch(d -> d.kind == KnowledgeCatalog.Kind.PLAN_TEAM && "reviewed".equals(d.status)))
+		{
+			reasons.addAll(assessTeam(account).blockers);
+		}
+		if (catalog.decisions.stream().anyMatch(d -> !"reviewed".equals(d.status)))
+		{
+			reasons.add("Samples awaiting review are excluded from suggestions.");
+		}
+		return List.copyOf(reasons);
+	}
+
+	private void prayerReason(List<String> reasons, AccountSnapshot account, Observation<Boolean> unlock,
+		String prayer, int target, KnowledgeCatalog.Kind scrollKind)
+	{
+		if (!unlock.known())
+		{
+			reasons.add(prayer + ": unlock state unknown; no scroll or training suggestion can be confirmed.");
+		}
+		else if (!unlock.value())
+		{
+			Decision decision = catalog.decisions.stream().filter(d -> d.kind == scrollKind).findFirst().orElse(null);
+			String storage = decision == null || account.observedItem(decision.itemId) == Truth.UNKNOWN
+				? "unread containers remain unknown" : "other storage remains unknown";
+			reasons.add(prayer + ": not unlocked, but no eligible reviewed action with a positively observed scroll; " + storage + ".");
+		}
+		else if (account.atLeast("PRAYER", target) == Truth.TRUE)
+		{
+			reasons.add(prayer + ": already unlocked and its Prayer level met. Its scroll and Prayer-training samples are complete.");
+		}
+		else
+		{
+			reasons.add(prayer + ": unlocked. Training sample needs confirmed Prayer below " + target
+				+ " and Defence at least 70; observed Prayer " + value(account.level("PRAYER"))
+				+ ", Defence " + value(account.level("DEFENCE")) + ".");
+		}
+	}
+
+	private TeamPlan assessTeam(AccountSnapshot account)
+	{
+		List<String> blockers = new ArrayList<>();
+		List<String> evidence = new ArrayList<>();
 		for (String skill : List.of("ATTACK", "STRENGTH", "RANGED", "MAGIC", "HITPOINTS"))
 		{
-			if (account.atLeast(skill, 80) != Truth.TRUE) { return null; }
+			baselineReason(blockers, account, skill, 80);
 		}
-		if (Truth.all(account.atLeast("DEFENCE", 70), account.atLeast("PRAYER", 70)) != Truth.TRUE) { return null; }
-		List<String> evidence = new ArrayList<>();
+		baselineReason(blockers, account, "DEFENCE", 70);
+		baselineReason(blockers, account, "PRAYER", 70);
 		for (String style : List.of("melee", "ranged", "magic"))
 		{
 			Gear item = catalog.gear.get(style).stream().filter(g -> usable(account, g)).findFirst().orElse(null);
-			if (item == null) { return null; }
+			if (item == null)
+			{
+				weaponReason(blockers, account, style);
+				continue;
+			}
 			evidence.add(item.label + " observed in " + account.itemEvidence(item.id));
 			if (item.crystal)
 			{
@@ -91,7 +147,66 @@ public final class Advisor
 			}
 		}
 		evidence.add("Authored planning baseline: 80+ Attack/Strength/Ranged/Magic/Hitpoints, 70+ Defence/Prayer: " + account.levels.evidence());
-		return evidence;
+		return new TeamPlan(List.copyOf(evidence), List.copyOf(blockers));
+	}
+
+	private static void baselineReason(List<String> blockers, AccountSnapshot account, String skill, int minimum)
+	{
+		if (account.atLeast(skill, minimum) != Truth.TRUE)
+		{
+			blockers.add("Team CoX planning: " + skill + " " + value(account.level(skill))
+				+ "; this sample needs an observed real level of at least " + minimum + ". This is a preparation baseline, not a raid access requirement.");
+		}
+	}
+
+	private void weaponReason(List<String> blockers, AccountSnapshot account, String style)
+	{
+		List<Gear> observed = catalog.gear.get(style).stream()
+			.filter(g -> account.observedItem(g.id) == Truth.TRUE).collect(java.util.stream.Collectors.toList());
+		if (observed.isEmpty())
+		{
+			boolean unknown = catalog.gear.get(style).stream().anyMatch(g -> account.observedItem(g.id) == Truth.UNKNOWN);
+			blockers.add("Team CoX planning: no covered " + style + " weapon confirmed in observed inventory/equipment/bank. "
+				+ (unknown ? "Unread containers remain unknown. " : "Other storage remains unknown. ")
+				+ (style.equals("magic") ? "Only selected charged powered-staff variants are recognised." : "Unrecognised variants are outside this sample."));
+			return;
+		}
+		Set<String> details = new java.util.LinkedHashSet<>();
+		for (Gear item : observed)
+		{
+			if (account.atLeast(item.skill, item.level) != Truth.TRUE)
+			{
+				details.add(item.label + " observed, but " + item.skill + " " + value(account.level(item.skill))
+					+ " does not confirm its " + item.level + " wield level");
+			}
+			if (item.crystal)
+			{
+				if (account.atLeast("AGILITY", 70) != Truth.TRUE)
+				{
+					details.add("Bowfa observed, but 70 Agility is not confirmed (observed " + value(account.level("AGILITY")) + ")");
+				}
+				for (String part : List.of("crystalBody", "crystalLegs", "crystalHelm"))
+				{
+					if (catalog.gear.get(part).stream().noneMatch(g -> usable(account, g)))
+					{
+						details.add("Bowfa observed, but recognised active " + part.replace("crystal", "crystal ").toLowerCase(java.util.Locale.ROOT)
+						+ " is not confirmed; this sample currently covers default-colour armour only");
+					}
+				}
+			}
+		}
+		blockers.add("Team CoX planning (" + style + "): " + String.join("; ", details) + ".");
+	}
+
+	private static final class TeamPlan
+	{
+		final List<String> evidence;
+		final List<String> blockers;
+		TeamPlan(List<String> evidence, List<String> blockers)
+		{
+			this.evidence = evidence;
+			this.blockers = blockers;
+		}
 	}
 
 	private boolean usable(AccountSnapshot account, Gear gear)

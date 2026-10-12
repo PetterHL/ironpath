@@ -18,7 +18,8 @@ import net.runelite.client.util.LinkBrowser;
 
 final class IronpathPanel extends PluginPanel
 {
-	void render(String status, AccountSnapshot snapshot, List<Recommendation> advice, KnowledgeCatalog catalog)
+	void render(String status, AccountSnapshot snapshot, List<Recommendation> advice,
+		List<String> noAdviceReasons, KnowledgeCatalog catalog)
 	{
 		if (!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
 		removeAll();
@@ -45,7 +46,15 @@ final class IronpathPanel extends PluginPanel
 			text(this, "Only observed storage is covered. Not observed does not mean never acquired. Stored gear may need charges, ammunition or unnoting; check before use.");
 			if (advice.isEmpty())
 			{
-				text(this, "No supported suggestion from these five samples. Observe your bank if needed. Unlocks, unrecognised variants and other storage remain unknown; no missing gear is inferred.");
+				text(this, "No recommendation matches these five samples. Inspect why below; other storage and unrecognised variants remain outside coverage.");
+				JButton explain = new JButton("Why no suggestion");
+				add(explain);
+				JPanel details = new JPanel();
+				details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS));
+				for (String reason : noAdviceReasons) { text(details, reason); }
+				details.setVisible(false);
+				explain.addActionListener(event -> { details.setVisible(!details.isVisible()); revalidate(); });
+				add(details);
 			}
 			for (Recommendation recommendation : advice) { card(recommendation, catalog); }
 		}
