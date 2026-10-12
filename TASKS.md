@@ -36,6 +36,7 @@ Code review: [PR #1 — Implement T1 local account observations and CoX sidebar]
 | Jagex Account development login and sidebar opening | Passed, user performed | User reported login; supplied image shows the active Ironpath sidebar. |
 | Bank remains unknown before first opening | Passed, user performed | User confirmed bank had not been opened; sidebar displays `Bank unknown`. |
 | First bank opening updates observation status | Passed, user performed | A subsequent sidebar image displays `Bank last observed this session`. This establishes the status transition, not full item-capture or close/filter accuracy. |
+| Positive team CoX suggestion is displayed | Passed, user performed | A later sidebar image shows `Plan ordinary team CoX with your observed weapons` after the earlier empty result. Matching item evidence, the expanded explanation and usefulness still need user verification. |
 | Empty-result explanation | Failed in initial UI; correction awaiting user retest | After the bank status updated, the generic empty state did not identify the unmet sample condition. Added a `Why no suggestion` expansion using the same pure evaluator checks; no catalogue or recommendation eligibility was expanded. |
 | Displayed skill/unlock accuracy and remaining real-client behavior | Pending | Rendering alone does not establish that the values match the game. |
 
@@ -60,7 +61,7 @@ JAVA_HOME=/tmp/ironpath-jdk11 GRADLE_USER_HOME=/workspace/.gradle ./gradlew \
   -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 test build --no-daemon
 ```
 
-**Pending real-client checks:** login initialisation and displayed skill/unlock accuracy; bank item-capture, close/filter freshness and observation times; placeholders and supported charged/cosmetic variants; the new empty-result explanation and a positive CoX suggestion after a supported charged weapon is observed; consumed unlocks; logout, hop, reconnect and region-loading clears; two characters and RuneLite profile changes; unsupported modes/worlds; disable/re-enable; source links and recommendation usefulness. Only the manual passes explicitly recorded above are established. No general game accuracy pass, player usefulness judgement or Hub approval is claimed. See README for simple Windows/macOS/Linux build and launch commands and Jagex Account login guidance. T2 remains unstarted; no Hub submission.
+**Pending real-client checks:** login initialisation and displayed skill/unlock accuracy; bank item-capture, close/filter freshness and observation times; placeholders and supported charged/cosmetic variants; the new empty-result explanation and the positive suggestion's expanded matching evidence; consumed unlocks; logout, hop, reconnect and region-loading clears; two characters and RuneLite profile changes; unsupported modes/worlds; disable/re-enable; source links and recommendation usefulness. Only the manual passes explicitly recorded above are established. No general game accuracy pass, player usefulness judgement or Hub approval is claimed. See README for simple Windows/macOS/Linux build and launch commands and Jagex Account login guidance. T2 remains unstarted; no Hub submission.
 
 ## T2 — Review the bounded catalogue
 

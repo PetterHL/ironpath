@@ -113,12 +113,13 @@ and `Filepath`; goals, skips, manual confirmations and their persistence are def
 
 Initial user-performed Windows checks passed on 12 October 2026: local build,
 Jagex Account development login, sidebar opening, an unknown bank before its
-first opening and the bank observation status transition after opening.
+first opening, the bank observation status transition after opening and the
+display of an initial team CoX suggestion.
 Evidence and limitations are recorded in [T1](TASKS.md).
 
 Remaining real-client checks are **pending**: displayed skill/unlock accuracy;
 bank item-capture and close/filter freshness; the empty-result explanation and
-a positive recommendation; placeholders and charged/cosmetic variants;
+the positive suggestion's expanded evidence; placeholders and charged/cosmetic variants;
 consumed scroll unlock timing; logout/hop/reconnect; two characters and RuneLite
 profiles; unsupported worlds; disable/re-enable cleanup; source buttons; and
 recommendation usefulness. The test fixtures are synthetic and establish logic
