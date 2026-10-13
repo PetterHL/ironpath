@@ -25,6 +25,18 @@ Two-column cards stack sprite, two/three-line name, one short value line and one
 
 R2 uses the same native cards/navigation and separate family references. Ranged weapon Value leads with DPS; armour/jewellery retain max hit at unchanged speed. A neutral loss and long-term specialist label may coexist, with separately expandable encounter results and complete inputs explaining why. Ranged Before/After names use the family item registry. Dart loading and charged quiver/ammunition assumptions are explicit corrections, not live combat readings. [Fresh component captures and pending live acceptance](validation/R2.md).
 
+## Progression-intelligence presentation refinement
+
+**Selected for R3–R6, not implemented in R2.** Keep native cards, responsive two-column Browse and Value/Path; no new major screen or wider window is required. DESIGN `progression-1` supersedes older effort-first admission/ranking text below. The selected analytical comparison remains available; it is not the sole headline for a utility item.
+
+- Card: full item name, one meaningful role/value reason, then effort/status. For example, “Venator bow — lower-attention multi-target Slayer” or “Zaryte — high-HP special role”; these require reviewed applicable evidence, not universal canned recommendations.
+- Value: personal importance and “why for your account”; adequate owned alternative; supported benefit/trade-off; optional indirect “helps at X, which still offers Y.” State conditional context/preferences explicitly. A major long-term upgrade may have both labels without contradiction.
+- Path: distinguish game access, selected-method capabilities, recommended preparation and optional improvements. Where supported, lead with “A reviewed method uses your existing gear” alongside the optional detour. This is not a completion guarantee.
+- Activity: show independent access/method evidence, eligible useful rewards, and uncertain/ineligible rewards separately. A reward-specific unknown must not mark the entire activity unavailable. A single strong reward can be worthwhile without a “several rewards” headline.
+- Browse: eventually filter role/activity/importance separately from effort/status; retain owned-use, conditional and small-gain explanations. No questionnaire; one focused clarification can improve consequential unknowns. Never render all model fields as badges.
+
+Evidence is read-only planning. No live prayer/movement cues or encounter rehearsal. Existing native-width/client checks stay pending until actually performed; this document supplies no new UI screenshots or test pass.
+
 ## Overview and discovery
 
 Header: IronPath, one line of context such as “Based on observed gear”; small **Browse** action. A quiet account-evidence link opens timestamps/unknowns. Knowledge versions, diagnostics and goals live behind Account/Preferences, below the main content. No repeated freshness/version block in details.
