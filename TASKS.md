@@ -4,9 +4,9 @@ Updated 12 October 2026. This is the single active backlog.
 
 ## Current decision and status
 
-Petter approved moving directly from the CoX experiment to broader Ironman PvM progression on 12 October 2026. CoX remains a supported activity and regression case. A separate CoX-only release and completion of the old T4 user trial are **not prerequisites for expansion**. Do not interpret this decision as proof that unperformed tests passed.
+Petter approved an **automatic, account-aware Ironman PvM upgrade advisor** on 12 October 2026. The primary question is which upgrades are worthwhile for this account, what they change and how to obtain them. Goals are optional; equipment, prayers, skill levels and permanent unlocks are eligible. The next task is **P4a, an upgrade-first vertical slice of approximately 3–4 representative upgrades**, not another catalogue-expansion-first delivery. Useful broad PvM work remains in place. The old CoX trial is not a prerequisite; unperformed tests remain pending.
 
-At the original planning update, main contained the documentation foundation; implementation is in the open stacked PRs below. Do not rebuild T1–T3 from scratch.
+Verified for this update: `main` is `c717927cdf4e3fd8128d28b96e05690965f5a908`; [PR #5](https://github.com/PetterHL/ironpath/pull/5), `p1-p3-broad-pvm`, is **open and unmerged** at `eb22fef97aa899bac5611b3001462dfdbebe0b80`. It incorporates PRs #1–#4, which also remain open. This documentation change is stacked on that implementation. Recheck current heads before starting; do not rebuild T1–P3, merge/close prior PRs or assume main contains their code.
 
 | Historical work | Verified repository state | Remaining qualification |
 |---|---|---|
@@ -15,12 +15,15 @@ At the original planning update, main contained the documentation foundation; im
 | T3 goals, ranking, local preferences | [PR #3](https://github.com/PetterHL/ironpath/pull/3), `t3-local-advisor` at `b3a93d9aa60f7661e49b970fc3b9272e7ad2df12` | Build / 58 tests reported passing; T3 real-client checks pending |
 | T4 trial preparation | [PR #4](https://github.com/PetterHL/ironpath/pull/4), `t4-user-maintenance-trial` at `fad507f0b87f2e4f879c8810daad663f7dd3043f` | Documentation only; simulated maintenance rehearsal complete; user trial pending |
 | T5 CoX distribution | Not started | Superseded by P5 below |
+| P1–P3 broad PvM foundation | PR #5 at `eb22fef`; 16 decisions, seven goals | Historical 75 tests passed; limited PC flow user-reported working, detailed validation pending |
 
 Historical implementation/test reports are in [TASKS.md at the T4 baseline](https://github.com/PetterHL/ironpath/blob/fad507f0b87f2e4f879c8810daad663f7dd3043f/TASKS.md). Preserve those results when combining branches. This plan replaces the old CoX-only scope and T1-only assignment; historical reports remain evidence, not active instructions.
 
 ## Delivery order
 
-P1, P2 and P3 form the **next implementation assignment**. Deliver them together as a coherent PR, using small commits as useful. Do not introduce a new approval/review gate between these three tasks. P4 and P5 follow separately. No plugin implementation is part of this planning update.
+**P4a → one implementation review → P4b → P5.** P4a includes source verification, minimal model changes, the bounded numerical comparison, sidebar experience and validation in one assignment. Expand toward approximately 8–12 researched upgrades only after testing and review; counts are budgets, not quotas or permanent limits. No plugin implementation is part of this documentation update.
+
+The P1–P3 briefs and results immediately below describe the completed earlier delivery. Their goal-count comparator, available-only cards and earlier catalogue budget are historical behaviour, superseded for future implementation by docs/DESIGN.md and P4. Preserve their reported results and pending checks accurately.
 
 ## P1 — Bring the existing foundation and current plan together (implemented)
 
@@ -214,40 +217,71 @@ restart and character/profile isolation remain **pending**. It does not accept
 all five checklist scenarios, establish zero critical errors, or change any
 historical T1–T4 result. P4/distribution remain outside this assignment.
 
-## P4 — Expand the first catalogue to approximately 35–45 decisions
+## P4 — Upgrade-first delivery (replaces catalogue-expansion-first scope)
 
-After P3 is implemented, expand breadth using the same model. Prioritise missing useful choices over filling quotas; do not require another abstract architecture study.
+P4a is the next implementation assignment. Complete it in one coherent PR, with small commits as useful and one normal review at the end. Source checks, model changes, calculations, UI and tests are work within that delivery, not separate approval gates. P4b follows only after the slice is tested and reviewed. Do not reopen settled backend, AI, repository or independent-development decisions.
 
-| Area | Candidate decisions | Approximate budget |
-|---|---|---:|
-| Shared PvM foundations | Relevant quest/skill unlocks, Piety, fire cape, key glove/defender gaps when they constrain a supported goal | 5 |
-| Midgame equipment | Zombie axe, targeted Barrows, Moons, proceed with an adequate owned kit | 5 |
-| Ranged | CG/Bowfa/crystal packages, supported alternatives, Zulrah/blowpipe, Vorkath/Ava progression | 5 |
-| Magic and prayers | Powered staffs, trident/swamp, meaningful magic slots, Royal Titans prayers, Rigour/Augury | 6 |
-| Slayer and specialist weapons | Relevant Slayer milestones, demonbane, dragonbane and defence reduction | 5 |
-| Jewellery and armour | Zenytes/Crafting, selected GWD upgrades, defer marginal gains | 5 |
-| Raids | ToA, ordinary team CoX, ToB entry/preparation and selected later improvements | 6 |
-| Advanced objectives | A few goal-specific DT2, Inferno and Colosseum preparation choices | 3 |
+### P4a — First complete upgrade experience (not started)
 
-These are research candidates, not a validated progression order or a promise of every route. Reuse existing decisions; do not count every item tier as a separate user choice. Yama, Doom and Nex acquisition routes are later candidates unless evidence justifies replacing a lower-value candidate within the budget. Relevant owned rewards may be recognised earlier.
+**Outcome:** observe account → identify relevant upgrade → explain personal value → compare alternatives → show acquisition path. The experience must work with no selected goal and include clearly labelled provisional advice where ownership is unknown.
 
-**Done:** source-reviewed breadth serves midgame, post-Bowfa and established raiding accounts; unsupported goals and item combinations are explicit; affected account fixtures and catalogue validation pass. No full quest/skill planner, UIM/HCIM/GIM routing or every-boss coverage.
+Use docs/DESIGN.md's representative cases: **occult necklace, trident of the swamp, Zaryte crossbow and avernic treads**. Four is a scope budget, not a quota. A documented substitution or a three-case slice is acceptable only if it preserves the numerical comparison, specialist limitations and prerequisite/shared-route cases across multiple PvM activities. Do not shrink to CoX-only advice, discard existing broad content or pad the slice with administrative reminders. Cloth/Eye secondary opportunities do not require two additional full upgrade implementations.
 
-## P5 — Broad usefulness trial and distribution readiness
+| Work / dependency | Implementation and completion evidence |
+|---|---|
+| **1. Reconcile baseline and evidence** | Recheck main and relevant open PRs; use PR #5's implementation plus these updated documents, following the current stacked-PR workflow if unmerged. Do not merge/close/reset earlier PRs. Run existing baseline tests once. Verify selected exact variants, new route access/prerequisites, supported alternatives and target/formula sources. Reuse existing evidence where applicable; pin new revisions and record access/review/reuse metadata. |
+| **2. Outcome/value and route evaluation**, using 1 | Extend existing catalogue/Advisor in place to distinguish outcome, route and contextual comparison. Replace goal-count ranking; retain stable identifiers, pure truth evaluation, skip semantics and source/cycle validation. Add provisional and plan-ahead results with targeted confirmations and route-specific nearest steps in no-goal mode. Group shared routes and separate quick actions from major upgrade candidates. |
+| **3. Reference setup and numerical model**, using 1 | Build docs/DESIGN.md's bounded powered-magic reference setup/comparison helper. Reuse observed levels/items; add only reviewed slot/stat/target facts. Propose a setup with lightweight confirmation/correction, explicit empty/unknown slots, prayer/boost assumptions and invalidation. Keep it in memory. Show before/after max hit and the supported trident theoretical-DPS/hit-chance comparison against ordinary Dharok, with exact assumptions and unsupported fallbacks. No external runtime calculator, dependency import, general optimiser or persisted loadout system. |
+| **4. Four upgrade experiences**, using 2–3 | Occult: contextual magic bonus/breakpoint and Slayer acquisition prerequisite. Swamp: owned seas alternative, target comparison, Zulrah/assembly/upkeep work. Zaryte: special-attack role, hit/HP/energy/bolt limitations and verified Nex/component route. Treads: exact owned boot alternative, equip/access/component gaps and conditional shared Doom rewards. Preserve relevant advanced ownership, prayer/skill/unlock and CG/Moons/Titans/ToA/CoX content. Numbers are required only where the bounded model supports them. |
+| **5. Sidebar and validation**, integrated with 2–4 | Compact single-column cards open useful detail views; sources/assumptions and contextual corrections are accessible. Observations, diagnostics, goals and manual administration move to secondary controls. Keep major upgrades visible above separate quick actions. Reuse lifecycle/identity, Swing and serial IO guards. Complete the acceptance checks below, update P4a results and README's delivered behaviour, and open a reviewable PR. |
 
-Replace the old CoX-only release gate with a short broad trial. Reuse existing T4 safety checks and maintenance evidence; do not repeat a simulation merely to complete a checklist.
+**Required acceptance checks:**
 
-- Check real-client observation accuracy, save/restart and character/profile isolation, plus goal change and activity skip/restore.
-- Try five contrasting scenarios, including no-goal, declined-CG, post-Bowfa and established raider contexts. Aim for four of five actionable or correctly abstaining results and three distinct recommendations judged useful. Record unexercised checks as pending.
-- Zero critical ownership/access/isolation errors before release. A concrete discovered defect is a reason to fix it; pending user availability is not a reason to stop P1–P4 development.
-- Review current sources and maintenance effort proportional to the wider catalogue.
-- Prepare licence/notices, privacy/coverage/install documentation, metadata/icon and supported build. Choose a distinct Plugin Hub manifest identifier.
-- Plugin Hub submission requires explicit publication authorisation. This roadmap change does not grant it.
+1. **Account-specific value:** no-goal fixtures for midgame, post-Bowfa and advanced accounts select useful supported outcomes. Owned equivalents suppress redundant grinds; owning Bowfa/twisted bow alone does not suppress Zaryte's distinct role or make it worthwhile. A deliberately marginal/no-gain case is deferred or accurately explained. Goal aliases/count changes cannot increase benefit; a real optional goal may refine relevant priorities.
+2. **Partial knowledge:** unopened and observed-empty banks never establish global absence. Supported evidence can produce provisional cards with specific ownership/alternative questions; irrelevant or unsupported contexts do not produce a generic shopping list. Confirm/clear and positive live/manual precedence update cards correctly. Unsupported inputs suppress a numerical result while preserving justified qualitative advice.
+3. **Routes and shared rewards:** a relevant inaccessible upgrade shows its next prerequisite without selecting a goal; distinguish hard access, preparation and equip requirements. Preserve ALL/ANY alternatives and activity skip/restore, including owned reward utility after skipping. Doom outcomes have individual ownership/value and delve eligibility; do not assume simultaneous drops, enough materials or player capability. One shared route explanation replaces duplicated work without adding unrelated benefits.
+4. **Trustworthy numbers:** independently derive and test supported integer-rounding/max-hit cases, including 90-Magic seas 25 → swamp 28 and seas 25 → 26 with only occult's 5% bonus. Vary Magic across breakpoints, supported gear/prayers/boosts and styles; test zero-delta, unknown gear, incompatible slots, empty/charged variants and unavailable assumptions. Validate accuracy branches, successful zero-hit handling and attack interval against hand checks and a pinned, locally run calculator using original synthetic inputs. Record reference version, inputs, outputs and tolerances; investigate discrepancies. No production-code-derived expectations, copied corpus or claim that oracle agreement proves game correctness. If the reference cannot be run, document the limitation and supply independent hand-derived accuracy/DPS fixtures; the mandatory numeric case cannot simply be waived.
+5. **Numerical honesty and alternatives:** at least one account-aware end-to-end number changes when observed levels/reference setup change. Trident DPS is labelled uninterrupted attacks against the exact target, excludes poison/venom and does not inherit wind weakness. Mention a relevant wind-spell alternative at Barrows without claiming full spell optimisation. Zaryte's conditional proc is never called a guaranteed hit; no unsupported encounter-time, kills/trip or deeper-delve estimate appears.
+6. **UI and regression safety:** cards are legible at RuneLite's normal narrow width and with long labels. No goal or account-wide questionnaire is required; details show assumptions, alternatives and acquisition work. Owned-scroll/assembly actions are separate. Test meaningful actual control behaviour for corrections/back navigation and delayed stale actions. Reference confirmations invalidate after relevant changes and clear on character/profile transitions. Retain relevant catalogue, first-save, serial IO, schema migration, restart and account-isolation tests; replace only assertions intentionally superseded by the new product semantics.
+
+**Validation and review deliverable:** run the meaningful test suite and build, catalogue validation and `git diff --check`; report actual commands/results and resolved RuneLite/JDK versions. Provide three concise synthetic walkthroughs (including a provisional/blocked and an advanced-specialist case), the supported calculation matrix and known exclusions. Every selected outcome path must be inspectable across fixtures; a single account need not receive every card. Preserve historical 75-test evidence as history, not a claimed new pass. Record real-client checks below as passed only when actually exercised.
+
+**Focused PC checklist — pending:**
+
+- Open with no goal, before/after bank observation; inspect a useful card and its ownership/reference assumptions without navigating a setup form.
+- Compare supported before/after figures to the displayed setup, correct one choice, change a relevant level/equipment input, and confirm recalculation/invalidation. Inspect an unsupported setup's honest fallback.
+- Inspect a specialist and a blocked/shared-route example if the account supports them; confirm alternatives and remaining work are useful. Leave unavailable account cases pending rather than grind items for a test.
+- Check narrow-width readability, detail/back controls, quick actions, secondary goals/diagnostics, sources and activity skip/restore.
+- Recheck first-save/restart and two-character/profile separation using the existing privacy-safe procedures; stale setup/UI actions must not cross identities. Distinguish observed passes, user reports and synthetic evidence.
+
+**Stop after P4a delivery and review request.** Do not start P4b, full encounter modelling or Plugin Hub publication in the same assignment.
+
+### P4b — Expand useful coverage after P4a review (not started)
+
+Expand toward approximately **8–12 thoroughly researched upgrades**, reusing the validated UI, outcome/route model and comparison boundaries. Preserve useful existing decisions; this is not a total-record quota or permanent limit. Prioritise gaps found in use: relevant prayers/permanent unlocks, skill breakpoints and equipment across multiple PvM activities. Add numerical contexts only when their assumptions/mechanics can be verified with proportionate tests; qualitative specialist advice remains valid.
+
+Retain independent content/source review, owned-alternative checks, provisional/access handling and acquisition trade-offs per upgrade. Add optional advanced goals only when supported outcomes justify them; do not implement the whole example goal list. Further expansion follows observed usefulness and sustainable maintenance rather than a preset 35–45-decision target.
+
+## P5 — Usefulness trial and distribution readiness (not started)
+
+Reuse T4's safety checks and recorded maintenance rehearsal; do not repeat a simulation just to complete a checklist. Development need not wait for unavailable user testing, but release claims need evidence.
+
+- Check real-client observation accuracy, numerical assumptions, save/restart and character/profile isolation, plus secondary goals and activity skip/restore.
+- Try five contrasting scenarios, including no-goal/provisional, declined-CG, post-Bowfa and established-raider contexts. Aim for four of five actionable or correctly qualified/abstaining results and three distinct recommendations judged useful. A provisional result counts only if its uncertainty and next confirmation are understood. Record unexercised checks as pending.
+- Zero critical ownership/access/isolation errors and no known incorrect numerical claims before release. Fix concrete defects; do not convert pending availability into fabricated passes.
+- Review source freshness and real maintenance effort; reduce coverage if upkeep is disproportionate.
+- Prepare licence/notices, privacy/coverage/install documentation, metadata/icon and supported build. Retain the approved product name and choose a distinct Plugin Hub manifest identifier.
+- Plugin Hub submission requires explicit publication authorisation; this roadmap grants none.
 
 ## Next Codex assignment
 
-Read AGENTS.md, README.md, docs/DESIGN.md and this active P1–P5 plan from current main. Implement **P1–P3 together**, reusing T3 including `b3a93d9` and the T4 historical records. Do not rebuild the foundation or wait for the old CoX trial. Deliver a coherent PR against main with the first broad 12–16-decision slice, meaningful tests, accurate task results and a short manual checklist. Stop before P4/distribution. Report actual blockers; do not claim unperformed game tests passed.
+Read AGENTS.md, README.md, docs/DESIGN.md and TASKS.md from the latest upgrade-first documentation branch/commit. Verify current main and PR heads, then combine those documents with the existing PR #5 implementation without merging or closing earlier PRs. Implement **P4a only**: the 3–4-upgrade vertical slice, no-goal/provisional recommendations, bounded account-aware comparisons and acquisition details. Reuse the existing architecture and broad content; meet P4a's numerical, UI and regression criteria. Deliver one coherent PR with actual validation results, synthetic walkthroughs and pending PC checks. Stop before P4b and publication.
 
+## Documentation-direction review — 12 October 2026
+
+This update changes only README.md, AGENTS.md, docs/DESIGN.md and TASKS.md. No application code, catalogue data, tests or dependencies are changed. Repository state and PR #5 were checked rather than presumed merged; #1–#4 remain open. The P1–P3 results/PC records and historical T1–T4 records below are preserved, including pending checks and the limited user-reported flow.
+
+Consistency review: both numeric examples share one small powered-magic model; Zaryte and Doom remain bounded contextual/route cases. Reference loadout inputs are explicitly additional work because current snapshots are item-ID sets. Value/certainty/access are separate, and goal-count ranking is deliberately replaced. P4a is one delivery/review, followed by evidence-led expansion, with no new framework or infrastructure. Numeric validation and new access-source checks are implementation work; no product-architecture decision remains blocking. Application tests are not rerun for this documentation-only update; the historical 75-test result remains unchanged.
 
 ## Historical T1–T4 records (preserved; superseded task instructions)
 
