@@ -60,14 +60,16 @@ public class UpgradePanelTest
 		return result;
 	}
 	private JButton button(String label){return children(panel).stream().filter(c->c instanceof JButton).map(c->(JButton)c).filter(b->b.getText().equals(label)||label.equals(b.getToolTipText())).findFirst().orElseThrow();}
-	private JButton open(String id){return children(panel).stream().filter(c->c instanceof JButton).map(c->(JButton)c).filter(b->("open-upgrade-"+id).equals(b.getName())).findFirst().orElseThrow();}
+	private JButton open(String id){if(children(panel).stream().noneMatch(c->("open-upgrade-"+id).equals(c.getName()))){button("Browse").doClick();}return children(panel).stream().filter(c->c instanceof JButton).map(c->(JButton)c).filter(b->("open-upgrade-"+id).equals(b.getName())).findFirst().orElseThrow();}
 	private boolean visible(Component c){while(c!=panel){if(!c.isVisible())return false;c=c.getParent();if(c==null)return false;}return true;}
 	private String text(){return children(panel).stream().filter(c->c instanceof JTextArea).map(c->((JTextArea)c).getText()).collect(java.util.stream.Collectors.joining("\n"));}
 
 	@Test public void noGoalPrimaryCardsAndAdministrationStaySeparateAtNarrowWidth() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{
-			assertEquals(3,children(panel).stream().filter(c->c instanceof JButton&&"Open details".equals(((JButton)c).getText())&&visible(c)).count());
+			assertEquals(0,children(panel).stream().filter(c->c instanceof JButton&&"Open details".equals(((JButton)c).getText())).count());
+			assertTrue(visible(button("Browse")));
+			assertTrue(children(panel).stream().anyMatch(c->c.getName()!=null&&c.getName().startsWith("open-upgrade-")&&visible(c)));
 			assertFalse(visible(button("Set goal")));assertTrue(visible(button("Account and preferences")));
 			for(Component c:children(panel))
 			{

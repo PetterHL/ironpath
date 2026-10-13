@@ -15,6 +15,7 @@ final class ObservationSession
 	private String identity;
 	private AccountSnapshot snapshot;
 	private final MagicReference reference = new MagicReference();
+	private com.ironpath.advisor.PaceScenario pace;
 	private Preferences preferences = Preferences.EMPTY;
 	private boolean loaded, writable;
 	private String storageStatus = "Preferences unavailable until login.";
@@ -45,6 +46,13 @@ final class ObservationSession
 	synchronized long generation() { return generation; }
 	synchronized long revision() { return revision; }
 	synchronized AccountSnapshot snapshot() { return snapshot; }
+	synchronized com.ironpath.advisor.PaceScenario pace() { return pace; }
+	synchronized boolean editPace(long token, long viewRevision, String currentIdentity, AccountSnapshot expected,
+		com.ironpath.advisor.PaceScenario next)
+	{
+		if (!accepts(token, currentIdentity) || revision != viewRevision || snapshot != expected || !loaded || snapshot == null) { return false; }
+		pace=next; revision++; return true;
+	}
 	synchronized PoweredMagic.Setup reference(KnowledgeCatalog catalog)
 	{ return snapshot == null || !loaded ? null : reference.update(snapshot, preferences, catalog); }
 	synchronized boolean editReference(long token, long viewRevision, String currentIdentity, AccountSnapshot expected,
@@ -62,6 +70,7 @@ final class ObservationSession
 		identity = null;
 		snapshot = null;
 		reference.clear();
+		pace = null;
 		preferences = Preferences.EMPTY; loaded = false; writable = false;
 		storageStatus = "Loading local character preferences…";
 	}

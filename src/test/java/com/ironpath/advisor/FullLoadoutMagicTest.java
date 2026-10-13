@@ -31,6 +31,25 @@ public class FullLoadoutMagicTest
 			"cape",21795,"neck",12002,"hands",19544,"feet",13235,"ring",11770));
 		if (weapon != 27275) { slots.put("shield",25985); } return slots;
 	}
+	@Test public void observedAncientBlessingRemainsInSupportedReferenceWithoutChangingMagicMetrics()
+	{
+		Map<String,Integer> equipped=slots(12899,2);equipped.put("ammo",20235);
+		Set<Integer> owned=new HashSet<>(equipped.values());owned.remove(0);
+		AccountSnapshot base=account(owned,99,99);
+		AccountSnapshot a=new AccountSnapshot(base.levels,base.inventory,fact(owned),base.bank,base.rigour,base.augury,base.facts,
+			fact(equipped),Observation.unknown(),Observation.unknown(),Observation.unknown());
+		CombatSetup proposed=service.propose(a);
+		assertEquals(Integer.valueOf(20235),proposed.slots.get("ammo"));
+		ComparisonResult blessing=service.compare(a,Preferences.EMPTY,proposed,27275);
+		Map<String,Integer> empty=new HashMap<>(proposed.slots);empty.put("ammo",0);
+		CombatSetup without=new CombatSetup(empty,proposed.prayer,proposed.boost,proposed.style,proposed.confirmed,proposed.minimalTemplate,proposed.target,proposed.provenance);
+		ComparisonResult control=service.compare(a,Preferences.EMPTY,without,27275);
+		assertTrue(blessing.reason,blessing.available(THEORETICAL_DPS));
+		assertEquals(control.before.maxHit,blessing.before.maxHit);
+		assertEquals(control.before.attackRoll,blessing.before.attackRoll);
+		assertEquals(control.before.dps,blessing.before.dps,0);
+		assertTrue(blessing.assumptions.toString().contains("ancient-blessing"));
+	}
 	@Test public void fullLoadoutsMatch540PinnedOriginalOracleCases() throws Exception
 	{
 		int count = 0;

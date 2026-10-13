@@ -2,6 +2,11 @@
 
 Product refinement · 13 October 2026 · proposed R1.5 specification, on the R1 baseline now integrated into `main`. Supersedes the reset’s ranking and UI choices; preserves its comprehensive scope.
 
+R1.5a now implements this contract for review on main's R1 baseline, with schema 7
+and `pursuit-1`. See [implementation, validation and remaining client checks](validation/R1.5a.md).
+The specification's original proposed labels describe its planning snapshot;
+R1.5b observation and complex route totals remain future work.
+
 ## A. Stable product vision
 
 **IronPath — Your path to endgame PvM** is a free, open-source, local RuneLite plugin for established Ironman accounts. Opening it should answer: **What upgrades are worthwhile for my account, why, and how do I obtain them?** No goal, setup wizard, account registration or paid API is required.
@@ -155,6 +160,10 @@ Raw observations and inferred pace stay memory-only. R1.5 permits optional manua
 A comparison's input contract includes exact baseline/candidate slot items, charges/ammo assumptions, real and effective levels, attack type/style/speed, prayers, boosts, spell/element, task/salve conditions, NPC ID/version, size, defensive stats and selected phase/scaling/HP/reduction assumptions. Every field is observed, explicitly assumed or unknown. Report model/knowledge revision, exclusions and supported/conditional/unsupported **per metric**.
 
 Propose a complete compatible reference setup from equipped/observed owned items plus conservative reviewed templates. Keep current-versus-proposed labels accurate. Unknown gear cannot silently become empty or zero. Offer a focused correction, not eleven compulsory dropdowns. Start with direct slot substitution and a few reviewed packages, not a universal optimiser. Display the strongest supported owned competing setup for the selected context; preserve candidate uncertainty. Confirmation improves input agreement, not mathematical validity.
+
+**Default reference and primary metric — user direction, 13 October 2026 (implemented for review; client checks pending):** use an analytical **Enemy with 0 Defence** as the automatic comparison baseline, replacing automatic Graardor/Dharok selection. The POH combat dummy motivates the neutral comparison; its location and any forced-max-hit behaviour are not part of the product claim. The authored powered-magic profile fixes Defence 0, Magic 0 and magic-defence bonus 0, yielding ordinary defence roll 576. No HP, size, other defence types or creature-family modifiers are assigned; later combat families need their own reviewed inputs. Zero Defence alone neither defines the magic defence roll nor guarantees a hit. Use ordinary expected damage/hit distributions and attack intervals. Keep existing reviewed bosses as explicit contextual alternatives and regression cases; specialist usefulness cannot be inferred from the neutral number.
+
+Lead weapon comparisons with theoretical DPS, including speed and full compatible package changes, and retain max hit as secondary. Armour/jewellery with unchanged attack interval may lead with max hit while retaining accuracy/DPS in detail; any interval-changing effect uses the weapon rule. Unsupported DPS is a visible per-metric gap, never max hit presented as DPS or a zero gain. This is a presentation/default-context choice, not a universal ranking score. Delivery and acceptance are in TASKS's reference/metric follow-up before the visible R2 release.
 
 | Layer | What is implemented incrementally | Required boundaries |
 |---|---|---|

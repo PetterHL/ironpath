@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 6,
-  "knowledgeVersion": "r1-1",
+  "schemaVersion": 8,
+  "knowledgeVersion": "reference-1",
   "reviewed": "2026-10-13",
   "sources": [
     {
@@ -23,7 +23,10 @@
       "routes": [
         "seek-titans-prayers"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-rigour"
+      ]
     },
     {
       "id": "augury",
@@ -45,7 +48,10 @@
       "routes": [
         "seek-titans-prayers"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-augury"
+      ]
     },
     {
       "id": "dex-scroll",
@@ -65,7 +71,10 @@
       ],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-rigour"
+      ]
     },
     {
       "id": "arcane-scroll",
@@ -85,7 +94,10 @@
       ],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-augury"
+      ]
     },
     {
       "id": "cox-kit",
@@ -154,7 +166,10 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-rigour"
+      ]
     },
     {
       "id": "trident",
@@ -204,7 +219,10 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-augury"
+      ]
     },
     {
       "id": "swamp-trident",
@@ -253,7 +271,13 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "assemble-swamp-trident"
+      ],
+      "rewards": [
+        "cox-augury"
+      ]
     },
     {
       "id": "shadow",
@@ -305,6 +329,9 @@
       ],
       "contexts": [
         "toa"
+      ],
+      "rewards": [
+        "cox-augury"
       ]
     },
     {
@@ -353,7 +380,10 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-augury"
+      ]
     },
     {
       "id": "fang",
@@ -459,7 +489,10 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-rigour"
+      ]
     },
     {
       "id": "crystal",
@@ -501,7 +534,11 @@
       "routes": [
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "assemble-swamp-trident",
+        "seek-zulrah-magic-fang"
+      ]
     },
     {
       "id": "warhammer",
@@ -588,7 +625,10 @@
         "seek-occult-necklace",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-occult-necklace"
+      ]
     },
     {
       "id": "fury",
@@ -724,7 +764,10 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-rigour"
+      ]
     },
     {
       "id": "wand",
@@ -812,7 +855,10 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-augury"
+      ]
     },
     {
       "id": "scythe",
@@ -1017,7 +1063,10 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-augury"
+      ]
     },
     {
       "id": "swamp-e",
@@ -1066,7 +1115,10 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-augury"
+      ]
     },
     {
       "id": "sang-holy",
@@ -1114,7 +1166,10 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-augury"
+      ]
     },
     {
       "id": "crystal-body",
@@ -1151,7 +1206,10 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-rigour"
+      ]
     },
     {
       "id": "crystal-legs",
@@ -1188,7 +1246,10 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-rigour"
+      ]
     },
     {
       "id": "crystal-helm",
@@ -1225,7 +1286,10 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-rigour"
+      ]
     },
     {
       "id": "item-ids",
@@ -1433,7 +1497,11 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "cox-rigour",
+        "cox-augury"
+      ]
     },
     {
       "id": "gauntlet-route",
@@ -1599,7 +1667,10 @@
       "routes": [
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-zulrah-magic-fang"
+      ]
     },
     {
       "id": "zulrah-strategy",
@@ -1931,7 +2002,10 @@
       "routes": [
         "seek-occult-necklace"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-occult-necklace"
+      ]
     },
     {
       "id": "magic-formula",
@@ -1968,7 +2042,9 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [
+        "neutral-zero-defence"
+      ]
     },
     {
       "id": "magic-damage",
@@ -2005,7 +2081,9 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [
+        "neutral-zero-defence"
+      ]
     },
     {
       "id": "dharok",
@@ -2128,7 +2206,10 @@
       "routes": [
         "seek-zaryte-crossbow"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-zaryte-crossbow"
+      ]
     },
     {
       "id": "nex",
@@ -2148,7 +2229,10 @@
       "routes": [
         "seek-zaryte-crossbow"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-zaryte-crossbow"
+      ]
     },
     {
       "id": "frozen-door",
@@ -2220,7 +2304,10 @@
       "routes": [
         "seek-avernic-treads"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-avernic-treads"
+      ]
     },
     {
       "id": "final-dawn",
@@ -2260,7 +2347,10 @@
       "routes": [
         "seek-avernic-treads"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-avernic-treads"
+      ]
     },
     {
       "id": "dragon-boots",
@@ -2457,7 +2547,10 @@
       "routes": [
         "seek-zaryte-crossbow"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-zaryte-crossbow"
+      ]
     },
     {
       "id": "confliction",
@@ -2503,7 +2596,10 @@
       "routes": [
         "seek-tumekens-shadow"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-tumekens-shadow"
+      ]
     },
     {
       "id": "r1-sanguinesti-staff",
@@ -2703,7 +2799,10 @@
         "seek-ancestral-robe-bottom",
         "seek-ancestral-robe-top"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-ancestral-hat"
+      ]
     },
     {
       "id": "r1-twisted-ancestral-hat",
@@ -2751,7 +2850,10 @@
         "seek-ancestral-robe-bottom",
         "seek-ancestral-robe-top"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-ancestral-robe-top"
+      ]
     },
     {
       "id": "r1-twisted-ancestral-robe-top",
@@ -2799,7 +2901,10 @@
         "seek-ancestral-robe-bottom",
         "seek-ancestral-robe-top"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-ancestral-robe-bottom"
+      ]
     },
     {
       "id": "r1-twisted-ancestral-robe-bottom",
@@ -2844,7 +2949,10 @@
       "routes": [
         "seek-tormented-bracelet"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-tormented-bracelet"
+      ]
     },
     {
       "id": "r1-tormented-bracelet-or",
@@ -2910,7 +3018,10 @@
       "routes": [
         "seek-magus-ring"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-magus-ring"
+      ]
     },
     {
       "id": "r1-seers-ring",
@@ -3646,7 +3757,10 @@
       "routes": [
         "seek-tormented-bracelet"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-tormented-bracelet"
+      ]
     },
     {
       "id": "r1-gold-bar",
@@ -3802,6 +3916,9 @@
       ],
       "contexts": [
         "toa"
+      ],
+      "efforts": [
+        "seek-tumekens-shadow"
       ]
     },
     {
@@ -3826,7 +3943,16 @@
         "seek-ancestral-robe-bottom",
         "seek-ancestral-robe-top"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-ancestral-hat",
+        "seek-ancestral-robe-top",
+        "seek-ancestral-robe-bottom"
+      ],
+      "rewards": [
+        "cox-rigour",
+        "cox-augury"
+      ]
     },
     {
       "id": "r1-duke-sucellus",
@@ -3846,7 +3972,10 @@
       "routes": [
         "seek-magus-ring"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-magus-ring"
+      ]
     },
     {
       "id": "r1-demonic-gorilla",
@@ -3866,7 +3995,13 @@
       "routes": [
         "seek-tormented-bracelet"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-tormented-bracelet"
+      ],
+      "acquisitions": [
+        "next-zenyte-shard"
+      ]
     },
     {
       "id": "r1-monkey-madness-ii",
@@ -3976,6 +4111,24 @@
       "models": [
         "powered-magic-2"
       ],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r15-ancient-blessing",
+      "type": "wiki equipment stats",
+      "url": "https://oldschool.runescape.wiki/w/Ancient_blessing?oldid=15252873",
+      "revision": "15252873",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "licence": "CC BY-NC-SA 3.0; linked evidence only",
+      "reuseBasis": "Independently recorded item ID, ammunition slot and zero magic stats. No Wiki text, code, dataset or assets copied.",
+      "decisions": [],
+      "items": [
+        20235
+      ],
+      "models": [],
       "routes": [],
       "contexts": []
     }
@@ -4476,7 +4629,21 @@
       "preparation": "Positive fang, chisel and seas-trident observations; known Crafting 59+ and Magic 78+; completion must be confirmed false in supported storage. Unobserved containers keep completion unknown.",
       "activity": "owned-magic",
       "benefitBand": "MODERATE",
-      "benefitReason": "Owned parts, no supported observed/manual competing magic option."
+      "benefitReason": "Owned parts, no supported observed/manual competing magic option.",
+      "pursuit": {
+        "mode": "READY",
+        "burden": "LOW",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "Owned fang and trident leave a bounded assembly, subject to the actual chisel/level checks.",
+        "missingMechanics": "No new fang drop or total acquisition hours are implied.",
+        "sources": [
+          "swamp-trident",
+          "magic-fang"
+        ],
+        "allocations": [],
+        "variants": []
+      }
     },
     {
       "id": "review-olm-lance",
@@ -5163,6 +5330,20 @@
             "value": true
           }
         ]
+      },
+      "pursuit": {
+        "mode": "REPEATABLE",
+        "burden": "MODERATE",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "Repeat Zulrah after reviewed access/setup checks; owned fang exposes assembly instead.",
+        "missingMechanics": "Multiple-roll acquisition and player cycle pace remain unsupported in this increment.",
+        "sources": [
+          "zulrah-route",
+          "magic-fang"
+        ],
+        "allocations": [],
+        "variants": []
       }
     },
     {
@@ -5678,7 +5859,21 @@
         "twisted-bow",
         "wand",
         "whip"
-      ]
+      ],
+      "pursuit": {
+        "mode": "REPEATABLE",
+        "burden": "MODERATE",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "A smoke-devil task and protection are required; after those checks this is a repeatable single-slot route.",
+        "missingMechanics": "Personal task/supply/training time and total drop hours are not estimated.",
+        "sources": [
+          "smoke-devil",
+          "occult"
+        ],
+        "allocations": [],
+        "variants": []
+      }
     },
     {
       "id": "seek-zaryte-crossbow",
@@ -5765,11 +5960,63 @@
         "frozen-door",
         "item-ids",
         "nex",
-        "twisted-bow",
-        "zaryte",
+        "nihil-horn",
         "nihil-shards",
-        "nihil-horn"
-      ]
+        "twisted-bow",
+        "zaryte"
+      ],
+      "pursuit": {
+        "mode": "LONG_TAIL",
+        "burden": "HIGH",
+        "tail": "LONG",
+        "modeId": "ordinary",
+        "reason": "Nex unique acquisition involves team coordination; re-evaluate owned horn and remaining components.",
+        "missingMechanics": "Personal Nex allocation, ACB/shard work and total-route hours are unsupported.",
+        "sources": [
+          "nex",
+          "nihil-horn",
+          "zaryte"
+        ],
+        "allocations": [],
+        "variants": [
+          {
+            "when": {
+              "test": "ALL",
+              "conditions": [
+                {
+                  "test": "POSSESSION",
+                  "key": "nihilHorn",
+                  "value": true
+                },
+                {
+                  "test": "POSSESSION",
+                  "key": "armadylCrossbow",
+                  "value": true
+                }
+              ]
+            },
+            "mode": "BOUNDED",
+            "burden": "MODERATE",
+            "tail": "ORDINARY",
+            "reason": "Owned horn and ACB remove their acquisition stages; confirm 250 shards and 90 Fletching before bounded assembly. No total estimate.",
+            "allocations": [],
+            "bypassesAcquisition": true
+          },
+          {
+            "when": {
+              "test": "POSSESSION",
+              "key": "nihilHorn",
+              "value": true
+            },
+            "mode": "UNKNOWN",
+            "burden": "UNKNOWN",
+            "tail": "UNKNOWN",
+            "reason": "Owned horn removes its Nex unique stage. ACB and shard acquisition/preparation are not quantified; check their remaining work before an active-pursuit claim.",
+            "allocations": [],
+            "bypassesAcquisition": true
+          }
+        ]
+      }
     },
     {
       "id": "seek-avernic-treads",
@@ -5842,7 +6089,21 @@
         "trident-e",
         "twisted-bow",
         "confliction"
-      ]
+      ],
+      "pursuit": {
+        "mode": "LONG_TAIL",
+        "burden": "HIGH",
+        "tail": "LONG",
+        "modeId": "ordinary",
+        "reason": "Completed delve 4 and sustained challenge preparation remain separate from owning other Doom rewards.",
+        "missingMechanics": "Challenge success, personal reward probability and cycle pace are not estimated.",
+        "sources": [
+          "doom",
+          "avernic-treads"
+        ],
+        "allocations": [],
+        "variants": []
+      }
     },
     {
       "id": "seek-tumekens-shadow",
@@ -5909,7 +6170,21 @@
         "value": true
       },
       "repeatable": false,
-      "itemId": 27275
+      "itemId": 27275,
+      "pursuit": {
+        "mode": "LONG_TAIL",
+        "burden": "HIGH",
+        "tail": "LONG",
+        "modeId": "ordinary",
+        "reason": "Rare raid reward with substantial repeated raid/team or solo preparation; retain as long-term value.",
+        "missingMechanics": "Current personal ToA mode/points/allocation mechanics and pace are unmodelled; no 1/24-raid claim.",
+        "sources": [
+          "r1-tombs-of-amascut",
+          "r1-tumekens-shadow"
+        ],
+        "allocations": [],
+        "variants": []
+      }
     },
     {
       "id": "seek-ancestral-hat",
@@ -5978,7 +6253,21 @@
         "value": true
       },
       "repeatable": false,
-      "itemId": 21018
+      "itemId": 21018,
+      "pursuit": {
+        "mode": "LONG_TAIL",
+        "burden": "HIGH",
+        "tail": "LONG",
+        "modeId": "ordinary",
+        "reason": "Targeting an individual raid armour piece is long-tail work; other useful CoX families are assessed separately.",
+        "missingMechanics": "Personal CoX points/mode/allocation and full-cycle pace remain unmodelled.",
+        "sources": [
+          "r1-chambers-of-xeric",
+          "r1-ancestral-hat"
+        ],
+        "allocations": [],
+        "variants": []
+      }
     },
     {
       "id": "seek-ancestral-robe-top",
@@ -6047,7 +6336,21 @@
         "value": true
       },
       "repeatable": false,
-      "itemId": 21021
+      "itemId": 21021,
+      "pursuit": {
+        "mode": "LONG_TAIL",
+        "burden": "HIGH",
+        "tail": "LONG",
+        "modeId": "ordinary",
+        "reason": "Targeting an individual raid armour piece is long-tail work; other useful CoX families are assessed separately.",
+        "missingMechanics": "Personal CoX points/mode/allocation and full-cycle pace remain unmodelled.",
+        "sources": [
+          "r1-chambers-of-xeric",
+          "r1-ancestral-robe-top"
+        ],
+        "allocations": [],
+        "variants": []
+      }
     },
     {
       "id": "seek-ancestral-robe-bottom",
@@ -6116,7 +6419,21 @@
         "value": true
       },
       "repeatable": false,
-      "itemId": 21024
+      "itemId": 21024,
+      "pursuit": {
+        "mode": "LONG_TAIL",
+        "burden": "HIGH",
+        "tail": "LONG",
+        "modeId": "ordinary",
+        "reason": "Targeting an individual raid armour piece is long-tail work; other useful CoX families are assessed separately.",
+        "missingMechanics": "Personal CoX points/mode/allocation and full-cycle pace remain unmodelled.",
+        "sources": [
+          "r1-chambers-of-xeric",
+          "r1-ancestral-robe-bottom"
+        ],
+        "allocations": [],
+        "variants": []
+      }
     },
     {
       "id": "seek-tormented-bracelet",
@@ -6198,7 +6515,80 @@
         "value": true
       },
       "repeatable": false,
-      "itemId": 19544
+      "itemId": 19544,
+      "pursuit": {
+        "mode": "REPEATABLE",
+        "burden": "MODERATE",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "A next-shard repeatable route followed by separately checked onyx, skills and assembly.",
+        "missingMechanics": "Only the next shard distribution is supported; no combined bracelet ETA.",
+        "sources": [
+          "r1-demonic-gorilla",
+          "r1-tormented-bracelet",
+          "r1-zenyte-shard"
+        ],
+        "allocations": [
+          "zenyte"
+        ],
+        "variants": [
+          {
+            "when": {
+              "test": "POSSESSION",
+              "key": "zenyteBracelet",
+              "value": true
+            },
+            "mode": "READY",
+            "burden": "LOW",
+            "tail": "ORDINARY",
+            "reason": "Owned bracelet bypasses the shard, onyx and gem stages; only enchantment/equip checks remain.",
+            "allocations": [
+              "zenyte"
+            ],
+            "bypassesAcquisition": true
+          },
+          {
+            "when": {
+              "test": "ANY",
+              "conditions": [
+                {
+                  "test": "POSSESSION",
+                  "key": "zenyteGem",
+                  "value": true
+                },
+                {
+                  "test": "POSSESSION",
+                  "key": "zenyteUncut",
+                  "value": true
+                }
+              ]
+            },
+            "mode": "BOUNDED",
+            "burden": "LOW",
+            "tail": "ORDINARY",
+            "reason": "Owned gem/intermediate bypasses fresh gorilla acquisition; remaining skill/resources and assembly still need checking.",
+            "allocations": [
+              "zenyte"
+            ],
+            "bypassesAcquisition": true
+          },
+          {
+            "when": {
+              "test": "POSSESSION",
+              "key": "zenyteShard",
+              "value": true
+            },
+            "mode": "BOUNDED",
+            "burden": "LOW",
+            "tail": "ORDINARY",
+            "reason": "Owned shard removes its drop stage; onyx/crafting/assembly work is separate and may still be unknown.",
+            "allocations": [
+              "zenyte"
+            ],
+            "bypassesAcquisition": true
+          }
+        ]
+      }
     },
     {
       "id": "seek-magus-ring",
@@ -6273,7 +6663,81 @@
         "value": true
       },
       "repeatable": false,
-      "itemId": 28313
+      "itemId": 28313,
+      "pursuit": {
+        "mode": "LONG_TAIL",
+        "burden": "HIGH",
+        "tail": "LONG",
+        "modeId": "ordinary",
+        "reason": "Hidden/stateful vestige mechanics and independent ring/ingot/assembly work prevent a simple fresh-drop model.",
+        "missingMechanics": "Hidden vestige state, other components and total-route hours are not estimated.",
+        "sources": [
+          "r1-duke-sucellus",
+          "r1-magus-ring"
+        ],
+        "allocations": [],
+        "variants": [
+          {
+            "when": {
+              "test": "POSSESSION",
+              "key": "magusIcon",
+              "value": true
+            },
+            "mode": "READY",
+            "burden": "LOW",
+            "tail": "ORDINARY",
+            "reason": "Owned Magus icon removes Duke/vestige/seers work; remaining ingots, mould and skills determine readiness.",
+            "allocations": [],
+            "bypassesAcquisition": true
+          },
+          {
+            "when": {
+              "test": "ALL",
+              "conditions": [
+                {
+                  "test": "POSSESSION",
+                  "key": "magusVestige",
+                  "value": true
+                },
+                {
+                  "test": "ANY",
+                  "conditions": [
+                    {
+                      "test": "POSSESSION",
+                      "key": "seersIcon",
+                      "value": true
+                    },
+                    {
+                      "test": "POSSESSION",
+                      "key": "seersRing",
+                      "value": true
+                    }
+                  ]
+                }
+              ]
+            },
+            "mode": "BOUNDED",
+            "burden": "LOW",
+            "tail": "ORDINARY",
+            "reason": "Owned vestige and ring/icon remove their reward acquisition. Check remaining learning, skills, ingots and assembly; no fresh vestige grind or hidden-state estimate.",
+            "allocations": [],
+            "bypassesAcquisition": true
+          },
+          {
+            "when": {
+              "test": "POSSESSION",
+              "key": "magusVestige",
+              "value": true
+            },
+            "mode": "UNKNOWN",
+            "burden": "UNKNOWN",
+            "tail": "UNKNOWN",
+            "reason": "Owned vestige removes its hidden-drop stage. The remaining seers ring/icon, ingots and assembly need their own checks; no total effort is claimed.",
+            "allocations": [],
+            "bypassesAcquisition": true
+          }
+        ]
+      }
     }
   ],
   "gear": {
@@ -8095,6 +8559,18 @@
           "item-ids"
         ]
       }
+    ],
+    "blessings": [
+      {
+        "id": 20235,
+        "label": "Ancient blessing",
+        "skill": "PRAYER",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r15-ancient-blessing"
+        ]
+      }
     ]
   },
   "itemSets": {
@@ -8465,7 +8941,9 @@
     "zenyteBracelet": "Zenyte bracelet",
     "zenyteGem": "Cut zenyte",
     "zenyteUncut": "Uncut zenyte",
-    "zenyteShard": "Zenyte shard"
+    "zenyteShard": "Zenyte shard",
+    "rigourScroll": "Dexterous prayer scroll owned (Rigour)",
+    "auguryScroll": "Arcane prayer scroll owned (Augury)"
   },
   "goals": [
     {
@@ -8868,7 +9346,13 @@
       "headline": "5% magic damage, rounded; compare your neck.",
       "effortShort": "Slayer 93, task and RNG drop.",
       "status": "reviewed",
-      "reviewed": "2026-10-12"
+      "reviewed": "2026-10-12",
+      "rewardFamily": "occult-necklace",
+      "role": "powered-magic",
+      "contexts": [
+        "dharok",
+        "graardor"
+      ]
     },
     {
       "id": "swamp-trident",
@@ -9015,7 +9499,13 @@
       "headline": "Three base max hits over seas; scale upkeep matters.",
       "effortShort": "Fang acquisition, assembly and upkeep.",
       "status": "reviewed",
-      "reviewed": "2026-10-12"
+      "reviewed": "2026-10-12",
+      "rewardFamily": "swamp-trident",
+      "role": "powered-magic",
+      "contexts": [
+        "dharok",
+        "graardor"
+      ]
     },
     {
       "id": "zaryte-crossbow",
@@ -9165,7 +9655,156 @@
       "headline": "Conditional ruby-special utility after a successful hit.",
       "effortShort": "Nex/component work; owned parts count.",
       "status": "reviewed",
-      "reviewed": "2026-10-12"
+      "reviewed": "2026-10-12",
+      "rewardFamily": "zaryte-crossbow",
+      "role": "ranged-special",
+      "contexts": [
+        "reviewed-specialist"
+      ],
+      "path": [
+        {
+          "id": "nex-access",
+          "label": "The Frozen Door / Nex entry",
+          "role": "ACCESS",
+          "completeWhen": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "frozen-door",
+                "value": true
+              },
+              {
+                "test": "LEVEL",
+                "key": "HITPOINTS",
+                "minimum": 70
+              },
+              {
+                "test": "LEVEL",
+                "key": "STRENGTH",
+                "minimum": 70
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 70
+              },
+              {
+                "test": "LEVEL",
+                "key": "AGILITY",
+                "minimum": 70
+              },
+              {
+                "test": "FACT",
+                "key": "nex-entry",
+                "value": true
+              }
+            ]
+          },
+          "detail": "The Frozen Door / Nex entry"
+        },
+        {
+          "id": "nex-prep",
+          "label": "Nex team/preparation",
+          "role": "PREPARATION",
+          "completeWhen": {
+            "test": "FACT",
+            "key": "nex-team",
+            "value": true
+          },
+          "detail": "Nex team/preparation"
+        },
+        {
+          "id": "horn",
+          "label": "Nihil horn",
+          "role": "ACTIVITY",
+          "completeWhen": {
+            "test": "POSSESSION",
+            "key": "nihilHorn",
+            "value": true
+          },
+          "detail": "Nihil horn",
+          "dependencies": {
+            "mode": "ALL",
+            "children": [
+              {
+                "mode": "NODE",
+                "node": "nex-access"
+              },
+              {
+                "mode": "NODE",
+                "node": "nex-prep"
+              }
+            ]
+          }
+        },
+        {
+          "id": "acb",
+          "label": "Armadyl crossbow",
+          "role": "COMPONENT",
+          "completeWhen": {
+            "test": "POSSESSION",
+            "key": "armadylCrossbow",
+            "value": true
+          },
+          "detail": "Armadyl crossbow"
+        },
+        {
+          "id": "shards",
+          "label": "250 nihil shards",
+          "role": "COMPONENT",
+          "completeWhen": {
+            "test": "CONSTANT",
+            "value": false
+          },
+          "detail": "250 nihil shards",
+          "itemId": 26231,
+          "quantity": 250
+        },
+        {
+          "id": "fletch",
+          "label": "90 Fletching",
+          "role": "ASSEMBLY",
+          "completeWhen": {
+            "test": "LEVEL",
+            "key": "FLETCHING",
+            "minimum": 90
+          },
+          "detail": "90 Fletching"
+        },
+        {
+          "id": "assemble",
+          "label": "Assemble Zaryte crossbow",
+          "role": "ASSEMBLY",
+          "completeWhen": {
+            "test": "POSSESSION",
+            "key": "zaryte",
+            "value": true
+          },
+          "detail": "Assemble Zaryte crossbow",
+          "dependencies": {
+            "mode": "ALL",
+            "children": [
+              {
+                "mode": "NODE",
+                "node": "horn"
+              },
+              {
+                "mode": "NODE",
+                "node": "acb"
+              },
+              {
+                "mode": "NODE",
+                "node": "shards"
+              },
+              {
+                "mode": "NODE",
+                "node": "fletch"
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "id": "avernic-treads",
@@ -9398,7 +10037,12 @@
       "headline": "Base +2 ranged strength; same magic damage as eternal. Less melee strength than primordial.",
       "effortShort": "Final Dawn, delve-4 eligibility and RNG.",
       "status": "reviewed",
-      "reviewed": "2026-10-12"
+      "reviewed": "2026-10-12",
+      "rewardFamily": "avernic-treads",
+      "role": "hybrid-boots",
+      "contexts": [
+        "reviewed-specialist"
+      ]
     },
     {
       "id": "tumekens-shadow",
@@ -9460,7 +10104,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -9533,6 +10177,12 @@
             ]
           }
         }
+      ],
+      "rewardFamily": "tumekens-shadow",
+      "role": "powered-magic",
+      "contexts": [
+        "dharok",
+        "graardor"
       ]
     },
     {
@@ -9608,7 +10258,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -9661,6 +10311,12 @@
           },
           "detail": "Normal or challenge-mode CoX; distinct rewards, no combined/drop-progress percentage."
         }
+      ],
+      "rewardFamily": "ancestral",
+      "role": "powered-magic",
+      "contexts": [
+        "dharok",
+        "graardor"
       ]
     },
     {
@@ -9736,7 +10392,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -9789,6 +10445,12 @@
           },
           "detail": "Normal or challenge-mode CoX; distinct rewards, no combined/drop-progress percentage."
         }
+      ],
+      "rewardFamily": "ancestral",
+      "role": "powered-magic",
+      "contexts": [
+        "dharok",
+        "graardor"
       ]
     },
     {
@@ -9864,7 +10526,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -9917,6 +10579,12 @@
           },
           "detail": "Normal or challenge-mode CoX; distinct rewards, no combined/drop-progress percentage."
         }
+      ],
+      "rewardFamily": "ancestral",
+      "role": "powered-magic",
+      "contexts": [
+        "dharok",
+        "graardor"
       ]
     },
     {
@@ -9995,7 +10663,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -10281,7 +10949,8 @@
             "key": "zenyteBracelet",
             "value": true
           },
-          "detail": "ANY: an existing bracelet bypasses shard/gem work."
+          "detail": "ANY: an existing bracelet bypasses shard/gem work.",
+          "alternativeOnly": true
         },
         {
           "id": "enchant",
@@ -10328,6 +10997,12 @@
             ]
           }
         }
+      ],
+      "rewardFamily": "tormented-bracelet",
+      "role": "powered-magic",
+      "contexts": [
+        "dharok",
+        "graardor"
       ]
     },
     {
@@ -10409,7 +11084,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -10634,7 +11309,8 @@
             "key": "magusIcon",
             "value": true
           },
-          "detail": "ANY: an existing icon bypasses previous component work."
+          "detail": "ANY: an existing icon bypasses previous component work.",
+          "alternativeOnly": true
         },
         {
           "id": "ring",
@@ -10681,6 +11357,12 @@
             ]
           }
         }
+      ],
+      "rewardFamily": "magus-ring",
+      "role": "powered-magic",
+      "contexts": [
+        "dharok",
+        "graardor"
       ]
     }
   ],
@@ -12155,9 +12837,38 @@
         "requirements": {},
         "twoHanded": false,
         "historyEffect": false
+      },
+      {
+        "id": 20235,
+        "label": "Ancient blessing",
+        "slot": "ammo",
+        "magicAttack": 0,
+        "damagePercent": 0,
+        "damagePermille": 0,
+        "sources": [
+          "r15-ancient-blessing"
+        ],
+        "requirements": {},
+        "twoHanded": false,
+        "historyEffect": false
       }
     ],
     "targets": [
+      {
+        "id": "neutral-zero-defence",
+        "name": "Enemy with 0 Defence",
+        "npcId": 0,
+        "analytical": true,
+        "defenceLevel": 0,
+        "magicLevel": 0,
+        "magicDefence": 0,
+        "variant": "STANDARD",
+        "scalingSupported": true,
+        "sources": [
+          "magic-formula",
+          "magic-damage"
+        ]
+      },
       {
         "id": "dharok",
         "name": "Ordinary Dharok (active attacks)",
@@ -12196,5 +12907,166 @@
         ]
       }
     ]
-  }
+  },
+  "acquisitions": [
+    {
+      "id": "next-zenyte-shard",
+      "version": "zenyte-fixed-1",
+      "activity": "demonic-gorillas",
+      "mode": "ordinary",
+      "rewardFamily": "zenyte-shard",
+      "route": "seek-tormented-bracelet",
+      "node": "shard",
+      "recipient": "Player eligible for the demonic gorilla loot drop",
+      "trialUnit": "eligible demonic gorilla kills",
+      "support": "REVIEWED",
+      "mechanic": "FIXED_BERNOULLI",
+      "numerator": 1,
+      "denominator": 300,
+      "reviewed": "2026-10-13",
+      "reason": "E1 reviewed fixed next-shard rate; not a jewellery completion model.",
+      "sources": [
+        "r1-demonic-gorilla"
+      ],
+      "assumptions": [
+        "Independent future eligible kills with unchanged fixed 1/300 chance.",
+        "Includes the successful kill; past dry kills do not change the future distribution."
+      ],
+      "exclusions": [
+        "Next shard only; not a completed tormented bracelet.",
+        "Quest/access, onyx, crafting/training, assembly and supplies are excluded.",
+        "One shard allocation cannot fund several jewellery choices."
+      ]
+    }
+  ],
+  "activityRewards": [
+    {
+      "id": "cox-rigour",
+      "activity": "chambers-of-xeric",
+      "mode": "ordinary",
+      "family": "rigour",
+      "title": "Rigour",
+      "benefit": "MODERATE",
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 74
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          }
+        ]
+      },
+      "ownedWhen": {
+        "test": "ANY",
+        "conditions": [
+          {
+            "test": "RIGOUR",
+            "value": true
+          },
+          {
+            "test": "POSSESSION",
+            "key": "rigourScroll",
+            "value": true
+          }
+        ]
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "FACT",
+        "key": "cox-preparation",
+        "value": true
+      },
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "dex-scroll",
+        "item-ids",
+        "r1-chambers-of-xeric",
+        "rigour",
+        "twisted-bow"
+      ],
+      "itemId": 21034
+    },
+    {
+      "id": "cox-augury",
+      "activity": "chambers-of-xeric",
+      "mode": "ordinary",
+      "family": "augury",
+      "title": "Augury",
+      "benefit": "MODERATE",
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "USABLE",
+            "key": "magic"
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 77
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          }
+        ]
+      },
+      "ownedWhen": {
+        "test": "ANY",
+        "conditions": [
+          {
+            "test": "AUGURY",
+            "value": true
+          },
+          {
+            "test": "POSSESSION",
+            "key": "auguryScroll",
+            "value": true
+          }
+        ]
+      },
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "FACT",
+        "key": "cox-preparation",
+        "value": true
+      },
+      "sources": [
+        "arcane-scroll",
+        "augury",
+        "ayak",
+        "item-ids",
+        "r1-chambers-of-xeric",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e"
+      ],
+      "itemId": 21079
+    }
+  ]
 }

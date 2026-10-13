@@ -42,6 +42,6 @@ final class PoweredStaffModel
 		double mean = weapon.weapon.equals("SANG") ? max / 2.0 + 1.6 + 0.8 / (max + 1.0) : PoweredMagic.successfulMean(max);
 		int reportedMax = weapon.weapon.equals("SANG") ? max + 8 : max;
 		return new PoweredMagic.Metrics(reportedMax, chance, chance * mean / (ticks * 0.6),
-			visible, effective, attack, damage / 10.0, roll, defence);
+			visible, effective, attack, damage / 10.0, roll, defence, ticks);
 	}
 }
