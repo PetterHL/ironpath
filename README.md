@@ -56,7 +56,7 @@ Reuse the existing T1–P3 RuneLite implementation and preserve its licence noti
 
 ## Start here
 
-The latest inspected implementation is PR #7, `p4a-upgrade-advisor`, at `b50b0a9`, stacked on PR #6 (`docs/upgrade-first-roadmap`, `2ef409a`) and PR #5 (`p1-p3-broad-pvm`, `eb22fef`). PR #5 consolidates earlier T1–T4 work. PRs #1–#7 remain open and unmerged; main is `c717927`. The complete relationship is recorded in the design. Recheck remote state before future work.
+The current development baseline is `main`: PRs #5–#10 were integrated on 13 October 2026 with merge commits, preserving all earlier work. R1 is implemented; R1.5a is the next assignment. Earlier stacked PRs are historical records. Start each new delivery from updated main and open a focused PR back to main. See [integration validation](docs/validation/main-integration-20261013.md).
 
 This product-reset branch contains **documentation and wireframes only**, targeting #7's branch to keep review focused. It changes neither plugin behaviour nor the recorded test results. The next implementation assignment is **R1: realistic full-loadout magic and first endgame value**, described in TASKS.md. Old P4b counts and sequential planning/review gates are superseded. No existing PR is merged, closed or overwritten.
 
@@ -75,7 +75,7 @@ Clone the repository and check out the combined implementation branch:
 ```sh
 git clone https://github.com/PetterHL/ironpath.git
 cd ironpath
-git checkout r1-full-loadout-magic
+git checkout main
 ```
 
 For an existing clone, close the development client, enter its `ironpath` directory,
@@ -83,7 +83,7 @@ and update the branch first:
 
 ```sh
 git fetch origin
-git switch r1-full-loadout-magic
+git switch main
 git pull --ff-only
 ```
 
