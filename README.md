@@ -25,11 +25,13 @@ The intended product is a free, open-source RuneLite sidebar that automatically 
 
 IronPath is intended to become a comprehensive endgame PvM upgrade advisor, including BiS, meaningful specialist sidegrades, permanent rewards and the progression bridges needed to reach them. **R1 is an implementation increment, not the product boundary.** There is no catalogue ceiling or requirement to select a goal.
 
-R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. R2–R8 extend the other combat families, coverage, maintenance and real-client evidence. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
+R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. The next implementation is **R1.5a: pursuit priority and visual foundation**; R2–R8 then extend combat families, coverage, maintenance and real-client evidence. Ranged model work can overlap this increment. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
 
 Recommendations must explain what changes relative to owned alternatives, where it matters, when to defer, and how to obtain the upgrade. Strong alternatives and partial observations change the advice. An unread bank never proves an item is missing. Long-term upgrades remain visible alongside nearer opportunities.
 
 The architecture stays one local Java RuneLite plugin with bundled reviewed knowledge and native Swing UI. The main investment is accurate knowledge, reusable combat mechanics and useful presentation. We are not adding a backend, subscriptions or per-user AI. See the independent feasibility assessment and trade-offs in the design.
+
+**Proposed refinement, not yet implemented:** distinguish upgrades worth owning from active pursuits and valuable shared activities. R1.5a adds transparent effort/long-tail categories, a first conditional next-zenyte-shard estimate, compact pursuit rows and a responsive item grid. Hours require an explicit pace and scope; gear/DPS does not predict raid times. Local performance observation and complex raid/component models follow later. See [revised wireframes](docs/UX.md) and [next assignment](TASKS.md#next-implementation). Comprehensive coverage, optional goals and all existing R1 work remain intact.
 
 ## Read and work
 
@@ -39,7 +41,7 @@ The architecture stays one local Java RuneLite plugin with bundled reviewed know
 | [docs/CATALOGUE.md](docs/CATALOGUE.md) | Comprehensive initial coverage inventory, promotion criteria and visible research/model gaps |
 | [docs/UX.md](docs/UX.md) | Native RuneLite design and concrete sidebar wireframes |
 | [docs/RESEARCH.md](docs/RESEARCH.md) | Current evidence, source limits, calculator reuse/licensing and historical research |
-| [TASKS.md](TASKS.md) | Active R1–R8 assignments, quality criteria, next brief and preserved implementation/test history |
+| [TASKS.md](TASKS.md) | Active R1, R1.5 and R2–R8 assignments, quality criteria, next brief and preserved implementation/test history |
 | [AGENTS.md](AGENTS.md) | Persistent development instructions that protect the product vision |
 
 TASKS.md is the only backlog. The catalogue is an evidence/coverage inventory, not a second task tracker. Implementation increments can be small; the intended product must not silently shrink to match them.
