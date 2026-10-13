@@ -22,6 +22,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -239,11 +240,19 @@ public class ObservationLifecycleTest
 		when(client.getIntStack()).thenReturn(new int[]{2}); // Quest.getState's supported script result: finished.
 		observeBank();
 		assertTrue(plugin.session.snapshot().fact("song-of-elves").value());
+		assertTrue(plugin.session.snapshot().fact("frozen-door").value());
+		assertTrue(plugin.session.snapshot().fact("final-dawn").value());
 		assertTrue(plugin.session.snapshot().fact("beneath-cursed-sands").source().contains("Quest.getState"));
 		when(client.getIntStack()).thenReturn(new int[]{1});
 		VarbitChanged changed = new VarbitChanged(); changed.setVarbitId(VarbitID.BCS);
 		plugin.onVarbitChanged(changed); tick();
 		assertFalse(plugin.session.snapshot().fact("beneath-cursed-sands").value());
+		when(client.getIntStack()).thenReturn(new int[]{2});
+		VarbitChanged dawn = new VarbitChanged(); dawn.setVarpId(VarPlayerID.VMQ4_PRIMARY);
+		plugin.onVarbitChanged(dawn); tick(); assertTrue(plugin.session.snapshot().fact("final-dawn").value());
+		when(client.getIntStack()).thenReturn(new int[]{1});
+		VarbitChanged frozen = new VarbitChanged(); frozen.setVarpId(VarPlayerID.NEX_PERM);
+		plugin.onVarbitChanged(frozen); tick(); assertFalse(plugin.session.snapshot().fact("frozen-door").value());
 		when(client.getVarbitValue(VarbitID.PRAYER_DEADEYE_UNLOCKED)).thenReturn(1);
 		plugin.onVarbitChanged(new VarbitChanged()); tick();
 		assertTrue(plugin.session.snapshot().fact("deadeye").value());
@@ -255,6 +264,8 @@ public class ObservationLifecycleTest
 		tick(); tick();
 		assertFalse(plugin.session.snapshot().bank.known());
 		assertFalse(plugin.session.snapshot().fact("song-of-elves").known());
+		assertFalse(plugin.session.snapshot().fact("frozen-door").known());
+		assertFalse(plugin.session.snapshot().fact("final-dawn").known());
 		assertFalse(plugin.session.snapshot().fact("deadeye").value());
 	}
 

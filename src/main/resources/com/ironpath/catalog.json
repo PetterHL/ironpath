@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 4,
-  "knowledgeVersion": "p3-1",
+  "schemaVersion": 5,
+  "knowledgeVersion": "p4a-1",
   "reviewed": "2026-10-12",
   "sources": [
     {
@@ -9,9 +9,9 @@
       "url": "https://oldschool.runescape.wiki/w/Rigour?oldid=14954629",
       "revision": "14954629",
       "decisions": [
-        "unlock-rigour",
+        "seek-titans-prayers",
         "train-rigour",
-        "seek-titans-prayers"
+        "unlock-rigour"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -25,9 +25,9 @@
       "url": "https://oldschool.runescape.wiki/w/Augury?oldid=15362822",
       "revision": "15362822",
       "decisions": [
-        "unlock-augury",
+        "seek-titans-prayers",
         "train-augury",
-        "seek-titans-prayers"
+        "unlock-augury"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -69,11 +69,11 @@
       "url": "https://oldschool.runescape.wiki/w/Chambers_of_Xeric/Strategies?oldid=15357585",
       "revision": "15357585",
       "decisions": [
-        "plan-team-cox",
         "assemble-swamp-trident",
-        "review-olm-lance",
         "coordinate-defence-reduction",
-        "review-occult-switch"
+        "plan-team-cox",
+        "review-occult-switch",
+        "review-olm-lance"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -87,13 +87,17 @@
       "url": "https://oldschool.runescape.wiki/w/Bow_of_faerdhinen?oldid=15366535",
       "revision": "15366535",
       "decisions": [
-        "plan-team-cox",
+        "assemble-swamp-trident",
         "coordinate-defence-reduction",
+        "plan-team-cox",
         "pursue-bowfa",
-        "seek-zulrah-magic-fang",
-        "seek-toa-fang",
+        "seek-avernic-treads",
         "seek-moons-atlatl",
-        "seek-titans-prayers"
+        "seek-occult-necklace",
+        "seek-titans-prayers",
+        "seek-toa-fang",
+        "seek-zaryte-crossbow",
+        "seek-zulrah-magic-fang"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -107,14 +111,16 @@
       "url": "https://oldschool.runescape.wiki/w/Trident_of_the_seas?oldid=15364129",
       "revision": "15364129",
       "decisions": [
-        "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
+        "plan-team-cox",
         "review-occult-switch",
-        "train-slayer-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
         "seek-seas-trident",
+        "seek-toa-fang",
         "seek-zulrah-magic-fang",
-        "seek-toa-fang"
+        "train-slayer-trident"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -128,14 +134,16 @@
       "url": "https://oldschool.runescape.wiki/w/Trident_of_the_swamp?oldid=15364128",
       "revision": "15364128",
       "decisions": [
-        "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
+        "plan-team-cox",
         "review-occult-switch",
-        "train-slayer-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
         "seek-seas-trident",
+        "seek-toa-fang",
         "seek-zulrah-magic-fang",
-        "seek-toa-fang"
+        "train-slayer-trident"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -149,14 +157,16 @@
       "url": "https://oldschool.runescape.wiki/w/Tumeken%27s_shadow?oldid=15316596",
       "revision": "15316596",
       "decisions": [
-        "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
+        "plan-team-cox",
         "review-occult-switch",
-        "train-slayer-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
         "seek-seas-trident",
+        "seek-toa-fang",
         "seek-zulrah-magic-fang",
-        "seek-toa-fang"
+        "train-slayer-trident"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -170,14 +180,16 @@
       "url": "https://oldschool.runescape.wiki/w/Sanguinesti_staff?oldid=15336446",
       "revision": "15336446",
       "decisions": [
-        "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
+        "plan-team-cox",
         "review-occult-switch",
-        "train-slayer-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
         "seek-seas-trident",
+        "seek-toa-fang",
         "seek-zulrah-magic-fang",
-        "seek-toa-fang"
+        "train-slayer-trident"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -191,12 +203,15 @@
       "url": "https://oldschool.runescape.wiki/w/Osmumten%27s_fang?oldid=15236139",
       "revision": "15236139",
       "decisions": [
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
         "plan-team-cox",
         "review-olm-lance",
-        "coordinate-defence-reduction",
-        "seek-toa-fang",
         "seek-moons-atlatl",
-        "seek-titans-prayers"
+        "seek-occult-necklace",
+        "seek-titans-prayers",
+        "seek-toa-fang",
+        "seek-zulrah-magic-fang"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -210,12 +225,15 @@
       "url": "https://oldschool.runescape.wiki/w/Dragon_hunter_lance?oldid=15264894",
       "revision": "15264894",
       "decisions": [
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
         "plan-team-cox",
         "review-olm-lance",
-        "coordinate-defence-reduction",
-        "seek-toa-fang",
         "seek-moons-atlatl",
-        "seek-titans-prayers"
+        "seek-occult-necklace",
+        "seek-titans-prayers",
+        "seek-toa-fang",
+        "seek-zulrah-magic-fang"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -229,12 +247,16 @@
       "url": "https://oldschool.runescape.wiki/w/Rune_crossbow?oldid=15369406",
       "revision": "15369406",
       "decisions": [
-        "plan-team-cox",
+        "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "seek-zulrah-magic-fang",
-        "seek-toa-fang",
+        "plan-team-cox",
+        "seek-avernic-treads",
         "seek-moons-atlatl",
-        "seek-titans-prayers"
+        "seek-occult-necklace",
+        "seek-titans-prayers",
+        "seek-toa-fang",
+        "seek-zaryte-crossbow",
+        "seek-zulrah-magic-fang"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -324,7 +346,10 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "review-occult-switch"
+        "assemble-swamp-trident",
+        "review-occult-switch",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -338,7 +363,10 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "review-occult-switch"
+        "assemble-swamp-trident",
+        "review-occult-switch",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -352,12 +380,15 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
         "plan-team-cox",
         "review-olm-lance",
-        "coordinate-defence-reduction",
-        "seek-toa-fang",
         "seek-moons-atlatl",
-        "seek-titans-prayers"
+        "seek-occult-necklace",
+        "seek-titans-prayers",
+        "seek-toa-fang",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -371,12 +402,15 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
         "plan-team-cox",
         "review-olm-lance",
-        "coordinate-defence-reduction",
-        "seek-toa-fang",
         "seek-moons-atlatl",
-        "seek-titans-prayers"
+        "seek-occult-necklace",
+        "seek-titans-prayers",
+        "seek-toa-fang",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -390,13 +424,17 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "plan-team-cox",
+        "assemble-swamp-trident",
         "coordinate-defence-reduction",
+        "plan-team-cox",
         "pursue-bowfa",
-        "seek-zulrah-magic-fang",
-        "seek-toa-fang",
+        "seek-avernic-treads",
         "seek-moons-atlatl",
-        "seek-titans-prayers"
+        "seek-occult-necklace",
+        "seek-titans-prayers",
+        "seek-toa-fang",
+        "seek-zaryte-crossbow",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -411,9 +449,10 @@
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
         "assemble-swamp-trident",
-        "train-slayer-trident",
+        "seek-occult-necklace",
         "seek-seas-trident",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "train-slayer-trident"
       ]
     },
     {
@@ -427,14 +466,16 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
+        "plan-team-cox",
         "review-occult-switch",
-        "train-slayer-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
         "seek-seas-trident",
+        "seek-toa-fang",
         "seek-zulrah-magic-fang",
-        "seek-toa-fang"
+        "train-slayer-trident"
       ]
     },
     {
@@ -476,7 +517,10 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "review-occult-switch"
+        "assemble-swamp-trident",
+        "review-occult-switch",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -490,7 +534,10 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "review-occult-switch"
+        "assemble-swamp-trident",
+        "review-occult-switch",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -546,14 +593,16 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
+        "plan-team-cox",
         "review-occult-switch",
-        "train-slayer-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
         "seek-seas-trident",
+        "seek-toa-fang",
         "seek-zulrah-magic-fang",
-        "seek-toa-fang"
+        "train-slayer-trident"
       ]
     },
     {
@@ -567,14 +616,16 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
+        "plan-team-cox",
         "review-occult-switch",
-        "train-slayer-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
         "seek-seas-trident",
+        "seek-toa-fang",
         "seek-zulrah-magic-fang",
-        "seek-toa-fang"
+        "train-slayer-trident"
       ]
     },
     {
@@ -588,14 +639,16 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "plan-team-cox",
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
+        "plan-team-cox",
         "review-occult-switch",
-        "train-slayer-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
         "seek-seas-trident",
+        "seek-toa-fang",
         "seek-zulrah-magic-fang",
-        "seek-toa-fang"
+        "train-slayer-trident"
       ]
     },
     {
@@ -609,12 +662,16 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "plan-team-cox",
+        "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "seek-zulrah-magic-fang",
-        "seek-toa-fang",
+        "plan-team-cox",
+        "seek-avernic-treads",
         "seek-moons-atlatl",
-        "seek-titans-prayers"
+        "seek-occult-necklace",
+        "seek-titans-prayers",
+        "seek-toa-fang",
+        "seek-zaryte-crossbow",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -628,12 +685,16 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "plan-team-cox",
+        "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "seek-zulrah-magic-fang",
-        "seek-toa-fang",
+        "plan-team-cox",
+        "seek-avernic-treads",
         "seek-moons-atlatl",
-        "seek-titans-prayers"
+        "seek-occult-necklace",
+        "seek-titans-prayers",
+        "seek-toa-fang",
+        "seek-zaryte-crossbow",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -647,12 +708,16 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
       "decisions": [
-        "plan-team-cox",
+        "assemble-swamp-trident",
         "coordinate-defence-reduction",
-        "seek-zulrah-magic-fang",
-        "seek-toa-fang",
+        "plan-team-cox",
+        "seek-avernic-treads",
         "seek-moons-atlatl",
-        "seek-titans-prayers"
+        "seek-occult-necklace",
+        "seek-titans-prayers",
+        "seek-toa-fang",
+        "seek-zaryte-crossbow",
+        "seek-zulrah-magic-fang"
       ]
     },
     {
@@ -666,20 +731,23 @@
       "licence": "BSD-2-Clause (RuneLite source)",
       "reuseBasis": "Checked exact numeric IDs and charged, inactive, component and cosmetic names against the official API source. No source code copied; limited identifiers accompany independently checked Wiki mechanics.",
       "decisions": [
-        "unlock-rigour",
-        "unlock-augury",
-        "plan-team-cox",
         "assemble-swamp-trident",
-        "review-olm-lance",
         "coordinate-defence-reduction",
-        "review-occult-switch",
+        "plan-team-cox",
         "pursue-bowfa",
-        "train-slayer-trident",
-        "seek-seas-trident",
-        "seek-zulrah-magic-fang",
-        "seek-toa-fang",
+        "review-occult-switch",
+        "review-olm-lance",
+        "seek-avernic-treads",
         "seek-moons-atlatl",
-        "seek-titans-prayers"
+        "seek-occult-necklace",
+        "seek-seas-trident",
+        "seek-titans-prayers",
+        "seek-toa-fang",
+        "seek-zaryte-crossbow",
+        "seek-zulrah-magic-fang",
+        "train-slayer-trident",
+        "unlock-augury",
+        "unlock-rigour"
       ]
     },
     {
@@ -759,8 +827,8 @@
       "url": "https://oldschool.runescape.wiki/w/Cave_kraken?oldid=15342837",
       "revision": "15342837",
       "decisions": [
-        "train-slayer-trident",
-        "seek-seas-trident"
+        "seek-seas-trident",
+        "train-slayer-trident"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -788,6 +856,7 @@
       "url": "https://oldschool.runescape.wiki/w/Zulrah?oldid=15366227",
       "revision": "15366227",
       "decisions": [
+        "assemble-swamp-trident",
         "seek-zulrah-magic-fang"
       ],
       "author": "OSRS Wiki contributors",
@@ -802,6 +871,7 @@
       "url": "https://oldschool.runescape.wiki/w/Zulrah/Strategies?oldid=15356843",
       "revision": "15356843",
       "decisions": [
+        "assemble-swamp-trident",
         "seek-zulrah-magic-fang"
       ],
       "author": "OSRS Wiki contributors",
@@ -816,6 +886,7 @@
       "url": "https://oldschool.runescape.wiki/w/Regicide?oldid=15369687",
       "revision": "15369687",
       "decisions": [
+        "assemble-swamp-trident",
         "seek-zulrah-magic-fang"
       ],
       "author": "OSRS Wiki contributors",
@@ -1006,6 +1077,336 @@
       "reviewed": "2026-10-12",
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Full page accessed for bounded access, acquisition, variant and alternative review. Original route explanation and editorial baseline; no prose, tables, artwork or progression dataset redistributed. Strategy is conditional, not player/expert endorsement."
+    },
+    {
+      "id": "smoke-devil",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Smoke_devil?oldid=15357607",
+      "revision": "15357607",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "seek-occult-necklace"
+      ]
+    },
+    {
+      "id": "magic-formula",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Damage_per_second/Magic?oldid=15321382",
+      "revision": "15321382",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "assemble-swamp-trident",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
+      ]
+    },
+    {
+      "id": "magic-damage",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Magic_damage?oldid=15371256",
+      "revision": "15371256",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "assemble-swamp-trident",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
+      ]
+    },
+    {
+      "id": "dharok",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Dharok_the_Wretched?oldid=15316733",
+      "revision": "15316733",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "assemble-swamp-trident",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
+      ]
+    },
+    {
+      "id": "mystic-might",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Mystic_might?oldid=15362148",
+      "revision": "15362148",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "assemble-swamp-trident",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
+      ]
+    },
+    {
+      "id": "augury-mechanics",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Augury?oldid=15362822",
+      "revision": "15362822",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "assemble-swamp-trident",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
+      ]
+    },
+    {
+      "id": "zaryte",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Zaryte_crossbow?oldid=15293439",
+      "revision": "15293439",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "seek-zaryte-crossbow"
+      ]
+    },
+    {
+      "id": "nex",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Nex?oldid=15371100",
+      "revision": "15371100",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "seek-zaryte-crossbow"
+      ]
+    },
+    {
+      "id": "frozen-door",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/The_Frozen_Door?oldid=15166745",
+      "revision": "15166745",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "seek-zaryte-crossbow"
+      ]
+    },
+    {
+      "id": "armadyl-crossbow",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Armadyl_crossbow?oldid=15364436",
+      "revision": "15364436",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "seek-zaryte-crossbow"
+      ]
+    },
+    {
+      "id": "avernic-treads",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Avernic_treads?oldid=15314043",
+      "revision": "15314043",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "seek-avernic-treads"
+      ]
+    },
+    {
+      "id": "final-dawn",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/The_Final_Dawn?oldid=15369722",
+      "revision": "15369722",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "seek-avernic-treads"
+      ]
+    },
+    {
+      "id": "doom",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl?oldid=15360840",
+      "revision": "15360840",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "seek-avernic-treads"
+      ]
+    },
+    {
+      "id": "dragon-boots",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Dragon_boots?oldid=15364734",
+      "revision": "15364734",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "assemble-swamp-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
+      ]
+    },
+    {
+      "id": "primordial-boots",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Primordial_boots?oldid=15290842",
+      "revision": "15290842",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "assemble-swamp-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
+      ]
+    },
+    {
+      "id": "eternal-boots",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Eternal_boots?oldid=15186940",
+      "revision": "15186940",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "assemble-swamp-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
+      ]
+    },
+    {
+      "id": "pegasian-boots",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Pegasian_boots?oldid=15272722",
+      "revision": "15272722",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "assemble-swamp-trident",
+        "seek-avernic-treads",
+        "seek-occult-necklace",
+        "seek-zulrah-magic-fang"
+      ]
+    },
+    {
+      "id": "tormented",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Tormented_bracelet?oldid=15301600",
+      "revision": "15301600",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "seek-avernic-treads"
+      ]
+    },
+    {
+      "id": "cloth",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Mokhaiotl_cloth?oldid=15248146",
+      "revision": "15248146",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independently written explanation and limited checked mechanical facts; no guide prose, table, image or calculator dataset imported.",
+      "decisions": [
+        "seek-avernic-treads"
+      ]
+    },
+    {
+      "id": "nihil-shards",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Nihil_shard?oldid=15190623",
+      "revision": "15190623",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independent component/remaining-work explanation and checked limited mechanical facts; no table, guide prose or dataset imported.",
+      "decisions": [
+        "seek-zaryte-crossbow"
+      ]
+    },
+    {
+      "id": "nihil-horn",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Nihil_horn?oldid=15190673",
+      "revision": "15190673",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Independent component/remaining-work explanation and checked limited mechanical facts; no table, guide prose or dataset imported.",
+      "decisions": [
+        "seek-zaryte-crossbow"
+      ]
+    },
+    {
+      "id": "confliction",
+      "type": "OSRS Wiki mechanics",
+      "url": "https://oldschool.runescape.wiki/w/Confliction_gauntlets?oldid=15330811",
+      "revision": "15330811",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-12",
+      "reviewed": "2026-10-12",
+      "licence": "CC BY-NC-SA 3.0 (source page)",
+      "reuseBasis": "Limited creation/wear and ownership-equivalence facts; independently written conditional explanation, no source table or prose imported.",
+      "decisions": [
+        "seek-avernic-treads"
+      ]
     }
   ],
   "decisions": [
@@ -1408,18 +1809,44 @@
       "completion": "A recognised swamp trident (including uncharged/enhanced) or competing owned magic option ends this bounded assembly suggestion; this is not a claim that every alternative is best everywhere.",
       "applicability": "Positive fang, chisel and seas-trident observations; known Crafting 59+ and Magic 78+; completion must be confirmed false in supported storage. Unobserved containers keep completion unknown.",
       "sources": [
+        "augury-mechanics",
         "ayak",
+        "bowfa",
         "cox-kit",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "dharok",
+        "dragon-boots",
+        "eternal-boots",
+        "fang",
+        "fury",
+        "fury-or",
         "item-ids",
+        "lance",
+        "magic-damage",
         "magic-fang",
+        "magic-formula",
+        "mystic-might",
+        "occult",
+        "occult-or",
+        "pegasian-boots",
+        "primordial-boots",
+        "regicide-route",
         "sang",
         "sang-holy",
         "shadow",
         "swamp-e",
         "swamp-trident",
+        "tentacle",
         "trident",
         "trident-e",
-        "wand"
+        "twisted-bow",
+        "wand",
+        "whip",
+        "zulrah-route",
+        "zulrah-strategy"
       ],
       "status": "reviewed",
       "reviewed": "2026-10-12",
@@ -2113,24 +2540,41 @@
       "applicability": "Only a confirmed target gap and positively supported conditions make this actionable; unknown ownership abstains.",
       "benefitReason": "Your observed seas trident can support a Zulrah route toward a swamp trident. A Bowfa account can still have this magic gap; the upgrade helps both supported raid goals.",
       "sources": [
+        "augury-mechanics",
         "ayak",
         "bowfa",
         "crossbow",
         "crystal-body",
         "crystal-helm",
         "crystal-legs",
+        "dharok",
+        "dragon-boots",
+        "eternal-boots",
+        "fang",
+        "fury",
+        "fury-or",
         "item-ids",
+        "lance",
+        "magic-damage",
         "magic-fang",
+        "magic-formula",
+        "mystic-might",
+        "occult",
+        "occult-or",
+        "pegasian-boots",
+        "primordial-boots",
         "regicide-route",
         "sang",
         "sang-holy",
         "shadow",
         "swamp-e",
         "swamp-trident",
+        "tentacle",
         "trident",
         "trident-e",
         "twisted-bow",
         "wand",
+        "whip",
         "zulrah-route",
         "zulrah-strategy"
       ],
@@ -2568,6 +3012,266 @@
           }
         ]
       }
+    },
+    {
+      "id": "seek-occult-necklace",
+      "title": "Plan a smoke-devil task for an occult necklace",
+      "kind": "ACQUIRE",
+      "activity": "smoke-devils",
+      "outcome": "magic-neck",
+      "family": "magic-neck",
+      "status": "reviewed",
+      "reviewed": "2026-10-12",
+      "requires": [],
+      "repeatable": false,
+      "itemId": 0,
+      "goals": [],
+      "notes": [],
+      "contextBenefits": [],
+      "benefitBand": "MODERATE",
+      "effortBand": "GRIND",
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "LEVEL",
+            "key": "SLAYER",
+            "minimum": 93
+          },
+          {
+            "test": "FACT",
+            "key": "smoke-task",
+            "value": true
+          },
+          {
+            "test": "FACT",
+            "key": "smoke-protection",
+            "value": true
+          }
+        ]
+      },
+      "prepWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "completeWhen": {
+        "test": "POSSESSION",
+        "key": "occult",
+        "value": true
+      },
+      "why": "Smoke devils require 93 Slayer, an active smoke-devil task and a facemask or Slayer helmet. Task and protection are targeted manual checks, not observed by this reader. Wearing an occult requires 70 Magic.",
+      "benefitReason": "Smoke devils require 93 Slayer, an active smoke-devil task and a facemask or Slayer helmet. Task and protection are targeted manual checks, not observed by this reader. Wearing an occult requires 70 Magic.",
+      "alternative": "Keep a supported fury/owned neck option; pursue a swamp weapon upgrade separately if useful. An owned occult needs only a switch reminder.",
+      "tradeoff": "Repeated task/drop work; damage bonuses are rounded, so 5% damage does not guarantee 5% DPS.",
+      "effort": "Remaining Slayer training if below 93, task availability and a variable RNG drop grind; no exact hours.",
+      "access": "Smoke devils require 93 Slayer, an active smoke-devil task and a facemask or Slayer helmet. Task and protection are targeted manual checks, not observed by this reader. Wearing an occult requires 70 Magic.",
+      "preparation": "Supplies and player capability are unobserved; access does not establish readiness.",
+      "completion": "Confirmed outcome ownership ends this acquisition route.",
+      "applicability": "Reviewed route; provisional and blocked upgrade planning is separate from confirmed availability.",
+      "sources": [
+        "augury-mechanics",
+        "ayak",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "dharok",
+        "dragon-boots",
+        "eternal-boots",
+        "fang",
+        "fury",
+        "fury-or",
+        "item-ids",
+        "lance",
+        "magic-damage",
+        "magic-formula",
+        "mystic-might",
+        "occult",
+        "occult-or",
+        "pegasian-boots",
+        "primordial-boots",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "smoke-devil",
+        "swamp-e",
+        "swamp-trident",
+        "tentacle",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "wand",
+        "whip"
+      ]
+    },
+    {
+      "id": "seek-zaryte-crossbow",
+      "title": "Plan Nex and Zaryte component work",
+      "kind": "ACQUIRE",
+      "activity": "nex",
+      "outcome": "zaryte",
+      "family": "zaryte",
+      "status": "reviewed",
+      "reviewed": "2026-10-12",
+      "requires": [],
+      "repeatable": false,
+      "itemId": 0,
+      "goals": [],
+      "notes": [],
+      "contextBenefits": [],
+      "benefitBand": "MODERATE",
+      "effortBand": "GRIND",
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "FACT",
+            "key": "frozen-door",
+            "value": true
+          },
+          {
+            "test": "LEVEL",
+            "key": "HITPOINTS",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "STRENGTH",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "AGILITY",
+            "minimum": 70
+          },
+          {
+            "test": "FACT",
+            "key": "nex-entry",
+            "value": true
+          }
+        ]
+      },
+      "prepWhen": {
+        "test": "FACT",
+        "key": "nex-team",
+        "value": true
+      },
+      "completeWhen": {
+        "test": "POSSESSION",
+        "key": "zaryte",
+        "value": true
+      },
+      "why": "Complete The Frozen Door (its Desert Treasure I and four GWD-faction key pieces remain quest work); base 70 Strength/Ranged/Agility and 70 Hitpoints are conservatively checked. Prison entry also needs the current killcount or ecumenical-key check.",
+      "benefitReason": "Complete The Frozen Door (its Desert Treasure I and four GWD-faction key pieces remain quest work); base 70 Strength/Ranged/Agility and 70 Hitpoints are conservatively checked. Prison entry also needs the current killcount or ecumenical-key check.",
+      "alternative": "Keep the Armadyl/rune crossbow for appropriate enchanted-bolt use, and keep Bowfa/twisted bow for their distinct general roles. Defence reduction competes for special energy when useful.",
+      "tradeoff": "Requires an Armadyl crossbow, a Nex nihil horn and 250 nihil shards. Shard quantity is unobserved. Evoke uses 75% special energy, doubles accuracy and forces the enchanted effect only IF the attack hits; ruby damage depends on current HP, caps and exceptions.",
+      "effort": "Long coordinated team acquisition and component collection; team, supplies and special-attack context must be checked.",
+      "access": "Complete The Frozen Door (its Desert Treasure I and four GWD-faction key pieces remain quest work); base 70 Strength/Ranged/Agility and 70 Hitpoints are conservatively checked. Prison entry also needs the current killcount or ecumenical-key check.",
+      "preparation": "Supplies and player capability are unobserved; access does not establish readiness.",
+      "completion": "Confirmed outcome ownership ends this acquisition route.",
+      "applicability": "Reviewed route; provisional and blocked upgrade planning is separate from confirmed availability.",
+      "sources": [
+        "armadyl-crossbow",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "frozen-door",
+        "item-ids",
+        "nex",
+        "twisted-bow",
+        "zaryte",
+        "nihil-shards",
+        "nihil-horn"
+      ]
+    },
+    {
+      "id": "seek-avernic-treads",
+      "title": "Plan Doom for base avernic treads",
+      "kind": "ACQUIRE",
+      "activity": "doom",
+      "outcome": "treads",
+      "family": "treads",
+      "status": "reviewed",
+      "reviewed": "2026-10-12",
+      "requires": [],
+      "repeatable": false,
+      "itemId": 0,
+      "goals": [],
+      "notes": [],
+      "contextBenefits": [],
+      "benefitBand": "MODERATE",
+      "effortBand": "GRIND",
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "FACT",
+        "key": "final-dawn",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "FACT",
+        "key": "doom-preparation",
+        "value": true
+      },
+      "completeWhen": {
+        "test": "POSSESSION",
+        "key": "treads",
+        "value": true
+      },
+      "why": "Complete The Final Dawn to unlock Doom. Treads become eligible after completing delve 4; this never establishes the ability to clear that delve. Wearing requires 80 Defence, Strength, Ranged and Magic.",
+      "benefitReason": "Complete The Final Dawn to unlock Doom. Treads become eligible after completing delve 4; this never establishes the ability to clear that delve. Wearing requires 80 Defence, Strength, Ranged and Magic.",
+      "alternative": "Keep Cerberus/dragon boots. Base treads have +4 melee strength versus primordial +5; eternal and base treads both have 1% magic damage. The improvement can be marginal or worse for a single style.",
+      "tradeoff": "Each later Cerberus addition needs the exact boots, 80 Magic, 60 Runecraft and 4,000 demon tears. Base ownership is not max treads, and item sets prove no tear quantity. Deeper attempts risk unclaimed rewards.",
+      "effort": "Late-game learning and repeated RNG acquisition. Stop/claim decisions and delve capability are not modelled.",
+      "access": "Complete The Final Dawn to unlock Doom. Treads become eligible after completing delve 4; this never establishes the ability to clear that delve. Wearing requires 80 Defence, Strength, Ranged and Magic.",
+      "preparation": "Supplies and player capability are unobserved; access does not establish readiness.",
+      "completion": "Confirmed outcome ownership ends this acquisition route.",
+      "applicability": "Reviewed route; provisional and blocked upgrade planning is separate from confirmed availability.",
+      "sources": [
+        "avernic-treads",
+        "ayak",
+        "bowfa",
+        "cloth",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "doom",
+        "dragon-boots",
+        "eternal-boots",
+        "final-dawn",
+        "item-ids",
+        "pegasian-boots",
+        "primordial-boots",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "tormented",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "confliction"
+      ]
     }
   ],
   "gear": {
@@ -3483,6 +4187,209 @@
           "item-ids"
         ]
       }
+    ],
+    "upgradePieces": [
+      {
+        "id": 11785,
+        "label": "Armadyl crossbow",
+        "skill": "RANGED",
+        "level": 70,
+        "sources": [
+          "item-ids",
+          "armadyl-crossbow"
+        ]
+      },
+      {
+        "id": 26374,
+        "label": "Zaryte crossbow",
+        "skill": "RANGED",
+        "level": 80,
+        "sources": [
+          "item-ids",
+          "zaryte"
+        ]
+      },
+      {
+        "id": 26372,
+        "label": "nihil horn",
+        "skill": "RANGED",
+        "level": 1,
+        "sources": [
+          "item-ids",
+          "zaryte"
+        ]
+      },
+      {
+        "id": 26231,
+        "label": "nihil shards (quantity unobserved)",
+        "skill": "RANGED",
+        "level": 1,
+        "sources": [
+          "item-ids",
+          "zaryte"
+        ]
+      },
+      {
+        "id": 11840,
+        "label": "dragon boots",
+        "skill": "DEFENCE",
+        "level": 60,
+        "sources": [
+          "item-ids",
+          "dragon-boots"
+        ]
+      },
+      {
+        "id": 13239,
+        "label": "primordial boots",
+        "skill": "DEFENCE",
+        "level": 75,
+        "sources": [
+          "item-ids",
+          "primordial-boots"
+        ]
+      },
+      {
+        "id": 13235,
+        "label": "eternal boots",
+        "skill": "MAGIC",
+        "level": 75,
+        "sources": [
+          "item-ids",
+          "eternal-boots"
+        ]
+      },
+      {
+        "id": 13237,
+        "label": "pegasian boots",
+        "skill": "RANGED",
+        "level": 75,
+        "sources": [
+          "item-ids",
+          "pegasian-boots"
+        ]
+      },
+      {
+        "id": 19544,
+        "label": "tormented bracelet",
+        "skill": "MAGIC",
+        "level": 75,
+        "sources": [
+          "item-ids",
+          "tormented"
+        ]
+      },
+      {
+        "id": 31109,
+        "label": "Mokhaiotl cloth",
+        "skill": "MAGIC",
+        "level": 1,
+        "sources": [
+          "item-ids",
+          "cloth"
+        ]
+      },
+      {
+        "id": 31111,
+        "label": "demon tears (quantity unobserved)",
+        "skill": "MAGIC",
+        "level": 1,
+        "sources": [
+          "item-ids",
+          "avernic-treads"
+        ]
+      },
+      {
+        "id": 31088,
+        "label": "avernic treads",
+        "skill": "DEFENCE",
+        "level": 80,
+        "sources": [
+          "item-ids",
+          "avernic-treads"
+        ]
+      },
+      {
+        "id": 31091,
+        "label": "avernic treads (pr)",
+        "skill": "DEFENCE",
+        "level": 80,
+        "sources": [
+          "item-ids",
+          "avernic-treads"
+        ]
+      },
+      {
+        "id": 31092,
+        "label": "avernic treads (pe)",
+        "skill": "DEFENCE",
+        "level": 80,
+        "sources": [
+          "item-ids",
+          "avernic-treads"
+        ]
+      },
+      {
+        "id": 31093,
+        "label": "avernic treads (et)",
+        "skill": "DEFENCE",
+        "level": 80,
+        "sources": [
+          "item-ids",
+          "avernic-treads"
+        ]
+      },
+      {
+        "id": 31094,
+        "label": "avernic treads (pr)(pe)",
+        "skill": "DEFENCE",
+        "level": 80,
+        "sources": [
+          "item-ids",
+          "avernic-treads"
+        ]
+      },
+      {
+        "id": 31095,
+        "label": "avernic treads (pr)(et)",
+        "skill": "DEFENCE",
+        "level": 80,
+        "sources": [
+          "item-ids",
+          "avernic-treads"
+        ]
+      },
+      {
+        "id": 31096,
+        "label": "avernic treads (pe)(et)",
+        "skill": "DEFENCE",
+        "level": 80,
+        "sources": [
+          "item-ids",
+          "avernic-treads"
+        ]
+      },
+      {
+        "id": 31097,
+        "label": "avernic treads (max)",
+        "skill": "DEFENCE",
+        "level": 80,
+        "sources": [
+          "item-ids",
+          "avernic-treads"
+        ]
+      },
+      {
+        "id": 31106,
+        "label": "confliction gauntlets",
+        "skill": "HITPOINTS",
+        "level": 90,
+        "sources": [
+          "item-ids",
+          "cloth",
+          "confliction"
+        ]
+      }
     ]
   },
   "itemSets": {
@@ -3674,6 +4581,75 @@
     ],
     "vigourScroll": [
       30627
+    ],
+    "zaryte": [
+      26374
+    ],
+    "armadylCrossbow": [
+      11785
+    ],
+    "nihilHorn": [
+      26372
+    ],
+    "nihilShards": [
+      26231
+    ],
+    "boots": [
+      11840,
+      13239,
+      13235,
+      13237
+    ],
+    "primordial": [
+      13239
+    ],
+    "eternal": [
+      13235
+    ],
+    "pegasian": [
+      13237
+    ],
+    "treads": [
+      31091,
+      31092,
+      31093,
+      31094,
+      31095,
+      31096,
+      31097,
+      31088
+    ],
+    "tormented": [
+      19544
+    ],
+    "cloth": [
+      31109
+    ],
+    "demonTears": [
+      31111
+    ],
+    "advancedStaff": [
+      22323,
+      22481,
+      25731,
+      25733,
+      27275,
+      27277,
+      31113,
+      31115
+    ],
+    "ayak": [
+      31113,
+      31115
+    ],
+    "clothOrGauntlets": [
+      31109,
+      31106
+    ],
+    "cerberusBoots": [
+      13235,
+      13237,
+      13239
     ]
   },
   "activities": {
@@ -3689,7 +4665,10 @@
     "slayer": "Slayer / cave krakens",
     "toa": "Tombs of Amascut",
     "moons": "Moons of Peril",
-    "royal-titans": "Royal Titans"
+    "royal-titans": "Royal Titans",
+    "smoke-devils": "Smoke-devil Slayer tasks",
+    "nex": "Nex / Zaryte components",
+    "doom": "Doom of Mokhaiotl"
   },
   "ownershipLabels": {
     "bowfaOrBetter": "Bowfa (any reviewed form) or twisted bow owned",
@@ -3697,7 +4676,23 @@
     "swampOrBetter": "Swamp trident or supported competing magic weapon owned",
     "seasOrBetter": "Seas trident or supported stronger magic option owned",
     "fang": "Osmumten's fang owned",
-    "magicFang": "Magic fang owned (unassembled component)"
+    "magicFang": "Magic fang owned (unassembled component)",
+    "occult": "Occult necklace (plain or ornamented) owned",
+    "competingMagic": "Swamp trident or recognised competing magic option owned",
+    "zaryte": "Zaryte crossbow owned",
+    "armadylCrossbow": "Armadyl crossbow owned",
+    "nihilHorn": "Nihil horn owned",
+    "nihilShards": "Nihil shards owned (does not confirm 250)",
+    "boots": "Supported dragon/Cerberus boots owned",
+    "treads": "Any avernic treads form owned",
+    "tormented": "Tormented bracelet owned",
+    "cloth": "Mokhaiotl cloth owned",
+    "demonTears": "Demon tears owned (does not confirm quantity)",
+    "advancedStaff": "Recognised Sanguinesti/Shadow/Eye staff owned",
+    "ayak": "Eye of Ayak owned",
+    "seasAssembly": "Seas trident owned (charged, empty or enhanced)",
+    "clothOrGauntlets": "Mokhaiotl cloth or confliction gauntlets owned",
+    "cerberusBoots": "Eternal/pegasian/primordial boots owned for optional treads addition"
   },
   "goals": [
     {
@@ -3979,5 +4974,851 @@
       "requires": [],
       "whenRole": "ACCESS"
     }
-  ]
+  ],
+  "upgrades": [
+    {
+      "id": "occult-necklace",
+      "title": "Occult necklace",
+      "itemId": 12002,
+      "when": {
+        "test": "ANY",
+        "conditions": [
+          {
+            "test": "POSSESSION",
+            "key": "seasAssembly",
+            "value": true
+          },
+          {
+            "test": "POSSESSION",
+            "key": "competingMagic",
+            "value": true
+          }
+        ]
+      },
+      "ownedWhen": {
+        "test": "POSSESSION",
+        "key": "occult",
+        "value": true
+      },
+      "equipWhen": {
+        "test": "LEVEL",
+        "key": "MAGIC",
+        "minimum": 70
+      },
+      "routes": [
+        "seek-occult-necklace"
+      ],
+      "benefitBand": "MODERATE",
+      "valueReason": "A supported magic weapon establishes potential neck-slot value. Compare its flat 5% damage and +12 magic attack with a fury/empty reference; breakpoints matter. Advanced staff mechanics are qualitative only.",
+      "alternatives": "Keep fury for its other styles. An already-owned occult is a quick switch; a trident improvement and wind spells at Barrows are separate alternatives.",
+      "remainingWork": "Slayer 93 and a smoke-devil task/protection check, then repeated acquisition.",
+      "limitation": "No guaranteed percentage DPS gain; the reference excludes advanced staffs and complete encounter timing.",
+      "sources": [
+        "augury-mechanics",
+        "ayak",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "dharok",
+        "dragon-boots",
+        "eternal-boots",
+        "fang",
+        "fury",
+        "fury-or",
+        "item-ids",
+        "lance",
+        "magic-damage",
+        "magic-formula",
+        "mystic-might",
+        "occult",
+        "occult-or",
+        "pegasian-boots",
+        "primordial-boots",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "smoke-devil",
+        "swamp-e",
+        "swamp-trident",
+        "tentacle",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "wand",
+        "whip"
+      ],
+      "applications": [
+        {
+          "id": "barrows",
+          "text": "Barrows: a powered-magic reference; wind spells remain a competing option.",
+          "when": {
+            "test": "POSSESSION",
+            "key": "seasAssembly",
+            "value": true
+          },
+          "label": "Barrows reference"
+        },
+        {
+          "id": "ordinary-cox",
+          "text": "Ordinary team CoX: magic-role equipment, subject to team/loadout requirements.",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "USABLE",
+                "key": "magic"
+              },
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              },
+              {
+                "test": "USABLE",
+                "key": "melee"
+              }
+            ]
+          },
+          "label": "Team CoX magic role"
+        }
+      ],
+      "comparison": "OCCULT",
+      "unknownSets": [],
+      "goals": [
+        "magic-upgrade",
+        "plan-team-cox",
+        "toa-entry"
+      ],
+      "parts": [],
+      "shared": [],
+      "headline": "5% magic damage, rounded; compare your neck.",
+      "effortShort": "Slayer 93, task and RNG drop.",
+      "status": "reviewed",
+      "reviewed": "2026-10-12"
+    },
+    {
+      "id": "swamp-trident",
+      "title": "Trident of the swamp",
+      "itemId": 12899,
+      "when": {
+        "test": "POSSESSION",
+        "key": "seasAssembly",
+        "value": true
+      },
+      "ownedWhen": {
+        "test": "POSSESSION",
+        "key": "swampOrBetter",
+        "value": true
+      },
+      "equipWhen": {
+        "test": "LEVEL",
+        "key": "MAGIC",
+        "minimum": 78
+      },
+      "routes": [
+        "assemble-swamp-trident",
+        "seek-zulrah-magic-fang"
+      ],
+      "benefitBand": "MAJOR",
+      "valueReason": "An owned seas trident is a concrete baseline. Swamp adds three base max hits and +10 magic attack; scale upkeep and competing owned weapons can make another grind unnecessary.",
+      "alternatives": "Keep seas when upkeep or Zulrah is unwelcome. Review recognised advanced magic first; wind spells exploit Dharok's weakness while tridents do not.",
+      "remainingWork": "One magic fang, a seas trident and chisel; 59 Crafting to assemble, 78 Magic to wield, then runes/scales. Already-owned parts reduce remaining work.",
+      "limitation": "Uninterrupted ordinary Dharok comparison only; venom, movement, resources and raid scaling are excluded.",
+      "sources": [
+        "augury-mechanics",
+        "ayak",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "dharok",
+        "dragon-boots",
+        "eternal-boots",
+        "fang",
+        "fury",
+        "fury-or",
+        "item-ids",
+        "lance",
+        "magic-damage",
+        "magic-fang",
+        "magic-formula",
+        "mystic-might",
+        "occult",
+        "occult-or",
+        "pegasian-boots",
+        "primordial-boots",
+        "regicide-route",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "tentacle",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "wand",
+        "whip",
+        "zulrah-route",
+        "zulrah-strategy"
+      ],
+      "applications": [
+        {
+          "id": "barrows",
+          "text": "Barrows: a powered-magic reference; wind spells remain a competing option.",
+          "when": {
+            "test": "POSSESSION",
+            "key": "seasAssembly",
+            "value": true
+          },
+          "label": "Barrows reference"
+        },
+        {
+          "id": "ordinary-cox",
+          "text": "Ordinary team CoX: magic-role equipment, subject to team/loadout requirements.",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "USABLE",
+                "key": "magic"
+              },
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              },
+              {
+                "test": "USABLE",
+                "key": "melee"
+              }
+            ]
+          },
+          "label": "Team CoX magic role"
+        }
+      ],
+      "comparison": "SWAMP",
+      "unknownSets": [],
+      "goals": [
+        "magic-upgrade",
+        "plan-team-cox",
+        "toa-entry"
+      ],
+      "parts": [
+        {
+          "label": "Magic fang",
+          "when": {
+            "test": "POSSESSION",
+            "key": "magicFang",
+            "value": true
+          }
+        },
+        {
+          "label": "Seas trident (uncharge before assembly)",
+          "when": {
+            "test": "POSSESSION",
+            "key": "seasAssembly",
+            "value": true
+          }
+        },
+        {
+          "label": "Chisel",
+          "when": {
+            "test": "ITEMS",
+            "key": "chisel"
+          }
+        },
+        {
+          "label": "59 Crafting for assembly",
+          "when": {
+            "test": "LEVEL",
+            "key": "CRAFTING",
+            "minimum": 59
+          }
+        }
+      ],
+      "shared": [],
+      "headline": "Three base max hits over seas; scale upkeep matters.",
+      "effortShort": "Fang acquisition, assembly and upkeep.",
+      "status": "reviewed",
+      "reviewed": "2026-10-12"
+    },
+    {
+      "id": "zaryte-crossbow",
+      "title": "Zaryte crossbow",
+      "itemId": 26374,
+      "when": {
+        "test": "ANY",
+        "conditions": [
+          {
+            "test": "POSSESSION",
+            "key": "armadylCrossbow",
+            "value": true
+          },
+          {
+            "test": "POSSESSION",
+            "key": "nihilHorn",
+            "value": true
+          },
+          {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "zaryte-context",
+                "value": true
+              },
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              }
+            ]
+          }
+        ]
+      },
+      "ownedWhen": {
+        "test": "POSSESSION",
+        "key": "zaryte",
+        "value": true
+      },
+      "equipWhen": {
+        "test": "LEVEL",
+        "key": "RANGED",
+        "minimum": 80
+      },
+      "routes": [
+        "seek-zaryte-crossbow"
+      ],
+      "benefitBand": "MINOR",
+      "valueReason": "An owned Armadyl crossbow/component or explicitly confirmed specialist use supports a conditional enchanted-bolt special-attack comparison. Bowfa/twisted bow alone establishes no need.",
+      "alternatives": "Keep the owned crossbow for enchanted bolts; Bowfa/twisted bow retain distinct sustained roles. Observed defence-reduction weapons may be preferable uses of the same special energy.",
+      "remainingWork": "Complete the outstanding access/team and component work. An already-owned horn completes the Nex-unique part; check missing Armadyl crossbow work or collect shards from Ancient Prison monsters, then assemble. Presence of shards does not prove 250.",
+      "limitation": "No bolt or special-attack DPS simulator: Evoke needs 75% energy and a successful hit. Ruby damage depends on current HP, cap and target exceptions; 110 is not a guaranteed hit.",
+      "sources": [
+        "armadyl-crossbow",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "frozen-door",
+        "item-ids",
+        "nex",
+        "twisted-bow",
+        "zaryte",
+        "nihil-shards",
+        "nihil-horn"
+      ],
+      "applications": [
+        {
+          "id": "ruby-target",
+          "text": "High-current-HP targets allowing ruby effects: confirm that this role matches your intended target.",
+          "when": {
+            "test": "ANY",
+            "conditions": [
+              {
+                "test": "POSSESSION",
+                "key": "armadylCrossbow",
+                "value": true
+              },
+              {
+                "test": "POSSESSION",
+                "key": "nihilHorn",
+                "value": true
+              },
+              {
+                "test": "ALL",
+                "conditions": [
+                  {
+                    "test": "FACT",
+                    "key": "zaryte-context",
+                    "value": true
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "ranged"
+                  }
+                ]
+              }
+            ]
+          },
+          "label": "Ruby-eligible high-HP targets"
+        }
+      ],
+      "comparison": "NONE",
+      "unknownSets": [],
+      "goals": [],
+      "parts": [
+        {
+          "label": "Armadyl crossbow (Commander Zilyana route; GWD preparation remains a check)",
+          "when": {
+            "test": "POSSESSION",
+            "key": "armadylCrossbow",
+            "value": true
+          }
+        },
+        {
+          "label": "Nihil horn (Nex unique; confirm ownership before repeating this grind)",
+          "when": {
+            "test": "POSSESSION",
+            "key": "nihilHorn",
+            "value": true
+          }
+        },
+        {
+          "label": "250 nihil shards (Ancient Prison monsters; manual quantity check)",
+          "when": {
+            "test": "FACT",
+            "key": "zaryte-shards",
+            "value": true
+          }
+        }
+      ],
+      "shared": [],
+      "contextBenefits": [
+        {
+          "when": {
+            "test": "FACT",
+            "key": "zaryte-context",
+            "value": true
+          },
+          "band": "MODERATE",
+          "reason": "Explicitly confirmed high-HP ruby-special role, still subject to hit/target/energy limitations."
+        }
+      ],
+      "headline": "Conditional ruby-special utility after a successful hit.",
+      "effortShort": "Nex/component work; owned parts count.",
+      "status": "reviewed",
+      "reviewed": "2026-10-12"
+    },
+    {
+      "id": "avernic-treads",
+      "title": "Base avernic treads",
+      "itemId": 31088,
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "ITEMS",
+            "key": "boots"
+          },
+          {
+            "test": "ANY",
+            "conditions": [
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              },
+              {
+                "test": "USABLE",
+                "key": "magic"
+              }
+            ]
+          }
+        ]
+      },
+      "ownedWhen": {
+        "test": "POSSESSION",
+        "key": "treads",
+        "value": true
+      },
+      "equipWhen": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "STRENGTH",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 80
+          }
+        ]
+      },
+      "routes": [
+        "seek-avernic-treads"
+      ],
+      "benefitBand": "MODERATE",
+      "valueReason": "A supported owned boot and magic/ranged weapon provide a concrete slot comparison. Base treads add ranged strength/accuracy; base magic damage equals eternal. Melee strength is lower than primordial.",
+      "alternatives": "Keep your exact boots when their style already suffices; do not chase an automatic best-in-slot label. A melee-only primordial case is deferred.",
+      "remainingWork": "The Final Dawn, unassumed delve-4 capability and repeated RNG; optional Cerberus additions are separate, not a requirement to use base boots.",
+      "limitation": "No kill-time or deeper-delve claim. Base +4 melee / +2 ranged strength / 1% magic damage versus primordial +5 melee, pegasian +1 ranged or eternal 1% magic.",
+      "sources": [
+        "avernic-treads",
+        "ayak",
+        "bowfa",
+        "cloth",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "doom",
+        "dragon-boots",
+        "eternal-boots",
+        "final-dawn",
+        "item-ids",
+        "pegasian-boots",
+        "primordial-boots",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "tormented",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "confliction"
+      ],
+      "applications": [
+        {
+          "id": "ranged-slot",
+          "text": "Ranged: +2 strength versus dragon/primordial/eternal 0 or pegasian +1, before any loadout breakpoint calculation.",
+          "when": {
+            "test": "USABLE",
+            "key": "ranged"
+          },
+          "label": "Ranged slot"
+        },
+        {
+          "id": "magic-slot",
+          "text": "Magic: +11 attack and 1% damage; eternal has +8 attack and the same 1% damage.",
+          "when": {
+            "test": "USABLE",
+            "key": "magic"
+          },
+          "label": "Magic slot"
+        }
+      ],
+      "comparison": "NONE",
+      "unknownSets": [],
+      "goals": [],
+      "parts": [
+        {
+          "label": "80 Magic for optional addition",
+          "when": {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 80
+          },
+          "optional": true
+        },
+        {
+          "label": "60 Runecraft for optional addition",
+          "when": {
+            "test": "LEVEL",
+            "key": "RUNECRAFT",
+            "minimum": 60
+          },
+          "optional": true
+        },
+        {
+          "label": "Cerberus boots for their specific style addition",
+          "when": {
+            "test": "POSSESSION",
+            "key": "cerberusBoots",
+            "value": true
+          },
+          "optional": true
+        },
+        {
+          "label": "4,000 demon tears for one addition (quantity unobserved)",
+          "when": {
+            "test": "FACT",
+            "key": "treads-tears",
+            "value": true
+          },
+          "optional": true
+        }
+      ],
+      "shared": [
+        {
+          "title": "Mokhaiotl cloth",
+          "when": {
+            "test": "POSSESSION",
+            "key": "tormented",
+            "value": true
+          },
+          "ownedWhen": {
+            "test": "ANY",
+            "conditions": [
+              {
+                "test": "POSSESSION",
+                "key": "clothOrGauntlets",
+                "value": true
+              },
+              {
+                "test": "POSSESSION",
+                "key": "cloth",
+                "value": true
+              }
+            ]
+          },
+          "minDelve": 2,
+          "detail": "Separate conditional upgrade for an owned tormented bracelet: cloth, 10,000 demon tears, 83 Crafting and 70 Smithing at a bank; 90 Hitpoints to wear (quantity unobserved). Check cloth/gauntlet ownership first; no combined DPS or simultaneous-drop assumption.",
+          "sources": [
+            "cloth",
+            "tormented",
+            "doom",
+            "confliction"
+          ]
+        },
+        {
+          "title": "Eye of Ayak",
+          "when": {
+            "test": "POSSESSION",
+            "key": "seasAssembly",
+            "value": true
+          },
+          "ownedWhen": {
+            "test": "POSSESSION",
+            "key": "advancedStaff",
+            "value": true
+          },
+          "minDelve": 3,
+          "detail": "Separate conditional powered-staff option over seas; compare owned advanced staffs first. No Eye damage model, charge supply or delve capability is inferred.",
+          "sources": [
+            "ayak",
+            "doom"
+          ]
+        }
+      ],
+      "contextBenefits": [
+        {
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "ITEMS",
+                "key": "eternal"
+              },
+              {
+                "test": "USABLE",
+                "key": "magic"
+              },
+              {
+                "test": "ITEMS",
+                "key": "ranged",
+                "value": false
+              }
+            ]
+          },
+          "band": "MINOR",
+          "reason": "Eternal already has the same 1% magic damage; +3 attack alone may not justify Doom. Ranged value remains a separate application."
+        }
+      ],
+      "headline": "Base +2 ranged strength; same magic damage as eternal. Less melee strength than primordial.",
+      "effortShort": "Final Dawn, delve-4 eligibility and RNG.",
+      "status": "reviewed",
+      "reviewed": "2026-10-12"
+    }
+  ],
+  "comparison": {
+    "modelVersion": "powered-magic-1",
+    "targetId": 1673,
+    "targetName": "Ordinary Barrows Dharok",
+    "targetMagic": 1,
+    "targetMagicDefence": -11,
+    "attackTicks": 4,
+    "sources": [
+      "magic-formula",
+      "magic-damage",
+      "dharok",
+      "mystic-might",
+      "augury-mechanics",
+      "trident",
+      "trident-e",
+      "swamp-trident",
+      "swamp-e",
+      "occult",
+      "occult-or",
+      "fury",
+      "fury-or",
+      "eternal-boots",
+      "dragon-boots",
+      "primordial-boots",
+      "pegasian-boots",
+      "item-ids"
+    ],
+    "items": [
+      {
+        "id": 11905,
+        "label": "trident of the seas (full)",
+        "slot": "weapon",
+        "magicAttack": 15,
+        "damagePercent": 0,
+        "weapon": "SEAS",
+        "sources": [
+          "trident",
+          "trident-e",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11907,
+        "label": "trident of the seas",
+        "slot": "weapon",
+        "magicAttack": 15,
+        "damagePercent": 0,
+        "weapon": "SEAS",
+        "sources": [
+          "trident",
+          "trident-e",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22288,
+        "label": "trident of the seas (e)",
+        "slot": "weapon",
+        "magicAttack": 15,
+        "damagePercent": 0,
+        "weapon": "SEAS",
+        "sources": [
+          "trident",
+          "trident-e",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12899,
+        "label": "trident of the swamp",
+        "slot": "weapon",
+        "magicAttack": 25,
+        "damagePercent": 0,
+        "weapon": "SWAMP",
+        "sources": [
+          "swamp-trident",
+          "swamp-e",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22292,
+        "label": "trident of the swamp (e)",
+        "slot": "weapon",
+        "magicAttack": 25,
+        "damagePercent": 0,
+        "weapon": "SWAMP",
+        "sources": [
+          "swamp-trident",
+          "swamp-e",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 6585,
+        "label": "amulet of fury",
+        "slot": "neck",
+        "magicAttack": 10,
+        "damagePercent": 0,
+        "weapon": null,
+        "sources": [
+          "fury",
+          "fury-or",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12436,
+        "label": "amulet of fury (or)",
+        "slot": "neck",
+        "magicAttack": 10,
+        "damagePercent": 0,
+        "weapon": null,
+        "sources": [
+          "fury",
+          "fury-or",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12002,
+        "label": "occult necklace",
+        "slot": "neck",
+        "magicAttack": 12,
+        "damagePercent": 5,
+        "weapon": null,
+        "sources": [
+          "occult",
+          "occult-or",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 19720,
+        "label": "occult necklace (or)",
+        "slot": "neck",
+        "magicAttack": 12,
+        "damagePercent": 5,
+        "weapon": null,
+        "sources": [
+          "occult",
+          "occult-or",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11840,
+        "label": "dragon boots",
+        "slot": "feet",
+        "magicAttack": -3,
+        "damagePercent": 0,
+        "weapon": null,
+        "sources": [
+          "dragon-boots",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 13239,
+        "label": "primordial boots",
+        "slot": "feet",
+        "magicAttack": -4,
+        "damagePercent": 0,
+        "weapon": null,
+        "sources": [
+          "primordial-boots",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 13235,
+        "label": "eternal boots",
+        "slot": "feet",
+        "magicAttack": 8,
+        "damagePercent": 1,
+        "weapon": null,
+        "sources": [
+          "eternal-boots",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 13237,
+        "label": "pegasian boots",
+        "slot": "feet",
+        "magicAttack": -12,
+        "damagePercent": 0,
+        "weapon": null,
+        "sources": [
+          "pegasian-boots",
+          "item-ids"
+        ]
+      }
+    ]
+  }
 }

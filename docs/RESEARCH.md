@@ -189,3 +189,96 @@ one Slayer milestone and the retained owned-parts/prayer/CoX decisions. Missing
 storage alone never activates an acquisition route. Source-page availability and
 static fixtures do not establish live observation accuracy, real-client usability,
 expert consensus, rights to redistribute source material, or Hub approval.
+
+## P4a evidence and bounded numerical validation — 12 October 2026
+
+This delivery extends the existing catalogue and evaluator; it does not import a
+calculator engine or equipment/monster dataset. Four reviewed outcomes reference
+nineteen decisions (the original sixteen remain), eighty-one exact item forms and
+eighty-four sources. Thirteen individually checked stat records support only the
+ordinary trident reference. Source authors, exact revisions, access/review dates,
+reuse basis and affected decisions remain in the bundled source register.
+
+New mechanics review accessed the actual pages over HTTPS and recorded their
+revision footers. The important additional route records are smoke devil
+`15357607` (93 Slayer, active task and face protection), Nex `15371100` and The
+Frozen Door `15166745` (permanent prison unlock versus current entry/team checks),
+Armadyl crossbow `15364436`, nihil horn `15190673` and shards `15190623` (distinct
+component work; shards can come from Ancient Prison monsters), The Final Dawn
+`15369722`, Doom `15360840` and avernic treads `15314043` (quest, individual delve
+eligibility, base versus eight exact treads forms and optional additions).
+
+Cloth `15248146`, tormented bracelet `15301600` and confliction gauntlets
+`15330811` bound the conditional shared opportunity: 83 Crafting, 70 Smithing,
+cloth, a tormented bracelet and 10,000 demon tears at a bank; 90 Hitpoints to wear.
+Already-owned cloth/gauntlets suppress that opportunity. The Eye opportunity
+checks recognised advanced staff ownership independently. Neither one assumes
+quantity, simultaneous rewards, access readiness or any ability to clear a delve.
+Existing Zaryte/occult/seas/swamp/advanced-alternative evidence was reused and
+current mechanics were rechecked. These are original limited explanations, not
+copied source prose or tables; source review is not player endorsement.
+
+`Quest.THE_FROZEN_DOOR` and `Quest.THE_FINAL_DAWN` compile against RuneLite 1.13.1.
+The reader uses the supported `Quest.getState` script with unknown fallback.
+Selected `NEX_PERM`/`VMQ4_PRIMARY` progress events request a coalesced read; there is
+no all-quests/tick scan. Tests exercise those script/progress facts and clearing;
+real-client accuracy remains pending. Smoke-task/face-protection, Nex visit/team,
+ruby-special context and material quantities are explicitly timestamped manual
+planning assumptions. They must be rechecked before use, not treated as live
+observations or inferred from ownership.
+
+The independently authored model follows the checked mechanics at magic formula
+`15321382`, magic damage `15371256`, ordinary Dharok `15316733`, seas `15364129`,
+swamp `15364128`, occult `15314514`, Mystic Might `15362148` and Augury `15362822`.
+Supported flat neck/boot stats have individual pinned evidence in the register.
+No wind weakness is applied to non-elemental powered-staff attacks.
+
+For visible Magic L, base seas/swamp hits are `floor(L/3)-5` and
+`floor(L/3)-2`. Floor the base multiplied by total supported gear/prayer damage.
+Accuracy uses `floor(L × prayer multiplier) + style bonus + 8`, with +3 for
+Accurate or +1 for Longrange; invisible style bonuses do not change base damage.
+The attack roll is that effective level times `(64 + magic attack bonus)`.
+Dharok's defence roll is `(1+9) × (64-11) = 530`. Inclusive rolls give
+`1-(D+2)/(2(A+1))` when A>D, otherwise `A/(2(D+1))`.
+
+On a successful attack, the uniformly rolled zero is raised to one; misses stay
+zero. The conditional mean is `M/2 + 1/(M+1)`, then multiply by hit chance and
+divide by 2.4 seconds. For example, at 90 Magic with seas, no boost/prayer and
+all non-weapon slots explicitly empty, A=`101×79=7979`; accuracy is `29/30`.
+Successful outcomes sum to 326 across 26 rolls, so DPS is
+`(29/30)×(326/26)/2.4 = 5.0502136752`. Swamp gives max 28, A=8989 and
+`(1-266/8990)×(407/29)/2.4 = 5.6746768440`. Adding only an occult instead gives
+max 26, A=9191 and DPS 5.2749035662. These are reference attacks, not encounter
+speed, trip length, resources or actual player DPS.
+
+Other original hand fixtures check Magic 75/78/89/90/92/93/99 breakpoints, low/equal/
+high attack-roll branches, zero misses versus successful zeros, negative boot
+bonuses, both styles, Mystic Might (+15% accuracy/+2% damage), Augury (+25%/+4%),
+and a full +4 magic-potion assumption. Zero delta from an already selected occult
+is retained rather than inflated into a percentage gain. Unknown/incompatible
+slots, empty/manual weapons and unavailable prayer/equip requirements withhold
+numbers. Whole max hits, one-decimal hit chance and two-decimal DPS are displayed;
+accuracy differences use percentage points, and no relative-percent division is
+needed.
+
+The external GPL-3.0 **Wiki calculator** was actually run at
+`89c3e25b344aea90d0189746e4b5f73dde0f0383` in a separate temporary checkout, with its
+own existing data and dependencies. The original synthetic harness is
+[validation/p4a-oracle.test.ts](validation/p4a-oracle.test.ts); no upstream test
+corpus was copied. Its 234 rows span the seven Magic levels, seas/swamp (swamp
+starts at 78), empty/fury/occult necks, both styles and none/Mystic-Might-plus-potion/
+Augury scenarios. All other slots are explicitly empty, NPC is 1673 and no special
+mechanics are selected. Installation used the session proxy/CA trust and a
+writable temporary Yarn directory. No external code/data was added to the plugin
+or its runtime dependencies.
+
+Reproduce in a separate reference checkout: check out that exact commit, run its
+Yarn 4.9.2 `install --immutable`, copy the original harness to
+`src/tests/calc/IronpathP4a.test.ts`, and run
+`yarn jest src/tests/calc/IronpathP4a.test.ts --runInBand --coverage=false`.
+The local run passed; the generated outputs are retained in
+`src/test/resources/com/ironpath/p4a-oracle.csv`. Java tests match integer max hits
+and rolls exactly, hit chance within `1e-12` and DPS within `1e-10`. All 234 match;
+no discrepancy remains. The separate hand derivation agrees as well. Agreement
+with this pinned implementation is bounded validation, not proof of game
+correctness or a licence to expand into unsupported combat mechanics.

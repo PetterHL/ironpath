@@ -2,15 +2,22 @@
 
 **Your path to endgame PvM**
 
-P1–P3 development build · 12 October 2026 · plugin 0.3.0 · knowledge p3-1
+P4a development build · 12 October 2026 · plugin 0.4.0 · knowledge p4a-1
 
-**Delivered baseline: P1–P3 implement the first broad PvM slice, reusing T1–T3 and T4's historical records.** Sixteen reviewed decisions span CG, Zulrah, ToA, Slayer, Moons, Royal Titans and ordinary team CoX. On 12 October 2026, PR #5 was open and unmerged at `eb22fef`; main remained `c717927`. TASKS.md preserves automated results, the limited user-reported PC flow and pending detailed checks. The upgrade-first experience described below is planned P4a work, not a shipped feature. No Plugin Hub submission or external service exists.
+**Delivered: P4a's four-upgrade slice on the P1–P3 foundation.** Occult necklace,
+trident of the swamp, Zaryte crossbow and base avernic treads now have no-goal
+cards, provisional ownership, alternatives and acquisition details. A bounded,
+local powered-magic comparison uses an explicit reference setup against ordinary
+Barrows Dharok. The existing sixteen broad PvM decisions remain accessible.
+TASKS.md records the current automated results and pending PC checks; its earlier
+75-test result and limited user-reported flow remain historical evidence.
+No Plugin Hub submission or external service exists.
 
 The intended product is a free, open-source RuneLite sidebar that automatically identifies worthwhile Ironman PvM upgrades using observed account state: **which upgrades are worth pursuing, what difference will they make, and how do I obtain them?** Equipment, relevant prayers, skill levels and permanent unlocks are eligible. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
 ## Decision
 
-Proceed with an **upgrade-first vertical slice** on the existing broad PvM foundation. P4a covers approximately 3–4 representative upgrades end to end, including a tested account-aware numerical comparison, supported alternatives and acquisition prerequisites. The default experience works without a goal; optional goals remain secondary. Compact single-column cards lead to value/comparison/route details, with clearly labelled provisional advice when ownership is unknown. Detailed observations and administration move behind secondary controls.
+The **upgrade-first vertical slice** is implemented on the existing broad PvM foundation. Four outcomes have value, alternatives and route details; occult and swamp share a tested numerical model. The default experience works without a goal. Compact single-column cards open details with Back navigation, while goals, observations and administration are under Account and preferences. Unknown ownership remains provisional; access, preparation and equip requirements remain separate.
 
 After testing and review, expand toward approximately 8–12 thoroughly researched upgrades, then according to usefulness. These are scope budgets, not quotas or permanent limits; retain useful existing content. Compare actual marginal value rather than recommending every missing item. Theoretical DPS requires an explicit reference setup/target and must not be presented as faster full encounters or more kills per trip. See docs/DESIGN.md for the bounded calculation model and limitations.
 
@@ -42,8 +49,11 @@ Reuse the existing T1–P3 RuneLite implementation and preserve its licence noti
 The implementation baseline combines PRs #1–#3 (including `b3a93d9`), PR #4's
 historical records and main's broad plan in PR #5. All five PRs were still open
 and unmerged when this documentation update was prepared. Recheck before work.
-The next implementation assignment is P4a in TASKS.md. P4b and publication follow
-separately; this update changes documentation only.
+P4a is delivered on `p4a-upgrade-advisor`, stacked on PR #6
+(`docs/upgrade-first-roadmap` at `2ef409a`), which contains PR #5
+(`eb22fef`). Main was rechecked at `c717927`; both PRs remained open and unmerged.
+This branch changes implementation, catalogue and validation documentation. P4b
+and publication remain separate assignments after review.
 
 The existing official RuneLite template, Gradle 8.10, Java release 11 and notices
 are retained; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). RuneLite resolves
@@ -60,7 +70,7 @@ Clone the repository and check out the combined implementation branch:
 ```sh
 git clone https://github.com/PetterHL/ironpath.git
 cd ironpath
-git checkout p1-p3-broad-pvm
+git checkout p4a-upgrade-advisor
 ```
 
 For an existing clone, close the development client, enter its `ironpath` directory,
@@ -68,7 +78,7 @@ and update the branch first:
 
 ```sh
 git fetch origin
-git switch p1-p3-broad-pvm
+git switch p4a-upgrade-advisor
 git pull --ff-only
 ```
 
@@ -98,45 +108,64 @@ Do not upload or commit that file.
 
 On a **standard Ironman in an ordinary permanent members world**, open Ironpath
 and allow two server ticks for initial observations/preferences. Open your bank,
-then read a suggestion and expand **Why and alternatives**. Pinned source links
-are under **Reviewed sources**. Advice is planning, not a complete loadout or a
-promise of successful kills.
+then open a card with **Open details**. Pinned source links are under
+**Reviewed sources**. Advice is planning, not a complete loadout or a promise of
+successful kills. Leave account cases you cannot exercise pending.
 
-## Use the delivered P1–P3 build
+## Use the P4a build
 
-The following describes the current implementation, including its targeted-absence
-confirmation requirement. P4a will introduce upgrade-first/provisional cards and
-reference comparisons; those features are not present in the commands above.
+1. Open with **no goal**. Up to three primary upgrade cards show a supported
+   effect, contexts, remaining work and a confidence/access label. A fourth
+   supported outcome is under **More supported upgrades**. A supported observed
+   or manually owned baseline can justify a provisional card; an empty bank
+   alone cannot. Unsupported contexts receive a coverage explanation.
+2. Choose **Open details** for baseline evidence, alternatives, equip levels,
+   acquisition requirements and sources. **Back to upgrades** returns to the
+   cards. A relevant inaccessible outcome stays visible as **Plan ahead**;
+   ownership or access checks never become an available grind by assumption.
+3. Confirm only the named ownership fact if appropriate. **Already owned**
+   suppresses redundant acquisition; **Confirm not owned** and **Clear
+   confirmation** are reversible. Positive observed/manual possession wins over
+   a conflicting absence. Manual ownership cannot create charged/usable gear.
+4. Occult/swamp details offer **Reference setup and assumptions**. The proposal
+   uses observed real levels and supported exact tridents, neck and boot pieces;
+   every other slot is deliberately empty. It defaults to no offensive prayer,
+   no boost and Accurate. Numbers before confirmation are a **proposed reference
+   scenario**, not your actual loadout. Correct a supported weapon/neck/feet,
+   prayer, boost or style, then **Confirm reference**. Unsupported equipped
+   pieces or unread equipment withhold numbers until you explicitly choose
+   **Use minimal template** to exclude them. No missing piece silently gives
+   zero bonuses; empty/uncharged/manual weapons cannot enter the baseline.
+5. The calculation covers uninterrupted ordinary **Dharok, NPC 1673** attacks.
+   It reports max hit, hit chance (changes in percentage points) and theoretical
+   DPS. It excludes wind weakness for tridents, venom/poison, set effects,
+   advanced staffs, raid scaling, movement and resources. Wind spells remain a
+   Barrows alternative. These numbers never promise kill time, trip length or
+   deeper delves. Zaryte and treads have qualitative/stat comparisons, not a
+   bolt, full-loadout or Doom combat model.
+6. Reference corrections/confirmations stay in memory. Relevant level, item or
+   manual-input changes invalidate confirmation; identity/lifecycle changes
+   clear the setup. Same-value observation refreshes retain confirmation.
+   **Quick actions** separates owned scroll/switch/assembly reminders.
+   **Existing broad PvM advice**, including **More available activities**, retains
+   CG, Moons, Titans, Slayer, ToA and ordinary team CoX advice and sources.
+7. **Account and preferences** contains observations, diagnostics, optional goals,
+   manual planning assumptions and activity/action skip/restore. A skip excludes
+   acquisition work without completing an outcome or hiding owned reward
+   utility. Current task, Nex entry/team and supply/quantity assumptions need
+   rechecking before play; their manual timestamps are not live observations.
+   Wait for **Preferences saved locally**, then restart or change character/
+   profile to check isolated choices and cleared observations/reference setups.
+   These PC checks remain pending.
 
-1. **No goal** gives up to three materially different activities. Select one
-   optional goal to refine priority: ordinary team CoX, Rigour/Augury use levels,
-   owned-parts swamp assembly, ranged routes, powered-magic progression or
-   low-level ToA / a fang. There are no free-text or multiple queued goals.
-2. Goals distinguish access, suggested preparation, use levels and target
-   outcomes. Confirmed missing prerequisites appear separately from available
-   cards. **ANY** routes remain alternatives; optional supplies or higher prayers
-   do not become game access requirements.
-3. Acquisition advice needs a **targeted planning confirmation** when ownership
-   cannot be established. An empty or unopened bank does not mean an upgrade is
-   missing globally. Under **Skips and manual confirmations**, select only the
-   target indicated by the goal (for example “Bowfa … or twisted bow owned”),
-   then **Not owned / locked** if correct. Positive observed or manually owned
-   supported alternatives override that absence. Confirmations have provenance
-   and can be cleared; there is no account-wide questionnaire.
-4. **Skip this activity** excludes its acquisition route. Skipping **CG** never
-   hides an owned Bowfa/crystal kit, and Moons can remain a reviewed alternative
-   when its facts support it. The controls also retain individual action skips
-   for owned reminders. **Restore activity/action** reverses the corresponding
-   choice; a skip never completes an outcome.
-5. **Owned / unlocked** can suppress a redundant grind or provide an unknown
-   quest/unlock fallback. It cannot create a charged, equipped or usable weapon.
-   Readable client quest/unlock facts take precedence; observed possession beats
-   manual absence. **Clear selected fact** or **Reset all planning choices** is
-   reversible.
-6. Wait for **Preferences saved locally**, then restart. The same character/profile
-   should restore the goal, skips and confirmations, while the bank remains
-   unknown until opened. Check another character and RuneLite profile separately.
-   These are pending PC checks, not automated game-test results.
+The retained activity evaluator still needs targeted absence confirmations for
+missing-item grinds. Its ranking now puts contextual benefit before optional goal
+relevance and remaining effort; it does not count goal aliases. A goal retains its
+own route/next-step view even when a higher-value activity leads the secondary
+list. Owned-parts swamp assembly remains a quick action and an inspectable route
+of the grouped swamp outcome. Treads' Cerberus additions are optional, with
+separate skill/component/4,000-tear checks. Cloth and Eye opportunities retain
+separate ownership/value and delve eligibility; their gains are not combined.
 
 Controls wait for identity and preference loading. A corrupt/unsupported file
 disables editing to protect it; a failed save labels current changes memory-only.
@@ -147,8 +176,9 @@ keys. Old action skips are not widened; retired identifiers are explicitly dropp
 ## Privacy and coverage
 
 Real levels, inventory/equipment, session bank, Rigour/Augury and Deadeye/Mystic
-Vigour unlocks, plus completion of Song of the Elves, Regicide, Beneath Cursed Sands
-and Perilous Moons are read on the client thread into immutable snapshots.
+Vigour unlocks, plus completion of Song of the Elves, Regicide, Beneath Cursed Sands,
+Perilous Moons, The Frozen Door and The Final Dawn are read on the client thread
+into immutable snapshots.
 Unavailable quest scripts, containers or skills stay unknown. Quests use supported
 `Quest.getState`; selected progress events coalesce into a read, while idle ticks
 retain the existing snapshot. No KC, Collection Log, resource quantities or player
@@ -158,8 +188,9 @@ The catalogue recognises selected exact active/charged, empty and cosmetic forms
 for distinct purposes. Bowfa usable-package checks still cover default-colour active
 crystal armour. Atlatl acquisition is supported, but its full strength/ammunition
 setup is outside the CoX baseline. Only the base keris partisan is recognised for
-ToA preparation. No complete loadouts, solo/Expert/Challenge Mode certification,
-all bosses, or advanced-item acquisition catalogue is promised. Advanced owned
+ToA preparation. The magic reference is a restricted template, not a complete observed loadout.
+No solo/Expert/Challenge Mode certification, all-boss coverage or general advanced
+acquisition catalogue is promised. Advanced owned
 magic alternatives may suppress a redundant route without proving a spell setup.
 
 CG planning begins with the regular Gauntlet unlock; a prior regular completion is
@@ -180,8 +211,8 @@ RuneLite's supported `Filepath` API:
 On Windows this is under `%USERPROFILE%\.runelite`. The existing key separates
 configuration profile, RuneScape profile and character without a username or raw
 account ID. Files are local and unencrypted; keep them private. Reset writes empty
-choices for the current identity. No bank, live levels/quests/unlocks or observed
-timestamps are serialized, synced through ConfigManager, logged or uploaded.
+choices for the current identity. No bank, live levels/quests/unlocks, observed timestamps or reference setups are
+serialized, synced through ConfigManager, logged or uploaded.
 Only fixed source links open browser traffic, carrying no account data.
 
 Logout, connection loss, hop, region loading, profile/character changes, unsupported
@@ -193,5 +224,6 @@ check identity/generation. The first-save directory fix and lifecycle guards fro
 Automated fixtures use synthetic observations, isolated temporary storage and
 mocked client/UI events. They do not establish live accuracy or player usefulness.
 Limited earlier T1 user-performed passes and the simulated T4 maintenance rehearsal
-are preserved verbatim in TASKS.md. Unperformed T1–T4 and P1–P3 real-client checks
-remain pending; no client was launched for this work and no Hub approval is claimed.
+are preserved verbatim in TASKS.md. Unperformed T1–T4, P1–P3 and P4a real-client checks remain pending. Headless Swing
+previews and mocked controls do not establish game-client usefulness. No client
+was launched for this work and no Hub approval is claimed.

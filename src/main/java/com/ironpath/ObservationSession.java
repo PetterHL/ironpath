@@ -1,6 +1,9 @@
 package com.ironpath;
 
 import com.ironpath.model.AccountSnapshot;
+import com.ironpath.advisor.KnowledgeCatalog;
+import com.ironpath.advisor.MagicReference;
+import com.ironpath.advisor.PoweredMagic;
 import com.ironpath.preferences.Preferences;
 import java.util.Objects;
 
@@ -11,6 +14,7 @@ final class ObservationSession
 	private long revision;
 	private String identity;
 	private AccountSnapshot snapshot;
+	private final MagicReference reference = new MagicReference();
 	private Preferences preferences = Preferences.EMPTY;
 	private boolean loaded, writable;
 	private String storageStatus = "Preferences unavailable until login.";
@@ -41,6 +45,15 @@ final class ObservationSession
 	synchronized long generation() { return generation; }
 	synchronized long revision() { return revision; }
 	synchronized AccountSnapshot snapshot() { return snapshot; }
+	synchronized PoweredMagic.Setup reference(KnowledgeCatalog catalog)
+	{ return snapshot == null || !loaded ? null : reference.update(snapshot, preferences, catalog); }
+	synchronized boolean editReference(long token, long viewRevision, String currentIdentity, AccountSnapshot expected,
+		String key, String value, KnowledgeCatalog catalog)
+	{
+		if (!accepts(token, currentIdentity) || revision != viewRevision || snapshot != expected || snapshot == null || !loaded
+			|| !reference.edit(key, value, snapshot, preferences, catalog)) { return false; }
+		revision++; return true;
+	}
 
 	synchronized void clear()
 	{
@@ -48,6 +61,7 @@ final class ObservationSession
 		revision++;
 		identity = null;
 		snapshot = null;
+		reference.clear();
 		preferences = Preferences.EMPTY; loaded = false; writable = false;
 		storageStatus = "Loading local character preferences…";
 	}

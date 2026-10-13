@@ -123,10 +123,29 @@ public class CatalogValidationTest
 			JsonArray goals = decision.getAsJsonObject().getAsJsonArray("goals");
 			if (goals.remove(new com.google.gson.JsonPrimitive("toa-entry"))) { goals.add("practice-amascut"); }
 		}
+		for (var upgrade : doc.getAsJsonArray("upgrades"))
+		{
+			JsonArray goals = upgrade.getAsJsonObject().getAsJsonArray("goals");
+			if (goals.remove(new com.google.gson.JsonPrimitive("toa-entry"))) { goals.add("practice-amascut"); }
+		}
 		KnowledgeCatalog catalog = KnowledgeCatalog.read(new Gson(), new StringReader(doc.toString()));
 		assertTrue(catalog.decisions.stream().filter(d -> d.kind == KnowledgeCatalog.Kind.ACQUIRE).count() >= 4);
 		assertTrue(Advisor.goalChoices(catalog).containsKey("practice-amascut"));
 		assertFalse(Advisor.goalChoices(catalog).containsKey("toa-entry"));
+	}
+
+	@Test public void rejectsBrokenOutcomeComparisonAndSharedRewardContracts()
+	{
+		rejects(d -> d.remove("upgrades"));
+		rejects(d -> d.getAsJsonArray("upgrades").get(0).getAsJsonObject().remove("status"));
+		rejects(d -> d.getAsJsonArray("upgrades").get(0).getAsJsonObject().getAsJsonArray("routes").add("missing-route"));
+		rejects(d -> d.getAsJsonArray("upgrades").get(0).getAsJsonObject().getAsJsonArray("sources").add("missing-source"));
+		rejects(d -> d.getAsJsonArray("upgrades").get(0).getAsJsonObject().getAsJsonArray("applications").add(d.getAsJsonArray("upgrades").get(0).getAsJsonObject().getAsJsonArray("applications").get(0).deepCopy()));
+		rejects(d -> d.getAsJsonArray("upgrades").get(3).getAsJsonObject().getAsJsonArray("shared").get(0).getAsJsonObject().addProperty("minDelve",1));
+		rejects(d -> d.getAsJsonObject("comparison").addProperty("targetId",12317));
+		rejects(d -> d.getAsJsonObject("comparison").addProperty("attackTicks",5));
+		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("items").get(0).getAsJsonObject().addProperty("slot","head"));
+		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("items").get(0).getAsJsonObject().remove("sources"));
 	}
 
 }

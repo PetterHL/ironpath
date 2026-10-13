@@ -221,7 +221,7 @@ historical T1–T4 result. P4/distribution remain outside this assignment.
 
 P4a is the next implementation assignment. Complete it in one coherent PR, with small commits as useful and one normal review at the end. Source checks, model changes, calculations, UI and tests are work within that delivery, not separate approval gates. P4b follows only after the slice is tested and reviewed. Do not reopen settled backend, AI, repository or independent-development decisions.
 
-### P4a — First complete upgrade experience (not started)
+### P4a — First complete upgrade experience (implemented; review and PC checks pending)
 
 **Outcome:** observe account → identify relevant upgrade → explain personal value → compare alternatives → show acquisition path. The experience must work with no selected goal and include clearly labelled provisional advice where ownership is unknown.
 
@@ -255,6 +255,125 @@ Use docs/DESIGN.md's representative cases: **occult necklace, trident of the swa
 - Recheck first-save/restart and two-character/profile separation using the existing privacy-safe procedures; stale setup/UI actions must not cross identities. Distinguish observed passes, user reports and synthetic evidence.
 
 **Stop after P4a delivery and review request.** Do not start P4b, full encounter modelling or Plugin Hub publication in the same assignment.
+
+### P4a implementation results — 12 October 2026
+
+**Baseline and stack:** rechecked main `c717927cdf4e3fd8128d28b96e05690965f5a908`,
+PR #5 open/unmerged at `eb22fef97aa899bac5611b3001462dfdbebe0b80`, and PR #6
+open/unmerged at `2ef409a9f66f3bb93fa85942f1a1c850e6a0b074`. Created
+`p4a-upgrade-advisor` directly from #6, verified #5 is its ancestor, and preserved
+the earlier implementation, four updated guidance documents, P1–P3 reports and
+historical T1–T4 records. The implementation PR targets
+`docs/upgrade-first-roadmap` to keep this delivery reviewable in the existing
+stack. Existing PRs/branches were neither merged, closed nor reset.
+
+**Delivered:** plugin **0.4.0**, knowledge **p4a-1**, catalogue schema **5**:
+**four reviewed upgrade outcomes / nineteen decisions / eighty-one exact item
+forms / eighty-four sources / thirteen bounded stat records**. The original
+sixteen decisions and stable preference identifiers remain. Occult adds the
+93-Slayer/task/protection route; swamp groups Zulrah and owned-parts assembly;
+Zaryte distinguishes Nex, Armadyl-crossbow and shard work; base treads shows
+quest/equip requirements and separately optional Cerberus additions. Already
+owned components reduce the remaining component checks. Cloth/gauntlets and Eye
+opportunities have their own ownership/value and delve-2/3 eligibility; treads
+requires completed delve 4. No quantity, simultaneous reward or delve capability
+is inferred. Relevant exact variants, access and alternatives were checked with
+actual revision footers and the existing pinned API definitions; detailed
+mechanics/oracle provenance is in docs/RESEARCH.md.
+
+Value, ownership certainty and acquisition access are separate. No-goal cards can
+be provisional or plan ahead; specific ownership questions remain reversible,
+and live/manual positive evidence beats absence. Owned equivalents suppress the
+acquisition. Bowfa/twisted bow alone neither establishes nor suppresses Zaryte
+specialist value. A magic-only eternal case is explicitly marginal; a melee-only
+primordial case receives no treads grind. Comparator order is contextual value,
+optional relevant goal, distinct evidenced encounter applications, then remaining
+access/work and stable ID. Goal counts/aliases contribute no score.
+
+The existing Swing panel now leads with three compact single-column cards and an
+optional fourth. Details expose baseline evidence, alternatives, numerical
+assumptions, requirements/parts/shared rewards and sources, with Back navigation.
+Targeted ownership questions keep stable positions after edits. Equivalent exact
+variant sets share confirmation meaning, so a historical advanced-ownership key
+suppresses the grouped outcome and redundant assembly without a duplicate
+ownership question. No charge/usability is created by that planning fact. Quick actions are
+separate; all retained available broad advice, goals, observations and
+administration remain accessible through secondary controls. Native ItemManager
+images are used in the client; headless previews use a symbol fallback. Explicit
+RuneLite colours and wrapped long controls remain legible at the native width.
+These previews are not an authenticated client or player usefulness test.
+
+The powered-magic helper returns **supported / conditional / unsupported** with
+reasons and the complete input/source/model contract. Proposals use observed
+levels/exact supported items, explicit empty slots and visible style/prayer/boost
+assumptions. Unsupported or unread equipment cannot silently add zero; a user can
+explicitly select the minimal reference template. Lightweight corrections and
+confirmation stay in memory, invalidate after input changes and clear with the
+existing account/profile generation. Stale reference and navigation actions are
+rejected. No loadout persistence, runtime calculator, dependency, backend or
+account-data export was introduced. Preferences remain schema 2 with existing
+schema-1 migration, serial Filepath IO and first-save/restart isolation guards.
+
+**Actual validation:** the first offline baseline attempt could not resolve
+uncached `latest.release` metadata. `source /workspace/ironpath-environment/activate.sh`
+followed by `./gradlew test build --no-daemon` resolved the metadata and passed
+**75 tests, zero failures/errors/skips** on Temurin **11.0.32.1+1**, RuneLite
+**1.13.1**, Gradle **8.10**. This is a fresh baseline pass, separate from the
+historical P3 result. Final `./gradlew test build --offline --no-daemon` passed
+**106 tests, zero failures/errors/skips**; catalogue validation and
+`git diff --check` pass. Fontconfig cache and Gradle deprecation warnings remain
+non-fatal. The final tests cover the four paths, partial knowledge, owned/manual
+precedence, marginal/specialist contexts, aliases, shared outcomes/components,
+integer/accuracy/distribution cases, unsupported inputs and actual Swing/client
+control events. Existing regression cases are retained; priority assertions were
+changed only for the documented value-before-goal rule, retaining direct-goal
+next-step and available-alternative checks.
+
+The pinned Wiki calculator was actually run separately on **234 original
+synthetic scenarios**, not a copied upstream corpus. All integer results match;
+accuracy tolerance is `1e-12`, DPS tolerance `1e-10`, with no discrepancy.
+Independent hand-derived expectations also pass, including both accuracy branches,
+successful zeros, attack interval and gear/prayer/style rounding. The original
+repeatable harness and output fixture retain provenance. Oracle agreement is not
+claimed as game correctness. Headless native-width primary/detail PNGs are
+produced under `build/reports/p4a`; details/back, targeted confirm/clear,
+correction/confirmation, input-change invalidation and deliberately delayed
+cross-character actions are exercised with actual controls and mocked client
+queues. Real browser, client appearance and account facts remain pending.
+
+**Supported calculation matrix and exclusions:**
+
+| Input | Supported boundary |
+|---|---|
+| Weapon | Observed charged seas 11905/11907/22288; swamp 12899/22292. Empty/manual forms cannot become a baseline. Candidate swamp is explicitly proposed charged/supplied. |
+| Slots | Reviewed fury/occult plain/ornamented necks and dragon/primordial/eternal/pegasian boots; every other reference slot explicitly empty. Incompatible/unknown mechanics return unavailable. |
+| Skills/assumptions | Real Magic 75–99 (swamp equip 78+); no boost or full +4 magic-potion assumption; Accurate/Longrange; no offensive prayer, Mystic Might or Augury only when use/unlock requirements are confirmed. Never infer an active prayer. |
+| Target/result | Ordinary Barrows Dharok NPC 1673, Magic 1 / magic defence -11; 4 ticks / 2.4 seconds of uninterrupted attacks. Max hit, hit chance and theoretical DPS only. |
+| Excluded | Wind weakness on tridents, venom/poison, advanced staff/set mechanics, thralls/specials, raids/scaling/reduction, movement/resources, expected kill/encounter time, kills/trip and deeper-delve estimates. Wind spells remain a qualitative Barrows alternative. |
+
+At **90 Magic, Accurate, no boost/prayer and all non-weapon slots deliberately
+empty**: seas max **25**, hit chance **96.6667%**, DPS **5.0502136752**; swamp max
+**28**, chance **97.0412%**, DPS **5.6746768440**; seas plus only occult max **26**,
+chance **97.1062%**, DPS **5.2749035662**. UI rounds hit chance to one decimal and
+DPS to two. These are proposed reference scenarios, not actual account performance
+or universal DPS percentages. Observed levels and corrected reference choices
+change the end-to-end numbers; an already selected occult has zero delta.
+
+**Three concrete synthetic walkthroughs — no player data/usefulness claim:**
+
+| Observed facts / optional preferences | Outcome and next step | Alternatives / boundary |
+|---|---|---|
+| Seas trident 11907 and fury 6585; Magic 75, Slayer 80; no goal; global target ownership unknown. | Provisional swamp and occult cards. Occult names Slayer 93 then task/protection checks; swamp separates 78-Magic equip work. The supported occult reference gives max 20 → 21; swamp numbers are withheld below its wield level. Positive inventory with an unread or empty bank also supports provisional cards in a separate fixture. | Keep seas/fury. No missing global ownership is invented; a targeted confirmation can change certainty or suppress the outcome. |
+| Bowfa/crystal, seas, fury and dragon boots; Magic 90, Slayer 90; no goal. | Swamp, occult and treads remain relevant. Swamp has a tested Dharok comparison; occult names its Slayer gap and treads The Final Dawn. Correcting reference feet/neck changes the numbers. | Keep seas and compare scale upkeep; wind spells remain relevant at Barrows. Zulrah skip excludes that route; a separately tested owned-fang/chisel case retains assembly/quick-action utility, with no further fang grind. |
+| Twisted bow 20997, Armadyl crossbow 11785 and warhammer 13576; Magic/Ranged 99; no goal. | Conditional Zaryte specialist card, with The Frozen Door/access/team and component checks. An explicit ruby-target planning confirmation refines its value band; tbow alone produces no Zaryte card. | Tbow keeps its sustained role, ACB its bolt role and defence reduction competes for special energy. Evoke requires a hit and 75% energy; 110 ruby damage is not guaranteed. No unsupported DPS is shown. |
+
+**PC status:** no authenticated client/in-game testing was performed. Every P4a
+PC item immediately above remains **pending**, including native item icons,
+bank/quest/variant accuracy, source browsing, readability/usefulness in the actual
+client, correction/invalidation, first-save/restart and two-character/profile
+checks. Historical limited user reports stay limited; zero live critical errors
+is not assumed. P4b, full encounter modelling and Plugin Hub publication were
+not started.
 
 ### P4b — Expand useful coverage after P4a review (not started)
 

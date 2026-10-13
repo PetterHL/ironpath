@@ -19,9 +19,15 @@ import javax.swing.JComboBox;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.StatChanged;
+import net.runelite.api.gameval.InventoryID;
+import com.ironpath.advisor.KnowledgeCatalog;
+import com.ironpath.advisor.PoweredMagic;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -92,7 +98,7 @@ public class PreferenceLifecycleTest
 		}
 		return null;
 	}
-	private JButton button(String label) { return find(panel, JButton.class, b -> b.getText().equals(label)); }
+	private JButton button(String label) { return find(panel, JButton.class, b -> b.getText().equals(label) || label.equals(b.getToolTipText())); }
 	private void setGoal() throws Exception
 	{
 		SwingUtilities.invokeAndWait(() ->
@@ -165,5 +171,47 @@ public class PreferenceLifecycleTest
 		SwingUtilities.invokeAndWait(() -> button("Reset all planning choices").doClick()); callbacks(); load();
 		assertNull(plugin.session.preferences().goal); assertTrue(plugin.session.preferences().skipped.isEmpty());
 		assertTrue(plugin.session.preferences().confirmations.isEmpty());
+	}
+
+	@Test public void actualReferenceControlsRecalculateAndDelayedActionsCannotCrossCharacters() throws Exception
+	{
+		ItemContainer inventory = mock(ItemContainer.class), equipment = mock(ItemContainer.class);
+		when(inventory.getItems()).thenReturn(new Item[]{new Item(11907,1),new Item(6585,1)});
+		when(equipment.getItems()).thenReturn(new Item[0]);
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(inventory);
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
+		login(); KnowledgeCatalog catalog = KnowledgeCatalog.load(new Gson());
+		SwingUtilities.invokeAndWait(() -> find(panel,JButton.class,b -> "open-upgrade-swamp-trident".equals(b.getName())).doClick());
+		JButton oldBack=button("Back to upgrades"),oldConfirm=button("Confirm reference");
+		SwingUtilities.invokeAndWait(() -> oldConfirm.doClick());callbacks();
+		assertTrue(plugin.session.reference(catalog).confirmed);assertTrue(files.isEmpty());
+		SwingUtilities.invokeAndWait(() -> {
+			JComboBox<?> boost=find(panel,JComboBox.class,c -> "reference-boost".equals(c.getName()));
+			boost.setSelectedIndex(1);button("Apply boost").doClick();
+		});callbacks();
+		assertEquals(PoweredMagic.Boost.MAGIC_POTION,plugin.session.reference(catalog).boost);
+		assertFalse(plugin.session.reference(catalog).confirmed);
+		JButton delayedConfirm=button("Confirm reference");
+		SwingUtilities.invokeAndWait(() -> delayedConfirm.doClick());
+		characterB();plugin.onProfileChanged(new ProfileChanged());tick();tick();load();
+		assertFalse(plugin.session.reference(catalog).confirmed);assertEquals(PoweredMagic.Boost.NONE,plugin.session.reference(catalog).boost);
+		SwingUtilities.invokeAndWait(() -> {oldBack.doClick();oldConfirm.doClick();});callbacks();
+		assertFalse(plugin.session.reference(catalog).confirmed);assertNotNull(find(panel,JButton.class,b -> "open-upgrade-swamp-trident".equals(b.getName())));
+		assertTrue(files.isEmpty());
+	}
+
+	@Test public void actualLevelEventInvalidatesConfirmedReferenceAndOldControls() throws Exception
+	{
+		ItemContainer inventory=mock(ItemContainer.class),equipment=mock(ItemContainer.class);
+		when(inventory.getItems()).thenReturn(new Item[]{new Item(11907,1)});when(equipment.getItems()).thenReturn(new Item[0]);
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(inventory);when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
+		login();KnowledgeCatalog catalog=KnowledgeCatalog.load(new Gson());
+		SwingUtilities.invokeAndWait(() -> find(panel,JButton.class,b -> "open-upgrade-swamp-trident".equals(b.getName())).doClick());
+		SwingUtilities.invokeAndWait(() -> button("Confirm reference").doClick());callbacks();assertTrue(plugin.session.reference(catalog).confirmed);
+		JButton old=button("Confirm reference");when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(93);
+		plugin.onStatChanged(new StatChanged(Skill.MAGIC,0,93,93));tick();
+		assertFalse(plugin.session.reference(catalog).confirmed);
+		assertEquals(26,new PoweredMagic(catalog).compare(plugin.session.snapshot(),plugin.session.preferences(),plugin.session.reference(catalog),"OCCULT").before.maxHit);
+		SwingUtilities.invokeAndWait(() -> old.doClick());callbacks();assertFalse(plugin.session.reference(catalog).confirmed);
 	}
 }
