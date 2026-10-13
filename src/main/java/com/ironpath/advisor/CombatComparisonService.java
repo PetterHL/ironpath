@@ -171,11 +171,18 @@ public final class CombatComparisonService
 		PoweredMagic.Metrics before = PoweredStaffModel.calculate(a.level("MAGIC"), setup, target, items);
 		PoweredMagic.Metrics after = PoweredStaffModel.calculate(a.level("MAGIC"), afterSetup, target, items);
 		EnumMap<ComparisonResult.Metric, PoweredMagic.Status> support = support(setup.confirmed ? PoweredMagic.Status.SUPPORTED : PoweredMagic.Status.CONDITIONAL);
+		EnumMap<ComparisonResult.Metric, String> gaps = new EnumMap<>(ComparisonResult.Metric.class);
 		String reason = "Reference estimate only; not observed combat performance.";
-		if (hasHistoryEffect(setup) || hasHistoryEffect(afterSetup))
+		java.util.Set<String> beforeGaps = accuracyGaps(setup), afterGaps = accuracyGaps(afterSetup);
+		java.util.Set<String> allGaps = new java.util.TreeSet<>(beforeGaps); allGaps.addAll(afterGaps);
+		if (!allGaps.isEmpty())
 		{
 			support.put(HIT_CHANCE, PoweredMagic.Status.UNSUPPORTED); support.put(THEORETICAL_DPS, PoweredMagic.Status.UNSUPPORTED);
-			reason += " One-handed Confliction history or Brimstone's accuracy proc is a model gap; max hit remains supported.";
+			String detail = allGaps.stream().map(gap -> (beforeGaps.contains(gap) && afterGaps.contains(gap)
+				? "Before and after: " : beforeGaps.contains(gap) ? "Before: " : "After: ") + gap)
+				.collect(Collectors.joining(" "));
+			gaps.put(HIT_CHANCE, detail); gaps.put(THEORETICAL_DPS, detail);
+			reason += " " + detail + " Max hit remains supported.";
 		}
 		List<String> assumptions = new ArrayList<>();
 		assumptions.add(setup.confirmed ? "Confirmed reference estimate; candidate remains proposed." : "Proposed complete reference; correct any consequential assumption.");
@@ -199,11 +206,21 @@ public final class CombatComparisonService
 		{ assumptions.add("Observed Brimstone is a competing ring: its accuracy proc is unsupported. This reference uses the strongest supported flat-stat alternative; it does not certify Brimstone inferior."); }
 		assumptions.add("Model " + catalog.comparison.modelVersion + "; knowledge " + catalog.version + "; sources " + sourceDescription(setup, afterSetup, target));
 		return new ComparisonResult(setup, afterSetup, before, after, target, support, reason, catalog.comparison.modelVersion, catalog.version, assumptions,
-			candidate.weapon != null || before.attackTicks != after.attackTicks);
+			candidate.weapon != null || before.attackTicks != after.attackTicks, gaps);
 	}
-	private boolean hasHistoryEffect(CombatSetup setup)
-	{ return setup.slots.values().stream().filter(id -> id > 0).map(items::get).anyMatch(i -> i.unsupportedAccuracy
-		|| i.historyEffect && !items.get(setup.slots.get("weapon")).twoHanded); }
+	private java.util.Set<String> accuracyGaps(CombatSetup setup)
+	{
+		java.util.Set<String> result = new java.util.TreeSet<>();
+		for (int id : setup.slots.values())
+		{
+			if (id == 0) { continue; }
+			KnowledgeCatalog.CombatItem item = items.get(id);
+			if (item.unsupportedAccuracy) { result.add(item.label + ": accuracy proc is not modelled."); }
+			if (item.historyEffect && !items.get(setup.slots.get("weapon")).twoHanded)
+			{ result.add(item.label + ": one-handed accuracy stacks are not modelled."); }
+		}
+		return result;
+	}
 	private String description(CombatSetup setup)
 	{
 		return PoweredMagic.SLOTS.stream().map(slot -> slot + "=" + (setup.slots.get(slot) == 0 ? "deliberately empty"
@@ -226,5 +243,5 @@ public final class CombatComparisonService
 	private ComparisonResult unavailable(CombatSetup setup, String reason)
 	{ return unavailable(setup, reason, false); }
 	private ComparisonResult unavailable(CombatSetup setup, String reason, boolean dpsFirst)
-	{ return new ComparisonResult(setup, null, null, null, setup == null ? null : target(setup.target), support(PoweredMagic.Status.UNSUPPORTED), reason, catalog.comparison.modelVersion, catalog.version, List.of(), dpsFirst); }
+	{ return new ComparisonResult(setup, null, null, null, setup == null ? null : target(setup.target), support(PoweredMagic.Status.UNSUPPORTED), reason, catalog.comparison.modelVersion, catalog.version, List.of(), dpsFirst, Map.of()); }
 }

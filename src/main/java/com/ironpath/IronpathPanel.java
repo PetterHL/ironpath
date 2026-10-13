@@ -322,8 +322,10 @@ final class IronpathPanel extends PluginPanel
 				"Theoretical DPS  %.2f → %.2f  (%+.2f)", comparison.before.dps, comparison.after.dps, comparison.dpsGain()) : "Theoretical DPS unavailable · model gap";
 			boolean dpsFirst = comparison.primaryMetric == ComparisonResult.Metric.THEORETICAL_DPS;
 			text(this, dpsFirst ? dps : max); text(this, dpsFirst ? max : dps);
+			String gap = comparison.gaps.get(ComparisonResult.Metric.THEORETICAL_DPS);
+			if (gap != null) { text(this, "DPS and hit chance gap: " + gap); }
 			text(this, comparison.available(ComparisonResult.Metric.HIT_CHANCE) ? String.format(java.util.Locale.ROOT,
-				"Hit chance  %.1f%% → %.1f%%", comparison.before.hitChance * 100, comparison.after.hitChance * 100) : "Hit chance  Unsupported for this history mechanic");
+				"Hit chance  %.1f%% → %.1f%%", comparison.before.hitChance * 100, comparison.after.hitChance * 100) : "Hit chance unavailable · model gap");
 			text(this, String.format(java.util.Locale.ROOT, "Attack interval  %d → %d ticks (%.1f → %.1f s)",
 				comparison.before.attackTicks, comparison.after.attackTicks, comparison.before.attackTicks * 0.6, comparison.after.attackTicks * 0.6));
 			text(this, comparison.target.name + " · " + setup.prayer + " · " + setup.boost + ". Reference only.");

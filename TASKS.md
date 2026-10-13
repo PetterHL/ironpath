@@ -222,6 +222,14 @@ These are planned acceptance fixtures, **not newly executed tests**. Pin complet
 
 Also exercise: equal supported gains with disjoint versus overlapping effort ranges; different-target DPS values; qualitative specialist versus numerical damage; missing/invalid pace; old versus current CoX weighting; multi-roll expected count versus at-least-one probability; same-activity double counting; resource allocation conflicts; all-owned and all-unknown accounts; stale asynchronous identity. Tests must assert justified relationships and explanation changes, not one universal item ordering.
 
+### Client comparison-gap explanation — 13 October 2026
+
+Two supplied RuneLite screenshots confirm the integrated Enemy with 0 Defence label, DPS-first Shadow detail with 4→5 ticks and off-hand removal, and max-hit-first Ancestral detail with unchanged four-tick interval. The supplied reference confirms Brimstone ring with tormented bracelet: the ring's unmodelled accuracy proc blocks hit chance/DPS; Confliction is not involved in that reference. These are limited visual/client findings, not a numeric-model, DPI/navigation or player-usefulness acceptance pass. Full reference dumps, observation timestamps and account identifiers are not recorded here.
+
+Branch `client-model-gap-labels` clarifies the existing per-metric gap: name only present items, distinguish before/after/both, and explain it beside the Value metrics. Brimstone is not described as an attack-history effect. Keep supported max hit, DPS-first/max-hit-first presentation, numeric support boundaries and known-equipment references. An explicit empty-ring control can test the supported numeric view; it does not establish actual Brimstone DPS. Plugin patch 0.6.2, knowledge reference-1, schema 8 and powered-magic-2 remain. [Validation](docs/validation/client-model-gap-labels.md).
+
+**Quantitative follow-up alongside R2:** review and implement Brimstone's accuracy proc with independent hand/reference fixtures and contextual strongest-owned-ring comparisons. This concrete model gap blocks supported DPS on the tested reference; do not silently drop the ring or treat its effect as zero. Confliction's one-handed history remains a separate task in the existing magic/remaining-model coverage. The explanation fix implements neither mechanic.
+
 ## Next implementation
 
 **Review/integrate R1.5a and the delivered neutral-reference/DPS-first follow-up, then continue R2's ranged packages and major alternatives.** Actual-client retests remain pending in their validation reports and run alongside implementation. Read DESIGN's quantitative contract and UX's metric rules; R2's visible delivery must use these contracts. R1.5b local pacing, complex R5 distributions, full R6 filters and R8 broad usability evidence remain deferred. No new planning reset, catalogue ceiling or required-goal workflow.

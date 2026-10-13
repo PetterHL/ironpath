@@ -11,15 +11,17 @@ public final class ComparisonResult
 	public final PoweredMagic.Metrics before, after;
 	public final TargetProfile target;
 	public final Map<Metric, PoweredMagic.Status> support;
+	public final Map<Metric, String> gaps;
 	public final String reason, modelVersion, knowledgeVersion;
 	public final List<String> assumptions;
 	public final Metric primaryMetric;
 	ComparisonResult(CombatSetup beforeSetup, CombatSetup afterSetup, PoweredMagic.Metrics before,
 		PoweredMagic.Metrics after, TargetProfile target, Map<Metric, PoweredMagic.Status> support,
-		String reason, String model, String knowledge, List<String> assumptions, boolean dpsFirst)
+		String reason, String model, String knowledge, List<String> assumptions, boolean dpsFirst, Map<Metric, String> gaps)
 	{
 		this.beforeSetup = beforeSetup; this.afterSetup = afterSetup; this.before = before; this.after = after;
 		this.target = target; this.support = Map.copyOf(support); this.reason = reason;
+		this.gaps = Map.copyOf(gaps);
 		modelVersion = model; knowledgeVersion = knowledge; this.assumptions = List.copyOf(assumptions);
 		primaryMetric = dpsFirst ? Metric.THEORETICAL_DPS : Metric.MAX_HIT;
 	}
