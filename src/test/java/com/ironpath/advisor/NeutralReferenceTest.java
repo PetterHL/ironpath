@@ -104,7 +104,7 @@ public class NeutralReferenceTest
 				repeat.stream().map(v->v.upgrade.id+v.pursuit.category).collect(java.util.stream.Collectors.toList()));
 			assertTrue(first.stream().filter(v->v.comparison.before!=null).allMatch(v->v.comparison.target.analytical));
 			if(a.observedItem(27275)==com.ironpath.model.Truth.TRUE)assertFalse(first.stream().anyMatch(v->v.upgrade.id.equals("swamp-trident")));
-			if(profile.getKey().startsWith("Nearly complete"))assertTrue(first.isEmpty());
+			if(profile.getKey().startsWith("Nearly complete"))assertTrue(first.stream().noneMatch(v -> v.upgrade.comparison.equals("POWERED_MAGIC")));
 			report.append("## ").append(profile.getKey()).append("\n\n");
 			if(first.isEmpty())report.append("No remaining supported outcome; wider combat-family coverage remains pending.\n\n");
 			for(var view:first)report.append("- **").append(view.upgrade.title).append("** — ").append(view.pursuit.category.label)

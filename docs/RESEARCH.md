@@ -1,5 +1,15 @@
 # IronPath research and evidence
 
+## R2 checked ranged facts — 13 October 2026
+
+The [R2 validation report](validation/R2.md) and bundled r2-* source records contain actual full-page revision-pinned review, independently authored bounded stats/recipes and original explanations. Direct ordinary HTTPS retrieval succeeded; indexed snippets were not used to promote these claims. Magic remains powered-magic-2 and the new local family is ranged-1; neither imports calculator code or a bulk equipment dataset.
+
+Review covered effective-level/roll/interval arithmetic; tbow integer rounding and Magic/accuracy caps; active crystal and complete Void/task order; light/standard/heavy defence; compatible plain ammunition/internal darts; Masori offensive equivalence; current jewellery/capes; seeking floor/accuracy and quiver restrictions. Rosewood's current rune ceiling and its 84-Fletching/two-log/beak recipe were checked. Toxic requires **78 Fletching**, changed from 53 in May 2024; the route was corrected before delivery. Vorkath's lifetime kill-50 first-head guarantee is not a fresh guaranteed-head countdown for an unknown account.
+
+Rupture uses an elder Maggot King fang, chisel/84-Crafting etching, anguish and bank-side assembly; ordinary Turoth fangs are a separate context. Anguish uses a necklace mould/92 Crafting. Current quiver charges affect arrows/bolts from either ammo slot, with no extra charged bonus for internal darts/crystal. Sources distinguish drops, assembly, equip conditions, supplies and observation scope; unsupported odds/hours/special/encounter claims remain unavailable.
+
+The development-only pinned reference `89c3e25…` was executed on **1,944 original complete ranged inputs**, retaining separate hand cases and investigating a reference-harness crystal-name case mismatch. Only original synthetic inputs/results are committed; no GPL code/test corpus/equipment data or web/game assets were imported. Rights remain separately assessed for code, data, source text and sprites. Actual player pace, account data, live sprites and usefulness were not observed.
+
 ## Neutral analytical reference — 13 October 2026
 
 The requested **Enemy with 0 Defence** is an authored comparison assumption, not an observed NPC or combat-dummy stat claim. The exact powered-magic inputs are Defence 0, Magic 0, magic-defence bonus 0, standard non-ToA rules and no reduction/task/salve/weakness. Ordinary NPC magic defence uses `(Magic + 9) × (magic defence bonus + 64)`, so the roll is **576**, not zero. Existing pinned `magic-formula` and `magic-damage` sources supply the ordinary mechanics and are linked to the new context in the bundled register; their original review dates are retained. No new source retrieval or endorsement is claimed for the authored input choices. HP, size, melee/ranged defences, scaling and creature-family properties are unassigned in runtime.

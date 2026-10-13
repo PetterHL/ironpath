@@ -101,7 +101,7 @@ public final class CombatComparisonService
 	{ return catalog.comparison.targets.stream().filter(t -> t.id.equals(id)).findFirst().orElse(null); }
 	public String validate(AccountSnapshot a, Preferences p, CombatSetup s)
 	{
-		if (s == null || !s.slots.keySet().equals(new java.util.HashSet<>(PoweredMagic.SLOTS))
+		if (s == null || s.family != CombatSetup.Family.POWERED_MAGIC || !s.slots.keySet().equals(new java.util.HashSet<>(PoweredMagic.SLOTS))
 			|| s.prayer == null || s.boost == null || s.style == null || target(s.target) == null)
 		{ return "Reference slots or assumptions are unknown."; }
 		if (!s.minimalTemplate && !a.equipment.known()) { return "Equipment is unread. Observe it or explicitly choose a reference template; unknown bonuses are not zero."; }
@@ -194,7 +194,7 @@ public final class CombatComparisonService
 		assumptions.add(target.name + (target.analytical ? " · Authored analytical reference; Defence " + target.defenceLevel : " · NPC " + target.npcId)
 			+ "; Magic " + target.magicLevel + "; magic-defence bonus " + target.magicDefence
 			+ "; defence roll " + target.defenceRoll() + ". No reduction, task, salve or elemental weakness; powered attacks receive no wind weakness.");
-		if (target.analytical) { assumptions.add("Ordinary attack rolls and damage distribution; accuracy is not guaranteed and damage is not forced to maximum. No HP, size, melee/ranged defensive stats, raid scaling or creature-family effects are assigned. This profile supports powered magic only; specialist usefulness requires an explicit encounter context."); }
+		if (target.analytical) { assumptions.add("Ordinary attack rolls and damage distribution; accuracy is not guaranteed and damage is not forced to maximum. No HP, size, melee defensive stats, raid scaling or creature-family effects are assigned. This calculation uses the reviewed powered-magic inputs; ranged defensive inputs have their own independently validated family model. Specialist usefulness requires an explicit encounter context."); }
 		assumptions.add("Attack bonus " + before.attackBonus + " → " + after.attackBonus + "; damage bonus " + before.damagePercent + "% → " + after.damagePercent
 			+ "%. Shadow multiplies equipment, including its weapon attack; caps gear damage before adding prayer. Off-hands are removed for Shadow.");
 		assumptions.add("Uninterrupted attacks: tridents/Sang 4 ticks, Eye 3, Shadow 5. Successful zero becomes 1; misses remain 0. Supplies/charges assumed; remaining charges not measured.");

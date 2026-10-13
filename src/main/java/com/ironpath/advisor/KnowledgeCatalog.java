@@ -25,7 +25,8 @@ public final class KnowledgeCatalog
 	// This is the finite reader contract, not arbitrary client varbit/quest lookup from JSON.
 	private static final Set<String> FACTS = Set.of("rigour", "augury", "song-of-elves", "regicide",
 		"beneath-cursed-sands", "perilous-moons", "deadeye", "mystic-vigour", "final-dawn", "frozen-door",
-		"smoke-task", "smoke-protection", "nex-entry", "nex-team", "zaryte-context", "zaryte-shards", "doom-preparation", "treads-tears", "desert-treasure-ii", "monkey-madness-ii", "duke-defeated", "peer-ring-icons", "cox-preparation", "toa-preparation", "monkey-form");
+		"smoke-task", "smoke-protection", "nex-entry", "nex-team", "zaryte-context", "zaryte-shards", "doom-preparation", "treads-tears", "desert-treasure-ii", "monkey-madness-ii", "duke-defeated", "peer-ring-icons", "cox-preparation", "toa-preparation", "monkey-form",
+		"blood-moon-rises", "dragon-slayer-ii", "leviathan-defeated", "colosseum-preparation", "zilyana-entry");
 	public final Map<String, Goal> goals;
 	public final Map<String, String> activities;
 	private final Map<String, String> ownershipLabels;
@@ -34,6 +35,7 @@ public final class KnowledgeCatalog
 	public final List<Decision> decisions;
 	public final List<Upgrade> upgrades;
 	public final ComparisonSpec comparison;
+	public final RangedSpec ranged;
 	public final Map<String, AcquisitionModel> acquisitionModels;
 	public final List<ActivityReward> activityRewards;
 	public final Map<String, Source> sources;
@@ -42,7 +44,7 @@ public final class KnowledgeCatalog
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 8 || document.decisions == null
+		if (document.schemaVersion != 9 || document.decisions == null
 			|| document.decisions.isEmpty())
 		{
 			throw new IllegalArgumentException("Unsupported or incomplete PvM catalogue");
@@ -219,7 +221,7 @@ public final class KnowledgeCatalog
 			if (upgrade == null) { throw new IllegalArgumentException("Missing upgrade outcome"); }
 			stableId(upgrade.id);
 			if (!upgradeIds.add(upgrade.id) || upgrade.benefitBand == null || !itemIds.contains(upgrade.itemId)
-				|| !Set.of("NONE", "POWERED_MAGIC").contains(require(upgrade.comparison))
+				|| !Set.of("NONE", "POWERED_MAGIC", "RANGED").contains(require(upgrade.comparison))
 				|| upgrade.routes == null || upgrade.routes.isEmpty()
 				|| !ids.containsAll(upgrade.routes) || new HashSet<>(upgrade.routes).size() != upgrade.routes.size()
 				|| upgrade.goals == null || new HashSet<>(upgrade.goals).size() != upgrade.goals.size()
@@ -262,6 +264,7 @@ public final class KnowledgeCatalog
 				validate(node.completeWhen, contract, 0); validateDependencies(node.dependencies, path.keySet(), 0);
 				if (node.quantity != null && (node.quantity < 1 || node.itemId == null || !itemIds.contains(node.itemId)))
 				{ throw new IllegalArgumentException("Invalid path quantity"); }
+				if (node.quantity != null) { gear.values().stream().flatMap(List::stream).filter(g -> g.id == node.itemId).forEach(g -> requireItemEvidence(g,contract)); }
 			}
 			for (String node : path.keySet()) { visitPath(node, path, new HashSet<>(), new HashSet<>()); }
 			for (SharedReward reward : upgrade.shared)
@@ -280,6 +283,37 @@ public final class KnowledgeCatalog
 		}
 		upgrades = List.copyOf(document.upgrades);
 		comparison = document.comparison;
+		ranged = document.ranged;
+		if (ranged == null || !RangedModel.VERSION.equals(ranged.modelVersion) || ranged.items == null || ranged.items.isEmpty()
+			|| ranged.candidateAmmo == null) { throw new IllegalArgumentException("Missing ranged contract"); }
+		evidence(ranged.sources);
+		Set<Integer> rangedIds = new HashSet<>();
+		for (RangedItem item : ranged.items)
+		{
+			if (item == null || !itemIds.contains(item.id) || !rangedIds.add(item.id) || !PoweredMagic.SLOTS.contains(require(item.slot))
+				|| item.attack < -100 || item.attack > 300 || item.strength < -100 || item.strength > 300 || item.ammo == null || item.setPart == null
+				|| item.crystalWeight < 0 || item.crystalWeight > 3 || item.ammoTier < 0 || item.ammoTier > 10
+				|| item.weapon != null && (!item.slot.equals("weapon") || item.ticks < 2 || item.ticks > 10 || item.defenceType == null || item.maxAmmoTier < 0 || item.maxAmmoTier > 10)
+				|| item.weapon == null && item.slot.equals("weapon")
+				|| item.seeking && (item.ammo != RangedItem.Ammo.ARROW || item.slot.equals("weapon"))
+				|| item.chargedQuiver && !item.slot.equals("cape") || item.boltEffect && item.ammo != RangedItem.Ammo.BOLT
+				|| item.ammo != RangedItem.Ammo.NONE && !item.slot.equals("ammo") || item.requirements == null)
+			{ throw new IllegalArgumentException("Invalid ranged item/compatibility contract"); }
+			require(item.label); evidence(item.sources);
+			if (item.weapon != null && item.twoHanded != !(item.weapon == RangedItem.Weapon.CROSSBOW || item.weapon == RangedItem.Weapon.DRAGON_HUNTER))
+			{ throw new IllegalArgumentException("Invalid ranged hands"); }
+			if (item.weapon != null && item.defenceType != (item.weapon == RangedItem.Weapon.TOXIC || item.weapon == RangedItem.Weapon.ROSEWOOD
+				? RangedItem.DefenceType.LIGHT : item.weapon == RangedItem.Weapon.CROSSBOW || item.weapon == RangedItem.Weapon.DRAGON_HUNTER ? RangedItem.DefenceType.HEAVY : RangedItem.DefenceType.STANDARD))
+			{ throw new IllegalArgumentException("Invalid ranged defence type"); }
+			item.requirements.forEach((skill,level) -> { if (!SKILLS.contains(skill) || level < 1 || level > 99) { throw new IllegalArgumentException("Invalid ranged equip requirement"); } });
+		}
+		for (Map.Entry<String,Integer> entry : ranged.candidateAmmo.entrySet())
+		{
+			RangedItem.Weapon family = RangedItem.Weapon.valueOf(entry.getKey());
+			RangedItem ammo = ranged.items.stream().filter(i -> i.id == entry.getValue()).findFirst().orElseThrow(() -> new IllegalArgumentException("Unknown candidate ammunition"));
+			if (ranged.items.stream().filter(i -> i.weapon == family).anyMatch(w -> !RangedModel.compatible(w,ammo)))
+			{ throw new IllegalArgumentException("Invalid supplied candidate ammunition"); }
+		}
 		if (comparison == null || !"powered-magic-2".equals(comparison.modelVersion)
 			|| comparison.targets == null || comparison.targets.isEmpty()
 			|| comparison.items == null || comparison.items.isEmpty())
@@ -293,6 +327,14 @@ public final class KnowledgeCatalog
 				|| target.analytical && (target.npcId != 0 || !target.variant.equals("STANDARD") || !target.scalingSupported
 					|| target.defenceLevel == null || target.defenceLevel != 0 || target.magicLevel != 0 || target.magicDefence != 0)
 				|| target.magicDefence < -64 || target.magicDefence > 10000
+				|| target.defenceLevel != null && (target.defenceLevel < 0 || target.defenceLevel > 10000)
+				|| target.magicAttack != null && (target.magicAttack < 0 || target.magicAttack > 10000)
+				|| target.rangedLight != null && (target.rangedLight < -64 || target.rangedLight > 10000)
+				|| target.rangedStandard != null && (target.rangedStandard < -64 || target.rangedStandard > 10000)
+				|| target.rangedHeavy != null && (target.rangedHeavy < -64 || target.rangedHeavy > 10000)
+				|| target.rangedStandard != null && (target.rangedLight == null || target.rangedHeavy == null || target.defenceLevel == null || target.magicAttack == null)
+				|| target.analytical && (target.xerician || target.dragon || target.slayer || target.rangedLight == null || target.rangedStandard == null || target.rangedHeavy == null
+					|| target.rangedLight != 0 || target.rangedStandard != 0 || target.rangedHeavy != 0 || target.magicAttack == null || target.magicAttack != 0)
 				|| target.variant.equals("TOA") && target.scalingSupported)
 			{ throw new IllegalArgumentException("Unsupported target profile/scaling"); }
 		}
@@ -378,16 +420,17 @@ public final class KnowledgeCatalog
 		for (Source source : sources.values())
 		{
 			if (!itemIds.containsAll(source.items) || !ids.containsAll(source.routes)
-				|| !targetIds.containsAll(source.contexts) || source.models.stream().anyMatch(m -> !m.equals(comparison.modelVersion))
+				|| !targetIds.containsAll(source.contexts) || source.models.stream().anyMatch(m -> !m.equals(comparison.modelVersion) && !m.equals(ranged.modelVersion))
 				|| source.acquisitions.stream().anyMatch(id -> !models.containsKey(id) || !models.get(id).sources.contains(source.id))
 				|| source.efforts.stream().anyMatch(id -> !ids.contains(id) || byId.get(id).pursuit == null || !byId.get(id).pursuit.sources.contains(source.id))
 				|| source.rewards.stream().anyMatch(id -> activityRewards.stream().noneMatch(r -> r.id.equals(id) && r.sources.contains(source.id))))
 			{ throw new IllegalArgumentException("Unknown source dependency"); }
-			if (!source.models.isEmpty() && !comparison.sources.contains(source.id)
+			if (!source.models.isEmpty() && !comparison.sources.contains(source.id) && !ranged.sources.contains(source.id)
 				|| source.routes.stream().anyMatch(id -> !byId.get(id).sources.contains(source.id)))
 			{ throw new IllegalArgumentException("Inconsistent source model/route dependency"); }
 			for (int id : source.items) { if (gear.values().stream().flatMap(List::stream).noneMatch(g -> g.id == id && g.sources.contains(source.id))
-				&& comparison.items.stream().noneMatch(i -> i.id == id && i.sources.contains(source.id)))
+				&& comparison.items.stream().noneMatch(i -> i.id == id && i.sources.contains(source.id))
+				&& ranged.items.stream().noneMatch(i -> i.id == id && i.sources.contains(source.id)))
 				{ throw new IllegalArgumentException("Inconsistent source item dependency"); } }
 			for (String id : source.contexts) { if (comparison.targets.stream().noneMatch(t -> t.id.equals(id) && t.sources.contains(source.id)))
 				{ throw new IllegalArgumentException("Inconsistent source context dependency"); } }
@@ -439,6 +482,11 @@ public final class KnowledgeCatalog
 		Map<String, String> choices = new java.util.LinkedHashMap<>();
 		choices.put("rigour", "Rigour unlock"); choices.put("augury", "Augury unlock");
 		choices.put("desert-treasure-ii", "Desert Treasure II completed");
+		choices.put("blood-moon-rises", "The Blood Moon Rises completed");
+		choices.put("dragon-slayer-ii", "Dragon Slayer II completed");
+		choices.put("leviathan-defeated", "The Leviathan defeated at least once");
+		choices.put("colosseum-preparation", "Colosseum supplies/method reviewed (not completion or readiness certification)");
+		choices.put("zilyana-entry", "Saradomin GWD 70 Agility, rope and visit entry checked");
 		choices.put("monkey-madness-ii", "Monkey Madness II completed");
 		choices.put("duke-defeated", "Duke Sucellus defeated at least once");
 		choices.put("peer-ring-icons", "Peer the Seer ring-icon instruction learned");
@@ -593,6 +641,7 @@ public final class KnowledgeCatalog
 		List<Goal> goals;
 		List<Upgrade> upgrades;
 		ComparisonSpec comparison;
+		RangedSpec ranged;
 		List<AcquisitionSpec> acquisitions;
 		List<ActivityReward> activityRewards;
 	}
@@ -620,7 +669,7 @@ public final class KnowledgeCatalog
 		public Integer itemId, quantity;
 		public Condition completeWhen;
 		public Dependencies dependencies;
-		public boolean alternativeOnly;
+		public boolean alternativeOnly, acquisition;
 	}
 	public static final class Application { public String id, text, label; public Condition when; }
 	public static final class Part { public String label; public Condition when; public boolean optional; public Integer itemId, quantity; }
@@ -638,6 +687,13 @@ public final class KnowledgeCatalog
 		public List<String> sources;
 		public List<CombatItem> items;
 		public List<TargetProfile> targets;
+	}
+	public static final class RangedSpec
+	{
+		public String modelVersion;
+		public List<String> sources;
+		public List<RangedItem> items;
+		public Map<String,Integer> candidateAmmo;
 	}
 	public static final class CombatItem
 	{

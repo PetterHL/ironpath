@@ -133,6 +133,15 @@ public class CatalogValidationTest
 		assertTrue(Advisor.goalChoices(catalog).containsKey("practice-amascut"));
 		assertFalse(Advisor.goalChoices(catalog).containsKey("toa-entry"));
 	}
+	@Test public void rangedContractsRejectFalseCompatibilityAndIncompleteTargetInputs()
+	{
+		rejects(d -> d.getAsJsonObject("ranged").getAsJsonArray("items").get(0).getAsJsonObject().addProperty("twoHanded",false));
+		rejects(d -> d.getAsJsonObject("ranged").getAsJsonArray("items").get(0).getAsJsonObject().addProperty("defenceType","HEAVY"));
+		rejects(d -> d.getAsJsonObject("ranged").getAsJsonObject("candidateAmmo").addProperty("ROSEWOOD",21330));
+		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().remove("rangedHeavy"));
+		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().addProperty("magicAttack",250));
+		rejects(d -> d.getAsJsonObject("ranged").getAsJsonArray("items").get(0).getAsJsonObject().remove("sources"));
+	}
 
 	@Test public void rejectsBrokenOutcomeComparisonAndSharedRewardContracts()
 	{

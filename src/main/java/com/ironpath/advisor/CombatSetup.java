@@ -6,6 +6,12 @@ import java.util.Map;
  * Prayer, boost, supplies and attack style are assumptions, never live combat state. */
 public class CombatSetup
 {
+	public enum Family { POWERED_MAGIC, RANGED }
+	public final Family family;
+	public final RangedModel.Prayer rangedPrayer;
+	public final RangedModel.Style rangedStyle;
+	public final boolean rangingPotion, onTask;
+	public final int loadedAmmo;
 	public final Map<String, Integer> slots;
 	public final Map<String, String> provenance;
 	public final PoweredMagic.Prayer prayer;
@@ -16,8 +22,47 @@ public class CombatSetup
 	public CombatSetup(Map<String, Integer> slots, PoweredMagic.Prayer prayer, PoweredMagic.Boost boost,
 		PoweredMagic.Style style, boolean confirmed, boolean template, String target, Map<String, String> provenance)
 	{
+		this(slots, prayer, boost, style, confirmed, template, target, provenance, Family.POWERED_MAGIC,
+			RangedModel.Prayer.NONE, RangedModel.Style.RAPID, false, false, 0);
+	}
+	public CombatSetup(Map<String, Integer> slots, PoweredMagic.Prayer prayer, PoweredMagic.Boost boost,
+		PoweredMagic.Style style, boolean confirmed, boolean template, String target, Map<String, String> provenance,
+		Family family, RangedModel.Prayer rangedPrayer, RangedModel.Style rangedStyle,
+		boolean rangingPotion, boolean onTask, int loadedAmmo)
+	{
 		this.slots = Map.copyOf(slots); this.prayer = prayer; this.boost = boost; this.style = style;
 		this.confirmed = confirmed; minimalTemplate = template; this.target = target;
 		this.provenance = Map.copyOf(provenance);
+		this.family = family; this.rangedPrayer = rangedPrayer; this.rangedStyle = rangedStyle;
+		this.rangingPotion = rangingPotion; this.onTask = onTask; this.loadedAmmo = loadedAmmo;
 	}
+	public static CombatSetup ranged(Map<String, Integer> slots, String target, Map<String, String> provenance)
+	{ return new CombatSetup(slots, PoweredMagic.Prayer.NONE, PoweredMagic.Boost.NONE, PoweredMagic.Style.ACCURATE,
+		false, false, target, provenance, Family.RANGED, RangedModel.Prayer.NONE, RangedModel.Style.RAPID, false, false, 0); }
+	public CombatSetup rangedCopy(Map<String, Integer> next, Map<String, String> origins, String targetId, int darts)
+	{ return new CombatSetup(next, prayer, boost, style, false, minimalTemplate, targetId, origins,
+		family, rangedPrayer, rangedStyle, rangingPotion, onTask, darts); }
+	public CombatSetup edit(String key, String value)
+	{
+		Map<String, Integer> next = new java.util.LinkedHashMap<>(slots);
+		Map<String, String> origins = new java.util.LinkedHashMap<>(provenance);
+		if (PoweredMagic.SLOTS.contains(key)) { next.put(key, Integer.valueOf(value)); origins.put(key, "Explicit reference correction; ownership/requirements revalidated."); }
+		if (key.equals("template")) { PoweredMagic.SLOTS.stream().filter(s -> !s.equals("weapon") && !s.equals("ammo")).forEach(s -> {
+			next.put(s, 0); origins.put(s, "Explicit template exclusion; other account gear remains unknown."); }); }
+		return new CombatSetup(next, prayer, boost, style, key.equals("confirm"), key.equals("template") || minimalTemplate,
+			key.equals("target") ? value : target, origins, family,
+			key.equals("prayer") ? RangedModel.Prayer.valueOf(value) : rangedPrayer,
+			key.equals("style") ? RangedModel.Style.valueOf(value) : rangedStyle,
+			key.equals("boost") ? parseBoolean(value) : rangingPotion,
+			key.equals("task") ? parseBoolean(value) : onTask,
+			key.equals("loaded-ammo") ? Integer.parseInt(value) : loadedAmmo);
+	}
+	private static boolean parseBoolean(String value)
+	{ if (!value.equals("true") && !value.equals("false")) { throw new IllegalArgumentException("Invalid boolean assumption"); } return Boolean.parseBoolean(value); }
+	public CombatSetup unconfirmed()
+	{ return new CombatSetup(slots, prayer, boost, style, false, minimalTemplate, target, provenance,
+		family, rangedPrayer, rangedStyle, rangingPotion, onTask, loadedAmmo); }
+	public String assumptionLabel()
+	{ return family == Family.RANGED ? rangedPrayer + " · " + (rangingPotion ? "Ranging potion" : "No boost") + " · " + rangedStyle
+		: prayer + " · " + boost + " · " + style; }
 }

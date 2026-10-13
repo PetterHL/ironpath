@@ -23,6 +23,8 @@ RuneLite's inspected PluginPanel prefers 225 content pixels and 6-pixel insets; 
 
 Two-column cards stack sprite, two/three-line name, one short value line and one effort/status line; never put a paragraph beside the sprite. Reflow the whole Browse grid to one column when effective cell width is under 100 logical pixels or actual font metrics cannot display the selected names/statuses without clipping. Permit taller rows where useful; never shrink the client font or rely on hover for a full name. Scaling is not just multiplying an exported image: test actual font metrics, OS DPI and client UI settings. A single-column layout toggle in Preferences is optional accessibility support, not a prerequisite.
 
+R2 uses the same native cards/navigation and separate family references. Ranged weapon Value leads with DPS; armour/jewellery retain max hit at unchanged speed. A neutral loss and long-term specialist label may coexist, with separately expandable encounter results and complete inputs explaining why. Ranged Before/After names use the family item registry. Dart loading and charged quiver/ammunition assumptions are explicit corrections, not live combat readings. [Fresh component captures and pending live acceptance](validation/R2.md).
+
 ## Overview and discovery
 
 Header: IronPath, one line of context such as “Based on observed gear”; small **Browse** action. A quiet account-evidence link opens timestamps/unknowns. Knowledge versions, diagnostics and goals live behind Account/Preferences, below the main content. No repeated freshness/version block in details.

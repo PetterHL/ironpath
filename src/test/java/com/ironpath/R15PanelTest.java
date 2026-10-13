@@ -109,7 +109,7 @@ public class R15PanelTest
 				assertTrue(text().contains("Useful missing reward: Rigour"));assertTrue(text().contains("one dependent armour family"));capture("activity");button("Back to upgrades").doClick();
 				open("tumekens-shadow").doClick();reference=reference.edit("target","toa");render();assertTrue(text().contains("Theoretical DPS unavailable"));capture("unsupported");
 				button("Back to upgrades").doClick();button("Overview").doClick();preferences=Preferences.EMPTY;render();capture("unknown");
-				preferences=absent(catalog);account=items(developed(true),12002,19544,28313,21018,21021,21024,26374,31097);reference=new PoweredMagic(catalog).propose(account, "graardor");render();capture("empty");
+				preferences=absent(catalog);account=items(developed(true),12002,19544,28313,21018,21021,21024,26374,31097);account=items(account,catalog.upgrades.stream().mapToInt(u->u.itemId).toArray());reference=new PoweredMagic(catalog).propose(account, "graardor");render();capture("empty");
 				assertTrue(text().contains("No remaining supported upgrade"));
 			}
 			catch(Exception failure) { throw new RuntimeException(failure); }

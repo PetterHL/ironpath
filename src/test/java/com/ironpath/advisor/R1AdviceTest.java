@@ -24,7 +24,8 @@ public class R1AdviceTest
 	private Advisor advisor;
 	// Preserve the originally selected high-defence context for these R1/R1.5 regressions.
 	private List<Advisor.UpgradeView> reviewedUpgrades(Advisor evaluator, AccountSnapshot a, Preferences p)
-	{ return evaluator.upgrades(a, p, new PoweredMagic(catalog).propose(a, "graardor")); }
+	{ return evaluator.upgrades(a, p, new PoweredMagic(catalog).propose(a, "graardor")).stream()
+		.filter(v -> !v.upgrade.comparison.equals("RANGED")).collect(java.util.stream.Collectors.toList()); }
 	@Before public void setup() throws Exception { catalog=KnowledgeCatalog.load(new Gson());advisor=new Advisor(catalog); }
 	public static AccountSnapshot postBowfa(boolean shadow)
 	{

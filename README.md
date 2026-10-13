@@ -2,9 +2,11 @@
 
 **Your path to endgame PvM**
 
-Neutral-reference development build · 13 October 2026 · plugin 0.6.2 · knowledge reference-1 · schema 8
+Ranged development build · 13 October 2026 · plugin 0.7.0 · knowledge r2-1 · schema 9
 
-**This branch implements R1.5a for review on the integrated R1 baseline.** Effort-aware pursuit categories, deduplicated shared activities, compact native rows and responsive Browse retain all R1 comparisons/routes. The next-zenyte-shard estimate is conditional: mean/median/P90 in future eligible kills, optional session-only pace, and no completed-bracelet ETA. See [R1.5a validation and pending client checks](docs/validation/R1.5a.md).
+**This branch delivers R2 ranged packages for review on updated main.** Bowfa/crystal, tbow, toxic/rosewood blowpipes, crossbow alternatives and supported armour/jewellery/ammunition have complete compatible reference comparisons. Seventeen additional upgrade outcomes retain effort-aware priority, shared activities and native Value/Path. Magic and ranged corrections stay separate and in memory. See [R2 verification and pending client checks](docs/validation/R2.md).
+
+Weapons lead with theoretical DPS; armour/jewellery retain max hit where speed is unchanged. Neutral Magic 0 is deliberately poor for tbow, so separately reviewed Graardor/Zilyana examples preserve specialist value without treating a large number as the next grind. Masori cannot manufacture a Bowfa upgrade by losing crystal synergy. Seeking arrows and charged quiver obey their actual projectile restrictions. Raid/special/bounce/time/trip coverage remains open.
 
 **Delivered: realistic powered-magic references and first endgame value.** Shadow,
 Ancestral hat/top/bottom, tormented bracelet and Magus ring join occult, swamp,
@@ -29,7 +31,7 @@ The intended product is a free, open-source RuneLite sidebar that automatically 
 
 IronPath is intended to become a comprehensive endgame PvM upgrade advisor, including BiS, meaningful specialist sidegrades, permanent rewards and the progression bridges needed to reach them. **R1 is an implementation increment, not the product boundary.** There is no catalogue ceiling or requirement to select a goal.
 
-R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. This branch delivers **R1.5a: pursuit priority and visual foundation** for review; R1.5b and R2–R8 extend effort models, combat families, coverage, maintenance and real-client evidence. Ranged model work can overlap this increment. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
+R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. R1.5a and the neutral/DPS follow-up are integrated; this branch delivers **R2 ranged packages** for review. R1.5b and R3–R8 extend effort, combat/specialist coverage, maintenance and real-client evidence. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
 
 The comparison follow-up is implemented on this branch: **Enemy with 0 Defence** is the automatic powered-magic reference. Weapons show theoretical DPS before → after and its absolute delta first; unchanged-speed armour/jewellery keep max hit first. The authored target has Defence 0, Magic 0 and magic-defence bonus 0; ordinary rolls give defence roll 576 and do not guarantee accuracy or maximum damage. Details show hit chance, attack interval and per-metric gaps. See [validation and pending client checks](docs/validation/neutral-reference.md).
 
@@ -62,16 +64,16 @@ Reuse the existing T1–P3 RuneLite implementation and preserve its licence noti
 
 ## Start here
 
-The current development baseline is `main`: PRs #5–#10 were integrated on 13 October 2026 with merge commits, preserving all earlier work. R1 is integrated; this branch implements R1.5a for review, with integration and client checks pending. Earlier stacked PRs are historical records. Start each new delivery from updated main and open a focused PR back to main. See [integration validation](docs/validation/main-integration-20261013.md).
+The current shared baseline is `main` at `cb7c2cd`, including merged R1.5a PR #12, reference/DPS PR #13 and exact model-gap PR #15. This focused R2 branch is `r2-ranged-packages`; its implementation and live acceptance are recorded in [R2 validation](docs/validation/R2.md). Earlier reports preserve their original delivery/test context.
 
-To test this comparison follow-up before integration, close the client and check out its branch:
+To test R2 before integration, close the development client first:
 
 ```sh
 git fetch origin
-git switch reference-neutral-dps
+git switch r2-ranged-packages
 ```
 
-This follow-up depends on R1.5a PR #12 and is reviewed separately; main remains the shared baseline until integration. Historical planning branches and validation reports describe their original deliveries.
+Historical planning branches and validation reports are records, not fresh prerequisites.
 
 The existing official RuneLite template, Gradle 8.10, Java release 11 and notices
 are retained; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). RuneLite resolves
@@ -130,7 +132,15 @@ then activate a card with its title/chevron, mouse or keyboard. **Browse** retai
 **Reviewed sources**. Advice is planning, not a complete loadout or a promise of
 successful kills. Leave account cases you cannot exercise pending.
 
-## Use the R1.5a build
+## Use R2 ranged comparisons
+
+Open without a goal and observe your gear/bank. Ranged outcomes automatically use the strongest supported observed package for **Enemy with 0 Defence**, with no prayer/boost and Rapid explicitly assumed. Value discloses before/after weapons, compatible armour and ammunition; Graardor and Zilyana remain separate encounter examples with inspectable complete inputs. Unknown equipped gear and invalid/unobserved baseline ammunition produce a visible gap.
+
+Use **Reference setup and assumptions** to correct ranged slots, dart loading, prayer, boost, style or target. These edits leave the magic reference independent. A quiver's charged bonus applies to arrows/bolts, while crystal and blowpipe retain its base cape stats. Empty/inactive weapons can establish ownership but cannot create a supplied baseline. Candidate-only ammunition is labelled as an assumption, never observed account supply.
+
+Path removes confirmed owned seeds/fangs/intermediates before a new grind. Self/NPC singing branches remain exclusive; shard/seed/material quantities are conservative scoped observations. Toxic blowpipe assembly requires 78 Fletching and a chisel, then separate darts/scales. Quiver challenge effort, raids, remaining RNG and complex routes retain qualitative scope rather than invented hours. All live-client checks remain pending.
+
+## Use the retained advisor workflow
 
 1. Open with **no goal** and observe the bank. The overview offers up to two
    **Worth pursuing** rows, one justified **Worth doing** activity, a long-term
@@ -202,8 +212,8 @@ keys. Old action skips are not widened; retired identifiers are explicitly dropp
 
 Real levels, inventory/equipment, session bank, Rigour/Augury and Deadeye/Mystic
 Vigour unlocks, plus completion of Song of the Elves, Regicide, Beneath Cursed Sands,
-Perilous Moons, The Frozen Door, The Final Dawn, Monkey Madness II and Desert
-Treasure II are read on the client thread
+Perilous Moons, The Frozen Door, The Final Dawn, Monkey Madness II, Desert
+Treasure II, The Blood Moon Rises and Dragon Slayer II are read on the client thread
 into immutable snapshots.
 Unavailable quest scripts, containers or skills stay unknown. Quests use supported
 `Quest.getState`; selected progress events coalesce into a read, while idle ticks
