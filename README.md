@@ -4,7 +4,7 @@
 
 Neutral-reference development build · 13 October 2026 · plugin 0.6.1 · knowledge reference-1 · schema 8
 
-**This branch implements R1.5a for review on the integrated R1 baseline.** Effort-aware pursuit categories, deduplicated shared activities, compact native rows and responsive Browse retain all R1 comparisons/routes. The next-zenyte-shard estimate is conditional: mean/median/P90 in future eligible kills, optional session-only pace, and no completed-bracelet ETA. See [R1.5a validation and pending client checks](docs/validation/R1.5a.md).
+**Main includes R1.5a and the neutral-reference/DPS-first follow-up.** Effort-aware pursuit categories, deduplicated shared activities, compact native rows and responsive Browse retain all R1 comparisons/routes. The next-zenyte-shard estimate is conditional: mean/median/P90 in future eligible kills, optional session-only pace, and no completed-bracelet ETA. See [R1.5a validation and pending client checks](docs/validation/R1.5a.md).
 
 **Delivered: realistic powered-magic references and first endgame value.** Shadow,
 Ancestral hat/top/bottom, tormented bracelet and Magus ring join occult, swamp,
@@ -27,7 +27,7 @@ The intended product is a free, open-source RuneLite sidebar that automatically 
 
 IronPath is intended to become a comprehensive endgame PvM upgrade advisor, including BiS, meaningful specialist sidegrades, permanent rewards and the progression bridges needed to reach them. **R1 is an implementation increment, not the product boundary.** There is no catalogue ceiling or requirement to select a goal.
 
-R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. This branch delivers **R1.5a: pursuit priority and visual foundation** for review; R1.5b and R2–R8 extend effort models, combat families, coverage, maintenance and real-client evidence. Ranged model work can overlap this increment. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
+R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. **R1.5a: pursuit priority and visual foundation** is integrated; R1.5b and R2–R8 extend effort models, combat families, coverage, maintenance and real-client evidence. Ranged model work can overlap this increment. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
 
 The comparison follow-up is implemented on this branch: **Enemy with 0 Defence** is the automatic powered-magic reference. Weapons show theoretical DPS before → after and its absolute delta first; unchanged-speed armour/jewellery keep max hit first. The authored target has Defence 0, Magic 0 and magic-defence bonus 0; ordinary rolls give defence roll 576 and do not guarantee accuracy or maximum damage. Details show hit chance, attack interval and per-metric gaps. See [validation and pending client checks](docs/validation/neutral-reference.md).
 
@@ -60,16 +60,9 @@ Reuse the existing T1–P3 RuneLite implementation and preserve its licence noti
 
 ## Start here
 
-The current development baseline is `main`: PRs #5–#10 were integrated on 13 October 2026 with merge commits, preserving all earlier work. R1 is integrated; this branch implements R1.5a for review, with integration and client checks pending. Earlier stacked PRs are historical records. Start each new delivery from updated main and open a focused PR back to main. See [integration validation](docs/validation/main-integration-20261013.md).
+The current development baseline is `main` at `9035a06`: PR #12 integrated R1.5a and the merged neutral-reference/DPS-first PR #13 on 13 October 2026. Plugin 0.6.1, knowledge reference-1 and catalogue schema 8 are now in main. Prior R1 integration and all earlier history remain intact. Actual-client checks are still pending in the original validation reports.
 
-To test this comparison follow-up before integration, close the client and check out its branch:
-
-```sh
-git fetch origin
-git switch reference-neutral-dps
-```
-
-This follow-up depends on R1.5a PR #12 and is reviewed separately; main remains the shared baseline until integration. Historical planning branches and validation reports describe their original deliveries.
+Close the development client and use the main-branch update/build instructions below to test the integrated build. R2 starts in draft PR #14 on `r2-ranged-models`; its first ranged-family models are tested but do not yet generate new personal recommendations. Full ranged references, routes, item/charge/ammo checks and UI integration are next in TASKS. Historical reports retain their original branch/test context.
 
 The existing official RuneLite template, Gradle 8.10, Java release 11 and notices
 are retained; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). RuneLite resolves
