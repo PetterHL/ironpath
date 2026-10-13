@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 9,
-  "knowledgeVersion": "r2-2",
+  "schemaVersion": 10,
+  "knowledgeVersion": "r3a-1",
   "reviewed": "2026-10-13",
   "sources": [
     {
@@ -154,7 +154,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -203,6 +204,15 @@
       "contexts": [],
       "rewards": [
         "cox-rigour"
+      ],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
+      ],
+      "activityContexts": [
+        "muspah-bowfa"
       ]
     },
     {
@@ -255,7 +265,11 @@
       ],
       "contexts": [],
       "rewards": [
-        "cox-augury"
+        "cox-augury",
+        "doom-eye"
+      ],
+      "relations": [
+        "treads-hybrid-role"
       ]
     },
     {
@@ -311,6 +325,9 @@
       ],
       "rewards": [
         "cox-augury"
+      ],
+      "relations": [
+        "treads-hybrid-role"
       ]
     },
     {
@@ -365,7 +382,11 @@
         "toa"
       ],
       "rewards": [
-        "cox-augury"
+        "cox-augury",
+        "doom-eye"
+      ],
+      "relations": [
+        "treads-hybrid-role"
       ]
     },
     {
@@ -416,7 +437,11 @@
       ],
       "contexts": [],
       "rewards": [
-        "cox-augury"
+        "cox-augury",
+        "doom-eye"
+      ],
+      "relations": [
+        "treads-hybrid-role"
       ]
     },
     {
@@ -517,7 +542,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -554,6 +580,15 @@
       "contexts": [],
       "rewards": [
         "cox-rigour"
+      ],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
+      ],
+      "activityContexts": [
+        "muspah-bowfa"
       ]
     },
     {
@@ -824,7 +859,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "items": [
         20997
@@ -857,6 +893,16 @@
       "contexts": [],
       "rewards": [
         "cox-rigour"
+      ],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention",
+        "venator-colosseum"
+      ],
+      "activityContexts": [
+        "muspah-bowfa"
       ]
     },
     {
@@ -947,7 +993,11 @@
       ],
       "contexts": [],
       "rewards": [
-        "cox-augury"
+        "cox-augury",
+        "doom-eye"
+      ],
+      "relations": [
+        "treads-hybrid-role"
       ]
     },
     {
@@ -1155,7 +1205,11 @@
       ],
       "contexts": [],
       "rewards": [
-        "cox-augury"
+        "cox-augury",
+        "doom-eye"
+      ],
+      "relations": [
+        "treads-hybrid-role"
       ]
     },
     {
@@ -1208,6 +1262,9 @@
       "contexts": [],
       "rewards": [
         "cox-augury"
+      ],
+      "relations": [
+        "treads-hybrid-role"
       ]
     },
     {
@@ -1258,7 +1315,11 @@
       ],
       "contexts": [],
       "rewards": [
-        "cox-augury"
+        "cox-augury",
+        "doom-eye"
+      ],
+      "relations": [
+        "treads-hybrid-role"
       ]
     },
     {
@@ -1282,7 +1343,8 @@
         "seek-toa-fang",
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
-        "seek-crystal-body"
+        "seek-crystal-body",
+        "seek-venator-bow"
       ],
       "items": [
         23975
@@ -1301,6 +1363,15 @@
       "contexts": [],
       "rewards": [
         "cox-rigour"
+      ],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
+      ],
+      "activityContexts": [
+        "muspah-bowfa"
       ]
     },
     {
@@ -1324,7 +1395,8 @@
         "seek-toa-fang",
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
-        "seek-crystal-legs"
+        "seek-crystal-legs",
+        "seek-venator-bow"
       ],
       "items": [
         23979
@@ -1343,6 +1415,15 @@
       "contexts": [],
       "rewards": [
         "cox-rigour"
+      ],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
+      ],
+      "activityContexts": [
+        "muspah-bowfa"
       ]
     },
     {
@@ -1366,7 +1447,8 @@
         "seek-toa-fang",
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
-        "seek-crystal-helm"
+        "seek-crystal-helm",
+        "seek-venator-bow"
       ],
       "items": [
         23971
@@ -1385,6 +1467,15 @@
       "contexts": [],
       "rewards": [
         "cox-rigour"
+      ],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
+      ],
+      "activityContexts": [
+        "muspah-bowfa"
       ]
     },
     {
@@ -1437,7 +1528,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "items": [
         564,
@@ -1590,7 +1682,13 @@
         31109,
         31111,
         31113,
-        31115
+        31115,
+        27610,
+        27612,
+        27614,
+        27616,
+        20724,
+        27641
       ],
       "models": [],
       "routes": [
@@ -1630,7 +1728,22 @@
       "contexts": [],
       "rewards": [
         "cox-rigour",
-        "cox-augury"
+        "cox-augury",
+        "doom-cloth",
+        "doom-eye",
+        "muspah-heart-essence"
+      ],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "zaryte-ruby-burst",
+        "treads-hybrid-role",
+        "venator-attention",
+        "venator-colosseum"
+      ],
+      "activityContexts": [
+        "colosseum-switch",
+        "muspah-bowfa"
       ]
     },
     {
@@ -1723,7 +1836,13 @@
         "seek-crystal-body",
         "seek-crystal-legs"
       ],
-      "contexts": []
+      "contexts": [],
+      "relations": [
+        "venator-attention"
+      ],
+      "activityContexts": [
+        "muspah-bowfa"
+      ]
     },
     {
       "id": "crystal-route",
@@ -2375,6 +2494,12 @@
       "contexts": [],
       "efforts": [
         "seek-zaryte-crossbow"
+      ],
+      "relations": [
+        "zaryte-ruby-burst"
+      ],
+      "activityContexts": [
+        "ruby-burst"
       ]
     },
     {
@@ -2398,6 +2523,9 @@
       "contexts": [],
       "efforts": [
         "seek-zaryte-crossbow"
+      ],
+      "activityContexts": [
+        "ruby-burst"
       ]
     },
     {
@@ -2468,7 +2596,10 @@
         "seek-twisted-buckler",
         "seek-avas-assembler"
       ],
-      "contexts": []
+      "contexts": [],
+      "relations": [
+        "zaryte-ruby-burst"
+      ]
     },
     {
       "id": "avernic-treads",
@@ -2501,6 +2632,12 @@
       "contexts": [],
       "efforts": [
         "seek-avernic-treads"
+      ],
+      "relations": [
+        "treads-hybrid-role"
+      ],
+      "activityContexts": [
+        "doom-hybrid"
       ]
     },
     {
@@ -2544,6 +2681,13 @@
       "contexts": [],
       "efforts": [
         "seek-avernic-treads"
+      ],
+      "rewards": [
+        "doom-cloth",
+        "doom-eye"
+      ],
+      "activityContexts": [
+        "doom-hybrid"
       ]
     },
     {
@@ -2598,7 +2742,10 @@
         "seek-occult-necklace",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "relations": [
+        "treads-hybrid-role"
+      ]
     },
     {
       "id": "eternal-boots",
@@ -2625,7 +2772,10 @@
         "seek-occult-necklace",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "relations": [
+        "treads-hybrid-role"
+      ]
     },
     {
       "id": "pegasian-boots",
@@ -2652,7 +2802,10 @@
         "seek-occult-necklace",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "relations": [
+        "treads-hybrid-role"
+      ]
     },
     {
       "id": "tormented",
@@ -2676,7 +2829,10 @@
         "seek-avernic-treads",
         "seek-tormented-bracelet"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "doom-cloth"
+      ]
     },
     {
       "id": "cloth",
@@ -2701,7 +2857,10 @@
         "seek-avernic-treads",
         "seek-tormented-bracelet"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "doom-cloth"
+      ]
     },
     {
       "id": "nihil-shards",
@@ -2768,7 +2927,10 @@
         "seek-avernic-treads",
         "seek-tormented-bracelet"
       ],
-      "contexts": []
+      "contexts": [],
+      "rewards": [
+        "doom-cloth"
+      ]
     },
     {
       "id": "r1-tumekens-shadow",
@@ -4170,6 +4332,9 @@
       "rewards": [
         "cox-rigour",
         "cox-augury"
+      ],
+      "activityContexts": [
+        "cox-team"
       ]
     },
     {
@@ -4545,7 +4710,11 @@
         "seek-toxic-blowpipe"
       ],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "relations": [
+        "venator-attention",
+        "venator-colosseum"
+      ]
     },
     {
       "id": "r2-rosewood-blowpipe",
@@ -5197,7 +5366,11 @@
         "seek-necklace-of-anguish"
       ],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck"
+      ]
     },
     {
       "id": "r2-necklace-of-rupture",
@@ -5226,7 +5399,11 @@
         "seek-necklace-of-rupture"
       ],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck"
+      ]
     },
     {
       "id": "r2-zaryte-vambraces",
@@ -5961,7 +6138,10 @@
       "contexts": [],
       "efforts": [],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "activityContexts": [
+        "core-ranged"
+      ]
     },
     {
       "id": "r2-maximum-ranged-hit",
@@ -6976,6 +7156,222 @@
       "efforts": [],
       "rewards": [],
       "acquisitions": []
+    },
+    {
+      "id": "r3-venator-bow",
+      "type": "wiki",
+      "url": "https://oldschool.runescape.wiki/w/Venator_bow?oldid=15345156",
+      "author": "OSRS Wiki contributors",
+      "revision": "15345156",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "licence": "CC BY-NC-SA; evidence link only",
+      "reuseBasis": "Pinned full page reviewed for the bounded facts and method alternatives. Independently written relationship and route explanations; no prose, images, tables or dataset imported. Detailed Venator geometry remains unsupported.",
+      "decisions": [
+        "seek-venator-bow"
+      ],
+      "items": [
+        27610,
+        27612
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [],
+      "rewards": [],
+      "relations": [
+        "venator-attention",
+        "venator-colosseum"
+      ],
+      "activityContexts": [
+        "slayer-multicombat",
+        "colosseum-switch"
+      ]
+    },
+    {
+      "id": "r3-venator-shard",
+      "type": "wiki",
+      "url": "https://oldschool.runescape.wiki/w/Venator_shard?oldid=15371536",
+      "author": "OSRS Wiki contributors",
+      "revision": "15371536",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "licence": "CC BY-NC-SA; evidence link only",
+      "reuseBasis": "Pinned full page reviewed for the bounded facts and method alternatives. Independently written relationship and route explanations; no prose, images, tables or dataset imported. Detailed Venator geometry remains unsupported.",
+      "decisions": [
+        "seek-venator-bow"
+      ],
+      "items": [
+        27614
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [
+        "seek-venator-bow"
+      ],
+      "rewards": [],
+      "activityContexts": [
+        "muspah-bowfa"
+      ]
+    },
+    {
+      "id": "r3-muspah",
+      "type": "wiki",
+      "url": "https://oldschool.runescape.wiki/w/Phantom_Muspah?oldid=15367478",
+      "author": "OSRS Wiki contributors",
+      "revision": "15367478",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "licence": "CC BY-NC-SA; evidence link only",
+      "reuseBasis": "Pinned full page reviewed for the bounded facts and method alternatives. Independently written relationship and route explanations; no prose, images, tables or dataset imported. Detailed Venator geometry remains unsupported.",
+      "decisions": [
+        "seek-venator-bow"
+      ],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [
+        "seek-venator-bow"
+      ],
+      "rewards": [
+        "muspah-heart-essence"
+      ],
+      "relations": [
+        "venator-attention"
+      ],
+      "activityContexts": [
+        "muspah-bowfa"
+      ]
+    },
+    {
+      "id": "r3-essence",
+      "type": "wiki",
+      "url": "https://oldschool.runescape.wiki/w/Ancient_essence?oldid=15326865",
+      "author": "OSRS Wiki contributors",
+      "revision": "15326865",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "licence": "CC BY-NC-SA; evidence link only",
+      "reuseBasis": "Pinned full page reviewed for the bounded facts and method alternatives. Independently written relationship and route explanations; no prose, images, tables or dataset imported. Detailed Venator geometry remains unsupported.",
+      "decisions": [
+        "seek-venator-bow"
+      ],
+      "items": [
+        27616
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [],
+      "rewards": [
+        "muspah-heart-essence"
+      ],
+      "activityContexts": [
+        "muspah-bowfa"
+      ]
+    },
+    {
+      "id": "r3-secrets",
+      "type": "wiki",
+      "url": "https://oldschool.runescape.wiki/w/Secrets_of_the_North?oldid=15325015",
+      "author": "OSRS Wiki contributors",
+      "revision": "15325015",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "licence": "CC BY-NC-SA; evidence link only",
+      "reuseBasis": "Pinned full page reviewed for the bounded facts and method alternatives. Independently written relationship and route explanations; no prose, images, tables or dataset imported. Detailed Venator geometry remains unsupported.",
+      "decisions": [
+        "seek-venator-bow"
+      ],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [],
+      "rewards": []
+    },
+    {
+      "id": "r3-saturated-heart",
+      "type": "wiki",
+      "url": "https://oldschool.runescape.wiki/w/Saturated_heart?oldid=15371902",
+      "author": "OSRS Wiki contributors",
+      "revision": "15371902",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "licence": "CC BY-NC-SA; evidence link only",
+      "reuseBasis": "Pinned full page reviewed for the bounded facts and method alternatives. Independently written relationship and route explanations; no prose, images, tables or dataset imported. Detailed Venator geometry remains unsupported.",
+      "decisions": [],
+      "items": [
+        20724,
+        27641
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [],
+      "rewards": [
+        "muspah-heart-essence"
+      ],
+      "activityContexts": [
+        "muspah-bowfa"
+      ]
+    },
+    {
+      "id": "r3-colosseum-method",
+      "type": "wiki",
+      "url": "https://oldschool.runescape.wiki/w/Fortis_Colosseum/Strategies?oldid=15370386",
+      "author": "OSRS Wiki contributors",
+      "revision": "15370386",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "licence": "CC BY-NC-SA; evidence link only",
+      "reuseBasis": "Pinned full page reviewed for the bounded facts and method alternatives. Independently written relationship and route explanations; no prose, images, tables or dataset imported. Detailed Venator geometry remains unsupported.",
+      "decisions": [
+        "seek-venator-bow"
+      ],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [],
+      "rewards": [],
+      "relations": [
+        "venator-colosseum"
+      ],
+      "activityContexts": [
+        "colosseum-switch"
+      ]
+    },
+    {
+      "id": "r3-muspah-method",
+      "type": "wiki",
+      "url": "https://oldschool.runescape.wiki/w/Phantom_Muspah/Strategies?oldid=15371265",
+      "author": "OSRS Wiki contributors",
+      "revision": "15371265",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "licence": "CC BY-NC-SA; evidence link only",
+      "reuseBasis": "Pinned full page reviewed for the bounded facts and method alternatives. Independently written relationship and route explanations; no prose, images, tables or dataset imported. Detailed Venator geometry remains unsupported.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [],
+      "rewards": [],
+      "activityContexts": [
+        "muspah-bowfa"
+      ]
     }
   ],
   "decisions": [
@@ -11150,6 +11546,84 @@
         "allocations": [],
         "variants": []
       }
+    },
+    {
+      "id": "seek-venator-bow",
+      "title": "Pursue remaining Venator shards",
+      "kind": "ACQUIRE",
+      "itemId": 27612,
+      "when": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "completeWhen": {
+        "test": "POSSESSION",
+        "key": "venatorBow",
+        "value": true
+      },
+      "repeatable": false,
+      "accessWhen": {
+        "test": "FACT",
+        "key": "secrets-of-north",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "FACT",
+        "key": "muspah-preparation",
+        "value": true
+      },
+      "goals": [],
+      "notes": [],
+      "contextBenefits": [],
+      "benefitBand": "MODERATE",
+      "benefitReason": "Optional multi-target convenience, independently of single-target DPS.",
+      "why": "Five Venator shards form the bow; essence enables bounce attacks.",
+      "alternative": "Keep your owned ranged kit or active barrage/chins for appropriate methods; Venator is optional.",
+      "tradeoff": "Ancient essence competes with heart saturation and shards can be broken down irreversibly. Compare allocations before consuming them.",
+      "effort": "Remaining shards, assembly, arrows and essence. Personal pace and full-item time unestimated.",
+      "access": "Complete Secrets of the North for Muspah; assembly from owned shards does not require a new boss trip.",
+      "completion": "Charged and uncharged bow ownership end acquisition; neither manual ownership nor a shard count proves current usability.",
+      "applicability": "Multi-combat convenience; exact updated geometry and encounter breakpoints unsupported.",
+      "family": "venator-bow",
+      "activity": "muspah",
+      "outcome": "Venator bow",
+      "preparation": "Review Muspah method and supplies; Bowfa is a supported alternative, not a success certificate.",
+      "effortBand": "GRIND",
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "item-ids",
+        "r3-colosseum-method",
+        "r3-essence",
+        "r3-muspah",
+        "r3-secrets",
+        "r3-venator-bow",
+        "r3-venator-shard",
+        "twisted-bow"
+      ],
+      "requires": [],
+      "status": "reviewed",
+      "reviewed": "2026-10-13",
+      "pursuit": {
+        "mode": "REPEATABLE",
+        "burden": "MODERATE",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "Repeat Muspah for the remaining five-shard requirement; observed shards reduce only their own remaining work.",
+        "missingMechanics": "Complete probability/pace model and full bow ETA unsupported.",
+        "sources": [
+          "r3-muspah",
+          "r3-venator-shard"
+        ],
+        "allocations": [
+          "ancient-essence-allocation",
+          "venator-shard-allocation"
+        ],
+        "variants": []
+      }
     }
   ],
   "gear": {
@@ -12266,6 +12740,66 @@
           "item-ids",
           "cloth",
           "confliction"
+        ]
+      },
+      {
+        "id": 27610,
+        "label": "Charged venator bow",
+        "skill": "RANGED",
+        "level": 80,
+        "sources": [
+          "r3-venator-bow",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27612,
+        "label": "Venator bow (uncharged)",
+        "skill": "RANGED",
+        "level": 80,
+        "sources": [
+          "r3-venator-bow",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27614,
+        "label": "Venator shard",
+        "skill": "RANGED",
+        "level": 1,
+        "sources": [
+          "r3-venator-shard",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27616,
+        "label": "Ancient essence",
+        "skill": "RANGED",
+        "level": 1,
+        "sources": [
+          "r3-essence",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 20724,
+        "label": "Imbued heart",
+        "skill": "MAGIC",
+        "level": 1,
+        "sources": [
+          "r3-saturated-heart",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27641,
+        "label": "Saturated heart",
+        "skill": "MAGIC",
+        "level": 1,
+        "sources": [
+          "r3-saturated-heart",
+          "item-ids"
         ]
       }
     ],
@@ -14149,6 +14683,22 @@
     ],
     "vorkathHead": [
       21907
+    ],
+    "venatorBow": [
+      27610,
+      27612
+    ],
+    "venatorShards": [
+      27614
+    ],
+    "ancientEssence": [
+      27616
+    ],
+    "imbuedHeart": [
+      20724
+    ],
+    "saturatedHeart": [
+      27641
     ]
   },
   "activities": {
@@ -14175,7 +14725,9 @@
     "maggot-king": "Maggot King",
     "colosseum": "Colosseum",
     "leviathan": "Leviathan",
-    "vorkath": "Vorkath"
+    "vorkath": "Vorkath",
+    "muspah": "Phantom Muspah",
+    "ranged-use": "Broad ranged use"
   },
   "ownershipLabels": {
     "bowfaOrBetter": "Bowfa (any reviewed form) or twisted bow owned",
@@ -14243,7 +14795,12 @@
     "crystalBodyOwned": "Crystal body including inactive form",
     "crystalLegsOwned": "Crystal legs including inactive form",
     "tanzaniteFang": "Tanzanite fang",
-    "vorkathHead": "Vorkath's head"
+    "vorkathHead": "Vorkath's head",
+    "venatorBow": "Venator bow (ownership does not prove charged)",
+    "venatorShards": "Venator shards (presence does not prove five)",
+    "ancientEssence": "Ancient essence (quantity and allocation separate)",
+    "imbuedHeart": "Imbued heart",
+    "saturatedHeart": "Saturated heart"
   },
   "goals": [
     {
@@ -14652,7 +15209,11 @@
       "contexts": [
         "dharok",
         "graardor"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "swamp-trident",
@@ -14805,7 +15366,11 @@
       "contexts": [
         "dharok",
         "graardor"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "zaryte-crossbow",
@@ -14959,7 +15524,7 @@
       "rewardFamily": "zaryte-crossbow",
       "role": "ranged-special",
       "contexts": [
-        "reviewed-specialist"
+        "ruby-burst"
       ],
       "path": [
         {
@@ -15104,7 +15669,11 @@
             ]
           }
         }
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "avernic-treads",
@@ -15281,14 +15850,19 @@
               }
             ]
           },
-          "minDelve": 2,
           "detail": "Separate conditional upgrade for an owned tormented bracelet: cloth, 10,000 demon tears, 83 Crafting and 70 Smithing at a bank; 90 Hitpoints to wear (quantity unobserved). Check cloth/gauntlet ownership first; no combined DPS or simultaneous-drop assumption.",
           "sources": [
             "cloth",
             "tormented",
             "doom",
             "confliction"
-          ]
+          ],
+          "eligibilityWhen": {
+            "test": "FACT",
+            "key": "doom-delve-two",
+            "value": true
+          },
+          "eligibilityLabel": "Completed delve 2 planning scenario; ability unobserved"
         },
         {
           "title": "Eye of Ayak",
@@ -15302,12 +15876,17 @@
             "key": "advancedStaff",
             "value": true
           },
-          "minDelve": 3,
           "detail": "Separate conditional powered-staff option over seas; compare owned advanced staffs first. No Eye damage model, charge supply or delve capability is inferred.",
           "sources": [
             "ayak",
             "doom"
-          ]
+          ],
+          "eligibilityWhen": {
+            "test": "FACT",
+            "key": "doom-delve-three",
+            "value": true
+          },
+          "eligibilityLabel": "Completed delve 3 planning scenario; ability unobserved"
         }
       ],
       "contextBenefits": [
@@ -15341,8 +15920,13 @@
       "rewardFamily": "avernic-treads",
       "role": "hybrid-boots",
       "contexts": [
-        "reviewed-specialist"
-      ]
+        "doom-hybrid"
+      ],
+      "eligibilityWhen": {
+        "test": "FACT",
+        "key": "doom-delve-four",
+        "value": true
+      }
     },
     {
       "id": "tumekens-shadow",
@@ -15483,7 +16067,11 @@
       "contexts": [
         "dharok",
         "graardor"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "ancestral-hat",
@@ -15617,7 +16205,11 @@
       "contexts": [
         "dharok",
         "graardor"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "ancestral-robe-top",
@@ -15751,7 +16343,11 @@
       "contexts": [
         "dharok",
         "graardor"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "ancestral-robe-bottom",
@@ -15885,7 +16481,11 @@
       "contexts": [
         "dharok",
         "graardor"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "tormented-bracelet",
@@ -16303,7 +16903,11 @@
       "contexts": [
         "dharok",
         "graardor"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "magus-ring",
@@ -16663,7 +17267,11 @@
       "contexts": [
         "dharok",
         "graardor"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "twisted-bow",
@@ -16782,7 +17390,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "bowfa",
@@ -16999,7 +17611,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "crystal-helm",
@@ -17210,7 +17826,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "crystal-body",
@@ -17421,7 +18041,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "crystal-legs",
@@ -17632,7 +18256,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "toxic-blowpipe",
@@ -17788,7 +18416,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "rosewood-blowpipe",
@@ -17940,7 +18572,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "masori-mask",
@@ -18066,7 +18702,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "masori-body",
@@ -18192,7 +18832,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "masori-chaps",
@@ -18318,7 +18962,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "necklace-of-anguish",
@@ -18701,7 +19349,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "necklace-of-rupture",
@@ -18899,7 +19551,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "dizanas-quiver",
@@ -19019,7 +19675,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "venator-ring",
@@ -19287,7 +19947,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "zaryte-vambraces",
@@ -19413,7 +20077,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "twisted-buckler",
@@ -19537,7 +20205,11 @@
       "contexts": [
         "graardor",
         "zilyana"
-      ]
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     },
     {
       "id": "avas-assembler",
@@ -19695,6 +20367,151 @@
       "contexts": [
         "graardor",
         "zilyana"
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
+    },
+    {
+      "id": "venator-bow",
+      "title": "Venator bow",
+      "itemId": 27610,
+      "when": {
+        "test": "USABLE",
+        "key": "ranged"
+      },
+      "ownedWhen": {
+        "test": "POSSESSION",
+        "key": "venatorBow",
+        "value": true
+      },
+      "equipWhen": {
+        "test": "LEVEL",
+        "key": "RANGED",
+        "minimum": 80
+      },
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "routes": [
+        "seek-venator-bow"
+      ],
+      "valueReason": "Optional multi-target convenience; not a replacement for every main ranged weapon.",
+      "alternatives": "Keep your owned ranged kit or active barrage/chins for appropriate methods; Venator is optional.",
+      "remainingWork": "Remaining shards, assembly, arrows and essence. Personal pace and full-item time unestimated.",
+      "limitation": "Exact revised bounce geometry, one-shot arrangements, XP and encounter DPS remain unsupported. Charged/usable state, arrow/essence quantities and allocation require checks.",
+      "benefitBand": "MODERATE",
+      "applications": [
+        {
+          "id": "multi-combat",
+          "label": "Packed multi-combat",
+          "text": "Can automatically engage additional eligible targets. Single-target damage does not measure this convenience.",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          }
+        }
+      ],
+      "comparison": "NONE",
+      "unknownSets": [],
+      "goals": [],
+      "parts": [],
+      "shared": [],
+      "contextBenefits": [],
+      "headline": "Lower-attention multi-target method; geometry unmodelled.",
+      "effortShort": "Remaining shards and essence; no full ETA.",
+      "status": "reviewed",
+      "reviewed": "2026-10-13",
+      "rewardFamily": "venator-bow",
+      "role": "multi-target-method",
+      "contexts": [
+        "slayer-multicombat",
+        "colosseum-switch"
+      ],
+      "path": [
+        {
+          "id": "access",
+          "label": "Secrets of the North completed",
+          "role": "ACCESS",
+          "completeWhen": {
+            "test": "FACT",
+            "key": "secrets-of-north",
+            "value": true
+          },
+          "detail": "Hard Muspah access; no megarare requirement.",
+          "dependencies": null
+        },
+        {
+          "id": "method",
+          "label": "Review Muspah method and supplies",
+          "role": "PREPARATION",
+          "completeWhen": {
+            "test": "FACT",
+            "key": "muspah-preparation",
+            "value": true
+          },
+          "detail": "Owned Bowfa/crystal is a reviewed alternative. Execution is not observed.",
+          "dependencies": null
+        },
+        {
+          "id": "shards",
+          "label": "Five Venator shards",
+          "role": "ACTIVITY",
+          "completeWhen": {
+            "test": "POSSESSION",
+            "key": "venatorShards",
+            "value": true
+          },
+          "detail": "Use observed quantity; manual presence cannot establish five. Do not break these shards into essence if allocated to the bow.",
+          "dependencies": {
+            "mode": "ALL",
+            "children": [
+              {
+                "mode": "NODE",
+                "node": "access"
+              },
+              {
+                "mode": "NODE",
+                "node": "method"
+              }
+            ]
+          },
+          "itemId": 27614,
+          "quantity": 5,
+          "acquisition": true
+        },
+        {
+          "id": "assemble",
+          "label": "Combine five shards into the uncharged bow",
+          "role": "ASSEMBLY",
+          "completeWhen": {
+            "test": "POSSESSION",
+            "key": "venatorBow",
+            "value": true
+          },
+          "detail": "Irreversible combination; arrows and essence charging are separate from ownership.",
+          "dependencies": {
+            "mode": "NODE",
+            "node": "shards"
+          }
+        }
+      ],
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "item-ids",
+        "r3-colosseum-method",
+        "r3-essence",
+        "r3-muspah",
+        "r3-secrets",
+        "r3-venator-bow",
+        "r3-venator-shard",
+        "twisted-bow"
       ]
     }
   ],
@@ -21363,7 +22180,12 @@
         "rigour",
         "twisted-bow"
       ],
-      "itemId": 21034
+      "itemId": 21034,
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "tail": "ORDINARY"
     },
     {
       "id": "cox-augury",
@@ -21428,7 +22250,154 @@
         "trident",
         "trident-e"
       ],
-      "itemId": 21079
+      "itemId": 21079,
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "tail": "ORDINARY"
+    },
+    {
+      "id": "doom-cloth",
+      "activity": "doom",
+      "mode": "ordinary",
+      "family": "confliction",
+      "title": "Mokhaiotl cloth",
+      "itemId": 31109,
+      "benefit": "MODERATE",
+      "when": {
+        "test": "POSSESSION",
+        "key": "tormented",
+        "value": true
+      },
+      "ownedWhen": {
+        "test": "ANY",
+        "conditions": [
+          {
+            "test": "POSSESSION",
+            "key": "clothOrGauntlets",
+            "value": true
+          },
+          {
+            "test": "POSSESSION",
+            "key": "cloth",
+            "value": true
+          }
+        ]
+      },
+      "eligibilityWhen": {
+        "test": "FACT",
+        "key": "doom-delve-two",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "FACT",
+        "key": "final-dawn",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "FACT",
+        "key": "doom-preparation",
+        "value": true
+      },
+      "sources": [
+        "cloth",
+        "confliction",
+        "doom",
+        "item-ids",
+        "tormented"
+      ],
+      "tail": "UNKNOWN"
+    },
+    {
+      "id": "doom-eye",
+      "activity": "doom",
+      "mode": "ordinary",
+      "family": "eye",
+      "title": "Eye of Ayak",
+      "itemId": 31113,
+      "benefit": "MODERATE",
+      "when": {
+        "test": "POSSESSION",
+        "key": "seasAssembly",
+        "value": true
+      },
+      "ownedWhen": {
+        "test": "POSSESSION",
+        "key": "advancedStaff",
+        "value": true
+      },
+      "eligibilityWhen": {
+        "test": "FACT",
+        "key": "doom-delve-three",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "FACT",
+        "key": "final-dawn",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "FACT",
+        "key": "doom-preparation",
+        "value": true
+      },
+      "sources": [
+        "ayak",
+        "doom",
+        "item-ids",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "trident",
+        "trident-e"
+      ],
+      "tail": "UNKNOWN"
+    },
+    {
+      "id": "muspah-heart-essence",
+      "activity": "muspah",
+      "mode": "ordinary",
+      "family": "heart-saturation",
+      "title": "Essence for an owned imbued heart",
+      "itemId": 27616,
+      "benefit": "MODERATE",
+      "when": {
+        "test": "ITEMS",
+        "key": "imbuedHeart"
+      },
+      "ownedWhen": {
+        "test": "POSSESSION",
+        "key": "saturatedHeart",
+        "value": true
+      },
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "accessWhen": {
+        "test": "FACT",
+        "key": "secrets-of-north",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "FACT",
+        "key": "muspah-preparation",
+        "value": true
+      },
+      "sources": [
+        "r3-muspah",
+        "r3-essence",
+        "r3-saturated-heart",
+        "item-ids"
+      ],
+      "tail": "ORDINARY",
+      "requiredQuantity": 150000,
+      "resourceWhen": {
+        "test": "POSSESSION",
+        "key": "ancientEssence",
+        "value": true
+      }
     }
   ],
   "ranged": {
@@ -22590,5 +23559,529 @@
       "TOXIC": 21330,
       "ROSEWOOD": 811
     }
-  }
+  },
+  "activityContexts": [
+    {
+      "id": "core-ranged",
+      "activity": "ranged-use",
+      "mode": "ordinary",
+      "method": "Broad ranged use; no preferred encounter inferred",
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "methodWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "preparation": [],
+      "sources": [
+        "r2-ranged"
+      ],
+      "reviewed": "2026-10-13",
+      "resourceConflicts": []
+    },
+    {
+      "id": "ruby-burst",
+      "activity": "nex",
+      "mode": "ordinary",
+      "method": "High-HP eligible ruby special; HP/immunity/energy must be checked",
+      "accessWhen": {
+        "test": "FACT",
+        "key": "frozen-door",
+        "value": true
+      },
+      "methodWhen": {
+        "test": "FACT",
+        "key": "nex-team",
+        "value": true
+      },
+      "preparation": [],
+      "sources": [
+        "nex",
+        "zaryte"
+      ],
+      "reviewed": "2026-10-13",
+      "resourceConflicts": []
+    },
+    {
+      "id": "doom-hybrid",
+      "activity": "doom",
+      "mode": "ordinary",
+      "method": "Reviewed Doom preparation; delve success remains unknown",
+      "accessWhen": {
+        "test": "FACT",
+        "key": "final-dawn",
+        "value": true
+      },
+      "methodWhen": {
+        "test": "FACT",
+        "key": "doom-preparation",
+        "value": true
+      },
+      "preparation": [
+        {
+          "role": "demonbane-method",
+          "label": "Review demonbane shield-interruption and switches; premium megarares are optional",
+          "when": {
+            "test": "FACT",
+            "key": "doom-preparation",
+            "value": true
+          },
+          "sources": [
+            "doom"
+          ],
+          "constraint": "METHOD_CAPABILITY"
+        }
+      ],
+      "sources": [
+        "avernic-treads",
+        "doom"
+      ],
+      "reviewed": "2026-10-13",
+      "resourceConflicts": []
+    },
+    {
+      "id": "slayer-multicombat",
+      "activity": "slayer",
+      "mode": "ordinary",
+      "method": "Eligible packed multi-combat targets; no favourite task inferred",
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "methodWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "preparation": [],
+      "sources": [
+        "r3-venator-bow"
+      ],
+      "reviewed": "2026-10-13",
+      "resourceConflicts": []
+    },
+    {
+      "id": "colosseum-switch",
+      "activity": "colosseum",
+      "mode": "ordinary",
+      "method": "Existing reviewed switches can be used before optional Venator work",
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "methodWhen": {
+        "test": "FACT",
+        "key": "colosseum-preparation",
+        "value": true
+      },
+      "preparation": [
+        {
+          "role": "venator-switch",
+          "label": "Venator is an optional convenience switch; current one-shot geometry is unvalidated",
+          "when": {
+            "test": "ITEMS",
+            "key": "venatorBow"
+          },
+          "sources": [
+            "r3-venator-bow",
+            "r3-colosseum-method"
+          ],
+          "constraint": "OPTIONAL_IMPROVEMENT"
+        }
+      ],
+      "sources": [
+        "item-ids",
+        "r3-colosseum-method",
+        "r3-venator-bow"
+      ],
+      "reviewed": "2026-10-13",
+      "resourceConflicts": []
+    },
+    {
+      "id": "muspah-bowfa",
+      "activity": "muspah",
+      "mode": "ordinary",
+      "method": "Reviewed Bowfa/crystal method; supplies and execution remain checks",
+      "accessWhen": {
+        "test": "FACT",
+        "key": "secrets-of-north",
+        "value": true
+      },
+      "methodWhen": {
+        "test": "FACT",
+        "key": "muspah-preparation",
+        "value": true
+      },
+      "preparation": [
+        {
+          "role": "ranged-method",
+          "label": "Owned Bowfa/crystal is a reviewed Muspah alternative; no tbow detour required",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "ITEMS",
+                "key": "bowfaOwned"
+              },
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              },
+              {
+                "test": "USABLE",
+                "key": "crystalBody"
+              },
+              {
+                "test": "USABLE",
+                "key": "crystalLegs"
+              }
+            ]
+          },
+          "sources": [
+            "r3-muspah",
+            "bowfa",
+            "crystal-body",
+            "crystal-legs",
+            "crystal-helm",
+            "r3-muspah-method"
+          ],
+          "constraint": "METHOD_CAPABILITY"
+        }
+      ],
+      "sources": [
+        "bowfa",
+        "bowfa-route",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "item-ids",
+        "r3-muspah",
+        "twisted-bow",
+        "r3-muspah-method",
+        "r3-saturated-heart",
+        "r3-essence",
+        "r3-venator-shard"
+      ],
+      "reviewed": "2026-10-13",
+      "resourceConflicts": [
+        "Ancient essence allocated to heart saturation cannot also charge the bow; shards allocated to bow assembly cannot also be broken down. Heart saturation needs 150,000 essence; no simultaneous completion claim."
+      ]
+    },
+    {
+      "id": "cox-team",
+      "activity": "chambers-of-xeric",
+      "mode": "ordinary",
+      "method": "Ordinary team route; no solo readiness inferred",
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "methodWhen": {
+        "test": "FACT",
+        "key": "cox-preparation",
+        "value": true
+      },
+      "preparation": [],
+      "sources": [
+        "r1-chambers-of-xeric"
+      ],
+      "reviewed": "2026-10-13",
+      "resourceConflicts": []
+    }
+  ],
+  "roleSupport": [
+    {
+      "id": "anguish-core-neck",
+      "subject": "necklace-of-anguish",
+      "context": "core-ranged",
+      "role": "ranged-neck",
+      "dimension": "ORDINARY_OFFENCE",
+      "significance": "CORE",
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          },
+          {
+            "test": "POSSESSION",
+            "key": "anguishOrBetter",
+            "value": false
+          }
+        ]
+      },
+      "noBenefitWhen": {
+        "test": "CONSTANT",
+        "value": false
+      },
+      "reason": "Core ranged neck improvement over the owned reference; a small neutral breakpoint does not cover this role.",
+      "limitation": "Rupture is superior; zenyte allocation, onyx and crafting remain separate.",
+      "alternatives": [],
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "item-ids",
+        "r2-necklace-of-anguish",
+        "r2-necklace-of-rupture",
+        "twisted-bow"
+      ],
+      "reviewed": "2026-10-13",
+      "status": "reviewed"
+    },
+    {
+      "id": "rupture-core-neck",
+      "subject": "necklace-of-rupture",
+      "context": "core-ranged",
+      "role": "ranged-neck",
+      "dimension": "ORDINARY_OFFENCE",
+      "significance": "SUBSTANTIAL",
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          },
+          {
+            "test": "POSSESSION",
+            "key": "anguishOrBetter",
+            "value": false
+          }
+        ]
+      },
+      "noBenefitWhen": {
+        "test": "CONSTANT",
+        "value": false
+      },
+      "reason": "A stronger ranged neck option; compare completing anguish first and the extra fang work.",
+      "limitation": "Owned anguish reduces this to its supported marginal improvement.",
+      "alternatives": [],
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "item-ids",
+        "r2-necklace-of-anguish",
+        "r2-necklace-of-rupture",
+        "twisted-bow"
+      ],
+      "reviewed": "2026-10-13",
+      "status": "reviewed"
+    },
+    {
+      "id": "zaryte-ruby-burst",
+      "subject": "zaryte-crossbow",
+      "context": "ruby-burst",
+      "role": "ruby-special",
+      "dimension": "BURST",
+      "significance": "SUBSTANTIAL",
+      "when": {
+        "test": "FACT",
+        "key": "zaryte-context",
+        "value": true
+      },
+      "noBenefitWhen": {
+        "test": "CONSTANT",
+        "value": false
+      },
+      "reason": "Adds conditional ruby-special burst; an owned bow does not cover this energy-limited role.",
+      "limitation": "Only after a successful hit on an eligible high-HP target. HP, immunity and competing special energy change value; exact expected burst is unsupported.",
+      "alternatives": [
+        {
+          "label": "Owned crossbow can already use enchanted ruby bolts; Zaryte adds conditional special control",
+          "when": {
+            "test": "ITEMS",
+            "key": "armadylCrossbow"
+          },
+          "coversBenefit": false
+        }
+      ],
+      "sources": [
+        "armadyl-crossbow",
+        "item-ids",
+        "zaryte"
+      ],
+      "reviewed": "2026-10-13",
+      "status": "reviewed"
+    },
+    {
+      "id": "treads-hybrid-role",
+      "subject": "avernic-treads",
+      "context": "doom-hybrid",
+      "role": "hybrid-boots",
+      "dimension": "INVENTORY",
+      "significance": "CONTEXTUAL",
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          },
+          {
+            "test": "USABLE",
+            "key": "magic"
+          }
+        ]
+      },
+      "noBenefitWhen": {
+        "test": "CONSTANT",
+        "value": false
+      },
+      "reason": "Hybrid boot option for ranged and magic; review whether your method actually removes a switch.",
+      "limitation": "No saved-slot count without a real switch setup. Base melee strength can lose to primordial; optional additions are independent.",
+      "alternatives": [
+        {
+          "label": "Keep existing style boots; no Cerberus additions are required for base treads",
+          "when": {
+            "test": "ANY",
+            "conditions": [
+              {
+                "test": "ITEMS",
+                "key": "eternal"
+              },
+              {
+                "test": "ITEMS",
+                "key": "primordial"
+              },
+              {
+                "test": "ITEMS",
+                "key": "pegasian"
+              }
+            ]
+          },
+          "coversBenefit": false
+        }
+      ],
+      "sources": [
+        "avernic-treads",
+        "ayak",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "eternal-boots",
+        "item-ids",
+        "pegasian-boots",
+        "primordial-boots",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e",
+        "twisted-bow"
+      ],
+      "reviewed": "2026-10-13",
+      "status": "reviewed"
+    },
+    {
+      "id": "venator-attention",
+      "subject": "venator-bow",
+      "context": "slayer-multicombat",
+      "role": "multi-target-method",
+      "dimension": "CONVENIENCE",
+      "significance": "CONTEXTUAL",
+      "when": {
+        "test": "USABLE",
+        "key": "ranged"
+      },
+      "noBenefitWhen": {
+        "test": "FACT",
+        "key": "multi-combat-method",
+        "value": false
+      },
+      "reason": "Optional lower-attention multi-combat method alongside your owned ranged kit.",
+      "limitation": "Packed eligible targets, arrows and ancient essence required; single combat removes bounce value. No task/XP/AFK duration or payback claim.",
+      "alternatives": [
+        {
+          "label": "Owned Bowfa remains a single-target option; automatic multi-target engagement is a separate benefit",
+          "when": {
+            "test": "ITEMS",
+            "key": "bowfaOwned"
+          },
+          "coversBenefit": false
+        },
+        {
+          "label": "Owned blowpipe remains a fast single-target alternative",
+          "when": {
+            "test": "ITEMS",
+            "key": "toxicBlowpipe"
+          },
+          "coversBenefit": false
+        }
+      ],
+      "sources": [
+        "bowfa",
+        "bowfa-route",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "item-ids",
+        "r2-toxic-blowpipe",
+        "r3-muspah",
+        "r3-venator-bow",
+        "twisted-bow"
+      ],
+      "reviewed": "2026-10-13",
+      "status": "reviewed"
+    },
+    {
+      "id": "venator-colosseum",
+      "subject": "venator-bow",
+      "context": "colosseum-switch",
+      "role": "wave-opening-switch",
+      "dimension": "MULTI_TARGET",
+      "significance": "CONTEXTUAL",
+      "when": {
+        "test": "FACT",
+        "key": "colosseum-preparation",
+        "value": true
+      },
+      "noBenefitWhen": {
+        "test": "CONSTANT",
+        "value": false
+      },
+      "reason": "Optional Colosseum opening switch; start the reviewed method with adequate owned alternatives.",
+      "limitation": "Exact revised return-bounce geometry and one-shot breakpoints are unsupported. Not required for quiver.",
+      "alternatives": [
+        {
+          "label": "Owned blowpipe is a reviewed Colosseum switch alternative",
+          "when": {
+            "test": "ITEMS",
+            "key": "toxicBlowpipe"
+          },
+          "coversBenefit": false
+        },
+        {
+          "label": "Owned tbow is a reviewed Colosseum switch alternative",
+          "when": {
+            "test": "ITEMS",
+            "key": "twistedBow"
+          },
+          "coversBenefit": false
+        }
+      ],
+      "sources": [
+        "item-ids",
+        "r2-toxic-blowpipe",
+        "r3-colosseum-method",
+        "r3-venator-bow",
+        "twisted-bow"
+      ],
+      "reviewed": "2026-10-13",
+      "status": "reviewed"
+    }
+  ]
 }

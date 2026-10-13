@@ -21,11 +21,12 @@ public final class PursuitAssessment
 	public final Tail tail;
 	public final List<String> reasonCodes, reasons, blockers, allocations;
 	public final EffortEstimate estimate;
+	public final ValueEvidence valueEvidence;
 
 	PursuitAssessment(RecommendationRanker.Candidate c, Category category, List<String> codes, List<String> reasons, String alternative)
 	{
 		id=c.id; route=c.route; activity=c.activity; mode=c.activityMode; family=c.family; version=RecommendationRanker.VERSION;
-		this.category=category; acquisitionMode=c.mode; burden=c.burden; tail=c.tail; this.alternative=alternative;
+		valueEvidence=c.evidence; this.category=category; acquisitionMode=c.mode; burden=c.burden; tail=c.tail; this.alternative=alternative;
 		reasonCodes=List.copyOf(codes); this.reasons=List.copyOf(reasons); blockers=c.blockers; allocations=c.allocations; estimate=c.estimate;
 	}
 }

@@ -95,7 +95,7 @@ public final class Advisor
 	{
 		CombatComparisonService comparisonService = new CombatComparisonService(catalog);
 		RangedComparisonService rangedService = new RangedComparisonService(catalog);
-		Map<String,CombatSetup> rangedContexts = new LinkedHashMap<>();
+		Map<String,CombatSetup> rangedContexts = new LinkedHashMap<>(), magicContexts = new LinkedHashMap<>();
 		Map<String, Map<String, String>> referenceChoices = new LinkedHashMap<>();
 		PoweredMagic.SLOTS.forEach(slot -> referenceChoices.put(slot, comparisonService.choices(slot, account)));
 		referenceChoices.put("target", comparisonService.targetChoices());
@@ -166,7 +166,7 @@ public final class Advisor
 			for (KnowledgeCatalog.SharedReward reward : upgrade.shared)
 			{
 				if (truth(reward.when, account, preferences) != Truth.TRUE || truth(reward.ownedWhen, account, preferences) == Truth.TRUE) { continue; }
-				shared.add(reward.title + " — eligible from completed delve " + reward.minDelve + ". "
+				shared.add(reward.title + " — " + reward.eligibilityLabel + ": " + truth(reward.eligibilityWhen, account, preferences) + ". "
 					+ (truth(reward.ownedWhen, account, preferences) == Truth.UNKNOWN ? "Ownership/alternatives unconfirmed. " : "Planning gap confirmed. ") + reward.detail);
 			}
 			String label = questions.isEmpty() ? "Planning gap confirmed" : "Ownership unconfirmed — if you do not already own the outcome/alternative";
@@ -187,6 +187,15 @@ public final class Advisor
 					contexts.add(resultForTarget);
 				}
 			}
+			if (!ranged && !upgrade.comparison.equals("NONE"))
+			{
+				for (String targetId : upgrade.contexts)
+				{
+					if (targetId.equals(reference.target)) { continue; }
+					CombatSetup contextual=magicContexts.computeIfAbsent(targetId,id->comparisonService.propose(account,id));
+					contexts.add(comparisonService.compare(account,preferences,contextual,upgrade));
+				}
+			}
 			boolean contextualGain = contexts.stream().anyMatch(c -> c.available(ComparisonResult.Metric.THEORETICAL_DPS) && c.dpsGain() > 1e-10);
 			String ranking = "Reviewed contextual " + band + " value; combat metric gap: " + comparison.reason;
 			if (comparison.available(ComparisonResult.Metric.THEORETICAL_DPS))
@@ -194,14 +203,14 @@ public final class Advisor
 				double change = comparison.dpsGain(), relative = comparison.before.dps > 0 ? change / comparison.before.dps : 0;
 				if (change <= 1e-10 && !contextualGain) { band = KnowledgeCatalog.Benefit.MINOR; label += " · No demonstrated sustained gain; defer"; }
 				else if (change <= 1e-10) { label += " · Specialist gain in a reviewed encounter; neutral result is separate"; }
-				else if (!upgrade.id.equals("tumekens-shadow")) { band = relative >= 0.05 ? KnowledgeCatalog.Benefit.MODERATE : KnowledgeCatalog.Benefit.MINOR; }
+				else { band = relative >= 0.25 ? KnowledgeCatalog.Benefit.MAJOR : relative >= 0.05 ? KnowledgeCatalog.Benefit.MODERATE : KnowledgeCatalog.Benefit.MINOR; }
 				ranking = String.format(java.util.Locale.ROOT, "Supported marginal DPS %+.3f on %s; %s value. %s", change, comparison.target.name, band,
 					comparison.before.maxHit == comparison.after.maxHit ? "No max-hit breakpoint; accuracy is separate." : "Whole-loadout max-hit breakpoint.");
 			}
 			if (contextualGain)
 			{ evidence.add("Supported specialist value in " + contexts.stream().filter(c -> c.available(ComparisonResult.Metric.THEORETICAL_DPS) && c.dpsGain() > 1e-10)
 				.map(c -> c.target.name).collect(Collectors.joining(", ")) + ". Inspect the separate encounter results and complete inputs; gains are not added or compared as a universal score."); }
-			evidence.add("Ranking: " + ranking + " Value evidence only. Pursuit category and remaining burden determine priority before strength; encounter text count does not.");
+			evidence.add("Ranking: " + ranking + " Ordinary offence evidence only. Independent roles establish personal importance; pursuit status and effort remain separate. Context count carries no priority.");
 			List<Requirement> path = new ArrayList<>();
 			for (KnowledgeCatalog.PathNode node : upgrade.path)
 			{ path.add(new Requirement(node.label + (node.quantity != null && account.observedQuantity(node.itemId).known()
@@ -229,9 +238,16 @@ public final class Advisor
 					{ questions.addAll(ownershipQuestions(remaining.completeWhen, account, preferences)); }
 				}
 			}
+			ValueEvidence personalValue=ProgressionEvaluator.evaluate(catalog,upgrade,comparison,contexts,c -> truth(c,account,preferences));
+			Set<String> valueSources=new java.util.TreeSet<>(upgrade.sources);
+			for (ValueEvidence.Role role : personalValue.roles)
+			{
+				valueSources.addAll(role.sources);
+				catalog.progression.contexts.stream().filter(c->c.id.equals(role.context)).forEach(c->valueSources.addAll(c.sources));
+			}
 			result.add(new UpgradeView(upgrade, label, context == null ? upgrade.valueReason : context.reason,
 				band, evidence, applications, questions.stream().distinct().collect(Collectors.toList()), routes, equip, parts, shared, comparison, path,
-				ranged ? rangedService.referenceChoices(account) : referenceChoices, contexts));
+				ranged ? rangedService.referenceChoices(account) : referenceChoices, contexts, personalValue, new ArrayList<>(valueSources)));
 		}
 		List<RecommendationRanker.Candidate> candidates = new ArrayList<>();
 		for (UpgradeView view : result)
@@ -240,7 +256,23 @@ public final class Advisor
 		List<UpgradeView> ranked = new ArrayList<>(); Set<String> selected = new HashSet<>();
 		for (PursuitAssessment assessment : new RecommendationRanker().rank(candidates))
 		{ if (selected.add(assessment.id)) { ranked.add(new UpgradeView(byId.get(assessment.id), assessment)); } }
-		return List.copyOf(ranked);
+		List<ActivityOpportunity> activities=activityOpportunities(account,preferences,ranked);
+		List<UpgradeView> explained=new ArrayList<>();
+		for (UpgradeView upgrade : ranked)
+		{
+			List<String> trails=new ArrayList<>(); Set<String> visited=new HashSet<>();
+			for (ValueEvidence.Role role : upgrade.valueEvidence.roles)
+			{
+				if (role.applicable != Truth.TRUE || role.covered || !visited.add(role.context)) { continue; }
+				ProgressionKnowledge.Context context=catalog.progression.contexts.stream().filter(c->c.id.equals(role.context)).findFirst().orElseThrow();
+				activities.stream().filter(a->a.activity.equals(context.activity)&&a.mode.equals(context.mode)).findFirst().ifPresent(activity -> {
+					List<String> other=activity.usefulRewards.stream().filter(r->!r.equals(upgrade.upgrade.title)).distinct().collect(Collectors.toList());
+					if (!other.isEmpty()) { trails.add("Direct role: " + role.reason + " Useful at " + activity.title + ", which still offers " + String.join(", ",other) + ". Separate rewards; no priority amplification."); }
+				});
+			}
+			explained.add(new UpgradeView(upgrade,trails));
+		}
+		return List.copyOf(explained);
 	}
 
 	private RecommendationRanker.Candidate pursuitCandidate(UpgradeView view, RouteView route,
@@ -254,7 +286,7 @@ public final class Advisor
 		String rationale = (variant == null ? spec.reason : variant.reason) + " " + spec.missingMechanics;
 		if (acquisitionStagesOwned(view.upgrade,account,preferences))
 		{
-			mode = PursuitAssessment.Mode.BOUNDED; burden = PursuitAssessment.Burden.LOW; tail = PursuitAssessment.Tail.ORDINARY;
+			mode = PursuitAssessment.Mode.BOUNDED; burden = PursuitAssessment.Burden.MODERATE; tail = PursuitAssessment.Tail.ORDINARY;
 			rationale = "Confirmed owned acquisition stages bypass the repeat grind; only remaining resources, skills and assembly are assessed. " + spec.missingMechanics;
 		}
 		List<Requirement> remaining = new ArrayList<>(); Set<String> steps = new HashSet<>();
@@ -275,7 +307,7 @@ public final class Advisor
 			}
 			// Suggested preparation is not necessarily a hard dependency edge in the recipe.
 			// It still matters while acquiring the reward, but owned components can remove that activity.
-			if (variant == null || effective.stream().anyMatch(n -> n.role.equals("ACTIVITY")))
+			if (!acquisitionStagesOwned(view.upgrade,account,preferences) && (variant == null || effective.stream().anyMatch(n -> n.role.equals("ACTIVITY"))))
 			{
 				addRequirements(route.decision.prepWhen, account, preferences, remaining, false, "SUGGESTED PREPARATION");
 				addRequirements(route.decision.accessWhen, account, preferences, remaining, false, "ACCESS");
@@ -300,8 +332,11 @@ public final class Advisor
 			}
 			steps.add(route.decision.id);
 		}
+		if (!acquisitionStagesOwned(view.upgrade,account,preferences))
+		{ addRequirements(view.upgrade.eligibilityWhen,account,preferences,remaining,false,"REWARD ELIGIBILITY"); }
 		boolean unknown = !view.questions.isEmpty() || remaining.stream().anyMatch(r -> r.truth == Truth.UNKNOWN || r.skipped);
-		boolean blocked = remaining.stream().anyMatch(r -> r.truth == Truth.FALSE);
+		boolean blocked = remaining.stream().anyMatch(r -> r.truth == Truth.FALSE && !r.role.equals("SUGGESTED PREPARATION") && !r.role.equals("PREPARATION"));
+		unknown |= remaining.stream().anyMatch(r -> r.truth != Truth.TRUE && (r.role.equals("SUGGESTED PREPARATION") || r.role.equals("PREPARATION")));
 		List<String> blockers = new ArrayList<>();
 		if (!view.questions.isEmpty()) { blockers.add("Confirm ownership: " + catalog.factChoices().get(view.questions.get(0))); }
 		remaining.stream().filter(r -> r.truth != Truth.TRUE || r.skipped).forEach(r -> blockers.add(r.role + ": " + r.label));
@@ -309,10 +344,10 @@ public final class Advisor
 		boolean numeric = comparison.available(ComparisonResult.Metric.THEORETICAL_DPS);
 		Double gain = numeric ? comparison.dpsGain() : null;
 		boolean contextualGain = view.contextComparisons.stream().anyMatch(c -> c.available(ComparisonResult.Metric.THEORETICAL_DPS) && c.dpsGain() > 1e-10);
-		boolean positive = !numeric || gain > 1e-10 || contextualGain;
-		if (!numeric && !view.upgrade.comparison.equals("NONE"))
+		boolean positive = view.valueEvidence.independentUtility || view.valueEvidence.importance.ordinal() < ValueEvidence.Importance.MARGINAL.ordinal() || numeric && gain > 1e-10 || contextualGain;
+		if (!numeric && !view.valueEvidence.independentUtility && view.valueEvidence.importance == ValueEvidence.Importance.UNCERTAIN)
 		{ unknown = true; blockers.add("Comparison input/model gap: " + comparison.gaps.getOrDefault(ComparisonResult.Metric.THEORETICAL_DPS, comparison.reason)); }
-		String bucket = view.upgrade.role + "/" + String.join(",", view.upgrade.contexts);
+		String bucket = view.upgrade.role;
 		if (numeric)
 		{
 			CombatSetup setup = comparison.beforeSetup;
@@ -334,12 +369,12 @@ public final class Advisor
 			if (stageRemaining && estimate.meanTrials == null)
 			{ unknown = true; blockers.add(estimate.reason); }
 		}
-		return new RecommendationRanker.Candidate(view.upgrade.id, route.decision.id, route.decision.activity, spec.modeId,
+		return new RecommendationRanker.Candidate(new RecommendationRanker.Candidate(view.upgrade.id, route.decision.id, route.decision.activity, spec.modeId,
 			view.upgrade.rewardFamily, bucket, view.band, mode, burden, tail, rationale,
 			unknown, blocked, preferences.goal != null && view.upgrade.goals.contains(preferences.goal),
-			!unknown && !blocked, positive, view.upgrade.contexts.size(), numeric ? 2 : 1,
-			burden == PursuitAssessment.Burden.HIGH ? 1 : 0, 0, gain, null, null, blockers,
-			variant == null ? spec.allocations : variant.allocations, steps, estimate);
+			!unknown && !blocked, positive, 0, view.valueEvidence.independentUtility || numeric ? 2 : 1,
+			-1, -1, gain, null, null, blockers,
+			variant == null ? spec.allocations : variant.allocations, steps, estimate), view.valueEvidence);
 	}
 
 	private Set<String> ownershipKeys(Condition condition)
@@ -404,7 +439,7 @@ public final class Advisor
 			Set<String> families = new java.util.TreeSet<>(), sources = new java.util.TreeSet<>(), allocations = new java.util.TreeSet<>();
 			Set<Integer> itemIds = new java.util.TreeSet<>();
 			List<String> rewards = new ArrayList<>(), uncertain = new ArrayList<>(), exclusions = new ArrayList<>();
-			boolean available = true, longTail = true; KnowledgeCatalog.Benefit best = KnowledgeCatalog.Benefit.PLANNING;
+			boolean available = false, longTail = true; KnowledgeCatalog.Benefit best = KnowledgeCatalog.Benefit.PLANNING;
 			for (UpgradeView view : upgrades)
 			{
 				RouteView route = view.routes.stream().filter(r -> r.decision.activity.equals(activity) && r.decision.pursuit.modeId.equals(mode)).findFirst().orElse(null);
@@ -413,13 +448,16 @@ public final class Advisor
 				if (route.decision.kind == KnowledgeCatalog.Kind.ASSEMBLE || variant != null && variant.bypassesAcquisition
 					|| acquisitionStagesOwned(view.upgrade,account,preferences))
 				{ exclusions.add(view.upgrade.title + ": owned components removed this acquisition stage; not counted as a missing activity reward."); continue; }
-				if (view.band == KnowledgeCatalog.Benefit.MINOR || view.pursuit.category == PursuitAssessment.Category.DEFER)
+				if (view.valueEvidence.importance == ValueEvidence.Importance.MARGINAL || view.pursuit.category == PursuitAssessment.Category.DEFER)
 				{ exclusions.add(view.upgrade.title + ": small/no demonstrated gain or dominated."); continue; }
 				if (!view.questions.isEmpty()) { uncertain.add(view.upgrade.title + ": ownership unconfirmed; not counted as missing."); continue; }
+				Truth eligibility=truth(view.upgrade.eligibilityWhen,account,preferences);
+				if (eligibility != Truth.TRUE) { uncertain.add(view.upgrade.title + ": reward eligibility " + eligibility + "; independent of activity access."); continue; }
 				families.add(view.upgrade.rewardFamily); rewards.add(view.upgrade.title); sources.addAll(view.upgrade.sources); itemIds.add(view.upgrade.itemId);
 				longTail &= view.pursuit.tail == PursuitAssessment.Tail.LONG;
-				allocations.addAll(view.pursuit.allocations); available &= route.available && view.pursuit.category != PursuitAssessment.Category.CHECK && view.pursuit.category != PursuitAssessment.Category.PLAN;
-				if (view.band.ordinal() < best.ordinal()) { best = view.band; }
+				allocations.addAll(view.pursuit.allocations); available |= truth(route.decision.accessWhen,account,preferences)==Truth.TRUE && truth(route.decision.prepWhen,account,preferences)==Truth.TRUE;
+				KnowledgeCatalog.Benefit value=view.valueEvidence.importance == ValueEvidence.Importance.KEY ? KnowledgeCatalog.Benefit.MAJOR : view.valueEvidence.importance == ValueEvidence.Importance.STRONG ? KnowledgeCatalog.Benefit.MODERATE : KnowledgeCatalog.Benefit.MINOR;
+				if (value.ordinal() < best.ordinal()) { best = value; }
 			}
 			for (KnowledgeCatalog.ActivityReward reward : catalog.activityRewards)
 			{
@@ -427,15 +465,42 @@ public final class Advisor
 				Truth owned = truth(reward.ownedWhen, account, preferences);
 				if (owned == Truth.TRUE) { exclusions.add(reward.title + ": owned scroll/unlocked benefit; not a missing reward."); continue; }
 				if (owned == Truth.UNKNOWN) { uncertain.add(reward.title + ": unlock/scroll ownership unknown; not counted as missing."); continue; }
+				if (reward.requiredQuantity!=null)
+				{
+					Observation<Long> quantity=account.observedQuantity(reward.itemId);
+					if (quantity.known() && quantity.value()>=reward.requiredQuantity)
+					{ exclusions.add(reward.title + ": observed resources bypass collection; confirm allocation before assembly."); continue; }
+					if (truth(reward.resourceWhen,account,preferences)!=Truth.FALSE)
+					{ uncertain.add(reward.title + ": check remaining quantity/allocation; presence or a lower bound does not prove the full requirement."); continue; }
+				}
+				Truth eligibility=truth(reward.eligibilityWhen,account,preferences);
+				if (eligibility != Truth.TRUE) { uncertain.add(reward.title + ": reward eligibility " + eligibility + "; not counted as eligible."); continue; }
 				families.add(reward.family); rewards.add(reward.title); sources.addAll(reward.sources); itemIds.add(reward.itemId);
-				available &= truth(reward.accessWhen, account, preferences) == Truth.TRUE && truth(reward.prepWhen, account, preferences) == Truth.TRUE;
+				available |= truth(reward.accessWhen, account, preferences) == Truth.TRUE && truth(reward.prepWhen, account, preferences) == Truth.TRUE;
+				longTail &= reward.tail != PursuitAssessment.Tail.ORDINARY;
 				if (reward.benefit.ordinal() < best.ordinal()) { best = reward.benefit; }
 			}
 			if (families.isEmpty() && uncertain.isEmpty()) { continue; }
 			if (activity.equals("chambers-of-xeric"))
 			{ exclusions.add("Ancestral pieces are one dependent armour family, not three independent benefits."); }
+			ProgressionKnowledge.Context context=catalog.progression.contexts.stream().filter(c->c.activity.equals(activity)&&c.mode.equals(mode)).findFirst().orElse(null);
+			Truth access=context == null ? Truth.UNKNOWN : truth(context.accessWhen,account,preferences);
+			Truth method=context == null ? Truth.UNKNOWN : truth(context.methodWhen,account,preferences);
+			List<String> preparation=new ArrayList<>();
+			if (context != null)
+			{
+				available=access==Truth.TRUE && method==Truth.TRUE;
+				exclusions.addAll(context.resourceConflicts); sources.addAll(context.sources);
+				for (ProgressionKnowledge.Preparation option : context.preparation)
+				{
+					Truth supported=truth(option.when,account,preferences);
+					preparation.add(option.constraint + ": " + option.label + " — " + supported);
+					if (option.constraint==ProgressionKnowledge.Constraint.METHOD_CAPABILITY && supported!=Truth.TRUE) { available=false; }
+				}
+			}
+
 			result.add(new ActivityOpportunity(activity, mode, catalog.activities.get(activity), available, best,
-				new ArrayList<>(families), rewards, uncertain, exclusions, new ArrayList<>(allocations), new ArrayList<>(sources), new ArrayList<>(itemIds), longTail));
+				new ArrayList<>(families), rewards, uncertain, exclusions, new ArrayList<>(allocations), new ArrayList<>(sources), new ArrayList<>(itemIds), longTail, access, method, preparation));
 		}
 		result.sort(Comparator.comparing((ActivityOpportunity a) -> !a.category.equals("Worth doing"))
 			.thenComparing(a -> a.bestValue).thenComparing(a -> !a.available).thenComparing(a -> a.id));
@@ -469,7 +534,9 @@ public final class Advisor
 	{
 		if (node.quantity == null) { return planningTruth(node.completeWhen, a, p); }
 		Observation<Long> count = a.observedQuantity(node.itemId);
-		return count.known() && count.value() >= node.quantity ? Truth.TRUE : Truth.UNKNOWN;
+		if (count.known() && count.value() >= node.quantity) { return Truth.TRUE; }
+		// Explicit global absence may establish fresh acquisition work; a container zero cannot.
+		return node.completeWhen.test==KnowledgeCatalog.Test.POSSESSION && planningTruth(node.completeWhen,a,p)==Truth.FALSE ? Truth.FALSE : Truth.UNKNOWN;
 	}
 	private String quantityEvidence(KnowledgeCatalog.PathNode node, AccountSnapshot a)
 	{
@@ -517,15 +584,18 @@ public final class Advisor
 		public final List<ComparisonResult> contextComparisons;
 		public final Map<String, Map<String, String>> referenceChoices;
 		public final PursuitAssessment pursuit;
+		public final ValueEvidence valueEvidence;
+		public final List<String> indirectReasons, evidenceSources;
+		public final UpgradeCard card;
 		UpgradeView(KnowledgeCatalog.Upgrade upgrade, String label, String value, KnowledgeCatalog.Benefit band,
 			List<String> evidence, List<String> applications, List<String> questions, List<RouteView> routes,
-			List<Requirement> equip, List<Requirement> parts, List<String> shared, ComparisonResult comparison, List<Requirement> path, Map<String, Map<String, String>> referenceChoices, List<ComparisonResult> contexts)
+			List<Requirement> equip, List<Requirement> parts, List<String> shared, ComparisonResult comparison, List<Requirement> path, Map<String, Map<String, String>> referenceChoices, List<ComparisonResult> contexts, ValueEvidence valueEvidence, List<String> evidenceSources)
 		{
 			this.upgrade = upgrade; this.label = label; this.value = value; this.band = band;
 			this.evidence = List.copyOf(evidence); this.applications = List.copyOf(applications); this.questions = List.copyOf(questions);
 			this.routes = List.copyOf(routes); this.equip = List.copyOf(equip); this.parts = List.copyOf(parts); this.shared = List.copyOf(shared);
 			this.comparison = comparison; this.path = List.copyOf(path); this.referenceChoices = Map.copyOf(referenceChoices); this.pursuit = null;
-			contextComparisons = List.copyOf(contexts);
+			contextComparisons = List.copyOf(contexts); this.valueEvidence=valueEvidence; this.evidenceSources=List.copyOf(evidenceSources); indirectReasons=List.of(); card=null;
 		}
 		private UpgradeView(UpgradeView value, PursuitAssessment assessment)
 		{
@@ -533,7 +603,15 @@ public final class Advisor
 			evidence=value.evidence; applications=value.applications; questions=value.questions;
 			routes=value.routes; equip=value.equip; parts=value.parts; shared=value.shared; comparison=value.comparison;
 			path=value.path; referenceChoices=value.referenceChoices; pursuit=assessment;
-			contextComparisons=value.contextComparisons;
+			contextComparisons=value.contextComparisons; valueEvidence=value.valueEvidence; indirectReasons=value.indirectReasons; evidenceSources=value.evidenceSources; card=new UpgradeCard(this);
+		}
+
+		private UpgradeView(UpgradeView value, List<String> trails)
+		{
+			upgrade=value.upgrade; label=value.label; this.value=value.value; band=value.band; evidence=value.evidence;
+			applications=value.applications; questions=value.questions; routes=value.routes; equip=value.equip; parts=value.parts;
+			shared=value.shared; comparison=value.comparison; path=value.path; referenceChoices=value.referenceChoices;
+			pursuit=value.pursuit; contextComparisons=value.contextComparisons; valueEvidence=value.valueEvidence; indirectReasons=List.copyOf(trails); evidenceSources=value.evidenceSources; card=value.card;
 		}
 
 	}
