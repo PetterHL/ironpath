@@ -2,7 +2,7 @@
 
 **Your path to endgame PvM**
 
-Neutral-reference development build · 13 October 2026 · plugin 0.6.1 · knowledge reference-1 · schema 8
+Neutral-reference development build · 13 October 2026 · plugin 0.6.2 · knowledge reference-1 · schema 8
 
 **Main includes R1.5a and the neutral-reference/DPS-first follow-up.** Effort-aware pursuit categories, deduplicated shared activities, compact native rows and responsive Browse retain all R1 comparisons/routes. The next-zenyte-shard estimate is conditional: mean/median/P90 in future eligible kills, optional session-only pace, and no completed-bracelet ETA. See [R1.5a validation and pending client checks](docs/validation/R1.5a.md).
 
@@ -22,6 +22,8 @@ metrics remain visible gaps. See [R1 validation](docs/validation/R1.md) and
 or player-usefulness pass is claimed. No Plugin Hub submission or runtime service.
 
 The intended product is a free, open-source RuneLite sidebar that automatically identifies worthwhile Ironman PvM upgrades using observed account state: **which upgrades are worth pursuing, what difference will they make, and how do I obtain them?** Equipment, relevant prayers, skill levels and permanent unlocks are eligible. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
+
+**Client comparison-gap follow-up:** Value now names the unsupported accuracy item and whether it affects before, after or both reference setups. Brimstone's proc and Confliction's one-handed stacks remain separate model gaps; supported max hit stays visible. See [validation](docs/validation/client-model-gap-labels.md). This explanation patch is on `client-model-gap-labels`; main remains the integrated 0.6.1 baseline until review/integration.
 
 ## Product direction
 

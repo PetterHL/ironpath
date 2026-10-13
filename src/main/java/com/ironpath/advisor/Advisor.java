@@ -281,7 +281,7 @@ public final class Advisor
 		Double gain = numeric ? comparison.dpsGain() : null;
 		boolean positive = !numeric || gain > 1e-10;
 		if (!numeric && !view.upgrade.comparison.equals("NONE"))
-		{ unknown = true; blockers.add("Comparison input/model gap: " + comparison.reason); }
+		{ unknown = true; blockers.add("Comparison input/model gap: " + comparison.gaps.getOrDefault(ComparisonResult.Metric.THEORETICAL_DPS, comparison.reason)); }
 		String bucket = view.upgrade.role + "/" + String.join(",", view.upgrade.contexts);
 		if (numeric)
 		{
