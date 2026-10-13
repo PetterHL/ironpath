@@ -25,7 +25,7 @@ public class R15PanelTest
 	private AccountSnapshot account;private Preferences preferences;private PoweredMagic.Setup reference;private PaceScenario pace;
 	@Before public void setup() throws Exception
 	{
-		catalog=KnowledgeCatalog.load(new Gson());advisor=new Advisor(catalog);account=developed(false);preferences=absent(catalog);reference=new PoweredMagic(catalog).propose(account);
+		catalog=KnowledgeCatalog.load(new Gson());advisor=new Advisor(catalog);account=developed(false);preferences=absent(catalog);reference=new PoweredMagic(catalog).propose(account, "graardor");
 		SwingUtilities.invokeAndWait(()->{panel=new IronpathPanel();render();});
 	}
 	private void render()
@@ -49,6 +49,28 @@ public class R15PanelTest
 		return children(panel).stream().filter(c->("open-upgrade-"+id).equals(c.getName())).map(c->(JButton)c).findFirst().orElseThrow();
 	}
 	private String text() { return children(panel).stream().filter(c->c instanceof JTextArea).map(c->((JTextArea)c).getText()).collect(java.util.stream.Collectors.joining("\n")); }
+	@Test public void neutralWeaponAndArmourSummariesKeepTheirMetricOrderAndVisibleGaps() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			try
+			{
+				account=items(developed(false),12002,19544,31106);
+				reference=new PoweredMagic(catalog).propose(account).edit("hands","19544");render();
+				assertTrue(text().contains("Enemy with 0 Defence"));
+				capture("neutral-overview");button("Browse").doClick();capture("neutral-browse");
+				assertTrue(text().contains("DPS "));assertFalse(text().contains("Graardor"));
+				open("tumekens-shadow").doClick();
+				assertTrue(text().indexOf("Theoretical DPS")<text().indexOf("Max hit"));
+				assertTrue(text().contains("4 → 5 ticks (2.4 → 3.0 s)"));capture("neutral-weapon-value");
+				button("Back to upgrades").doClick();open("ancestral-hat").doClick();
+				assertTrue(text().indexOf("Max hit")<text().indexOf("Theoretical DPS"));capture("neutral-armour-value");
+				button("Back to upgrades").doClick();reference=reference.edit("hands","31106");render();
+				assertTrue(text().contains("DPS unavailable · model gap"));open("tumekens-shadow").doClick();
+				assertTrue(text().indexOf("Theoretical DPS unavailable")<text().indexOf("Max hit"));capture("neutral-history-gap");
+			}
+			catch(Exception failure){throw new RuntimeException(failure);}
+		});
+	}
 	@Test public void overviewBrowseValuePathActivityUnknownEmptyAndUnsupportedCaptures() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{
@@ -62,9 +84,9 @@ public class R15PanelTest
 				button("Clear pace").doClick();assertNull(pace);assertTrue(text().contains("Hours unavailable"));
 				button("Back to upgrades").doClick();button("Shared activities").doClick();children(panel).stream().filter(c->"open-activity:chambers-of-xeric/ordinary".equals(c.getName())).map(c->(JButton)c).findFirst().orElseThrow().doClick();
 				assertTrue(text().contains("Useful missing reward: Rigour"));assertTrue(text().contains("one dependent armour family"));capture("activity");button("Back to upgrades").doClick();
-				open("tumekens-shadow").doClick();reference=reference.edit("target","toa");render();assertTrue(text().contains("Comparison unavailable"));capture("unsupported");
+				open("tumekens-shadow").doClick();reference=reference.edit("target","toa");render();assertTrue(text().contains("Theoretical DPS unavailable"));capture("unsupported");
 				button("Back to upgrades").doClick();button("Overview").doClick();preferences=Preferences.EMPTY;render();capture("unknown");
-				preferences=absent(catalog);account=items(developed(true),12002,19544,28313,21018,21021,21024,26374,31097);reference=new PoweredMagic(catalog).propose(account);render();capture("empty");
+				preferences=absent(catalog);account=items(developed(true),12002,19544,28313,21018,21021,21024,26374,31097);reference=new PoweredMagic(catalog).propose(account, "graardor");render();capture("empty");
 				assertTrue(text().contains("No remaining supported upgrade"));
 			}
 			catch(Exception failure) { throw new RuntimeException(failure); }

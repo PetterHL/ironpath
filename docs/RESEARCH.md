@@ -1,5 +1,11 @@
 # IronPath research and evidence
 
+## Neutral analytical reference — 13 October 2026
+
+The requested **Enemy with 0 Defence** is an authored comparison assumption, not an observed NPC or combat-dummy stat claim. The exact powered-magic inputs are Defence 0, Magic 0, magic-defence bonus 0, standard non-ToA rules and no reduction/task/salve/weakness. Ordinary NPC magic defence uses `(Magic + 9) × (magic defence bonus + 64)`, so the roll is **576**, not zero. Existing pinned `magic-formula` and `magic-damage` sources supply the ordinary mechanics and are linked to the new context in the bundled register; their original review dates are retained. No new source retrieval or endorsement is claimed for the authored input choices. HP, size, melee/ranged defences, scaling and creature-family properties are unassigned in runtime.
+
+The independently authored [neutral harness](validation/neutral-oracle.test.ts) runs against the separate GPL development reference at `89c3e25b344aea90d0189746e4b5f73dde0f0383`. It uses the generic custom-monster base with zero Defence/Magic/magic-defence bonus and no attributes/weakness; its unused HP/size fields are incidental harness defaults, not runtime inputs or kill-time evidence. **180 original full-loadout cases** cover three Magic levels, five staves, three armour packages, two styles and no-boost/Augury-heart scenarios. Outputs agree with the original Java implementation within the established tolerances. Ordinary successful-zero damage and Sang's current proc retain the R1 distributions. No upstream code, equipment data or imagery is redistributed. See [validation](validation/neutral-reference.md) for hand checks and limits.
+
 ## R1.5a client finding: Ancient blessing — 13 October 2026
 
 The supplied client screenshots exposed unsupported equipped ammo ID 20235. Reviewed [Ancient blessing revision 15252873](https://oldschool.runescape.wiki/w/Ancient_blessing?oldid=15252873): item ID 20235, ammunition slot, all attack/defence bonuses zero, magic damage 0%, Prayer +1 and Zarosian God Wars protection. These item facts support retaining this exact item in the powered-magic reference. Prayer duration and faction protection are outside the fixed-prayer uninterrupted DPS model. Other blessings and unsupported ammunition are not inferred from this review.

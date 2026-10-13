@@ -25,7 +25,8 @@ public class PoweredMagicTest
 	@Test public void handDerivedNinetyMagicIncludesAccuracySuccessfulZeroAndFourTickInterval()
 	{
 		AccountSnapshot a = account(Set.of(11907), 90, 90);
-		PoweredMagic.Result swamp = compare(a, "SWAMP"), occult = compare(a, "OCCULT");
+		PoweredMagic.Setup dharok = model.propose(a).edit("target", "dharok");
+		PoweredMagic.Result swamp = model.compare(a, Preferences.EMPTY, dharok, "SWAMP"), occult = model.compare(a, Preferences.EMPTY, dharok, "OCCULT");
 		assertEquals(25, swamp.before.maxHit); assertEquals(28, swamp.after.maxHit); assertEquals(26, occult.after.maxHit);
 		// Inclusive rolls: (90+3+8)*(15+64)=7979; Dharok (1+9)*(64-11)=530.
 		assertEquals(7979, swamp.before.attackRoll); assertEquals(530, swamp.before.defenceRoll);
@@ -135,7 +136,7 @@ public class PoweredMagicTest
 				if(line.startsWith("#")||line.startsWith("magic"))continue;
 				String[] v=line.split(","); int magic=Integer.parseInt(v[0]),weapon=Integer.parseInt(v[1]),neck=Integer.parseInt(v[2]);
 				AccountSnapshot a=account(neck==0?Set.of(weapon):Set.of(weapon,neck),magic,90);
-				PoweredMagic.Setup s=model.propose(a).edit("style",v[3].toUpperCase(java.util.Locale.ROOT));
+				PoweredMagic.Setup s=model.propose(a).edit("target","dharok").edit("style",v[3].toUpperCase(java.util.Locale.ROOT));
 				if(v[4].equals("might-potion"))s=s.edit("prayer","MYSTIC_MIGHT").edit("boost","MAGIC_POTION");
 				if(v[4].equals("augury"))s=s.edit("prayer","AUGURY");
 				PoweredMagic.Metrics r=model.compare(a,Preferences.EMPTY,s,"OCCULT").before;

@@ -22,14 +22,17 @@ public class R15AdviceTest
 	private KnowledgeCatalog catalog;
 	private Advisor advisor;
 	private Preferences missing;
+	// Preserve the originally selected high-defence context for these R1/R1.5 regressions.
+	private List<Advisor.UpgradeView> reviewedUpgrades(Advisor evaluator, AccountSnapshot a, Preferences p)
+	{ return evaluator.upgrades(a, p, new PoweredMagic(catalog).propose(a, "graardor")); }
 	@Before public void setup() throws Exception { catalog=KnowledgeCatalog.load(new Gson());advisor=new Advisor(catalog);missing=absent(catalog); }
 	private Advisor.UpgradeView view(AccountSnapshot a, Preferences p, String id)
-	{ return advisor.upgrades(a,p).stream().filter(v->v.upgrade.id.equals(id)).findFirst().orElseThrow(); }
+	{ return reviewedUpgrades(advisor, a,p).stream().filter(v->v.upgrade.id.equals(id)).findFirst().orElseThrow(); }
 	private ActivityOpportunity cox(AccountSnapshot a, Preferences p)
-	{ return advisor.activityOpportunities(a,p,advisor.upgrades(a,p)).stream().filter(v->v.activity.equals("chambers-of-xeric")).findFirst().orElseThrow(); }
+	{ return advisor.activityOpportunities(a,p,reviewedUpgrades(advisor, a,p)).stream().filter(v->v.activity.equals("chambers-of-xeric")).findFirst().orElseThrow(); }
 	@Test public void postBowfaHasNearerPursuitsWithoutPromotingShadowFromLongTerm()
 	{
-		AccountSnapshot a=developed(false);List<Advisor.UpgradeView> views=advisor.upgrades(a,missing);
+		AccountSnapshot a=developed(false);List<Advisor.UpgradeView> views=reviewedUpgrades(advisor, a,missing);
 		assertEquals(Category.PURSUE,view(a,missing,"tormented-bracelet").pursuit.category);
 		assertEquals(Category.LONG_TERM,view(a,missing,"tumekens-shadow").pursuit.category);
 		assertTrue(views.indexOf(viewById(views,"tormented-bracelet"))<views.indexOf(viewById(views,"tumekens-shadow")));
@@ -51,8 +54,8 @@ public class R15AdviceTest
 		int number=0;
 		for(AccountSnapshot a:profiles)
 		{
-			List<Advisor.UpgradeView> views=advisor.upgrades(a,missing);
-			assertEquals(views.stream().map(v->v.upgrade.id+v.pursuit.category+v.pursuit.reasonCodes).collect(java.util.stream.Collectors.toList()),advisor.upgrades(a,missing).stream().map(v->v.upgrade.id+v.pursuit.category+v.pursuit.reasonCodes).collect(java.util.stream.Collectors.toList()));
+			List<Advisor.UpgradeView> views=reviewedUpgrades(advisor, a,missing);
+			assertEquals(views.stream().map(v->v.upgrade.id+v.pursuit.category+v.pursuit.reasonCodes).collect(java.util.stream.Collectors.toList()),reviewedUpgrades(advisor, a,missing).stream().map(v->v.upgrade.id+v.pursuit.category+v.pursuit.reasonCodes).collect(java.util.stream.Collectors.toList()));
 			if(a==shadow) { assertFalse(views.stream().anyMatch(v->v.upgrade.id.equals("swamp-trident")||v.upgrade.id.equals("tumekens-shadow"))); }
 			report.append("## ").append(++number).append(". ").append(List.of("Post-Bowfa","Tbow, no Shadow","Shadow owner","Several missing CoX families","Only rare R1 magic reward remains","Several nearer opportunities / owned horn").get(number-1)).append("\n\n");
 			report.append("Observed synthetic facts: ").append(a.facts.entrySet().stream().sorted(java.util.Map.Entry.comparingByKey()).map(e->e.getKey()+"="+(e.getValue().known()?e.getValue().value():"unknown")).collect(java.util.stream.Collectors.joining(", "))).append(". Rigour/Augury false; unread fields remain unknown. Confirmed-absent ownership keys: ").append(new java.util.TreeSet<>(missing.confirmations.keySet())).append(". Quantities: ").append(a.bankQuantities.known()?new java.util.TreeMap<>(a.bankQuantities.value()):"unknown").append(".\n\n");
@@ -70,7 +73,7 @@ public class R15AdviceTest
 		assertEquals(Category.PURSUE,view(obtainable,missing,"zaryte-crossbow").pursuit.category);
 		assertEquals(Mode.BOUNDED,view(obtainable,missing,"zaryte-crossbow").pursuit.acquisitionMode);
 		assertEquals(Category.LONG_TERM,view(onlyRare,missing,"tumekens-shadow").pursuit.category);
-		assertTrue(new PursuitOverview(advisor.upgrades(onlyRare,missing),List.of(),List.of(),List.of()).pursuits.isEmpty());
+		assertTrue(new PursuitOverview(reviewedUpgrades(advisor, onlyRare,missing),List.of(),List.of(),List.of()).pursuits.isEmpty());
 		java.nio.file.Path file=java.nio.file.Path.of("build/reports/r15/scenarios.md");java.nio.file.Files.createDirectories(file.getParent());java.nio.file.Files.writeString(file,report);
 	}
 	@Test public void sharedCoxFamiliesShrinkWithOwnershipAndNeverCountUnknownUnlocks()
@@ -84,12 +87,12 @@ public class R15AdviceTest
 		assertEquals(List.of("ancestral"),cox(unknown,missing).usefulFamilies);
 		assertEquals(2,cox(unknown,missing).uncertainRewards.size());
 		assertFalse(cox(unknown,missing).category.equals("Worth doing"));
-		assertFalse(advisor.activityOpportunities(a,missing.skip("chambers-of-xeric",true),advisor.upgrades(a,missing.skip("chambers-of-xeric",true))).stream().anyMatch(o->o.activity.equals("chambers-of-xeric")));
+		assertFalse(advisor.activityOpportunities(a,missing.skip("chambers-of-xeric",true),reviewedUpgrades(advisor, a,missing.skip("chambers-of-xeric",true))).stream().anyMatch(o->o.activity.equals("chambers-of-xeric")));
 	}
 	@Test public void oneOrdinaryRewardDoesNotBecomeLongTailJustBecauseItIsNotShared()
 	{
 		AccountSnapshot a=developed(false);
-		ActivityOpportunity gorillas=advisor.activityOpportunities(a,missing,advisor.upgrades(a,missing)).stream().filter(o->o.activity.equals("demonic-gorillas")).findFirst().orElseThrow();
+		ActivityOpportunity gorillas=advisor.activityOpportunities(a,missing,reviewedUpgrades(advisor, a,missing)).stream().filter(o->o.activity.equals("demonic-gorillas")).findFirst().orElseThrow();
 		assertEquals("Single reward route",gorillas.category);assertEquals(List.of("tormented-bracelet"),gorillas.usefulFamilies);
 	}
 	@Test public void ownedShardOrIntermediateRemovesOnlyItsDropStageAndStillChecksUnknownWork()
@@ -124,7 +127,7 @@ public class R15AdviceTest
 	@Test public void ownedComponentsCannotVoteForFreshActivityRewards()
 	{
 		AccountSnapshot a=items(developed(false),19529,26372,11785,28291);
-		List<ActivityOpportunity> activities=advisor.activityOpportunities(a,missing,advisor.upgrades(a,missing));
+		List<ActivityOpportunity> activities=advisor.activityOpportunities(a,missing,reviewedUpgrades(advisor, a,missing));
 		assertTrue(activities.stream().noneMatch(o->o.activity.equals("demonic-gorillas")||o.activity.equals("nex")||o.activity.equals("duke-sucellus")));
 		AccountSnapshot vestige=items(developed(false),28281);
 		var ring=view(vestige,missing,"magus-ring");assertEquals(Mode.BOUNDED,ring.pursuit.acquisitionMode);assertEquals(Category.CHECK,ring.pursuit.category);
@@ -139,7 +142,7 @@ public class R15AdviceTest
 		assertEquals(Category.PLAN,view(withFact(a,"beneath-cursed-sands",fact(false)),missing,"tumekens-shadow").pursuit.category);
 		JsonObject doc=new JsonParser().parse(new InputStreamReader(getClass().getResourceAsStream("/com/ironpath/catalog.json"))).getAsJsonObject();doc.getAsJsonArray("acquisitions").get(0).getAsJsonObject().addProperty("support","INVALID");
 		Advisor invalid=new Advisor(KnowledgeCatalog.read(new Gson(),new StringReader(doc.toString())));
-		var v=invalid.upgrades(a,missing).stream().filter(u->u.upgrade.id.equals("tormented-bracelet")).findFirst().orElseThrow();
+		var v=reviewedUpgrades(invalid, a,missing).stream().filter(u->u.upgrade.id.equals("tormented-bracelet")).findFirst().orElseThrow();
 		assertEquals(Category.CHECK,v.pursuit.category);assertTrue(v.comparison.dpsGain()>0);assertNull(v.pursuit.estimate.meanTrials);
 	}
 	@Test public void raidPreparationRemainsConsequentialEvenWhenItIsNotAHardRecipeEdge()
@@ -150,7 +153,7 @@ public class R15AdviceTest
 	}
 	@Test public void sourceRecordOrderAndExtraEncounterProseCannotChangeCategoriesOrPriority() throws Exception
 	{
-		AccountSnapshot a=developed(false);List<String> original=advisor.upgrades(a,missing).stream().map(v->v.upgrade.id+v.pursuit.category+v.pursuit.reasonCodes).collect(java.util.stream.Collectors.toList());
+		AccountSnapshot a=developed(false);List<String> original=reviewedUpgrades(advisor, a,missing).stream().map(v->v.upgrade.id+v.pursuit.category+v.pursuit.reasonCodes).collect(java.util.stream.Collectors.toList());
 		JsonObject doc=new JsonParser().parse(new InputStreamReader(getClass().getResourceAsStream("/com/ironpath/catalog.json"))).getAsJsonObject();
 		com.google.gson.JsonArray reversed=new com.google.gson.JsonArray();for(int i=doc.getAsJsonArray("sources").size()-1;i>=0;i--)reversed.add(doc.getAsJsonArray("sources").get(i));doc.add("sources",reversed);
 		JsonObject upgrade=doc.getAsJsonArray("upgrades").get(8).getAsJsonObject();
@@ -158,13 +161,13 @@ public class R15AdviceTest
 		Advisor changed=new Advisor(KnowledgeCatalog.read(new Gson(),new StringReader(doc.toString())));
 		JsonObject unreviewed=doc.deepCopy();unreviewed.getAsJsonArray("upgrades").get(8).getAsJsonObject().getAsJsonArray("contexts").add("more-prose-is-not-reviewed-coverage");
 		assertThrows(IllegalArgumentException.class,()->KnowledgeCatalog.read(new Gson(),new StringReader(unreviewed.toString())));
-		assertEquals(original,changed.upgrades(a,missing).stream().map(v->v.upgrade.id+v.pursuit.category+v.pursuit.reasonCodes).collect(java.util.stream.Collectors.toList()));
+		assertEquals(original,reviewedUpgrades(changed, a,missing).stream().map(v->v.upgrade.id+v.pursuit.category+v.pursuit.reasonCodes).collect(java.util.stream.Collectors.toList()));
 	}
 	@Test public void nearlyCompleteAndSkippedAccountsDoNotFillSlots()
 	{
 		AccountSnapshot a=items(developed(true),21018,21021,21024,12002,19544,28313,26374,31097);
-		List<Advisor.UpgradeView> views=advisor.upgrades(a,missing);assertTrue(views.isEmpty());
+		List<Advisor.UpgradeView> views=reviewedUpgrades(advisor, a,missing);assertTrue(views.isEmpty());
 		PursuitOverview overview=new PursuitOverview(views,List.of(),List.of(),List.of());assertTrue(overview.pursuits.isEmpty());assertTrue(overview.longTerm.isEmpty());
-		assertTrue(advisor.upgrades(developed(false),missing.skip("demonic-gorillas",true)).stream().noneMatch(v->v.upgrade.id.equals("tormented-bracelet")));
+		assertTrue(reviewedUpgrades(advisor, developed(false),missing.skip("demonic-gorillas",true)).stream().noneMatch(v->v.upgrade.id.equals("tormented-bracelet")));
 	}
 }

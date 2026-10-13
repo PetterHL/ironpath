@@ -24,7 +24,7 @@ public final class PoweredMagic
 	public static final class Setup extends CombatSetup
 	{
 		public Setup(Map<String, Integer> slots, Prayer prayer, Boost boost, Style style, boolean confirmed, boolean template)
-		{ this(slots, prayer, boost, style, confirmed, template, "dharok", Map.of()); }
+		{ this(slots, prayer, boost, style, confirmed, template, "neutral-zero-defence", Map.of()); }
 		public Setup(Map<String, Integer> slots, Prayer prayer, Boost boost, Style style, boolean confirmed, boolean template,
 			String target, Map<String, String> provenance)
 		{ super(slots, prayer, boost, style, confirmed, template, target, provenance); }
@@ -47,6 +47,7 @@ public final class PoweredMagic
 		Setup unconfirmed() { return new Setup(slots, prayer, boost, style, false, minimalTemplate, target, provenance); }
 	}
 	public Setup propose(AccountSnapshot account) { return service.propose(account); }
+	public Setup propose(AccountSnapshot account, String target) { return service.propose(account, target); }
 	public Map<String, String> choices(String slot, AccountSnapshot a) { return service.choices(slot, a); }
 	public Map<String, String> targetChoices() { return service.targetChoices(); }
 	public String validate(AccountSnapshot a, Preferences p, Setup s) { return service.validate(a, p, s); }
@@ -69,12 +70,12 @@ public final class PoweredMagic
 	}
 	public static final class Metrics
 	{
-		public final int maxHit, visibleMagic, effectiveMagic, attackBonus;
+		public final int maxHit, visibleMagic, effectiveMagic, attackBonus, attackTicks;
 		public final double damagePercent, hitChance, dps;
 		public final long attackRoll, defenceRoll;
-		Metrics(int maxHit, double chance, double dps, int visible, int effective, int attack, double damage, long roll, long defence)
+		Metrics(int maxHit, double chance, double dps, int visible, int effective, int attack, double damage, long roll, long defence, int ticks)
 		{ this.maxHit = maxHit; hitChance = chance; this.dps = dps; visibleMagic = visible; effectiveMagic = effective;
-			attackBonus = attack; damagePercent = damage; attackRoll = roll; defenceRoll = defence; }
+			attackBonus = attack; damagePercent = damage; attackRoll = roll; defenceRoll = defence; attackTicks = ticks; }
 	}
 	public static final class Result
 	{

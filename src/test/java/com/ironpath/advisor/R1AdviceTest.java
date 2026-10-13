@@ -22,6 +22,9 @@ public class R1AdviceTest
 {
 	private KnowledgeCatalog catalog;
 	private Advisor advisor;
+	// Preserve the originally selected high-defence context for these R1/R1.5 regressions.
+	private List<Advisor.UpgradeView> reviewedUpgrades(Advisor evaluator, AccountSnapshot a, Preferences p)
+	{ return evaluator.upgrades(a, p, new PoweredMagic(catalog).propose(a, "graardor")); }
 	@Before public void setup() throws Exception { catalog=KnowledgeCatalog.load(new Gson());advisor=new Advisor(catalog); }
 	public static AccountSnapshot postBowfa(boolean shadow)
 	{
@@ -30,7 +33,7 @@ public class R1AdviceTest
 	}
 	@Test public void noGoalPostBowfaHasNearerOptionsAndRealShadowAncestralPlanAheadValue()
 	{
-		List<Advisor.UpgradeView> views=advisor.upgrades(postBowfa(false),Preferences.EMPTY);
+		List<Advisor.UpgradeView> views=reviewedUpgrades(advisor, postBowfa(false),Preferences.EMPTY);
 		assertTrue(views.stream().anyMatch(v->v.upgrade.id.equals("tumekens-shadow")&&v.comparison.dpsGain()>0&&v.label.contains("Plan ahead")));
 		assertTrue(views.subList(0,3).stream().anyMatch(v->v.upgrade.id.equals("tumekens-shadow")));
 		assertTrue(views.stream().anyMatch(v->v.upgrade.id.equals("tormented-bracelet")&&v.comparison.dpsGain()>0));
@@ -39,19 +42,19 @@ public class R1AdviceTest
 	}
 	@Test public void gainingShadowChangesAdviceAndNeverSuggestsASwampGrind()
 	{
-		List<Advisor.UpgradeView> views=advisor.upgrades(postBowfa(true),Preferences.EMPTY);
+		List<Advisor.UpgradeView> views=reviewedUpgrades(advisor, postBowfa(true),Preferences.EMPTY);
 		assertFalse(views.stream().anyMatch(v->v.upgrade.id.equals("swamp-trident")||v.upgrade.id.equals("tumekens-shadow")));
 		assertTrue(views.stream().anyMatch(v->v.upgrade.id.startsWith("ancestral-")&&v.comparison.beforeSetup.slots.get("weapon")==27275&&v.comparison.dpsGain()>0));
 		assertEquals(Integer.valueOf(0),views.get(0).comparison.beforeSetup.slots.get("shield"));
 	}
 	@Test public void tinyOrZeroAccessoryGainCannotOutrankCapabilityByAddingEncounterText()
 	{
-		AccountSnapshot a=postBowfa(false);List<Advisor.UpgradeView> original=advisor.upgrades(a,Preferences.EMPTY);
+		AccountSnapshot a=postBowfa(false);List<Advisor.UpgradeView> original=reviewedUpgrades(advisor, a,Preferences.EMPTY);
 		Advisor.UpgradeView shadow=original.stream().filter(v->v.upgrade.id.equals("tumekens-shadow")).findFirst().orElseThrow();
 		Advisor.UpgradeView ring=original.stream().filter(v->v.upgrade.id.equals("magus-ring")).findFirst().orElseThrow();
 		assertTrue(original.indexOf(shadow)<original.indexOf(ring));
 		for(int i=0;i<30;i++){KnowledgeCatalog.Application app=new KnowledgeCatalog.Application();app.id="extra-"+i;app.text="Another authored description";app.label="Extra";app.when=ring.upgrade.when;ring.upgrade.applications=new java.util.ArrayList<>(ring.upgrade.applications);ring.upgrade.applications.add(app);}
-		assertEquals(original.get(0).upgrade.id,advisor.upgrades(a,Preferences.EMPTY).get(0).upgrade.id);
+		assertEquals(original.get(0).upgrade.id,reviewedUpgrades(advisor, a,Preferences.EMPTY).get(0).upgrade.id);
 	}
 	@Test public void quantityReadingsStayUnknownWhenUnreadAndNeverAddDuplicatedMovedStacks()
 	{
@@ -59,17 +62,17 @@ public class R1AdviceTest
 		assertFalse(base.observedQuantity(26231).known());
 		AccountSnapshot a=new AccountSnapshot(base.levels,base.inventory,base.equipment,base.bank,base.rigour,base.augury,base.facts,
 			Observation.unknown(),fact(Map.of(26231,120L)),fact(Map.of()),fact(Map.of(26231,120L)));
-		Advisor.UpgradeView zaryte=advisor.upgrades(a,Preferences.EMPTY).stream().filter(v->v.upgrade.id.equals("zaryte-crossbow")).findFirst().orElseThrow();
+		Advisor.UpgradeView zaryte=reviewedUpgrades(advisor, a,Preferences.EMPTY).stream().filter(v->v.upgrade.id.equals("zaryte-crossbow")).findFirst().orElseThrow();
 		assertEquals(120L,(long)a.observedQuantity(26231).value());
 		assertTrue(zaryte.parts.stream().anyMatch(r->r.label.contains("250")&&r.truth==Truth.UNKNOWN&&r.evidence.contains("120 / 250")));
 		AccountSnapshot enough=new AccountSnapshot(base.levels,base.inventory,base.equipment,base.bank,base.rigour,base.augury,base.facts,
 			Observation.unknown(),Observation.unknown(),Observation.unknown(),fact(Map.of(26231,250L)));
-		assertTrue(advisor.upgrades(enough,Preferences.EMPTY).stream().filter(v->v.upgrade.id.equals("zaryte-crossbow")).findFirst().orElseThrow().parts.stream().anyMatch(r->r.label.contains("250")&&r.truth==Truth.TRUE));
+		assertTrue(reviewedUpgrades(advisor, enough,Preferences.EMPTY).stream().filter(v->v.upgrade.id.equals("zaryte-crossbow")).findFirst().orElseThrow().parts.stream().anyMatch(r->r.label.contains("250")&&r.truth==Truth.TRUE));
 	}
 	@Test public void ownedIntermediateTakesAnyBranchWithoutRequiringTheUpstreamGrind()
 	{
 		AccountSnapshot a=account(Set.of(12899,28291),99,99);
-		Advisor.UpgradeView magus=advisor.upgrades(a,Preferences.EMPTY).stream().filter(v->v.upgrade.id.equals("magus-ring")).findFirst().orElseThrow();
+		Advisor.UpgradeView magus=reviewedUpgrades(advisor, a,Preferences.EMPTY).stream().filter(v->v.upgrade.id.equals("magus-ring")).findFirst().orElseThrow();
 		assertTrue(magus.routes.get(0).next.contains("Three chromium ingots"));
 		assertFalse(magus.routes.get(0).next.contains("vestige"));
 		assertTrue(magus.path.stream().anyMatch(r->r.evidence.contains("ANY")));
@@ -102,7 +105,7 @@ public class R1AdviceTest
 		StringBuilder report=new StringBuilder("# R1 synthetic account demonstrations\n\nOriginal anonymous fixtures, not player-usefulness evidence. No goal. Model powered-magic-2; knowledge r1-1.\n\nSources and exact revisions: [bundled register](../../src/main/resources/com/ironpath/catalog.json). All omitted slots are explicit reference exclusions; raw accounts and references are never saved.\n\n");
 		for(Map.Entry<String,AccountSnapshot> profile:profiles.entrySet())
 		{
-			List<Advisor.UpgradeView> views=advisor.upgrades(profile.getValue(),Preferences.EMPTY);
+			List<Advisor.UpgradeView> views=reviewedUpgrades(advisor, profile.getValue(),Preferences.EMPTY);
 			if(profile.getKey().contains("Shadow")&&!profile.getKey().contains("no Shadow"))assertFalse(views.stream().anyMatch(v->v.upgrade.id.equals("swamp-trident")));
 			if(profile.getKey().startsWith("Nearly complete"))assertTrue(views.isEmpty());
 			report.append("## ").append(profile.getKey()).append("\n\nReal levels: ").append(profile.getValue().levels.value()).append(". Observed synthetic bank IDs: ").append(new java.util.TreeSet<>(profile.getValue().bank.value())).append(". Inventory/equipment explicitly empty.\n\n");

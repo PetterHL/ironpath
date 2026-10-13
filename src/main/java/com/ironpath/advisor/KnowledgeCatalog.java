@@ -42,7 +42,7 @@ public final class KnowledgeCatalog
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 7 || document.decisions == null
+		if (document.schemaVersion != 8 || document.decisions == null
 			|| document.decisions.isEmpty())
 		{
 			throw new IllegalArgumentException("Unsupported or incomplete PvM catalogue");
@@ -289,12 +289,15 @@ public final class KnowledgeCatalog
 		{
 			stableId(target.id); require(target.name); evidence(target.sources);
 			if (!targetIds.add(target.id) || !Set.of("STANDARD", "TOA").contains(target.variant)
-				|| target.scalingSupported && target.npcId < 1 || target.magicLevel < 0 || target.magicLevel > 10000
+				|| target.scalingSupported && !target.analytical && target.npcId < 1 || target.magicLevel < 0 || target.magicLevel > 10000
+				|| target.analytical && (target.npcId != 0 || !target.variant.equals("STANDARD") || !target.scalingSupported
+					|| target.defenceLevel == null || target.defenceLevel != 0 || target.magicLevel != 0 || target.magicDefence != 0)
 				|| target.magicDefence < -64 || target.magicDefence > 10000
 				|| target.variant.equals("TOA") && target.scalingSupported)
 			{ throw new IllegalArgumentException("Unsupported target profile/scaling"); }
 		}
 
+		if (!targetIds.contains("neutral-zero-defence")) { throw new IllegalArgumentException("Missing default analytical reference"); }
 		evidence(comparison.sources);
 		Set<Integer> statIds = new HashSet<>();
 		for (CombatItem item : comparison.items)

@@ -143,9 +143,16 @@ public class CatalogValidationTest
 		rejects(d -> d.getAsJsonArray("upgrades").get(0).getAsJsonObject().getAsJsonArray("applications").add(d.getAsJsonArray("upgrades").get(0).getAsJsonObject().getAsJsonArray("applications").get(0).deepCopy()));
 		rejects(d -> d.getAsJsonArray("upgrades").get(3).getAsJsonObject().getAsJsonArray("shared").get(0).getAsJsonObject().addProperty("minDelve",1));
 		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().addProperty("magicDefence",-65));
-		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(2).getAsJsonObject().addProperty("scalingSupported",true));
+		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(3).getAsJsonObject().addProperty("scalingSupported",true));
 		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("items").get(0).getAsJsonObject().addProperty("slot","head"));
 		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("items").get(0).getAsJsonObject().remove("sources"));
+	}
+	@Test public void analyticalTargetCannotClaimAnNpcOrSilentlyChangeItsDefenceAssumptions()
+	{
+		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().addProperty("npcId",2215));
+		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().remove("defenceLevel"));
+		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().addProperty("magicLevel",80));
+		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().addProperty("magicDefence",298));
 	}
 
 }

@@ -126,7 +126,7 @@ suite passes 155 tests; exact-item evidence and regression details are in the
 validation report. Corrected detail/comparison client retest and the broader
 scaling/usefulness acceptance checks remain pending.
 
-### Reference baseline and metric presentation — next comparison increment (not implemented)
+### Reference baseline and metric presentation — implemented for review; client checks pending
 
 **User direction, 13 October 2026:** replace the automatically selected Graardor/Dharok reference with a neutral enemy with 0 Defence, based on the POH combat-dummy comparison idea. The product label is **Enemy with 0 Defence**; do not require or advertise a POH/dummy location. This is an analytical reference, not a measurement of player performance. Deliver this focused follow-up after R1.5a, alongside R1.5b if useful, and before R2's user-facing release. R2 research/models and the optional observation adapter do not depend on it.
 
@@ -136,7 +136,7 @@ scaling/usefulness acceptance checks remain pending.
 - **Armour, jewellery and other equipment that leaves attack interval unchanged:** max hit may remain the primary compact metric, with accuracy and DPS available in Value. For any equipment/set effect that changes attack interval, use the DPS-first rule. Preserve zero-breakpoint and accuracy-only value, qualitative utility and uncertainty. This display preference does not override effort/category ranking or permit cross-context DPS sorting.
 - Validate ordinary 0-Defence target rolls and expected damage against hand checks and a pinned reference, including successful zero hits, different attack speeds, equal-max-hit weapons with different DPS, complete staff/off-hand packages, unchanged-speed accessories and unsupported history mechanics. Preserve R1 boss/oracle cases as explicit-context regressions. Capture overview/Browse/Value at native width and retest the default label/metric in the client; do not rewrite historical screenshots as new behaviour.
 
-**Acceptance:** no goal/setup wizard is needed to obtain the neutral reference; the default card no longer says Graardor reference. A slower weapon's larger max hit cannot imply higher DPS. Weapon details lead with the supported DPS result or an honest gap, while ordinary armour/jewellery retain max-hit summaries. Exact target assumptions remain inspectable and specialist usefulness stays contextual. Runtime implementation and actual-client acceptance are pending; this entry records the requested future behaviour only.
+**Acceptance:** no goal/setup wizard is needed to obtain the neutral reference; the default card no longer says Graardor reference. A slower weapon's larger max hit cannot imply higher DPS. Weapon details lead with the supported DPS result or an honest gap, while ordinary armour/jewellery retain max-hit summaries. Exact target assumptions remain inspectable and specialist usefulness stays contextual. Runtime implementation is delivered on `reference-neutral-dps`, based on PR #12 at `dbbd515`. Plugin 0.6.1, knowledge reference-1, catalogue schema 8; combat powered-magic-2, pursuit-1 and preference schema 2 remain. The neutral target is an authored assumption with Defence/Magic/magic-defence bonus all zero and ordinary magic defence roll 576; it is not an NPC stat claim. The analytical target does not count as another useful encounter in ranking breadth. New metric rows allow taller Browse value lines without reducing fonts. [Validation, independent reference checks, synthetic profiles and fresh component captures](docs/validation/neutral-reference.md). Actual-client acceptance remains pending.
 
 ### R1.5b — Effort expansion and local pacing (alongside R2; not implemented)
 
@@ -224,7 +224,7 @@ Also exercise: equal supported gains with disjoint versus overlapping effort ran
 
 ## Next implementation
 
-**Complete R1.5a review/client checks on the existing branch, then implement the reference baseline and metric presentation follow-up above as the next focused comparison increment.** R1.5a implementation is recorded above; the neutral default and DPS-first weapon presentation are not implemented yet. Read DESIGN's quantitative contract and UX's metric rules. R2 can research/model ranged mechanics concurrently; adopt these contracts for its visible delivery. R1.5b local pacing, complex R5 distributions, full R6 filters and R8 broad usability evidence remain deferred. No new planning reset, catalogue ceiling or required-goal workflow.
+**Review/integrate R1.5a and the delivered neutral-reference/DPS-first follow-up, then continue R2's ranged packages and major alternatives.** Actual-client retests remain pending in their validation reports and run alongside implementation. Read DESIGN's quantitative contract and UX's metric rules; R2's visible delivery must use these contracts. R1.5b local pacing, complex R5 distributions, full R6 filters and R8 broad usability evidence remain deferred. No new planning reset, catalogue ceiling or required-goal workflow.
 
 The original documentation refinement had no new application-test or actual-client result. R1.5a implementation/build/component evidence is recorded above; actual-client validation remains pending.
 
