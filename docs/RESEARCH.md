@@ -1,5 +1,11 @@
 # IronPath research and evidence
 
+## R1.5a client finding: Ancient blessing — 13 October 2026
+
+The supplied client screenshots exposed unsupported equipped ammo ID 20235. Reviewed [Ancient blessing revision 15252873](https://oldschool.runescape.wiki/w/Ancient_blessing?oldid=15252873): item ID 20235, ammunition slot, all attack/defence bonuses zero, magic damage 0%, Prayer +1 and Zarosian God Wars protection. These item facts support retaining this exact item in the powered-magic reference. Prayer duration and faction protection are outside the fixed-prayer uninterrupted DPS model. Other blessings and unsupported ammunition are not inferred from this review.
+
+Accessed/reviewed 13 October 2026; pinned response SHA-256 `7df999408e572fc5b3061fdc4ad040d1729de3d092fe8e909b05da0318bdd05d`. Original stat entries and explanations only; no Wiki prose, code, dataset or assets redistributed. Catalogue source `r15-ancient-blessing` links both the gear and combat-stat records for 20235. Knowledge is now `r1.5a-2`; schema 7 and combat model `powered-magic-2` are unchanged.
+
 ## Acquisition effort and native UI investigation — 13 October 2026
 
 **Status:** research and proposed implementation contract. No acquisition estimate, personal performance tracker or redesigned UI was implemented here. R1 evidence below remains unchanged. The source review establishes mechanics and technical feasibility, not reliable account-specific kill rates or Hub approval.

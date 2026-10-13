@@ -119,6 +119,13 @@ real RuneLite image loading, DPI/scaling or player usefulness. **The actual-clie
 focused PC checklist in that report. All earlier pending real-client checks and
 historical TASKS/RESEARCH records are preserved.
 
+**First PC screenshots:** native sprites and full names in the two-column Check
+Browse view are observed. Shadow detail clipping and Ancient blessing (20235)
+blocking magic comparison were found and corrected on this branch. The follow-up
+suite passes 155 tests; exact-item evidence and regression details are in the
+validation report. Corrected detail/comparison client retest and the broader
+scaling/usefulness acceptance checks remain pending.
+
 ### R1.5b — Effort expansion and local pacing (alongside R2; not implemented)
 
 Extend the same estimator to reviewed multiple independent rolls using Zulrah/magic fang E2; distinguish at-least-one probability from expected item count and show shared reward relevance without additive gains. Add one narrowly tested passive activity adapter: start with CoX completion/points/timing evidence if it can be reliably observed through current public APIs. This adapter may show session pace without any CoX drop/hour estimate; raid probability modelling is a separate dependency in R5. If full-cycle detection cannot be validated, show in-raid duration only and retain manual cycle pacing.

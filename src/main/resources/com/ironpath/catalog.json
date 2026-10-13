@@ -1,6 +1,6 @@
 {
   "schemaVersion": 7,
-  "knowledgeVersion": "r1.5a-1",
+  "knowledgeVersion": "r1.5a-2",
   "reviewed": "2026-10-13",
   "sources": [
     {
@@ -4107,6 +4107,24 @@
       "models": [
         "powered-magic-2"
       ],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r15-ancient-blessing",
+      "type": "wiki equipment stats",
+      "url": "https://oldschool.runescape.wiki/w/Ancient_blessing?oldid=15252873",
+      "revision": "15252873",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "licence": "CC BY-NC-SA 3.0; linked evidence only",
+      "reuseBasis": "Independently recorded item ID, ammunition slot and zero magic stats. No Wiki text, code, dataset or assets copied.",
+      "decisions": [],
+      "items": [
+        20235
+      ],
+      "models": [],
       "routes": [],
       "contexts": []
     }
@@ -8537,6 +8555,18 @@
           "item-ids"
         ]
       }
+    ],
+    "blessings": [
+      {
+        "id": 20235,
+        "label": "Ancient blessing",
+        "skill": "PRAYER",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r15-ancient-blessing"
+        ]
+      }
     ]
   },
   "itemSets": {
@@ -12799,6 +12829,20 @@
         "sources": [
           "item-ids",
           "r1-barrows-gloves"
+        ],
+        "requirements": {},
+        "twoHanded": false,
+        "historyEffect": false
+      },
+      {
+        "id": 20235,
+        "label": "Ancient blessing",
+        "slot": "ammo",
+        "magicAttack": 0,
+        "damagePercent": 0,
+        "damagePermille": 0,
+        "sources": [
+          "r15-ancient-blessing"
         ],
         "requirements": {},
         "twoHanded": false,

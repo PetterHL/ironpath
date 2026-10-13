@@ -120,6 +120,34 @@ public class R15PanelTest
 		});
 	}
 	private void layout(Container parent) { parent.doLayout();for(Component child:parent.getComponents())if(child instanceof Container)layout((Container)child); }
+	@Test public void detailTextFitsItsActualWrappedDocumentAtWiderPanelWidths() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			open("tumekens-shadow").doClick();
+			for(int width:new int[]{225,245,300})
+			for(float font:new float[]{12,14,16,20})
+			{
+				for(Component child:children(panel))if(child instanceof JTextArea)child.setFont(child.getFont().deriveFont(font));
+				for(Component child:children(panel))if(child instanceof Container)((Container)child).invalidate();panel.invalidate();
+				panel.setSize(width,20000);for(int i=0;i<4;i++)layout(panel);
+				panel.setSize(width,panel.getPreferredSize().height);for(int i=0;i<4;i++)layout(panel);
+				for(Component child:children(panel))
+				{
+					if(!(child instanceof JTextArea)||!child.isShowing()&&!child.isVisible())continue;
+					JTextArea area=(JTextArea)child;
+					if(area.getHeight()==0)continue;
+					try
+					{
+						area.getUI().getRootView(area).setSize(area.getWidth()-area.getInsets().left-area.getInsets().right,area.getHeight()-area.getInsets().top-area.getInsets().bottom);
+						java.awt.geom.Rectangle2D end=area.modelToView2D(area.getDocument().getLength());
+						assertNotNull(end);
+						assertTrue(width+" font "+font+" size "+area.getSize()+" preferred "+area.getPreferredSize()+" end "+end+": "+area.getText(),end.getMaxY()+area.getInsets().bottom<=area.getHeight());
+					}
+					catch(javax.swing.text.BadLocationException failure){throw new AssertionError(failure);}
+				}
+			}
+		});
+	}
 	private void layoutPanel()
 	{
 		panel.setSize(225,20000);for(int i=0;i<3;i++)layout(panel);panel.setSize(225,panel.getPreferredSize().height);for(int i=0;i<3;i++)layout(panel);

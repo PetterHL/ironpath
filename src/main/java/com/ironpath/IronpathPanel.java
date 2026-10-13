@@ -619,23 +619,15 @@ final class IronpathPanel extends PluginPanel
 			@Override public Dimension getPreferredSize()
 			{
 				int width = getParent() == null || getParent().getWidth() <= 0 ? 201 : Math.max(1, getParent().getWidth() - getParent().getInsets().left - getParent().getInsets().right);
-				java.awt.FontMetrics metrics=getFontMetrics(getFont()); int lines=0;
-				for (String paragraph : getText().split("\\n",-1))
-				{
-					int used=0; lines++;
-					for (String word : paragraph.split("\\s+"))
-					{
-							int size=metrics.stringWidth(word), budget=Math.max(1,width-10);
-							if (used > 0 && used+metrics.stringWidth(" ")+size > budget) { lines++; used=0; }
-							if (size > budget)
-							{
-								for (char character : word.toCharArray())
-								{ int pixels=metrics.charWidth(character); if (used > 0 && used+pixels > budget) { lines++; used=0; } used += pixels; }
-							}
-							else { used += (used == 0 ? 0 : metrics.stringWidth(" "))+size; }
-						}
-				}
-				return new Dimension(width,lines*metrics.getHeight()+10);
+				// BoxLayout caps the allocated width even when the native viewport is wider.
+				// Measure wrapping at that same width so detail paragraphs cannot lose lines.
+				width = Math.min(width, getMaximumSize().width);
+				java.awt.Insets insets = getInsets();
+				javax.swing.text.View view = getUI().getRootView(this);
+				// Swing reserves one pixel for the document caret when wrapping.
+				view.setSize(Math.max(1, width - insets.left - insets.right - 1), Integer.MAX_VALUE);
+				return new Dimension(width, (int) Math.ceil(view.getPreferredSpan(javax.swing.text.View.Y_AXIS))
+					+ insets.top + insets.bottom);
 			}
 		}; text.setLineWrap(true); text.setWrapStyleWord(true);
 		text.setMinimumSize(new Dimension(0,0));

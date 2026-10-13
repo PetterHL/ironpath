@@ -176,6 +176,8 @@ public final class CombatComparisonService
 		List<String> assumptions = new ArrayList<>();
 		assumptions.add(setup.confirmed ? "Confirmed reference estimate; candidate remains proposed." : "Proposed complete reference; correct any consequential assumption.");
 		assumptions.add("Baseline slots: " + description(setup)); assumptions.add("Candidate slots: " + description(afterSetup));
+		if (setup.slots.get("ammo") == 20235)
+		{ assumptions.add("Ancient blessing remains equipped: zero magic attack/damage. Its +1 Prayer and God Wars protection do not change this fixed-prayer uninterrupted DPS scenario; prayer duration and trip utility are not modelled."); }
 		assumptions.add("Real Magic " + a.level("MAGIC") + " (" + a.levels.evidence() + "); visible " + before.visibleMagic
 			+ "; " + setup.prayer + "; " + setup.boost + "; " + setup.style + ". Prayer/boost are selected assumptions, not observed active.");
 		assumptions.add(target.name + " · NPC " + target.npcId + "; Magic " + target.magicLevel + "; defence bonus " + target.magicDefence
