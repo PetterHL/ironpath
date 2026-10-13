@@ -118,4 +118,3 @@ Real levels: {CRAFTING=90, STRENGTH=90, SLAYER=99, RUNECRAFT=90, DEFENCE=90, RAN
 Real levels: {CRAFTING=90, STRENGTH=90, SLAYER=99, RUNECRAFT=90, DEFENCE=90, RANGED=90, HITPOINTS=90, AGILITY=90, HERBLORE=90, ATTACK=90, PRAYER=90, MAGIC=99}. Observed synthetic bank IDs: [4708, 4712, 4714, 6585, 6731, 7462, 12002, 12899, 13235, 20997, 21018, 21021, 21024, 21795, 22325, 23971, 23975, 23979, 25867, 25985, 26374, 27275, 28313, 31097, 31106]. Inventory/equipment explicitly empty.
 
 No remaining supported R1 magic outcome; no padding. Other combat-family coverage remains open.
-
