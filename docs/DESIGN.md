@@ -161,6 +161,10 @@ A comparison's input contract includes exact baseline/candidate slot items, char
 
 Propose a complete compatible reference setup from equipped/observed owned items plus conservative reviewed templates. Keep current-versus-proposed labels accurate. Unknown gear cannot silently become empty or zero. Offer a focused correction, not eleven compulsory dropdowns. Start with direct slot substitution and a few reviewed packages, not a universal optimiser. Display the strongest supported owned competing setup for the selected context; preserve candidate uncertainty. Confirmation improves input agreement, not mathematical validity.
 
+**Default reference and primary metric — user direction, 13 October 2026 (implementation pending):** use an analytical **Enemy with 0 Defence** as the automatic comparison baseline, replacing automatic Graardor/Dharok selection. The POH combat dummy motivates the neutral comparison; its location and any forced-max-hit behaviour are not part of the product claim. Review exact magic-defence inputs, bonuses and family-specific target properties: zero Defence alone neither defines the magic defence roll nor guarantees a hit. Use ordinary expected damage/hit distributions and attack intervals. Keep existing reviewed bosses as explicit contextual alternatives and regression cases; specialist usefulness cannot be inferred from the neutral number.
+
+Lead weapon comparisons with theoretical DPS, including speed and full compatible package changes, and retain max hit as secondary. Armour/jewellery with unchanged attack interval may lead with max hit while retaining accuracy/DPS in detail; any interval-changing effect uses the weapon rule. Unsupported DPS is a visible per-metric gap, never max hit presented as DPS or a zero gain. This is a presentation/default-context choice, not a universal ranking score. Delivery and acceptance are in TASKS's reference/metric follow-up before the visible R2 release.
+
 | Layer | What is implemented incrementally | Required boundaries |
 |---|---|---|
 | Q0 (existing) | Ordinary seas/swamp max hit, accuracy and DPS against Dharok | P4a's very small slot vocabulary; not full magic coverage |
