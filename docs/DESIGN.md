@@ -22,7 +22,7 @@ Success requires several relevant choices, understandable personal value, suppor
 | BiS versus worthwhile acquisition | BiS is contextual. Small accessory breakpoints may be poor grinds; scarce resources, alternatives and upkeep matter. Long-term megarares remain visible. |
 | Sustained damage versus encounter success | Calculate supported attacks locally. Do not translate DPS into kills/trip. Analytical time/resource estimates need their own validated assumptions and policy assessment. |
 | Maintenance versus release freshness | Version bundled facts/models; dependency-based change review and source discovery. Known-invalid claims are disabled, unaffected coverage remains. Offline users cannot receive instant corrections. |
-| Attractive UI versus sidebar space | Native Swing, concise pursuit/activity rows plus a responsive two-column item grid, progressive disclosure and client item sprites. A larger optional surface must pass current policy review; it is not a core dependency. |
+| Attractive UI versus sidebar space | Native Swing, compact visual upgrade cards with client item sprites and progressive disclosure. One column at ordinary width; two only with measured readable content under UX. No larger-window dependency. |
 
 No rewrite, hosted service, database, user-facing AI, subscriptions, gameplay automation or mandatory other plugin. Remain one Java/Gradle project. Standard Ironman main-game planning is the baseline. UIM storage optimisation, GIM shared-bank inference, HCIM safety certification and seasonal mechanics require separate explicit support; they must not leak into ordinary recommendations.
 
@@ -166,7 +166,7 @@ Implement the tier judgement as a small versioned policy over the evidence field
 
 Only mark a choice dominated if its alternative is no worse on **all material, known dimensions** for that role/context and remaining route, and better on one. Unknown or incomparable convenience, upkeep, team roles, supply or effort means a trade-off, not dominance. Existing gain-only dominance must not decide multi-role value. Broad importance does not justify invented numeric sums across activities.
 
-Retain the compact overview's limited display slots: useful active choices, a justified activity and important longer-term/contextual choices. Do not require exactly two active pursuits or two missing reward families. An all-megarare account can legitimately see a lower-attention or sustain choice, a small context-specific improvement, or no material upgrades. No mandatory preference wizard; offer one consequential correction when needed.
+Present a compact card-first homepage under [UX's R3a selection/layout policy](UX.md): a measured preview budget over the full result, with important long-term/specialist discovery before repeated roles/families. Preserve the domain order and expose why a preview representative was selected; width/repaint never changes rank. Deduplicate correlated reward families, not every distinct benefit sharing an acquisition activity. A justified activity is secondary to visible upgrade cards. Do not require exactly two pursuits, fill a quota or cap the catalogue. An all-megarare account can legitimately see a lower-attention or sustain choice, a small contextual improvement, or no material upgrades. No mandatory preference wizard; offer one consequential correction when needed.
 
 ### Preparation-detour safeguard
 

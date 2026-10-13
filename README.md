@@ -33,6 +33,8 @@ The documentation-only [research review](docs/PROGRESSION_RESEARCH.md) checks 30
 
 This design is **not implemented in the R2 build**. [TASKS R3–R6](TASKS.md) now starts with a useful relationship-aware vertical increment, then melee/specialist models, complete paths and comprehensive discovery. Existing numerical/lifecycle behaviour and pending client evidence remain. Highly developed accounts and comprehensive endgame coverage stay first-class; the 30 research examples are not a catalogue cap.
 
+**R3a native UI direction:** [UX](docs/UX.md) selects compact visual item cards with real RuneLite sprites, short account-specific value, supported contextual numbers and direct Value/Path actions. The normal narrow panel uses one column; two require enough measured width and readable content. Several relevant choices and visible Long-term/Specialist discovery lead the homepage; account controls and optional goals stay secondary. This is a documentation decision, not an implemented UI or completed client check. [Review evidence and handoff](docs/validation/R3a-ui-direction.md).
+
 ## Product direction
 
 IronPath is intended to become a comprehensive endgame PvM upgrade advisor, including BiS, meaningful specialist sidegrades, permanent rewards and the progression bridges needed to reach them. **R1 is an implementation increment, not the product boundary.** There is no catalogue ceiling or requirement to select a goal.
