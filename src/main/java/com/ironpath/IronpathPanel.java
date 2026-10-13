@@ -40,6 +40,7 @@ final class IronpathPanel extends PluginPanel
 	private java.awt.Point overviewPosition;
 	private long view;
 	private Runnable refresh;
+	private PursuitOverview renderedOverview;
 	IronpathPanel() { this(null); }
 	IronpathPanel(ItemManager itemManager) { this.itemManager = itemManager; }
 
@@ -73,6 +74,9 @@ final class IronpathPanel extends PluginPanel
 	{
 		List<Advisor.UpgradeView> upgrades = overview.all;
 		if (!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
+		javax.swing.JViewport liveViewport=(javax.swing.JViewport)SwingUtilities.getAncestorOfClass(javax.swing.JViewport.class,this);
+		Anchor updateAnchor=snapshot!=null && renderedOverview!=null && overview!=renderedOverview && detail==null ? captureAnchor(liveViewport) : null;
+		renderedOverview=snapshot==null ? null : overview;
 		long currentView = ++view;
 		refresh = () -> render(status, snapshot, advice, catalog, goal, preferences, actions, storageStatus, reasons, overview, reference);
 		if (snapshot == null) { pathDetail = false; overviewPosition = null; browse = false; category = "All"; returnFocus = null; }
@@ -100,23 +104,18 @@ final class IronpathPanel extends PluginPanel
 				if (browse) { browse(overview, reference, currentView, actions); }
 				else
 				{
-					button(this, "Browse", () -> showBrowse(currentView, actions));
-					text(this, "Worth pursuing");
-					if (overview.pursuits.isEmpty()) { text(this, "No confirmed immediate pursuit. Check inputs or explore longer-term value below."); }
-					for (Advisor.UpgradeView upgrade : overview.pursuits) { upgradeCard(this, upgrade, reference, currentView, actions, false); }
-					overview.activities.stream().filter(a -> a.category.equals("Worth doing")).findFirst().ifPresent(a -> {
-						text(this, "Worth doing"); activityCard(a, currentView, actions);
-					});
-					if (!overview.longTerm.isEmpty())
-					{
-						text(this, "Long-term upgrades"); upgradeCard(this, overview.longTerm.get(0), reference, currentView, actions, false);
-					}
-					if (!overview.conditional.isEmpty())
-					{
-						text(this, "Check first / Plan ahead"); upgradeCard(this, overview.conditional.get(0), reference, currentView, actions, false);
-					}
+					JPanel discovery=new ActionLinks(); discovery.setFont(getFont());
+					button(discovery,"Browse",()->showBrowse(currentView,actions));
+					button(discovery,"Long-term",()->showCategory("Long-term",currentView,actions));
+					button(discovery,"Specialist",()->showCategory("Specialist",currentView,actions)); add(discovery);
+					HomepageDeck deck=new HomepageDeck(); deck.setName("homepage-deck");
+					for (Advisor.UpgradeView upgrade : overview.preview)
+					{ upgradeCard(deck,upgrade,reference,currentView,actions,false); }
+					add(deck);
+
 					if (upgrades.isEmpty()) { text(this, "No remaining supported upgrade from these observations. Open the bank or inspect coverage; unknown is not absence. No priorities are added to fill the list."); }
 					button(this, "Browse all (" + upgrades.size() + ")", () -> showBrowse(currentView, actions));
+					overview.activities.stream().filter(a -> a.category.equals("Worth doing")).findFirst().ifPresent(a -> activityCard(a,currentView,actions));
 					if (!overview.quickActions.isEmpty())
 					{
 						JPanel quickPanel = section(this, "Quick actions");
@@ -128,6 +127,7 @@ final class IronpathPanel extends PluginPanel
 				for (Recommendation recommendation : overview.broadAdvice) { card(broad, recommendation, catalog, actions); }
 				for (String reason : reasons) { text(broad, reason); }
 				JPanel account = section(this, "Account and preferences");
+				text(account,"Reference setups stay in memory; explicit planning choices are saved locally. Live acceptance checks remain pending.");
 				text(account, status); text(account, "Knowledge " + catalog.version + " · reviewed " + catalog.reviewed);
 				if (ChronoUnit.DAYS.between(catalog.reviewed, LocalDate.now()) > 90) { text(account, "Review is over 90 days old. Check sources before pursuing."); }
 				observations(account, snapshot, catalog); text(account, storageStatus);
@@ -135,19 +135,61 @@ final class IronpathPanel extends PluginPanel
 				if (goal != null) { goal(account, goal, catalog, actions); }
 			}
 		}
-		text(this, "Local planning · live checks pending. Reference setups stay in memory; planning choices are saved locally.");
+		if (snapshot==null) { text(this,"Open the bank after login to improve account evidence."); }
 		revalidate(); repaint();
+		if (updateAnchor!=null && liveViewport!=null)
+		{ SwingUtilities.invokeLater(()->{ if(valid(currentView,actions)) { restoreAnchor(liveViewport,updateAnchor); } }); }
 	}
 
 	private void navigate(String id, long expectedView, Actions actions)
+	{ navigate(id,false,expectedView,actions); }
+	private void navigate(String id, boolean path, long expectedView, Actions actions)
 	{
 		if (view != expectedView || (actions != null && !actions.current())) { return; }
 		javax.swing.JViewport viewport = (javax.swing.JViewport) SwingUtilities.getAncestorOfClass(javax.swing.JViewport.class, this);
 		if (detail == null && id != null && viewport != null) { overviewPosition = viewport.getViewPosition(); }
-		if (id != null) { returnFocus = id.startsWith("activity:") ? "open-" + id : "open-upgrade-" + id; }
-		detail = id; pathDetail = false; refresh.run(); long returnedView = view;
+		if (id != null) { returnFocus = id.startsWith("activity:") ? "open-" + id : (path ? "path-upgrade-" : "open-upgrade-") + id; }
+		detail = id; pathDetail = path; refresh.run(); long returnedView = view;
 		if (viewport != null) { java.awt.Point position = id == null && overviewPosition != null ? overviewPosition : new java.awt.Point();
 			SwingUtilities.invokeLater(() -> { if (view == returnedView && (actions == null || actions.current())) { viewport.setViewPosition(position); if (id == null) { restoreFocus(this); } } }); }
+	}
+
+	private static final class Anchor
+	{
+		final String id, focus; final int offset, position;
+		Anchor(String id,int offset,int position,String focus) { this.id=id; this.offset=offset; this.position=position; this.focus=focus; }
+	}
+	private Anchor captureAnchor(javax.swing.JViewport viewport)
+	{
+		if (viewport==null) { return null; }
+		int position=viewport.getViewPosition().y; java.awt.Component selected=null;
+		for (java.awt.Component card : namedCards(this))
+		{
+			if (!card.isVisible()) { continue; }
+			int y=SwingUtilities.convertPoint(card,0,0,this).y;
+			if (selected==null || y<=position) { selected=card; } else { break; }
+		}
+		java.awt.Component focused=java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+		String focus=focused!=null && SwingUtilities.isDescendingFrom(focused,this) ? focused.getName() : null;
+		return new Anchor(selected==null ? null : selected.getName(),selected==null ? 0 : position-SwingUtilities.convertPoint(selected,0,0,this).y,position,focus);
+	}
+	private java.util.List<java.awt.Component> namedCards(java.awt.Container parent)
+	{
+		java.util.List<java.awt.Component> cards=new java.util.ArrayList<>();
+		for (java.awt.Component child : parent.getComponents())
+		{
+			if (child.getName()!=null && child.getName().startsWith("upgrade-card-")) { cards.add(child); }
+			else if (child instanceof java.awt.Container) { cards.addAll(namedCards((java.awt.Container)child)); }
+		}
+		return cards;
+	}
+	private void restoreAnchor(javax.swing.JViewport viewport,Anchor anchor)
+	{
+		viewport.doLayout(); doLayout();
+		java.awt.Component card=namedCards(this).stream().filter(c->c.isVisible() && c.getName().equals(anchor.id)).findFirst().orElse(null);
+		int y=card==null ? anchor.position : SwingUtilities.convertPoint(card,0,0,this).y+anchor.offset;
+		viewport.setViewPosition(new java.awt.Point(0,Math.max(0,Math.min(y,getHeight()-viewport.getExtentSize().height))));
+		if (anchor.focus!=null) { returnFocus=anchor.focus; restoreFocus(this); }
 	}
 
 	private void observations(JPanel parent, AccountSnapshot snapshot, KnowledgeCatalog catalog)
@@ -167,6 +209,11 @@ final class IronpathPanel extends PluginPanel
 		if (!valid(expectedView, actions)) { return; }
 		browse = true; refresh.run();
 	}
+	private void showCategory(String selection,long expectedView,Actions actions)
+	{
+		if (!valid(expectedView,actions)) { return; }
+		category=selection; browse=true; refresh.run();
+	}
 	private boolean valid(long expectedView, Actions actions) { return view == expectedView && (actions == null || actions.current()); }
 	private void restoreFocus(java.awt.Container parent)
 	{
@@ -179,13 +226,14 @@ final class IronpathPanel extends PluginPanel
 	private void browse(PursuitOverview overview, com.ironpath.advisor.CombatSetup reference, long expectedView, Actions actions)
 	{
 		button(this, "Overview", () -> { if (valid(expectedView, actions)) { browse = false; refresh.run(); } });
-		JComboBox<String> filter = new JComboBox<>(new String[]{"All", "Pursue", "Long-term", "Check"});
+		JComboBox<String> filter = new JComboBox<>(new String[]{"All", "Pursue", "Long-term", "Specialist", "Check"});
 		filter.setName("browse-category"); filter.setSelectedItem(category); filter.setMaximumSize(new Dimension(213,28)); filter.setAlignmentX(LEFT_ALIGNMENT);
 		filter.getAccessibleContext().setAccessibleName("Browse recommendation category");
 		filter.addActionListener(event -> { if (valid(expectedView, actions)) { category = (String) filter.getSelectedItem(); refresh.run(); } }); add(filter);
 		List<Advisor.UpgradeView> visible = overview.all.stream().filter(u -> category.equals("All")
 			|| category.equals("Pursue") && u.pursuit.category == PursuitAssessment.Category.PURSUE
-			|| category.equals("Long-term") && u.pursuit.category == PursuitAssessment.Category.LONG_TERM
+			|| category.equals("Long-term") && (u.pursuit.category == PursuitAssessment.Category.LONG_TERM || u.pursuit.tail == PursuitAssessment.Tail.LONG)
+			|| category.equals("Specialist") && u.valueEvidence.specialist
 			|| category.equals("Check") && (u.pursuit.category == PursuitAssessment.Category.CHECK || u.pursuit.category == PursuitAssessment.Category.PLAN)).collect(java.util.stream.Collectors.toList());
 		text(this, visible.size() + " upgrades · " + category);
 		BrowseGrid grid = new BrowseGrid(); grid.setName("browse-grid");
@@ -204,59 +252,56 @@ final class IronpathPanel extends PluginPanel
 	private void upgradeCard(JPanel parent, Advisor.UpgradeView upgrade, com.ironpath.advisor.CombatSetup setup,
 		long expectedView, Actions actions, boolean tile)
 	{
-		JPanel card = new JPanel(); card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS)); card.setAlignmentX(LEFT_ALIGNMENT);
-		card.setBackground(ColorScheme.DARKER_GRAY_COLOR); card.setMaximumSize(new Dimension(213,Integer.MAX_VALUE));
-		card.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1,1,1,ColorScheme.MEDIUM_GRAY_COLOR),BorderFactory.createEmptyBorder(6,6,6,6)));
-		JPanel header=new JPanel(new java.awt.BorderLayout()); header.setOpaque(false); header.setMaximumSize(new Dimension(213,40)); header.setAlignmentX(LEFT_ALIGNMENT);
-		JLabel icon = new JLabel("◇"); icon.setPreferredSize(new Dimension(40,40)); icon.setForeground(ColorScheme.TEXT_COLOR);
-		icon.setToolTipText(upgrade.upgrade.title); icon.getAccessibleContext().setAccessibleName(upgrade.upgrade.title + " sprite");
-		if (itemManager != null) { itemManager.getImage(upgrade.upgrade.itemId).addTo(icon); }
-		header.add(icon, java.awt.BorderLayout.WEST);
-		JButton open = new JButton("›"); open.setMargin(new java.awt.Insets(0,4,0,4)); open.setPreferredSize(new Dimension(24,28));
-		open.setMaximumSize(new Dimension(24,28)); open.setToolTipText(upgrade.upgrade.title); open.setName("open-upgrade-" + upgrade.upgrade.id);
-		open.getAccessibleContext().setAccessibleName("Open " + upgrade.upgrade.title + ", " + upgrade.pursuit.category.label);
-		open.addActionListener(event -> navigate(upgrade.upgrade.id, expectedView, actions));
-		open.getInputMap().put(javax.swing.KeyStroke.getKeyStroke("ENTER"), "open-card");
-		open.getActionMap().put("open-card", new javax.swing.AbstractAction() { public void actionPerformed(java.awt.event.ActionEvent event) { open.doClick(); } });
-		header.add(open,java.awt.BorderLayout.EAST);
-		JPanel content=card;
-		if (tile) { card.add(header); }
-		else
+		com.ironpath.advisor.UpgradeCard copy=upgrade.card;
+		JPanel card=new JPanel(); card.setFont(getFont()); card.setName("upgrade-card-"+upgrade.upgrade.id);
+		card.setLayout(new BoxLayout(card,BoxLayout.Y_AXIS)); card.setAlignmentX(LEFT_ALIGNMENT);
+		card.setBackground(ColorScheme.DARKER_GRAY_COLOR); card.setMaximumSize(new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE));
+		card.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorScheme.MEDIUM_GRAY_COLOR),BorderFactory.createEmptyBorder(6,6,6,6)));
+		JPanel header=new JPanel(new CardHeaderLayout()); header.setFont(getFont()); header.setOpaque(false); header.setAlignmentX(LEFT_ALIGNMENT);
+		JLabel icon=new JLabel("◇")
 		{
-			card.setLayout(new CompactRowLayout()); card.add(icon,java.awt.BorderLayout.WEST);
-			JPanel actionWell=new JPanel(new java.awt.GridBagLayout()); actionWell.setOpaque(false); actionWell.add(open); card.add(actionWell,java.awt.BorderLayout.EAST);
-			content=new JPanel(); content.setLayout(new BoxLayout(content,BoxLayout.Y_AXIS)); content.setOpaque(false); card.add(content,java.awt.BorderLayout.CENTER);
-		}
-		text(content, upgrade.upgrade.title); content.getComponent(content.getComponentCount()-1).setFont(getFont().deriveFont(java.awt.Font.BOLD));
-		ComparisonResult result = upgrade.comparison;
-		String headline=result.primaryMetric == ComparisonResult.Metric.THEORETICAL_DPS || result.before != null && result.available(ComparisonResult.Metric.MAX_HIT)
-			? result.headline()
-			: upgrade.upgrade.role.equals("powered-magic") ? "Magic support · model gap" : upgrade.upgrade.comparison.equals("RANGED") ? "Ranged value · model gap" : upgrade.upgrade.role.equals("ranged-special") ? "Ruby special role" : "Hybrid boot slot";
-		text(content, headline);
-		content.getComponent(content.getComponentCount()-1).setName("comparison-headline");
-		text(content, upgrade.pursuit.category.label + (tile ? "" : " · " + upgrade.pursuit.burden.toString().toLowerCase(java.util.Locale.ROOT) + " work")
-			+ (upgrade.pursuit.tail == PursuitAssessment.Tail.LONG && upgrade.pursuit.category != PursuitAssessment.Category.LONG_TERM ? " · Long tail" : ""));
-		if (!tile && !upgrade.pursuit.blockers.isEmpty()) { text(content, "Next check: " + upgrade.pursuit.blockers.get(0)); }
-		java.awt.event.MouseAdapter activate=new java.awt.event.MouseAdapter() { public void mouseClicked(java.awt.event.MouseEvent event) { if (valid(expectedView, actions)) { open.doClick(); } } };
+			@Override public void setIcon(javax.swing.Icon image) { if (valid(expectedView,actions)) { super.setIcon(image); setText(image==null ? "◇" : ""); if(image!=null) { getAccessibleContext().setAccessibleName(upgrade.upgrade.title+" item image"); } } }
+		};
+		icon.setPreferredSize(new Dimension(40,40)); icon.setForeground(ColorScheme.TEXT_COLOR); icon.setName("sprite-"+upgrade.upgrade.id);
+		icon.getAccessibleContext().setAccessibleName(upgrade.upgrade.title+" item image; placeholder while loading");
+		if (itemManager!=null) { itemManager.getImage(upgrade.upgrade.itemId).addTo(icon); }
+		header.add(icon); text(header,upgrade.upgrade.title);
+		JTextArea title=(JTextArea)header.getComponent(1); title.setFocusable(false); title.setName("card-title"); title.setForeground(new java.awt.Color(244,213,141)); title.setFont(getFont().deriveFont(java.awt.Font.BOLD));
+		card.add(header);
+		text(card,copy.reason); card.getComponent(card.getComponentCount()-1).setFocusable(false); card.getComponent(card.getComponentCount()-1).setName("card-reason");
+		text(card,copy.metric); card.getComponent(card.getComponentCount()-1).setFocusable(false); card.getComponent(card.getComponentCount()-1).setName("comparison-headline");
+		text(card,copy.status); card.getComponent(card.getComponentCount()-1).setFocusable(false); card.getComponent(card.getComponentCount()-1).setName("card-status");
+		JPanel actionsRow=new ActionLinks(); actionsRow.setFont(getFont()); actionsRow.setOpaque(false); actionsRow.setAlignmentX(LEFT_ALIGNMENT);
+		JButton open=button(actionsRow,"Value",()->navigate(upgrade.upgrade.id,false,expectedView,actions));
+		open.getActionMap().put("open-card",open.getActionMap().get("activate"));
+		open.setName("open-upgrade-"+upgrade.upgrade.id); open.setToolTipText(upgrade.upgrade.title);
+		open.getAccessibleContext().setAccessibleName("Value for "+upgrade.upgrade.title);
+		JButton path=button(actionsRow,"Path",()->navigate(upgrade.upgrade.id,true,expectedView,actions));
+		path.setName("path-upgrade-"+upgrade.upgrade.id); path.getAccessibleContext().setAccessibleName("Path for "+upgrade.upgrade.title);
+		card.add(actionsRow);
+		java.awt.event.MouseAdapter activate=new java.awt.event.MouseAdapter() { public void mouseClicked(java.awt.event.MouseEvent event) { if (valid(expectedView,actions)) { open.doClick(); } } };
 		clickable(card,activate,open); parent.add(card);
 	}
+
 	private void clickable(java.awt.Container parent, java.awt.event.MouseAdapter listener, JButton open)
 	{
 		parent.addMouseListener(listener);
 		for (java.awt.Component child : parent.getComponents())
-		{ if (child == open) { continue; } if (child instanceof java.awt.Container) { clickable((java.awt.Container)child,listener,open); } else { child.addMouseListener(listener); } }
+		{ if (child instanceof javax.swing.AbstractButton) { continue; } if (child instanceof java.awt.Container) { clickable((java.awt.Container)child,listener,open); } else { child.addMouseListener(listener); } }
 	}
 	private void activityCard(ActivityOpportunity activity, long expectedView, Actions actions)
 	{
 		text(this, activity.title); text(this, "Useful families: " + String.join(" · ", activity.usefulFamilies));
-		activitySprites(this, activity);
-		JButton open=button(this, "Several useful rewards ›", () -> navigate("activity:" + activity.id, expectedView, actions)); open.setName("open-activity:" + activity.id);
+		activitySprites(this, activity, expectedView, actions);
+		JButton open=button(this, activity.usefulFamilies.size()>1 ? "Inspect shared rewards ›" : "Inspect useful reward ›", () -> navigate("activity:" + activity.id, expectedView, actions)); open.setName("open-activity:" + activity.id);
 		open.getAccessibleContext().setAccessibleName("Open " + activity.title + " shared rewards");
 	}
 	private void activityDetails(ActivityOpportunity activity, KnowledgeCatalog catalog, Actions actions, long expectedView)
 	{
 		text(this, activity.title + " · " + activity.category); text(this, activity.reason);
-		activitySprites(this, activity);
+		text(this,"Activity access: " + activity.access + " · method review: " + activity.method + ". Neither certifies success.");
+		for (String preparation : activity.preparation) { text(this,preparation); }
+		activitySprites(this, activity, expectedView, actions);
 		text(this, "Mode: " + activity.mode + ". Time not estimated: personal reward mechanics and cycle pace are unsupported.");
 		for (String reward : activity.usefulRewards) { text(this, "Useful missing reward: " + reward); }
 		for (String reward : activity.uncertainRewards) { text(this, "Check: " + reward); }
@@ -266,13 +311,13 @@ final class IronpathPanel extends PluginPanel
 		if (actions != null && actions.canEdit()) { button(this, "Skip this activity", () -> { if (valid(expectedView, actions)) { actions.skip(activity.activity,true); } }); }
 		if (!activity.sources.isEmpty()) { sources(this,activity.sources,catalog); }
 	}
-	private void activitySprites(JPanel parent, ActivityOpportunity activity)
+	private void activitySprites(JPanel parent, ActivityOpportunity activity, long expectedView, Actions actions)
 	{
 		JPanel strip=new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT,4,0)); strip.setOpaque(false);
 		strip.setAlignmentX(LEFT_ALIGNMENT); strip.setMaximumSize(new Dimension(213,40)); strip.setPreferredSize(new Dimension(213,40));
 		for (int id : activity.itemIds.stream().limit(4).collect(java.util.stream.Collectors.toList()))
 		{
-			JLabel icon=new JLabel("◇"); icon.setForeground(ColorScheme.TEXT_COLOR); icon.setPreferredSize(new Dimension(40,40));
+			JLabel icon=new JLabel("◇") { @Override public void setIcon(javax.swing.Icon image) { if(valid(expectedView,actions)) { super.setIcon(image); } } }; icon.setForeground(ColorScheme.TEXT_COLOR); icon.setPreferredSize(new Dimension(40,40));
 			icon.getAccessibleContext().setAccessibleName("Representative useful reward; item " + id);
 			if (itemManager != null) { itemManager.getImage(id).addTo(icon); } strip.add(icon);
 		}
@@ -284,21 +329,26 @@ final class IronpathPanel extends PluginPanel
 	{
 		KnowledgeCatalog.Upgrade upgrade = view.upgrade;
 		text(this, upgrade.title + "\n" + view.pursuit.category.label);
-		text(this, view.pursuit.reasons.get(0));
-		if (view.pursuit.alternative != null)
-		{
-			String alternative=catalog.upgrades.stream().filter(u -> u.id.equals(view.pursuit.alternative)).map(u -> u.title).findFirst().orElse(view.pursuit.alternative);
-			text(this, "Consider first: " + alternative + ". Its remaining route qualifies independently; gains and resource allocations are not combined.");
-		}
-		if (!view.pursuit.blockers.isEmpty()) { text(this, "Next check: " + view.pursuit.blockers.get(0)); }
+
 		long expectedView = this.view;
-		JPanel tabs = new JPanel(new java.awt.GridLayout(1, 2, 4, 0)); tabs.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 12, 30));
+		JPanel tabs = new JPanel(new java.awt.GridLayout(1, 2, 4, 0)); tabs.setFont(getFont()); tabs.setOpaque(false); tabs.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 12, 30));
 		tabs.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 12, 30));
 		tabs.setMinimumSize(new Dimension(PluginPanel.PANEL_WIDTH - 12, 30)); tabs.setAlignmentX(LEFT_ALIGNMENT);
-		button(tabs, "Value", () -> { if (valid(expectedView, actions)) { pathDetail = false; refresh.run(); } });
-		button(tabs, "Path", () -> { if (valid(expectedView, actions)) { pathDetail = true; refresh.run(); } }); add(tabs);
+		JButton valueTab=button(tabs, "Value", () -> { if (valid(expectedView, actions)) { pathDetail = false; refresh.run(); } });
+		JButton pathTab=button(tabs, "Path", () -> { if (valid(expectedView, actions)) { pathDetail = true; refresh.run(); } });
+		int tabHeight=Math.max(valueTab.getPreferredSize().height,pathTab.getPreferredSize().height);
+		tabs.setMaximumSize(new Dimension(213,tabHeight)); tabs.setPreferredSize(new Dimension(213,tabHeight)); tabs.setMinimumSize(new Dimension(0,tabHeight)); add(tabs);
 		if (pathDetail) { acquisition(view, catalog, actions); return; }
-		text(this, "Why for your account: " + view.value);
+		text(this,view.valueEvidence.importance.label + ": " + view.valueEvidence.reason);
+		text(this,"Baseline: " + view.valueEvidence.baseline);
+		if (!view.pursuit.blockers.isEmpty()) { text(this,"Next check: " + view.pursuit.blockers.get(0)); }
+		for (com.ironpath.advisor.ValueEvidence.Role role : view.valueEvidence.roles)
+		{
+			text(this,role.reason + " Applicable: " + role.applicable + ".");
+			for (String alternative : role.alternatives) { text(this,"Adequate owned alternative: " + alternative); }
+			text(this,"Defer / limits: " + role.limitation);
+		}
+		for (String trail : view.indirectReasons) { text(this,trail); }
 		JPanel whyOrder = section(this, "Why this order");
 		for (String reason : view.pursuit.reasons) { text(whyOrder, reason); }
 		text(whyOrder, "Ranking " + view.pursuit.version + ": " + String.join(", ", view.pursuit.reasonCodes));
@@ -369,7 +419,7 @@ final class IronpathPanel extends PluginPanel
 				button(ownership, "Clear confirmation", () -> actions.confirm(key, null));
 			}
 		}
-		sources(this, upgrade.sources, catalog);
+		sources(this, view.evidenceSources, catalog);
 	}
 
 	private void itemSummary(JPanel parent, String label, int id, KnowledgeCatalog catalog)
@@ -384,6 +434,14 @@ final class IronpathPanel extends PluginPanel
 	{
 		KnowledgeCatalog.Upgrade upgrade = view.upgrade;
 		text(this, "Next: " + (view.pursuit.blockers.isEmpty() ? view.routes.stream().filter(r -> r.decision.id.equals(view.pursuit.route)).findFirst().orElse(view.routes.get(0)).next : view.pursuit.blockers.get(0)));
+		for (com.ironpath.advisor.ValueEvidence.Role role : view.valueEvidence.roles)
+		{ for (String alternative : role.alternatives) { text(this,"Owned method alternative: " + alternative); } }
+		for (com.ironpath.advisor.ProgressionKnowledge.Context context : catalog.progression.contexts)
+		{
+			if (!context.activity.equals(view.pursuit.activity)) { continue; }
+			for (com.ironpath.advisor.ProgressionKnowledge.Preparation option : context.preparation)
+			{ text(this,option.constraint + ": " + option.label); }
+		}
 		effort(view.pursuit, actions);
 		if (!view.path.isEmpty()) { JPanel recipe = section(this, "Recipe and ALL/ANY alternatives"); text(recipe, "ALL/ANY recipe: completed intermediates bypass upstream work. This is the full reviewed recipe, not an instruction to repeat it."); requirements(recipe, view.path); }
 		text(this, "Equip requirements (separate from acquisition)"); requirements(this, view.equip);
@@ -402,7 +460,7 @@ final class IronpathPanel extends PluginPanel
 			text(this, "Same Doom acquisition activity, separate conditional rewards. Treads require completed delve 4. Rewards are rolled separately; their benefits are not added and nothing certifies delve capability.");
 			for (String reward : view.shared) { text(this, reward); }
 		}
-		sources(this, upgrade.sources, catalog);
+		sources(this, view.evidenceSources, catalog);
 	}
 
 	private void effort(PursuitAssessment pursuit, Actions actions)
@@ -607,7 +665,7 @@ final class IronpathPanel extends PluginPanel
 
 	private JPanel section(JPanel parent, String label)
 	{
-		JPanel details = new JPanel(); details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS)); details.setVisible(false);
+		JPanel details = new JPanel(); details.setFont(parent.getFont()); details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS)); details.setVisible(false);
 		details.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		button(parent, label, () -> { details.setVisible(!details.isVisible()); revalidate(); });
 		parent.add(details); return details;
@@ -639,6 +697,9 @@ final class IronpathPanel extends PluginPanel
 	private static JButton button(JPanel panel, String label, Runnable action)
 	{
 		JButton button = new JButton(label);
+		button.setFont(panel.getFont()); button.setMargin(new java.awt.Insets(2,3,2,3));
+		button.setForeground(ColorScheme.TEXT_COLOR); button.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		button.setContentAreaFilled(false); button.setOpaque(true);
 		if (label.length() > 24)
 		{ button.setText("<html><div style='width:150px'>" + label.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;") + "</div></html>"); }
 		button.setToolTipText(label);
@@ -663,6 +724,7 @@ final class IronpathPanel extends PluginPanel
 				// BoxLayout caps the allocated width even when the native viewport is wider.
 				// Measure wrapping at that same width so detail paragraphs cannot lose lines.
 				width = Math.min(width, getMaximumSize().width);
+				if ("card-title".equals(getName())) { width=Math.max(1,width-46); }
 				java.awt.Insets insets = getInsets();
 				javax.swing.text.View view = getUI().getRootView(this);
 				// Swing reserves one pixel for the document caret when wrapping.
@@ -672,10 +734,11 @@ final class IronpathPanel extends PluginPanel
 			}
 		}; text.setLineWrap(true); text.setWrapStyleWord(true);
 		text.setMinimumSize(new Dimension(0,0));
-		text.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 12, Integer.MAX_VALUE));
+		text.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+		text.setFont(panel.getFont());
 		text.setEditable(false); text.setOpaque(false);
 		text.setForeground(ColorScheme.TEXT_COLOR);
-		text.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); text.setAlignmentX(LEFT_ALIGNMENT);
+		text.setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0)); text.setAlignmentX(LEFT_ALIGNMENT);
 		panel.add(text);
 	}
 }

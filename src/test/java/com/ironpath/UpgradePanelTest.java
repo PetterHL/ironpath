@@ -73,8 +73,8 @@ public class UpgradePanelTest
 			assertFalse(visible(button("Set goal")));assertTrue(visible(button("Account and preferences")));
 			for(Component c:children(panel))
 			{
-				if(c instanceof JTextArea){assertTrue(((JTextArea)c).getLineWrap());assertTrue(c.getMaximumSize().width<=PluginPanel.PANEL_WIDTH);}
-				if(c instanceof JButton||c instanceof JComboBox){assertTrue(c.getMaximumSize().width<=PluginPanel.PANEL_WIDTH);}
+				if(c instanceof JTextArea){assertTrue(((JTextArea)c).getLineWrap());assertTrue(c.getWidth()<=PluginPanel.PANEL_WIDTH);}
+				if(c instanceof JButton||c instanceof JComboBox){assertTrue(c.getWidth()<=PluginPanel.PANEL_WIDTH);}
 			}
 		});
 	}

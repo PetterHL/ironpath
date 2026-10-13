@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 /** Reflows from actual content width/font metrics; never reduces the client font. */
-final class BrowseGrid extends JPanel implements LayoutManager
+class BrowseGrid extends JPanel implements LayoutManager
 {
-	private static final int GAP=6, MINIMUM_CELL=100;
-	BrowseGrid() { setLayout(this); setOpaque(false); setAlignmentX(LEFT_ALIGNMENT); setMaximumSize(new Dimension(213,Integer.MAX_VALUE)); }
+	private static final int GAP=6, MINIMUM_CELL=170;
+	BrowseGrid() { setLayout(this); setOpaque(false); setAlignmentX(LEFT_ALIGNMENT); setMaximumSize(new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE)); }
 	int columns(int width)
 	{
 		int cell=(width-GAP)/2;
@@ -24,16 +24,17 @@ final class BrowseGrid extends JPanel implements LayoutManager
 			for (JTextArea text : labels((Container)tile))
 			{
 				FontMetrics metrics=text.getFontMetrics(text.getFont()); int lines=1, used=0;
+				int usable=cell-14-("card-title".equals(text.getName()) ? 46 : 0);
 				for (String word : text.getText().split("\\s+"))
 				{
 					int size=metrics.stringWidth(word);
-					if (size > cell-12) { return 1; }
-					if (used > 0 && used+metrics.stringWidth(" ")+size > cell-12) { lines++; used=0; }
+					if (size > usable) { return 1; }
+					if (used > 0 && used+metrics.stringWidth(" ")+size > usable) { lines++; used=0; }
 					used += (used == 0 ? 0 : metrics.stringWidth(" "))+size;
 				}
 				// Before/after DPS and its declared reference may wrap below the title.
 				// Allow taller value rows; long item names still trigger one column.
-				if (lines > ("comparison-headline".equals(text.getName()) ? 6 : 3)) { return 1; }
+				if (lines > ("card-reason".equals(text.getName()) ? 4 : 3)) { return 1; }
 			}
 		}
 		return 2;

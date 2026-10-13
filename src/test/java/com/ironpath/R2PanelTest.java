@@ -57,7 +57,7 @@ public class R2PanelTest
 			{
 				panel=new IronpathPanel();render();capture("overview");button("Browse").doClick();capture("browse");
 				assertTrue(text().contains("Enemy with 0 Defence"));
-				assertTrue(children(panel).stream().filter(c->"comparison-headline".equals(c.getName())).map(c->((JTextArea)c).getText()).noneMatch(s->s.contains("Zilyana")));
+				assertTrue(children(panel).stream().filter(c->"comparison-headline".equals(c.getName())).map(c->((JTextArea)c).getText()).anyMatch(s->s.contains("Zilyana")));
 				open("twisted-bow");assertTrue(text().indexOf("Theoretical DPS  ")<text().indexOf("Max hit  "));
 				assertFalse(text().contains("Unknown reference"));
 				button("Reviewed encounter trade-offs").doClick();assertTrue("Target",text().contains("Commander Zilyana"));

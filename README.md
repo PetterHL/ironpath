@@ -2,9 +2,11 @@
 
 **Your path to endgame PvM**
 
-Ranged development build · 13 October 2026 · plugin 0.7.1 · knowledge r2-2 · schema 9
+R3a development build · 13 October 2026 · plugin 0.8.0 · knowledge r3a-1 · schema 10
 
-**This branch delivers R2 ranged packages for review on updated main.** Bowfa/crystal, tbow, toxic/rosewood blowpipes, crossbow alternatives and supported armour/jewellery/ammunition have complete compatible reference comparisons. Seventeen additional upgrade outcomes retain effort-aware priority, shared activities and native Value/Path. Magic and ranged corrections stay separate and in memory. See [R2 verification and pending client checks](docs/validation/R2.md).
+**This branch delivers R3a relationship advice and the native card-first homepage for review.** Personal importance is independent of acquisition status and effort. Anguish retains its core ranged-neck role despite a small neutral breakpoint; Zaryte keeps conditional burst value; Venator adds reviewed multi-target convenience and a five-shard route. Adequate owned switches make Venator optional preparation, and reward-specific Doom checks no longer block independently eligible rewards. Cards show account value, labelled numbers/gaps and direct Value/Path actions, with Long-term and Specialist discovery beside Browse. See [R3a evidence, counterfactuals and pending client checks](docs/validation/R3a.md).
+
+The implementation PR targets **`docs/endgame-progression-intelligence` (PR #17, `75897d5`)**, which includes corrected R2 `32cb24a`. PR #17 remains documentation-only; neither dependency is merged by this delivery. All existing R2 outcomes, ranged/magic calculations, oracle cases and lifecycle protections remain.
 
 Weapons and upgrades that change the selected weapon lead with theoretical DPS; armour/jewellery retain max hit where weapon and speed are unchanged. Neutral Magic 0 is deliberately poor for tbow, so separately reviewed Graardor/Zilyana examples preserve specialist value without treating a large number as the next grind. Masori cannot manufacture a Bowfa upgrade by losing crystal synergy. Seeking arrows and charged quiver obey their actual projectile restrictions. Raid/special/bounce/time/trip coverage remains open.
 
@@ -27,19 +29,19 @@ The intended product is a free, open-source RuneLite sidebar that automatically 
 
 **Client comparison-gap follow-up:** Value now names the unsupported accuracy item and whether it affects before, after or both reference setups. Brimstone's proc and Confliction's one-handed stacks remain separate model gaps; supported max hit stays visible. See [validation](docs/validation/client-model-gap-labels.md). This explanation patch is integrated in main `cb7c2cd` via PR #15; R2 remains a separate reviewed-development increment.
 
-## Next design: endgame progression intelligence
+## Progression advice on this review branch
 
 The documentation-only [research review](docs/PROGRESSION_RESEARCH.md) checks 30 varied relationships against current mechanics, strategies and qualified player experience. The selected [progression-1 contract](docs/DESIGN.md#progression-intelligence-contract-version-progression-1) separates an item's role, personal importance, pursuit status and remaining effort. It adds adequate owned alternatives, multi-dimensional utility and explainable item → activity → reward relationships without a graph service or a universal efficiency score.
 
-This design is **not implemented in the R2 build**. [TASKS R3–R6](TASKS.md) now starts with a useful relationship-aware vertical increment, then melee/specialist models, complete paths and comprehensive discovery. Existing numerical/lifecycle behaviour and pending client evidence remain. Highly developed accounts and comprehensive endgame coverage stay first-class; the 30 research examples are not a catalogue cap.
+The R3a vertical increment now implements this policy for the supported relationships. Broader melee, specials, permanent rewards and preference work remain in R3b–R6. [TASKS R3–R6](TASKS.md) now starts with a useful relationship-aware vertical increment, then melee/specialist models, complete paths and comprehensive discovery. Existing numerical/lifecycle behaviour and pending client evidence remain. Highly developed accounts and comprehensive endgame coverage stay first-class; the 30 research examples are not a catalogue cap.
 
-**R3a native UI direction:** [UX](docs/UX.md) selects compact visual item cards with real RuneLite sprites, short account-specific value, supported contextual numbers and direct Value/Path actions. The normal narrow panel uses one column; two require enough measured width and readable content. Several relevant choices and visible Long-term/Specialist discovery lead the homepage; account controls and optional goals stay secondary. This is a documentation decision, not an implemented UI or completed client check. [Review evidence and handoff](docs/validation/R3a-ui-direction.md).
+**R3a native UI direction:** [UX](docs/UX.md) selects compact visual item cards with real RuneLite sprites, short account-specific value, supported contextual numbers and direct Value/Path actions. The normal narrow panel uses one column; two require enough measured width and readable content. Several relevant choices and visible Long-term/Specialist discovery lead the homepage; account controls and optional goals stay secondary. The card-first implementation and synthetic component captures are in [R3a validation](docs/validation/R3a.md). Real sprites, client scaling and player usefulness remain pending; [the documentation review](docs/validation/R3a-ui-direction.md) retains its original history.
 
 ## Product direction
 
 IronPath is intended to become a comprehensive endgame PvM upgrade advisor, including BiS, meaningful specialist sidegrades, permanent rewards and the progression bridges needed to reach them. **R1 is an implementation increment, not the product boundary.** There is no catalogue ceiling or requirement to select a goal.
 
-R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. R1.5a and the neutral/DPS follow-up are integrated; this branch delivers **R2 ranged packages** for review. R1.5b and R3–R8 extend effort, combat/specialist coverage, maintenance and real-client evidence. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
+R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. R1.5a and the neutral/DPS follow-up are integrated; this branch retains R2 and delivers **R3a relationship advice/cards** for review. R1.5b and R3–R8 extend effort, combat/specialist coverage, maintenance and real-client evidence. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
 
 The comparison follow-up is implemented on this branch: **Enemy with 0 Defence** is the automatic powered-magic reference. Weapons show theoretical DPS before → after and its absolute delta first; unchanged-speed armour/jewellery keep max hit first. The authored target has Defence 0, Magic 0 and magic-defence bonus 0; ordinary rolls give defence roll 576 and do not guarantee accuracy or maximum damage. Details show hit chance, attack interval and per-metric gaps. See [validation and pending client checks](docs/validation/neutral-reference.md).
 
@@ -47,7 +49,7 @@ Recommendations must explain what changes relative to owned alternatives, where 
 
 The architecture stays one local Java RuneLite plugin with bundled reviewed knowledge and native Swing UI. The main investment is accurate knowledge, reusable combat mechanics and useful presentation. We are not adding a backend, subscriptions or per-user AI. See the independent feasibility assessment and trade-offs in the design.
 
-**Pursuit priority:** upgrades worth owning, active pursuits and shared activities are separate. Readiness and supported remaining burden precede strength within an immediate-pursuit group. Shadow/Ancestral retain long-tail value; unknown ownership/preparation stays conditional. Owned components remove their own drop stages. Shared CoX benefits count Ancestral as one family and count prayer rewards only with confirmed missing unlock/scroll facts. No drop probabilities or DPS gains are added across rewards. See [implementation evidence](docs/validation/R1.5a.md) and [ranking contract](docs/DESIGN.md#deterministic-selection-procedure-version-pursuit-1-proposed).
+**Progression priority:** `progression-1` orders actionable choices by personal importance, explicit interest, claim evidence and remaining burden. Ordinary numbers only break compatible setup/context ties; the analytical reference and raw context/prose counts add no breadth. Long-tail status remains visible independently of importance. Scoped utility and adequate owned alternatives survive unrelated DPS gaps. Source-linked one-hop explanations never feed back into rank. [Historical pursuit-1 evidence](docs/validation/R1.5a.md) is preserved.
 
 ## Read and work
 
@@ -73,13 +75,13 @@ Reuse the existing T1–P3 RuneLite implementation and preserve its licence noti
 
 ## Start here
 
-The current shared baseline is `main` at `cb7c2cd`, including merged R1.5a PR #12, reference/DPS PR #13 and exact model-gap PR #15. This focused R2 branch is `r2-ranged-packages`; its implementation and live acceptance are recorded in [R2 validation](docs/validation/R2.md). Earlier reports preserve their original delivery/test context.
+The shared main remains `cb7c2cd`. R3a depends on PR #17 at `75897d5`, including R2 PR #16 at `32cb24a`; review this implementation against that branch. [R3a validation](docs/validation/R3a.md) separates completed automated/component checks from pending client acceptance.
 
-To test R2 before integration, close the development client first:
+To test R3a before integration, close the development client first:
 
 ```sh
 git fetch origin
-git switch r2-ranged-packages
+git switch r3a-personalized-cards
 ```
 
 Historical planning branches and validation reports are records, not fresh prerequisites.
@@ -99,7 +101,7 @@ Clone the repository and check out the combined implementation branch:
 ```sh
 git clone https://github.com/PetterHL/ironpath.git
 cd ironpath
-git checkout main
+git checkout r3a-personalized-cards
 ```
 
 For an existing clone, close the development client, enter its `ironpath` directory,
@@ -107,7 +109,7 @@ and update the branch first:
 
 ```sh
 git fetch origin
-git switch main
+git switch r3a-personalized-cards
 git pull --ff-only
 ```
 

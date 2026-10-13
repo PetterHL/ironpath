@@ -1,6 +1,6 @@
 # IronPath product and architecture
 
-Endgame intelligence design · 13 October 2026. Inspected main `cb7c2cd` and unmerged R2 PR #16 at `a501e6f`, then its concurrent review correction `32cb24a` (schema 9, `pursuit-1`). **`progression-1` below is the selected next design, not delivered runtime behaviour.** It refines ranking and relationships while retaining comprehensive scope, existing working code and validation history. R1.5b observation and complex route totals remain future work.
+Endgame intelligence design · 13 October 2026. Inspected main `cb7c2cd` and unmerged R2 PR #16 at `a501e6f`, then its concurrent review correction `32cb24a` (schema 9, `pursuit-1`). **The bounded `progression-1` migration is implemented for review in R3a; broader relationship/model coverage remains open.** See [implementation evidence](validation/R3a.md). It refines ranking and relationships while retaining comprehensive scope, existing working code and validation history. R1.5b observation and complex route totals remain future work.
 
 ## A. Stable product vision
 
@@ -100,7 +100,7 @@ Show component progress such as an observed quantity against its requirement onl
 
 ## Progression intelligence contract (version `progression-1`)
 
-**Selected design, not implemented in R2.** Supersedes `pursuit-1` admission/order where they conflict. Preserve its implementation and regression evidence until a reviewed migration. [Thirty checked relationships and the code assessment](PROGRESSION_RESEARCH.md) are the evidence; TASKS R3–R6 are the delivery assignments. This is an extension of the current engine, not another reset.
+**Selected design; the R3a vertical increment implements the bounded migration on R2.** Supersedes `pursuit-1` admission/order where they conflict. Preserve its implementation and regression evidence until a reviewed migration. [Thirty checked relationships and the code assessment](PROGRESSION_RESEARCH.md) are the evidence; TASKS R3–R6 are the delivery assignments. This is an extension of the current engine, not another reset.
 
 ### Independent assessment
 
