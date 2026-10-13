@@ -22,6 +22,8 @@ Keep D/R/V/Q and the uncapped inventory unchanged: recommendation validation, co
 All active outcomes still require complete truthful paths and useful value even when acquisition numbers are unsupported. Group activity rewards by distinct account-relevant families; item variants and three dependent armour pieces cannot inflate ranking. Unknown ownership does not count as confirmed shared opportunity. TASKS alone assigns delivery and acceptance.
 
 
+**R2 model work started, 13 October 2026:** original crystal-bow/Bowfa/tbow arithmetic now has pinned source review, hand cases and 1,152 differential scenarios. [Model evidence](validation/R2-ranged-models.md). Runtime inventory statuses remain unpromoted: full reference setup, observed forms, acquisition routes, ranking and user-facing integration are still required. This does not narrow the R2 assignment or remove other ranged families.
+
 ## How to read and maintain this inventory
 
 **D** = discovered candidate; name/family cross-checked against reference item data or existing evidence, but current route/mechanics need item-level review. **R** = researched candidate with relevant mechanics/release evidence inspected; not an implemented validated recommendation. **V** = validated recommendation in the P4a bundle for its specific contexts, with real-client validation still pending. **Q0** = quantitative support only within P4a's documented trident/Dharok contract. **—** = no shipped quantitative model. A proposed model code is a backlog mapping, never a claim of calculation support.

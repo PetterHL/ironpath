@@ -95,6 +95,12 @@ The external GPL calculator runs only in a separate temporary checkout at `89c3e
 
 ToA's multiplier/cap is hand-checked independently, but no encounter figures ship until phase and raid/path/party scaling are supported. Max hit, accuracy, DPS, expected kill time and trip performance remain distinct metrics. No live game or player-usefulness evidence was collected.
 
+## R2 first ranged-family review — 13 October 2026
+
+Source/model work starts independently of the pending R1.5a integration. Review current active crystal bow (23983), Bowfa, crystal armour, twisted bow, ordinary ranged formulas/styles and Eagle Eye/Deadeye/Rigour. Exact revision links, retrieved response hashes, original arithmetic/fixtures and limitations are in [R2 model validation](validation/R2-ranged-models.md) and its [source manifest](validation/r2-source-review.json). General Masori facts were reviewed as a future equipment-audit source; no exact full Masori stat catalogue or acquisition outcome is promoted here. `Ranged_accuracy` is only a redirect to general equipment stats and is not accepted as formula evidence.
+
+Use independently authored Java `ranged-family-1` modules and the existing ordinary attack primitive; run GPL calculator `89c3e25b344aea90d0189746e4b5f73dde0f0383` only in a separate temporary development checkout. An original 1,152-case corpus agrees after correcting the harness's historical crystal-bow ID to the current active 23983. No upstream implementation, bulk data or artwork is imported. Reviewed stats/formulas are factual inputs; explanations and code are original. These dormant model checks are not a runtime promotion, source-register schema expansion or proof of personal advice/readiness. Complete setup/ownership/routes/UI integration and the remaining R2 families stay in TASKS.
+
 ## Product-reset investigation — 12 October 2026
 
 This section records the historical product-reset investigation; the newer acquisition investigation above supersedes its ranking/UI scope. [DESIGN](DESIGN.md), [CATALOGUE](CATALOGUE.md), [UX](UX.md) and the active [backlog](../TASKS.md) control future work. Historical research below remains evidence, not a scope limit. No live account, new game client, current creator video or gated Discord strategy guide was inspected in this session. No application tests were rerun.
