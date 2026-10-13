@@ -289,7 +289,11 @@ public class IronpathPlugin extends Plugin
 		String storageStatus = session.storageStatus();
 		List<Advisor.Recommendation> recommendations = snapshot == null || !loaded ? List.of() : advisor.evaluate(snapshot, preferences);
 		com.ironpath.advisor.PoweredMagic.Setup reference = catalog == null ? null : session.reference(catalog);
-		List<Advisor.UpgradeView> upgrades = snapshot == null || !loaded ? List.of() : advisor.upgrades(snapshot, preferences, reference);
+		List<Advisor.UpgradeView> upgrades = snapshot == null || !loaded ? List.of() : advisor.upgrades(snapshot, preferences, reference, session.pace());
+		com.ironpath.advisor.PursuitOverview overview = new com.ironpath.advisor.PursuitOverview(upgrades,
+			snapshot == null || !loaded ? List.of() : advisor.activityOpportunities(snapshot, preferences, upgrades),
+			snapshot == null || !loaded ? List.of() : advisor.quickActions(snapshot, preferences),
+			snapshot == null || !loaded ? List.of() : advisor.availableActivities(snapshot, preferences));
 		Advisor.GoalView goal = snapshot == null || !loaded ? null : advisor.goal(snapshot, preferences);
 		List<String> reasons = snapshot == null || !loaded || !recommendations.isEmpty() ? List.of()
 			: advisor.explainNoAdvice(snapshot, preferences);
@@ -318,11 +322,33 @@ public class IronpathPlugin extends Plugin
 					render("Reference updated in memory for this character/profile.", snapshot);
 				});
 			}
+			public void pace(String value)
+			{
+				clientThread.invokeLater(() -> {
+					if (!IronpathPlugin.this.current(token, expectedIdentity) || !session.currentView(token, revision) || session.snapshot() != snapshot) { return; }
+					com.ironpath.advisor.PaceScenario next = null;
+					try
+					{
+						if (!value.isBlank())
+						{
+							String[] bounds=value.trim().split("-", -1);
+							if (bounds.length > 2) { throw new IllegalArgumentException(); }
+							double minimum=Double.parseDouble(bounds[0]), maximum=bounds.length == 1 ? minimum : Double.parseDouble(bounds[1]);
+							next=new com.ironpath.advisor.PaceScenario("demonic-gorillas", "ordinary", minimum, maximum,
+								"Eligible completed kills per active hour, including travel/banking/failures in the scenario", Instant.now());
+						}
+					}
+					catch (IllegalArgumentException invalid)
+					{ render("Pace needs a positive kills/hour value or range, for example 40 or 30-50; current scenario retained.", snapshot); return; }
+					if (session.editPace(token, revision, expectedIdentity, snapshot, next))
+					{ render("Pace scenario updated in memory; it is not measured performance.", snapshot); }
+				});
+			}
 		};
 		SwingUtilities.invokeLater(() ->
 		{
 			if (!running || panel == null || !session.currentView(token, revision) || session.snapshot() != snapshot) { return; }
-			panel.render(status, snapshot, recommendations, catalog, goal, preferences, actions, storageStatus, reasons, upgrades, reference);
+			panel.render(status, snapshot, recommendations, catalog, goal, preferences, actions, storageStatus, reasons, overview, reference);
 		});
 	}
 
