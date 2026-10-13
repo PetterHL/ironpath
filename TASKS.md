@@ -1,6 +1,6 @@
 # IronPath tasks
 
-Updated 12 October 2026. **This active R1–R8 backlog supersedes P4b/P5 and every older catalogue-size budget or sequential planning gate.** Historical briefs/results are preserved verbatim below and are not active instructions.
+Updated 13 October 2026. **This active R1–R8 backlog supersedes P4b/P5 and every older catalogue-size budget or sequential planning gate.** Historical briefs/results are preserved verbatim below and are not active instructions.
 
 ## A. Product vision
 
@@ -29,7 +29,7 @@ Each assignment produces useful advice, reviewed knowledge, UI evidence and mean
 
 These are capability milestones, not upgrade-count targets. R6 remains open while material inventory gaps exist; new releases extend the inventory. R7 and real-client feedback run alongside feature delivery. Q1–Q5 layers in DESIGN describe calculation dependencies, not a requirement to finish all standard formulas before implementing a high-value megarare.
 
-### R1 — Realistic full-loadout magic and first endgame value (next)
+### R1 — Realistic full-loadout magic and first endgame value (implemented for review; live checks pending)
 
 Implement a working endgame improvement on P4a, rather than another small set of disconnected cards.
 
@@ -44,6 +44,18 @@ Implement a working endgame improvement on P4a, rather than another small set of
 - Generalise source links to items/models/routes/contexts and allow reviewed official update evidence. Promote each shipped outcome only after its current facts, variants, routes and original explanations pass the catalogue contract. Preserve older useful content and source notices.
 
 **Acceptance:** realistic post-Bowfa magic account sees justified nearer options and Shadow/Ancestral plan-ahead value; Shadow owner receives relevant armour/accessory advice rather than swamp; two complete loadouts produce reproducible supported comparisons; zero breakpoints and unknown gear are honest. Show synthetic before/after scenarios with inputs, sources, model versions and ranking explanation. Preserve P4a valid numeric/ownership/lifecycle cases, investigate reference disagreements, run the build and meaningful regressions. Render overview, numeric detail, unsupported detail and route at native width. Record pending real-client checks without pretending screenshots establish usefulness. Do not implement universal optimisation, all combat families or encounter simulation in R1.
+
+### R1 implementation evidence — 13 October 2026
+
+Based exactly on product-reset PR #8 (`7d31483133483f1a18d7bc34e3fd290064943907`), retaining its entire P4a/#7 → #6 → #5 ancestry and documents. New branch `r1-full-loadout-magic`; existing PRs are not merged, closed or changed.
+
+Plugin **0.5.0**, knowledge **r1-1**, schema **6**: ten outcomes, twenty-five decisions, 151 recognised forms, 157 linked evidence records and 82 combat-item records. Counts describe this delivery, not catalogue limits. Shadow, individual Ancestral pieces, tormented bracelet and Magus have acquisition paths; prior occult/swamp/Zaryte/treads advice remains. Reference proposals compare supported owned staff/off-hand packages, all eleven slots, prayers/boosts and two distinct ordinary targets. Calculations run before rendering and feed deterministic value bands/order. Zero breakpoints and unknown inputs are explicit; Shadow ownership suppresses swamp acquisition.
+
+Slot and container-count observations retain scope/time, stay in memory and clear with existing identity guards. Quantity checks use the largest observed container count rather than adding potentially duplicated stacks from different observation times. Magus/tormented recipes have typed ALL/ANY dependency graphs, actual skills/resources, owned-intermediate bypasses and cycle checks. Zaryte displays observed shards or unknown quantity. Source dependencies cover items, models, routes and contexts and accept reviewed official updates. Arbitrary content quotas are removed; parser/condition/path resource guards remain.
+
+**Validation:** 124 automated tests pass on Temurin 11.0.32.1 / RuneLite 1.13.1; 540 new original full-loadout cases agree with pinned reference `89c3e25…`, alongside all 234 original P4a cases. The Sang proc disagreement was investigated against current Wiki pages and the implemented July Jagex update, then fixed with its correct successful-zero distribution. Six no-goal profiles and native-width Swing overview, Value, unsupported detail, ordinary path, branching recipe and Zaryte quantity views are recorded in [R1 validation](docs/validation/R1.md) and [synthetic demonstrations](docs/validation/r1-scenarios.md). `git diff --check` passes.
+
+**Open boundaries:** no ToA phase/raid/path/party scaling, one-handed Confliction history, Brimstone accuracy proc, elemental/ancient spells, encounter times or trip model. ToA refuses numbers rather than supplying a default raid level; Confliction/Brimstone preserve supported max hit with accuracy/DPS gaps. Sang healing and Lightbearer utility remain qualitative. Native item sprites, actual client 100–200% scaling, bank refresh, player usefulness and all historical live checks remain **pending**. Screenshots use synthetic inputs and headless Swing; they do not establish game-client correctness or usefulness. R2–R8 remain open; no comprehensive product or Hub release is claimed.
 
 ### R2 — Ranged packages and post-Bowfa choices
 
@@ -108,9 +120,9 @@ Synthetic profiles have explicit positive/negative/unknown facts, complete refer
 
 For profiles with meaningful covered gaps, aim for at least three defensible, varied choices including long-term value where relevant; this is a usefulness check, not mandatory padding. Score each inspected recommendation on relevance, baseline correctness, value evidence, path correctness and comprehensibility (pass/conditional/fail with reason). Review both top results and important omissions. Change one fact at a time (gain Shadow, consume prayer, open bank, skip activity, change target) and verify the explanation changes coherently. Pair automated scenario assertions with native screenshots and focused player feedback; neither substitutes for the other.
 
-## Next Codex assignment — ready to use
+## Next implementation
 
-> Implement R1 from TASKS.md on a new branch based on the latest coherent P4a + product-reset state. Inspect the open PR stack first; do not merge or close existing work. Deliver realistic full-loadout magic comparison, Shadow/Ancestral endgame upgrade value and acquisition paths, meaningful marginal-value ranking, and native overview/Value/Path screens as specified in DESIGN, CATALOGUE and UX. Preserve privacy, unknown-state semantics and existing valid regressions. Research and validate each shipped mechanic, record unsupported contexts, and provide synthetic account demonstrations plus build/test and UI evidence. Open a reviewable implementation PR. Do not reduce the product vision to this slice, implement a universal simulator, or submit to Plugin Hub.
+R2 extends R1's shared contracts with ranged packages and meaningful post-Bowfa choices. Review R1 and its pending real-client checks alongside that work; do not repeat the historical planning/trial phases as blanket gates. R1's validation record above does not silently pass R8.
 
 ## Historical task snapshots and results
 

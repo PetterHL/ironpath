@@ -26,6 +26,16 @@ Success requires several relevant choices, understandable personal value, suppor
 
 No rewrite, hosted service, database, user-facing AI, subscriptions, gameplay automation or mandatory other plugin. Remain one Java/Gradle project. Standard Ironman main-game planning is the baseline. UIM storage optimisation, GIM shared-bank inference, HCIM safety certification and seasonal mechanics require separate explicit support; they must not leak into ordinary recommendations.
 
+## R1 implementation — 13 October 2026
+
+The baseline findings below are the reset's historical assessment. R1 now delivers full supported powered-magic loadouts, typed `CombatSetup`/`TargetProfile`/per-metric `ComparisonResult`, an independent family model and comparison service, and native Value/Path views. The P4a `PoweredMagic` name is retained as a compatibility facade; arithmetic is shared. Ten outcomes include the named endgame slice, while coverage remains open.
+
+Current upgrade ranking uses capability/context bands, supported absolute marginal DPS, metric confidence, optional goal relevance, remaining effort and stable ID. The 5% relative-gain boundary distinguishes material versus small *ordinary sustained-magic* improvements in this slice; it is a transparent calibration choice, not a universal rule for specs, sustain or other combat families. Shadow uses its capability role when a positive supported gain exists; zero/negative gains are deferred. Encounter prose count has no influence. One Ancestral piece occupies the primary shortlist; every relevant piece remains inspectable. No RNG hours or fabricated efficiency score.
+
+Equipment slots and quantities extend immutable snapshots without changing persisted preferences. Known/unknown quantity semantics deliberately avoid summing observations made at different times. Typed ALL/ANY acquisition dependencies short-circuit owned intermediate components. Sources now link items, models, routes and contexts and permit reviewed official Jagex evidence. Content quotas are gone; a 4M-character parser budget, condition fan-out/depth and per-path depth guard bound resources. ToA scaling and special/state models remain explicit gaps.
+
+See [validation/R1.md](validation/R1.md) for formula boundaries, fixtures, reproducible oracle commands, native-width evidence and pending client checks. The full product direction and R2–R8 remain unchanged. This implementation starts at PR #8's exact head; it does not alter the open stack.
+
 ## Verified implementation and PR stack
 
 Inspected source and GitHub metadata on 12 October 2026:

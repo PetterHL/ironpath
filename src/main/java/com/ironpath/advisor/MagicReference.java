@@ -20,6 +20,9 @@ public final class MagicReference
 		Map<String, Object> next = new HashMap<>();
 		next.put("levels", value(account.levels)); next.put("inventory", value(account.inventory));
 		next.put("equipment", value(account.equipment)); next.put("bank", value(account.bank));
+		next.put("slots", value(account.equipmentSlots)); next.put("inventory-quantities", value(account.inventoryQuantities));
+		next.put("equipment-quantities", value(account.equipmentQuantities)); next.put("bank-quantities", value(account.bankQuantities));
+		next.put("facts", account.facts.entrySet().stream().collect(java.util.stream.Collectors.toMap(Map.Entry::getKey, e -> value(e.getValue()))));
 		next.put("augury", value(account.augury));
 		Map<String, Boolean> manual = new HashMap<>();
 		preferences.confirmations.forEach((key, confirmation) -> manual.put(key, confirmation.value));
@@ -39,7 +42,8 @@ public final class MagicReference
 		{
 			PoweredMagic.Setup next = setup.edit(key, value);
 			if (key.equals("confirm") && new PoweredMagic(catalog).validate(account, preferences, next) != null) { return false; }
-			if (!PoweredMagic.SLOTS.contains(key) && !java.util.Set.of("prayer", "boost", "style", "template", "confirm").contains(key)) { return false; }
+			if (!PoweredMagic.SLOTS.contains(key) && !java.util.Set.of("prayer", "boost", "style", "target", "template", "confirm").contains(key)) { return false; }
+			if (key.equals("target") && !new PoweredMagic(catalog).targetChoices().containsKey(value)) { return false; }
 			setup = next; corrected = true; return true;
 		}
 		catch (IllegalArgumentException invalidChoice) { return false; }

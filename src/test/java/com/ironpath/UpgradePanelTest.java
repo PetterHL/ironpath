@@ -51,7 +51,7 @@ public class UpgradePanelTest
 			public void confirm(String key,Boolean value){preferences=preferences.confirm(key,value,TIME);render();}
 			public void clear(){preferences=Preferences.EMPTY;render();}
 			public void reference(String key,String value){setup=setup.edit(key,value);render();}
-		},"Synthetic storage",List.of(),advisor.upgrades(account,preferences),setup);
+		},"Synthetic storage",List.of(),advisor.upgrades(account,preferences,setup),setup);
 	}
 	private List<Component> children(Container container)
 	{
@@ -85,7 +85,7 @@ public class UpgradePanelTest
 			button("Clear confirmation").doClick();assertFalse(preferences.confirmations.containsKey("owns-swampOrBetter"));
 			button("Already owned").doClick();assertTrue(preferences.confirmations.get("owns-swampOrBetter").value);
 			assertFalse(advisor.upgrades(account,preferences).stream().anyMatch(v->v.upgrade.id.equals("swamp-trident")));
-			open("occult-necklace").doClick();button("Back to upgrades").doClick();assertTrue(visible(open("occult-necklace")));
+			open("occult-necklace").doClick();button("Back to upgrades").doClick();assertTrue(visible(button("Account and preferences")));
 		});
 	}
 
@@ -107,6 +107,41 @@ public class UpgradePanelTest
 			catch(Exception failure){throw new RuntimeException(failure);}
 		});
 	}
+	@Test public void r1ValuePathUnsupportedAndOverviewRenderAtNativeWidth() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			try
+			{
+				account=com.ironpath.advisor.R1AdviceTest.postBowfa(false);setup=new PoweredMagic(catalog).propose(account);render();capture("r1-overview.png");
+				open("tumekens-shadow").doClick();assertTrue(text().contains("Off-hand removed"));capture("r1-value.png");
+				button("Path").doClick();assertTrue(text().contains("Beneath Cursed Sands"));assertFalse(text().contains("Theoretical DPS  "));capture("r1-path.png");
+				button("Value").doClick();setup=setup.edit("target","toa");render();assertTrue(text().contains("no default invocation"));capture("r1-unsupported.png");
+				button("Back to upgrades").doClick();assertTrue(visible(button("Account and preferences")));
+				setup=setup.edit("target","graardor");render();open("magus-ring").doClick();button("Path").doClick();assertTrue(text().contains("ALL/ANY"));capture("r1-assembly-path.png");
+				AccountSnapshot base=account;java.util.Set<Integer> items=new java.util.HashSet<>(base.bank.value());items.addAll(Set.of(11785,26372));
+				account=new AccountSnapshot(base.levels,base.inventory,base.equipment,fact(items),base.rigour,base.augury,base.facts,
+					com.ironpath.model.Observation.unknown(),com.ironpath.model.Observation.unknown(),com.ironpath.model.Observation.unknown(),fact(java.util.Map.of(26231,120L)));
+				setup=new PoweredMagic(catalog).propose(account);render();button("Back to upgrades").doClick();open("zaryte-crossbow").doClick();
+				assertTrue(text().contains("specialist role"));button("Path").doClick();button("Evidence").doClick();capture("r1-zaryte-path.png");
+			}
+			catch(Exception failure){throw new RuntimeException(failure);}
+		});
+	}
+	@Test public void backRestoresOverviewScrollAndStaleTabCannotReopenOtherAccount() throws Exception
+	{
+		javax.swing.JScrollPane[] holder=new javax.swing.JScrollPane[1];JButton[] oldPath=new JButton[1];
+		SwingUtilities.invokeAndWait(()->{
+			holder[0]=new javax.swing.JScrollPane(panel);holder[0].setSize(PluginPanel.PANEL_WIDTH,600);
+			panel.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH,4000));holder[0].doLayout();holder[0].getViewport().setViewPosition(new java.awt.Point(0,350));
+			open("swamp-trident").doClick();oldPath[0]=button("Path");button("Back to upgrades").doClick();
+		});
+		SwingUtilities.invokeAndWait(()->{
+			assertEquals(350,holder[0].getViewport().getViewPosition().y);
+			panel.render("Account changed",null,List.of(),catalog,null,Preferences.EMPTY,null,"",List.of());oldPath[0].doClick();
+			assertFalse(text().contains("Trident of the swamp"));
+		});
+	}
+
 	private void capture(String filename) throws Exception
 	{
 		for(Component c:children(panel))if(c instanceof JTextArea){c.setSize(PluginPanel.PANEL_WIDTH-12,Short.MAX_VALUE);c.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH-12,c.getPreferredSize().height));}

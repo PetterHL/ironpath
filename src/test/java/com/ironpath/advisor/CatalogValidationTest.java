@@ -142,8 +142,8 @@ public class CatalogValidationTest
 		rejects(d -> d.getAsJsonArray("upgrades").get(0).getAsJsonObject().getAsJsonArray("sources").add("missing-source"));
 		rejects(d -> d.getAsJsonArray("upgrades").get(0).getAsJsonObject().getAsJsonArray("applications").add(d.getAsJsonArray("upgrades").get(0).getAsJsonObject().getAsJsonArray("applications").get(0).deepCopy()));
 		rejects(d -> d.getAsJsonArray("upgrades").get(3).getAsJsonObject().getAsJsonArray("shared").get(0).getAsJsonObject().addProperty("minDelve",1));
-		rejects(d -> d.getAsJsonObject("comparison").addProperty("targetId",12317));
-		rejects(d -> d.getAsJsonObject("comparison").addProperty("attackTicks",5));
+		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().addProperty("magicDefence",-65));
+		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(2).getAsJsonObject().addProperty("scalingSupported",true));
 		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("items").get(0).getAsJsonObject().addProperty("slot","head"));
 		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("items").get(0).getAsJsonObject().remove("sources"));
 	}

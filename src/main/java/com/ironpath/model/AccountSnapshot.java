@@ -14,6 +14,8 @@ public final class AccountSnapshot
 	public final Observation<Boolean> rigour;
 	public final Observation<Boolean> augury;
 	public final Map<String, Observation<Boolean>> facts;
+	public final Observation<Map<String, Integer>> equipmentSlots;
+	public final Observation<Map<Integer, Long>> inventoryQuantities, equipmentQuantities, bankQuantities;
 
 	public AccountSnapshot(Observation<Map<String, Integer>> levels,
 		Observation<Set<Integer>> inventory, Observation<Set<Integer>> equipment,
@@ -27,6 +29,21 @@ public final class AccountSnapshot
 		Observation<Set<Integer>> bank, Observation<Boolean> rigour, Observation<Boolean> augury,
 		Map<String, Observation<Boolean>> facts)
 	{
+		this(levels, inventory, equipment, bank, rigour, augury, facts, Observation.unknown(),
+			Observation.unknown(), Observation.unknown(), Observation.unknown());
+	}
+
+	public AccountSnapshot(Observation<Map<String, Integer>> levels,
+		Observation<Set<Integer>> inventory, Observation<Set<Integer>> equipment,
+		Observation<Set<Integer>> bank, Observation<Boolean> rigour, Observation<Boolean> augury,
+		Map<String, Observation<Boolean>> facts, Observation<Map<String, Integer>> equipmentSlots,
+		Observation<Map<Integer, Long>> inventoryQuantities, Observation<Map<Integer, Long>> equipmentQuantities,
+		Observation<Map<Integer, Long>> bankQuantities)
+	{
+		this.equipmentSlots = copyMap(equipmentSlots);
+		this.inventoryQuantities = copyMap(inventoryQuantities);
+		this.equipmentQuantities = copyMap(equipmentQuantities);
+		this.bankQuantities = copyMap(bankQuantities);
 		this.facts = Map.copyOf(facts);
 		this.levels = copyLevels(levels);
 		this.inventory = copyItems(inventory);
@@ -34,6 +51,28 @@ public final class AccountSnapshot
 		this.bank = copyItems(bank);
 		this.rigour = rigour;
 		this.augury = augury;
+	}
+
+	private static <K, V> Observation<Map<K, V>> copyMap(Observation<Map<K, V>> fact)
+	{ return fact.known() ? Observation.observed(Map.copyOf(fact.value()), fact.time(), fact.source()) : fact; }
+
+	/** Conservative count from readable containers. Never establishes global absence or current supplies. */
+	public Observation<Long> observedQuantity(int id)
+	{
+		long total = 0; java.time.Instant time = null;
+		java.util.List<String> evidence = new java.util.ArrayList<>();
+		for (Observation<Map<Integer, Long>> container : java.util.List.of(inventoryQuantities, equipmentQuantities, bankQuantities))
+		{
+			if (!container.known()) { continue; }
+			// Observations made at different times can describe the same moved stack.
+			// The largest observed container count is a conservative planning lower bound;
+			// never add a stale bank count to a newer carried count.
+			total = Math.max(total, container.value().getOrDefault(id, 0L));
+			if (time == null || container.time().isBefore(time)) { time = container.time(); }
+			evidence.add(container.evidence());
+		}
+		return time == null ? Observation.unknown() : Observation.observed(total, time,
+			"largest observed container count; other amounts unknown; bank may be stale; " + String.join("; ", evidence));
 	}
 
 	private static Observation<Map<String, Integer>> copyLevels(Observation<Map<String, Integer>> fact)

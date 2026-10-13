@@ -109,7 +109,7 @@ public class PoweredMagicTest
 		AccountSnapshot empty=account(Set.of(11908),90,90); PoweredMagic.Setup s=model.propose(empty);
 		assertEquals(PoweredMagic.Status.UNSUPPORTED,model.compare(empty,Preferences.EMPTY.confirm("item-11907",true,TIME),s,"SWAMP").status);
 		for(int id:new int[]{11905,11907,22288}) { assertEquals(25,compare(account(Set.of(id),90,90),"SWAMP").before.maxHit); }
-		assertEquals(PoweredMagic.Status.UNSUPPORTED,compare(account(Set.of(27275),90,90),"OCCULT").status);
+		assertEquals(PoweredMagic.Status.CONDITIONAL,compare(account(Set.of(27275),90,90),"OCCULT").status);
 		assertEquals(PoweredMagic.Status.UNSUPPORTED,compare(account(Set.of(11907),75,90),"SWAMP").status);
 	}
 
