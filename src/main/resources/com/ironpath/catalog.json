@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 7,
-  "knowledgeVersion": "r1.5a-2",
+  "schemaVersion": 8,
+  "knowledgeVersion": "reference-1",
   "reviewed": "2026-10-13",
   "sources": [
     {
@@ -2042,7 +2042,9 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [
+        "neutral-zero-defence"
+      ]
     },
     {
       "id": "magic-damage",
@@ -2079,7 +2081,9 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [
+        "neutral-zero-defence"
+      ]
     },
     {
       "id": "dharok",
@@ -10100,7 +10104,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -10254,7 +10258,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -10388,7 +10392,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -10522,7 +10526,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -10659,7 +10663,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -11080,7 +11084,7 @@
         {
           "id": "powered-magic",
           "label": "Reviewed powered-magic targets",
-          "text": "Ordinary Dharok and General Graardor are separate attack profiles; select the target in Value. This does not certify encounter readiness.",
+          "text": "Enemy with 0 Defence is an analytical powered-magic reference. Reviewed boss profiles are optional explicit contexts; this number does not establish universal boss usefulness or encounter readiness.",
           "when": {
             "test": "ANY",
             "conditions": [
@@ -12850,6 +12854,21 @@
       }
     ],
     "targets": [
+      {
+        "id": "neutral-zero-defence",
+        "name": "Enemy with 0 Defence",
+        "npcId": 0,
+        "analytical": true,
+        "defenceLevel": 0,
+        "magicLevel": 0,
+        "magicDefence": 0,
+        "variant": "STANDARD",
+        "scalingSupported": true,
+        "sources": [
+          "magic-formula",
+          "magic-damage"
+        ]
+      },
       {
         "id": "dharok",
         "name": "Ordinary Dharok (active attacks)",

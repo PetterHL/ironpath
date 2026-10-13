@@ -229,10 +229,11 @@ final class IronpathPanel extends PluginPanel
 		}
 		text(content, upgrade.upgrade.title); content.getComponent(content.getComponentCount()-1).setFont(getFont().deriveFont(java.awt.Font.BOLD));
 		ComparisonResult result = upgrade.comparison;
-		String headline=result.before != null && result.available(ComparisonResult.Metric.MAX_HIT)
-			? String.format(java.util.Locale.ROOT, "%+d max hit · %s reference", result.after.maxHit-result.before.maxHit, result.target.id.equals("graardor") ? "Graardor" : result.target.name)
+		String headline=result.primaryMetric == ComparisonResult.Metric.THEORETICAL_DPS || result.before != null && result.available(ComparisonResult.Metric.MAX_HIT)
+			? result.headline()
 			: upgrade.upgrade.role.equals("powered-magic") ? "Magic support · model gap" : upgrade.upgrade.role.equals("ranged-special") ? "Ruby special role" : "Hybrid boot slot";
 		text(content, headline);
+		content.getComponent(content.getComponentCount()-1).setName("comparison-headline");
 		text(content, upgrade.pursuit.category.label + (tile ? "" : " · " + upgrade.pursuit.burden.toString().toLowerCase(java.util.Locale.ROOT) + " work")
 			+ (upgrade.pursuit.tail == PursuitAssessment.Tail.LONG && upgrade.pursuit.category != PursuitAssessment.Category.LONG_TERM ? " · Long tail" : ""));
 		if (!tile && !upgrade.pursuit.blockers.isEmpty()) { text(content, "Next check: " + upgrade.pursuit.blockers.get(0)); }
@@ -311,15 +312,20 @@ final class IronpathPanel extends PluginPanel
 			if (!comparison.beforeSetup.slots.get("shield").equals(comparison.afterSetup.slots.get("shield")))
 			{ text(this, "Off-hand removed for a two-handed replacement."); }
 		}
-		if (comparison.before == null) { text(this, "Comparison unavailable: " + comparison.reason); }
+		if (comparison.before == null) { text(this, (comparison.primaryMetric == ComparisonResult.Metric.THEORETICAL_DPS
+			? "Theoretical DPS unavailable · model gap: " : "Comparison unavailable: ") + comparison.reason); }
 		if (comparison.before != null)
 		{
-			text(this, "Max hit  " + comparison.before.maxHit + " → " + comparison.after.maxHit + "  ("
-				+ String.format(java.util.Locale.ROOT, "%+d", comparison.after.maxHit - comparison.before.maxHit) + ")");
+			String max = "Max hit  " + comparison.before.maxHit + " → " + comparison.after.maxHit + "  ("
+				+ String.format(java.util.Locale.ROOT, "%+d", comparison.after.maxHit - comparison.before.maxHit) + ")";
+			String dps = comparison.available(ComparisonResult.Metric.THEORETICAL_DPS) ? String.format(java.util.Locale.ROOT,
+				"Theoretical DPS  %.2f → %.2f  (%+.2f)", comparison.before.dps, comparison.after.dps, comparison.dpsGain()) : "Theoretical DPS unavailable · model gap";
+			boolean dpsFirst = comparison.primaryMetric == ComparisonResult.Metric.THEORETICAL_DPS;
+			text(this, dpsFirst ? dps : max); text(this, dpsFirst ? max : dps);
 			text(this, comparison.available(ComparisonResult.Metric.HIT_CHANCE) ? String.format(java.util.Locale.ROOT,
 				"Hit chance  %.1f%% → %.1f%%", comparison.before.hitChance * 100, comparison.after.hitChance * 100) : "Hit chance  Unsupported for this history mechanic");
-			text(this, comparison.available(ComparisonResult.Metric.THEORETICAL_DPS) ? String.format(java.util.Locale.ROOT,
-				"Theoretical DPS  %.2f → %.2f  (%+.2f)", comparison.before.dps, comparison.after.dps, comparison.dpsGain()) : "Theoretical DPS  Unsupported for this history mechanic");
+			text(this, String.format(java.util.Locale.ROOT, "Attack interval  %d → %d ticks (%.1f → %.1f s)",
+				comparison.before.attackTicks, comparison.after.attackTicks, comparison.before.attackTicks * 0.6, comparison.after.attackTicks * 0.6));
 			text(this, comparison.target.name + " · " + setup.prayer + " · " + setup.boost + ". Reference only.");
 		}
 		if (!upgrade.comparison.equals("NONE"))

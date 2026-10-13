@@ -23,7 +23,10 @@ public final class CombatComparisonService
 		items = catalog.comparison.items.stream().collect(Collectors.toUnmodifiableMap(i -> i.id, i -> i));
 	}
 	public PoweredMagic.Setup propose(AccountSnapshot a)
+	{ return propose(a, "neutral-zero-defence"); }
+	public PoweredMagic.Setup propose(AccountSnapshot a, String targetId)
 	{
+		if (target(targetId) == null) { throw new IllegalArgumentException("Unknown reference target"); }
 		Map<String, Integer> slots = new LinkedHashMap<>();
 		Map<String, String> provenance = new LinkedHashMap<>();
 		for (String slot : PoweredMagic.SLOTS)
@@ -51,7 +54,7 @@ public final class CombatComparisonService
 		{ slots.put("head", -1); provenance.put("head", "Unsupported equipped gear without slot evidence."); }
 		PoweredMagic.Setup proposal = new PoweredMagic.Setup(slots, PoweredMagic.Prayer.NONE, PoweredMagic.Boost.NONE,
 			PoweredMagic.Style.ACCURATE, false, false,
-			slots.get("body") > 0 && items.containsKey(slots.get("body")) && a.atLeast("MAGIC", 85) == Truth.TRUE ? "graardor" : "dharok", provenance);
+			targetId, provenance);
 		// Compare observed charged staff packages, including removal of an off-hand for Shadow.
 		double best = -1;
 		for (KnowledgeCatalog.CombatItem weapon : items.values().stream().filter(i -> i.weapon != null
@@ -150,15 +153,16 @@ public final class CombatComparisonService
 	{ return upgrade.comparison.equals("NONE") ? unavailable(setup, "This specialist role has no supported combat model.") : compare(a, p, setup, upgrade.itemId); }
 	public ComparisonResult compare(AccountSnapshot a, Preferences p, CombatSetup setup, int candidateId)
 	{
-		String error = validate(a, p, setup);
-		if (error != null) { return unavailable(setup, error); }
-		TargetProfile target = target(setup.target);
-		if (!target.scalingSupported) { return unavailable(setup, "ToA phase, raid level, path and party scaling are not supported. Select a reviewed non-ToA target; no default invocation is invented."); }
 		KnowledgeCatalog.CombatItem candidate = items.get(candidateId);
+		boolean weaponComparison = candidate != null && candidate.weapon != null;
+		String error = validate(a, p, setup);
+		if (error != null) { return unavailable(setup, error, weaponComparison); }
+		TargetProfile target = target(setup.target);
+		if (!target.scalingSupported) { return unavailable(setup, "ToA phase, raid level, path and party scaling are not supported. Select a reviewed non-ToA target; no default invocation is invented.", weaponComparison); }
 		if (candidate == null) { return unavailable(setup, "Candidate mechanics are not supported."); }
 		if (candidate.weapon != null && candidate.weapon.equals("SWAMP") && !items.get(setup.slots.get("weapon")).weapon.equals("SEAS"))
-		{ return unavailable(setup, "Swamp requires a charged seas baseline; keep the stronger owned powered staff."); }
-		error = equipError(a, p, candidateId); if (error != null) { return unavailable(setup, error + " Retain the plan-ahead route."); }
+		{ return unavailable(setup, "Swamp requires a charged seas baseline; keep the stronger owned powered staff.", true); }
+		error = equipError(a, p, candidateId); if (error != null) { return unavailable(setup, error + " Retain the plan-ahead route.", weaponComparison); }
 		Map<String, Integer> afterSlots = new LinkedHashMap<>(setup.slots); afterSlots.put(candidate.slot, candidateId);
 		Map<String, String> afterProvenance = new LinkedHashMap<>(setup.provenance);
 		afterProvenance.put(candidate.slot, "Proposed candidate; charged and supplied assumption.");
@@ -180,17 +184,22 @@ public final class CombatComparisonService
 		{ assumptions.add("Ancient blessing remains equipped: zero magic attack/damage. Its +1 Prayer and God Wars protection do not change this fixed-prayer uninterrupted DPS scenario; prayer duration and trip utility are not modelled."); }
 		assumptions.add("Real Magic " + a.level("MAGIC") + " (" + a.levels.evidence() + "); visible " + before.visibleMagic
 			+ "; " + setup.prayer + "; " + setup.boost + "; " + setup.style + ". Prayer/boost are selected assumptions, not observed active.");
-		assumptions.add(target.name + " · NPC " + target.npcId + "; Magic " + target.magicLevel + "; defence bonus " + target.magicDefence
+		assumptions.add(target.name + (target.analytical ? " · Authored analytical reference; Defence " + target.defenceLevel : " · NPC " + target.npcId)
+			+ "; Magic " + target.magicLevel + "; magic-defence bonus " + target.magicDefence
 			+ "; defence roll " + target.defenceRoll() + ". No reduction, task, salve or elemental weakness; powered attacks receive no wind weakness.");
+		if (target.analytical) { assumptions.add("Ordinary attack rolls and damage distribution; accuracy is not guaranteed and damage is not forced to maximum. No HP, size, melee/ranged defensive stats, raid scaling or creature-family effects are assigned. This profile supports powered magic only; specialist usefulness requires an explicit encounter context."); }
 		assumptions.add("Attack bonus " + before.attackBonus + " → " + after.attackBonus + "; damage bonus " + before.damagePercent + "% → " + after.damagePercent
 			+ "%. Shadow multiplies equipment, including its weapon attack; caps gear damage before adding prayer. Off-hands are removed for Shadow.");
 		assumptions.add("Uninterrupted attacks: tridents/Sang 4 ticks, Eye 3, Shadow 5. Successful zero becomes 1; misses remain 0. Supplies/charges assumed; remaining charges not measured.");
+		assumptions.add("Attack interval " + before.attackTicks + " → " + after.attackTicks + " ticks ("
+			+ (before.attackTicks * 0.6) + " → " + (after.attackTicks * 0.6) + " seconds); DPS uses expected damage and hit chance.");
 		assumptions.add("Sang's current successful-hit proc: 20% adds 8 damage before the final zero floor; the reported max includes that proc. Healing is not converted into trips or extra kills.");
 		assumptions.add("Sang healing, Eye specials, Confliction history, ancient/elemental spells, ToA scaling, encounter time and trips remain separate model gaps.");
 		if (a.observedItem(22975) == Truth.TRUE && !setup.slots.containsValue(22975))
 		{ assumptions.add("Observed Brimstone is a competing ring: its accuracy proc is unsupported. This reference uses the strongest supported flat-stat alternative; it does not certify Brimstone inferior."); }
 		assumptions.add("Model " + catalog.comparison.modelVersion + "; knowledge " + catalog.version + "; sources " + sourceDescription(setup, afterSetup, target));
-		return new ComparisonResult(setup, afterSetup, before, after, target, support, reason, catalog.comparison.modelVersion, catalog.version, assumptions);
+		return new ComparisonResult(setup, afterSetup, before, after, target, support, reason, catalog.comparison.modelVersion, catalog.version, assumptions,
+			candidate.weapon != null || before.attackTicks != after.attackTicks);
 	}
 	private boolean hasHistoryEffect(CombatSetup setup)
 	{ return setup.slots.values().stream().filter(id -> id > 0).map(items::get).anyMatch(i -> i.unsupportedAccuracy
@@ -215,5 +224,7 @@ public final class CombatComparisonService
 		return result;
 	}
 	private ComparisonResult unavailable(CombatSetup setup, String reason)
-	{ return new ComparisonResult(setup, null, null, null, setup == null ? null : target(setup.target), support(PoweredMagic.Status.UNSUPPORTED), reason, catalog.comparison.modelVersion, catalog.version, List.of()); }
+	{ return unavailable(setup, reason, false); }
+	private ComparisonResult unavailable(CombatSetup setup, String reason, boolean dpsFirst)
+	{ return new ComparisonResult(setup, null, null, null, setup == null ? null : target(setup.target), support(PoweredMagic.Status.UNSUPPORTED), reason, catalog.comparison.modelVersion, catalog.version, List.of(), dpsFirst); }
 }

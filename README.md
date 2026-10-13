@@ -2,14 +2,14 @@
 
 **Your path to endgame PvM**
 
-R1.5a development build · 13 October 2026 · plugin 0.6.0 · knowledge r1.5a-1 · schema 7
+Neutral-reference development build · 13 October 2026 · plugin 0.6.1 · knowledge reference-1 · schema 8
 
 **This branch implements R1.5a for review on the integrated R1 baseline.** Effort-aware pursuit categories, deduplicated shared activities, compact native rows and responsive Browse retain all R1 comparisons/routes. The next-zenyte-shard estimate is conditional: mean/median/P90 in future eligible kills, optional session-only pace, and no completed-bracelet ETA. See [R1.5a validation and pending client checks](docs/validation/R1.5a.md).
 
 **Delivered: realistic powered-magic references and first endgame value.** Shadow,
 Ancestral hat/top/bottom, tormented bracelet and Magus ring join occult, swamp,
 Zaryte and treads. Complete supported slot setups produce max hit, hit chance and
-theoretical DPS on ordinary Dharok or General Graardor. The model includes charged
+theoretical DPS on **Enemy with 0 Defence** by default, with ordinary Dharok and General Graardor available as explicit contexts. The model includes charged
 tridents, Sang's current damage proc, Eye and Shadow; it respects fractional ring
 bonuses, prayer/boost assumptions and off-hand removal. Supported marginal changes
 influence deterministic advice. Native cards lead to **Value | Path** screens.
@@ -29,7 +29,7 @@ IronPath is intended to become a comprehensive endgame PvM upgrade advisor, incl
 
 R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. This branch delivers **R1.5a: pursuit priority and visual foundation** for review; R1.5b and R2–R8 extend effort models, combat families, coverage, maintenance and real-client evidence. Ranged model work can overlap this increment. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
 
-The next planned comparison follow-up replaces the automatic boss reference with **Enemy with 0 Defence** and makes theoretical DPS the primary weapon metric, including attack speed. Armour/jewellery with unchanged speed may keep max hit first. This is not implemented in this build; exact target assumptions and honest per-metric gaps remain required. See the [delivery assignment](TASKS.md#reference-baseline-and-metric-presentation--next-comparison-increment-not-implemented).
+The comparison follow-up is implemented on this branch: **Enemy with 0 Defence** is the automatic powered-magic reference. Weapons show theoretical DPS before → after and its absolute delta first; unchanged-speed armour/jewellery keep max hit first. The authored target has Defence 0, Magic 0 and magic-defence bonus 0; ordinary rolls give defence roll 576 and do not guarantee accuracy or maximum damage. Details show hit chance, attack interval and per-metric gaps. See [validation and pending client checks](docs/validation/neutral-reference.md).
 
 Recommendations must explain what changes relative to owned alternatives, where it matters, when to defer, and how to obtain the upgrade. Strong alternatives and partial observations change the advice. An unread bank never proves an item is missing. Long-term upgrades remain visible alongside nearer opportunities.
 
@@ -62,14 +62,14 @@ Reuse the existing T1–P3 RuneLite implementation and preserve its licence noti
 
 The current development baseline is `main`: PRs #5–#10 were integrated on 13 October 2026 with merge commits, preserving all earlier work. R1 is integrated; this branch implements R1.5a for review, with integration and client checks pending. Earlier stacked PRs are historical records. Start each new delivery from updated main and open a focused PR back to main. See [integration validation](docs/validation/main-integration-20261013.md).
 
-To test this R1.5a PR before integration, close the client and check out its branch:
+To test this comparison follow-up before integration, close the client and check out its branch:
 
 ```sh
 git fetch origin
-git switch r1.5a-pursuit-visual-foundation
+git switch reference-neutral-dps
 ```
 
-Main remains the shared baseline until the PR is merged. Historical planning branches and validation reports describe their original deliveries.
+This follow-up depends on R1.5a PR #12 and is reviewed separately; main remains the shared baseline until integration. Historical planning branches and validation reports describe their original deliveries.
 
 The existing official RuneLite template, Gradle 8.10, Java release 11 and notices
 are retained; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). RuneLite resolves
@@ -140,10 +140,11 @@ successful kills. Leave account cases you cannot exercise pending.
    actual remaining work, separate equip checks and expandable ALL/ANY recipe
    branches. **Back to upgrades** retains Browse category, selection and scroll.
    Shared activity detail names useful families, exclusions and uncertain rewards.
-3. The complete reference prefers supported observed owned pieces and charged
-   staff packages. A reviewed mage body at 85+ Magic selects ordinary Graardor as
-   an explicit high-defence reference; smaller templates start at Dharok.
-   These are reference profiles, not inferred encounter interests or readiness.
+3. The complete reference prefers supported observed owned pieces and the strongest
+   supported charged staff/off-hand package for **Enemy with 0 Defence**.
+   Boss profiles remain explicit alternatives in the target selector. Neutral DPS
+   can favour a faster staff even when Shadow has a larger max hit; specialist
+   usefulness and encounter readiness require their own context.
    No prayer/boost and Accurate are default assumptions. Shadow removes the
    off-hand. Unknown/unreviewed equipped slots with no supported alternative
    block numbers until a focused correction or explicit template exclusion.

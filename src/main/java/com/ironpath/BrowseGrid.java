@@ -31,7 +31,9 @@ final class BrowseGrid extends JPanel implements LayoutManager
 					if (used > 0 && used+metrics.stringWidth(" ")+size > cell-12) { lines++; used=0; }
 					used += (used == 0 ? 0 : metrics.stringWidth(" "))+size;
 				}
-				if (lines > 3) { return 1; }
+				// Before/after DPS and its declared reference may wrap below the title.
+				// Allow taller value rows; long item names still trigger one column.
+				if (lines > ("comparison-headline".equals(text.getName()) ? 6 : 3)) { return 1; }
 			}
 		}
 		return 2;

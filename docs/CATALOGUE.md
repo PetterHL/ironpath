@@ -1,5 +1,7 @@
 # Endgame coverage inventory
 
+**Comparison follow-up, 13 October 2026:** powered-magic outcomes now use the authored Enemy with 0 Defence baseline by default, with DPS-first weapon summaries and max-hit-first unchanged-speed accessories. The analytical profile is not counted as another useful encounter for ranking breadth. Existing specialist/boss contexts and all coverage gaps remain. See [validation](validation/neutral-reference.md).
+
 **R1.5a client follow-up:** Ancient blessing (20235) is supported as an observed ammo-slot reference item with reviewed zero magic stats. Its +1 Prayer and faction protection are outside uninterrupted DPS; other unsupported ammo remains a model gap. See [source review](RESEARCH.md).
 
 **R1 delivery update, 13 October 2026:** the inventory below remains uncapped. Current validated magic outcomes and exact supported forms are recorded in the bundled catalogue and [R1 validation](validation/R1.md). Ten shipped outcomes are one increment; D/R rows and future releases stay inactive until their contracts are reviewed.
