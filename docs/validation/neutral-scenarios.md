@@ -78,5 +78,3 @@
 ## Nearly complete supported magic
 
 No remaining supported outcome; wider combat-family coverage remains pending.
-
-
