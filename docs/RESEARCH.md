@@ -1,5 +1,88 @@
 # IronPath research and evidence
 
+## Acquisition effort and native UI investigation — 13 October 2026
+
+**Status:** research and proposed implementation contract. No acquisition estimate, personal performance tracker or redesigned UI was implemented here. R1 evidence below remains unchanged. The source review establishes mechanics and technical feasibility, not reliable account-specific kill rates or Hub approval.
+
+### Evidence register and conclusions
+
+Sources accessed/reviewed 13 October 2026. RuneLite source was inspected at master and pinned to `5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03`; revalidate public APIs against the implementation's resolved client version (R1 reports 1.13.1). These are development references, not new runtime dependencies. No upstream code, sprites, guide text or bulk dataset is imported.
+
+| ID / source | Verified finding and permissible inference | Limit / maintenance need |
+|---|---|---|
+| E1 [Demonic gorilla, revision 15362958](https://oldschool.runescape.wiki/w/Demonic_gorilla?oldid=15362958) | Full page retrieved via normal HTTPS; drop table lists one zenyte shard at 1/300. Candidate for the first fixed-probability acquisition model | Estimate the **next shard**, not a completed bracelet or four jewellery pieces; account for MM2/access, crafting/onyx/assembly and competing shard allocation separately. No kills/hour verified |
+| E2 [Zulrah, revision 15366227](https://oldschool.runescape.wiki/w/Zulrah?oldid=15366227) | Full page retrieved; magic fang is listed as two 1/1,024 rolls per kill | Multiple-roll extension must distinguish expected quantity from chance of at least one; do not encode exact 1/512 per kill. No player pacing verified |
+| E3 [Jagex CoX changes, 12 August 2026](https://secure.runescape.com/m=news/summer-sweep-up---agility--chambers-of-xeric-changes?oldschool=1) | Implemented table has total regular weighting 60, CM 56; tbow weight 2 in each and each Ancestral piece weight 4 | These are conditional unique weights, not per-raid personal chances. Old 69-total tables are stale. Points, caps, recipient allocation, mode and later fixes require a complete model before raid-hour claims |
+| E4 [Jagex ToA drop mechanics, 28 October 2022](https://secure.runescape.com/m=news/tombs-of-amascut-drop-mechanics--osmumtens-fang?oldschool=1) | Historical primary explanation separates raid points/level, team recipient share and unique weights; Shadow is 1/24 conditional on the relevant unique roll. Low-level restrictions and stateful tertiary rewards differ | Historical model evidence, **not a current complete ToA audit**. Recheck all later updates, caps and eligibility before promotion. Never show 1/24 raids as Shadow's chance |
+| E5 [RuneLite PluginPanel](https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-client/src/main/java/net/runelite/client/ui/PluginPanel.java) | Content panel preferred width 225; border inset 6 each side. Wrapper prefers 225+17 for scrollbar; horizontal scrolling is disabled | Do not subtract the scrollbar twice. Measure actual viewport/insets and font metrics; OS/client scaling must be checked in client |
+| E6 [RuneLite ItemManager](https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-client/src/main/java/net/runelite/client/game/ItemManager.java) | `getImage` provides cached asynchronous game sprites; documented `addTo` refreshes labels/buttons when ready | Existing IronPath already uses this API. Preserve native sprite size/aspect and async identity guards; client data needed for genuine previews |
+| E7 [RuneLite RaidsPlugin](https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-client/src/main/java/net/runelite/client/plugins/raids/RaidsPlugin.java) | CoX plugin observes start/floor/finish messages and reads total/personal points | Proof selected passive observation is feasible; not a universal raid-timing API or complete effort measure. In-raid timing omits scouting, banking, failures and team formation |
+| E8 [RuneLite ChatCommandsPlugin](https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-client/src/main/java/net/runelite/client/plugins/chatcommands/ChatCommandsPlugin.java) | Recognises KC and several completion/PB message formats | Some captures specifically extract PB, not the latest duration. Reimplement only narrowly validated local event adapters; do not use PB as average pace or invoke chat upload services |
+| E9 [RuneLite LootTrackerPlugin](https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-client/src/main/java/net/runelite/client/plugins/loottracker/LootTrackerPlugin.java) | Handles `ServerNpcLoot` and guarded reward-chest reads, including ToA metadata; multiple event paths exist | Loot event is not a run start/end or proof of all attempts. Avoid duplicate chest/loot/chat counts and private-plugin dependencies. Its remote/synced storage behaviour is not IronPath's privacy design |
+| E10 [Hub restrictions](https://github.com/runelite/runelite/wiki/Rejected-or-Rolled-Back-Features), [Hub review](https://github.com/runelite/runelite/wiki/Plugin-Hub-Review), [Jagex client guidelines](https://secure.runescape.com/m=news/third-party-client-guidelines?oldschool=1) | Review covers game rules/security. Restrictions include window/focus manipulation and content simulation. Existing plugins are not automatic approval for new ones | Passive retrospective summaries and analytic drop probabilities appear consistent with a local advisor; this is engineering judgment, not approval. Recheck before delivery; seek targeted clarification if a planned adapter/encounter model approaches a restriction. No live combat instructions, automation or playable simulation |
+
+E1 local retrieval SHA-256: `94c97da9b26ad8c0e902a8886e3e310ca45ebb6cd055ba54e1f672fe77e618df`; E2: `87830c2f671d9133129694d55188230edfa6cc306e2d7d140f78236299cb58b3`. These identify the UTF-8 saved responses; linked oldid is the durable review reference. Web-reader access failed for these pages, while ordinary HTTPS retrieval succeeded; no access-control bypass was used. Raw pages are not redistributed. Other Wiki snippets are discovery only. No current specialist-community pacing benchmark or player session was verified in this assignment.
+
+### What gear can and cannot tell us
+
+Combat levels and full loadouts support checked attack comparisons. Gear may establish a supported setup and identify known hard requirements; it does not reveal execution, death rate, movement, phase skips, switches, puzzle speed, scouting, group availability, supplies or resupply habits. Even exact uninterrupted DPS does not establish average boss or raid cycle duration. Do not scale a guide's kills/hour by the ratio of two DPS values or infer a raid invocation from gear.
+
+Separate three clocks: (1) encounter timer, (2) repeat cycle including banking/travel/respawn/failures, (3) broader acquisition effort including prerequisites and supplying the activity. Hours always name their scope. Never turn active hours into calendar days without an explicitly selected play schedule. Learning/challenge rewards such as Inferno and quiver stay qualitative until a credible individual basis exists; no equipment-to-success probability.
+
+Delivery tiers (dependencies and acceptance live only in TASKS):
+
+| Support | Useful output | Withheld |
+|---|---|---|
+| A0 reviewed route only | Remaining prerequisites, effort/tail/coordination/upkeep labels with rationale; alternatives and shared rewards | Numerical hours/odds without reviewed mechanics |
+| A1 reviewed probability | Mean trials, median and P90 for a supported next reward under stated eligible trials | Time without pacing; full-item total if components/preparation remain unknown |
+| A2 explicit pace scenario | Conditional hour summaries using player-entered or separately reviewed cycle pace; visible sensitivity | “Your expected time” from an unobserved benchmark; exact totals across unknown prerequisites |
+| A3 validated local observation (later) | Session-derived cycle pace for matched mode/team/setup, sample size and overhead coverage; labelled recent estimate | Historic account inference, PB-as-average, automatic transfer to harder modes/new gear |
+| A4 complex route models (later, selective) | Validated stateful/multi-component distributions or bounded analytic scenarios when useful | Universal simulator, every-item exact ETA, automatic route optimiser |
+
+A0 remains useful indefinitely for individual unsupported mechanics; it must not become an excuse to abandon quantitative coverage. A1/A2 are independent of full encounter simulation. Do not block ranged/melee models on A3/A4.
+
+### Acquisition mathematics and uncertainty contract
+
+For independent eligible trials with a fixed success probability `0 < p < 1`, the number `N` of **future trials including the successful trial** is geometric:
+
+```
+P(N <= n) = 1 - (1-p)^n             n = 0, 1, ...
+E[N] = 1/p
+n_q = ceil(log(1-q) / log(1-p))     0 < q < 1
+E[hours | r] = 1/(p*r)
+hours_q | r = n_q/r                r = eligible trials per active hour
+```
+
+Use numerically stable `log1p`/`expm1` equivalents and boundary checks. `p=1` means one trial; `p=0` has no finite completion time; missing/invalid p or nonpositive pace is unavailable, never zero. Within-trial completion timing is intentionally not modelled. For a fixed-rate drop, past dry KC does not reduce remaining expectation or increase the next-trial chance. Never show an RNG percentage-completed bar.
+
+**Worked E1 scenario, next zenyte shard:** p=1/300 gives mean 300 kills, P50=208, P90=690, P10=32. At an **illustrative, unmeasured** 40 eligible kills/hour: mean 7.5 h, median 5.2 h, P90 about 17.3 h. This is not a recommended/default player pace. A sensitivity input of 30–50 kills/hour gives mean 6–10 h; it is a pacing scenario range, not a confidence interval. The UI must retain “next shard only; access/onyx/crafting/supplies excluded.” Ten percent still need more than P90; the mean is not a deadline or a 50% completion point. Default to kills until a pace is supplied; no compulsory input flow.
+
+**E2 multiple rolls:** if the two specified rolls are independent and each has probability 1/1024, chance of at least one magic fang per kill is `1-(1023/1024)^2`, whereas expected fang count is `2/1024`. These quantities differ. Verify independence/eligibility and source mechanics when implementing; don't silently round a per-roll table into an exact per-kill probability. Multiple successes and other useful rewards require the actual joint loot structure.
+
+With varying known probabilities, `P(no success after n)=product(1-p_i)` only for conditionally independent trials; do not plug average team points into a nonlinear model and call it exact. Raid personal chance must model both the unique event and allocation to this player. Loot weights conditional on a unique are not personal drop rates. Hidden/stateful mechanics (e.g. vestige rolls), duplicate protection, guaranteed counters, ordered components and changing eligibility require an explicit state model. Unobserved hidden state cannot be inferred from a dry streak. Keep those at A0 until validated.
+
+For sequential components, linearity can combine **means** when the actual process and all component expectations are supported; medians/P90s cannot be added. Components from the same activity can overlap and must not be treated as independent sequential grinds. Review reuse of prerequisites, allocation of shared resources and owned intermediates; an unknown component blocks a full-route estimate while permitting a clearly labelled partial estimate. Deterministic training/quest estimates are separate scenario inputs, not RNG drops. No Monte Carlo or generic graph simulator is needed for R1.5.
+
+For an activity's useful-reward set, sum mutually exclusive outcomes only within the same roll. For independent parallel rolls use the correct complement/product; otherwise use the joint model or withhold the union. “Any useful reward” is not “all useful rewards,” and expected unique count is not expected distinct upgrades. Re-evaluate the useful set after ownership changes; duplicate scrolls or a consumed unlock must not keep inflating activity value. Supply income is not GE-priced upgrade utility.
+
+Two different uncertainties must remain distinct: **RNG distribution conditional on mechanics/pace** and **uncertainty about mechanics, pace and account inputs**. Use mean, median and “90% by … under this scenario; 10% later,” with no false upper guarantee. Optional P10–P90 is a central predictive range conditional on the assumptions, not an empirical confidence interval. Round hours to sensible precision and expose trial units and exclusions near the numbers. A wide long tail may argue for diversification, but does not prove one player's optimal choice.
+
+### Passive observation feasibility and validation limits
+
+A supported activity adapter can observe public client events, correlate start/finish/loot/KC, and keep session summaries locally. No universal trustworthy duration/loot event exists for all content. A missing event, hopping, mid-run plugin enable, disconnect or logout creates a **censored/invalid observation**, not a successful fast completion. NPC despawn is not sufficient proof of player credit or loot eligibility; Boss Timers is primarily a respawn timer, not an acquisition-efficiency oracle.
+
+Use a small explicit state machine per supported activity: idle → observed start → complete/failed/abandoned, with generation and deduplication keys. Preserve mode/team/points and timer scope; reset on identity/profile/unsupported-world transitions. Compute cycle throughput from total eligible completions divided by recorded active session time, including attributable failure and banking costs. Do not average reciprocals of individual successful kill durations. Show successful in-raid duration separately when full-cycle time is unavailable. User-explicit pauses can exclude breaks; idle heuristics must be labelled rather than secretly making pace look faster.
+
+Initial A3 calibration proposal: at least 10 eligible completed attempts across two fully observed sessions for an automatically selected session-pace estimate; below that show observations as provisional and keep the scenario/manual fallback. This is a product minimum to test, not statistical assurance. Retain failures/censored counts, report median/range and sample count, and use a bounded recent window (e.g. last 30 matching completions) with explicit reset after material mode/team changes. Never infer drop rates from this small sample. Start with one validated activity and event-replay fixtures before widening adapters. Compare estimates to a manually timed actual-client session; exact thresholds/window remain unvalidated.
+
+Keep raw events/pace in memory with no telemetry or chat uploads. Historical persistence would require an explicit later storage/retention/migration decision, deletion control and account isolation. Prefer direct supported public events over scraping other plugins' config/private state; optional integration needs its own API/version review. The source code proves technical possibility, not reliability on every live run or policy acceptance of every use.
+
+### Promotion and maintenance
+
+Each acquisition fact needs outcome/route/activity/mode, precise trial unit and recipient, prerequisites, roll count/table weights, duplicate/state rules, source URL/revision/date, original evidence summary, model version, reviewed date, known exclusions and invalidation dependencies. Each pace needs setup/team/mode, successful-versus-attempt rate, clock/overhead scope, provenance and sample/benchmark limitations. Quantitative promotion requires independent hand cases and a pinned independent reference where suitable; discrepancies withdraw affected claims.
+
+Recheck changed drop rates, reward pools, points formulas/caps, mode restrictions, component recipes, access rules, supply requirements, item IDs and event formats before each affected release. A source update triggers review, not automatic publication. Invalid odds disable dependent time/priority claims while preserving independently supported value/path data. No runtime scraping, background web service or account export. All remaining research and implementation work is assigned in TASKS, not a second backlog here.
+
 ## R1 current mechanics review — 13 October 2026
 
 Individual current pages were retrieved over permitted HTTPS and reviewed with their variant fields, equip requirements, bonuses, recipes and revision footers. The new `r1-*` records in the [bundled register](../src/main/resources/com/ironpath/catalog.json) retain exact revisions, review/access dates and item/model/route/context dependencies. Explanations and numeric code are original. No bulk upstream equipment data, calculator code, guide prose, game artwork or player data is redistributed.
@@ -14,7 +97,7 @@ ToA's multiplier/cap is hand-checked independently, but no encounter figures shi
 
 ## Product-reset investigation — 12 October 2026
 
-This section records the current investigation. [DESIGN](DESIGN.md), [CATALOGUE](CATALOGUE.md), [UX](UX.md) and the active [backlog](../TASKS.md) control future work. Historical research below remains evidence, not a scope limit. No live account, new game client, current creator video or gated Discord strategy guide was inspected in this session. No application tests were rerun.
+This section records the historical product-reset investigation; the newer acquisition investigation above supersedes its ranking/UI scope. [DESIGN](DESIGN.md), [CATALOGUE](CATALOGUE.md), [UX](UX.md) and the active [backlog](../TASKS.md) control future work. Historical research below remains evidence, not a scope limit. No live account, new game client, current creator video or gated Discord strategy guide was inspected in this session. No application tests were rerun.
 
 ### Independent conclusion
 

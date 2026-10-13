@@ -4,6 +4,24 @@
 
 Research cut: **12 October 2026**. This is the initial comprehensive coverage map, not a shipped recommendation dataset or a global BiS tier list. It has no fixed upper bound. TASKS.md owns delivery status; this file owns coverage and evidence gaps.
 
+## Effort and acquisition representation — proposed R1.5 extension
+
+Keep D/R/V/Q and the uncapped inventory unchanged: recommendation validation, combat-model support and acquisition-model support are independent. No runtime catalogue/schema data changes in this documentation PR. Add acquisition support A0–A4 per route as specified in RESEARCH, with stable activity/mode/reward-family and estimate scope, effort/tail rationale, source/model versions, roll semantics, exclusions and unsupported reasons. **Pursuit category is derived for the account, not a fixed item rank.** These mappings are design/research classifications, not newly shipped estimates or an additional backlog.
+
+| Representative family | Acquisition classification / shared value | Current evidence boundary for implementation |
+|---|---|---|
+| Tormented / other zenyte allocation | Next-shard fixed RNG, then resources/skills/assembly; one shard cannot fund several jewellery choices | E1 reviewed rate; R1.5a first A1/A2 candidate. Full-item hours unavailable with unknown remaining preparation |
+| Swamp trident / magic fang | Multiple rolls per Zulrah kill; other useful rewards only if account-relevant | E2 reviewed table; R1.5b, not exact 1/512 simplification; Shadow ownership changes value |
+| Tbow / Ancestral / prayers and other CoX rewards | Shared activity, points/mode/recipient-dependent RNG; tbow long-tail candidate, not universal active pursuit | August weights verified, personal trial model and pace not validated; A0 until complete audit |
+| Shadow / other ToA outcomes | Shared activity, raid-level/points/recipient-dependent RNG | Historical primary weighting evidence only; current complete estimate unsupported |
+| Scythe / other ToB outcomes | Shared activity, personal reward/participation/mode mechanics; long-tail | A0 pending complete loot/pace audit; retain specialist value and upkeep |
+| Nex / Zaryte / Torva | Team/contribution-dependent rewards and components; owned horn/pieces change remaining effort | A0; no personal time from team drop rate. Shards, ACB and repair/assembly remain separate |
+| Magus / other vestiges | Stateful hidden-drop mechanics plus visible components/skills | A0; no geometric shortcut from headline mean or inferred hidden progress |
+| Infernal cape / quiver / permanent rewards | Deterministic claim conditional on successful challenge; learning effort unknown | A0; gear does not determine attempts or success rate |
+
+All active outcomes still require complete truthful paths and useful value even when acquisition numbers are unsupported. Group activity rewards by distinct account-relevant families; item variants and three dependent armour pieces cannot inflate ranking. Unknown ownership does not count as confirmed shared opportunity. TASKS alone assigns delivery and acceptance.
+
+
 ## How to read and maintain this inventory
 
 **D** = discovered candidate; name/family cross-checked against reference item data or existing evidence, but current route/mechanics need item-level review. **R** = researched candidate with relevant mechanics/release evidence inspected; not an implemented validated recommendation. **V** = validated recommendation in the P4a bundle for its specific contexts, with real-client validation still pending. **Q0** = quantitative support only within P4a's documented trident/Dharok contract. **—** = no shipped quantitative model. A proposed model code is a backlog mapping, never a claim of calculation support.

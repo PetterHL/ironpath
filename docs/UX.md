@@ -1,95 +1,86 @@
-# RuneLite UI direction
+# IronPath native UI specification
 
-Design specification, 12 October 2026. The image is a **proposed wireframe**, not an implemented UI or live account screenshot. The three screens use separate synthetic examples. Only the stated 90-Magic trident max-hit example comes from P4a's recorded calculation; no invented improvement percentages are shown.
+13 October 2026 · **proposed R1.5 design, not implemented or live-client validated**. Keep native Swing/PluginPanel. [Earlier wireframes and R1 evidence](UX-20261012.md) remain historical references; [TASKS](../TASKS.md) is the sole delivery backlog.
 
-![Three native-width sidebar wireframes](images/upgrade-advisor-wireframes.png)
+![Proposed hybrid overview, Browse, Value and Path at native panel width](images/r15/effort-wireframes.png)
 
-[Editable SVG](images/upgrade-advisor-wireframes.svg)
+[Editable SVG](images/r15/effort-wireframes.svg). Four independent synthetic states, each a 225-logical-pixel content panel. The labelled sprite wells are placeholders for native RuneLite sprites, not imported/generated OSRS artwork. The next-shard numbers are the explicitly illustrative 40-kills/hour scenario in RESEARCH; no real player pace is implied. The Value example uses R1's recorded synthetic tormented comparison, max hit 33→35 and DPS 2.32→2.51 on ordinary Graardor; it is not universal item value. Prototype text/category combinations illustrate the proposed decisions, not results of a new ranker run.
 
-## R1 implementation evidence — 13 October 2026
+## Assessment and layout decision
 
-The original wireframes above remain design references. R1 implements native overview cards, Value/Path navigation, before/after identity, supported metric rows, assumptions/source disclosures, focused slot/context corrections, compact prerequisite evidence, and Back with overview scroll restoration. The headless screenshots in [validation/R1.md](validation/R1.md) use real Swing controls at 225 pixels and synthetic accounts. ItemManager supplies sprites in the actual client; the captures use an accessible placeholder because no game client is connected.
+Reviewed [R1 overview](images/r1/r1-overview.png) and [R1 Value](images/r1/r1-value.png). These are headless native Swing captures; the screenshot mentioned in the brief was not attached. Current problems are visible: repeated full-width action bars, long primary-card paragraphs, weak distinction between immediate work and rare-item aspirations, repeated metrics and prominent technical/account controls. R1 already calls ItemManager, so imagery is an integration/layout improvement rather than missing infrastructure.
 
-Clipped Value/Path labels found in inspection were corrected and the screens recaptured. Overview, numerical detail, unsupported ToA detail, ordinary path, branching Magus recipe and Zaryte quantity path were inspected. Native client 100%, 125%, 150% and 200% scaling, sprite behavior and player usefulness are still pending; these captures do not pass R8. Full search/filter and comprehensive coverage remain later capabilities.
+**Choose a hybrid:** concise full-width rows for pursuits and shared activities, followed by a small long-term preview; Browse uses two columns where names and text fit. This gives the requested visual discovery without squeezing priority explanations into approximately 100 pixels. All items remain reachable; visible preview counts are not content limits. No mandatory goal or setup screen.
 
-## Native implementation decision
+RuneLite's inspected PluginPanel prefers 225 content pixels and 6-pixel insets; its wrapper adds 17 for the scrollbar. Thus an ordinary 213-pixel content area with a 6-pixel gutter permits two approximately 103-pixel cards. Do not subtract the wrapper's scrollbar allowance again. Measure the actual viewport/insets in the client. [Pinned source](https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-client/src/main/java/net/runelite/client/ui/PluginPanel.java).
 
-Use the existing `PluginPanel`, Swing and `ItemManager` in the same client. Inspected RuneLite source declares `PANEL_WIDTH = 225`, a 17-pixel scrollbar allowance and 6-pixel border offsets; usable card content is narrower still. Design at that width first, then test RuneLite UI scaling and Windows display scaling. This is not a React/HTML/browser surface.
+Two-column cards stack sprite, two/three-line name, one short value line and one effort/status line; never put a paragraph beside the sprite. Reflow the whole Browse grid to one column when effective cell width is under 100 logical pixels or actual font metrics cannot display the selected names/statuses without clipping. Permit taller rows where useful; never shrink the client font or rely on hover for a full name. Scaling is not just multiplying an exported image: test actual font metrics, OS DPI and client UI settings. A single-column layout toggle in Preferences is optional accessibility support, not a prerequisite.
 
-Use one column of cards with native item sprites and a clear visual hierarchy. A two-column grid is useful for a compact Browse icon grid only if names remain accessible; it is unsuitable for recommendation explanations at native width. Three primary recommendations plus Browse is a starting layout, not a maximum number of outcomes. Preserve scrolling position and filters when returning from details.
+## Overview and discovery
 
-A custom wider sidebar or a user-opened modeless Swing detail dialog may be technically possible, but is not promised as Plugin Hub compatible. The current restrictions prohibit manipulating the client's window/focus and warn that existing plugins may be grandfathered. Build all core functions in the sidebar. Revisit a larger optional surface only after a genuine usability need and current policy/API verification. Do not introduce JavaFX, embedded browsers, external-process renderers or an account-export website.
+Header: IronPath, one line of context such as “Based on observed gear”; small **Browse** action. A quiet account-evidence link opens timestamps/unknowns. Knowledge versions, diagnostics and goals live behind Account/Preferences, below the main content. No repeated freshness/version block in details.
 
-References: [PluginPanel source](https://github.com/runelite/runelite/blob/master/runelite-client/src/main/java/net/runelite/client/ui/PluginPanel.java), [API](https://static.runelite.net/runelite-client/apidocs/net/runelite/client/ui/PluginPanel.html), [ItemManager](https://github.com/runelite/runelite/blob/master/runelite-client/src/main/java/net/runelite/client/game/ItemManager.java), [current restrictions](https://github.com/runelite/runelite/wiki/Rejected-or-Rolled-Back-Features).
+1. **Worth pursuing:** up to two concise rows, each a native sprite, full item name, one supported value headline and short effort/status. Use “Conditional”/“Check first” instead when ownership or access changes the conclusion. A title/chevron is the visible action; the row is also clickable. Do not show only a glowing high DPS number without a target/reference label.
+2. **Worth doing:** one activity row, e.g. Chambers of Xeric with representative reward sprites and “Several useful rewards.” Activation opens its shared-reward view: useful families, owned/uncertain exclusions, route mode, any supported probabilities and a reason to continue/defer. It must explicitly distinguish “any useful reward” from obtaining all of them. This is an activity view inside the same panel, not a new main navigation tab.
+3. **Long-term upgrades:** compact item preview and “Browse all.” Preserve discovery of Shadow/tbow/Scythe even when poor immediate grinds. If no near-term work exists, state that honestly and bring the remaining long-term/specialist choices into view without relabelling them efficient.
+4. A compact quick-action section appears only for real assembly/claim/unlock opportunities. Account/Preferences follows the content. Avoid full-width administration buttons between recommendations.
 
-## Overview
+Browse has **All / Pursue / Long-term / Check** category selection in R1.5a and a visible result count. Full search/style/slot/encounter filtering comes later in R6. Default All retains conditional/specialist/deferred relevant items. Owned outcomes can be inspected through a secondary toggle; owned is distinct from current usability. Research-only catalogue entries stay separate and cannot impersonate personalised recommendations. Keep category selection, scroll, selected item and keyboard focus when returning from detail.
 
-Header: **IronPath**, small tagline, Browse action. Beneath it, one unobtrusive account freshness line. No goal selector or checklist above recommendations. No giant “unknown” panel if useful conditional advice is already possible.
+### Card information budget
 
-Card anatomy:
+| Surface | Show | Put in detail |
+|---|---|---|
+| Pursuit row | Sprite; full name; one short value phrase; effort/status; compact chevron | Before/after setup, full metrics, prerequisites, sources and ownership controls |
+| Browse tile | Sprite above full wrapping name; one concise value; one effort phrase with text status | Per-metric figures and comparison assumptions; do not cram all five axes into a badge |
+| Activity row | Activity title; relevant reward sprites/names; why it offers several chances to improve | Reward family list, overlap/duplicates, points/mode/pace inputs and exclusions |
+| No estimate | “Effort not estimated” or “Check requirements” | Missing mechanic/input and useful next action |
 
-- 32×32 item sprite beside a wrapping bold item name. For a set, use its representative item and name the affected pieces in details. Wireframe squares are placeholders; production uses RuneLite's client image service with an accessible text fallback.
-- A single strongest account-specific value statement. Supported numerical headline: “Max hit 25 → 28 · reference”. Qualitative headline: identify the actual role and baseline, not “good at many bosses”.
-- One or two encounter labels; a longer list belongs in details.
-- One concise status: Worth comparing, Plan ahead, Ownership unconfirmed, or Small gain. Status colour is supplementary to words.
-- Remaining effort in plain language, and a clear Details action. Avoid acquisition promises from unknown access.
+For qualitative cards use “Magic support,” “Special attack role” or another supported role; avoid generic “Huge upgrade.” For numerical headlines use one metric plus context, e.g. “+2 max hit · reference”; details identify the full setup/target. Do not display an hours badge unless the time scope is clear enough for that surface. “Long-term” is a recommendation category, not a drop probability.
 
-Show a few priorities immediately and a Browse list below, with optional style, slot, encounter, readiness and owned/deferred filters. Defaults must not hide long-term upgrades. Search may locate an item outside personalised recommendations; such a detail clearly says “Catalogue entry” rather than implying it was recommended. Research-only candidates belong in a separate coverage view, not as active upgrade cards.
+## Value detail
 
-Quick actions such as consuming a scroll or assembling owned parts form a small separate section. Account, preferences, source versions and diagnostics are secondary. Optional encounter interests can be chosen in Preferences or from a relevant card; no account-wide questionnaire.
+Compact Back, item sprite/name, recommendation category, then **Value | Path**. No oversized repeated Open details control.
 
-## Upgrade details
+- Lead with why it matters **for this account**, relative to the strongest supported owned alternative. Include the active-priority/defer reason in plain language near the top.
+- Show the selected context beside one before/after summary. Metric rows present supported max hit, hit chance and theoretical DPS once; unsupported metrics keep a precise gap. Max hit and accuracy are not interchangeable.
+- Before/after equipment disclosure names removed off-hand/set changes. Input assumptions and model/source versions are expandable; changing reference setup remains a focused secondary action.
+- “Consider first / When to defer” identifies a justified alternative and real opportunity cost. Do not add percentages from unrelated encounters or claim several items are guaranteed in the same hours.
+- If ownership changes the advice, display one compact “Already own this?” correction link; open the existing guarded confirm/clear controls on demand. Never hide consequential uncertainty behind that link.
+- Source links are available, but raw formula/debug text is not the first screen.
 
-Always retain a Back control and item identity. Use a compact view selector **Value | Path**. Sources and assumptions are disclosures within Value, not extra top-level tabs.
+For a nearly complete account, specialist detail must name a concrete role and limits; it is acceptable to say “Small gain; pursue if this encounter matters to you.” Preferences remain optional. Supported scenarios do not certify raid skill or readiness.
 
-1. Lead with “Why for your account”: baseline item/package, useful role and the reason the recommendation outranks a weaker alternative.
-2. Before/after item row. At narrow widths stack long equipment names. Explicitly remove incompatible off-hands or replace an entire package when needed.
-3. Metric tiles: max hit, hit chance and theoretical DPS where individually supported. Absolute values before/after plus delta; no sparkline without meaningful data. Label target/context immediately next to results.
-4. One-line scenario summary: observed levels, selected target and assumed prayer/boost. Expand to full inputs and model/source version; a player should not need to read raw formula/debug paragraphs to understand the result.
-5. Relevant owned alternatives and a “When to defer” explanation, including no-breakpoint or sustain-versus-damage cases. Put acquisition effort near value, not above it.
-6. Focused correction: “Change reference setup” edits a relevant slot/context, not a mandatory full calculator form. Unknown/missing input shows the exact reason and a useful remedy.
+## Path and effort detail
 
-Calculated proposals are labelled reference scenarios. Confirmation does not turn a theoretical number into measured performance. Unsupported numbers show “Comparison not yet supported for …” while retaining justified qualitative value; no fake zeros or generic percentage.
+Lead with the next genuine remaining step, not a wall of requirements. Group Access, Components/assembly and Equip separately. Keep ALL/ANY vertical and collapsible; completed groups are compact. A tick means observed/confirmed completion, an empty circle means confirmed remaining, and a question mark means unknown. Colour is supplementary. Resource counts have observation time; an RNG drop has no completed-percent gauge.
 
-## Acquisition path
+Effort panel order:
 
-Use a vertical sequence with compact ALL/ANY groups, not a large dependency tree squeezed sideways. Mark:
+1. Precise scope: **Next zenyte shard** (not “Tormented bracelet time”).
+2. Without pace: mean 300 eligible kills, median 208, 90% by 690 under the reviewed fixed-drop model. State that 10% take longer.
+3. Optional **Set pace** opens a compact eligible-kills/hour input with unit/scope explanation and Clear; default blank. If supplied, show conditional mean/median/P90 hours and the pace immediately beside them. No forced goal or performance questionnaire.
+4. Explicit exclusions: quest/access, onyx, crafting/training and supply work are not included. Unknown remaining work forbids a full-item total. Fixed-rate dry KC does not imply progress toward the next drop.
+5. Mechanic and pace provenance, review date and assumptions disclosure; show a separate pace sensitivity range when input is a range. Never call that a confidence interval or a maximum completion time.
 
-| Visual | Meaning |
+Long-tail raid routes initially explain current mode/team/preparation and useful other rewards, with **Time not estimated** until the personal loot model and pacing are supported. A player can compare other routes and skip/restore an activity without erasing owned reward utility. An owned component bypasses its upstream acquisition; exact quantity unknown remains Check needed.
+
+## Native components, appearance and interaction
+
+| Concern | Implementation direction |
 |---|---|
-| Check + Completed | Observed or explicitly confirmed completion, with provenance on expansion |
-| Empty circle + Remaining | Confirmed unmet requirement/component |
-| Question mark + Check needed | Unknown; never painted as failed or complete |
-| “Recommended” label | Preparation; not a hard gate |
-| “Alternative route” disclosure | ANY branch; alternatives remain selectable and don't require all branches |
+| Layout | Existing PluginPanel with BoxLayout/GridBagLayout rows, a nested GridLayout/adaptive grid, CardLayout for overview/activity/value/path; one vertical scroller, no horizontal scroll or nested scrolling cards |
+| Sprites | Existing ItemManager `getImage(itemId).addTo(label/button)` asynchronous path; native sprite dimensions/aspect in a 40×40 well, no upscaled fake pixel art. Keep text fallback for unavailable images; no web downloads or bundled copied sprite pack |
+| Surfaces | RuneLite ColorScheme dark surfaces, subtle 1px boundaries, restrained gold for titles, teal for pursuits, amber for uncertainty/long-term; text labels carry meaning |
+| Type/spacing | Respect client font (roughly 12–13 logical pixels body, 14–15 title); 6px outer inset/gutters, 6–8px card padding. Measure strings, wrap, use accessible text contrast, never reduce font to force a tile |
+| Activation | Standard Swing action semantics with visible focus; title/chevron plus clickable card. Enter/Space opens, Back restores focus/scroll. Tooltips supplement, never replace names/uncertainty. Avoid nested competing click targets |
+| Rendering | Immutable view models, calculations outside rendering, EDT updates, reuse/caching for sprites. No per-tick complete rebuild or scroll jump; stale generation callbacks discarded |
+| Scope | No JavaFX, browser framework, custom wider window, animated background or OS/window-focus manipulation. Original SVG/PNG documents are design artifacts, not a runtime UI framework |
 
-Zaryte example: access section, Armadyl crossbow branch, nihil horn branch, shard quantity, assembly and equip level. Display complete steps without consuming the entire first screen. The next step is the nearest real missing prerequisite, or the most consequential unknown when no valid next activity is established. An already-owned horn changes remaining work; it never implies shards or readiness for Nex.
+Native ItemManager integration is the practical way to use real game sprites. This environment has no attached authenticated client from which to validate/capture them. Wireframes therefore use clearly labelled sprite wells; replace them with real client imagery during R1.5a verification rather than copying unlicensed web artwork into Git. [ItemManager reference](https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-client/src/main/java/net/runelite/client/game/ItemManager.java).
 
-Do not show “70% complete” for RNG acquisition. An observed “120 / 250 shards” would be a component count with a timestamp, not a drop-probability gauge. Shared activity rewards have separate value rows. Keep optional focus/pin available without making it mandatory.
+## Required states and actual-client validation
 
-## Design tokens and behaviour
+Design states: empty/insufficient observation with useful bank guidance and Browse; partial/unknown with provisional value; all meaningful outcomes owned; only long-tail choices; unsupported numeric model; unknown pace; stale/invalid probability; skipped activity; shared rewards becoming owned; long names/enlarged font; profile/account transition while details or sprite loads are pending.
 
-| Element | Proposed implementation |
-|---|---|
-| Surfaces | RuneLite `ColorScheme` dark backgrounds; card one shade apart with a subtle 1px boundary |
-| Text | Client font, typically 12–13 logical pixels, 14–15 bold item titles; wrap by measured available width; respect scaling |
-| Spacing | 6px outer panel inset, 8px card inset, 6–8px row gaps, 10–12px between cards |
-| Accent | Muted teal for verified improvement, warm amber for conditional/plan-ahead; off-white primary text, readable secondary grey |
-| Metrics | Larger tabular/aligned numbers where supported; labels always present; avoid red/green-only semantics |
-| Navigation | `CardLayout` or equivalent view state within existing panel; Back, preserved list scroll, keyboard focus, Escape where appropriate |
-| Controls | Standard Swing buttons/combos with accessible names, visible focus; full card click is additional, not the only action |
-| Performance | Cache client sprites; calculate on immutable state outside render; update changed view data without rebuilding every control on a tick |
-| Overflow | No horizontal scroll or clipped labels at native width; expand full explanations on demand |
-
-The mockup colours are design intent, not a reason to replace all RuneLite conventions. Keep readable contrast at native scale. Image placeholders are not generated OSRS artwork and should not ship as item assets.
-
-## Required interface states and checks
-
-- No usable observation: explain what opening the bank will improve; allow Browse without pretending recommendations are personalised.
-- Partial observation: useful provisional cards with targeted corrections; no ownership questionnaire.
-- Strong alternatives or all supported outcomes owned: explain no meaningful supported gain, allow deferred/coverage browsing, never pad cards.
-- Model unsupported: preserve a sensible card, identify the unsupported mechanic, keep the model gap visible to maintainers.
-- Account/profile transition: clear cards/reference state; stale callback must not reopen previous-character details.
-- Rescoring while a detail is open: preserve context if valid, otherwise show why it changed; no jarring navigation on every tick.
-
-Render overview, numeric detail, qualitative specialist detail and a branching path at 225px; inspect 100%, 125%, 150% and 200% scaling in the actual client. Test long item names and screen-reader/accessibility labels. A player should find several useful choices quickly, describe why one matters, identify the baseline/assumptions and choose the next step without opening diagnostics. Record observed usability problems and fix them; mockup screenshots alone do not prove success.
+TASKS R1.5a contains the authoritative acceptance checks. Record actual RuneLite/OS versions, logical viewport, client/OS scaling combinations at 100%, 125%, 150% and 200%, font behaviour and screenshots. Inspect overview, grid and one-column fallback, Value, Path, activity detail, empty and unknown states. Check mouse/keyboard activation, visible focus, Back/scroll and generation guards. Ask the player to find a worthwhile next upgrade, explain its defer/effort reason, and identify a next step without diagnostics. Record findings, including disagreements, rather than treating a screenshot as a usefulness pass. All these **live checks remain pending** for this docs-only assignment.

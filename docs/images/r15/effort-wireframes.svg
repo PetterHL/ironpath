@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1034" height="960" viewBox="0 0 1034 960"><title>IronPath R1.5 proposed native sidebar wireframes</title><desc>Four independent synthetic screens, 225 logical pixels each. Sprite wells are placeholders. Proposed design, not a live client capture.</desc>
+<rect x="0" y="0" width="1034" height="960" rx="0" fill="#141619"/>
+<text x="28" y="48" font-family="Segoe UI, sans-serif" font-size="28" font-weight="700" fill="#ead8ad">IronPath</text>
+<text x="159" y="45" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#e3e6e9">Upgrade value. Practical effort. A clear next step.</text>
+<text x="28" y="76" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#aeb4bc">R1.5 design proposal  /  Four 225 px panels  /  Synthetic examples  /  Native sprites shown as labelled wells</text>
+<text x="28" y="110" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#aeb4bc">01 / AUTOMATIC OVERVIEW</text>
+<rect x="28" y="126" width="225" height="738" rx="5" fill="#252525" stroke="#414141"/>
+<text x="40" y="158" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700" fill="#ead8ad">IronPath</text>
+<text x="40" y="180" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#bec2c8">Based on observed gear</text>
+<text x="40" y="208" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#b7c2ce">Account evidence</text>
+<text x="186" y="209" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#ead8ad">Browse ›</text>
+<rect x="40" y="224" width="201" height="1" rx="0" fill="#424242"/>
+<text x="40" y="252" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#e8d7b0">Worth pursuing</text>
+<rect x="34" y="265" width="213" height="112" rx="4" fill="#303030" stroke="#47433a"/>
+<rect x="42" y="277" width="40" height="40" rx="4" fill="#25292e" stroke="#555047"/>
+<text x="47" y="299" font-family="Segoe UI, sans-serif" font-size="10" font-weight="400" fill="#c7ba9c">sprite</text>
+<text x="90" y="289" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#f0ede5">Tormented</text>
+<text x="90" y="306" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#f0ede5">bracelet</text>
+<text x="42" y="337" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#e5e7e9">Magic support · reference</text>
+<rect x="42" y="346" width="108" height="22" rx="3" fill="#303538"/>
+<text x="49" y="360" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#7ec8b3">Repeat RNG</text>
+<text x="223" y="362" font-family="Segoe UI, sans-serif" font-size="17" font-weight="400" fill="#ead8ad">›</text>
+<text x="40" y="404" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#e8d7b0">Worth doing</text>
+<rect x="34" y="417" width="213" height="128" rx="4" fill="#303030" stroke="#414747"/>
+<text x="42" y="441" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#f0ede5">Chambers of Xeric</text>
+<text x="42" y="464" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">Several useful reward families</text>
+<text x="42" y="482" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">Armour and prayer gaps</text>
+<rect x="42" y="498" width="156" height="22" rx="3" fill="#303538"/>
+<text x="49" y="512" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#7ec8b3">Shared opportunity</text>
+<text x="224" y="516" font-family="Segoe UI, sans-serif" font-size="17" font-weight="400" fill="#ead8ad">›</text>
+<text x="40" y="576" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#e8d7b0">Long-term upgrades</text>
+<rect x="34" y="590" width="213" height="107" rx="4" fill="#2b2d31" stroke="#49434e"/>
+<rect x="42" y="600" width="40" height="40" rx="4" fill="#25292e" stroke="#555047"/>
+<text x="47" y="622" font-family="Segoe UI, sans-serif" font-size="10" font-weight="400" fill="#c7ba9c">sprite</text>
+<text x="90" y="612" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#f0ede5">Tumeken’s</text>
+<text x="90" y="629" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#f0ede5">shadow</text>
+<text x="42" y="658" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#e5e7e9">Powerful · rare raid reward</text>
+<text x="42" y="684" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#d6b48a">Long-term</text>
+<text x="40" y="733" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#ead8ad">Browse all upgrades  ›</text>
+<text x="40" y="767" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#b6bbc2">No goal needed.</text>
+<text x="40" y="785" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#b6bbc2">Only justified choices appear.</text>
+<rect x="40" y="820" width="201" height="1" rx="0" fill="#424242"/>
+<text x="40" y="846" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#b6bbc2">Account &amp; preferences</text>
+<text x="279" y="110" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#aeb4bc">02 / VISUAL BROWSE</text>
+<rect x="279" y="126" width="225" height="738" rx="5" fill="#252525" stroke="#414141"/>
+<text x="291" y="158" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700" fill="#ead8ad">‹  Upgrades</text>
+<text x="291" y="180" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#bec2c8">All relevant items stay visible</text>
+<rect x="289" y="198" width="35" height="22" rx="3" fill="#303538"/>
+<text x="296" y="212" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#7ec8b3">All</text>
+<text x="336" y="213" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#e5e7e9">Pursue</text>
+<text x="388" y="213" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#e5e7e9">Long-term</text>
+<text x="455" y="213" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#e5e7e9">Check</text>
+<text x="291" y="246" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#b6bbc2">Illustrative catalogue selection</text>
+<rect x="285" y="264" width="103" height="175" rx="4" fill="#303030" stroke="#49443b"/>
+<rect x="316" y="274" width="40" height="40" rx="4" fill="#25292e" stroke="#555047"/>
+<text x="321" y="296" font-family="Segoe UI, sans-serif" font-size="10" font-weight="400" fill="#c7ba9c">sprite</text>
+<text x="293" y="337" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#eeeae1">Tormented</text>
+<text x="293" y="354" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#eeeae1">bracelet</text>
+<text x="293" y="395" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#c6cad0">Magic support</text>
+<text x="293" y="422" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#7ec8b3">Repeat RNG</text>
+<rect x="394" y="264" width="103" height="175" rx="4" fill="#303030" stroke="#49443b"/>
+<rect x="425" y="274" width="40" height="40" rx="4" fill="#25292e" stroke="#555047"/>
+<text x="430" y="296" font-family="Segoe UI, sans-serif" font-size="10" font-weight="400" fill="#c7ba9c">sprite</text>
+<text x="402" y="337" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#eeeae1">Ancestral</text>
+<text x="402" y="354" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#eeeae1">robe top</text>
+<text x="402" y="395" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#c6cad0">Robe upgrade</text>
+<text x="402" y="422" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#cfb793">Shared raid</text>
+<rect x="285" y="445" width="103" height="175" rx="4" fill="#303030" stroke="#49443b"/>
+<rect x="316" y="455" width="40" height="40" rx="4" fill="#25292e" stroke="#555047"/>
+<text x="321" y="477" font-family="Segoe UI, sans-serif" font-size="10" font-weight="400" fill="#c7ba9c">sprite</text>
+<text x="293" y="518" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#eeeae1">Tumeken’s</text>
+<text x="293" y="535" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#eeeae1">shadow</text>
+<text x="293" y="576" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#c6cad0">Major value</text>
+<text x="293" y="603" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#d6b48a">Long-term</text>
+<rect x="394" y="445" width="103" height="175" rx="4" fill="#303030" stroke="#49443b"/>
+<rect x="425" y="455" width="40" height="40" rx="4" fill="#25292e" stroke="#555047"/>
+<text x="430" y="477" font-family="Segoe UI, sans-serif" font-size="10" font-weight="400" fill="#c7ba9c">sprite</text>
+<text x="402" y="518" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#eeeae1">Zaryte</text>
+<text x="402" y="535" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#eeeae1">crossbow</text>
+<text x="402" y="576" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#c6cad0">Specialist</text>
+<text x="402" y="603" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#d6b48a">Check first</text>
+<rect x="285" y="637" width="213" height="60" rx="3" fill="#2a2a2a"/>
+<text x="293" y="661" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">Select an item to see its value,</text>
+<text x="293" y="679" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">effort and next route step.</text>
+<text x="291" y="740" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#b6bbc2">Long names / enlarged fonts:</text>
+<text x="291" y="760" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#b6bbc2">grid reflows to one column.</text>
+<text x="291" y="780" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#b6bbc2">Full names remain visible.</text>
+<rect x="291" y="820" width="201" height="1" rx="0" fill="#424242"/>
+<text x="291" y="846" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#b6bbc2">Back preserves filters &amp; scroll</text>
+<text x="530" y="110" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#aeb4bc">03 / VALUE DETAIL</text>
+<rect x="530" y="126" width="225" height="738" rx="5" fill="#252525" stroke="#414141"/>
+<text x="542" y="158" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700" fill="#ead8ad">‹  Upgrades</text>
+<text x="542" y="180" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#bec2c8">Tormented bracelet</text>
+<rect x="542" y="194" width="40" height="40" rx="4" fill="#25292e" stroke="#555047"/>
+<text x="547" y="216" font-family="Segoe UI, sans-serif" font-size="10" font-weight="400" fill="#c7ba9c">sprite</text>
+<rect x="595" y="203" width="135" height="22" rx="3" fill="#303538"/>
+<text x="602" y="217" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#7ec8b3">Worth pursuing</text>
+<rect x="536" y="249" width="104" height="30" rx="3" fill="#514837"/>
+<text x="573" y="267" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#f1e2bd">Value</text>
+<rect x="645" y="249" width="104" height="30" rx="3" fill="#333333"/>
+<text x="685" y="267" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#e5e7e9">Path</text>
+<text x="542" y="307" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#e8d7b0">Why for your account</text>
+<text x="542" y="331" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">Adds magic damage to this</text>
+<text x="542" y="350" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">supported staff setup. A nearer</text>
+<text x="542" y="369" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">route than the rare raid weapon.</text>
+<text x="542" y="399" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#c9bc9f">Graardor · proposed reference</text>
+<rect x="536" y="414" width="213" height="113" rx="4" fill="#303030"/>
+<text x="544" y="437" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#e5e7e9">Max hit</text>
+<text x="650" y="440" font-family="Segoe UI, sans-serif" font-size="20" font-weight="700" fill="#7ec8b3">33 → 35</text>
+<rect x="544" y="458" width="185" height="1" rx="0" fill="#464646"/>
+<text x="544" y="486" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#e5e7e9">Theoretical DPS</text>
+<text x="650" y="488" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#e7e3d9">2.32 → 2.51</text>
+<text x="542" y="557" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#d9c699">Before / after equipment  ›</text>
+<text x="542" y="588" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#d9c699">Inputs &amp; assumptions  ›</text>
+<rect x="542" y="609" width="201" height="1" rx="0" fill="#424242"/>
+<text x="542" y="638" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#e8d7b0">When to defer</text>
+<text x="542" y="662" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">Check the next shard’s use if</text>
+<text x="542" y="681" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">another zenyte item matters more.</text>
+<text x="542" y="700" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">Crafting and onyx work remain</text>
+<text x="542" y="719" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">separate from drop time.</text>
+<text x="542" y="763" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#ead8ad">See acquisition path  ›</text>
+<rect x="542" y="791" width="201" height="1" rx="0" fill="#424242"/>
+<text x="542" y="818" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#b6bbc2">Already own this?  ·  Sources</text>
+<text x="781" y="110" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#aeb4bc">04 / PATH &amp; EFFORT</text>
+<rect x="781" y="126" width="225" height="738" rx="5" fill="#252525" stroke="#414141"/>
+<text x="793" y="158" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700" fill="#ead8ad">‹  Upgrades</text>
+<text x="793" y="180" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#bec2c8">Tormented bracelet</text>
+<rect x="793" y="197" width="201" height="22" rx="3" fill="#303538"/>
+<text x="800" y="211" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#7ec8b3">Next: obtain or confirm shard</text>
+<rect x="787" y="235" width="104" height="30" rx="3" fill="#333333"/>
+<text x="824" y="253" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#e5e7e9">Value</text>
+<rect x="896" y="235" width="104" height="30" rx="3" fill="#514837"/>
+<text x="936" y="253" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#f1e2bd">Path</text>
+<text x="793" y="294" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#e8d7b0">Next zenyte shard only</text>
+<text x="793" y="318" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#d6b48a">Illustrative pace: 40 kills/h</text>
+<rect x="787" y="336" width="213" height="132" rx="4" fill="#303030" stroke="#49443b"/>
+<text x="795" y="359" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#e5e7e9">Mean</text>
+<text x="919" y="362" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" fill="#ece2cc">7.5 h</text>
+<text x="795" y="396" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#e5e7e9">Median</text>
+<text x="927" y="397" font-family="Segoe UI, sans-serif" font-size="15" font-weight="700" fill="#ece2cc">5.2 h</text>
+<text x="795" y="432" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#e5e7e9">90% by</text>
+<text x="917" y="433" font-family="Segoe UI, sans-serif" font-size="15" font-weight="700" fill="#ece2cc">17.3 h</text>
+<text x="793" y="492" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c9cdd2">10% take longer at this pace.</text>
+<text x="793" y="511" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c9cdd2">RNG is not progress completed.</text>
+<text x="793" y="545" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#ead8ad">Change pace  ·  Clear</text>
+<rect x="793" y="563" width="201" height="1" rx="0" fill="#424242"/>
+<text x="793" y="592" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#e8d7b0">Also required</text>
+<text x="793" y="617" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">?  Check access / preparation</text>
+<text x="793" y="641" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">○  Onyx and crafting / assembly</text>
+<text x="793" y="665" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#c4c8ce">○  Supplies for the activity</text>
+<rect x="787" y="689" width="213" height="65" rx="4" fill="#353029"/>
+<text x="795" y="713" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#dfcdb1">Those steps are excluded.</text>
+<text x="795" y="732" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#dfcdb1">No full-bracelet ETA is claimed.</text>
+<text x="793" y="788" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#d9c699">Drop model &amp; sources  ›</text>
+<text x="793" y="829" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#b6bbc2">Without pace: show kills only.</text>
+<text x="28" y="901" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#d7c59b">DESIGN NOTES</text>
+<text x="28" y="927" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#e4e6e9">Rows explain priorities. Tiles invite exploration. Value and Path carry the evidence.</text>
+<text x="28" y="951" font-family="Segoe UI, sans-serif" font-size="11" font-weight="400" fill="#aeb4bc">No new ranker or game-client test was run for these screens. See UX.md and RESEARCH.md for assumptions and pending validation.</text>
+</svg>

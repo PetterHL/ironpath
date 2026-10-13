@@ -1,6 +1,6 @@
 # IronPath product and architecture
 
-Product reset · 12 October 2026 · authoritative direction, superseding earlier slice budgets.
+Product refinement · 13 October 2026 · proposed R1.5 specification, on the implemented but unmerged R1 baseline. Supersedes the reset’s ranking and UI choices; preserves its comprehensive scope.
 
 ## A. Stable product vision
 
@@ -22,7 +22,7 @@ Success requires several relevant choices, understandable personal value, suppor
 | BiS versus worthwhile acquisition | BiS is contextual. Small accessory breakpoints may be poor grinds; scarce resources, alternatives and upkeep matter. Long-term megarares remain visible. |
 | Sustained damage versus encounter success | Calculate supported attacks locally. Do not translate DPS into kills/trip. Analytical time/resource estimates need their own validated assumptions and policy assessment. |
 | Maintenance versus release freshness | Version bundled facts/models; dependency-based change review and source discovery. Known-invalid claims are disabled, unaffected coverage remains. Offline users cannot receive instant corrections. |
-| Attractive UI versus sidebar space | Native Swing, compact single-column cards, progressive disclosure and real item sprites. A larger optional surface must pass current policy review; it is not a core dependency. |
+| Attractive UI versus sidebar space | Native Swing, concise pursuit/activity rows plus a responsive two-column item grid, progressive disclosure and client item sprites. A larger optional surface must pass current policy review; it is not a core dependency. |
 
 No rewrite, hosted service, database, user-facing AI, subscriptions, gameplay automation or mandatory other plugin. Remain one Java/Gradle project. Standard Ironman main-game planning is the baseline. UIM storage optimisation, GIM shared-bank inference, HCIM safety certification and seasonal mechanics require separate explicit support; they must not leak into ordinary recommendations.
 
@@ -34,25 +34,27 @@ Current upgrade ranking uses capability/context bands, supported absolute margin
 
 Equipment slots and quantities extend immutable snapshots without changing persisted preferences. Known/unknown quantity semantics deliberately avoid summing observations made at different times. Typed ALL/ANY acquisition dependencies short-circuit owned intermediate components. Sources now link items, models, routes and contexts and permit reviewed official Jagex evidence. Content quotas are gone; a 4M-character parser budget, condition fan-out/depth and per-path depth guard bound resources. ToA scaling and special/state models remain explicit gaps.
 
-See [validation/R1.md](validation/R1.md) for formula boundaries, fixtures, reproducible oracle commands, native-width evidence and pending client checks. The full product direction and R2–R8 remain unchanged. This implementation starts at PR #8's exact head; it does not alter the open stack.
+See [validation/R1.md](validation/R1.md) for formula boundaries, fixtures, reproducible oracle commands, native-width evidence and pending client checks. The full product ambition remains unchanged; the refinement below inserts R1.5 before/alongside R2. This implementation starts at PR #8's exact head; it does not alter the open stack.
 
 ## Verified implementation and PR stack
 
-Inspected source and GitHub metadata on 12 October 2026:
+Rechecked GitHub open-PR metadata and local Git ancestry on **13 October 2026**. All nine PRs are open and unmerged. Main remains `c717927cdf4e3fd8128d28b96e05690965f5a908`.
 
-| PR | Head / SHA | Target | State |
+| PR | Head / SHA | Target | Relationship |
 |---|---|---|---|
-| #1 | `t1-account-advisor` / `f224f41` | `main` | Open; currently conflicting |
-| #2 | `t2-cox-catalogue` / `e52728d` | `t1-account-advisor` | Open draft; currently conflicting |
-| #3 | `t3-local-advisor` / `b3a93d9` | `t2-cox-catalogue` | Open |
-| #4 | `t4-user-maintenance-trial` / `fad507f` | `t3-local-advisor` | Open draft |
-| #5 | `p1-p3-broad-pvm` / `eb22fef` | `main` | Open; incorporates earlier work and records |
-| #6 | `docs/upgrade-first-roadmap` / `2ef409a` | `p1-p3-broad-pvm` | Open |
-| #7 | `p4a-upgrade-advisor` / `b50b0a9` | `docs/upgrade-first-roadmap` | Open |
+| #1 | `t1-account-advisor` / `f224f41` | `main` | Earlier observation work |
+| #2 | `t2-cox-catalogue` / `e52728d` | `t1-account-advisor` | Earlier catalogue work; draft |
+| #3 | `t3-local-advisor` / `b3a93d9` | `t2-cox-catalogue` | Earlier local planning |
+| #4 | `t4-user-maintenance-trial` / `fad507f` | `t3-local-advisor` | Historical trial preparation; draft |
+| #5 | `p1-p3-broad-pvm` / `eb22fef` | `main` | Consolidates earlier work and records |
+| #6 | `docs/upgrade-first-roadmap` / `2ef409a` | `p1-p3-broad-pvm` | Ancestor of #7 |
+| #7 | `p4a-upgrade-advisor` / `b50b0a9` | `docs/upgrade-first-roadmap` | Ancestor of #8 |
+| #8 | `docs/product-reset-20261012` / `7d31483` | `p4a-upgrade-advisor` | Product reset; ancestor of #9 |
+| #9 | `r1-full-loadout-magic` / `309afb2` | `docs/product-reset-20261012` | Current implementation baseline |
 
-`main` is `c717927`. No PR above is merged. This documentation branch starts at #7's exact head and targets `p4a-upgrade-advisor`. It does not resolve old integration conflicts. When integration is authorised, preserve #5's consolidation, apply #6 → #7 → reset in order, and explicitly reconcile/retarget the remaining stack. Do not merge earlier overlapping PRs blindly. Recheck remote heads before changing any integration plan.
+This documentation-only branch starts at #9's exact head, `309afb27ba7a6e0aee43d6c078b1234beff34c55`, and targets `r1-full-loadout-magic`. It preserves the entire #5 → #6 → #7 → #8 → #9 ancestry. No application code, runtime catalogue, existing PR metadata or branches are changed. Integrate/retarget deliberately when authorised; never blindly merge overlapping earlier PRs. Recheck remote heads before starting implementation.
 
-P4a delivers four upgrade outcomes, nineteen decisions, 81 recognised item forms, 84 sources and thirteen combat-item records (plugin 0.4.0, knowledge `p4a-1`, schema 5). Historical evidence: 106 passing tests and 234 synthetic oracle cases. This session does not rerun or extend those results. P4a in-game observation, appearance and usefulness checks remain pending.
+R1's 124 tests and 540 new plus 234 retained oracle cases are **historical implementation evidence**, not tests rerun by this documentation assignment. Actual-client checks remain pending. R1.5 effort estimates, ranking categories and redesigned cards are **proposed**, not delivered features.
 
 ## B. Required capabilities and coverage
 
@@ -80,22 +82,67 @@ Example **Zaryte crossbow** (existing pinned evidence retained): The Frozen Door
 
 Show component progress such as an observed quantity against its requirement only when supported. Do not display a percentage of an RNG drop completed. Qualitative effort covers remaining skill/quest work, repeat RNG, team coordination, supplies and upkeep. Later probability/effort scenarios may use published rates with mode/scale and assumptions, never guaranteed hours or dry-streak entitlement. Shared activities list distinct potential rewards without summing gains or assuming simultaneous drops.
 
-## Recommendation design
+## Recommendation design — R1.5 decision
 
-Keep deterministic, explainable rules. Current `Advisor.upgrades()` sorts authored benefit band → goal → application count → route availability → ID. It does **not** consume `PoweredMagic` deltas, does not compare competing complete loadouts, and authored application text can inflate breadth. `upgrades()` requires `when == TRUE`, which can hide a distant valuable upgrade if readiness is encoded in applicability. Those are concrete limits, not reasons to replace the entire evaluator.
+### Independent assessment of R1
 
-Recommended flow:
+Retain R1's complete supported loadouts, per-metric evidence, typed routes and identity protections. Its actual `Advisor.upgrades()` comparator orders value band, absolute marginal DPS, metric support, optional interest, route availability, effort, then ID. A Shadow-specific capability band and a 5% ordinary-magic calibration affect the first comparison. Effort is too late to prevent a powerful rare item dominating. The top-three family adjustment improves variety, but does not distinguish an item worth owning from an activity worth spending time on. Absolute DPS deltas also cannot compare different targets or utility roles fairly.
 
-1. Select released, validated upgrade contexts. Remove owned equivalents and invalid mechanics. Keep an explicit deferred explanation for dominated/marginal cases in Browse.
-2. Establish baseline alternatives by role and encounter, including specialist specs, off-hands, ammunition and set packages. A two-handed candidate removes the old off-hand. Never manufacture a weaker baseline to make an upgrade look good.
-3. Compute supported scenario deltas; use reviewed qualitative evidence for genuine utility not captured by damage (healing, range, supply savings). Missing models do not imply zero value, and supported numbers do not automatically outrank stronger qualitative upgrades.
-4. Assign transparent value bands: capability-changing, material improvement, specialist improvement, marginal/no demonstrated gain. Conditional rules and measured breakpoints justify bands; record the matched explanation. Do not impose one DPS threshold across all roles.
-5. Within comparable bands, refine by explicitly selected encounter interest, deduplicated encounter IDs, remaining work/upkeep and confidence. Avoid claiming interests or team access from gear. Without preferences use a balanced set of reviewed common PvM contexts and label them.
-6. Form a diverse shortlist: worthwhile nearer work plus relevant long-term opportunities when available. Avoid three minor upgrades for the same slot/activity crowding out a megarare. Browse exposes every supported relevant candidate, including other rewards from shared content. Stable IDs break genuine ties.
+The R1 overview capture has roughly 300-pixel cards, repeated reference prose and full-width Open details buttons. The detail repeats numerical summaries and makes source/ownership controls compete with value. `ItemManager` is already called: sprites need better composition and client verification, not a new asset pipeline. See [UX](UX.md). The user-mentioned screenshot was not present in the supplied attachment; inspected `images/r1/r1-overview.png` and `r1-value.png` are the documented synthetic baseline, not a claim to have seen a live screenshot.
 
-Do not aggregate unrelated DPS percentages into an opaque total or divide an invented benefit by guessed grind hours. Initially compare Pareto trade-offs (better value but more work); add calibration only if profile tests reveal systematic errors. A deterministic score component may be useful internally if units and conditions are documented, but no universal efficiency score is promised.
+**Decision:** separate ownership value, pursuit priority, and activity value. Deliver deterministic categories and comparisons, not a universal efficiency score or a DPS-per-acquisition-hour ratio. No mandatory goal selection; use reviewed common encounter contexts, clearly labelled as defaults rather than inferred preferences.
 
-Poor-advice regression cases: Shadow must not trigger a default swamp grind; Bowfa + crystal must not imply Masori improves Bowfa; tbow must not hide Zaryte's supported special role; a target already owned in another equivalent form must suppress its grind; full treads must not trigger duplicate Cerberus upgrades; zero max-hit delta may still carry accuracy value but must not claim a damage breakpoint; declined CG must leave viable alternatives; scarce enhanced seeds must not be spent twice; prayer level must not substitute for an unlock. Include recently released superior alternatives, not only historic BiS.
+### Evidence and categories
+
+Every candidate retains independent axes: contextual value (capability/material/specialist/marginal), remaining effort, RNG tail, access/equip state, evidence support, and optional preference. Effort is route-specific; rarity is not an item-wide permanent verdict. An owned horn can turn Zaryte into a useful assembly plan; the original Nex rarity must not rank that remaining route.
+
+| Presentation | Deterministic admission rule | Meaning |
+|---|---|---|
+| Worth pursuing | Positive, reviewed account-specific role; viable unskipped route; no unresolved ownership/access fact that changes the advice; bounded or repeatable effort with credible evidence; no adverse dominance or unresolved substantial dependency | A defensible active pursuit, not a promise that the player can execute it |
+| Worth doing | Feasible unskipped activity route without consequential access unknowns, plus at least two distinct, non-dominated, useful missing reward families with sufficiently known ownership, or one useful reward plus a separately evidenced progression unlock | A shared opportunity; identify the useful rewards and what remains uncertain |
+| Long-term | Valuable outcome with reviewed long-tail acquisition or high preparation/coordination burden | Worth owning; not automatically the next grind |
+| Check first / Plan ahead | Consequential ownership, prerequisites, pace or remaining-work gaps prevent an active-pursuit claim | Conditional value remains discoverable; name the next useful check/step |
+| Specialist / Small gain / Defer | Narrow positive role, little demonstrated improvement, or dominated route | Preserve context and searchability; do not pad priorities |
+
+Specialist value can qualify as Worth pursuing if its relevance and effort justify it; specialist is a role, not a permanently low-priority class. A preferred long grind remains Long-term with a preference marker. Skips remove that route from pursuit/activity selection but do not erase item value or owned utility. An inaccessible upgrade stays in Plan ahead, with the nearest genuine dependency. Unknown never maps to zero hours, low effort or confirmed absence.
+
+Primary item-group precedence: owned equivalent → omit acquisition; demonstrated no worthwhile role/dominated → Defer; consequential unknown → Check first; confirmed blocking prerequisite → Plan ahead; remaining long-tail/high-burden route → Long-term; positive qualifying route → Worth pursuing. Specialist/value and tail labels remain independent badges, so Check first does not erase known rarity. If multiple routes exist, assess each and use the highest justified pursuit category (Worth pursuing before Long-term before conditional) among unskipped routes; keep alternatives and their exclusions in Path. Never choose a route on missing effort alone. Activity entries are separate assessments: blocked/uncertain access yields a conditional activity, not Worth doing. Reuse R1's supported ordinary-magic value calibration initially; new role-specific value bands require reviewed conditions, not a universal 5% rule.
+
+### Deterministic selection procedure (version `pursuit-1`, proposed)
+
+1. Reuse validated contexts and ownership/usability guards. Establish strongest supported owned alternatives for the same role/context; keep recognised unsupported competitors visible. Calculate supported metrics and retain separate qualitative utility. Do not use missing metrics as zero gain.
+2. Evaluate each route's remaining DAG, including components, skill/quest work, supply cost and upkeep. Assign evidence-backed acquisition modes or UNKNOWN: READY (only assembly/claim remains), BOUNDED (known finite task), REPEATABLE (ordinary repeat RNG), LONG_TAIL. These describe the process, not an ordered time scale: a finite task can take longer than a random drop. Separately retain a reviewed remaining-burden band LOW/MODERATE/HIGH/UNKNOWN with route-specific evidence and matched conditions. LOW requires little remaining preparation and limited known work; MODERATE permits repeated sessions with supported access/resources; HIGH captures substantial known work or coordination. Do not assign these from rarity alone or guessed hours; a substantial unquantified prerequisite forces Check first/Plan ahead, even for a common drop. Keep unusually long RNG tails visible independently of mean effort.
+3. Within the same role/context and compatible assumptions, mark A dominated only when B offers at least the supported value, no worse access/work/upkeep, and is strictly better on one supported dimension. Work dominance needs an explicit remaining-step comparison or conservative non-overlapping **expected-effort ranges across the supported pace scenarios**, with no worse reviewed tail/coordination burden; tier labels alone do not prove it. This is dominance of the stated planning evidence, not a guarantee B drops first. UNKNOWN or overlapping estimates imply a trade-off, not dominance. Different encounters, special roles and shared resources prevent inappropriate comparisons. This is a partial order, not a comparator that can form sort cycles.
+4. Apply the admission rules above, before sorting on item strength. Long-tail classification cannot be overcome by a large DPS number. Form activity candidates from stable activity/mode IDs and deduplicated useful reward families. Exclude owned/dominated rewards and distinguish uncertain ones; a full Ancestral set is one dependent family, not three votes. Never manufacture a second reward to keep CoX promoted.
+5. Sort **within each presentation group** by readiness of next step, reviewed remaining-burden band (LOW/MODERATE/HIGH; UNKNOWN separate), value band, explicit encounter preference, supported context coverage and evidence quality. Do not sort BOUNDED before REPEATABLE merely because one is deterministic. In Long-term use value/relevance first, with effort retained as a trade-off. Numerical deltas may break a remaining tie only within a bucket whose metric, target, baseline, role and model assumptions all match; otherwise skip that key. Stable ID is always the final tie-breaker. Activity order uses best supported reward value, then presence of an independent useful family/unlock, feasible remaining route, preference and stable ID; it does not sum DPS or award unlimited points for catalogue size. Return the matched ordering reasons as data. Build fixed comparison buckets rather than using pair-dependent sort rules that violate comparator transitivity.
+6. Overview selects up to two distinct active pursuits, one shared activity and a long-term preview **when justified**. These are layout slots, never catalogue caps or a quota to fill. Deduplicate activity/route families so the same grind does not consume every slot; list all relevant outcomes in Browse. If only long-tail rewards remain, say so and show them without changing their effort class. Unknown/provisional candidates have their own visible entry, not silent exclusion.
+
+Band boundaries and layout choices are product calibrations, not mathematical optimality. Version them and test changes against TASKS' profile matrix. An effort tier may be revised when actual remaining work changes; the UI must state why. Optional short-session/team preferences may filter or annotate compatible routes without certifying readiness. Do not start R1.5 with a preference questionnaire.
+
+### Opportunity cost and activity rewards
+
+Show a concrete alternative: “This remains a long-term upgrade; tormented bracelet has a nearer component route for your current magic setup,” only if those account facts and relative effort are supported. If credible time scenarios exist, compare outcomes over the **same declared budget** using each route's acquisition distribution. Say “chance of at least one useful reward,” not “you could complete three upgrades.” Do not add individual quantiles, DPS percentages across targets, or mutually exclusive allocations of an enhanced seed/zenyte/special energy. Resource allocation choices must remain alternatives.
+
+Activity value declines as useful missing rewards disappear. Many useful CoX rewards can make Chambers worthwhile without making Twisted bow a targeted recommendation. With only tbow missing, that activity loses its multi-reward explanation and remains a long-tail choice. Shadow, Scythe and Nex routes follow the same rules, with their actual loot mechanics and constraints; none gets a hardcoded “best next” exemption. Common supplies may be mentioned qualitatively; do not convert GP value into Ironman progression benefit.
+
+### Reusable acquisition contracts and architecture
+
+Extend the existing immutable catalogue and advisor contracts; names below are an implementation target, not a schema already shipped. Keep parsing/version migration inside the current project and `TASKS.md` as the only backlog.
+
+| Contract / component | Minimum fields and responsibility |
+|---|---|
+| `AcquisitionModel` | Stable model/activity/mode/reward-family IDs, eligible recipient, trial unit, mechanic kind (fixed Bernoulli, multiple rolls, deterministic; stateful unsupported initially), rational probabilities, assumptions, source IDs/revisions, review and model version, support state |
+| `PaceScenario` | Successful eligible trials per active hour or complete cycle minutes, source kind (user scenario/reviewed benchmark/later observed), scope of overhead, mode/team/points configuration, date and input provenance; optional rather than fabricated |
+| `EffortEstimate` | Route/node ID, remaining outcome, support level, mean trials, P50/P90 and optional P10, conditional hours if supported, prerequisite/assembly/supply exclusions, unknown reasons, RNG tail and pace sensitivity kept separate |
+| `ActivityOpportunity` | Activity/mode key, distinct useful outcome families with account relevance/ownership confidence, mutually exclusive allocations, shared prerequisites and non-additive explanation; quantitative union only with supported joint mechanics |
+| `PursuitAssessment` | Value evidence reference, effort reference, category, blockers, relevant alternative, matched reason codes, comparison/ranking versions and stable ties; immutable render input |
+| `AcquisitionEstimator` | Pure analytic unit-to-time conversion and supported distributions; no client reads, RNG simulation, network or Swing |
+| `RecommendationRanker` | Category admission, dominance graph, stable group sorting/diversity, explanation evidence; extract from Advisor only as needed |
+| Later `ActivityObservation` | Character generation, start/end, completed/failed/abandoned/censored, elapsed active session and in-instance scope, mode/team/points, detection provenance and validation status |
+
+Data path: client snapshot + preferences + bundled facts → existing comparison/path evaluation → acquisition evidence → pursuit/activity assessment → immutable overview/detail models → Swing. Quantitative evidence is optional independently of route and value evidence. Extend source dependencies to probabilities, reward pools, pace assumptions and observation adapters so a changed rate invalidates only affected estimates. A stale/invalid rate withdraws time/odds, not an otherwise valid value comparison.
+
+Raw observations and inferred pace stay memory-only. R1.5 permits optional manually entered pacing as a labelled scenario, never measured performance. Session observation later improves that scenario without silently changing mode/team assumptions. Persisting derived history would be a separate explicit privacy/migration design in R5; this refinement does not authorise raw account/loot persistence, remote telemetry or reading another plugin's private stores.
 
 ## Quantitative contract and implementation strategy
 
@@ -122,7 +169,9 @@ The current Hub restrictions also reject content simulations. That is a **policy
 
 Validation: hand-derived integer/rounding/zero/negative/breakpoint cases, original synthetic fixtures against a pinned reference, and disagreement investigation. Include tests with realistic complete loadouts and at least two target profiles per general mechanic, plus unusual target effects. Freeze input/source versions. Oracle agreement alone does not establish current game correctness; release notes may invalidate both models. Never silently fall back to a stale oracle.
 
-## Architecture changes against actual code
+## Architecture retained from the product reset (historical gap map)
+
+R1 has already delivered the slot/quantity, comparison, route and source changes described in its implementation section. The table below preserves the reset rationale, not a fresh list of missing R1 capabilities; R1.5 additions are specified above.
 
 | Existing code | Retain / change and why |
 |---|---|
@@ -152,6 +201,6 @@ Measure actual maintenance time. The earlier 20–40-minute quiet-week estimate 
 
 ## C. Delivery and success
 
-Use R1–R8 in [TASKS.md](../TASKS.md). Source validation, model work, UI and tests belong inside useful implementation PRs, not repeated planning gates. A concrete correctness/policy/licensing blocker applies to the affected claim or feature; it is not a blanket stop on independent catalogue work.
+Use R1, R1.5 and R2–R8 in [TASKS.md](../TASKS.md). Source validation, model work, UI and tests belong inside useful implementation PRs, not repeated planning gates. A concrete correctness/policy/licensing blocker applies to the affected claim or feature; it is not a blanket stop on independent catalogue work.
 
 A representative midgame, post-Bowfa and advanced account must each be able to explain several useful choices and their next steps. Late-stage completion can correctly yield few or no meaningful upgrades; never pad the shortlist. Assess personal relevance, comparison trust, acquisition clarity and actual sidebar usability separately from test counts.
