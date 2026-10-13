@@ -148,9 +148,10 @@ public class IronpathPlugin extends Plugin
 	{
 		AccountSnapshot previous = session.snapshot();
 		// Only selected quest progress invalidates quest facts. Script evaluation stays in the coalesced read.
-		boolean questChanged = Set.of(VarbitID.SOTE, VarbitID.BCS, VarbitID.PMOON_QUEST).contains(event.getVarbitId())
+		boolean questChanged = Set.of(VarbitID.SOTE, VarbitID.BCS, VarbitID.PMOON_QUEST, VarbitID.MM2_PROGRESS).contains(event.getVarbitId())
 			|| Set.of(VarPlayerID.SOTE_PRIMARY, VarPlayerID.BCS_PRIMARY, VarPlayerID.PMOON_MAIN,
-				VarPlayerID.REGICIDE_QUEST, VarPlayerID.NEX_PERM, VarPlayerID.VMQ4_PRIMARY).contains(event.getVarpId());
+				VarPlayerID.REGICIDE_QUEST, VarPlayerID.NEX_PERM, VarPlayerID.VMQ4_PRIMARY,
+				VarPlayerID.MM2_QUEST, VarPlayerID.DT2_PRIMARY).contains(event.getVarpId());
 		if (previous == null || !supported() || questChanged || !previous.rigour.known() || !previous.augury.known()
 			|| (previous.rigour.value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_RIGOUR_UNLOCKED)
 			|| (previous.augury.value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_AUGURY_UNLOCKED)
@@ -206,13 +207,15 @@ public class IronpathPlugin extends Plugin
 		long token = session.generation();
 		AccountSnapshot previous = session.snapshot();
 		Observation<Set<Integer>> bank = previous == null ? Observation.unknown() : previous.bank;
+		Observation<java.util.Map<Integer, Long>> bankQuantities = previous == null ? Observation.unknown() : previous.bankQuantities;
 		Widget bankWidget = client.getWidget(InterfaceID.Bankmain.ITEMS);
 		if (bankDirty && bankWidget != null && !bankWidget.isHidden())
 		{
 			bank = AccountSnapshotReader.container(client.getItemContainer(InventoryID.BANK), Instant.now(), "bank observed this session");
+			bankQuantities = AccountSnapshotReader.quantities(client.getItemContainer(InventoryID.BANK), bank.time(), "bank quantities observed this session");
 			bankDirty = false;
 		}
-		AccountSnapshot snapshot = reader.read(bank);
+		AccountSnapshot snapshot = reader.read(bank, bankQuantities);
 		if (!session.publish(token, identity(), snapshot)) { return; }
 		dirty = false;
 		render("Observed locally. Open a suggestion to inspect its evidence.", snapshot);
@@ -285,8 +288,8 @@ public class IronpathPlugin extends Plugin
 		boolean loaded = session.preferencesLoaded();
 		String storageStatus = session.storageStatus();
 		List<Advisor.Recommendation> recommendations = snapshot == null || !loaded ? List.of() : advisor.evaluate(snapshot, preferences);
-		List<Advisor.UpgradeView> upgrades = snapshot == null || !loaded ? List.of() : advisor.upgrades(snapshot, preferences);
 		com.ironpath.advisor.PoweredMagic.Setup reference = catalog == null ? null : session.reference(catalog);
+		List<Advisor.UpgradeView> upgrades = snapshot == null || !loaded ? List.of() : advisor.upgrades(snapshot, preferences, reference);
 		Advisor.GoalView goal = snapshot == null || !loaded ? null : advisor.goal(snapshot, preferences);
 		List<String> reasons = snapshot == null || !loaded || !recommendations.isEmpty() ? List.of()
 			: advisor.explainNoAdvice(snapshot, preferences);

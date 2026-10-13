@@ -25,6 +25,9 @@ final class AccountSnapshotReader
 	AccountSnapshotReader(Client client) { this.client = client; }
 
 	AccountSnapshot read(Observation<Set<Integer>> bank)
+	{ return read(bank, Observation.unknown()); }
+
+	AccountSnapshot read(Observation<Set<Integer>> bank, Observation<Map<Integer, Long>> bankQuantities)
 	{
 		if (!client.isClientThread()) { throw new IllegalStateException("Client thread required"); }
 		Instant now = Instant.now();
@@ -41,13 +44,18 @@ final class AccountSnapshotReader
 		facts.put("perilous-moons", quest(Quest.PERILOUS_MOONS, now));
 		facts.put("final-dawn", quest(Quest.THE_FINAL_DAWN, now));
 		facts.put("frozen-door", quest(Quest.THE_FROZEN_DOOR, now));
+		facts.put("desert-treasure-ii", quest(Quest.DESERT_TREASURE_II__THE_FALLEN_EMPIRE, now));
+		facts.put("monkey-madness-ii", quest(Quest.MONKEY_MADNESS_II, now));
 		facts.put("deadeye", unlock(VarbitID.PRAYER_DEADEYE_UNLOCKED, now, "Deadeye unlock varbit"));
 		facts.put("mystic-vigour", unlock(VarbitID.PRAYER_MYSTIC_VIGOUR_UNLOCKED, now, "Mystic Vigour unlock varbit"));
 		return new AccountSnapshot(Observation.observed(levels, now, "real skill levels"),
 			container(client.getItemContainer(InventoryID.INV), now, "inventory"),
 			container(client.getItemContainer(InventoryID.WORN), now, "equipment"), bank,
 			unlock(VarbitID.PRAYER_RIGOUR_UNLOCKED, now, "Rigour unlock varbit"),
-			unlock(VarbitID.PRAYER_AUGURY_UNLOCKED, now, "Augury unlock varbit"), facts);
+			unlock(VarbitID.PRAYER_AUGURY_UNLOCKED, now, "Augury unlock varbit"), facts,
+			slots(client.getItemContainer(InventoryID.WORN), now),
+			quantities(client.getItemContainer(InventoryID.INV), now, "inventory quantities"),
+			quantities(client.getItemContainer(InventoryID.WORN), now, "equipment quantities"), bankQuantities);
 	}
 
 	private Observation<Boolean> quest(Quest quest, Instant time)
@@ -76,5 +84,30 @@ final class AccountSnapshotReader
 			if (item.getId() > 0 && item.getQuantity() > 0) { ids.add(item.getId()); }
 		}
 		return Observation.observed(Set.copyOf(ids), time, source);
+	}
+
+	static Observation<Map<Integer, Long>> quantities(ItemContainer container, Instant time, String source)
+	{
+		if (container == null) { return Observation.unknown(); }
+		Map<Integer, Long> counts = new HashMap<>();
+		for (Item item : container.getItems())
+		{ if (item.getId() > 0 && item.getQuantity() > 0) { counts.merge(item.getId(), (long) item.getQuantity(), Math::addExact); } }
+		return Observation.observed(Map.copyOf(counts), time, source);
+	}
+
+	static Observation<Map<String, Integer>> slots(ItemContainer container, Instant time)
+	{
+		if (container == null) { return Observation.unknown(); }
+		Map<String, Integer> slots = new HashMap<>();
+		for (net.runelite.api.EquipmentInventorySlot slot : net.runelite.api.EquipmentInventorySlot.values())
+		{
+			String key = slot == net.runelite.api.EquipmentInventorySlot.AMULET ? "neck"
+				: slot == net.runelite.api.EquipmentInventorySlot.GLOVES ? "hands"
+				: slot == net.runelite.api.EquipmentInventorySlot.BOOTS ? "feet" : slot.name().toLowerCase(java.util.Locale.ROOT);
+			if (!com.ironpath.advisor.PoweredMagic.SLOTS.contains(key)) { continue; }
+			Item item = container.getItem(slot.getSlotIdx());
+			slots.put(key, item != null && item.getId() > 0 && item.getQuantity() > 0 ? item.getId() : 0);
+		}
+		return Observation.observed(Map.copyOf(slots), time, "equipment slots");
 	}
 }

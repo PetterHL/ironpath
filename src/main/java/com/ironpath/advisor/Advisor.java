@@ -83,7 +83,14 @@ public final class Advisor
 
 	/** Substantial outcomes, independent of route availability and selected goals. */
 	public List<UpgradeView> upgrades(AccountSnapshot account, Preferences preferences)
+	{ return upgrades(account, preferences, new CombatComparisonService(catalog).propose(account)); }
+
+	public List<UpgradeView> upgrades(AccountSnapshot account, Preferences preferences, CombatSetup reference)
 	{
+		CombatComparisonService comparisonService = new CombatComparisonService(catalog);
+		Map<String, Map<String, String>> referenceChoices = new LinkedHashMap<>();
+		PoweredMagic.SLOTS.forEach(slot -> referenceChoices.put(slot, comparisonService.choices(slot, account)));
+		referenceChoices.put("target", comparisonService.targetChoices());
 		List<UpgradeView> result = new ArrayList<>();
 		for (KnowledgeCatalog.Upgrade upgrade : catalog.upgrades)
 		{
@@ -125,8 +132,17 @@ public final class Advisor
 			List<Requirement> equip = new ArrayList<>(); addRequirements(upgrade.equipWhen, account, preferences, equip, false, "EQUIP");
 			List<Requirement> parts = new ArrayList<>();
 			for (KnowledgeCatalog.Part part : upgrade.parts)
-			{ parts.add(new Requirement(part.label, planningTruth(part.when, account, preferences), conditionEvidence(part.when, account, preferences), false,
-				part.optional ? "OPTIONAL ADDITION" : "COMPONENT / ASSEMBLY")); }
+			{
+				Observation<Long> quantity = part.quantity == null ? Observation.unknown() : account.observedQuantity(part.itemId);
+				Truth value = part.quantity == null ? planningTruth(part.when, account, preferences)
+					: quantity.known() && quantity.value() >= part.quantity ? Truth.TRUE : Truth.UNKNOWN;
+				String evidenceText = part.quantity == null ? conditionEvidence(part.when, account, preferences)
+					: quantity.known() ? quantity.value() + " / " + part.quantity + " in observed containers; " + quantity.evidence()
+					: "Quantity unknown; item presence or manual ownership does not establish the required count.";
+				String labelText = part.label + (part.quantity == null ? "" : quantity.known()
+					? " · " + quantity.value() + " / " + part.quantity + " observed" : " · Quantity unread");
+				parts.add(new Requirement(labelText, value, evidenceText, false, part.optional ? "OPTIONAL ADDITION" : "COMPONENT / ASSEMBLY"));
+			}
 			Requirement outstandingPart = parts.stream().filter(r -> r.role.equals("COMPONENT / ASSEMBLY") && r.truth != Truth.TRUE).findFirst().orElse(null);
 			if (outstandingPart != null)
 			{
@@ -149,13 +165,52 @@ public final class Advisor
 			if (routes.stream().noneMatch(r -> r.available)) { label += " · Plan ahead"; }
 			if (equip.stream().anyMatch(r -> r.truth != Truth.TRUE)) { label += " · Needs equip levels"; }
 			if (band == KnowledgeCatalog.Benefit.MINOR) { label += " · Contextual / consider deferring"; }
+			ComparisonResult comparison = comparisonService.compare(account, preferences, reference, upgrade);
+			String ranking = "Reviewed contextual " + band + " value; combat metric gap: " + comparison.reason;
+			if (comparison.available(ComparisonResult.Metric.THEORETICAL_DPS))
+			{
+				double change = comparison.dpsGain(), relative = comparison.before.dps > 0 ? change / comparison.before.dps : 0;
+				if (change <= 1e-10) { band = KnowledgeCatalog.Benefit.MINOR; label += " · No demonstrated sustained gain; defer"; }
+				else if (!upgrade.id.equals("tumekens-shadow")) { band = relative >= 0.05 ? KnowledgeCatalog.Benefit.MODERATE : KnowledgeCatalog.Benefit.MINOR; }
+				ranking = String.format(java.util.Locale.ROOT, "Supported marginal DPS %+.3f on %s; %s value. %s", change, comparison.target.name, band,
+					comparison.before.maxHit == comparison.after.maxHit ? "No max-hit breakpoint; accuracy is separate." : "Whole-loadout max-hit breakpoint.");
+			}
+			evidence.add("Ranking: " + ranking + " Capability, marginal gain, remaining effort and confidence determine order; encounter text count does not.");
+			List<Requirement> path = new ArrayList<>();
+			for (KnowledgeCatalog.PathNode node : upgrade.path)
+			{ path.add(new Requirement(node.label + (node.quantity != null && account.observedQuantity(node.itemId).known()
+				? " · " + account.observedQuantity(node.itemId).value() + " / " + node.quantity + " observed" : ""), pathTruth(node, account, preferences), node.detail + " "
+				+ (node.quantity == null ? conditionEvidence(node.completeWhen, account, preferences) : quantityEvidence(node, account))
+				+ dependencyDescription(node.dependencies), false, node.role)); }
+			if (!upgrade.path.isEmpty())
+			{
+				Map<String, KnowledgeCatalog.PathNode> nodes = upgrade.path.stream().collect(Collectors.toMap(n -> n.id, n -> n));
+				KnowledgeCatalog.PathNode nearest = nearestPath(upgrade.path.get(upgrade.path.size() - 1), nodes, account, preferences);
+				if (nearest != null)
+				{
+					for (int i = 0; i < routes.size(); i++) { RouteView route = routes.get(i);
+						routes.set(i, new RouteView(route.decision, route.status,
+							(pathTruth(nearest, account, preferences) == Truth.UNKNOWN ? "Check needed: " : "Remaining: ")
+							+ nearest.label + ". " + nearest.detail, route.requirements, route.available)); }
+				}
+			}
 			result.add(new UpgradeView(upgrade, label, context == null ? upgrade.valueReason : context.reason,
-				band, evidence, applications, questions.stream().distinct().collect(Collectors.toList()), routes, equip, parts, shared));
+				band, evidence, applications, questions.stream().distinct().collect(Collectors.toList()), routes, equip, parts, shared, comparison, path, referenceChoices));
 		}
 		result.sort(Comparator.comparing((UpgradeView u) -> u.band)
+			.thenComparing(Comparator.comparingDouble((UpgradeView u) -> u.comparison.available(ComparisonResult.Metric.THEORETICAL_DPS) ? Math.max(0, u.comparison.dpsGain()) : 0).reversed())
+			.thenComparing(u -> u.comparison.support.get(ComparisonResult.Metric.THEORETICAL_DPS))
 			.thenComparingInt(u -> preferences.goal != null && u.upgrade.goals.contains(preferences.goal) ? 0 : 1)
-			.thenComparing(Comparator.comparingInt((UpgradeView u) -> u.applications.size()).reversed())
-			.thenComparing(u -> u.routes.stream().noneMatch(r -> r.available)).thenComparing(u -> u.upgrade.id));
+			.thenComparing(u -> u.routes.stream().noneMatch(r -> r.available))
+			.thenComparing(u -> u.routes.get(0).decision.effortBand).thenComparing(u -> u.upgrade.id));
+		// One armour piece per primary shortlist; all pieces remain in Browse.
+		List<UpgradeView> primary = new ArrayList<>(), remainder = new ArrayList<>(); Set<String> families = new HashSet<>();
+		for (UpgradeView candidate : result)
+		{
+			String family = candidate.upgrade.id.startsWith("ancestral-") ? "ancestral" : candidate.upgrade.id;
+			if (primary.size() < 3 && families.add(family)) { primary.add(candidate); } else { remainder.add(candidate); }
+		}
+		result.clear(); result.addAll(primary); result.addAll(remainder);
 		// Retain a supported available alternative beside longer blocked plans in the first three slots.
 		if (result.size() > 3 && result.subList(0, 3).stream().noneMatch(u -> u.routes.stream().anyMatch(r -> r.available)))
 		{
@@ -163,6 +218,41 @@ public final class Advisor
 			if (available != null) { result.remove(available); result.add(2, available); }
 		}
 		return List.copyOf(result);
+	}
+	private String dependencyDescription(KnowledgeCatalog.Dependencies dependency)
+	{ return dependency == null ? "" : dependency.mode == KnowledgeCatalog.DependencyMode.NODE ? " " + dependency.node
+		: " · " + dependency.mode + " prerequisite branch: [" + dependency.children.stream().map(this::dependencyDescription).collect(Collectors.joining(", ")) + "]"; }
+	private KnowledgeCatalog.PathNode nearestPath(KnowledgeCatalog.PathNode node, Map<String, KnowledgeCatalog.PathNode> nodes,
+		AccountSnapshot a, Preferences p)
+	{
+		if (pathTruth(node, a, p) == Truth.TRUE) { return null; }
+		KnowledgeCatalog.PathNode next = nearestDependency(node.dependencies, nodes, a, p);
+		return next == null ? node : next;
+	}
+	private KnowledgeCatalog.PathNode nearestDependency(KnowledgeCatalog.Dependencies dependency,
+		Map<String, KnowledgeCatalog.PathNode> nodes, AccountSnapshot a, Preferences p)
+	{
+		if (dependency == null) { return null; }
+		if (dependency.mode == KnowledgeCatalog.DependencyMode.NODE) { return nearestPath(nodes.get(dependency.node), nodes, a, p); }
+		if (dependency.mode == KnowledgeCatalog.DependencyMode.ALL)
+		{ return dependency.children.stream().map(d -> nearestDependency(d, nodes, a, p)).filter(java.util.Objects::nonNull).findFirst().orElse(null); }
+		if (dependency.children.stream().anyMatch(d -> nearestDependency(d, nodes, a, p) == null)) { return null; }
+		// Prefer an already-owned intermediate check over redoing its upstream acquisition.
+		KnowledgeCatalog.Dependencies branch = dependency.children.stream().filter(d -> d.mode == KnowledgeCatalog.DependencyMode.NODE
+			&& nodes.get(d.node).dependencies == null && pathTruth(nodes.get(d.node), a, p) == Truth.UNKNOWN).findFirst().orElse(dependency.children.get(0));
+		return nearestDependency(branch, nodes, a, p);
+	}
+	private Truth pathTruth(KnowledgeCatalog.PathNode node, AccountSnapshot a, Preferences p)
+	{
+		if (node.quantity == null) { return planningTruth(node.completeWhen, a, p); }
+		Observation<Long> count = a.observedQuantity(node.itemId);
+		return count.known() && count.value() >= node.quantity ? Truth.TRUE : Truth.UNKNOWN;
+	}
+	private String quantityEvidence(KnowledgeCatalog.PathNode node, AccountSnapshot a)
+	{
+		Observation<Long> count = a.observedQuantity(node.itemId);
+		return count.known() ? count.value() + " / " + node.quantity + " (largest observed container count); " + count.evidence()
+			: "Quantity unknown; ownership does not establish the required amount.";
 	}
 
 	private List<String> ownershipQuestions(Condition c, AccountSnapshot a, Preferences p)
@@ -199,13 +289,17 @@ public final class Advisor
 		public final List<String> evidence, applications, questions, shared;
 		public final List<RouteView> routes;
 		public final List<Requirement> equip, parts;
+		public final List<Requirement> path;
+		public final ComparisonResult comparison;
+		public final Map<String, Map<String, String>> referenceChoices;
 		UpgradeView(KnowledgeCatalog.Upgrade upgrade, String label, String value, KnowledgeCatalog.Benefit band,
 			List<String> evidence, List<String> applications, List<String> questions, List<RouteView> routes,
-			List<Requirement> equip, List<Requirement> parts, List<String> shared)
+			List<Requirement> equip, List<Requirement> parts, List<String> shared, ComparisonResult comparison, List<Requirement> path, Map<String, Map<String, String>> referenceChoices)
 		{
 			this.upgrade = upgrade; this.label = label; this.value = value; this.band = band;
 			this.evidence = List.copyOf(evidence); this.applications = List.copyOf(applications); this.questions = List.copyOf(questions);
 			this.routes = List.copyOf(routes); this.equip = List.copyOf(equip); this.parts = List.copyOf(parts); this.shared = List.copyOf(shared);
+			this.comparison = comparison; this.path = List.copyOf(path); this.referenceChoices = Map.copyOf(referenceChoices);
 		}
 	}
 
@@ -241,6 +335,7 @@ public final class Advisor
 		Preferences.Confirmation manual = p.confirmations.get(key);
 		return manual == null ? live : Observation.observed(manual.value, manual.time, "manual planning confirmation: " + key);
 	}
+	public Truth truthForPlanningFact(AccountSnapshot a, Preferences p, String key) { return Truth.of(fact(a, p, key)); }
 	private Truth possession(AccountSnapshot a, Preferences p, int id)
 	{
 		if (a.observedItem(id) == Truth.TRUE) { return Truth.TRUE; }

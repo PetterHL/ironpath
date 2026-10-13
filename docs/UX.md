@@ -6,6 +6,12 @@ Design specification, 12 October 2026. The image is a **proposed wireframe**, no
 
 [Editable SVG](images/upgrade-advisor-wireframes.svg)
 
+## R1 implementation evidence — 13 October 2026
+
+The original wireframes above remain design references. R1 implements native overview cards, Value/Path navigation, before/after identity, supported metric rows, assumptions/source disclosures, focused slot/context corrections, compact prerequisite evidence, and Back with overview scroll restoration. The headless screenshots in [validation/R1.md](validation/R1.md) use real Swing controls at 225 pixels and synthetic accounts. ItemManager supplies sprites in the actual client; the captures use an accessible placeholder because no game client is connected.
+
+Clipped Value/Path labels found in inspection were corrected and the screens recaptured. Overview, numerical detail, unsupported ToA detail, ordinary path, branching Magus recipe and Zaryte quantity path were inspected. Native client 100%, 125%, 150% and 200% scaling, sprite behavior and player usefulness are still pending; these captures do not pass R8. Full search/filter and comprehensive coverage remain later capabilities.
+
 ## Native implementation decision
 
 Use the existing `PluginPanel`, Swing and `ItemManager` in the same client. Inspected RuneLite source declares `PANEL_WIDTH = 225`, a 17-pixel scrollbar allowance and 6-pixel border offsets; usable card content is narrower still. Design at that width first, then test RuneLite UI scaling and Windows display scaling. This is not a React/HTML/browser surface.

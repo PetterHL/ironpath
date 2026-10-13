@@ -2,24 +2,30 @@
 
 **Your path to endgame PvM**
 
-P4a development build · 12 October 2026 · plugin 0.4.0 · knowledge p4a-1
+R1 development build · 13 October 2026 · plugin 0.5.0 · knowledge r1-1
 
-**Delivered: P4a's four-upgrade slice on the P1–P3 foundation.** Occult necklace,
-trident of the swamp, Zaryte crossbow and base avernic treads now have no-goal
-cards, provisional ownership, alternatives and acquisition details. A bounded,
-local powered-magic comparison uses an explicit reference setup against ordinary
-Barrows Dharok. The existing sixteen broad PvM decisions remain accessible.
-TASKS.md records the current automated results and pending PC checks; its earlier
-75-test result and limited user-reported flow remain historical evidence.
-No Plugin Hub submission or external service exists.
+**Delivered: realistic powered-magic references and first endgame value.** Shadow,
+Ancestral hat/top/bottom, tormented bracelet and Magus ring join occult, swamp,
+Zaryte and treads. Complete supported slot setups produce max hit, hit chance and
+theoretical DPS on ordinary Dharok or General Graardor. The model includes charged
+tridents, Sang's current damage proc, Eye and Shadow; it respects fractional ring
+bonuses, prayer/boost assumptions and off-hand removal. Supported marginal changes
+influence deterministic advice. Native cards lead to **Value | Path** screens.
+The earlier observation, privacy, preferences and broad PvM foundation remains.
+
+This is partial coverage of the comprehensive product. ToA scaling, one-handed
+Confliction history, Brimstone accuracy procs, spell specialists and encounter/trip
+metrics remain visible gaps. See [R1 validation](docs/validation/R1.md) and
+[synthetic account demonstrations](docs/validation/r1-scenarios.md). No live-client
+or player-usefulness pass is claimed. No Plugin Hub submission or runtime service.
 
 The intended product is a free, open-source RuneLite sidebar that automatically identifies worthwhile Ironman PvM upgrades using observed account state: **which upgrades are worth pursuing, what difference will they make, and how do I obtain them?** Equipment, relevant prayers, skill levels and permanent unlocks are eligible. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
 ## Product direction
 
-IronPath is intended to become a comprehensive endgame PvM upgrade advisor, including BiS, meaningful specialist sidegrades, permanent rewards and the progression bridges needed to reach them. **The four-outcome P4a build is a foundation, not the product boundary.** There is no catalogue ceiling or requirement to select a goal.
+IronPath is intended to become a comprehensive endgame PvM upgrade advisor, including BiS, meaningful specialist sidegrades, permanent rewards and the progression bridges needed to reach them. **R1 is an implementation increment, not the product boundary.** There is no catalogue ceiling or requirement to select a goal.
 
-The next increments will compare realistic complete reference setups, connect marginal value to recommendation ranking, and deliver major endgame outcomes early. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
+R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. R2–R8 extend the other combat families, coverage, maintenance and real-client evidence. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
 
 Recommendations must explain what changes relative to owned alternatives, where it matters, when to defer, and how to obtain the upgrade. Strong alternatives and partial observations change the advice. An unread bank never proves an item is missing. Long-term upgrades remain visible alongside nearer opportunities.
 
@@ -67,7 +73,7 @@ Clone the repository and check out the combined implementation branch:
 ```sh
 git clone https://github.com/PetterHL/ironpath.git
 cd ironpath
-git checkout p4a-upgrade-advisor
+git checkout r1-full-loadout-magic
 ```
 
 For an existing clone, close the development client, enter its `ironpath` directory,
@@ -75,7 +81,7 @@ and update the branch first:
 
 ```sh
 git fetch origin
-git switch p4a-upgrade-advisor
+git switch r1-full-loadout-magic
 git pull --ff-only
 ```
 
@@ -109,51 +115,46 @@ then open a card with **Open details**. Pinned source links are under
 **Reviewed sources**. Advice is planning, not a complete loadout or a promise of
 successful kills. Leave account cases you cannot exercise pending.
 
-## Use the P4a build
+## Use the R1 build
 
-1. Open with **no goal**. Up to three primary upgrade cards show a supported
-   effect, contexts, remaining work and a confidence/access label. A fourth
-   supported outcome is under **More supported upgrades**. A supported observed
-   or manually owned baseline can justify a provisional card; an empty bank
-   alone cannot. Unsupported contexts receive a coverage explanation.
-2. Choose **Open details** for baseline evidence, alternatives, equip levels,
-   acquisition requirements and sources. **Back to upgrades** returns to the
-   cards. A relevant inaccessible outcome stays visible as **Plan ahead**;
-   ownership or access checks never become an available grind by assumption.
-3. Confirm only the named ownership fact if appropriate. **Already owned**
-   suppresses redundant acquisition; **Confirm not owned** and **Clear
-   confirmation** are reversible. Positive observed/manual possession wins over
-   a conflicting absence. Manual ownership cannot create charged/usable gear.
-4. Occult/swamp details offer **Reference setup and assumptions**. The proposal
-   uses observed real levels and supported exact tridents, neck and boot pieces;
-   every other slot is deliberately empty. It defaults to no offensive prayer,
-   no boost and Accurate. Numbers before confirmation are a **proposed reference
-   scenario**, not your actual loadout. Correct a supported weapon/neck/feet,
-   prayer, boost or style, then **Confirm reference**. Unsupported equipped
-   pieces or unread equipment withhold numbers until you explicitly choose
-   **Use minimal template** to exclude them. No missing piece silently gives
-   zero bonuses; empty/uncharged/manual weapons cannot enter the baseline.
-5. The calculation covers uninterrupted ordinary **Dharok, NPC 1673** attacks.
-   It reports max hit, hit chance (changes in percentage points) and theoretical
-   DPS. It excludes wind weakness for tridents, venom/poison, set effects,
-   advanced staffs, raid scaling, movement and resources. Wind spells remain a
-   Barrows alternative. These numbers never promise kill time, trip length or
-   deeper delves. Zaryte and treads have qualitative/stat comparisons, not a
-   bolt, full-loadout or Doom combat model.
-6. Reference corrections/confirmations stay in memory. Relevant level, item or
-   manual-input changes invalidate confirmation; identity/lifecycle changes
-   clear the setup. Same-value observation refreshes retain confirmation.
-   **Quick actions** separates owned scroll/switch/assembly reminders.
-   **Existing broad PvM advice**, including **More available activities**, retains
-   CG, Moons, Titans, Slayer, ToA and ordinary team CoX advice and sources.
-7. **Account and preferences** contains observations, diagnostics, optional goals,
-   manual planning assumptions and activity/action skip/restore. A skip excludes
-   acquisition work without completing an outcome or hiding owned reward
-   utility. Current task, Nex entry/team and supply/quantity assumptions need
-   rechecking before play; their manual timestamps are not live observations.
-   Wait for **Preferences saved locally**, then restart or change character/
-   profile to check isolated choices and cleared observations/reference setups.
-   These PC checks remain pending.
+1. Open with **no goal** and observe the bank. The three primary cards balance
+   supported value with varied outcomes; **More supported upgrades** keeps every
+   relevant reviewed outcome inspectable. Ownership uncertainty is conditional
+   advice, never a claim that unread storage is empty.
+2. Open a card. **Value** shows before/after gear, max hit, hit chance and
+   theoretical DPS where individually supported. **Path** shows actual access,
+   preparation, components, ALL/ANY assembly branches and equip conditions.
+   **Back to upgrades** restores the overview scroll position.
+3. The complete reference prefers supported observed owned pieces and charged
+   staff packages. A reviewed mage body at 85+ Magic selects ordinary Graardor as
+   an explicit high-defence reference; smaller templates start at Dharok.
+   These are reference profiles, not inferred encounter interests or readiness.
+   No prayer/boost and Accurate are default assumptions. Shadow removes the
+   off-hand. Unknown/unreviewed equipped slots with no supported alternative
+   block numbers until a focused correction or explicit template exclusion.
+4. **Reference setup and assumptions** discloses every slot, provenance, real and
+   effective levels, source/model versions and exclusions. Correct a slot,
+   prayer, boost, style or target, then **Confirm reference**. Empty slots are
+   deliberate reference exclusions; uncharged/manual weapons cannot become usable.
+   Confirmation does not establish measured performance. Selecting ToA shows its
+   missing phase/scaling inputs instead of inventing an invocation.
+5. Numbers cover uninterrupted ordinary attacks. Sang's 20% successful-hit
+   +8-damage proc is included; healing is separate. Confliction's one-handed
+   history and Brimstone accuracy procs withhold accuracy/DPS while retaining
+   supported max hit. Ancient/elemental spells, defence reduction, movement,
+   specials, kill time and trips are outside this comparison.
+6. Path quantities are timestamped, container-scoped planning evidence. The
+   largest readable container count is a conservative lower bound; a stale bank
+   stack is never added to its later inventory copy. Unread/insufficient counts
+   remain unknown. Owned intermediate components bypass their upstream branch;
+   boosts, preparation and current supplies still need checking.
+7. **Already owned**, **Confirm not owned** and **Clear confirmation** change only
+   the named planning fact. Positive possession wins conflicts; readable unlocks
+   override manual fallbacks. **Account and preferences** retains optional goals,
+   skips and local saves. A skip excludes acquisition without completing it.
+   Levels/items/slots/quantities/manual changes invalidate reference confirmation;
+   identity/lifecycle changes clear it. Wait for **Preferences saved locally**
+   before restarting. All real-client checks remain pending.
 
 The retained activity evaluator still needs targeted absence confirmations for
 missing-item grinds. Its ranking now puts contextual benefit before optional goal
@@ -174,18 +175,21 @@ keys. Old action skips are not widened; retired identifiers are explicitly dropp
 
 Real levels, inventory/equipment, session bank, Rigour/Augury and Deadeye/Mystic
 Vigour unlocks, plus completion of Song of the Elves, Regicide, Beneath Cursed Sands,
-Perilous Moons, The Frozen Door and The Final Dawn are read on the client thread
+Perilous Moons, The Frozen Door, The Final Dawn, Monkey Madness II and Desert
+Treasure II are read on the client thread
 into immutable snapshots.
 Unavailable quest scripts, containers or skills stay unknown. Quests use supported
 `Quest.getState`; selected progress events coalesce into a read, while idle ticks
-retain the existing snapshot. No KC, Collection Log, resource quantities or player
-skill are inferred.
+retain the existing snapshot. Equipment slots and supported positive container quantities retain provenance.
+No KC, Collection Log, unobserved quantities or player execution ability is inferred.
 
 The catalogue recognises selected exact active/charged, empty and cosmetic forms
 for distinct purposes. Bowfa usable-package checks still cover default-colour active
 crystal armour. Atlatl acquisition is supported, but its full strength/ammunition
 setup is outside the CoX baseline. Only the base keris partisan is recognised for
-ToA preparation. The magic reference is a restricted template, not a complete observed loadout.
+ToA preparation. The magic reference is a complete compatible proposal from reviewed observed gear,
+with explicitly labelled empty exclusions, prayer/boost assumptions and model gaps.
+It is not asserted to be the current worn loadout.
 No solo/Expert/Challenge Mode certification, all-boss coverage or general advanced
 acquisition catalogue is promised. Advanced owned
 magic alternatives may suppress a redundant route without proving a spell setup.

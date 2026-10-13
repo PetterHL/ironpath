@@ -1,5 +1,17 @@
 # IronPath research and evidence
 
+## R1 current mechanics review — 13 October 2026
+
+Individual current pages were retrieved over permitted HTTPS and reviewed with their variant fields, equip requirements, bonuses, recipes and revision footers. The new `r1-*` records in the [bundled register](../src/main/resources/com/ironpath/catalog.json) retain exact revisions, review/access dates and item/model/route/context dependencies. Explanations and numeric code are original. No bulk upstream equipment data, calculator code, guide prose, game artwork or player data is redistributed.
+
+Review covers Ahrim's usable degradation forms (broken forms excluded), Virtus powered bonuses (ancient bonus remains a gap), ordinary/twisted Ancestral, tormented ornament, fractional seers variants, Magus and its assembly intermediates, ordinary/fortified wards, other supported off-hands, god/imbued/locked/max capes, all avernic-treads combinations, Shadow/Eye/Sang charged versus uncharged forms, resource counts and ordinary Graardor. Unknown equipped items remain visible model gaps rather than empty slots. Confliction and Brimstone are recognised competitors even where their state/proc model is unsupported.
+
+**Investigated disagreement:** the initial independently authored Sang calculation omitted the current successful-hit damage proc. Current Sang `15336446` and holy Sang `15276380`, plus Jagex's [implemented 22 July gear update](https://secure.runescape.com/m=news/summer-sweep-up-gear--pvm-changes?oldschool=1), confirm a 1/5 proc adding 8 damage and the two-blood-rune charge cost. The source register records the official page's retrieved SHA-256 as well as its publication date. The revised model handles the damage distribution, including the final successful-zero floor; it makes no healing-to-trip claim. All 540 complete-loadout rows now agree with the pinned external reference, and independent hand cases agree.
+
+The external GPL calculator runs only in a separate temporary checkout at `89c3e25b344aea90d0189746e4b5f73dde0f0383`. [validation/r1-oracle.test.ts](validation/r1-oracle.test.ts) is an original harness; its fixtures are synthetic, not copied upstream tests. Formula inspection serves validation, not imported implementation. R1's Java test corpus records complete original inputs and generated outputs. The unchanged P4a corpus continues to pass through the shared arithmetic. [validation/R1.md](validation/R1.md) explains reproducibility, boundaries and actual checks.
+
+ToA's multiplier/cap is hand-checked independently, but no encounter figures ship until phase and raid/path/party scaling are supported. Max hit, accuracy, DPS, expected kill time and trip performance remain distinct metrics. No live game or player-usefulness evidence was collected.
+
 ## Product-reset investigation — 12 October 2026
 
 This section records the current investigation. [DESIGN](DESIGN.md), [CATALOGUE](CATALOGUE.md), [UX](UX.md) and the active [backlog](../TASKS.md) control future work. Historical research below remains evidence, not a scope limit. No live account, new game client, current creator video or gated Discord strategy guide was inspected in this session. No application tests were rerun.
