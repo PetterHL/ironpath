@@ -89,7 +89,7 @@ Pinned new evidence: Venator bow **15345156**, shards **15371536**, Muspah **153
 
 | Actual-client / player check | Status |
 |---|---|
-| Genuine ItemManager sprite success and asynchronous loading | **Pending**; no authenticated RuneLite client attached. Loading/missing imagery is captured separately. |
+| Genuine ItemManager sprite success and asynchronous loading | Petter subsequently supplied client screenshots with visible item sprites; this establishes visible sprite success for those examples only. Async/lifecycle acceptance and post-fix retest remain **pending**. See [client findings](R3a-client-variants.md). Original synthetic captures retain their provenance. |
 | RuneLite/OS viewport and 100/125/150/200% scaling | **Pending**; the software captures and explicit font tests do not emulate OS/client DPI. |
 | Actual mouse/keyboard/focus/Back and profile/world switching | **Pending**; component/lifecycle regressions pass, not a client pass. |
 | Player finds a useful upgrade, explains its trade-off and reaches the next step | **Pending**; synthetic relevance/counterfactual evidence is not player evidence. |

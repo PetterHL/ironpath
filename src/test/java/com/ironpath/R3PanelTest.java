@@ -39,6 +39,28 @@ public class R3PanelTest
 			public void skip(String id,boolean v) { preferences=preferences.skip(id,v);render(); }
 		},"Synthetic local storage",List.of(),overview,new PoweredMagic(catalog).propose(account));
 	}
+	@Test public void reportedEquipmentGetsUsefulHomeAndAnExplicitOptionalRosewoodInSpecialist() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			try
+			{
+				account=ClientEquipmentRegressionTest.reportedGearFixture(); preferences=Preferences.EMPTY; render();
+				assertTrue(children(panel).stream().noneMatch(c->"upgrade-card-rosewood-blowpipe".equals(c.getName())));
+				assertTrue(children(panel).stream().noneMatch(c->"upgrade-card-crystal-body".equals(c.getName())||"upgrade-card-toxic-blowpipe".equals(c.getName())));
+				capture("client-gear-home"); button("Specialist").doClick();
+				assertNotNull(named("upgrade-card-rosewood-blowpipe"));
+				assertTrue(text().contains("Owned Toxic/Blazing blowpipe is stronger")); assertTrue(text().contains("scale-free"));
+				size();
+				int optionalY=SwingUtilities.convertPoint(named("upgrade-card-rosewood-blowpipe"),0,0,panel).y;
+				capture("client-gear-specialist",Math.max(0,optionalY-60));
+				((JComboBox<?>)named("browse-category")).setSelectedItem("All");
+				((JButton)named("open-upgrade-zaryte-vambraces")).doClick();
+				assertFalse(text().contains("Unreviewed or incompatible ranged item 31097"));
+				capture("client-gear-value");
+			}
+			catch(Exception e){throw new RuntimeException(e);}
+		});
+	}
 	private List<Component> children(Container parent)
 	{ List<Component> result=new ArrayList<>();for(Component c:parent.getComponents()){result.add(c);if(c instanceof Container)result.addAll(children((Container)c));}return result; }
 	private Component named(String id) { return children(panel).stream().filter(c->id.equals(c.getName())).findFirst().orElseThrow(); }
@@ -53,6 +75,8 @@ public class R3PanelTest
 		panel.setSize(225,panel.getPreferredSize().height);for(int i=0;i<4;i++)layout(panel);
 	}
 	private void capture(String name) throws Exception
+	{ capture(name,0); }
+	private void capture(String name,int offsetY) throws Exception
 	{
 		size();
 		StringBuilder bounds=new StringBuilder();
@@ -61,7 +85,8 @@ public class R3PanelTest
 		}
 		Path boundsPath=Path.of("build/reports/r3a/images",name+"-bounds.txt");Files.createDirectories(boundsPath.getParent());Files.writeString(boundsPath,bounds);
 		BufferedImage image=new BufferedImage(225,600,BufferedImage.TYPE_INT_RGB);Graphics2D g=image.createGraphics();
-		g.setColor(net.runelite.client.ui.ColorScheme.DARK_GRAY_COLOR);g.fillRect(0,0,225,600);panel.printAll(g);g.dispose();
+		g.setColor(net.runelite.client.ui.ColorScheme.DARK_GRAY_COLOR);g.fillRect(0,0,225,600);
+		g.translate(0,-offsetY);panel.printAll(g);g.dispose();
 		Path dir=Path.of("build/reports/r3a/images");Files.createDirectories(dir);ImageIO.write(image,"png",dir.resolve(name+".png").toFile());
 	}
 	@Test public void compactHomepageAndBrowseShareFullCardsAndMeasuredDensity() throws Exception

@@ -114,6 +114,7 @@ final class IronpathPanel extends PluginPanel
 					add(deck);
 
 					if (upgrades.isEmpty()) { text(this, "No remaining supported upgrade from these observations. Open the bank or inspect coverage; unknown is not absence. No priorities are added to fill the list."); }
+					else if (overview.preview.isEmpty()) { text(this, "No worthwhile new pursuit is established in this reference. Browse retains small-gain and optional specialist alternatives."); }
 					button(this, "Browse all (" + upgrades.size() + ")", () -> showBrowse(currentView, actions));
 					overview.activities.stream().filter(a -> a.category.equals("Worth doing")).findFirst().ifPresent(a -> activityCard(a,currentView,actions));
 					if (!overview.quickActions.isEmpty())

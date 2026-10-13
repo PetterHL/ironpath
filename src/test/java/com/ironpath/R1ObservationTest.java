@@ -18,6 +18,29 @@ import static org.mockito.Mockito.*;
 
 public class R1ObservationTest
 {
+	@Test public void clientSlotsAndBankVariantsReachTheRangedAdvisorWithoutFalseRepeatGrinds() throws Exception
+	{
+		net.runelite.api.Client client=mock(net.runelite.api.Client.class);
+		when(client.isClientThread()).thenReturn(true);
+		when(client.getRealSkillLevel(any(net.runelite.api.Skill.class))).thenReturn(99);
+		Item[] worn=new Item[14]; java.util.Arrays.fill(worn,new Item(-1,0));
+		worn[0]=new Item(27729,1); worn[3]=new Item(28688,1); worn[4]=new Item(27721,1);
+		worn[7]=new Item(27725,1); worn[10]=new Item(31097,1);
+		ItemContainer equipment=mock(ItemContainer.class);
+		when(equipment.getItems()).thenReturn(worn);
+		when(equipment.getItem(anyInt())).thenAnswer(call->worn[call.getArgument(0)]);
+		when(client.getItemContainer(net.runelite.api.gameval.InventoryID.WORN)).thenReturn(equipment);
+		AccountSnapshot a=new AccountSnapshotReader(client).read(fact(Set.of(25867,11230)));
+		assertEquals(Integer.valueOf(31097),a.equipmentSlots.value().get("feet"));
+		assertTrue(a.observedItem(28688)==com.ironpath.model.Truth.TRUE);
+		KnowledgeCatalog catalog=KnowledgeCatalog.load(new Gson());
+		com.ironpath.advisor.RangedComparisonService ranged=new com.ironpath.advisor.RangedComparisonService(catalog);
+		assertNull(ranged.validate(a,Preferences.EMPTY,ranged.propose(a)));
+		var views=new com.ironpath.advisor.Advisor(catalog).upgrades(a,Preferences.EMPTY);
+		assertTrue(views.stream().noneMatch(v->v.upgrade.id.startsWith("crystal-")||v.upgrade.id.equals("toxic-blowpipe")||v.upgrade.id.equals("avernic-treads")));
+		assertTrue(views.stream().filter(v->v.upgrade.id.equals("zaryte-vambraces")).findFirst().orElseThrow()
+			.comparison.available(com.ironpath.advisor.ComparisonResult.Metric.THEORETICAL_DPS));
+	}
 	@Test public void supportedSlotsAndStackCountsAreIndependentImmutableObservations()
 	{
 		ItemContainer container=mock(ItemContainer.class);

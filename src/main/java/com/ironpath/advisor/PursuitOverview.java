@@ -30,7 +30,10 @@ public final class PursuitOverview
 		List<Advisor.UpgradeView> ordered=new ArrayList<>(); Map<String,String> reasons=new LinkedHashMap<>();
 		Set<String> families=new HashSet<>(), roles=new HashSet<>(), ids=new HashSet<>();
 		if (!active.isEmpty()) { select(active.get(0),"Highest justified actionable option",ordered,reasons,families,roles,ids); }
-		List<Advisor.UpgradeView> discovery=new ArrayList<>(all);
+		List<Advisor.UpgradeView> eligible=new ArrayList<>();
+		for (Advisor.UpgradeView view : all)
+		{ if (view.pursuit.category!=PursuitAssessment.Category.DEFER) { eligible.add(view); } }
+		List<Advisor.UpgradeView> discovery=new ArrayList<>(eligible);
 		// Importance is preserved; the existing rank supplies stable order within a tier.
 		discovery.sort(java.util.Comparator.comparing(u->u.valueEvidence.importance));
 		if (ordered.isEmpty() && !discovery.isEmpty()) { select(discovery.get(0),"Strongest remaining importance with truthful pursuit status",ordered,reasons,families,roles,ids); }
@@ -53,9 +56,9 @@ public final class PursuitOverview
 			if (!families.contains(view.pursuit.family) && !roles.contains(discoveryRole(view)))
 			{ select(view,"Distinct reviewed role before repeated family previews",ordered,reasons,families,roles,ids); }
 		}
-		for (Advisor.UpgradeView view : all)
+		for (Advisor.UpgradeView view : eligible)
 		{ if (!families.contains(view.pursuit.family)) { select(view,"Next ranked independent reward family",ordered,reasons,families,roles,ids); } }
-		for (Advisor.UpgradeView view : all) { select(view,"Remaining ranked choice; all outcomes retained in Browse",ordered,reasons,families,roles,ids); }
+		for (Advisor.UpgradeView view : eligible) { select(view,"Remaining ranked choice; all outcomes retained in Browse",ordered,reasons,families,roles,ids); }
 		preview=List.copyOf(ordered); previewReasons=Map.copyOf(reasons);
 	}
 	private static String discoveryRole(Advisor.UpgradeView view)

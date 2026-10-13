@@ -2,7 +2,9 @@
 
 **Your path to endgame PvM**
 
-R3a development build · 13 October 2026 · plugin 0.8.0 · knowledge r3a-1 · schema 10
+R3a development build · 13 October 2026 · plugin 0.8.1 · knowledge r3a-2 · schema 10
+
+**Client test correction:** all crystal armour colours (including black Iorwerth and the permanent-world Deadman cosmetic) now count as owned, with active/inactive bonuses kept separate. Blazing is recognised as cosmetic Toxic, while empty forms and unknown dart loads remain distinct. All eight Avernic treads forms have reviewed ranged stats. Owned Toxic/Blazing makes Rosewood an explicitly optional scale-free specialist, retained in Browse rather than a homepage damage upgrade. See [client findings and regressions](docs/validation/R3a-client-variants.md).
 
 **This branch delivers R3a relationship advice and the native card-first homepage for review.** Personal importance is independent of acquisition status and effort. Anguish retains its core ranged-neck role despite a small neutral breakpoint; Zaryte keeps conditional burst value; Venator adds reviewed multi-target convenience and a five-shard route. Adequate owned switches make Venator optional preparation, and reward-specific Doom checks no longer block independently eligible rewards. Cards show account value, labelled numbers/gaps and direct Value/Path actions, with Long-term and Specialist discovery beside Browse. See [R3a evidence, counterfactuals and pending client checks](docs/validation/R3a.md).
 

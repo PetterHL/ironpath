@@ -1,6 +1,6 @@
 {
   "schemaVersion": 10,
-  "knowledgeVersion": "r3a-1",
+  "knowledgeVersion": "r3a-2",
   "reviewed": "2026-10-13",
   "sources": [
     {
@@ -1328,10 +1328,10 @@
       "url": "https://oldschool.runescape.wiki/w/Crystal_body?oldid=15369568",
       "revision": "15369568",
       "author": "OSRS Wiki contributors",
-      "accessed": "2026-10-12",
-      "reviewed": "2026-10-12",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
       "licence": "CC BY-NC-SA 3.0 (source content only)",
-      "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
+      "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed. Rechecked permanent-world crystal recolours and active/inactive IDs for the client variant correction; identifiers and bounded facts only.",
       "decisions": [
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
@@ -1347,7 +1347,15 @@
         "seek-venator-bow"
       ],
       "items": [
-        23975
+        23975,
+        27697,
+        27709,
+        27721,
+        27733,
+        27745,
+        27757,
+        27769,
+        33023
       ],
       "models": [],
       "routes": [
@@ -1380,10 +1388,10 @@
       "url": "https://oldschool.runescape.wiki/w/Crystal_legs?oldid=15369571",
       "revision": "15369571",
       "author": "OSRS Wiki contributors",
-      "accessed": "2026-10-12",
-      "reviewed": "2026-10-12",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
       "licence": "CC BY-NC-SA 3.0 (source content only)",
-      "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
+      "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed. Rechecked permanent-world crystal recolours and active/inactive IDs for the client variant correction; identifiers and bounded facts only.",
       "decisions": [
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
@@ -1399,7 +1407,15 @@
         "seek-venator-bow"
       ],
       "items": [
-        23979
+        23979,
+        27701,
+        27713,
+        27725,
+        27737,
+        27749,
+        27761,
+        27773,
+        33027
       ],
       "models": [],
       "routes": [
@@ -1432,10 +1448,10 @@
       "url": "https://oldschool.runescape.wiki/w/Crystal_helm?oldid=15369569",
       "revision": "15369569",
       "author": "OSRS Wiki contributors",
-      "accessed": "2026-10-12",
-      "reviewed": "2026-10-12",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
       "licence": "CC BY-NC-SA 3.0 (source content only)",
-      "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed.",
+      "reuseBasis": "Full page reviewed for bounded mechanics and variants; original explanations and item selections. No copied prose, tables, images or progression dataset. Evidence link only; source content is not redistributed. Rechecked permanent-world crystal recolours and active/inactive IDs for the client variant correction; identifiers and bounded facts only.",
       "decisions": [
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
@@ -1451,7 +1467,15 @@
         "seek-venator-bow"
       ],
       "items": [
-        23971
+        23971,
+        27705,
+        27717,
+        27729,
+        27741,
+        27753,
+        27765,
+        27777,
+        33031
       ],
       "models": [],
       "routes": [
@@ -1484,10 +1508,10 @@
       "url": "https://github.com/runelite/runelite/blob/42a6f17a6a2e8e478aa763890ecd0181a59dad38/runelite-api/src/main/java/net/runelite/api/gameval/ItemID.java",
       "revision": "42a6f17a6a2e8e478aa763890ecd0181a59dad38",
       "author": "RuneLite contributors",
-      "accessed": "2026-10-12",
-      "reviewed": "2026-10-12",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
       "licence": "BSD-2-Clause (RuneLite source)",
-      "reuseBasis": "Checked exact numeric IDs and charged, inactive, component and cosmetic names against the official API source. No source code copied; limited identifiers accompany independently checked Wiki mechanics.",
+      "reuseBasis": "Checked exact numeric IDs and charged, inactive, component and cosmetic names against the official API source. No source code copied; limited identifiers accompany independently checked Wiki mechanics. Rechecked all crystal clan/Deadman cosmetic IDs and empty/loaded Blazing IDs for the client variant correction.",
       "decisions": [
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
@@ -1688,7 +1712,57 @@
         27614,
         27616,
         20724,
-        27641
+        27641,
+        27705,
+        27707,
+        27717,
+        27719,
+        27729,
+        27731,
+        27741,
+        27743,
+        27753,
+        27755,
+        27765,
+        27767,
+        27777,
+        27779,
+        33031,
+        33033,
+        27697,
+        27699,
+        27709,
+        27711,
+        27721,
+        27723,
+        27733,
+        27735,
+        27745,
+        27747,
+        27757,
+        27759,
+        27769,
+        27771,
+        33023,
+        33025,
+        27701,
+        27703,
+        27713,
+        27715,
+        27725,
+        27727,
+        27737,
+        27739,
+        27749,
+        27751,
+        27761,
+        27763,
+        27773,
+        27775,
+        33027,
+        33029,
+        28687,
+        28688
       ],
       "models": [],
       "routes": [
@@ -3676,7 +3750,9 @@
       "items": [
         31088
       ],
-      "models": [],
+      "models": [
+        "ranged-1"
+      ],
       "routes": [],
       "contexts": []
     },
@@ -3694,7 +3770,9 @@
       "items": [
         31091
       ],
-      "models": [],
+      "models": [
+        "ranged-1"
+      ],
       "routes": [],
       "contexts": []
     },
@@ -3712,7 +3790,9 @@
       "items": [
         31092
       ],
-      "models": [],
+      "models": [
+        "ranged-1"
+      ],
       "routes": [],
       "contexts": []
     },
@@ -3730,7 +3810,9 @@
       "items": [
         31093
       ],
-      "models": [],
+      "models": [
+        "ranged-1"
+      ],
       "routes": [],
       "contexts": []
     },
@@ -3748,7 +3830,9 @@
       "items": [
         31094
       ],
-      "models": [],
+      "models": [
+        "ranged-1"
+      ],
       "routes": [],
       "contexts": []
     },
@@ -3766,7 +3850,9 @@
       "items": [
         31095
       ],
-      "models": [],
+      "models": [
+        "ranged-1"
+      ],
       "routes": [],
       "contexts": []
     },
@@ -3784,7 +3870,9 @@
       "items": [
         31096
       ],
-      "models": [],
+      "models": [
+        "ranged-1"
+      ],
       "routes": [],
       "contexts": []
     },
@@ -3802,7 +3890,9 @@
       "items": [
         31097
       ],
-      "models": [],
+      "models": [
+        "ranged-1"
+      ],
       "routes": [],
       "contexts": []
     },
@@ -5009,7 +5099,23 @@
       ],
       "items": [
         23971,
-        23973
+        23973,
+        27705,
+        27707,
+        27717,
+        27719,
+        27729,
+        27731,
+        27741,
+        27743,
+        27753,
+        27755,
+        27765,
+        27767,
+        27777,
+        27779,
+        33031,
+        33033
       ],
       "models": [],
       "routes": [
@@ -5037,7 +5143,23 @@
       ],
       "items": [
         23975,
-        23977
+        23977,
+        27697,
+        27699,
+        27709,
+        27711,
+        27721,
+        27723,
+        27733,
+        27735,
+        27745,
+        27747,
+        27757,
+        27759,
+        27769,
+        27771,
+        33023,
+        33025
       ],
       "models": [],
       "routes": [
@@ -5048,7 +5170,8 @@
         "seek-crystal-body"
       ],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "activityContexts": []
     },
     {
       "id": "r2-crystal-legs",
@@ -5065,7 +5188,23 @@
       ],
       "items": [
         23979,
-        23981
+        23981,
+        27701,
+        27703,
+        27713,
+        27715,
+        27725,
+        27727,
+        27737,
+        27739,
+        27749,
+        27751,
+        27761,
+        27763,
+        27773,
+        27775,
+        33027,
+        33029
       ],
       "models": [],
       "routes": [
@@ -5076,7 +5215,8 @@
         "seek-crystal-legs"
       ],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "activityContexts": []
     },
     {
       "id": "r2-masori-mask",
@@ -7371,6 +7511,64 @@
       "rewards": [],
       "activityContexts": [
         "muspah-bowfa"
+      ]
+    },
+    {
+      "id": "client-blazing-blowpipe",
+      "type": "wiki cosmetic equivalence and active/empty form review",
+      "url": "https://oldschool.runescape.wiki/w/Blazing_blowpipe?oldid=15191641",
+      "revision": "15191641",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "licence": "CC BY-NC-SA 3.0; linked evidence only",
+      "reuseBasis": "Reviewed cosmetic-only equivalence, exact forms and ordinary ranged bonuses. Original explanation and bounded facts only; no article prose, code or images copied.",
+      "decisions": [
+        "seek-twisted-bow",
+        "seek-bowfa",
+        "seek-toxic-blowpipe",
+        "seek-rosewood-blowpipe",
+        "seek-masori-mask",
+        "seek-masori-body",
+        "seek-masori-chaps",
+        "seek-necklace-of-anguish",
+        "seek-necklace-of-rupture",
+        "seek-dizanas-quiver",
+        "seek-venator-ring",
+        "seek-zaryte-vambraces",
+        "seek-avas-assembler",
+        "seek-twisted-buckler"
+      ],
+      "items": [
+        28687,
+        28688
+      ],
+      "models": [
+        "ranged-1"
+      ],
+      "routes": [
+        "seek-twisted-bow",
+        "seek-bowfa",
+        "seek-toxic-blowpipe",
+        "seek-rosewood-blowpipe",
+        "seek-masori-mask",
+        "seek-masori-body",
+        "seek-masori-chaps",
+        "seek-necklace-of-anguish",
+        "seek-necklace-of-rupture",
+        "seek-dizanas-quiver",
+        "seek-venator-ring",
+        "seek-zaryte-vambraces",
+        "seek-avas-assembler",
+        "seek-twisted-buckler"
+      ],
+      "contexts": [],
+      "efforts": [],
+      "rewards": [],
+      "acquisitions": [],
+      "relations": [
+        "venator-attention",
+        "venator-colosseum"
       ]
     }
   ],
@@ -10047,7 +10245,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -10137,7 +10336,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -10471,7 +10671,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -10557,7 +10758,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -10645,7 +10847,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -10733,7 +10936,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -10821,7 +11025,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -10918,7 +11123,8 @@
         "r2-twisted-bow",
         "r2-zenyte-necklace",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -11050,7 +11256,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -11151,7 +11358,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -11243,7 +11451,8 @@
         "r2-venator-ring",
         "r2-venator-vestige",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -11355,7 +11564,8 @@
         "r2-twisted-bow",
         "r2-zaryte-vambraces",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -11441,7 +11651,8 @@
         "r2-twisted-bow",
         "r2-twisted-buckler",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -11528,7 +11739,8 @@
         "r2-twisted-bow",
         "r2-vorkath-head",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "requires": [],
       "status": "reviewed",
@@ -14218,6 +14430,506 @@
           "r2-ranged",
           "item-ids"
         ]
+      },
+      {
+        "id": 27705,
+        "label": "Crystal helm (Hefin)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27707,
+        "label": "Crystal helm (Hefin inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27717,
+        "label": "Crystal helm (Ithell)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27719,
+        "label": "Crystal helm (Ithell inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27729,
+        "label": "Crystal helm (Iorwerth)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27731,
+        "label": "Crystal helm (Iorwerth inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27741,
+        "label": "Crystal helm (Trahaearn)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27743,
+        "label": "Crystal helm (Trahaearn inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27753,
+        "label": "Crystal helm (Cadarn)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27755,
+        "label": "Crystal helm (Cadarn inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27765,
+        "label": "Crystal helm (Crwys)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27767,
+        "label": "Crystal helm (Crwys inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27777,
+        "label": "Crystal helm (Amlodd)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27779,
+        "label": "Crystal helm (Amlodd inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 33031,
+        "label": "Crystal helm (Deadman)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 33033,
+        "label": "Crystal helm (Deadman inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27697,
+        "label": "Crystal body (Hefin)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27699,
+        "label": "Crystal body (Hefin inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27709,
+        "label": "Crystal body (Ithell)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27711,
+        "label": "Crystal body (Ithell inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27721,
+        "label": "Crystal body (Iorwerth)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27723,
+        "label": "Crystal body (Iorwerth inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27733,
+        "label": "Crystal body (Trahaearn)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27735,
+        "label": "Crystal body (Trahaearn inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27745,
+        "label": "Crystal body (Cadarn)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27747,
+        "label": "Crystal body (Cadarn inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27757,
+        "label": "Crystal body (Crwys)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27759,
+        "label": "Crystal body (Crwys inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27769,
+        "label": "Crystal body (Amlodd)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27771,
+        "label": "Crystal body (Amlodd inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 33023,
+        "label": "Crystal body (Deadman)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 33025,
+        "label": "Crystal body (Deadman inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27701,
+        "label": "Crystal legs (Hefin)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27703,
+        "label": "Crystal legs (Hefin inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27713,
+        "label": "Crystal legs (Ithell)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27715,
+        "label": "Crystal legs (Ithell inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27725,
+        "label": "Crystal legs (Iorwerth)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27727,
+        "label": "Crystal legs (Iorwerth inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27737,
+        "label": "Crystal legs (Trahaearn)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27739,
+        "label": "Crystal legs (Trahaearn inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27749,
+        "label": "Crystal legs (Cadarn)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27751,
+        "label": "Crystal legs (Cadarn inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27761,
+        "label": "Crystal legs (Crwys)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27763,
+        "label": "Crystal legs (Crwys inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27773,
+        "label": "Crystal legs (Amlodd)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 27775,
+        "label": "Crystal legs (Amlodd inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 33027,
+        "label": "Crystal legs (Deadman)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 33029,
+        "label": "Crystal legs (Deadman inactive)",
+        "skill": "DEFENCE",
+        "level": 70,
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 28687,
+        "label": "Blazing blowpipe (empty)",
+        "skill": "RANGED",
+        "level": 75,
+        "sources": [
+          "client-blazing-blowpipe",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 28688,
+        "label": "Blazing blowpipe",
+        "skill": "RANGED",
+        "level": 75,
+        "sources": [
+          "client-blazing-blowpipe",
+          "item-ids"
+        ]
       }
     ]
   },
@@ -14334,13 +15046,37 @@
       22288
     ],
     "crystalBody": [
-      23975
+      23975,
+      27697,
+      27709,
+      27721,
+      27733,
+      27745,
+      27757,
+      27769,
+      33023
     ],
     "crystalLegs": [
-      23979
+      23979,
+      27701,
+      27713,
+      27725,
+      27737,
+      27749,
+      27761,
+      27773,
+      33027
     ],
     "crystalHelm": [
-      23971
+      23971,
+      27705,
+      27717,
+      27729,
+      27741,
+      27753,
+      27765,
+      27777,
+      33031
     ],
     "atlatl": [
       29000
@@ -14562,7 +15298,8 @@
       21902,
       11785,
       26374,
-      21012
+      21012,
+      28688
     ],
     "rangedObserved": [
       25865,
@@ -14583,14 +15320,17 @@
       21902,
       11785,
       26374,
-      21012
+      21012,
+      28688
     ],
     "twistedBow": [
       20997
     ],
     "toxicBlowpipe": [
       12926,
-      12924
+      12924,
+      28687,
+      28688
     ],
     "rosewoodBlowpipe": [
       31583,
@@ -14661,15 +15401,63 @@
     ],
     "crystalHelmOwned": [
       23971,
-      23973
+      23973,
+      27705,
+      27707,
+      27717,
+      27719,
+      27729,
+      27731,
+      27741,
+      27743,
+      27753,
+      27755,
+      27765,
+      27767,
+      27777,
+      27779,
+      33031,
+      33033
     ],
     "crystalBodyOwned": [
       23975,
-      23977
+      23977,
+      27697,
+      27699,
+      27709,
+      27711,
+      27721,
+      27723,
+      27733,
+      27735,
+      27745,
+      27747,
+      27757,
+      27759,
+      27769,
+      27771,
+      33023,
+      33025
     ],
     "crystalLegsOwned": [
       23979,
-      23981
+      23981,
+      27701,
+      27703,
+      27713,
+      27715,
+      27725,
+      27727,
+      27737,
+      27739,
+      27749,
+      27751,
+      27761,
+      27763,
+      27773,
+      27775,
+      33027,
+      33029
     ],
     "oneHandRanged": [
       9185,
@@ -14699,6 +15487,10 @@
     ],
     "saturatedHeart": [
       27641
+    ],
+    "toxicBlowpipeActive": [
+      12926,
+      28688
     ]
   },
   "activities": {
@@ -17330,7 +18122,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -17462,7 +18255,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -18319,7 +19113,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -18480,7 +19275,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -18641,7 +19437,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -18771,7 +19568,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -18901,7 +19699,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -19036,7 +19835,8 @@
         "r2-twisted-bow",
         "r2-zenyte-necklace",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -19415,7 +20215,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -19615,7 +20416,8 @@
         "r2-toxic-blowpipe",
         "r2-twisted-bow",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -19738,7 +20540,8 @@
         "r2-venator-ring",
         "r2-venator-vestige",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -20016,7 +20819,8 @@
         "r2-twisted-bow",
         "r2-zaryte-vambraces",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -20145,7 +20949,8 @@
         "r2-twisted-bow",
         "r2-twisted-buckler",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -20269,7 +21074,8 @@
         "r2-twisted-bow",
         "r2-vorkath-head",
         "twisted-bow",
-        "zaryte"
+        "zaryte",
+        "client-blazing-blowpipe"
       ],
       "applications": [
         {
@@ -22416,7 +23222,16 @@
       "r2-ranging-potion",
       "r2-seeker-arrow",
       "r2-dizana-s-quiver",
-      "r2-rosewood-blowpipe"
+      "r2-rosewood-blowpipe",
+      "r1-avernic-treads",
+      "r1-avernic-treads-pr",
+      "r1-avernic-treads-pe",
+      "r1-avernic-treads-et",
+      "r1-avernic-treads-pr-pe",
+      "r1-avernic-treads-pr-et",
+      "r1-avernic-treads-pe-et",
+      "r1-avernic-treads-max",
+      "client-blazing-blowpipe"
     ],
     "items": [
       {
@@ -23549,6 +24364,969 @@
           "r2-ranged",
           "item-ids"
         ]
+      },
+      {
+        "id": 27705,
+        "label": "Crystal helm (Hefin)",
+        "slot": "head",
+        "attack": 9,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 1
+      },
+      {
+        "id": 27707,
+        "label": "Crystal helm (Hefin inactive)",
+        "slot": "head",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27717,
+        "label": "Crystal helm (Ithell)",
+        "slot": "head",
+        "attack": 9,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 1
+      },
+      {
+        "id": 27719,
+        "label": "Crystal helm (Ithell inactive)",
+        "slot": "head",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27729,
+        "label": "Crystal helm (Iorwerth)",
+        "slot": "head",
+        "attack": 9,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 1
+      },
+      {
+        "id": 27731,
+        "label": "Crystal helm (Iorwerth inactive)",
+        "slot": "head",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27741,
+        "label": "Crystal helm (Trahaearn)",
+        "slot": "head",
+        "attack": 9,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 1
+      },
+      {
+        "id": 27743,
+        "label": "Crystal helm (Trahaearn inactive)",
+        "slot": "head",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27753,
+        "label": "Crystal helm (Cadarn)",
+        "slot": "head",
+        "attack": 9,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 1
+      },
+      {
+        "id": 27755,
+        "label": "Crystal helm (Cadarn inactive)",
+        "slot": "head",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27765,
+        "label": "Crystal helm (Crwys)",
+        "slot": "head",
+        "attack": 9,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 1
+      },
+      {
+        "id": 27767,
+        "label": "Crystal helm (Crwys inactive)",
+        "slot": "head",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27777,
+        "label": "Crystal helm (Amlodd)",
+        "slot": "head",
+        "attack": 9,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 1
+      },
+      {
+        "id": 27779,
+        "label": "Crystal helm (Amlodd inactive)",
+        "slot": "head",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 33031,
+        "label": "Crystal helm (Deadman)",
+        "slot": "head",
+        "attack": 9,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 1
+      },
+      {
+        "id": 33033,
+        "label": "Crystal helm (Deadman inactive)",
+        "slot": "head",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 23973,
+        "label": "Crystal helm (inactive)",
+        "slot": "head",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-helm",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27697,
+        "label": "Crystal body (Hefin)",
+        "slot": "body",
+        "attack": 31,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 3
+      },
+      {
+        "id": 27699,
+        "label": "Crystal body (Hefin inactive)",
+        "slot": "body",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27709,
+        "label": "Crystal body (Ithell)",
+        "slot": "body",
+        "attack": 31,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 3
+      },
+      {
+        "id": 27711,
+        "label": "Crystal body (Ithell inactive)",
+        "slot": "body",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27721,
+        "label": "Crystal body (Iorwerth)",
+        "slot": "body",
+        "attack": 31,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 3
+      },
+      {
+        "id": 27723,
+        "label": "Crystal body (Iorwerth inactive)",
+        "slot": "body",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27733,
+        "label": "Crystal body (Trahaearn)",
+        "slot": "body",
+        "attack": 31,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 3
+      },
+      {
+        "id": 27735,
+        "label": "Crystal body (Trahaearn inactive)",
+        "slot": "body",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27745,
+        "label": "Crystal body (Cadarn)",
+        "slot": "body",
+        "attack": 31,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 3
+      },
+      {
+        "id": 27747,
+        "label": "Crystal body (Cadarn inactive)",
+        "slot": "body",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27757,
+        "label": "Crystal body (Crwys)",
+        "slot": "body",
+        "attack": 31,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 3
+      },
+      {
+        "id": 27759,
+        "label": "Crystal body (Crwys inactive)",
+        "slot": "body",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27769,
+        "label": "Crystal body (Amlodd)",
+        "slot": "body",
+        "attack": 31,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 3
+      },
+      {
+        "id": 27771,
+        "label": "Crystal body (Amlodd inactive)",
+        "slot": "body",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 33023,
+        "label": "Crystal body (Deadman)",
+        "slot": "body",
+        "attack": 31,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 3
+      },
+      {
+        "id": 33025,
+        "label": "Crystal body (Deadman inactive)",
+        "slot": "body",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 23977,
+        "label": "Crystal body (inactive)",
+        "slot": "body",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-body",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27701,
+        "label": "Crystal legs (Hefin)",
+        "slot": "legs",
+        "attack": 18,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 2
+      },
+      {
+        "id": 27703,
+        "label": "Crystal legs (Hefin inactive)",
+        "slot": "legs",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27713,
+        "label": "Crystal legs (Ithell)",
+        "slot": "legs",
+        "attack": 18,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 2
+      },
+      {
+        "id": 27715,
+        "label": "Crystal legs (Ithell inactive)",
+        "slot": "legs",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27725,
+        "label": "Crystal legs (Iorwerth)",
+        "slot": "legs",
+        "attack": 18,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 2
+      },
+      {
+        "id": 27727,
+        "label": "Crystal legs (Iorwerth inactive)",
+        "slot": "legs",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27737,
+        "label": "Crystal legs (Trahaearn)",
+        "slot": "legs",
+        "attack": 18,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 2
+      },
+      {
+        "id": 27739,
+        "label": "Crystal legs (Trahaearn inactive)",
+        "slot": "legs",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27749,
+        "label": "Crystal legs (Cadarn)",
+        "slot": "legs",
+        "attack": 18,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 2
+      },
+      {
+        "id": 27751,
+        "label": "Crystal legs (Cadarn inactive)",
+        "slot": "legs",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27761,
+        "label": "Crystal legs (Crwys)",
+        "slot": "legs",
+        "attack": 18,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 2
+      },
+      {
+        "id": 27763,
+        "label": "Crystal legs (Crwys inactive)",
+        "slot": "legs",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 27773,
+        "label": "Crystal legs (Amlodd)",
+        "slot": "legs",
+        "attack": 18,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 2
+      },
+      {
+        "id": 27775,
+        "label": "Crystal legs (Amlodd inactive)",
+        "slot": "legs",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 33027,
+        "label": "Crystal legs (Deadman)",
+        "slot": "legs",
+        "attack": 18,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 2
+      },
+      {
+        "id": 33029,
+        "label": "Crystal legs (Deadman inactive)",
+        "slot": "legs",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 23981,
+        "label": "Crystal legs (inactive)",
+        "slot": "legs",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {
+          "DEFENCE": 70,
+          "AGILITY": 50
+        },
+        "sources": [
+          "r2-crystal-legs",
+          "item-ids"
+        ],
+        "crystalWeight": 0
+      },
+      {
+        "id": 28688,
+        "label": "Blazing blowpipe",
+        "slot": "weapon",
+        "attack": 30,
+        "strength": 20,
+        "requirements": {
+          "RANGED": 75
+        },
+        "sources": [
+          "client-blazing-blowpipe",
+          "item-ids"
+        ],
+        "weapon": "TOXIC",
+        "ticks": 3,
+        "maxAmmoTier": 8,
+        "defenceType": "LIGHT",
+        "twoHanded": true
+      },
+      {
+        "id": 31088,
+        "label": "avernic treads",
+        "slot": "feet",
+        "attack": 15,
+        "strength": 2,
+        "requirements": {
+          "MAGIC": 80,
+          "RANGED": 80,
+          "STRENGTH": 80
+        },
+        "sources": [
+          "r1-avernic-treads",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 31091,
+        "label": "avernic treads (pr)",
+        "slot": "feet",
+        "attack": 15,
+        "strength": 2,
+        "requirements": {
+          "MAGIC": 80,
+          "RANGED": 80,
+          "STRENGTH": 80
+        },
+        "sources": [
+          "r1-avernic-treads-pr",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 31092,
+        "label": "avernic treads (pe)",
+        "slot": "feet",
+        "attack": 15,
+        "strength": 3,
+        "requirements": {
+          "MAGIC": 80,
+          "RANGED": 80,
+          "STRENGTH": 80
+        },
+        "sources": [
+          "r1-avernic-treads-pe",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 31093,
+        "label": "avernic treads (et)",
+        "slot": "feet",
+        "attack": 15,
+        "strength": 2,
+        "requirements": {
+          "MAGIC": 80,
+          "RANGED": 80,
+          "STRENGTH": 80
+        },
+        "sources": [
+          "r1-avernic-treads-et",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 31094,
+        "label": "avernic treads (pr)(pe)",
+        "slot": "feet",
+        "attack": 15,
+        "strength": 3,
+        "requirements": {
+          "MAGIC": 80,
+          "RANGED": 80,
+          "STRENGTH": 80
+        },
+        "sources": [
+          "r1-avernic-treads-pr-pe",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 31095,
+        "label": "avernic treads (pr)(et)",
+        "slot": "feet",
+        "attack": 15,
+        "strength": 2,
+        "requirements": {
+          "MAGIC": 80,
+          "RANGED": 80,
+          "STRENGTH": 80
+        },
+        "sources": [
+          "r1-avernic-treads-pr-et",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 31096,
+        "label": "avernic treads (pe)(et)",
+        "slot": "feet",
+        "attack": 15,
+        "strength": 3,
+        "requirements": {
+          "MAGIC": 80,
+          "RANGED": 80,
+          "STRENGTH": 80
+        },
+        "sources": [
+          "r1-avernic-treads-pe-et",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 31097,
+        "label": "avernic treads (max)",
+        "slot": "feet",
+        "attack": 15,
+        "strength": 3,
+        "requirements": {
+          "MAGIC": 80,
+          "RANGED": 80,
+          "STRENGTH": 80
+        },
+        "sources": [
+          "r1-avernic-treads-max",
+          "item-ids"
+        ]
       }
     ],
     "candidateAmmo": {
@@ -24032,7 +25810,8 @@
         "r2-toxic-blowpipe",
         "r3-muspah",
         "r3-venator-bow",
-        "twisted-bow"
+        "twisted-bow",
+        "client-blazing-blowpipe"
       ],
       "reviewed": "2026-10-13",
       "status": "reviewed"
@@ -24078,7 +25857,8 @@
         "r2-toxic-blowpipe",
         "r3-colosseum-method",
         "r3-venator-bow",
-        "twisted-bow"
+        "twisted-bow",
+        "client-blazing-blowpipe"
       ],
       "reviewed": "2026-10-13",
       "status": "reviewed"

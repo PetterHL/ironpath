@@ -114,7 +114,8 @@ public class R3ProgressionTest
 		assertNotEquals(overview.preview.get(0).upgrade.role,overview.preview.get(1).upgrade.role);
 		assertTrue(overview.preview.get(2).valueEvidence.specialist);
 		assertNotEquals(overview.preview.get(0).upgrade.role,overview.preview.get(2).upgrade.role);
-		assertEquals(views.size(),overview.preview.size());assertEquals(views.size(),overview.preview.stream().map(v->v.upgrade.id).distinct().count());
+		long justified=views.stream().filter(v->v.pursuit.category!=Category.DEFER).count();
+		assertEquals(views.size(),overview.all.size());assertEquals(justified,overview.preview.size());assertEquals(justified,overview.preview.stream().map(v->v.upgrade.id).distinct().count());
 		assertEquals(overview.previewReasons, new PursuitOverview(views,List.of(),List.of(),List.of()).previewReasons);
 	}
 	@Test public void noFillerWhenAllDeliveredOutcomesAreOwnedAndSkipsOnlyRemoveTheirRoute()

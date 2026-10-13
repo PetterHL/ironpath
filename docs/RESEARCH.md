@@ -8,6 +8,10 @@ Key refinement: general role, personal importance, effort and pursuit status sta
 
 Historical sections below retain their original scope and results. Their older proposed status or inaccessible-source statements are snapshots, not current implementation instructions.
 
+## R3a client variant review — 13 October 2026
+
+Petter's screenshots and reported gear exposed missing crystal colours, Blazing recognition and ranged treads contributions. [Scoped review and validation](validation/R3a-client-variants.md) records the original synthetic regressions and post-fix retest boundary. Full existing pinned crystal/treads pages and Blazing revision `15191641` were reviewed; exact active/inactive/cosmetic identifiers were checked against official API revision `42a6f17a6a2e8e478aa763890ecd0181a59dad38`. Blazing changes appearance only. All eight treads forms have +15 ranged accuracy; Pegasian-attached forms have +3 ranged strength, other forms +2. Rosewood's existing rune-dart cap, +22 accuracy/+6 strength and lack of scale consumption explain its optional resource role beside Toxic's +30/+20. No new special, resource-cost or encounter model is inferred. Ordinary arithmetic and oracle resources are unchanged; source reverse dependencies remain validated. No source prose, calculator code/data or web images were imported.
+
 ## R2 checked ranged facts — 13 October 2026
 
 The [R2 validation report](validation/R2.md) and bundled r2-* source records contain actual full-page revision-pinned review, independently authored bounded stats/recipes and original explanations. Direct ordinary HTTPS retrieval succeeded; indexed snippets were not used to promote these claims. Magic remains powered-magic-2 and the new local family is ranged-1; neither imports calculator code or a bulk equipment dataset.
