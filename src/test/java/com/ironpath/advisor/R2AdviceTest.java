@@ -74,7 +74,9 @@ public class R2AdviceTest
 		assertNull(service.validate(a,missing,s));ComparisonResult r=service.compare(a,missing,s,20997);
 		assertEquals(Integer.valueOf(0),r.afterSetup.slots.get("shield"));assertNotEquals(r.before.defenceRoll,r.after.defenceRoll);
 		assertEquals((300+9L)*(75+64),r.before.defenceRoll);assertEquals((300+9L)*(100+64),r.after.defenceRoll);
-		assertFalse(service.compare(a,missing,service.propose(a),21000).available(THEORETICAL_DPS));
+		ComparisonResult offhand=service.compare(a,missing,service.propose(a),21000);
+		assertTrue(offhand.available(THEORETICAL_DPS));assertEquals(Integer.valueOf(9185),offhand.afterSetup.slots.get("weapon"));
+		assertEquals(Integer.valueOf(21000),offhand.afterSetup.slots.get("shield"));
 	}
 	@Test public void ownedIntermediateAndQuantityRemoveOnlyTheirRemainingAcquisitionStage()
 	{
@@ -142,7 +144,7 @@ public class R2AdviceTest
 	@Test public void representativeProfilesGenerateReviewableCurrentEvidence() throws Exception
 	{
 		Map<String,AccountSnapshot> profiles=new java.util.LinkedHashMap<>();profiles.put("Post-Bowfa",postBowfa());profiles.put("Tbow owned",items(postBowfa(),20997,11212,27226,27229,27232));profiles.put("Tbow and blowpipe",items(profiles.get("Tbow owned"),12926,11230));profiles.put("Shadow owned",items(postBowfa(),27275));profiles.put("Owned zenyte necklace",items(postBowfa(),19535));profiles.put("All active outcomes owned",items(postBowfa(),catalog.upgrades.stream().mapToInt(u->u.itemId).toArray()));
-		StringBuilder report=new StringBuilder("# R2 synthetic account evidence\n\nOriginal synthetic inputs, no goal. Model ranged-1 / powered-magic-2; knowledge r2-1; pursuit-1. Not a live-client or player-usefulness pass. Exact source revisions remain in the bundled catalogue.\n\n");
+		StringBuilder report=new StringBuilder("# R2 synthetic account evidence\n\nOriginal synthetic inputs, no goal. Model ranged-1 / powered-magic-2; knowledge "+catalog.version+"; pursuit-1. Not a live-client or player-usefulness pass. Exact source revisions remain in the bundled catalogue.\n\n");
 		for(Map.Entry<String,AccountSnapshot> entry:profiles.entrySet())
 		{
 			AccountSnapshot a=entry.getValue();List<Advisor.UpgradeView> views=advisor.upgrades(a,missing);

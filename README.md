@@ -2,11 +2,11 @@
 
 **Your path to endgame PvM**
 
-Ranged development build · 13 October 2026 · plugin 0.7.0 · knowledge r2-1 · schema 9
+Ranged development build · 13 October 2026 · plugin 0.7.1 · knowledge r2-2 · schema 9
 
 **This branch delivers R2 ranged packages for review on updated main.** Bowfa/crystal, tbow, toxic/rosewood blowpipes, crossbow alternatives and supported armour/jewellery/ammunition have complete compatible reference comparisons. Seventeen additional upgrade outcomes retain effort-aware priority, shared activities and native Value/Path. Magic and ranged corrections stay separate and in memory. See [R2 verification and pending client checks](docs/validation/R2.md).
 
-Weapons lead with theoretical DPS; armour/jewellery retain max hit where speed is unchanged. Neutral Magic 0 is deliberately poor for tbow, so separately reviewed Graardor/Zilyana examples preserve specialist value without treating a large number as the next grind. Masori cannot manufacture a Bowfa upgrade by losing crystal synergy. Seeking arrows and charged quiver obey their actual projectile restrictions. Raid/special/bounce/time/trip coverage remains open.
+Weapons and upgrades that change the selected weapon lead with theoretical DPS; armour/jewellery retain max hit where weapon and speed are unchanged. Neutral Magic 0 is deliberately poor for tbow, so separately reviewed Graardor/Zilyana examples preserve specialist value without treating a large number as the next grind. Masori cannot manufacture a Bowfa upgrade by losing crystal synergy. Seeking arrows and charged quiver obey their actual projectile restrictions. Raid/special/bounce/time/trip coverage remains open.
 
 **Delivered: realistic powered-magic references and first endgame value.** Shadow,
 Ancestral hat/top/bottom, tormented bracelet and Magus ring join occult, swamp,
@@ -134,11 +134,11 @@ successful kills. Leave account cases you cannot exercise pending.
 
 ## Use R2 ranged comparisons
 
-Open without a goal and observe your gear/bank. Ranged outcomes automatically use the strongest supported observed package for **Enemy with 0 Defence**, with no prayer/boost and Rapid explicitly assumed. Value discloses before/after weapons, compatible armour and ammunition; Graardor and Zilyana remain separate encounter examples with inspectable complete inputs. Unknown equipped gear and invalid/unobserved baseline ammunition produce a visible gap.
+Open without a goal and observe your gear/bank. Ranged outcomes automatically use the strongest supported observed package for **Enemy with 0 Defence**, with no prayer/boost and Rapid explicitly assumed. Armour/accessory candidates also reconsider owned compatible weapons, so crystal armour can make an owned Bowfa preferable to the original blowpipe reference. Value discloses before/after weapons, compatible armour and ammunition; Graardor and Zilyana remain separate encounter examples with inspectable complete inputs. Unknown equipped gear and invalid/unobserved baseline ammunition produce a visible gap.
 
 Use **Reference setup and assumptions** to correct ranged slots, dart loading, prayer, boost, style or target. These edits leave the magic reference independent. A quiver's charged bonus applies to arrows/bolts, while crystal and blowpipe retain its base cape stats. Empty/inactive weapons can establish ownership but cannot create a supplied baseline. Candidate-only ammunition is labelled as an assumption, never observed account supply.
 
-Path removes confirmed owned seeds/fangs/intermediates before a new grind. Self/NPC singing branches remain exclusive; shard/seed/material quantities are conservative scoped observations. Toxic blowpipe assembly requires 78 Fletching and a chisel, then separate darts/scales. Quiver challenge effort, raids, remaining RNG and complex routes retain qualitative scope rather than invented hours. All live-client checks remain pending.
+Path removes confirmed owned seeds/fangs/intermediates before a new grind. Owned uncut/cut zenyte removes fresh gorilla acquisition for anguish while retaining downstream skills/resources. Rupture checks 84 Crafting for etching and final combination, including an already-owned etched fang. Self/NPC singing branches remain exclusive; shard/seed/material quantities are conservative scoped observations. Toxic blowpipe assembly requires 78 Fletching and a chisel, then separate darts/scales. Quiver challenge effort, raids, remaining RNG and complex routes retain qualitative scope rather than invented hours. All live-client checks remain pending.
 
 ## Use the retained advisor workflow
 

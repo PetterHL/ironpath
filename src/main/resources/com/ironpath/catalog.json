@@ -1,6 +1,6 @@
 {
   "schemaVersion": 9,
-  "knowledgeVersion": "r2-1",
+  "knowledgeVersion": "r2-2",
   "reviewed": "2026-10-13",
   "sources": [
     {
@@ -10555,6 +10555,31 @@
               "zenyte"
             ],
             "bypassesAcquisition": true
+          },
+          {
+            "when": {
+              "test": "ANY",
+              "conditions": [
+                {
+                  "test": "POSSESSION",
+                  "key": "zenyteUncut",
+                  "value": true
+                },
+                {
+                  "test": "POSSESSION",
+                  "key": "zenyteGem",
+                  "value": true
+                }
+              ]
+            },
+            "mode": "BOUNDED",
+            "burden": "LOW",
+            "tail": "ORDINARY",
+            "reason": "Owned uncut or cut zenyte bypasses fresh gorilla acquisition, onyx and fusion; remaining cutting, necklace crafting and enchantment checks still apply.",
+            "allocations": [
+              "zenyte"
+            ],
+            "bypassesAcquisition": true
           }
         ]
       }
@@ -18763,6 +18788,17 @@
       "contextBenefits": [],
       "path": [
         {
+          "id": "craft-84",
+          "label": "84 Crafting / review boost",
+          "role": "ASSEMBLY",
+          "completeWhen": {
+            "test": "LEVEL",
+            "key": "CRAFTING",
+            "minimum": 84
+          },
+          "detail": "Both fang etching and final necklace combination require 84 Crafting; boost availability needs a current check."
+        },
+        {
           "id": "access",
           "label": "Complete The Blood Moon Rises",
           "role": "ACCESS",
@@ -18810,6 +18846,10 @@
               {
                 "mode": "NODE",
                 "node": "fang"
+              },
+              {
+                "mode": "NODE",
+                "node": "craft-84"
               }
             ]
           }
@@ -18845,6 +18885,10 @@
               {
                 "mode": "NODE",
                 "node": "anguish"
+              },
+              {
+                "mode": "NODE",
+                "node": "craft-84"
               }
             ]
           }
