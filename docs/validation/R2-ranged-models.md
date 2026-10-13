@@ -1,6 +1,6 @@
 # R2 first ranged-family models
 
-13 October 2026. `r2-ranged-models` originally started from R1 main `f495706` and is now updated in draft PR #14 against integrated main `9035a06`. PR #12 integrated R1.5a and merged PR #13's neutral-reference/DPS-first follow-up after explicit user authorisation. Runtime versions are plugin 0.6.1 / knowledge reference-1 / catalogue schema 8. This is a reviewable start on R2's pure family models; user-facing R2 coverage and actual-client checks remain pending.
+13 October 2026. `r2-ranged-models` originally started from R1 main `f495706` and is now updated in draft PR #14 against integrated main `cb7c2cd`, including the item-specific client gap explanation in PR #15. PR #12 integrated R1.5a and merged PR #13's neutral-reference/DPS-first follow-up after explicit user authorisation. Runtime versions are plugin 0.6.2 / knowledge reference-1 / catalogue schema 8. This is a reviewable start on R2's pure family models; user-facing R2 coverage and actual-client checks remain pending.
 
 ## Implemented arithmetic
 
@@ -51,6 +51,10 @@ Nine meaningful tests additionally cover independent hand derivations, integer b
 ## Main integration retest — 13 October 2026
 
 After user-authorised merge of PR #12 (including #13) to main `9035a06`, merge that baseline into the R2 draft branch. Git resolved the source/document changes without conflicts. The integrated main tree exactly matches the previously tested neutral-reference head `3192b7c`; main's reviewed runtime has 163 tests. A fresh normal `test build --no-daemon` on the combined R2 branch now passes **172 tests, zero failures/errors/skips**. This is an actual combined-suite run, including the 1,152 R2 cases, 180 neutral-reference cases and retained 234/540 magic corpora plus R1.5a ranking/UI/lifecycle checks. `git diff --check` passes. Original historical reports and all actual-client limitations are retained.
+
+## Client gap-label integration retest — 13 October 2026
+
+PR #15 was user-authorised, created and merged into main `cb7c2cd` (plugin 0.6.2). Its tree exactly matches the reviewed 165-test explanation-fix head `fb7d5dc`. Merge that main into draft #14 without conflicts, then run the normal `test build --no-daemon`: **174 tests, zero failures/errors/skips** on the combined R2 branch. This includes the item-specific Brimstone/Confliction gap tests and all previously recorded numeric, ranking, UI and lifecycle cases. `git diff --check` passes. Neither the label fix nor this integration implements Brimstone's proc or creates a live-client acceptance pass.
 
 ## Continue R2
 

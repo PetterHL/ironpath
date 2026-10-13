@@ -23,7 +23,7 @@ or player-usefulness pass is claimed. No Plugin Hub submission or runtime servic
 
 The intended product is a free, open-source RuneLite sidebar that automatically identifies worthwhile Ironman PvM upgrades using observed account state: **which upgrades are worth pursuing, what difference will they make, and how do I obtain them?** Equipment, relevant prayers, skill levels and permanent unlocks are eligible. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
-**Client comparison-gap follow-up:** Value now names the unsupported accuracy item and whether it affects before, after or both reference setups. Brimstone's proc and Confliction's one-handed stacks remain separate model gaps; supported max hit stays visible. See [validation](docs/validation/client-model-gap-labels.md). This explanation patch is on `client-model-gap-labels`; main remains the integrated 0.6.1 baseline until review/integration.
+**Client comparison-gap follow-up:** Value now names the unsupported accuracy item and whether it affects before, after or both reference setups. Brimstone's proc and Confliction's one-handed stacks remain separate model gaps; supported max hit stays visible. See [validation](docs/validation/client-model-gap-labels.md). This explanation patch is integrated into main via PR #15 (plugin 0.6.2).
 
 ## Product direction
 
@@ -62,7 +62,7 @@ Reuse the existing T1–P3 RuneLite implementation and preserve its licence noti
 
 ## Start here
 
-The current development baseline is `main` at `9035a06`: PR #12 integrated R1.5a and the merged neutral-reference/DPS-first PR #13 on 13 October 2026. Plugin 0.6.1, knowledge reference-1 and catalogue schema 8 are now in main. Prior R1 integration and all earlier history remain intact. Actual-client checks are still pending in the original validation reports.
+The current development baseline is `main` at `cb7c2cd`: PR #12 integrated R1.5a and the merged neutral-reference/DPS-first PR #13; PR #15 added item-specific comparison-gap explanations on 13 October 2026. Plugin 0.6.2, knowledge reference-1 and catalogue schema 8 are now in main. Prior R1 integration and all earlier history remain intact. Actual-client checks are still pending in the original validation reports.
 
 Close the development client and use the main-branch update/build instructions below to test the integrated build. R2 starts in draft PR #14 on `r2-ranged-models`; its first ranged-family models are tested but do not yet generate new personal recommendations. Full ranged references, routes, item/charge/ammo checks and UI integration are next in TASKS. Historical reports retain their original branch/test context.
 
