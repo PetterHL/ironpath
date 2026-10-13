@@ -104,10 +104,15 @@ public class RangedAttackModelTest
 		assertNull(model.calculate(unknown,Target.neutral()).dps);
 		Setup tbow=scenario(99,Family.TWISTED_BOW,Style.RAPID,Prayer.NONE,0);
 		assertFalse(model.calculate(tbow,new Target(0,0,null,0,false,true,true)).available());
+		assertFalse(model.calculate(tbow,new Target(0,0,0,0,null,true,true)).available());
 		assertFalse(model.calculate(tbow,new Target(0,0,0,0,true,false,true)).available());
 		assertFalse(model.calculate(tbow,new Target(0,0,0,0,false,true,false)).available());
 		Setup bowfa=scenario(99,Family.BOWFA,Style.RAPID,Prayer.NONE,0);
 		assertTrue(model.calculate(bowfa,new Target(0,0,null,null,false,true,true)).available());
+		Setup unknownCharges=new Setup(Family.BOWFA,Style.RAPID,Prayer.NONE,Ammo.NONE,99,99,50,10,0,true,null,true,true,Set.of());
+		assertFalse(model.calculate(unknownCharges,Target.neutral()).available());
+		Setup unknownWeapon=new Setup(Family.BOWFA,Style.RAPID,Prayer.NONE,Ammo.NONE,99,99,50,10,0,null,false,false,false,Set.of());
+		assertFalse(model.calculate(unknownWeapon,Target.neutral()).available());
 	}
 	@Test public void firstRangedFamiliesMatchPinnedOriginalReferenceCases() throws Exception
 	{

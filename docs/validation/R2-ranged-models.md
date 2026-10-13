@@ -4,7 +4,7 @@
 
 ## Implemented arithmetic
 
-Original Java `ranged-family-1` calculates ordinary supplied attacks for the modern active crystal bow, Bowfa and twisted bow. Inputs explicitly declare real/visible Ranged, style, prayer, complete additional gear bonuses, compatible ammunition, usable weapon and active crystal pieces. Null bonus/level/target inputs stay unknown. These scenarios are assumptions supplied to a pure function, not observed ownership or equip/readiness certification.
+Original Java `ranged-family-1` calculates ordinary supplied attacks for the modern active crystal bow, Bowfa and twisted bow. Inputs explicitly declare real/visible Ranged, style, prayer, complete additional gear bonuses, compatible ammunition, usable weapon and active crystal pieces. Null bonus/level/target inputs stay unknown. Weapon usability, crystal charge/activity states and the CoX cap context also preserve unknown rather than silently selecting an inactive piece or ordinary cap. These scenarios are assumptions supplied to a pure function, not observed ownership or equip/readiness certification.
 
 - Intrinsic attack/strength/base interval: crystal bow 100/78/5, Bowfa 128/106/5, tbow 70/20/6. Rapid removes one tick; Accurate adds three to both effective levels; Longrange gives neither damage/accuracy boost.
 - Gear bonuses exclude weapon/arrow contributions. Tbow requires a supplied ordinary-arrow strength; crystal bows require declared no arrows with zero arrow strength. Seeker effects and incompatible or unknown ammo are explicit gaps. Complete slot/equip/charge/ammo eligibility must be enforced by the future observation/reference adapter.

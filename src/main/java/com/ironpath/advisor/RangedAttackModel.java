@@ -33,11 +33,11 @@ public final class RangedAttackModel
 		public final Prayer prayer;
 		public final Ammo ammo;
 		public final Integer realRanged, visibleRanged, gearAttack, gearStrength, ammoStrength;
-		public final boolean usableWeapon, activeHelm, activeBody, activeLegs;
+		public final Boolean usableWeapon, activeHelm, activeBody, activeLegs;
 		public final Set<Unmodelled> unmodelled;
 		public Setup(Family family, Style style, Prayer prayer, Ammo ammo, Integer realRanged, Integer visibleRanged,
-			Integer gearAttack, Integer gearStrength, Integer ammoStrength, boolean usableWeapon,
-			boolean activeHelm, boolean activeBody, boolean activeLegs, Set<Unmodelled> unmodelled)
+			Integer gearAttack, Integer gearStrength, Integer ammoStrength, Boolean usableWeapon,
+			Boolean activeHelm, Boolean activeBody, Boolean activeLegs, Set<Unmodelled> unmodelled)
 		{
 			this.family=Objects.requireNonNull(family); this.style=Objects.requireNonNull(style);
 			this.prayer=Objects.requireNonNull(prayer); this.ammo=Objects.requireNonNull(ammo);
@@ -51,9 +51,10 @@ public final class RangedAttackModel
 	{
 		public final Integer defenceLevel, standardRangedDefence, magicLevel, magicAttackBonus;
 		/** CoX only selects the tbow curve cap; target stats must already be explicitly scaled. */
-		public final boolean chambers, statsKnown, ordinaryDistribution;
+		public final Boolean chambers;
+		public final boolean statsKnown, ordinaryDistribution;
 		public Target(Integer defenceLevel, Integer standardRangedDefence, Integer magicLevel, Integer magicAttackBonus,
-			boolean chambers, boolean statsKnown, boolean ordinaryDistribution)
+			Boolean chambers, boolean statsKnown, boolean ordinaryDistribution)
 		{
 			this.defenceLevel=defenceLevel; this.standardRangedDefence=standardRangedDefence;
 			this.magicLevel=magicLevel; this.magicAttackBonus=magicAttackBonus;
@@ -78,7 +79,7 @@ public final class RangedAttackModel
 		Objects.requireNonNull(setup); Objects.requireNonNull(target);
 		if (!setup.unmodelled.isEmpty()) { return gap("Unsupported mechanics: " + setup.unmodelled.stream()
 			.map(Enum::name).sorted().collect(java.util.stream.Collectors.joining(", "))); }
-		if (!setup.usableWeapon) { return gap("An active/charged and supplied weapon scenario is required; ownership alone is insufficient."); }
+		if (!Boolean.TRUE.equals(setup.usableWeapon)) { return gap("An active/charged and supplied weapon scenario is required; ownership alone is insufficient."); }
 		if (!target.statsKnown || !target.ordinaryDistribution) { return gap("Explicit final target stats and ordinary damage distribution are required; scaling/target effects are unsupported."); }
 		if (setup.realRanged == null || setup.visibleRanged == null || setup.gearAttack == null || setup.gearStrength == null)
 		{ return gap("Ranged levels or complete offensive gear bonuses are unknown; unread gear is not zero."); }
@@ -90,6 +91,9 @@ public final class RangedAttackModel
 		{ return gap("Known standard ranged defence inputs are required."); }
 		if (setup.ammo == Ammo.SEEKER_ARROW) { return gap("Seeker arrow successful-hit floor and eligibility are not modelled."); }
 		boolean tbow=setup.family == Family.TWISTED_BOW;
+		if (!tbow && (setup.activeHelm == null || setup.activeBody == null || setup.activeLegs == null))
+		{ return gap("Crystal armour charge/activity state is unknown; unknown pieces cannot be excluded or treated as active."); }
+		if (tbow && target.chambers == null) { return gap("Tbow's CoX cap context is unknown."); }
 		if (tbow && (setup.ammo != Ammo.ORDINARY_ARROW || setup.ammoStrength == null || setup.ammoStrength <= 0 || setup.ammoStrength > 1000)
 			|| !tbow && (setup.ammo != Ammo.NONE || setup.ammoStrength == null || setup.ammoStrength != 0))
 		{ return gap("Incompatible or unknown ammunition; crystal bows use no arrows and tbow requires supported ordinary arrows."); }
