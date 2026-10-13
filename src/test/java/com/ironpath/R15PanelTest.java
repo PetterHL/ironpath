@@ -60,13 +60,36 @@ public class R15PanelTest
 				capture("neutral-overview");button("Browse").doClick();capture("neutral-browse");
 				assertTrue(text().contains("DPS "));assertFalse(text().contains("Graardor"));
 				open("tumekens-shadow").doClick();
-				assertTrue(text().indexOf("Theoretical DPS")<text().indexOf("Max hit"));
+				assertTrue(text().indexOf("Theoretical DPS")<text().indexOf("Max hit  "));
 				assertTrue(text().contains("4 → 5 ticks (2.4 → 3.0 s)"));capture("neutral-weapon-value");
 				button("Back to upgrades").doClick();open("ancestral-hat").doClick();
-				assertTrue(text().indexOf("Max hit")<text().indexOf("Theoretical DPS"));capture("neutral-armour-value");
+				assertTrue(text().indexOf("Max hit  ")<text().indexOf("Theoretical DPS"));capture("neutral-armour-value");
 				button("Back to upgrades").doClick();reference=reference.edit("hands","31106");render();
 				assertTrue(text().contains("DPS unavailable · model gap"));open("tumekens-shadow").doClick();
-				assertTrue(text().indexOf("Theoretical DPS unavailable")<text().indexOf("Max hit"));capture("neutral-history-gap");
+				assertTrue(text().contains("Before: confliction gauntlets: one-handed accuracy stacks"));
+				assertFalse(text().contains("Brimstone ring: accuracy proc"));
+				assertTrue(text().indexOf("Theoretical DPS unavailable")<text().indexOf("Max hit  "));capture("neutral-history-gap");
+			}
+			catch(Exception failure){throw new RuntimeException(failure);}
+		});
+	}
+	@Test public void brimstoneGapIsVisibleAndExplicitReferenceCorrectionRestoresNumbers() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			try
+			{
+				account=items(developed(false),12002,19544,22975);
+				reference=new PoweredMagic(catalog).propose(account).edit("hands","19544").edit("ring","22975");render();
+				open("tumekens-shadow").doClick();
+				assertTrue(text().contains("Before and after: Brimstone ring: accuracy proc is not modelled."));
+				assertFalse(text().contains("one-handed accuracy stacks"));
+				assertFalse(text().contains("Unsupported for this history mechanic"));
+				assertTrue(text().indexOf("Theoretical DPS unavailable")<text().indexOf("Max hit  "));capture("brimstone-gap");
+				button("Back to upgrades").doClick();open("ancestral-hat").doClick();
+				assertTrue(text().indexOf("Max hit  ")<text().indexOf("Theoretical DPS unavailable"));capture("brimstone-armour-gap");
+				reference=reference.edit("ring","0");render();
+				assertFalse(text().contains("DPS and hit chance gap"));
+				assertFalse(text().contains("Theoretical DPS unavailable"));capture("explicit-empty-ring-control");
 			}
 			catch(Exception failure){throw new RuntimeException(failure);}
 		});

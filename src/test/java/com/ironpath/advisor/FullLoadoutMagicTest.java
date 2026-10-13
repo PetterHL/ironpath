@@ -117,4 +117,28 @@ public class FullLoadoutMagicTest
 		AccountSnapshot b=account(Set.of(11907,27275,19544,12002),99,99);assertEquals(Integer.valueOf(27275),service.propose(b).slots.get("weapon"));
 		AccountSnapshot c=account(Set.of(27277),99,99);assertNull(service.compare(c,Preferences.EMPTY,service.propose(c),21018).before);
 	}
+	@Test public void accuracyGapsNameOnlyPresentItemsAndTheirAffectedSide()
+	{
+		for (int mode=0; mode<3; mode++)
+		{
+			Map<String,Integer> slots=slots(12899,1);
+			if (mode!=1) { slots.put("ring",22975); }
+			if (mode!=0) { slots.put("hands",31106); }
+			AccountSnapshot a=account(new HashSet<>(slots.values()),99,99);
+			CombatSetup s=new CombatSetup(slots,PoweredMagic.Prayer.NONE,PoweredMagic.Boost.NONE,PoweredMagic.Style.ACCURATE,false,false,"neutral-zero-defence",Map.of());
+			ComparisonResult r=service.compare(a,Preferences.EMPTY,s,27275);
+			assertTrue(r.available(MAX_HIT)); assertFalse(r.available(HIT_CHANCE)); assertFalse(r.available(THEORETICAL_DPS));
+			assertFalse(r.gaps.containsKey(MAX_HIT)); assertTrue(Double.isNaN(r.dpsGain()));
+			String gap=r.gaps.get(THEORETICAL_DPS);
+			assertEquals(mode!=1,gap.contains("Before and after: Brimstone ring: accuracy proc"));
+			assertEquals(mode!=0,gap.contains("Before: confliction gauntlets: one-handed accuracy stacks"));
+			assertFalse(gap.contains("After: confliction"));
+			assertEquals(gap,r.gaps.get(HIT_CHANCE));
+		}
+		Map<String,Integer> slots=slots(12899,1);AccountSnapshot a=account(new HashSet<>(slots.values()),99,99);
+		CombatSetup s=new CombatSetup(slots,PoweredMagic.Prayer.NONE,PoweredMagic.Boost.NONE,PoweredMagic.Style.ACCURATE,false,false,"neutral-zero-defence",Map.of());
+		ComparisonResult candidate=service.compare(a,Preferences.EMPTY,s,31106);
+		assertTrue(candidate.gaps.get(THEORETICAL_DPS).startsWith("After: confliction"));
+		assertTrue(service.compare(a,Preferences.EMPTY,s,27275).gaps.isEmpty());
+	}
 }
