@@ -2,9 +2,9 @@
 
 **Your path to endgame PvM**
 
-PvM progression roadmap · updated 12 October 2026
+P1–P3 development build · 12 October 2026 · plugin 0.3.0 · knowledge p3-1
 
-**Status: development implementation in open PRs; broader PvM expansion is the next assignment.** At this update main contains the documentation foundation. T1–T3 implementation and T4 trial preparation are on stacked branches; see TASKS.md for exact baselines and pending checks. No Plugin Hub approval/submission or external service exists.
+**Status: P1–P3 implement the first broad PvM slice, reusing T1–T3 and T4's historical records.** Sixteen reviewed decisions span CG, Zulrah, ToA, Slayer, Moons, Royal Titans and ordinary team CoX. Automated results and the focused PC checklist are in TASKS.md; real-client checks remain pending. No Plugin Hub submission or external service exists.
 
 The intended product is a free, open-source RuneLite sidebar that helps an Ironman choose a useful next PvM activity or equipment objective using observed account state. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
@@ -37,6 +37,153 @@ Reuse the existing T1–T3 RuneLite implementation and preserve its licence noti
 
 ## Start here
 
-Run P1–P3 together as described at the end of `TASKS.md`. Bring the existing implementation and current main plan onto one working branch, then deliver real choices between PvM activities. No additional CoX-only polish or standalone architecture phase is required. Preserve useful build instructions and historical test results when combining branches.
+This branch combines PRs #1–#3 (including `b3a93d9`), PR #4's historical records,
+and main's broad plan. Earlier PRs remain open and unmerged. P4's wider catalogue
+and distribution work are separate assignments.
 
-The design introduces no per-user hosted inference, storage or API expenses. Development and content review still cost time; free distribution does not make knowledge maintenance automatic.
+The existing official RuneLite template, Gradle 8.10, Java release 11 and notices
+are retained; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). RuneLite resolves
+to 1.13.1 in the verified build. Runtime evaluation needs no hosted service.
+
+## Test locally on your PC
+
+Install a **JDK 11** (for example Temurin 11), Git, and set `JAVA_HOME` to that JDK.
+Both `java -version` and `javac -version` should work. Gradle is included in the
+repository; internet access is needed for its first dependency download.
+
+Clone the repository and check out the combined implementation branch:
+
+```sh
+git clone https://github.com/PetterHL/ironpath.git
+cd ironpath
+git checkout p1-p3-broad-pvm
+```
+
+For an existing clone, close the development client, enter its `ironpath` directory,
+and update the branch first:
+
+```sh
+git fetch origin
+git switch p1-p3-broad-pvm
+git pull --ff-only
+```
+
+Windows PowerShell:
+
+```powershell
+.\gradlew.bat test build
+.\gradlew.bat run
+```
+
+macOS / Linux:
+
+```sh
+./gradlew test build
+./gradlew run
+```
+
+The template's `run` task opens the RuneLite development client with Ironpath
+loaded and developer mode enabled. For a Jagex Account, follow RuneLite's
+[Using Jagex Accounts](https://github.com/runelite/runelite/wiki/Using-Jagex-Accounts)
+instructions to log into a development client. Do not put credentials in this
+repository. Close the client to stop it. If you used RuneLite's
+`--insecure-write-credentials` setup, remove that argument from the launcher's
+Client arguments after generating the local credentials, and delete the local
+`.runelite/credentials.properties` when development login testing is finished.
+Do not upload or commit that file.
+
+On a **standard Ironman in an ordinary permanent members world**, open Ironpath
+and allow two server ticks for initial observations/preferences. Open your bank,
+then read a suggestion and expand **Why and alternatives**. Pinned source links
+are under **Reviewed sources**. Advice is planning, not a complete loadout or a
+promise of successful kills.
+
+## Use the broad slice
+
+1. **No goal** gives up to three materially different activities. Select one
+   optional goal to refine priority: ordinary team CoX, Rigour/Augury use levels,
+   owned-parts swamp assembly, ranged routes, powered-magic progression or
+   low-level ToA / a fang. There are no free-text or multiple queued goals.
+2. Goals distinguish access, suggested preparation, use levels and target
+   outcomes. Confirmed missing prerequisites appear separately from available
+   cards. **ANY** routes remain alternatives; optional supplies or higher prayers
+   do not become game access requirements.
+3. Acquisition advice needs a **targeted planning confirmation** when ownership
+   cannot be established. An empty or unopened bank does not mean an upgrade is
+   missing globally. Under **Skips and manual confirmations**, select only the
+   target indicated by the goal (for example “Bowfa … or twisted bow owned”),
+   then **Not owned / locked** if correct. Positive observed or manually owned
+   supported alternatives override that absence. Confirmations have provenance
+   and can be cleared; there is no account-wide questionnaire.
+4. **Skip this activity** excludes its acquisition route. Skipping **CG** never
+   hides an owned Bowfa/crystal kit, and Moons can remain a reviewed alternative
+   when its facts support it. The controls also retain individual action skips
+   for owned reminders. **Restore activity/action** reverses the corresponding
+   choice; a skip never completes an outcome.
+5. **Owned / unlocked** can suppress a redundant grind or provide an unknown
+   quest/unlock fallback. It cannot create a charged, equipped or usable weapon.
+   Readable client quest/unlock facts take precedence; observed possession beats
+   manual absence. **Clear selected fact** or **Reset all planning choices** is
+   reversible.
+6. Wait for **Preferences saved locally**, then restart. The same character/profile
+   should restore the goal, skips and confirmations, while the bank remains
+   unknown until opened. Check another character and RuneLite profile separately.
+   These are pending PC checks, not automated game-test results.
+
+Controls wait for identity and preference loading. A corrupt/unsupported file
+disables editing to protect it; a failed save labels current changes memory-only.
+T3 preference schema 1 is read with stable goal/action/item keys intact. The next
+explicit save writes schema 2, which also accepts activity and ownership-target
+keys. Old action skips are not widened; retired identifiers are explicitly dropped.
+
+## Privacy and coverage
+
+Real levels, inventory/equipment, session bank, Rigour/Augury and Deadeye/Mystic
+Vigour unlocks, plus completion of Song of the Elves, Regicide, Beneath Cursed Sands
+and Perilous Moons are read on the client thread into immutable snapshots.
+Unavailable quest scripts, containers or skills stay unknown. Quests use supported
+`Quest.getState`; selected progress events coalesce into a read, while idle ticks
+retain the existing snapshot. No KC, Collection Log, resource quantities or player
+skill are inferred.
+
+The catalogue recognises selected exact active/charged, empty and cosmetic forms
+for distinct purposes. Bowfa usable-package checks still cover default-colour active
+crystal armour. Atlatl acquisition is supported, but its full strength/ammunition
+setup is outside the CoX baseline. Only the base keris partisan is recognised for
+ToA preparation. No complete loadouts, solo/Expert/Challenge Mode certification,
+all bosses, or advanced-item acquisition catalogue is promised. Advanced owned
+magic alternatives may suppress a redundant route without proving a spell setup.
+
+CG planning begins with the regular Gauntlet unlock; a prior regular completion is
+unobserved. Zulrah's partial Regicide/dialogue access is conservatively represented
+by completed Regicide plus a labelled dialogue check. Slayer advice seeks a task;
+it never claims a current cave-kraken task. Moons' Herblore baseline and Titans'
+duo/spell assumptions are preparation, not game entry requirements. Source review
+is static editorial review, not expert/player endorsement or in-game validation.
+
+Raw observations and character/profile identity stay in memory. Only explicit goal,
+action/activity skips and manual confirmation values/times are saved through
+RuneLite's supported `Filepath` API:
+
+```text
+.runelite/plugin-data/ironpath-advisor/<SHA-256 identity key>.json
+```
+
+On Windows this is under `%USERPROFILE%\.runelite`. The existing key separates
+configuration profile, RuneScape profile and character without a username or raw
+account ID. Files are local and unencrypted; keep them private. Reset writes empty
+choices for the current identity. No bank, live levels/quests/unlocks or observed
+timestamps are serialized, synced through ConfigManager, logged or uploaded.
+Only fixed source links open browser traffic, carrying no account data.
+
+Logout, connection loss, hop, region loading, profile/character changes, unsupported
+modes/worlds and plugin disable clear observations. Reopen the bank afterwards.
+Preference IO stays serial and off the client thread; delayed results and UI actions
+check identity/generation. The first-save directory fix and lifecycle guards from
+`b3a93d9` remain in place.
+
+Automated fixtures use synthetic observations, isolated temporary storage and
+mocked client/UI events. They do not establish live accuracy or player usefulness.
+Limited earlier T1 user-performed passes and the simulated T4 maintenance rehearsal
+are preserved verbatim in TASKS.md. Unperformed T1–T4 and P1–P3 real-client checks
+remain pending; no client was launched for this work and no Hub approval is claimed.

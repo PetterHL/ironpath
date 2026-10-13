@@ -6,7 +6,7 @@ Updated 12 October 2026. This is the single active backlog.
 
 Petter approved moving directly from the CoX experiment to broader Ironman PvM progression on 12 October 2026. CoX remains a supported activity and regression case. A separate CoX-only release and completion of the old T4 user trial are **not prerequisites for expansion**. Do not interpret this decision as proof that unperformed tests passed.
 
-At this planning update, main contains the documentation foundation; implementation is in the open stacked PRs below. Do not rebuild T1–T3 from scratch.
+At the original planning update, main contained the documentation foundation; implementation is in the open stacked PRs below. Do not rebuild T1–T3 from scratch.
 
 | Historical work | Verified repository state | Remaining qualification |
 |---|---|---|
@@ -22,7 +22,7 @@ Historical implementation/test reports are in [TASKS.md at the T4 baseline](http
 
 P1, P2 and P3 form the **next implementation assignment**. Deliver them together as a coherent PR, using small commits as useful. Do not introduce a new approval/review gate between these three tasks. P4 and P5 follow separately. No plugin implementation is part of this planning update.
 
-## P1 — Bring the existing foundation and current plan together (next)
+## P1 — Bring the existing foundation and current plan together (implemented)
 
 - Inspect current branch heads and open PRs before work. Start from the existing T3 implementation including `b3a93d9`; the recorded T4 branch already contains it.
 - Bring that implementation, T4 historical results and the current main planning documents together on a working branch. Resolve documentation conflicts in favour of this active P1–P5 plan while preserving accurate historical reports and useful build/login instructions.
@@ -31,7 +31,7 @@ P1, P2 and P3 form the **next implementation assignment**. Deliver them together
 
 **Done:** one working baseline includes existing implementation and current scope; earlier test evidence remains available; pending real-client checks remain pending.
 
-## P2 — Generalise only what the broad slice needs
+## P2 — Generalise only what the broad slice needs (implemented)
 
 Implement this alongside P3's real decisions, not as a standalone framework project.
 
@@ -48,7 +48,7 @@ Implement this alongside P3's real decisions, not as a standalone framework proj
 
 **Done:** P3 routes share the same small evaluation flow; existing supported advice remains correct or is deliberately migrated; adding a comparable reviewed decision does not require another boss-specific Java switch.
 
-## P3 — First useful broad PvM slice
+## P3 — First useful broad PvM slice (static delivery complete; PC checks pending)
 
 Target **12–16 meaningful reviewed decisions total**, including useful migrated existing decisions. The count is a budget, not a reason to pad the catalogue.
 
@@ -72,6 +72,147 @@ Target **12–16 meaningful reviewed decisions total**, including useful migrate
 8. Existing relevant tests and build pass. Report exact limitations and any real-client checks not performed.
 
 **Done:** present three concrete synthetic account examples with observed facts, selected goal, suggested activity, alternative and reasoning, including a declined-CG and a post-Bowfa case. Label synthetic evidence accurately. Record a short focused PC checklist; user testing is not a prerequisite for delivering this PR. Do not start P4 or Plugin Hub work in this assignment.
+
+### P1–P3 results — 12 October 2026
+
+Branch `p1-p3-broad-pvm` is a combined delivery against current main, based on
+`fad507f0b87f2e4f879c8810daad663f7dd3043f`. It contains T1/T2/T3 through
+`b3a93d9aa60f7661e49b970fc3b9272e7ad2df12`, including the first-save directory fix
+and CoX goal-status regression. Current main `c717927` was merged into this new
+working branch, with its broad scope taking precedence. PRs #1–#3's implementation
+and PR #4's historical documentation are incorporated; those PRs were not merged,
+closed or reset. T1–T4 text below remains verbatim, under an explicit historical
+heading. Main's AGENTS/design/plan and useful PC build/Jagex login instructions
+are retained. P4/P5/distribution were not started.
+
+**P1:** the combined baseline's `test build --no-daemon` passed **58 tests, zero
+failures** on Temurin JDK 11.0.32.1 / RuneLite 1.13.1. The cloud clone required the
+supported shell network permission to reach the proxy; the temporary JDK,
+configured proxy and system CA setup reused the documented T1 approach. No new
+foundation or repeat maintenance simulation was created.
+
+**P2:** all real decisions share the pure bounded evaluation flow. Reusable action
+types replace CoX kinds/unique-kind constraints; seven goals, activities, outcomes,
+contextual benefit bands, supported-goal breadth, qualitative effort and usable
+item packages live in bundled JSON. Hard access, suggested preparation, context
+and completion have separate predicates/labels. ALL/ANY and hard-cycle validation
+remain bounded; selected-goal routes rank before shared/other relevance, then
+contextual benefit, breadth, effort and stable ID. At most three different
+activities/families are shown. Activity skips exclude routes while retaining owned
+reward utility; individual old action skips remain available.
+
+The existing reader/controller/lifecycle/store were extended in place. Selected
+quest completion uses supported `Quest.getState` on the client thread; Deadeye and
+Mystic Vigour use permanent unlock varbits. Only selected progress events request a
+coalesced read. Unknown facts, time/provenance, positive live precedence, observed
+usable/charged distinctions, memory-only observations and character/profile guards
+remain. Acquisition absence needs a targeted explicit confirmation, including when
+an opened bank is empty. Schema 2 reads T3 schema 1, preserves all four old goal IDs,
+action skips and exact fact keys, keeps the same isolated identity/path, and drops
+retired IDs explicitly. No old skip is widened automatically.
+
+**P3:** plugin **0.3.0**, knowledge **p3-1**, catalogue schema **4**: **16 reviewed
+decisions / 61 exact item IDs / 62 sources / seven goals**. Retain the nine reviewed
+scroll/training/owned-kit/ordinary-team decisions; add a Slayer-87 milestone and
+six real acquisition/unlock choices covering CG, Zulrah, Slayer/cave krakens, ToA,
+Moons and Royal Titans. Post-Bowfa facts can support Zulrah, ToA and intermediate
+prayer choices. The magic-fang upgrade supports both raid goals; CG can be skipped
+in favour of Moons or an accurate unknown/blocked explanation. Owned advanced
+magic options suppress redundant trident routes without manufacturing charges.
+
+Full current pages were accessed for the bounded new access/acquisition/variant
+and alternative review; actual inspected revisions, original explanations,
+editorial preparation assumptions, dates and reuse/licence metadata are bundled.
+The review details and exact limitations are in docs/RESEARCH.md. There is no
+runtime scraping, new runtime dependency, backend, database, AI, KC/Collection Log,
+DPS optimiser, universal gear hierarchy or complete loadout planner.
+
+**Concrete fixes during generalisation:** regression tests caught a coordination
+preparation condition that had lost the retained CoX baseline, and alternative-route
+diagnostics that could turn bounded container absence into a missing global
+assembly input. Both were corrected. Observed relevant unconsumed Royal Titans
+scrolls also prevent another acquisition grind. When all remaining alternatives
+are blocked, the goal names a real route-specific access/preparation condition;
+an unknown alternative prevents claiming a universally missing requirement.
+
+**Final automated validation:** `test build --offline --no-daemon` on the same JDK
+and CA setup: **75 tests, zero failures/errors/skips**; `git diff --check` passes.
+All 58 existing cases remain, with assertions adapted only for the broader budget
+and generic explanation wording, plus 17 new cases covering broad goals/ranking,
+CG skip/restore, post-Bowfa and advanced accounts, shared upgrades, explicit target
+absence, open/unknown banks, manual/live precedence and non-usable ownership,
+Slayer milestone/task separation, ANY prayer alternatives, access versus preparation,
+owned scrolls, invalid references/package cycles, catalogue-defined goals, schema
+migration/restart and selected quest/unlock character isolation. The original
+first-save, serial IO, delayed callback, actual Swing listener and profile/character
+regressions still pass. These are synthetic fixtures and mocked API/UI events,
+not a live account trial. Non-fatal Fontconfig cache and Gradle deprecation warnings
+remain. No outstanding test/build blocker.
+
+### Three concrete synthetic examples
+
+These rows describe tested synthetic observations and explicit preferences. They
+are not captured account facts or player usefulness judgements. Skills meet the
+stated authored preparation baselines; the bank is positively observed, and only
+the relevant missing ownership targets are explicitly confirmed.
+
+| Synthetic context and goal | Suggested activity | Reviewed alternative and reason |
+|---|---|---|
+| Whip, rune crossbow, charged seas trident, base keris; 90 combat skills, required quests confirmed; Bowfa/twisted bow and atlatl targets confirmed absent. Goal: ranged options; **CG skipped**. | **Moons for an eclipse atlatl**; no CG card returns. | Keep the crossbow for appropriate low-level/team planning. Moons is a contextual alternative with melee/local-supply preparation, not a universal Bowfa equivalent. Restore CG and its reviewed route regains priority. |
+| Bowfa with default active crystal pieces, whip, seas trident and base keris; Rigour unlocked, Augury/Mystic Vigour locked; swamp/competing magic and fang gaps confirmed. **No goal**. | **Royal Titans, Zulrah and ToA** are three distinct choices. | The seas trident remains usable while deciding whether scale upkeep justifies Zulrah; current prayers remain available while deciding whether a duo unlock route is worthwhile. Bowfa suppresses another ranged acquisition without erasing the magic/prayer gaps. |
+| Bowfa/crystal, whip, observed charged Shadow and base keris; required access confirmed, higher prayers unlocked, fang absent. Goal: **ToA / fang**. | **Low-level ToA practice toward a fang**. | Ordinary team CoX planning with the observed kit remains available. Shadow ownership suppresses base/swamp trident grinds, while the fang remains a distinct supported melee objective; no success, supplies or solo/Expert readiness is inferred. |
+
+### Focused PC checklist — limited flow reported working; detailed checks pending
+
+Use README's JDK 11 build/launch commands on `p1-p3-broad-pvm`. No game client was
+launched in Cloud; `DISPLAY` is unset and no authenticated game session is available.
+Earlier T1 passes and the limited P3 user report below have their stated evidence
+boundaries. Do not grind/acquire items just to exercise a boundary; label unexercised
+checks pending.
+
+1. **Observations:** before opening the bank, verify unknown storage. Open it and
+   compare displayed levels, selected quest completion and prayer unlocks with the
+   game, including an unavailable/uncovered variant. Confirm active/empty forms,
+   placeholders and provenance do not invent ownership/usability.
+2. **Goals and alternatives:** on supported facts, try no goal, ranged, magic and
+   ToA goals. Confirm up to three different activities, meaningful priority changes,
+   targeted ownership prompts and separate access/preparation/ANY explanations.
+   Open a pinned reference under Reviewed sources.
+3. **CG skip/restore:** skip CG at activity level. Check Moons appears when supported,
+   or an accurate blocked/unknown reason; no CG card returns. An already-owned
+   Bowfa/crystal kit must still support appropriate advice. Restore the activity.
+4. **Manual facts and persistence:** with the client closed, preserve a backup of
+   only the plugin directory before a fresh-directory check. Test a reversible
+   target absence, manual advanced ownership and clearing. Wait for Preferences
+   saved locally, restart and check restored choices plus unknown bank. If a T3
+   file is available, verify schema-1 choices survive and the next save is schema 2.
+5. **Isolation:** check another character and RuneLite profile, then return. Confirm
+   only each identity's choices restore, observations clear on transitions/hop/logout,
+   and stale UI/load/save callbacks cannot change the new identity. Keep local files
+   private; report anonymous labels and minimal facts only.
+
+Accuracy, source-button behavior, real-client save/restart, character/profile
+isolation and player usefulness remain **pending**. Zero live critical errors is
+not assumed. P4's approximately 35–45 decisions and P5/publication remain outside
+this delivery.
+
+### P3 user-reported PC flow — 12 October 2026
+
+After the short guided PC test and clarification of the Restore activity/action
+controls, Petter reported: “evrything works.” Record the guided flow as **reported
+working by the user**, rather than a Codex-observed pass for each assertion.
+The supplied sequence covered branch update/build/launch, Knowledge p3-1 and the
+bank-unknown/open-bank flow, no-goal suggestions, switching ranged/magic/ToA goals,
+and CG activity skip/restore. No screenshots, account facts, exact card results,
+build output or per-step measurements accompanied this report; those details
+are not inferred or stored.
+
+This provides a limited positive workflow report. Detailed level/quest/prayer and
+item-variant accuracy, alternative correctness and player usefulness judgements,
+source buttons, manual confirmation boundaries, first-save/schema migration,
+restart and character/profile isolation remain **pending**. It does not accept
+all five checklist scenarios, establish zero critical errors, or change any
+historical T1–T4 result. P4/distribution remain outside this assignment.
 
 ## P4 — Expand the first catalogue to approximately 35–45 decisions
 
@@ -106,3 +247,424 @@ Replace the old CoX-only release gate with a short broad trial. Reuse existing T
 ## Next Codex assignment
 
 Read AGENTS.md, README.md, docs/DESIGN.md and this active P1–P5 plan from current main. Implement **P1–P3 together**, reusing T3 including `b3a93d9` and the T4 historical records. Do not rebuild the foundation or wait for the old CoX trial. Deliver a coherent PR against main with the first broad 12–16-decision slice, meaningful tests, accurate task results and a short manual checklist. Stop before P4/distribution. Report actual blockers; do not claim unperformed game tests passed.
+
+
+## Historical T1–T4 records (preserved; superseded task instructions)
+
+The following text records the earlier task snapshots verbatim. Its CoX-only scope and delivery gates are historical; the P1–P5 plan above is active.
+
+# Initial tasks
+
+Updated 12 October 2026. Only this file tracks initial work. **T1 passed static review with limited user-performed PC checks recorded below; T2's catalogue and static verification are complete; T3's local recommendation slice is implemented, with its live checks pending. T4 is prepared with user testing pending; T5 has not started.** Petter has approved the public repository `PetterHL/ironpath`; the repository and documentation foundation are established on GitHub. Independent development is agreed; competitor benchmarking is optional.
+
+## T1 — Small account and value experiment (ready for code review; in-game validation in progress)
+
+**Outcome:** one narrow RuneLite development build that demonstrates reliable account observations and understandable recommendations.
+
+- In the approved repository, add the current official example-plugin scaffold. Keep original notices; use the supported Java target and one Gradle project.
+- Capture real skill levels, inventory/equipment, observed bank and one relevant quest/unlock into an immutable snapshot. Display only necessary facts and freshness in a basic sidebar. Treat missing data as unknown.
+- Use three to six independently reviewed sample decisions in a pure Java evaluator. Do not copy a competitor's catalogue. Synthetic rule fixtures are acceptable for logic tests but must be labelled and must not appear as real advice.
+- Exercise five scenarios: bank unopened; midgame player who declines CG; post-Bowfa raider; advanced account with a high-end item but remaining gaps; and a consumed unlock/variant plus character-switch case. Separate lifecycle regression tests from product judgement.
+- Make the basic flow obvious: open the sidebar, observe the bank when needed, read a few suggestions and inspect why/alternatives. Record the account evidence and reasoning behind each suggestion. Do not require using Iron Compass or measuring superiority over another plugin.
+- Verify local preference-storage support before adding persistent account facts. Bank observations remain memory-only.
+
+**Done:** `gradlew test` and `gradlew build` pass (or exact blockers are reported); unknown bank and character isolation tests pass; no network/upload path exists in this plugin; live checks are explicitly passed or pending. Produce at least three concrete examples of understandable, account-specific advice across the five scenarios, including an established raider. Do not claim live usability testing when no game session is available.
+
+### T1 results — 12 October 2026
+
+Code review: [PR #1 — Implement T1 local account observations and CoX sidebar](https://github.com/PetterHL/ironpath/pull/1), branch `t1-account-advisor`.
+
+- Implemented the official example-plugin scaffold at `46e14f2c448fab6cbc599df1015b9631dcf1fc52` with original notices, Gradle 8.10, Java release 11 and one Gradle project. Current official RuneLite APIs were checked at `42a6f17a6a2e8e478aa763890ecd0181a59dad38`; the build resolved `latest.release` to `1.13.1`. There are no extra runtime dependencies; Mockito is test-only.
+- Added immutable real-level, inventory/equipment, session-bank and Rigour/Augury unlock observations with time/provenance. Only a visible bank following a bank event is sampled; a stale cached container alone is insufficient. Zero-quantity placeholders are excluded. Missing data remains unknown; positive possession and permanent unlocks are separate.
+- Added five source-reviewed samples in bundled `catalog.json`: read an observed dexterous scroll, read an observed arcane scroll, train Prayer for unlocked Rigour, train Prayer for unlocked Augury, and plan ordinary team CoX with recognised observed weapons. The evaluator is pure Java with deterministic authored ordering and at most three diverse suggestions; duplicate Prayer-training actions are suppressed. These are limited original preparation explanations, not a reviewed full progression catalogue or an expert/player endorsement. No T2 content expansion was performed.
+- Full current Wiki pages were fetched for the limited mechanic/variant review. Source records include pinned revision URLs, author/type, access and review dates, reuse basis and affected sample IDs. No competitor catalogue, Wiki prose/tables, images or guide dataset was copied. The sidebar exposes matching evidence, why, access distinctions, alternatives, trade-offs, qualitative effort, coverage, freshness and source links.
+- Raw observations and identity remain memory-only. No preference/manual-fact persistence was added. Supported local storage was verified in RuneLite's `Plugin.getPluginDirectory()` → `.runelite/plugin-data/[internalName]` and `Filepath.joinSegment`/reader/writer APIs; future character preferences must use that local path and character/profile identity rather than synced configuration. `internalName` is set. There are no HTTP clients, account lookups, uploads, runtime scraping, downloaded rules, reflection, subprocesses or gameplay input in production code. Browser source links are fixed, user-initiated and carry no account state.
+- All state clears on lifecycle/account/profile transitions, unsupported modes/worlds and disable; region loading also clears conservatively. Client callbacks and queued Swing views check generation/revision, current character/profile identity and current snapshot before applying results. Event changes are coalesced at the next server tick; idle ticks do not reevaluate the catalogue.
+
+**Automated validation:** `gradlew test` and `gradlew build` passed together on JDK `11.0.32.1`; **23 tests, zero failures**. Product fixtures and mocked RuneLite lifecycle tests are separate. Tests cover unopened banks/unknown completion, decline-CG alternatives, post-Bowfa and high-end accounts, consumed unlocks/spare scrolls, low-level scroll reading, inactive gear/components, individual wield levels, immutable evidence, three-valued conditions, unreviewed/invalid catalogue rejection, placeholders, cached-bank freshness, all game-state transitions, character/profile changes, changed identity without an event, unsupported modes/worlds, disable, stale result/view rejection and irrelevant-varbit coalescing. Three additional synthetic checks cover empty-result explanations: an uncharged staff with otherwise supported weapons and completed prayer samples, unknown bank/skill evidence, and crystal-package/individual wield-level coverage. Observing the supported charged form enables the existing CoX sample. These are synthetic observations, not captured accounts or in-game tests.
+
+**User-performed Windows validation — 12 October 2026:** Petter reported `BUILD SUCCESSFUL` for the local `gradlew.bat test build` command, then logged into the development client with a Jagex Account. A supplied sidebar screenshot confirms that Ironpath opens and displays `Bank unknown` before the user has opened the bank. These checks were performed by the user on his PC; Codex did not interact with the game. No screenshot, account identifier, credential, bank content or raw account observation is stored in this repository. Displayed skill/unlock accuracy still needs comparison with the game UI.
+
+| Manual check | Status | Evidence / limitation |
+|---|---|---|
+| Windows local build/test command | Passed, user reported | `BUILD SUCCESSFUL`; local detailed test output was not supplied. |
+| Jagex Account development login and sidebar opening | Passed, user performed | User reported login; supplied image shows the active Ironpath sidebar. |
+| Bank remains unknown before first opening | Passed, user performed | User confirmed bank had not been opened; sidebar displays `Bank unknown`. |
+| First bank opening updates observation status | Passed, user performed | A subsequent sidebar image displays `Bank last observed this session`. This establishes the status transition, not full item-capture or close/filter accuracy. |
+| Positive team CoX suggestion is displayed | Passed, user performed | A later sidebar image shows `Plan ordinary team CoX with your observed weapons` after the earlier empty result. Actual item-capture, provenance accuracy and usefulness still need user verification. |
+| Expanded recommendation evidence renders | Passed, user performed | Supplied detail images show the expected three weapon labels, distinct storage provenance, observation times, preparation baseline, access distinction, alternative and trade-off text. Actual storage locations still need user confirmation; this is a rendering check, not an independent account-accuracy pass. |
+| Empty-result explanation | Failed in initial UI; correction awaiting user retest | After the bank status updated, the generic empty state did not identify the unmet sample condition. Added a `Why no suggestion` expansion using the same pure evaluator checks; no catalogue or recommendation eligibility was expanded. |
+| Displayed skill/unlock accuracy and remaining real-client behavior | Pending | Rendering alone does not establish that the values match the game. |
+
+The following representative profiles remain synthetic; their full product/usefulness checks are separate from the initial manual checks above.
+
+| Synthetic scenario | Concrete evidence and supported result | Product judgement / in-game status |
+|---|---|---|
+| Bank unopened | No observed weapons or scrolls; unlocks unknown. Abstain and explain bank observation rather than invent missing gear. | Pending |
+| Midgame player declines CG | Recognised whip + rune crossbow + charged trident, 80+ style baseline and 70 Prayer. Suggest planning ordinary team CoX with these observed options; CG is not required. Access, supplies, armour and team agreement remain unverified. | Pending |
+| Post-Bowfa raider | Corrupted Bowfa + active crystal armour + whip/trident, both prayer unlocks confirmed, 74 Prayer. Suggest training to 77 for already unlocked Augury, alongside team planning; no extra arcane scroll or basic ranged grind. | Pending |
+| Advanced account with remaining gap | Observed fang + twisted bow + charged Shadow, 90 style levels, unlocked Rigour/Augury and 72 Prayer. Prioritise 74 Prayer for Rigour and team planning; suppress duplicate training advice and recognise the owned high-end weapons. | Pending |
+| Consumed unlock/variant and character switch | Unlocked prayers remain completed when scrolls are absent or spare scrolls remain. Uncharged/inactive/component forms do not satisfy the weapon baseline. Switching characters clears bank/unlocks and rejects the old generation before new observations. | Pending |
+
+**Cloud constraints:** the initial shell clone could not reach `proxy:8080`; enabling the shell's supported network permission resolved it. Without that permission, even Gradle's offline task listing failed local daemon IPC with `java.net.SocketException: Operation not permitted`; commands need the same permission for local sockets. The preinstalled Java 21 runtime failed compilation with `does not provide the required capabilities: [JAVA_COMPILER]`. A temporary Temurin JDK 11 resolved that. Its initial Maven download failed with `PKIX path building failed`; using the configured system CA store `/etc/ssl/certs/java/cacerts` resolved it while keeping TLS verification enabled. No outstanding test/build blocker remains. Swing tests emitted non-fatal `Fontconfig error: No writable cache directories`. `DISPLAY` is unset and no authenticated game session was available; the development client was not launched and no in-game checks were performed.
+
+Reproduction command used in Cloud (temporary paths are environment-specific; PC commands are in README):
+
+```sh
+JAVA_HOME=/tmp/ironpath-jdk11 GRADLE_USER_HOME=/workspace/.gradle ./gradlew \
+  -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts \
+  -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 \
+  -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 test build --no-daemon
+```
+
+**Pending real-client checks:** login initialisation and displayed skill/unlock accuracy; bank item-capture, close/filter freshness and observation times; placeholders and supported charged/cosmetic variants; the new empty-result explanation and the positive suggestion's expanded matching evidence; consumed unlocks; logout, hop, reconnect and region-loading clears; two characters and RuneLite profile changes; unsupported modes/worlds; disable/re-enable; source links and recommendation usefulness. Only the manual passes explicitly recorded above are established. No general game accuracy pass, player usefulness judgement or Hub approval is claimed. See README for simple Windows/macOS/Linux build and launch commands and Jagex Account login guidance. T2 remains unstarted; no Hub submission.
+
+## T2 — Review the bounded catalogue (complete for static review; real-client checks pending)
+
+Depends on T1's working foundation. Select at most twelve decisions within the CoX scope; at least four must help established accounts. Check current alternatives and hard requirements, write original explanations and effort assumptions, and attach source/revision/review/licence metadata. Do not allow one guide's opinion to become a hard requirement. Validate IDs, references, `all`/`any` conditions, cycles and missing evidence. Finish five representative account fixtures with expected explanations and alternatives, not just exact ordering snapshots.
+
+### T2 results — 12 October 2026
+
+Branch `t2-cox-catalogue` builds on PR #1's unmerged head `ae9af8758016a7048302d136cffba0ca20e821ff`. T1 passed static review according to Petter; **T1 has not been live-tested**. Its lifecycle implementation and pending manual checks are retained.
+
+- Authored **nine decisions**, keeping the five stable T1 IDs and adding four choices useful to established/post-Bowfa accounts: assemble an observed magic fang/seas-trident upgrade; compare an owned lance for Olm; agree team defence-reduction coverage; review an owned occult switch when a fury is currently equipped. These are bounded preparation choices, not a comprehensive acquisition route, universal gear order or player endorsement. Team coverage replaces the overlapping broad team-planning prompt.
+- Reviewed full current pages for the selected mechanics, alternatives and variants. Bundled **39 source records** (38 Wiki revisions and one pinned official RuneLite item-definition file) carry author/type, exact revision URL, accessed/reviewed dates, licence/reuse basis and affected IDs. Each of **56 exact item IDs** has evidence references. Source/reuse findings are recorded in `docs/RESEARCH.md`; no competitor catalogue, guide prose, equipment tables or images were imported.
+- Checked alternatives including the Eye of Ayak, dragon hunter wand, Sanguinesti staff/Shadow, scythe/Soulreaper axe and elder maul/BGS/DWH. Owned competing magic forms, including empty staffs, suppress redundant trident assembly. The wand is not counted as a ready powered spell setup. Owned scythe/Soulreaper axe suppresses the narrow lance comparison. Cosmetic and enhanced equivalences are explicit; inactive gear and components do not establish usable weapons. Unlisted variants remain outside coverage.
+- Added only bounded observation conditions (`all`/`any`, levels, named exact-item sets, current equipment and the existing two unlocks) and completion/dependency gates. Unknown completion withholds an action; an unread container never proves an item absent. Confirmed Prayer unlocks remain different from spare scrolls. The only hard decision dependencies are Prayer training's permanent unlocks. Planning baselines, crystal kit preferences and team-role discussion remain recommendations; raid access, lance miniquest sections, charges, supplies and spell setups are explicitly unverified where not captured.
+- Catalogue loading fails closed for invalid/duplicate IDs, unsupported predicates/schema, malformed conditions, bad item/source/decision references, missing evidence/review/reuse fields, inconsistent source links/revisions/dates, invalid completion definitions and hard-dependency cycles. The existing authored comparator and three-choice/family limit remain; no goal ranking, nearest-prerequisite UI, skip controls, manual confirmations, persistence or other T3 features were added. Reader/lifecycle code and dependencies are unchanged; sidebar changes only correct coverage and explanation text.
+
+**Automated validation:** `gradlew test build --no-daemon` passed on Temurin JDK `11.0.32.1`, with **33 tests, zero failures**, retaining all 20 T1 tests. Five new representative product fixtures assert matching evidence, expected reasoning and alternatives; four decision-boundary and four catalogue-validation tests cover the new semantics and failure modes. `git diff --check` passes. RuneLite resolves to `1.13.1`. The same supported shell network permission, system CA store and proxy arguments documented under T1 were used. Non-fatal Fontconfig cache and Gradle deprecation warnings remain.
+
+| Synthetic T2 fixture | Expected reasoning and alternatives |
+|---|---|
+| Bank unopened; then positive fang/chisel/trident in inventory | Abstain while competing-weapon completion is unknown. Positive parts do not prove another weapon is absent from the unopened bank. |
+| Midgame, 85 combat skills/70 Prayer; whip, rune crossbow, charged seas trident; no prayer unlocks | Plan ordinary team CoX using the observed crossbow, with CG optional. Kourend access and complete raid preparation remain unverified; missing scrolls do not become acquisition advice. |
+| Post-Bowfa, 90 combat skills/80 Prayer/80 Crafting; active crystal kit, seas trident, magic fang and chisel | Suggest assembling the owned magic upgrade and team planning. Explain uncharging, scale upkeep and keeping the seas trident as an alternative; no new ranged grind or contrived low-Prayer gap. |
+| Established Bowfa raider, 93 combat skills/80 Prayer; swamp trident, DWH and occult; fury currently equipped | Review the owned occult switch and agree defence-reduction coverage. Simpler hybrid switching and teammate coverage are explicit alternatives; current equipment does not prove the usual raid kit is deficient. |
+| Established account, 95 combat skills/90 Prayer; Bowfa kit, fang/lance, charged Ayak, BGS; ornamented occult equipped | Compare lance for Olm and agree coverage using the observed BGS/Ayak kit. Keep room-specific alternatives and unknown Barbarian Training visible. Suppress redundant trident assembly and occult advice. |
+
+**Limitations and remaining manual checks:** these fixtures are synthetic, not captured accounts, player judgement or RuneLite testing. No development client was launched; no authenticated game session was available. All T1 real-client checks remain pending. Additionally check fang assembly/uncharge and enhanced forms; default active versus inactive crystal pieces and supported Bowfa colours; empty versus charged Ayak/Sanguinesti/Shadow; ornamented neck/reduction gear; current equipment versus actual raid switches; and whether the four established-account prompts are useful or repetitive. Gear/skill baselines do not certify solo/Challenge Mode readiness or raid access. Unsupported items/variants need external review rather than inferred equivalence. No Plugin Hub submission, T3 implementation or T4 usefulness pass is claimed.
+
+## T3 — Complete the local recommendation slice (ready for review; in-game checks pending)
+
+Implement deterministic ranking, up to three diverse choices, optional single goal, nearest prerequisite, skip/restore and reversible manual confirmations. Keep one sidebar. Verify owned gear removes redundant grinds, source links carry no account data, skipped requirements do not become completed, unknowns do not fabricate advice, and preferences survive restart without leaking between characters.
+
+### T3 results — 12 October 2026
+
+Code review: [PR #3 — Implement T3 local goals, ranking and isolated preferences](https://github.com/PetterHL/ironpath/pull/3), stacked on PR #2.
+
+Branch `t3-local-advisor` builds on T2's `e52728d5313552fd8b0bdaa5eefdcbaa4be00915`.
+It also integrates the existing T1 follow-up diagnostics and user-performed check
+records from `f224f410f23f8d4f33310a4520aded9e84518b23`. T1/T2 results above describe
+those earlier task snapshots; their historical statements about later tasks do not
+set the current T3 status. Petter authorised proceeding after reporting that T2
+appears to work. That general report is not a pass for specific T2 or T3 scenarios.
+
+- Implemented a pure comparator of selected-goal relevance, contextual benefit,
+  authored effort band and stable ID; no efficiency score or time/DPS estimates.
+  At most three choices and one per family remain. Owned competing gear suppresses
+  redundant assembly/comparisons; specific team coordination takes precedence over
+  broad team planning. No-goal mode works; only one optional goal is selected.
+- Added four bounded goals: ordinary team CoX learning/improvement, meeting
+  Rigour/Augury unlock/use levels, and reviewing an owned-parts swamp trident
+  upgrade. The sidebar separates confirmed, missing and unknown prerequisites,
+  nearest confirmed missing prerequisite, and the next supported action. A locked
+  prayer is still a blocked goal even if Prayer is already high enough. No covered
+  acquisition route means abstaining and asking for observation/confirmation,
+  not fabricated grind advice. Preparation remains distinct from game access.
+- Added skip/restore for all reviewed actions, including prerequisites not currently
+  offered as cards. A skipped unlock blocks training until restored or actually
+  confirmed complete; skipping never counts as completion. Unrelated viable CoX
+  actions can still be shown while one goal is blocked.
+- Added reversible exact-item and prayer-unlock confirmations with explicit manual
+  provenance/time, individual clear buttons and reset controls in the same sidebar.
+  Manual ownership can suppress redundant work and inform planning, but cannot
+  create charged/equipped/usable weapon evidence or observed assembly supplies.
+  Readable unlock varbits are authoritative; positive observed possession overrides
+  conflicting manual absence. Raw snapshots are never modified by confirmations.
+- Persisted only goal, skipped IDs and explicit confirmation values/times in local
+  schema-1 JSON using supported `Plugin.getPluginDirectory()` / `Filepath` APIs.
+  A SHA-256 key isolates configuration profile + RuneScape profile + character;
+  no username/raw identity or automatic account observation is serialized. Writes
+  use a temporary file and atomic replace with a supported non-atomic fallback.
+  Serial worker IO preserves accepted save/load order across disable/re-enable;
+  client-thread callbacks and UI actions check current identity/generation before
+  applying results. Corrupt/unsupported files disable editing; save failures are
+  visible, never falsely reported as saved. No ConfigManager writes or uploads.
+- Plugin version is **0.2.0**. Bundled schema **3**, knowledge **t3-1**, replaces
+  legacy priority metadata with the small reviewed effort bands. The same nine
+  reviewed decisions, 56 exact item IDs, 39 source records and source review dates
+  remain; T3 introduces no new source claim, rule-download path or catalogue expansion.
+  Current official RuneLite 1.13.1, Java release 11 and the existing template/notices
+  remain supported. T4/T5 and Plugin Hub submission were not started.
+
+**Automated validation:** `gradlew test build --no-daemon` on Temurin JDK
+`11.0.32.1`: **58 tests, zero failures**. This includes the original T1/T2 fixtures,
+T1 abstention explanations, goal ranking/diversity, skipped prerequisite versus
+actual completion, unknown ownership, manually owned alternatives, unusable manual
+gear, unlock precedence/provenance, fixed source URLs, real temporary-file restart
+round trips, character/profile separation, corrupt/oversized/retired preferences,
+serialized IO recovery, actual Swing control listeners with mocked client events,
+delayed load/action/save callbacks, disable/re-enable, and visible write failure.
+These tests use synthetic facts and isolated temporary storage, not live accounts.
+`git diff --check` passes.
+
+**Cloud constraints:** the documented network permission, proxy and system CA
+arguments from T1 were used; RuneLite remains 1.13.1. No outstanding test/build
+blocker. Non-fatal Fontconfig cache and Gradle deprecation warnings remain.
+`DISPLAY` is unset and no authenticated game session is available in Cloud, so
+Codex did not launch or interact with RuneLite in-game.
+
+| T3 real-client check | Status |
+|---|---|
+| No-goal / single-goal selection and clear; readable ranking/evidence | Pending |
+| Goal prerequisites and nearest missing requirement match game/manual facts | Pending |
+| Skip required unlock, blocked route, restore without false completion | Pending |
+| Manual positive/negative, provenance, observed-positive precedence, clear/reset | Pending |
+| PC file write and restart restore; bank remains unknown until reopened | Pending |
+| Two characters and RuneLite profiles; logout/hop/unsupported-world isolation | Pending |
+| Disable/re-enable, source buttons and catalogue usefulness | Pending |
+
+PC build/launch and a short T3 check sequence are in `README.md`. Wait for
+**Preferences saved locally** before restarting. No T3 in-game pass or T4 user-trial
+result is claimed. Earlier limited T1 user-performed passes remain recorded above.
+
+
+### T3 review fixes — 12 October 2026
+
+Fixed the two findings from reviewed commit `3889580` on `t3-local-advisor`,
+updating the existing PR #3:
+
+- `LocalPreferences.write` now calls supported `Filepath.createDirectories()` on
+  the destination parent before creating its temporary file. A regression starts
+  with a nonexistent plugin subdirectory, saves for the first time and reloads
+  the goal/manual confirmation through a fresh store instance.
+- CoX goal status now recognises an available same-family preparation alternative
+  when defence-reduction coordination replaces broad team planning. Confirmed
+  missing, unknown and skipped prerequisites retain their existing status/guards;
+  the alternative does not certify raid access or complete the goal.
+
+Both bug regressions failed against `3889580` before the fixes. The added control
+fixture for missing/unknown/skipped prerequisites passed before and after the
+fixes. Full `gradlew test build --no-daemon` passes on the same supported JDK 11
+and RuneLite setup: **58 tests, zero failures**; `git diff --check` passes. No
+outstanding build blocker. These are synthetic logic/temporary-file tests;
+**no in-game testing was performed**. Catalogue, privacy/isolation rules and
+schemas are unchanged. T4/T5 remain unstarted.
+
+**Short PC checklist — all pending:** update `t3-local-advisor` and use README's
+build/launch commands, then:
+
+1. With the client closed, temporarily rename/back up only
+   `.runelite/plugin-data/ironpath-advisor` if it exists to exercise a fresh
+   directory. Launch, save a goal/manual confirmation, wait for **Preferences
+   saved locally**, restart and verify the choices return. Bank observations
+   should remain unknown until reopened. Preserve the backup.
+2. Select ordinary team CoX with a positively observed, supported three-style kit
+   and defence-reduction weapon. If the coordination card replaces broad planning,
+   the goal should say **Available preparation action** and name that next action.
+   Skip the selected goal action and restore it; its blocked status should reverse.
+3. Switch character and RuneLite profile: each should show its own choices. Return
+   to the original character/profile and verify its saved choices return without
+   carrying over bank observations.
+
+## T4 — Small user and maintenance trial (prepared; user testing pending)
+
+Test with Petter and, if available and explicitly invited, one or two experienced Ironmen. No unsolicited outreach. Check whether they can find a recommendation without assistance, understand its explanation, inspect an alternative and skip a grind. Acceptance target: at least four of five scenarios yield an actionable or correctly abstaining result, zero critical ownership/access errors, and at least three recommendations the player considers useful for the supplied account. These are proposed acceptance criteria, not measured results. Simulate a relevant source change and time the review/update process. Do not automate discovery unless it saves observed repeated work.
+
+### T4 PC trial — instructions and pending results
+
+Baseline: `t3-local-advisor` at **`b3a93d9aa60f7661e49b970fc3b9272e7ad2df12`**,
+including the first-save directory and same-family CoX goal-status fixes. Petter
+reports T3 passed static review; specific T3 real-client checks remain pending.
+The trial branch is `t4-user-maintenance-trial`. It changes only this task file;
+plugin **0.2.0**, knowledge **t3-1**, schema **3** and the shipped catalogue remain
+unchanged. Earlier T1–T3 sections describe their historical task snapshots.
+
+Allow about **20–30 minutes**, plus restart/login time. Use JDK 11 and a standard
+Ironman on an ordinary permanent members world. Use anonymous account/profile
+labels (A/B, P/Q) in the results; record only the few facts needed to judge advice,
+not names, IDs, credentials, screenshots or bank dumps. Include an established
+raiding account. If a boundary cannot be exercised on the available accounts,
+record it as **unexercised / pending**, not passed; do not grind or acquire items
+just for this trial. Do not invite or contact anyone through Codex.
+
+Windows PowerShell, inside an existing `ironpath` clone with the client closed:
+
+```powershell
+git fetch origin
+git switch t4-user-maintenance-trial
+git pull --ff-only
+git merge-base --is-ancestor b3a93d9 HEAD
+if ($LASTEXITCODE -ne 0) { throw "Required T3 fixes are missing" }
+java -version
+javac -version
+.\gradlew.bat test build
+if ($LASTEXITCODE -ne 0) { throw "Fix the build before the PC trial" }
+# Perform the first manual step below before launching.
+.\gradlew.bat run
+```
+
+**First manual step, before `run`:** with RuneLite closed, rename
+`%USERPROFILE%\.runelite\plugin-data\ironpath-advisor` to a unique backup name
+if it exists. Preserve it and leave other RuneLite files alone. If it does not
+exist, leave it absent. This exercises `b3a93d9`'s first save into a missing
+directory. After the trial, close the client before moving the trial directory
+aside and restoring your backup. README contains Jagex Account development-login
+guidance; never include local credentials in the results.
+
+Run these five scenarios in order. Expected results describe the existing build,
+not new features or promises of full raid readiness.
+
+1. **Find useful advice.** Log in, wait two server ticks and for local preferences
+   to load. Before opening the bank, check **Bank unknown**. Open the bank, then
+   use **No goal**. Without help locating a card, choose a suggestion, explain why
+   it fits, inspect **Why and alternatives**, and decide a next action. Record
+   seconds to find it and any assistance. Repeat for up to three distinct useful
+   recommendations across supplied accounts, including an established raider.
+   **Expected:** at most three different families; matching levels/items and
+   provenance agree with the game; owned alternatives avoid redundant work. Unknown
+   storage cannot prove missing gear. Empty results explain limits; CG stays optional
+   and preparation never certifies access. A source button opens a pinned reference
+   without account data in the URL.
+2. **Goals and alternatives.** Set ordinary team CoX, expand **Goal prerequisites
+   and sources**, then try Rigour/Augury or the owned-parts upgrade and **Clear goal**.
+   With a supported observed three-style kit and defence-reduction weapon, inspect
+   the coordination card replacing broad planning. **Expected:** one optional goal;
+   that CoX alternative says **Available preparation action** and names coordination.
+   A genuinely missing prerequisite is separate from unknown ownership; no uncovered
+   acquisition grind is invented. Confirmed outcomes suppress redundant work;
+   clearing the goal returns to no-goal advice.
+3. **Skip and restore.** Skip a card and restore it. For a still-locked prayer goal,
+   also skip its unlock action under **Skips and manual confirmations**, then restore.
+   **Expected:** the card disappears and returns only if still eligible; a skipped
+   required unlock blocks the route without marking it unlocked or offering dependent
+   training. Restoring removes the skip block, leaving actual missing/unknown facts
+   intact. If both prayers are already unlocked, the locked-route subcheck stays pending.
+4. **Manual confirmations.** Temporarily set a supported item's positive and negative
+   confirmation, inspect its manual provenance/time, then clear it. Try manual absence
+   for a positively observed item and the opposite of a readable prayer unlock.
+   **Expected:** confirmations are reversible planning assumptions; positive observed
+   possession and readable unlock varbits take precedence. Manual ownership cannot
+   create charged, equipped or usable gear. Clear/reset restores live or unknown
+   state. After checking **Reset all planning choices**, set one goal, one skip and
+   one harmless temporary confirmation for scenario 5.
+5. **First save, restart and isolation.** Wait for **Preferences saved locally**;
+   confirm a JSON file now exists under the fresh plugin directory. Restart and
+   return to A/P. Before reopening the bank, check restored choices and unknown bank.
+   Switch to B/P, then A/Q; set different choices and wait for each save. Return to
+   each combination, then A/P. **Expected:** only its own goal/skip/manual fact returns;
+   bank/live observations clear at restart and character/profile transitions. Editing
+   waits for identity/preferences; save errors are visible. The local JSON contains
+   choices and manual values/times, no bank, levels, live unlocks or raw identity.
+   Keep it private and report only field names. Missing B or Q means isolation pending.
+
+Only mark a scenario passed after its applicable checks are exercised and the
+player judges the result actionable or correctly abstaining. An abstention needs
+a correct reason, not just an empty list. Pending subchecks do not count toward
+the four-of-five gate. False ownership, a false access/readiness claim, or any
+cross-character/profile leakage is a critical error and blocks acceptance.
+
+| Scenario | Status | Account/profile label; actual result; time/assistance; mismatch or unexercised check |
+|---|---|---|
+| 1. Recommendation usefulness | **Pending user testing** | Awaiting Petter's results |
+| 2. Goals / alternatives | **Pending user testing** | Awaiting Petter's results |
+| 3. Skip / restore | **Pending user testing** | Awaiting Petter's results |
+| 4. Manual confirmations | **Pending user testing** | Awaiting Petter's results |
+| 5. First save / restart / character and profile isolation | **Pending user testing** | Awaiting Petter's results |
+
+Record three **distinct** recommendations considered useful, with at least one
+from an established raiding account. Showing the same card again is not another
+usefulness vote; synthetic fixtures are not player evidence.
+
+| Recommendation title / ID | Anonymous account context | Useful? Why; understood alternative; chosen next action |
+|---|---|---|
+| Pending 1 | Awaiting user | Awaiting user |
+| Pending 2 | Awaiting user | Awaiting user |
+| Pending 3 | Awaiting user | Awaiting user |
+
+**Result fields:** test date/build commit/JDK: pending; scenarios actionable or
+correctly abstaining: pending / 5; critical ownership/access/isolation errors:
+pending (do not assume zero); distinct useful recommendations: pending; overall
+T4 acceptance: **pending user results**. Report failures with the control/action,
+expected and actual result and minimal relevant facts. This five-scenario trial
+does not silently pass other outstanding T1–T3 lifecycle/variant checks.
+
+### T4 maintenance rehearsal — 12 October 2026
+
+**Explicit simulation, not a real source/game update:** candidate `SIM-T4-001`
+assumes wearing normal and ornamented occult necklaces changes from 70 to 80
+Magic, with IDs/stats unchanged. No new source was discovered or endorsed. The
+rehearsal used an independent temporary clone of `b3a93d9` at
+`/tmp/ironpath-t4-rehearsal-be53n8lu`, with a local simulation ticket and temporary
+tests. It was never pushed or used in a game client.
+
+**Impact review:** source register entries `occult` (revision `15314514`) and
+`occult-or` (`15187781`) both point to **`review-occult-switch`**, the only affected
+decision. Change its level predicate, access/applicability text and the two neck
+records (IDs `12002`, `19720`) together. Check the charged-weapon matcher, manual
+ownership semantics, equipped completion and fury/ornamented alternatives.
+Other eight decisions, goals, dependency edges, ranking and item IDs are unchanged;
+below-level accounts should lose only the occult prompt. No Slayer/acquisition
+requirement or new grind follows from this hypothetical wield change.
+
+The temporary candidate changed those fields, marked its explanation and both
+source reuse notes **SIMULATION ONLY**, and bumped only its knowledge version to
+`t4-rehearsal-only`. Schema 3, stable IDs and the 12 October review date remained.
+Pinned real URLs/revisions were retained explicitly as **baseline evidence only**;
+they do not support the invented requirement. A real update would require verifying
+released mechanics and recording actual new revisions before accepting/publishing it.
+
+**Validation and rollback:** Temurin JDK `11.0.32.1`, RuneLite `1.13.1`, existing
+Gradle wrapper and the supported Cloud network/proxy/system-CA setup from T1:
+
+- Unmodified temporary baseline: `gradlew test build --no-daemon` passed,
+  **58 tests, zero failures**.
+- Two temporary simulation tests failed against the baseline as expected: advice
+  was still offered at 79 Magic and metadata still required 70.
+- Candidate validation covered normal/ornamented forms below/at 80, unknown Magic
+  and equipment, equipped completion, manual ownership failing to create usable
+  gear, consistent requirement text/metadata and independent Prayer advice. The
+  first candidate run exposed one **fixture mistake**: 79 Magic does not meet the
+  unchanged 80-Magic team baseline. Corrected that control to an already unlocked
+  Rigour/73-Prayer gap; no production code change was needed. Full candidate
+  `test build --no-daemon` then passed **60 tests, zero failures**, including all
+  original catalogue rejection tests and five representative account fixtures.
+- Reviewed the candidate diff: only one decision, two neck records, two simulation
+  source notes and the temporary knowledge version changed; `git diff --check`
+  passed. Restored the catalogue from `b3a93d9`, removed the temporary fixture,
+  and ran `CatalogValidationTest` plus `CoxAccountFixturesTest`: **10 tests,
+  zero failures**. The temporary clone has no tracked diff after rollback.
+
+**Measured effort:** agent elapsed time, measured with a monotonic clock for
+review/update windows and build-log timestamps for the candidate runs. These are
+observed rehearsal timings, not an estimate of human labour:
+
+| Rehearsal phase | Measured elapsed time |
+|---|---|
+| Impact/source-link/requirement review | 31.8 seconds |
+| Temporary fixture preparation and cold baseline build wait (overlapping work) | 145.2 seconds; Gradle itself reported 1m 34s |
+| Expected-failure check and candidate catalogue update | 66.8 seconds |
+| Inspect/correct the invalid control fixture | 72.1 seconds |
+| Two candidate validation runs | 19.1 seconds total (9.3 failed, 9.8 passed) |
+| Rollback and targeted validation command | 7.0 seconds |
+
+Selected rehearsal windows total **342.0 seconds (5m 42s)**: 170.7 seconds for
+impact review/update/fixture correction, 26.1 seconds for candidate validation
+and rollback, plus 145.2 seconds for fixture preparation/cold baseline wait.
+JDK download/setup, PC-checklist writing, report-writing gaps and GitHub handoff
+are excluded. Raw timing/build logs and the candidate patch remain under `/tmp`
+for this session; the durable evidence is this report. No live source retrieval,
+expert/player review or release submission was timed. One simulated change cannot
+validate the proposed 20–40 minute weekly triage budget or justify a watcher;
+measure real repeated reviews before adding automation.
+
+**Shipped result:** the working catalogue and rolled-back copy both match the
+baseline byte for byte, SHA-256
+`470268a6ed539afaa6932df6cd813498b00dec63dcda157cd90be8176560a84d`.
+Only `TASKS.md` differs from `b3a93d9` in the trial branch. The nine decisions,
+56 item IDs, 39 sources, plugin version and knowledge/schema versions are unchanged.
+No development client was launched. **Maintenance rehearsal complete**;
+**user trial and T4 acceptance remain pending**. No source watcher, new feature,
+outreach, T5 work or Plugin Hub submission is part of this preparation.
+
