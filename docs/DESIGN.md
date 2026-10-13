@@ -1,6 +1,6 @@
 # IronPath product and architecture
 
-Endgame intelligence design · 13 October 2026. Inspected main `cb7c2cd` and unmerged R2 PR #16 at `a501e6f` (schema 9, `pursuit-1`). **`progression-1` below is the selected next design, not delivered runtime behaviour.** It refines ranking and relationships while retaining comprehensive scope, existing working code and validation history. R1.5b observation and complex route totals remain future work.
+Endgame intelligence design · 13 October 2026. Inspected main `cb7c2cd` and unmerged R2 PR #16 at `a501e6f`, then its concurrent review correction `32cb24a` (schema 9, `pursuit-1`). **`progression-1` below is the selected next design, not delivered runtime behaviour.** It refines ranking and relationships while retaining comprehensive scope, existing working code and validation history. R1.5b observation and complex route totals remain future work.
 
 ## A. Stable product vision
 
@@ -43,7 +43,7 @@ See [validation/R1.md](validation/R1.md) for formula boundaries, fixtures, repro
 
 ## Current integration and historical PR stack
 
-Current research snapshot: main is `cb7c2cd`, with #12/#13/#15 integrated. R2 PR #16 (`a501e6f`) and earlier ranged PR #14 (`f821c625`) are open. This documentation change is based on #16 and changes no implementation. Recheck remote state before implementation or integration. No merge is authorised by this research assignment.
+Current research snapshot: main is `cb7c2cd`, with #12/#13/#15 integrated. R2 PR #16 advanced from `a501e6f` to `32cb24a` during this assignment; its package/necklace corrections and 195-test historical result are preserved. Earlier ranged PR #14 (`f821c625`) remains separate. This documentation change targets #16 and changes no implementation. Recheck remote state before implementation or integration. No merge is authorised by this research assignment.
 
 <details>
 <summary>Earlier integration and pre-integration snapshots (preserved history)</summary>

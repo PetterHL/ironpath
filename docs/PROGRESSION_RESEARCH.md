@@ -2,6 +2,8 @@
 
 13 October 2026. Documentation-only review of **R2 PR #16, `a501e6fa3c022b78d3b34d8d5414059c704ae96f`**, based on main `cb7c2cd874e8225581e85566f652236ee7e6feb3`. PR #14 (`f821c625`) is a separate earlier ranged implementation; it is not assumed integrated or interchangeable. No application code, runtime data or PR merges are part of this assignment. Historical R2 test results were inspected, not rerun. Live-client and player-usefulness checks remain pending.
 
+**Concurrent R2 follow-up:** before completing this PR, R2 advanced to `32cb24a8db7ae807166d1f2d9844224c3be71fd6` (plugin 0.7.1 / knowledge r2-2). Its diff and review evidence were inspected and incorporated without modifying its application changes. It fixes owned ranged-package selection, projectile-aware quiver choice and remaining anguish/rupture requirements. The architecture findings below remain applicable; the newer 195-test result is preserved as externally recorded implementation evidence, not rerun here.
+
 This is an evidence report, **not another backlog**. [DESIGN](DESIGN.md) owns the selected contracts, [CATALOGUE](CATALOGUE.md) owns coverage, and [TASKS](../TASKS.md) alone owns delivery and acceptance.
 
 ## Decision
@@ -25,6 +27,8 @@ Comprehensive coverage means accounting for meaningful equipment, activities, al
 | `ActivityOpportunity`, `activityRewards` | Deduplicated families, shared acquisition, owned/unknown exclusions | Two families automatically create Worth doing; this alone does not establish good activity value. Availability is ANDed across reward assessments, so one reward-specific unknown can contaminate the activity. There is no reusable item → activity role → useful reward explanation. |
 | Typed path nodes and ALL/ANY dependencies | Actual component/access DAGs and cycle checks | `SharedReward.minDelve` still validates only 2–4 and renders Doom-specific wording. Optional preparations need role alternatives without joining the hard acquisition DAG. |
 | Source validation and native Value/Path/Browse | Bundled evidence, no network at runtime, restrained sidebar | Add claim-level dependencies and original strategic evidence with approved URLs. The current allowlist accepts Wiki, specific RuneLite ItemID source and Jagex news, not arbitrary community URLs. Do not weaken it to unrestricted links. |
+
+The later R2 correction improves owned ranged package selection and intermediate-item paths; keep those fixes when implementing the broader role-alternative contract. It does not change the inspected ranking, activity aggregation or relationship schema bottlenecks.
 
 These are design constraints observed in code, not claims that every affected account currently receives bad advice. The R2 report records 186 tests and 1,944 ranged oracle cases; that evidence concerns its delivered scope, not the proposed intelligence layer.
 
@@ -142,7 +146,7 @@ Promote one reviewed relation with a positive case, a strong-owned-alternative c
 
 Keep authoring as bundled JSON plus Java mechanics. Split the large authoring file by family only when useful for diffs; deterministic loading and stable IDs suffice. No database, runtime scraping, AI-generated live rules, general rule language or numerical model per individual item. The [DESIGN specification](DESIGN.md#progression-intelligence-contract-version-progression-1) and R3–R6 in TASKS turn this evidence into implementable work with counterfactual account checks.
 
-Documentation verification: nine documentation/metadata files only; all 30 relationship IDs, 46 source references and 16 planned PI profiles checked; 43 response hashes matched the retrieved local source pages; relative file links resolve; `git diff --check` passes. TASKS's historical snapshot section is byte-for-byte unchanged against the inspected R2 head. Application code, runtime catalogue and build/test files are unchanged. No application or live-client tests were run for this documentation assignment.
+Documentation verification: nine documentation/metadata files only; all 30 relationship IDs, 46 source references and 16 planned PI profiles checked; 43 response hashes matched the retrieved local source pages; relative file links resolve; `git diff --check` passes. TASKS's historical snapshot section is byte-for-byte unchanged against both inspected R2 heads. Application code, runtime catalogue and build/test files are unchanged. No application or live-client tests were run for this documentation assignment.
 
 ## Sources
 

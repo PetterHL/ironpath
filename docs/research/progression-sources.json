@@ -700,5 +700,7 @@
       "retrieval": "web-reader-full-page"
     }
   ],
-  "hashScope": "sha256 covers retrieved HTML response bytes where available; dynamic page markup may change. Wiki revision pins identify content; hashes are audit metadata, not a runtime dependency."
+  "hashScope": "sha256 covers retrieved HTML response bytes where available; dynamic page markup may change. Wiki revision pins identify content; hashes are audit metadata, not a runtime dependency.",
+  "reviewedFollowupCommit": "32cb24a8db7ae807166d1f2d9844224c3be71fd6",
+  "followupScope": "Concurrent R2 review corrections inspected and preserved; research mechanics sources unchanged; no application tests rerun."
 }
