@@ -1,6 +1,6 @@
 # IronPath product and architecture
 
-Product refinement · 13 October 2026 · proposed R1.5 specification, on the implemented but unmerged R1 baseline. Supersedes the reset’s ranking and UI choices; preserves its comprehensive scope.
+Product refinement · 13 October 2026 · proposed R1.5 specification, on the R1 baseline now integrated into `main`. Supersedes the reset’s ranking and UI choices; preserves its comprehensive scope.
 
 ## A. Stable product vision
 
@@ -36,7 +36,11 @@ Equipment slots and quantities extend immutable snapshots without changing persi
 
 See [validation/R1.md](validation/R1.md) for formula boundaries, fixtures, reproducible oracle commands, native-width evidence and pending client checks. The full product ambition remains unchanged; the refinement below inserts R1.5 before/alongside R2. This implementation starts at PR #8's exact head; it does not alter the open stack.
 
-## Verified implementation and PR stack
+## Current integration and historical PR stack
+
+On 13 October 2026, the user authorised integration and cleanup. PRs #5–#10 were merged into main in order with merge commits, preserving the complete earlier ancestry. PR #1 was automatically marked merged; #2–#4 were closed as superseded after ancestry verification. The tested implementation is now on main; R1.5 remains proposed. Future delivery starts from updated main. See [integration validation](validation/main-integration-20261013.md).
+
+The following snapshot records the **pre-integration** inspection and original refinement-PR base, not current branch instructions.
 
 Rechecked GitHub open-PR metadata and local Git ancestry on **13 October 2026**. All nine PRs are open and unmerged. Main remains `c717927cdf4e3fd8128d28b96e05690965f5a908`.
 

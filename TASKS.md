@@ -10,7 +10,7 @@ An established Ironman opens IronPath without selecting a goal and discovers wor
 
 Required: partial account observation; strong-alternative recognition; contextual ranking; full reference loadouts and local combat families; multi-step acquisition; native value-first UI; maintained sources and model coverage. [CATALOGUE](docs/CATALOGUE.md) inventories all relevant families, including current release candidates and future watchlist entries. D/R/V/Q are evidence/support states, not competing backlogs. [UX](docs/UX.md) gives concrete screens.
 
-**Current implemented baseline (unmerged):** PR #9 `r1-full-loadout-magic` at `309afb27ba7a6e0aee43d6c078b1234beff34c55`, plugin 0.5.0 / knowledge r1-1 / schema 6. R1's implementation report below records 124 tests and 540 new plus 234 retained comparison cases; these were not rerun for this docs-only refinement. Actual client checks remain pending. The new ranking, effort estimates and UI are proposed. DESIGN records the verified #5 → #6 → #7 → #8 → #9 stack. No existing PR was merged or changed.
+**Current implemented baseline:** `main`, following the authorised integration of PRs #5–#10 on 13 October 2026. R1 remains plugin 0.5.0 / knowledge r1-1 / schema 6; R1.5a ranking, effort estimates and UI remain proposed. A fresh local `test build --no-daemon` passed all 124 tests with zero failures/errors/skips before merge; the integrated tree matched the tested head exactly. All #1–#4 commits are ancestors of main. See [integration validation](docs/validation/main-integration-20261013.md). Actual-client checks remain pending; historical reports below retain their original context.
 
 ## C. Incremental implementation
 
@@ -170,7 +170,7 @@ Also exercise: equal supported gains with disjoint versus overlapping effort ran
 
 ## Next implementation
 
-**Implement R1.5a from this documentation branch atop R1.** Read DESIGN's `pursuit-1`, RESEARCH's A0–A2 and UX's wireframes, then build the small vertical slice specified above. R2 can research/model ranged mechanics concurrently; adopt the new contracts for its visible delivery. R1.5b local pacing, complex R5 distributions, full R6 filters and R8 broad usability evidence remain deferred. No new planning reset, catalogue ceiling or required-goal workflow.
+**Implement R1.5a on a new short-lived branch from updated `main`, with a focused PR targeting `main`.** Read DESIGN's `pursuit-1`, RESEARCH's A0–A2 and UX's wireframes, then build the small vertical slice specified above. R2 can research/model ranged mechanics concurrently; adopt the new contracts for its visible delivery. R1.5b local pacing, complex R5 distributions, full R6 filters and R8 broad usability evidence remain deferred. No new planning reset, catalogue ceiling or required-goal workflow.
 
 Documentation refinement validation: inspect the final PR's documentation-only diff, source links, mathematical examples, wireframe rendering and preservation of historical TASKS/RESEARCH sections. No new application-test or actual-client result is claimed by this assignment.
 
