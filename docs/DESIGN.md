@@ -2,6 +2,11 @@
 
 Product refinement · 13 October 2026 · proposed R1.5 specification, on the R1 baseline now integrated into `main`. Supersedes the reset’s ranking and UI choices; preserves its comprehensive scope.
 
+R1.5a now implements this contract for review on main's R1 baseline, with schema 7
+and `pursuit-1`. See [implementation, validation and remaining client checks](validation/R1.5a.md).
+The specification's original proposed labels describe its planning snapshot;
+R1.5b observation and complex route totals remain future work.
+
 ## A. Stable product vision
 
 **IronPath — Your path to endgame PvM** is a free, open-source, local RuneLite plugin for established Ironman accounts. Opening it should answer: **What upgrades are worthwhile for my account, why, and how do I obtain them?** No goal, setup wizard, account registration or paid API is required.

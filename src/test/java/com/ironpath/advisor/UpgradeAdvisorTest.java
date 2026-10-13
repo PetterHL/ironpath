@@ -156,8 +156,8 @@ public class UpgradeAdvisorTest
 		}
 		Advisor aliases=new Advisor(KnowledgeCatalog.read(new Gson(),new StringReader(doc.toString())));
 		assertEquals(original,aliases.upgrades(a,Preferences.EMPTY).stream().map(v->v.upgrade.id).collect(Collectors.toList()));
-		assertEquals("tumekens-shadow",ids(a,Preferences.EMPTY.goal("ranged-options")).get(0));
-		assertEquals("tumekens-shadow",ids(a,Preferences.EMPTY.goal("magic-upgrade")).get(0));
+		assertEquals(advisor.upgrades(a,Preferences.EMPTY).stream().filter(v->v.upgrade.id.equals("tumekens-shadow")).findFirst().orElseThrow().pursuit.category,advisor.upgrades(a,Preferences.EMPTY.goal("ranged-options")).stream().filter(v->v.upgrade.id.equals("tumekens-shadow")).findFirst().orElseThrow().pursuit.category);
+		assertEquals(advisor.upgrades(a,Preferences.EMPTY).stream().filter(v->v.upgrade.id.equals("tumekens-shadow")).findFirst().orElseThrow().pursuit.category,advisor.upgrades(a,Preferences.EMPTY.goal("magic-upgrade")).stream().filter(v->v.upgrade.id.equals("tumekens-shadow")).findFirst().orElseThrow().pursuit.category);
 		assertFalse(ids(account(Set.of(20997),99,99),Preferences.EMPTY.goal("toa-entry")).contains("zaryte-crossbow"));
 	}
 

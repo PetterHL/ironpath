@@ -2,7 +2,9 @@
 
 **Your path to endgame PvM**
 
-R1 development build · 13 October 2026 · plugin 0.5.0 · knowledge r1-1
+R1.5a development build · 13 October 2026 · plugin 0.6.0 · knowledge r1.5a-1 · schema 7
+
+**This branch implements R1.5a for review on the integrated R1 baseline.** Effort-aware pursuit categories, deduplicated shared activities, compact native rows and responsive Browse retain all R1 comparisons/routes. The next-zenyte-shard estimate is conditional: mean/median/P90 in future eligible kills, optional session-only pace, and no completed-bracelet ETA. See [R1.5a validation and pending client checks](docs/validation/R1.5a.md).
 
 **Delivered: realistic powered-magic references and first endgame value.** Shadow,
 Ancestral hat/top/bottom, tormented bracelet and Magus ring join occult, swamp,
@@ -25,13 +27,13 @@ The intended product is a free, open-source RuneLite sidebar that automatically 
 
 IronPath is intended to become a comprehensive endgame PvM upgrade advisor, including BiS, meaningful specialist sidegrades, permanent rewards and the progression bridges needed to reach them. **R1 is an implementation increment, not the product boundary.** There is no catalogue ceiling or requirement to select a goal.
 
-R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. The next implementation is **R1.5a: pursuit priority and visual foundation**; R2–R8 then extend combat families, coverage, maintenance and real-client evidence. Ranged model work can overlap this increment. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
+R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. This branch delivers **R1.5a: pursuit priority and visual foundation** for review; R1.5b and R2–R8 extend effort models, combat families, coverage, maintenance and real-client evidence. Ranged model work can overlap this increment. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
 
 Recommendations must explain what changes relative to owned alternatives, where it matters, when to defer, and how to obtain the upgrade. Strong alternatives and partial observations change the advice. An unread bank never proves an item is missing. Long-term upgrades remain visible alongside nearer opportunities.
 
 The architecture stays one local Java RuneLite plugin with bundled reviewed knowledge and native Swing UI. The main investment is accurate knowledge, reusable combat mechanics and useful presentation. We are not adding a backend, subscriptions or per-user AI. See the independent feasibility assessment and trade-offs in the design.
 
-**Proposed refinement, not yet implemented:** distinguish upgrades worth owning from active pursuits and valuable shared activities. R1.5a adds transparent effort/long-tail categories, a first conditional next-zenyte-shard estimate, compact pursuit rows and a responsive item grid. Hours require an explicit pace and scope; gear/DPS does not predict raid times. Local performance observation and complex raid/component models follow later. See [revised wireframes](docs/UX.md) and [next assignment](TASKS.md#next-implementation). Comprehensive coverage, optional goals and all existing R1 work remain intact.
+**Pursuit priority:** upgrades worth owning, active pursuits and shared activities are separate. Readiness and supported remaining burden precede strength within an immediate-pursuit group. Shadow/Ancestral retain long-tail value; unknown ownership/preparation stays conditional. Owned components remove their own drop stages. Shared CoX benefits count Ancestral as one family and count prayer rewards only with confirmed missing unlock/scroll facts. No drop probabilities or DPS gains are added across rewards. See [implementation evidence](docs/validation/R1.5a.md) and [ranking contract](docs/DESIGN.md#deterministic-selection-procedure-version-pursuit-1-proposed).
 
 ## Read and work
 
@@ -56,9 +58,16 @@ Reuse the existing T1–P3 RuneLite implementation and preserve its licence noti
 
 ## Start here
 
-The current development baseline is `main`: PRs #5–#10 were integrated on 13 October 2026 with merge commits, preserving all earlier work. R1 is implemented; R1.5a is the next assignment. Earlier stacked PRs are historical records. Start each new delivery from updated main and open a focused PR back to main. See [integration validation](docs/validation/main-integration-20261013.md).
+The current development baseline is `main`: PRs #5–#10 were integrated on 13 October 2026 with merge commits, preserving all earlier work. R1 is integrated; this branch implements R1.5a for review, with integration and client checks pending. Earlier stacked PRs are historical records. Start each new delivery from updated main and open a focused PR back to main. See [integration validation](docs/validation/main-integration-20261013.md).
 
-This product-reset branch contains **documentation and wireframes only**, targeting #7's branch to keep review focused. It changes neither plugin behaviour nor the recorded test results. The next implementation assignment is **R1: realistic full-loadout magic and first endgame value**, described in TASKS.md. Old P4b counts and sequential planning/review gates are superseded. No existing PR is merged, closed or overwritten.
+To test this R1.5a PR before integration, close the client and check out its branch:
+
+```sh
+git fetch origin
+git switch r1.5a-pursuit-visual-foundation
+```
+
+Main remains the shared baseline until the PR is merged. Historical planning branches and validation reports describe their original deliveries.
 
 The existing official RuneLite template, Gradle 8.10, Java release 11 and notices
 are retained; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). RuneLite resolves
@@ -113,20 +122,22 @@ Do not upload or commit that file.
 
 On a **standard Ironman in an ordinary permanent members world**, open Ironpath
 and allow two server ticks for initial observations/preferences. Open your bank,
-then open a card with **Open details**. Pinned source links are under
+then activate a card with its title/chevron, mouse or keyboard. **Browse** retains all relevant reviewed outcomes. Pinned source links are under
 **Reviewed sources**. Advice is planning, not a complete loadout or a promise of
 successful kills. Leave account cases you cannot exercise pending.
 
-## Use the R1 build
+## Use the R1.5a build
 
-1. Open with **no goal** and observe the bank. The three primary cards balance
-   supported value with varied outcomes; **More supported upgrades** keeps every
-   relevant reviewed outcome inspectable. Ownership uncertainty is conditional
-   advice, never a claim that unread storage is empty.
-2. Open a card. **Value** shows before/after gear, max hit, hit chance and
-   theoretical DPS where individually supported. **Path** shows actual access,
-   preparation, components, ALL/ANY assembly branches and equip conditions.
-   **Back to upgrades** restores the overview scroll position.
+1. Open with **no goal** and observe the bank. The overview offers up to two
+   **Worth pursuing** rows, one justified **Worth doing** activity, a long-term
+   preview and a consequential check. Empty groups stay empty. **Browse** has
+   All / Pursue / Long-term / Check and retains specialist/deferred choices.
+   Two columns fall back to one when width, names or fonts need more space.
+2. Activate a card by mouse, Enter or Space. **Value** shows supported metrics
+   once, with priority reasons and a relevant alternative. **Path** leads with
+   actual remaining work, separate equip checks and expandable ALL/ANY recipe
+   branches. **Back to upgrades** retains Browse category, selection and scroll.
+   Shared activity detail names useful families, exclusions and uncertain rewards.
 3. The complete reference prefers supported observed owned pieces and charged
    staff packages. A reviewed mage body at 85+ Magic selects ordinary Graardor as
    an explicit high-defence reference; smaller templates start at Dharok.
@@ -150,7 +161,7 @@ successful kills. Leave account cases you cannot exercise pending.
    stack is never added to its later inventory copy. Unread/insufficient counts
    remain unknown. Owned intermediate components bypass their upstream branch;
    boosts, preparation and current supplies still need checking.
-7. **Already owned**, **Confirm not owned** and **Clear confirmation** change only
+7. **Already own this? / Correct ownership** expands focused **Already owned**, **Confirm not owned** and **Clear confirmation** change only
    the named planning fact. Positive possession wins conflicts; readable unlocks
    override manual fallbacks. **Account and preferences** retains optional goals,
    skips and local saves. A skip excludes acquisition without completing it.
@@ -158,9 +169,18 @@ successful kills. Leave account cases you cannot exercise pending.
    identity/lifecycle changes clear it. Wait for **Preferences saved locally**
    before restarting. All real-client checks remain pending.
 
+The tormented Path estimates the **next zenyte shard only** when that stage
+remains. Default: mean 300, median 208, 90% by 690 eligible demonic gorilla kills;
+10% take longer. **Set pace (optional)** accepts a positive kills/hour number or
+range such as `30-50`, with explicit cycle overhead. Hours are conditional on that
+scenario, which remains in memory and clears on lifecycle/account/profile changes.
+**Clear pace** resets it. An owned shard/gem/bracelet removes the drop estimate.
+Quest/access, onyx, skills, assembly and supplies are excluded; no full-item time,
+RNG progress or dry-streak adjustment is implied. Raids/Nex/DT2/challenges retain
+reviewed qualitative routes and explicit time-model gaps.
+
 The retained activity evaluator still needs targeted absence confirmations for
-missing-item grinds. Its ranking now puts contextual benefit before optional goal
-relevance and remaining effort; it does not count goal aliases. A goal retains its
+missing-item grinds. This secondary legacy list retains its qualitative activity ordering; the primary R1.5a item assessments use `pursuit-1` categories and effort before strength. Neither counts goal aliases. A goal retains its
 own route/next-step view even when a higher-value activity leads the secondary
 list. Owned-parts swamp assembly remains a quick action and an inspectable route
 of the grouped swamp outcome. Treads' Cerberus additions are optional, with

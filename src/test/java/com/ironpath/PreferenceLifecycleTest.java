@@ -173,6 +173,27 @@ public class PreferenceLifecycleTest
 		assertTrue(plugin.session.preferences().confirmations.isEmpty());
 	}
 
+	@Test public void actualPaceControlsValidateRangesStayUnsavedAndRejectQueuedCrossCharacterInput() throws Exception
+	{
+		KnowledgeCatalog catalog=KnowledgeCatalog.load(new Gson());
+		files.put(LocalPreferences.key(A),com.ironpath.advisor.R15Fixtures.absent(catalog));
+		ItemContainer inventory=mock(ItemContainer.class),equipment=mock(ItemContainer.class);
+		when(inventory.getItems()).thenReturn(new Item[]{new Item(11907,1)});when(equipment.getItems()).thenReturn(new Item[0]);
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(inventory);when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
+		login();
+		SwingUtilities.invokeAndWait(()->{
+			button("Browse").doClick();find(panel,JButton.class,b->"open-upgrade-tormented-bracelet".equals(b.getName())).doClick();button("Path").doClick();
+			javax.swing.JTextField input=find(panel,javax.swing.JTextField.class,c->"pace-input".equals(c.getName()));assertNotNull(input);
+			input.setText("30-50");button("Apply pace").doClick();
+		});callbacks();assertEquals(30,plugin.session.pace().minimumPerHour,0);assertEquals(50,plugin.session.pace().maximumPerHour,0);
+		assertTrue(files.get(LocalPreferences.key(A)).confirmations.keySet().stream().noneMatch(k->k.contains("pace")));
+		SwingUtilities.invokeAndWait(()->{find(panel,javax.swing.JTextField.class,c->"pace-input".equals(c.getName())).setText("NaN");button("Apply pace").doClick();});callbacks();
+		assertEquals(30,plugin.session.pace().minimumPerHour,0);
+		SwingUtilities.invokeAndWait(()->button("Clear pace").doClick());callbacks();assertNull(plugin.session.pace());
+		SwingUtilities.invokeAndWait(()->{find(panel,javax.swing.JTextField.class,c->"pace-input".equals(c.getName())).setText("40");button("Apply pace").doClick();});
+		characterB();plugin.onProfileChanged(new ProfileChanged());tick();tick();load();assertNull(plugin.session.pace());
+	}
+
 	@Test public void actualReferenceControlsRecalculateAndDelayedActionsCannotCrossCharacters() throws Exception
 	{
 		ItemContainer inventory = mock(ItemContainer.class), equipment = mock(ItemContainer.class);

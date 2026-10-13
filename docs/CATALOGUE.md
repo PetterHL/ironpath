@@ -10,7 +10,7 @@ Keep D/R/V/Q and the uncapped inventory unchanged: recommendation validation, co
 
 | Representative family | Acquisition classification / shared value | Current evidence boundary for implementation |
 |---|---|---|
-| Tormented / other zenyte allocation | Next-shard fixed RNG, then resources/skills/assembly; one shard cannot fund several jewellery choices | E1 reviewed rate; R1.5a first A1/A2 candidate. Full-item hours unavailable with unknown remaining preparation |
+| Tormented / other zenyte allocation | Next-shard fixed RNG, then resources/skills/assembly; one shard cannot fund several jewellery choices | E1 reviewed rate; R1.5a implements conditional next-shard A1/A2. Full-item hours remain unavailable; see [validation](validation/R1.5a.md) |
 | Swamp trident / magic fang | Multiple rolls per Zulrah kill; other useful rewards only if account-relevant | E2 reviewed table; R1.5b, not exact 1/512 simplification; Shadow ownership changes value |
 | Tbow / Ancestral / prayers and other CoX rewards | Shared activity, points/mode/recipient-dependent RNG; tbow long-tail candidate, not universal active pursuit | August weights verified, personal trial model and pace not validated; A0 until complete audit |
 | Shadow / other ToA outcomes | Shared activity, raid-level/points/recipient-dependent RNG | Historical primary weighting evidence only; current complete estimate unsupported |

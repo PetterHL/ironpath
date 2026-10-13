@@ -34,13 +34,15 @@ public final class KnowledgeCatalog
 	public final List<Decision> decisions;
 	public final List<Upgrade> upgrades;
 	public final ComparisonSpec comparison;
+	public final Map<String, AcquisitionModel> acquisitionModels;
+	public final List<ActivityReward> activityRewards;
 	public final Map<String, Source> sources;
 	final Map<String, List<Gear>> gear;
 	final Map<String, List<Integer>> itemSets;
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 6 || document.decisions == null
+		if (document.schemaVersion != 7 || document.decisions == null
 			|| document.decisions.isEmpty())
 		{
 			throw new IllegalArgumentException("Unsupported or incomplete PvM catalogue");
@@ -309,10 +311,74 @@ public final class KnowledgeCatalog
 				if (!SKILLS.contains(skill) || level < 1 || level > 99) { throw new IllegalArgumentException("Invalid equip requirement"); }
 			}); }
 		}
+		if (document.acquisitions == null || document.activityRewards == null) { throw new IllegalArgumentException("Missing pursuit contracts"); }
+		java.util.Map<String, AcquisitionModel> models = new java.util.LinkedHashMap<>();
+		for (AcquisitionSpec model : document.acquisitions)
+		{
+			if (model == null) { throw new IllegalArgumentException("Missing acquisition model"); }
+			stableId(model.id); stableId(model.version); stableId(model.mode); stableId(model.rewardFamily);
+			if (models.containsKey(model.id) || !activities.containsKey(model.activity) || !ids.contains(model.route)
+				|| model.support == null || model.mechanic == null || model.denominator <= 0 || model.numerator < 0
+				|| model.numerator > model.denominator || model.denominator > 1_000_000_000L
+				|| model.assumptions == null || model.assumptions.isEmpty() || model.exclusions == null || model.exclusions.isEmpty())
+			{ throw new IllegalArgumentException("Invalid acquisition mechanic/scope"); }
+			require(model.recipient); require(model.trialUnit); require(model.reason);
+			if (LocalDate.parse(require(model.reviewed)).isAfter(reviewed)) { throw new IllegalArgumentException("Invalid acquisition review date"); }
+			evidence(model.sources);
+			if (!byId.get(model.route).activity.equals(model.activity) || !byId.get(model.route).sources.containsAll(model.sources)
+				|| upgrades.stream().noneMatch(u -> u.routes.contains(model.route) && u.path.stream().anyMatch(n -> n.id.equals(model.node))))
+			{ throw new IllegalArgumentException("Acquisition is not linked to its path stage"); }
+			for (String source : model.sources) { if (!sources.get(source).acquisitions.contains(model.id)) { throw new IllegalArgumentException("Missing acquisition source dependency"); } }
+			models.put(model.id, new AcquisitionModel(model));
+		}
+		acquisitionModels = Map.copyOf(models);
+		for (Upgrade upgrade : upgrades)
+		{
+			stableId(upgrade.rewardFamily); stableId(upgrade.role);
+			if (upgrade.contexts == null || upgrade.contexts.isEmpty() || new HashSet<>(upgrade.contexts).size() != upgrade.contexts.size())
+			{ throw new IllegalArgumentException("Missing reviewed comparison contexts"); }
+			upgrade.contexts.forEach(KnowledgeCatalog::stableId);
+			if (upgrade.contexts.stream().anyMatch(context -> !targetIds.contains(context)
+				&& !(upgrade.comparison.equals("NONE") && context.equals("reviewed-specialist"))))
+			{ throw new IllegalArgumentException("Unknown reviewed comparison context"); }
+			for (String route : upgrade.routes)
+			{
+				EffortSpec effort=byId.get(route).pursuit;
+				if (effort == null) { throw new IllegalArgumentException("Missing remaining-effort metadata"); }
+				validateEffort(effort.mode, effort.burden, effort.tail, effort.modeId, effort.reason, effort.missingMechanics, effort.allocations);
+				evidence(effort.sources);
+				if (!byId.get(route).sources.containsAll(effort.sources) || effort.variants == null) { throw new IllegalArgumentException("Missing effort evidence"); }
+				for (String source : effort.sources) { if (!sources.get(source).efforts.contains(route)) { throw new IllegalArgumentException("Missing effort source dependency"); } }
+				Decision contract=new Decision(); contract.sources=byId.get(route).sources;
+				for (EffortVariant variant : effort.variants)
+				{
+					if (variant == null) { throw new IllegalArgumentException("Missing remaining-work variant"); }
+					validate(variant.when, contract, 0);
+					validateEffort(variant.mode, variant.burden, variant.tail, effort.modeId, variant.reason, effort.missingMechanics, variant.allocations);
+				}
+			}
+		}
+		Set<String> rewardIds=new HashSet<>();
+		for (ActivityReward reward : document.activityRewards)
+		{
+			if (reward == null) { throw new IllegalArgumentException("Missing shared-activity reward"); }
+			stableId(reward.id); stableId(reward.family); stableId(reward.mode); require(reward.title);
+			if (!rewardIds.add(reward.id) || !activities.containsKey(reward.activity) || reward.benefit == null || !itemIds.contains(reward.itemId))
+			{ throw new IllegalArgumentException("Invalid activity reward"); }
+			evidence(reward.sources); Decision contract=new Decision(); contract.sources=reward.sources;
+			validate(reward.when, contract, 0); validate(reward.ownedWhen, contract, 0);
+			validate(reward.accessWhen, contract, 0); validate(reward.prepWhen, contract, 0);
+			gear.values().stream().flatMap(List::stream).filter(g -> g.id == reward.itemId).forEach(g -> requireItemEvidence(g, contract));
+			for (String source : reward.sources) { if (!sources.get(source).rewards.contains(reward.id)) { throw new IllegalArgumentException("Missing reward source dependency"); } }
+		}
+		activityRewards=List.copyOf(document.activityRewards);
 		for (Source source : sources.values())
 		{
 			if (!itemIds.containsAll(source.items) || !ids.containsAll(source.routes)
-				|| !targetIds.containsAll(source.contexts) || source.models.stream().anyMatch(m -> !m.equals(comparison.modelVersion)))
+				|| !targetIds.containsAll(source.contexts) || source.models.stream().anyMatch(m -> !m.equals(comparison.modelVersion))
+				|| source.acquisitions.stream().anyMatch(id -> !models.containsKey(id) || !models.get(id).sources.contains(source.id))
+				|| source.efforts.stream().anyMatch(id -> !ids.contains(id) || byId.get(id).pursuit == null || !byId.get(id).pursuit.sources.contains(source.id))
+				|| source.rewards.stream().anyMatch(id -> activityRewards.stream().noneMatch(r -> r.id.equals(id) && r.sources.contains(source.id))))
 			{ throw new IllegalArgumentException("Unknown source dependency"); }
 			if (!source.models.isEmpty() && !comparison.sources.contains(source.id)
 				|| source.routes.stream().anyMatch(id -> !byId.get(id).sources.contains(source.id)))
@@ -324,6 +390,13 @@ public final class KnowledgeCatalog
 				{ throw new IllegalArgumentException("Inconsistent source context dependency"); } }
 		}
 
+	}
+
+	private static void validateEffort(PursuitAssessment.Mode mode, PursuitAssessment.Burden burden, PursuitAssessment.Tail tail,
+		String modeId, String reason, String missingMechanics, List<String> allocations)
+	{
+		if (mode == null || burden == null || tail == null || allocations == null) { throw new IllegalArgumentException("Invalid effort support"); }
+		stableId(modeId); require(reason); require(missingMechanics); allocations.forEach(KnowledgeCatalog::stableId);
 	}
 
 	private void evidence(List<String> ids)
@@ -517,6 +590,8 @@ public final class KnowledgeCatalog
 		List<Goal> goals;
 		List<Upgrade> upgrades;
 		ComparisonSpec comparison;
+		List<AcquisitionSpec> acquisitions;
+		List<ActivityReward> activityRewards;
 	}
 
 	public static final class Upgrade
@@ -531,6 +606,8 @@ public final class KnowledgeCatalog
 		public List<SharedReward> shared;
 		public List<ContextBenefit> contextBenefits = List.of();
 		public List<PathNode> path = List.of();
+		public String rewardFamily, role;
+		public List<String> contexts;
 	}
 	public enum DependencyMode { NODE, ALL, ANY }
 	public static final class Dependencies { public DependencyMode mode; public String node; public List<Dependencies> children; }
@@ -540,6 +617,7 @@ public final class KnowledgeCatalog
 		public Integer itemId, quantity;
 		public Condition completeWhen;
 		public Dependencies dependencies;
+		public boolean alternativeOnly;
 	}
 	public static final class Application { public String id, text, label; public Condition when; }
 	public static final class Part { public String label; public Condition when; public boolean optional; public Integer itemId, quantity; }
@@ -582,6 +660,43 @@ public final class KnowledgeCatalog
 		public List<String> requires;
 		public Condition when, completeWhen, accessWhen, prepWhen;
 		public boolean repeatable;
+		public EffortSpec pursuit;
+	}
+
+	public static final class EffortSpec
+	{
+		public PursuitAssessment.Mode mode;
+		public PursuitAssessment.Burden burden;
+		public PursuitAssessment.Tail tail;
+		public String modeId, reason, missingMechanics;
+		public List<String> sources, allocations;
+		public List<EffortVariant> variants;
+	}
+	public static final class EffortVariant
+	{
+		public Condition when;
+		public PursuitAssessment.Mode mode;
+		public PursuitAssessment.Burden burden;
+		public PursuitAssessment.Tail tail;
+		public String reason;
+		public List<String> allocations;
+		public boolean bypassesAcquisition;
+	}
+	public static final class AcquisitionSpec
+	{
+		public String id, activity, mode, rewardFamily, route, node, recipient, trialUnit, version, reason, reviewed;
+		public AcquisitionModel.Support support;
+		public AcquisitionModel.Mechanic mechanic;
+		public long numerator, denominator;
+		public List<String> assumptions, exclusions, sources;
+	}
+	public static final class ActivityReward
+	{
+		public String id, activity, mode, family, title;
+		public int itemId;
+		public Benefit benefit;
+		public Condition when, ownedWhen, accessWhen, prepWhen;
+		public List<String> sources;
 	}
 
 	public static final class Goal
@@ -613,6 +728,7 @@ public final class KnowledgeCatalog
 		public List<String> decisions;
 		public List<Integer> items = List.of();
 		public List<String> models = List.of(), routes = List.of(), contexts = List.of();
+		public List<String> acquisitions = List.of(), efforts = List.of(), rewards = List.of();
 	}
 
 	static final class Gear

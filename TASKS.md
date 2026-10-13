@@ -10,16 +10,16 @@ An established Ironman opens IronPath without selecting a goal and discovers wor
 
 Required: partial account observation; strong-alternative recognition; contextual ranking; full reference loadouts and local combat families; multi-step acquisition; native value-first UI; maintained sources and model coverage. [CATALOGUE](docs/CATALOGUE.md) inventories all relevant families, including current release candidates and future watchlist entries. D/R/V/Q are evidence/support states, not competing backlogs. [UX](docs/UX.md) gives concrete screens.
 
-**Current implemented baseline:** `main`, following the authorised integration of PRs #5–#10 on 13 October 2026. R1 remains plugin 0.5.0 / knowledge r1-1 / schema 6; R1.5a ranking, effort estimates and UI remain proposed. A fresh local `test build --no-daemon` passed all 124 tests with zero failures/errors/skips before merge; the integrated tree matched the tested head exactly. All #1–#4 commits are ancestors of main. See [integration validation](docs/validation/main-integration-20261013.md). Actual-client checks remain pending; historical reports below retain their original context.
+**Current implemented baseline:** `main`, following the authorised integration of PRs #5–#10 on 13 October 2026. R1 remains plugin 0.5.0 / knowledge r1-1 / schema 6; R1.5a ranking, effort estimates and UI are implemented on this review branch; integration and actual-client acceptance remain pending. A fresh local `test build --no-daemon` passed all 124 tests with zero failures/errors/skips before merge; the integrated tree matched the tested head exactly. All #1–#4 commits are ancestors of main. See [integration validation](docs/validation/main-integration-20261013.md). Actual-client checks remain pending; historical reports below retain their original context.
 
 ## C. Incremental implementation
 
-Each assignment produces useful advice, reviewed knowledge, UI evidence and meaningful validation in the same PR. The next assignment is R1.5a implementation, not another architecture/planning phase. Source review and ordinary PR review are part of implementation, not serial approval gates between every small slice. A contributor may split an assignment into reviewable PRs without reducing its acceptance criteria or redefining the destination.
+Each assignment produces useful advice, reviewed knowledge, UI evidence and meaningful validation in the same PR. R1.5a implementation is delivered for review below, with actual-client checks pending. Source review and ordinary PR review are part of implementation, not serial approval gates between every small slice. A contributor may split an assignment into reviewable PRs without reducing its acceptance criteria or redefining the destination.
 
 | Milestone | Dependencies | Demonstrable result |
 |---|---|---|
 | R1 — Realistic magic and first endgame value | P4a + this reset | Full-loadout magic; Shadow/Ancestral early; numerical value influences advice; functional value/path views |
-| R1.5a — Pursuit priority and visual foundation | R1; next implementation | Explainable categories, shared activities, native compact cards and first conditional next-shard estimate |
+| R1.5a — Pursuit priority and visual foundation | R1; implemented for review | Explainable categories, shared activities, native compact cards and first conditional next-shard estimate |
 | R1.5b — Effort expansion and first observation adapter | R1.5a; alongside R2, not its release gate | Multiple-roll estimates and one validated session-pace adapter |
 | R2 — Ranged systems and major alternatives | R1 shared contracts + R1.5a presentation/ranking contract | Bowfa, tbow and other ranged packages compared correctly; meaningful post-Bowfa advice |
 | R3 — Melee systems and major alternatives | R1 shared contracts; can overlap R2 | Fang, Scythe, Soulreaper and armour/specialist trade-offs with checked family models |
@@ -59,7 +59,7 @@ Slot and container-count observations retain scope/time, stay in memory and clea
 
 **Open boundaries:** no ToA phase/raid/path/party scaling, one-handed Confliction history, Brimstone accuracy proc, elemental/ancient spells, encounter times or trip model. ToA refuses numbers rather than supplying a default raid level; Confliction/Brimstone preserve supported max hit with accuracy/DPS gaps. Sang healing and Lightbearer utility remain qualitative. Native item sprites, actual client 100–200% scaling, bank refresh, player usefulness and all historical live checks remain **pending**. Screenshots use synthetic inputs and headless Swing; they do not establish game-client correctness or usefulness. R1.5 and R2–R8 remain open; no comprehensive product or Hub release is claimed.
 
-### R1.5a — Pursuit priority and visual foundation (NEXT; not implemented)
+### R1.5a — Pursuit priority and visual foundation (implemented for review; actual-client checks pending)
 
 **Smallest useful increment:** reclassify R1's existing supported outcomes into defensible pursuits/activities/long-term/conditional choices and present them compactly, with an A1/A2 estimate for the next zenyte shard on the tormented route. Retain full-loadout comparisons and all existing routes. No new combat family, universal time simulator, mandatory goal, telemetry or account history store. This is one useful implementation milestone; internal commits may separate pure assessment and UI without creating another planning phase.
 
@@ -83,6 +83,41 @@ Acceptance criteria (all are meaningful behaviour, not getter/schema-shape tests
 - Actual RuneLite check: 100/125/150/200% client/OS scaling matrix, native sprites and async load, long-name wrapping, keyboard focus, detail/back, profile switch. Have a player identify a worthwhile pursuit, explain why Shadow can remain long-term, and find the next route step without diagnostics. Record findings and fixes. If unavailable, deliver implementation for review with this row **pending**, not a claimed polished-client pass; do not block unrelated R2 research/model work.
 
 **Exit:** a reviewer can see better priorities and a usable compact overview on the existing magic slice, explain the estimate's scope, and implement ranged outcomes against stable contracts. Do not expand R1.5a into learning curves, complete raid reward distributions, complex route totals or full personal-performance tracking.
+
+### R1.5a implementation evidence — 13 October 2026
+
+Short-lived branch `r1.5a-pursuit-visual-foundation` starts at integrated main
+`f495706`. Plugin **0.6.0**, knowledge **r1.5a-1**, schema **7**; ranking
+**pursuit-1**, acquisition **zenyte-fixed-1**. R1's powered-magic-2 formulas and
+all existing outcome/route IDs remain intact. Preference schema 2 is unchanged;
+existing stable confirmations/skips/goals continue to load. Two explicit scroll
+ownership keys extend the existing contract, with no bank/reference/pace persistence.
+
+Implemented immutable acquisition/pace/estimate/pursuit/activity/presentation
+contracts; remaining DAG evaluation with owned-intermediate bypass and exclusive
+resource choices; category admission, conservative dominance, stable context
+buckets, effort-before-strength ordering and deduplicated activity families.
+CoX prayer benefits require confirmed missing unlock and scroll ownership; unknown
+unlocks never become votes. A single ordinary reward is not labelled long-term
+merely because it has no shared reward. Owned horn excludes fresh horn work;
+quantities/assembly remain separate. Known-invalid E1 support withdraws its
+odds/hours and dependent pursuit urgency while preserving value/path evidence.
+
+Native compact pursuit rows, representative activity sprites, adaptive Browse,
+All/Pursue/Long-term/Check, Value/Path and one consequential prompt are delivered.
+Pacing accepts an optional positive number/range, resets in memory, and retains
+existing identity/revision guards. No new combat family, raid rate model, observation
+adapter, runtime service or publication is included.
+
+Automated totals and the exact build, six synthetic account comparisons,
+source/schema contract, before/after native component captures and limitations are
+in [R1.5a validation](docs/validation/R1.5a.md). The full normal suite retains
+R1 numeric/ownership/lifecycle checks; no new external oracle corpus was needed.
+Headless captures use native Swing with fallback sprite wells; they do not prove
+real RuneLite image loading, DPI/scaling or player usefulness. **The actual-client
+100/125/150/200% and player-usefulness acceptance row remains pending**, with the
+focused PC checklist in that report. All earlier pending real-client checks and
+historical TASKS/RESEARCH records are preserved.
 
 ### R1.5b — Effort expansion and local pacing (alongside R2; not implemented)
 
@@ -172,7 +207,7 @@ Also exercise: equal supported gains with disjoint versus overlapping effort ran
 
 **Implement R1.5a on a new short-lived branch from updated `main`, with a focused PR targeting `main`.** Read DESIGN's `pursuit-1`, RESEARCH's A0–A2 and UX's wireframes, then build the small vertical slice specified above. R2 can research/model ranged mechanics concurrently; adopt the new contracts for its visible delivery. R1.5b local pacing, complex R5 distributions, full R6 filters and R8 broad usability evidence remain deferred. No new planning reset, catalogue ceiling or required-goal workflow.
 
-Documentation refinement validation: inspect the final PR's documentation-only diff, source links, mathematical examples, wireframe rendering and preservation of historical TASKS/RESEARCH sections. No new application-test or actual-client result is claimed by this assignment.
+The original documentation refinement had no new application-test or actual-client result. R1.5a implementation/build/component evidence is recorded above; actual-client validation remains pending.
 
 ## Historical task snapshots and results
 

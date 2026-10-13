@@ -2,6 +2,11 @@
 
 13 October 2026 · **proposed R1.5 design, not implemented or live-client validated**. Keep native Swing/PluginPanel. [Earlier wireframes and R1 evidence](UX-20261012.md) remain historical references; [TASKS](../TASKS.md) is the sole delivery backlog.
 
+[R1.5a implementation evidence](validation/R1.5a.md) now includes native component
+captures of these surfaces, adaptive font/width checks and guarded controls.
+The wireframes below remain design artifacts; actual RuneLite sprites/scaling and
+player-usefulness checks remain pending.
+
 ![Proposed hybrid overview, Browse, Value and Path at native panel width](images/r15/effort-wireframes.png)
 
 [Editable SVG](images/r15/effort-wireframes.svg). Four independent synthetic states, each a 225-logical-pixel content panel. The labelled sprite wells are placeholders for native RuneLite sprites, not imported/generated OSRS artwork. The next-shard numbers are the explicitly illustrative 40-kills/hour scenario in RESEARCH; no real player pace is implied. The Value example uses R1's recorded synthetic tormented comparison, max hit 33→35 and DPS 2.32→2.51 on ordinary Graardor; it is not universal item value. Prototype text/category combinations illustrate the proposed decisions, not results of a new ranker run.
