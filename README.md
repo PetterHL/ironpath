@@ -2,7 +2,9 @@
 
 **Your path to endgame PvM**
 
-EP1 account-efficient progression · 14 October 2026 · plugin 0.10.0 · knowledge ep1-1 · schema 12
+UX2 visual advisor + EP1 progression · 14 October 2026 · plugin 0.11.0 · knowledge ep1-1 · schema 12
+
+**UX2 implementation for review:** whole native cards open details by mouse, Enter or Space. They show the supported gain or reviewed specialist property, the actual comparison baseline and one useful status. Value presents compact before/after changes and one account-specific priority reason; Path leads with source, remaining work and the next step. Calculation/estimate evidence stays secondary. Account presents levels, recorded gear/unlocks and reversible corrections, with a separate Diagnostics screen. EP1 queue, search/facets/owned-use, Back/scroll and identity guards are retained. [225px component captures, validation and pending PC checks](docs/validation/UX2.md). This is stacked on [EP1 #25](https://github.com/PetterHL/ironpath/pull/25); neither PR is merged by this work.
 
 **R3b first increment:** ordinary melee now compares complete supported owned one-/two-handed packages, actual stab/slash/crush styles, prayer/full-super-potion assumptions, max hit, hit chance and theoretical DPS. Abyssal tentacle has a Value/Path outcome with owned-component bypasses and explicit whip consumption. Neutral, ordinary Dharok and Graardor are reviewed contexts. Observed Fang/Scythe/Soulreaper/lance competitors keep the DPS-superiority claim unavailable while unaffected reference metrics remain visible. [Support, validation and pending client checks](docs/validation/R3b-ordinary-melee.md). Task/Salve, demon/dragon multipliers, endgame families, broader armour/treads, specials and time/trip metrics remain open R3b/R4 work.
 
@@ -12,7 +14,7 @@ EP1 account-efficient progression · 14 October 2026 · plugin 0.10.0 · knowled
 
 **Client test corrections:** all crystal armour colours (including black Iorwerth and the permanent-world Deadman cosmetic) count as owned, with active/inactive bonuses kept separate. Blazing is recognised as cosmetic Toxic, and all eight treads forms have ranged stats. Lightbearer now contributes its reviewed zero ordinary ranged bonuses instead of blocking comparison. Specialist roles recognise the supported ranged weapons, including Toxic/Blazing alone. Rosewood acquisition advice is withdrawn from every view; its existing owned-item numbers remain supported, while Doom special use awaits review. See the [first correction](docs/validation/R3a-client-variants.md) and [Lightbearer/Specialist follow-up](docs/validation/R3a-lightbearer.md).
 
-**Main includes R2 ranged packages, R3a relationship advice and the native card-first homepage.** Personal importance is independent of acquisition status and effort. Anguish retains its core ranged-neck role despite a small neutral breakpoint; Zaryte keeps conditional burst value; Venator adds reviewed multi-target convenience and a five-shard route. Adequate owned switches make Venator optional preparation, and reward-specific Doom checks no longer block independently eligible rewards. Cards show account value, labelled numbers/gaps and direct Value/Path actions. See [R3a evidence and pending client checks](docs/validation/R3a.md).
+**Main includes R2 ranged packages, R3a relationship advice and the native card-first homepage.** Personal importance is independent of acquisition status and effort. Anguish retains its core ranged-neck role despite a small neutral breakpoint; Zaryte keeps conditional burst value; Venator adds reviewed multi-target convenience and a five-shard route. Adequate owned switches make Venator optional preparation, and reward-specific Doom checks no longer block independently eligible rewards. UX2 cards show the supported result and baseline; Value/Path are inside details. See [R3a evidence and pending client checks](docs/validation/R3a.md).
 
 The combined integration preserves PRs #16–#20, UX completion #21, the ordinary-melee R3b increment and experimental KI1 #22 with their original histories. [Combined evidence and remaining client checks](docs/validation/ux-melee-ki1-integration.md). The superseded R2-model PR #14 is closed and preserved as the `r2-ranged-models` tag. Old branch names now identify historical snapshot tags; use main for current development. [Integration and cleanup record](docs/validation/main-integration-20261014.md).
 
@@ -41,13 +43,13 @@ The intended product is a free, open-source RuneLite sidebar that automatically 
 
 **EP1 implemented for review:** every active outcome, acquisition route, retained broad decision and shared activity reward uses `progression-2`: marginal account value and remaining effort jointly determine next-step priority. Reviewed method profiles select Short / Medium / Long / Very long effort automatically, with explicit preparation/unknown handling and completed-component bypasses. The homepage preserves that domain order and retains Long-term/Specialist/Browse discovery. [Policy, full coverage, same-account queues and component evidence](docs/validation/EP1.md).
 
-Scorching bow adds reviewed demonbane utility and an exclusive synapse/assembly route, with a separate Doom preparation alternative and no assumed total-time saving. Its owned ordinary/demonbane family remains a visible ranged model gap. Zenyte and synapse probabilities cover the next component only. Optional manual pace is session-only; no automatic full-cycle hours, observed performance or full-item ETA is promoted. UX2's full visual/comparison/account flow remains pending; EP1 connects order, effort and typed presentation to the current native UI.
+Scorching bow adds reviewed demonbane utility and an exclusive synapse/assembly route, with a separate Doom preparation alternative and no assumed total-time saving. Its owned ordinary/demonbane family remains a visible ranged model gap. Zenyte and synapse probabilities cover the next component only. Optional manual pace is session-only; no automatic full-cycle hours, observed performance or full-item ETA is promoted. UX2 now renders this queue in the visual/comparison/account flow above. Real-client/player acceptance remains pending.
 
 The original [research review](docs/PROGRESSION_RESEARCH.md) checks 30 varied relationships against current mechanics, strategies and qualified player experience. The implemented [progression-1 policy](docs/validation/R3a.md) separates an item's role, personal importance, pursuit status and remaining effort. It adds adequate owned alternatives, multi-dimensional utility and explainable item → activity → reward relationships without a graph service or a universal efficiency score.
 
 R3a delivered the earlier relationship policy; EP1 migrates its order while retaining those value and alternative contracts. Broader melee, specials, permanent rewards and preference work remain in R3b–R6. [TASKS R3–R6](TASKS.md) now starts with a useful relationship-aware vertical increment, then melee/specialist models, complete paths and comprehensive discovery. Existing numerical/lifecycle behaviour and pending client evidence remain. Highly developed accounts and comprehensive endgame coverage stay first-class; the 30 research examples are not a catalogue cap.
 
-**R3a native UI direction:** [UX](docs/UX.md) selects compact visual item cards with real RuneLite sprites, short account-specific value, supported contextual numbers and direct Value/Path actions. The normal narrow panel uses one column; two require enough measured width and readable content. Several relevant choices and visible Long-term/Specialist discovery lead the homepage; account controls and optional goals stay secondary. The card-first implementation and synthetic component captures are in [R3a validation](docs/validation/R3a.md). Real sprites, client scaling and player usefulness remain pending; [the documentation review](docs/validation/R3a-ui-direction.md) retains its original history.
+**Current native UI direction:** [UX](docs/UX.md) selects whole-card details, gold item names, prominent supported results, concise baselines and one status. One column is complete at ordinary sidebar width. Value/Path, calculation basis, focused corrections and separate Account/Diagnostics form the normal flow. Earlier R3a/UX-completion captures remain historical; [UX2 evidence](docs/validation/UX2.md) records the new components and the real-client checks still pending.
 
 ## Product direction
 
@@ -165,17 +167,16 @@ Path removes confirmed owned seeds/fangs/intermediates before a new grind. Owned
 
 ## Use the retained advisor workflow
 
-1. Open with **no goal** and observe the bank. The overview shows a measured
-   prefix of the account value/effort queue, a justified activity and a consequential
-   check. Long-term/Specialist links retain discovery without inserting lower-priority
-   grinds into the preview. Empty groups stay empty. **Browse** has
-   All / Pursue / Long-term / Check and retains specialist/deferred choices.
-   Two columns fall back to one when width, names or fonts need more space.
-2. Activate a card by mouse, Enter or Space. **Value** shows supported metrics
-   once, with priority reasons and a relevant alternative. **Path** leads with
-   actual remaining work, separate equip checks and expandable ALL/ANY recipe
-   branches. **Back to upgrades** retains Browse category, selection and scroll.
-   Shared activity detail names useful families, exclusions and uncertain rewards.
+1. Open with **no goal** and observe the bank. The overview preserves EP1's
+   value/remaining-effort order. Long-term and Specialist links keep later choices
+   discoverable; Browse retains all supported outcomes and owned-use explanations.
+   Search and style/slot/activity/role/importance/status filters combine without reranking.
+2. Activate the whole card by mouse, Enter or Space. **Value** shows the actual
+   before/after package and supported changed metrics, with one priority reason.
+   **Path** shows source, remaining access/components/equip work and a concrete next step.
+   **Back to upgrades** retains the search, filters, stable-ID card and scroll position.
+   Use **Evidence and calculation basis** or **Estimate basis and route evidence**
+   for sources, model limits, complete recipes, assumptions and optional manual pace.
 3. The complete reference prefers supported observed owned pieces and the strongest
    supported charged staff/off-hand package for **Enemy with 0 Defence**.
    Boss profiles remain explicit alternatives in the target selector. Neutral DPS
@@ -184,7 +185,7 @@ Path removes confirmed owned seeds/fangs/intermediates before a new grind. Owned
    No prayer/boost and Accurate are default assumptions. Shadow removes the
    off-hand. Unknown/unreviewed equipped slots with no supported alternative
    block numbers until a focused correction or explicit template exclusion.
-4. **Reference setup and assumptions** discloses every slot, provenance, real and
+4. Under **Evidence and calculation basis**, **Reference setup and assumptions** discloses every slot, provenance, real and
    effective levels, source/model versions and exclusions. Correct a slot,
    prayer, boost, style or target, then **Confirm reference**. Empty slots are
    deliberate reference exclusions; uncharged/manual weapons cannot become usable.
@@ -200,13 +201,12 @@ Path removes confirmed owned seeds/fangs/intermediates before a new grind. Owned
    stack is never added to its later inventory copy. Unread/insufficient counts
    remain unknown. Owned intermediate components bypass their upstream branch;
    boosts, preparation and current supplies still need checking.
-7. **Already own this? / Correct ownership** expands focused **Already owned**, **Confirm not owned** and **Clear confirmation** change only
+7. **Correct ownership** expands focused **Already owned**, **Confirm not owned** and **Clear confirmation** change only
    the named planning fact. Positive possession wins conflicts; readable unlocks
    override manual fallbacks. **Account and preferences** retains optional goals,
    skips and local saves. A skip excludes acquisition without completing it.
    Levels/items/slots/quantities/manual changes invalidate reference confirmation;
-   identity/lifecycle changes clear it. Wait for **Preferences saved locally**
-   before restarting. All real-client checks remain pending.
+   identity/lifecycle changes clear it. Inspect the local save state under **Account → Diagnostics** before restarting. All real-client checks remain pending.
 
 The tormented Path estimates the **next zenyte shard only** when that stage
 remains. Default: mean 300, median 208, 90% by 690 eligible demonic gorilla kills;

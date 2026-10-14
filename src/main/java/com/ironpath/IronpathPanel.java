@@ -58,8 +58,8 @@ final class IronpathPanel extends PluginPanel
 		if(!enabled || latest==null) { recentView=false; displayedRecent=null; recentOption=null; }
 	}
 	private final Map<String,String> facets=new java.util.LinkedHashMap<>();
-	private boolean filtersExpanded, includeOwned, accountView, orderUpdated;
-	private Anchor accountAnchor;
+	private boolean filtersExpanded, includeOwned, accountView, diagnosticsView, orderUpdated;
+	private Anchor accountAnchor, diagnosticsAnchor;
 	IronpathPanel() { this(null); }
 	IronpathPanel(ItemManager itemManager) { this.itemManager = itemManager; }
 
@@ -113,8 +113,8 @@ final class IronpathPanel extends PluginPanel
 		refresh = () -> render(status, snapshot, advice, catalog, goal, preferences, actions, storageStatus, reasons, overview, reference);
         if(snapshot==null) {
             recentHomeAnchor=recentListAnchor=null; recentReturnFocus=null; recentView=false; displayedRecent=null; recentOption=null; latestRecent=null;
-            pathDetail=false; homeAnchor=browseAnchor=detailAnchor=accountAnchor=null; browse=false; category="All"; query="";
-            searchDot=searchMark=0; returnFocus=null; facets.clear(); filtersExpanded=includeOwned=accountView=orderUpdated=false;
+            pathDetail=false; homeAnchor=browseAnchor=detailAnchor=accountAnchor=diagnosticsAnchor=null; browse=false; category="All"; query="";
+            searchDot=searchMark=0; returnFocus=null; facets.clear(); filtersExpanded=includeOwned=accountView=diagnosticsView=orderUpdated=false;
         }
 		if (snapshot == null || upgrades.stream().noneMatch(u -> u.upgrade.id.equals(detail))
 			&& overview.activities.stream().noneMatch(a -> ("activity:" + a.id).equals(detail))
@@ -125,7 +125,7 @@ final class IronpathPanel extends PluginPanel
 		if (snapshot!=null && !browse && detail==null && !accountView && !recentView) { button(heading,"Browse",()->showBrowse(currentView,actions)).setName("home-browse"); }
 		add(heading);
 		if (snapshot==null) { text(this,status); }
-		else {
+		else if(!accountView) {
 			JButton evidence=button(this,"Based on observed gear ›",()->showAccount(true,currentView,actions)); evidence.setName("account-evidence");
 			evidence.getAccessibleContext().setAccessibleName("Account evidence and preferences: observations, timestamps and unknowns");
 			evidence.setOpaque(false); evidence.setBorder(BorderFactory.createEmptyBorder(2,0,2,0));
@@ -137,8 +137,15 @@ final class IronpathPanel extends PluginPanel
 			com.ironpath.advisor.OwnedUpgrade selectedOwned=overview.owned.stream().filter(u->("owned:"+u.upgrade.id).equals(detail)).findFirst().orElse(null);
 			Advisor.UpgradeView selected = upgrades.stream().filter(u -> u.upgrade.id.equals(detail)).findFirst().orElse(null);
 			if (accountView) {
-				button(this,recentView ? "Back to recent boss" : "Back to upgrades",()->showAccount(false,currentView,actions)).setName("account-back");
-				account(this,status,snapshot,catalog,preferences,actions,storageStatus,goal);
+				if(diagnosticsView) {
+					button(this,"Back to account",()->showDiagnostics(false,currentView,actions)).setName("diagnostics-back");
+					label(this,"Diagnostics"); text(this,status); text(this,storageStatus);
+					text(this,"Knowledge "+catalog.version+" · reviewed "+catalog.reviewed);
+					observations(this,snapshot,catalog);
+				} else {
+					button(this,recentView ? "Back to recent boss" : "Back to upgrades",()->showAccount(false,currentView,actions)).setName("account-back");
+					account(this,status,snapshot,catalog,preferences,actions,storageStatus,goal);
+				}
 			}
 			else if(recentView && displayedRecent!=null)
 			{
@@ -215,8 +222,7 @@ final class IronpathPanel extends PluginPanel
 				text(broad, "Reviewed activity/preparation advice. These cases have no calculated upgrade benefit.");
 				for (Recommendation recommendation : overview.broadAdvice) { card(broad, recommendation, catalog, actions); }
 				for (String reason : reasons) { text(broad, reason); }
-				JPanel account = section(this, "Account and preferences");
-				account(account,status,snapshot,catalog,preferences,actions,storageStatus,goal);
+				button(this,"Account and preferences",()->showAccount(true,currentView,actions)).setName("open-account");
 			}
 		}
 		if (snapshot==null) { text(this,"Open the bank after login to improve account evidence."); }
@@ -242,18 +248,50 @@ final class IronpathPanel extends PluginPanel
 		if (!valid(expectedView,actions)||accountView==open) { return; }
 		javax.swing.JViewport viewport=(javax.swing.JViewport)SwingUtilities.getAncestorOfClass(javax.swing.JViewport.class,this);
 		if (open) { accountAnchor=captureAnchor(viewport); }
-		accountView=open; refresh.run();
+		accountView=open; diagnosticsView=false; refresh.run();
 		restoreNavigation(viewport,open ? null : accountAnchor,open ? "account-back" : "account-evidence",view,actions);
 	}
+	private void showDiagnostics(boolean open,long expectedView,Actions actions)
+	{
+		if(!valid(expectedView,actions)) { return; }
+		javax.swing.JViewport viewport=(javax.swing.JViewport)SwingUtilities.getAncestorOfClass(javax.swing.JViewport.class,this);
+		if(open) { diagnosticsAnchor=captureAnchor(viewport); }
+		diagnosticsView=open; refresh.run();
+		restoreNavigation(viewport,open?null:diagnosticsAnchor,open?"diagnostics-back":"open-diagnostics",view,actions);
+	}
+
 	private void account(JPanel parent,String status,AccountSnapshot snapshot,KnowledgeCatalog catalog,Preferences preferences,Actions actions,String storageStatus,Advisor.GoalView goal)
 	{
-		text(parent,"Reference setups stay in memory; explicit planning choices are saved locally.");
-		recentControls(parent,actions);
-		text(parent,status); text(parent,"Knowledge "+catalog.version+" · reviewed "+catalog.reviewed);
-		if (ChronoUnit.DAYS.between(catalog.reviewed,LocalDate.now())>90) { text(parent,"Review is over 90 days old. Check sources before pursuing."); }
-		observations(parent,snapshot,catalog); text(parent,storageStatus);
-		if (actions!=null && actions.canEdit()) { controls(parent,catalog,preferences,snapshot,actions); }
-		if (goal!=null) { goal(parent,goal,catalog,actions); }
+		long expectedView=view;
+		label(parent,"Your account");
+		text(parent,"Attack "+level(snapshot,"ATTACK")+" · Strength "+level(snapshot,"STRENGTH")+" · Defence "+level(snapshot,"DEFENCE"));
+		text(parent,"Ranged "+level(snapshot,"RANGED")+" · Magic "+level(snapshot,"MAGIC")+" · Prayer "+level(snapshot,"PRAYER"));
+		text(parent,"Rigour: "+unlock(snapshot.rigour)+" · Augury: "+unlock(snapshot.augury));
+		text(parent,snapshot.bank.known()?"Bank recorded this session; reopen it after changes.":"Bank not read this session. Open it to check owned alternatives.");
+		JPanel gear=section(parent,"Recorded gear");
+		if(snapshot.equipmentSlots.known()) {
+			for(String slot:PoweredMagic.SLOTS) {
+				Integer id=snapshot.equipmentSlots.value().get(slot); if(id==null || id<=0) { continue; }
+				text(gear,slot+": "+gearName(catalog,id));
+			}
+		} else { text(gear,"Worn slots not recorded; observed possessions do not establish the current loadout."); }
+		catalog.itemNames().entrySet().stream().sorted(Map.Entry.comparingByValue()).filter(g->snapshot.observedItem(g.getKey())==Truth.TRUE)
+			.forEach(g->text(gear,"Observed: "+g.getValue()));
+		text(gear,"Charges, loaded ammunition and manual ownership remain separate checks.");
+		JPanel unlocks=section(parent,"Recorded unlocks");
+		snapshot.facts.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(e->{
+			String name=catalog.factChoices().get(e.getKey()); if(name!=null) { text(unlocks,name+": "+unlock(e.getValue())); }
+		});
+		if(actions!=null && actions.canEdit()) { controls(parent,catalog,preferences,snapshot,actions); }
+		if(goal!=null) { JPanel chosen=section(parent,"Selected goal"); goal(chosen,goal,catalog,actions); }
+		JPanel experimental=section(parent,"Recent boss (experimental)"); recentControls(experimental,actions);
+		text(parent,"Planning choices are saved locally; observed gear and reference setups stay in session memory.");
+		if(ChronoUnit.DAYS.between(catalog.reviewed,LocalDate.now())>90) { text(parent,"Knowledge review is over 90 days old; check sources before pursuing."); }
+		button(parent,"Diagnostics",()->showDiagnostics(true,expectedView,actions)).setName("open-diagnostics");
+	}
+	private String gearName(KnowledgeCatalog catalog,int id)
+	{
+		return catalog.itemNames().getOrDefault(id,"Unreviewed item");
 	}
 
 	private void recentControls(JPanel parent,Actions actions)
@@ -489,25 +527,17 @@ final class IronpathPanel extends PluginPanel
 		long expectedResults=browseResultsView;
 		java.util.function.BooleanSupplier current=()->valid(expectedView,actions) && (!tile || browseResultsView==expectedResults);
 		com.ironpath.advisor.UpgradeCard copy=upgrade.card;
-		JPanel card=new JPanel(); card.setFont(getFont()); card.setName("upgrade-card-"+upgrade.upgrade.id);
-		card.setLayout(new BoxLayout(card,BoxLayout.Y_AXIS)); card.setAlignmentX(LEFT_ALIGNMENT);
-		card.setBackground(ColorScheme.DARKER_GRAY_COLOR); card.setMaximumSize(new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE));
-		card.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorScheme.MEDIUM_GRAY_COLOR),BorderFactory.createEmptyBorder(6,6,6,6)));
-		itemHeader(card,upgrade.upgrade,current);
-		text(card,copy.reason); card.getComponent(card.getComponentCount()-1).setFocusable(false); card.getComponent(card.getComponentCount()-1).setName("card-reason");
-		text(card,copy.metric); card.getComponent(card.getComponentCount()-1).setFocusable(false); card.getComponent(card.getComponentCount()-1).setName("comparison-headline");
-		text(card,copy.effort); card.getComponent(card.getComponentCount()-1).setFocusable(false); card.getComponent(card.getComponentCount()-1).setName("card-effort");
-		text(card,copy.status); card.getComponent(card.getComponentCount()-1).setFocusable(false); card.getComponent(card.getComponentCount()-1).setName("card-status");
-		JPanel actionsRow=new ActionLinks(); actionsRow.setFont(getFont()); actionsRow.setOpaque(false); actionsRow.setAlignmentX(LEFT_ALIGNMENT);
-		JButton open=button(actionsRow,"Value",()->{ if (current.getAsBoolean()) { navigate(upgrade.upgrade.id,false,expectedView,actions); } });
-		open.getActionMap().put("open-card",open.getActionMap().get("activate"));
-		open.setName("open-upgrade-"+upgrade.upgrade.id); open.setToolTipText(upgrade.upgrade.title);
-		open.getAccessibleContext().setAccessibleName("Value for "+upgrade.upgrade.title);
-		JButton path=button(actionsRow,"Path",()->{ if (current.getAsBoolean()) { navigate(upgrade.upgrade.id,true,expectedView,actions); } });
-		path.setName("path-upgrade-"+upgrade.upgrade.id); path.getAccessibleContext().setAccessibleName("Path for "+upgrade.upgrade.title);
-		card.add(actionsRow);
-		java.awt.event.MouseAdapter activate=new java.awt.event.MouseAdapter() { public void mouseClicked(java.awt.event.MouseEvent event) { if (valid(expectedView,actions)) { open.doClick(); } } };
-		clickable(card,activate,open); parent.add(card);
+		UpgradeTile card=new UpgradeTile(upgrade.upgrade.id,upgrade.upgrade.title,getFont(),()->{
+			if(current.getAsBoolean()) { navigate(upgrade.upgrade.id,false,expectedView,actions); }
+		});
+		itemHeader(card.body,upgrade.upgrade,current);
+		text(card.body,copy.metric); JTextArea result=(JTextArea)card.body.getComponent(card.body.getComponentCount()-1);
+		result.setName("comparison-headline"); result.setFont(getFont().deriveFont(java.awt.Font.BOLD,getFont().getSize2D()+3));
+		result.setForeground(copy.delta==null || copy.delta==0 ? ColorScheme.TEXT_COLOR : copy.delta>0 ? new java.awt.Color(137,218,156) : new java.awt.Color(255,160,160));
+		if(!copy.context.isEmpty()) { text(card.body,copy.context); card.body.getComponent(card.body.getComponentCount()-1).setName("card-context"); }
+		text(card.body,"Compared with "+copy.baseline); card.body.getComponent(card.body.getComponentCount()-1).setName("card-baseline");
+		if(!copy.status.isEmpty()) { text(card.body,copy.status); card.body.getComponent(card.body.getComponentCount()-1).setName("card-status"); }
+		card.finish(); parent.add(card);
 	}
 
 	private void itemHeader(JPanel parent,KnowledgeCatalog.Upgrade upgrade,java.util.function.BooleanSupplier current)
@@ -529,16 +559,13 @@ final class IronpathPanel extends PluginPanel
 		long expectedResults=browseResultsView;
 		java.util.function.BooleanSupplier current=()->valid(expectedView,actions)&&browseResultsView==expectedResults;
 		String id="owned:"+owned.upgrade.id;
-		JPanel card=new JPanel(); card.setFont(getFont()); card.setLayout(new BoxLayout(card,BoxLayout.Y_AXIS)); card.setAlignmentX(LEFT_ALIGNMENT);
-		card.setName("upgrade-card-"+id); card.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		card.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorScheme.MEDIUM_GRAY_COLOR),BorderFactory.createEmptyBorder(6,6,6,6)));
-		itemHeader(card,owned.upgrade,current);
-		text(card,"Acquisition covered by owned gear or a confirmed planning fact.");
-		text(card,"Usability and personal benefit need their own checks.");
-		JButton open=button(card,"Value",()->{if(current.getAsBoolean()){navigate(id,expectedView,actions);}}); open.setName("open-upgrade-"+id);
-		open.getAccessibleContext().setAccessibleName("Owned use of "+owned.upgrade.title); clickable(card,new java.awt.event.MouseAdapter(){public void mouseClicked(java.awt.event.MouseEvent e){open.doClick();}},open);
-		parent.add(card);
+		UpgradeTile card=new UpgradeTile(id,owned.upgrade.title,getFont(),()->{if(current.getAsBoolean()){navigate(id,expectedView,actions);}});
+		itemHeader(card.body,owned.upgrade,current);
+		text(card.body,"Owned / covered");
+		text(card.body,"Inspect uses and usability");
+		card.finish(); parent.add(card);
 	}
+
 	private void ownedDetails(com.ironpath.advisor.OwnedUpgrade owned,KnowledgeCatalog catalog,Actions actions)
 	{
 		long expectedView=view; itemHeader(this,owned.upgrade,()->valid(expectedView,actions));
@@ -548,16 +575,11 @@ final class IronpathPanel extends PluginPanel
 		for(String role:owned.roles){text(this,role);}
 		for(String application:owned.applications){text(this,application);}
 		text(this,"Limits: "+owned.upgrade.limitation);
-		JPanel evidence=section(this,"Ownership evidence");text(evidence,owned.evidence);
-		sources(this,owned.sources,catalog);
+		JPanel evidence=section(this,"Ownership evidence and sources");text(evidence,owned.evidence);
+		sources(evidence,owned.sources,catalog);
 	}
 
-	private void clickable(java.awt.Container parent, java.awt.event.MouseAdapter listener, JButton open)
-	{
-		parent.addMouseListener(listener);
-		for (java.awt.Component child : parent.getComponents())
-		{ if (child instanceof javax.swing.AbstractButton) { continue; } if (child instanceof java.awt.Container) { clickable((java.awt.Container)child,listener,open); } else { child.addMouseListener(listener); } }
-	}
+
 	private void activityCard(ActivityOpportunity activity, long expectedView, Actions actions)
 	{
 		text(this, activity.title); text(this, "Useful families: " + String.join(" · ", activity.usefulFamilies));
@@ -599,197 +621,230 @@ final class IronpathPanel extends PluginPanel
 		KnowledgeCatalog.Upgrade upgrade = view.upgrade;
 		long detailView=this.view;
 		itemHeader(this,upgrade,()->valid(detailView,actions));
-		text(this,view.pursuit.category.label);
+
 
 		long expectedView = this.view;
 		JPanel tabs = new JPanel(new java.awt.GridLayout(1, 2, 4, 0)); tabs.setFont(getFont()); tabs.setOpaque(false); tabs.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 12, 30));
 		tabs.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 12, 30));
 		tabs.setMinimumSize(new Dimension(PluginPanel.PANEL_WIDTH - 12, 30)); tabs.setAlignmentX(LEFT_ALIGNMENT);
-		JButton valueTab=button(tabs, "Value", () -> { if (valid(expectedView, actions)) { pathDetail = false; refresh.run(); } });
-		JButton pathTab=button(tabs, "Path", () -> { if (valid(expectedView, actions)) { pathDetail = true; refresh.run(); } });
+		JButton valueTab=button(tabs, "Value", () -> changeDetailTab(false,expectedView,actions));
+		JButton pathTab=button(tabs, "Path", () -> changeDetailTab(true,expectedView,actions));
+		valueTab.setName("detail-value-tab"); pathTab.setName("detail-path-tab");
 		JButton selectedTab=pathDetail ? pathTab : valueTab; selectedTab.setContentAreaFilled(true); selectedTab.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 		selectedTab.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new java.awt.Color(244,213,141)),BorderFactory.createEmptyBorder(2,3,2,3)));
 		selectedTab.getAccessibleContext().setAccessibleDescription("Selected view");
 		int tabHeight=Math.max(valueTab.getPreferredSize().height,pathTab.getPreferredSize().height);
 		tabs.setMaximumSize(new Dimension(213,tabHeight)); tabs.setPreferredSize(new Dimension(213,tabHeight)); tabs.setMinimumSize(new Dimension(0,tabHeight)); add(tabs);
 		if (pathDetail) { acquisition(view, catalog, actions); return; }
-		text(this,view.valueEvidence.importance.label + ": " + view.valueEvidence.reason);
-		text(this,view.presentation.priorityReason);
-		text(this,"Baseline: " + view.valueEvidence.baseline);
-		if (!view.pursuit.blockers.isEmpty()) { text(this,"Next check: " + view.pursuit.blockers.get(0)); }
-		for (com.ironpath.advisor.ValueEvidence.Role role : view.valueEvidence.roles)
-		{
-			text(this,role.reason + " Applicable: " + role.applicable + ".");
-			for (String alternative : role.alternatives) { text(this,"Adequate owned alternative: " + alternative); }
-			text(this,"Defer / limits: " + role.limitation);
+		com.ironpath.advisor.UpgradePresentation presentation=view.presentation;
+		comparison(this,presentation,()->valid(expectedView,actions));
+		label(this,"Why this position"); text(this,presentation.priorityReason);
+
+		JPanel evidence=section(this,"Evidence and calculation basis"); evidence.setName("value-evidence");
+		ComparisonResult comparison=view.comparison;
+		setup=comparison.beforeSetup==null?setup:comparison.beforeSetup;
+		calculationBasis(evidence,comparison);
+		for(com.ironpath.advisor.ValueEvidence.Role role:view.valueEvidence.roles) {
+			text(evidence,role.reason);
+			for(String alternative:role.alternatives) { text(evidence,"Adequate owned alternative: "+alternative); }
+			text(evidence,role.limitation);
 		}
-		for (String trail : view.indirectReasons) { text(this,trail); }
-		JPanel whyOrder = section(this, "Why this order");
-		for (String reason : view.pursuit.reasons) { text(whyOrder, reason); }
-		text(whyOrder, "Ranking " + view.pursuit.version + ": " + String.join(", ", view.pursuit.reasonCodes));
-		for (String evidence : view.evidence) { text(whyOrder, evidence); }
-		ComparisonResult comparison = view.comparison;
-		setup = comparison.beforeSetup == null ? setup : comparison.beforeSetup;
-		if (comparison.beforeSetup != null && comparison.afterSetup != null)
-		{
-			String slot = upgrade.comparison.equals("MELEE") ? catalog.melee.items.stream().filter(i -> i.id == upgrade.itemId).map(i -> i.slot).findFirst().orElse("weapon") : upgrade.comparison.equals("RANGED") ? catalog.ranged.items.stream().filter(i -> i.id == upgrade.itemId).map(i -> i.slot).findFirst().orElse("weapon") : catalog.comparison.items.stream().filter(i -> i.id == upgrade.itemId).map(i -> i.slot).findFirst().orElse("weapon");
-			itemSummary(this, "Before", comparison.beforeSetup.slots.get(slot), catalog);
-			itemSummary(this, "After", comparison.afterSetup.slots.get(slot), catalog);
-			if (!comparison.beforeSetup.slots.get("shield").equals(comparison.afterSetup.slots.get("shield")))
-			{ text(this, "Off-hand removed for a two-handed replacement."); }
-		}
-		if (comparison.before == null) { text(this, (comparison.primaryMetric == ComparisonResult.Metric.THEORETICAL_DPS
-			? "Theoretical DPS unavailable · model gap: " : "Comparison unavailable: ") + comparison.reason); }
-		if (comparison.before != null)
-		{
-			String max = "Max hit  " + comparison.before.maxHit + " → " + comparison.after.maxHit + "  ("
-				+ String.format(java.util.Locale.ROOT, "%+d", comparison.after.maxHit - comparison.before.maxHit) + ")";
-			String dps = comparison.available(ComparisonResult.Metric.THEORETICAL_DPS) ? String.format(java.util.Locale.ROOT,
-				"Theoretical DPS  %.2f → %.2f  (%+.2f)", comparison.before.dps, comparison.after.dps, comparison.dpsGain()) : "Theoretical DPS unavailable · model gap";
-			boolean dpsFirst = comparison.primaryMetric == ComparisonResult.Metric.THEORETICAL_DPS;
-			text(this, dpsFirst ? dps : max); text(this, dpsFirst ? max : dps);
-			String gap = comparison.gaps.get(ComparisonResult.Metric.THEORETICAL_DPS);
-			if (gap != null) { text(this, (comparison.available(ComparisonResult.Metric.HIT_CHANCE) ? "DPS gap: " : "DPS and hit chance gap: ") + gap); }
-			text(this, comparison.available(ComparisonResult.Metric.HIT_CHANCE) ? String.format(java.util.Locale.ROOT,
-				"Hit chance  %.1f%% → %.1f%%", comparison.before.hitChance * 100, comparison.after.hitChance * 100) : "Hit chance unavailable · model gap");
-			text(this, String.format(java.util.Locale.ROOT, "Attack interval  %d → %d ticks (%.1f → %.1f s)",
-				comparison.before.attackTicks, comparison.after.attackTicks, comparison.before.attackTicks * 0.6, comparison.after.attackTicks * 0.6));
-			text(this, comparison.target.name + " · " + setup.assumptionLabel() + ". Reference only.");
-		}
-		if (!upgrade.comparison.equals("NONE"))
-		{
-			JPanel assumptions = section(this, "Reference setup and assumptions");
-			for (String assumption : comparison.assumptions) { text(assumptions, assumption); }
-			if (comparison.before == null && setup != null) { text(assumptions, "Selected slots: " + setup.slots + ". Zero denotes an explicitly empty reference slot. " + setup.assumptionLabel() + "."); }
-			if (actions != null && actions.canEdit() && setup != null) { referenceControls(assumptions, a, setup, actions, view.referenceChoices, comparison.before != null); }
-		}
-		text(this, "Alternative: " + upgrade.alternatives); text(this, "Limits: " + upgrade.limitation);
-		if (!view.contextComparisons.isEmpty())
-		{
-			JPanel contexts = section(this, "Reviewed encounter trade-offs");
-			text(contexts, "Each encounter uses its strongest supported owned package. These examples are separate from the selected reference; gains are not added.");
-			for (ComparisonResult contextual : view.contextComparisons)
-			{
-				text(contexts, contextual.summary());
-				JPanel inputs = section(contexts, contextual.target.name + " inputs and assumptions");
-				for (String assumption : contextual.assumptions) { text(inputs, assumption); }
+		for(String trail:view.indirectReasons) { text(evidence,trail); }
+		text(evidence,"Alternative: "+upgrade.alternatives); text(evidence,"Limits: "+upgrade.limitation);
+		if(!upgrade.comparison.equals("NONE") && setup!=null) {
+			JPanel assumptions=section(evidence,"Reference setup and assumptions"); assumptions.setName("reference-corrections");
+			for(String assumption:comparison.assumptions) { text(assumptions,assumption); }
+			if(actions!=null && actions.canEdit()) { referenceControls(assumptions,a,setup,actions,view.referenceChoices,comparison.before!=null); }
+			if(presentation.primaryMetric.availability==com.ironpath.advisor.UpgradePresentation.Availability.INPUT_REQUIRED) {
+				button(this,presentation.primaryMetric.action,()->{if(valid(expectedView,actions)){ evidence.setVisible(true); assumptions.setVisible(true); revalidate(); }}).setName("correct-comparison-input");
 			}
 		}
-		JPanel remaining = section(this, "Remaining work and review"); text(remaining, upgrade.remainingWork + " Review: " + upgrade.reviewed + ".");
-		for (String application : view.applications) { text(this, application); }
-		java.util.Set<String> confirmationKeys = new java.util.LinkedHashSet<>();
-		if (upgrade.ownedWhen.test == KnowledgeCatalog.Test.POSSESSION) { confirmationKeys.add("owns-" + upgrade.ownedWhen.key); }
-		for (String set : upgrade.unknownSets) { confirmationKeys.add("owns-" + set); }
-		confirmationKeys.addAll(view.questions);
-		JPanel ownership = section(this, "Already own this? / Correct ownership");
-		for (String key : confirmationKeys)
-		{
-			text(ownership, "Targeted ownership check: " + catalog.factChoices().get(key) + "? "
-				+ (p.confirmations.containsKey(key) ? p.confirmations.get(key).evidence() : "Unconfirmed outside observed storage.")
-				+ " Positive observed/manual possession takes precedence over an absence.");
-			if (actions != null)
-			{
-				button(ownership, "Already owned", () -> actions.confirm(key, true));
-				button(ownership, "Confirm not owned", () -> actions.confirm(key, false));
-				button(ownership, "Clear confirmation", () -> actions.confirm(key, null));
-			}
+		for(ComparisonResult contextual:view.contextComparisons) {
+			text(evidence,contextual.target.name+": "+contextual.summary());
+			for(String assumption:contextual.assumptions) { text(evidence,assumption); }
 		}
-		sources(this, view.evidenceSources, catalog);
+		for(String application:view.applications) { text(evidence,application); }
+		sources(evidence,view.evidenceSources,catalog);
+		ownership(this,view,p,catalog,actions,expectedView);
 	}
 
-	private void itemSummary(JPanel parent, String label, int id, KnowledgeCatalog catalog)
+	private void changeDetailTab(boolean path,long expectedView,Actions actions)
 	{
-		JLabel icon = new JLabel(label); icon.setForeground(ColorScheme.TEXT_COLOR);
-		if (id > 0 && itemManager != null) { itemManager.getImage(id).addTo(icon); } parent.add(icon);
-		text(parent, id == 0 ? "Deliberately empty slot" : catalog.comparison.items.stream().filter(i -> i.id == id).map(i -> i.label).findFirst()
-			.orElseGet(() -> catalog.ranged.items.stream().filter(i -> i.id == id).map(i -> i.label).findFirst()
-				.orElseGet(() -> catalog.melee.items.stream().filter(i -> i.id == id).map(i -> i.label).findFirst().orElse("Unknown reference"))));
+		if(!valid(expectedView,actions)) { return; }
+		javax.swing.JViewport viewport=(javax.swing.JViewport)SwingUtilities.getAncestorOfClass(javax.swing.JViewport.class,this);
+		pathDetail=path; refresh.run(); restoreNavigation(viewport,null,path?"detail-path-tab":"detail-value-tab",view,actions);
+	}
+
+	private void label(JPanel parent,String message)
+	{
+		text(parent,message); JTextArea label=(JTextArea)parent.getComponent(parent.getComponentCount()-1);
+		label.setFont(parent.getFont().deriveFont(java.awt.Font.BOLD)); label.setForeground(new java.awt.Color(244,213,141));
+	}
+	private void comparison(JPanel parent,com.ironpath.advisor.UpgradePresentation presentation,java.util.function.BooleanSupplier current)
+	{
+		if(presentation.primaryMetric.availability==com.ironpath.advisor.UpgradePresentation.Availability.QUALITATIVE) {
+			label(parent,presentation.utility); text(parent,"Ordinary DPS does not quantify this role.");
+			if(presentation.comparisonMetrics.stream().noneMatch(m->m.delta!=null)) { return; }
+		}
+		for(com.ironpath.advisor.UpgradePresentation.SlotChange change:presentation.changes.stream().limit(1).collect(java.util.stream.Collectors.toList())) {
+			label(parent,change.slot.equals("shield")?"Off-hand":change.slot.substring(0,1).toUpperCase(java.util.Locale.ROOT)+change.slot.substring(1));
+			itemSummary(parent,"Before",change.beforeId,change.beforeName,current);
+			itemSummary(parent,"After",change.afterId,change.afterName,current);
+		}
+		if(presentation.changes.isEmpty()) { text(parent,"Compared with "+presentation.baseline); }
+		if(!presentation.contextLabel.isEmpty()) { text(parent,presentation.contextLabel); }
+		int index=0;
+		for(com.ironpath.advisor.UpgradePresentation.Metric metric:presentation.comparisonMetrics) {
+			boolean primary=index++==0;
+			if(!primary && metric.delta!=null && metric.delta==0) { continue; }
+			String title=metric.kind==ComparisonResult.Metric.THEORETICAL_DPS?"Theoretical DPS":metric.kind==ComparisonResult.Metric.MAX_HIT?"Max hit":"Hit chance";
+			String value=metric.delta==null?title+" not calculated":metric.kind==ComparisonResult.Metric.MAX_HIT
+				?String.format(java.util.Locale.ROOT,"%s  %.0f → %.0f  (%+.0f)",title,metric.before,metric.after,metric.delta)
+				:String.format(java.util.Locale.ROOT,"%s  %.2f → %.2f  (%+.2f%s)",title,metric.before,metric.after,metric.delta,metric.kind==ComparisonResult.Metric.HIT_CHANCE?" pp":"");
+			text(parent,value); JTextArea row=(JTextArea)parent.getComponent(parent.getComponentCount()-1); row.setName("detail-metric-"+metric.kind);
+			if(primary && metric.delta!=null && presentation.primaryMetric.availability!=com.ironpath.advisor.UpgradePresentation.Availability.QUALITATIVE) { row.setFont(parent.getFont().deriveFont(java.awt.Font.BOLD,parent.getFont().getSize2D()+2)); }
+			if(metric.delta!=null && metric.delta!=0) { row.setForeground(metric.delta>0?new java.awt.Color(137,218,156):new java.awt.Color(255,160,160)); }
+		}
+		for(com.ironpath.advisor.UpgradePresentation.SlotChange change:presentation.changes.stream().skip(1).collect(java.util.stream.Collectors.toList())) {
+			text(parent,change.slot+": "+change.beforeName+" → "+change.afterName);
+		}
+		if(presentation.beforeTicks!=null && !presentation.beforeTicks.equals(presentation.afterTicks)) {
+			text(parent,String.format(java.util.Locale.ROOT,"Attack interval %d → %d ticks (%.1f → %.1f s)",presentation.beforeTicks,presentation.afterTicks,presentation.beforeTicks*0.6,presentation.afterTicks*0.6));
+		}
+		com.ironpath.advisor.UpgradePresentation.Metric primary=presentation.comparisonMetrics.get(0);
+		if(primary.delta==null) { text(parent,primary.reason); }
+	}
+	private void calculationBasis(JPanel parent,ComparisonResult comparison)
+	{
+		if(comparison.target!=null && comparison.target.analytical) {
+			text(parent,"Shared analytical comparison: Enemy with 0 Defence. Ordinary uninterrupted attacks; this is not boss throughput, kill time or trip performance.");
+		} else if(comparison.target!=null) { text(parent,"Selected context: "+comparison.target.name+". Ordinary offence only."); }
+		if(comparison.beforeSetup!=null) { text(parent,comparison.beforeSetup.assumptionLabel()); }
+		comparison.gaps.forEach((metric,gap)->text(parent,metric+": "+gap));
+		if(comparison.before!=null) { text(parent,comparison.summary()); }
+		text(parent,"Model "+comparison.modelVersion+" · knowledge "+comparison.knowledgeVersion);
+	}
+	private void ownership(JPanel parent,Advisor.UpgradeView view,Preferences p,KnowledgeCatalog catalog,Actions actions,long expectedView)
+	{
+		java.util.Set<String> keys=new java.util.LinkedHashSet<>();
+		if(view.upgrade.ownedWhen.test==KnowledgeCatalog.Test.POSSESSION) { keys.add("owns-"+view.upgrade.ownedWhen.key); }
+		for(String set:view.upgrade.unknownSets) { keys.add("owns-"+set); } keys.addAll(view.questions);
+		JPanel ownership=section(parent,"Correct ownership");
+		text(ownership,"Manual possession is a planning fact; it does not establish charges or usable gear. Positive observed possession takes precedence.");
+		for(String key:keys) {
+			text(ownership,catalog.factChoices().get(key)+": "+(p.confirmations.containsKey(key)?p.confirmations.get(key).evidence():"Not confirmed"));
+			if(actions!=null && actions.canEdit()) {
+				button(ownership,"Already owned",()->{if(valid(expectedView,actions)){actions.confirm(key,true);}});
+				button(ownership,"Confirm not owned",()->{if(valid(expectedView,actions)){actions.confirm(key,false);}});
+				button(ownership,"Clear confirmation",()->{if(valid(expectedView,actions)){actions.confirm(key,null);}});
+			}
+		}
+	}
+	private void itemSummary(JPanel parent,String label,int id,String name,java.util.function.BooleanSupplier current)
+	{
+		JLabel image=new JLabel("◇") { @Override public void setIcon(javax.swing.Icon icon) { if(current.getAsBoolean()) { super.setIcon(icon); setText(icon==null?"◇":""); } } };
+		image.setPreferredSize(new Dimension(32,32)); image.setForeground(ColorScheme.TEXT_COLOR);
+		image.getAccessibleContext().setAccessibleName(label+" "+name);
+		if(id>0 && itemManager!=null) { itemManager.getImage(id).addTo(image); }
+		JPanel row=new JPanel(new CardHeaderLayout()); row.setFont(parent.getFont()); row.setOpaque(false); row.setAlignmentX(LEFT_ALIGNMENT);
+		row.add(image); text(row,label+": "+name); row.getComponent(1).setName("card-title"); parent.add(row);
 	}
 
 	private void acquisition(Advisor.UpgradeView view, KnowledgeCatalog catalog, Actions actions)
 	{
-		KnowledgeCatalog.Upgrade upgrade = view.upgrade;
-		text(this, "Next: " + view.presentation.nextStep);
-		for (com.ironpath.advisor.UpgradePresentation.RouteChoice choice : view.presentation.routes)
-		{
-			if (choice.preparationUpgrade==null) { continue; }
-			text(this,"Preparation alternative: " + choice.preparationUpgrade + ". " + choice.reason);
-			text(this,"Preparation: " + (choice.preparationOwned?"already owned":choice.preparationBand.label)
-				+ "; acquisition: " + choice.acquisitionBand.label + ". " + choice.scope + ". Combined hours unavailable.");
-		}
-		for (com.ironpath.advisor.ValueEvidence.Role role : view.valueEvidence.roles)
-		{ for (String alternative : role.alternatives) { text(this,"Owned method alternative: " + alternative); } }
-		for (com.ironpath.advisor.ProgressionKnowledge.Context context : catalog.progression.contexts)
-		{
-			if (!context.activity.equals(view.pursuit.activity)) { continue; }
-			for (com.ironpath.advisor.ProgressionKnowledge.Preparation option : context.preparation)
-			{ text(this,option.constraint + ": " + option.label); }
-		}
-		effort(view.pursuit, actions);
-		if (!view.path.isEmpty()) { JPanel recipe = section(this, "Recipe and ALL/ANY alternatives"); text(recipe, "ALL/ANY recipe: completed intermediates bypass upstream work. This is the full reviewed recipe, not an instruction to repeat it."); requirements(recipe, view.path); }
-		text(this, "Equip requirements (separate from acquisition)"); requirements(this, view.equip);
-		if (!view.parts.isEmpty()) { text(this, "Owned parts and additions — optional steps are labelled"); requirements(this, view.parts); }
-		text(this, "Acquisition paths — each outcome is grouped once");
-		for (Advisor.RouteView route : view.routes)
-		{
-			text(this, route.decision.title + "\n" + (route.decision.id.equals(view.pursuit.route) ? view.pursuit.category.label + " · remaining route" : route.status) + "\nNext: " + route.next);
-			JPanel steps = section(this, "Route requirements"); requirements(steps, route.requirements);
-			text(steps, route.decision.access); text(steps, "Suggested preparation: " + route.decision.preparation);
-			text(steps, "Trade-off: " + route.decision.tradeoff); text(steps, "Remaining effort: " + route.decision.effort);
-			if (actions != null && actions.canEdit()) { button(steps, "Skip this activity", () -> actions.skip(route.decision.activity, true)); }
-		}
-		if (!view.shared.isEmpty())
-		{
-			text(this, "Same Doom acquisition activity, separate conditional rewards. Treads require completed delve 4. Rewards are rolled separately; their benefits are not added and nothing certifies delve capability.");
-			for (String reward : view.shared) { text(this, reward); }
-		}
-		sources(this, view.evidenceSources, catalog);
-	}
-
-	private void effort(PursuitAssessment pursuit, Actions actions)
-	{
-		String process=pursuit.acquisitionMode == PursuitAssessment.Mode.READY ? "Assembly/claim remains" : pursuit.acquisitionMode == PursuitAssessment.Mode.BOUNDED ? "Finite remaining task" : pursuit.acquisitionMode == PursuitAssessment.Mode.REPEATABLE ? "Repeatable acquisition" : pursuit.acquisitionMode == PursuitAssessment.Mode.LONG_TAIL ? "Long-tail acquisition" : "Effort not estimated";
-		text(this,"Remaining effort: " + pursuit.remainingEffort.band.label + " · " + pursuit.remainingEffort.suitability.label);
-		text(this,pursuit.remainingEffort.method + ". " + pursuit.remainingEffort.reason);
-		text(this,"Scope: " + pursuit.remainingEffort.scope + ". " + pursuit.remainingEffort.gap);
-		EffortEstimate estimate = pursuit.estimate;
-		if (estimate == null) { text(this, "No acquisition hours. " + pursuit.remainingEffort.gap); return; }
-		text(this, estimate.remainingOutcome + " · next reward only");
-		if (pursuit.category == PursuitAssessment.Category.CHECK || pursuit.category == PursuitAssessment.Category.PLAN)
-		{ text(this, "Conditional planning: confirm the route/component checks above before pursuing a new shard."); }
-		if (estimate.meanTrials == null) { text(this, estimate.reason); return; }
-		text(this, String.format(java.util.Locale.ROOT,"Mean %.0f kills · median %d\n90%% by %d eligible kills; 10%% take longer.",estimate.meanTrials,estimate.p50,estimate.p90));
-		if (estimate.pace == null) { text(this, "Hours unavailable until an explicit eligible-kills/hour scenario is supplied."); }
-		else
-		{
-			text(this,String.format(java.util.Locale.ROOT,"Conditional on %.1f eligible kills/hour:\nMean %.1f h · median %.1f h\n90%% by %.1f h; 10%% later.",estimate.pace.minimumPerHour,estimate.meanHours(),estimate.medianHours(),estimate.p90Hours()));
-			if (estimate.pace.maximumPerHour > estimate.pace.minimumPerHour)
-			{ text(this,String.format(java.util.Locale.ROOT,"Pace sensitivity %.1f–%.1f kills/h: mean %.1f–%.1f h. Scenario range, not a confidence interval.",estimate.pace.minimumPerHour,estimate.pace.maximumPerHour,estimate.meanTrials/estimate.pace.maximumPerHour,estimate.meanHours())); }
-			text(this, estimate.pace.provenance + ". " + estimate.pace.scope + ". Entered " + estimate.pace.entered);
-		}
-		for (String exclusion : estimate.exclusions) { text(this, exclusion); }
-		text(this, "Fixed-rate dry kills do not reduce remaining expectation. RNG has no completion bar.");
 		long expectedView=this.view;
-		if (actions != null && actions.canEdit())
-		{
-			JPanel input=section(this,"Set pace (optional)"); text(input,"Eligible kills per active hour, including your cycle overhead. A number or range; blank clears. Session only.");
-			javax.swing.JTextField pace=new javax.swing.JTextField(estimate.pace == null ? "" : Double.toString(estimate.pace.minimumPerHour)
-				+ (estimate.pace.maximumPerHour > estimate.pace.minimumPerHour ? "-" + estimate.pace.maximumPerHour : ""));
-			pace.setName("pace-input"); pace.getAccessibleContext().setAccessibleName("Eligible demonic gorilla kills per active hour, or range");
-			pace.setMaximumSize(new Dimension(213,28)); input.add(pace);
-			button(input,"Apply pace",() -> { if (valid(expectedView,actions)) { actions.pace(pace.getText()); } });
-			button(input,"Clear pace",() -> { if (valid(expectedView,actions)) { actions.pace(""); } });
+		com.ironpath.advisor.UpgradePresentation presentation=view.presentation;
+		Advisor.RouteView selected=view.routes.stream().filter(r->r.decision.id.equals(view.pursuit.route)).findFirst().orElseThrow();
+		label(this,"From "+catalog.activities.getOrDefault(selected.decision.activity,selected.decision.title));
+		text(this,"Remaining effort: "+presentation.effort.band.label);
+		label(this,"Next step"); text(this,presentation.nextStep);
+		if(presentation.effort.acquisitionBypassed) { text(this,"Owned components remove the fresh reward grind."); }
+		else { text(this,presentation.effort.suitability.label+" · "+presentation.effort.method); }
+		EffortEstimate estimate=view.pursuit.estimate;
+		if(presentation.minimumMeanHours!=null) {
+			text(this,String.format(java.util.Locale.ROOT,"Estimated mean %.1f–%.1f h · manual scenario",presentation.minimumMeanHours,presentation.maximumMeanHours));
+			text(this,presentation.estimateScope+". Scenario sensitivity, not an RNG interval or deadline.");
+		} else if(estimate!=null && estimate.meanTrials!=null) {
+			text(this,String.format(java.util.Locale.ROOT,"%s · mean %.0f eligible kills",estimate.remainingOutcome,estimate.meanTrials));
+			text(this,"Next reward only; hours not estimated.");
+		} else { text(this,"Hours not estimated; "+presentation.effort.scope+"."); }
+		List<Advisor.Requirement> path=view.path.isEmpty()?selected.requirements:view.remainingPath;
+		remaining(this,"Access",path.stream().filter(r->r.role.equals("ACCESS")||r.role.equals("PREREQUISITE")).collect(java.util.stream.Collectors.toList()));
+		remaining(this,"Method checks",selected.requirements.stream().filter(r->r.role.equals("INPUTS / CONTEXT")).collect(java.util.stream.Collectors.toList()));
+		remaining(this,"Suggested preparation (not access)",path.stream().filter(r->r.role.equals("SUGGESTED PREPARATION")||r.role.equals("PREPARATION")).collect(java.util.stream.Collectors.toList()));
+		remaining(this,"Components and assembly",path.stream().filter(r->r.role.equals("COMPONENT")||r.role.equals("ASSEMBLY")||r.role.equals("ACTIVITY")).collect(java.util.stream.Collectors.toList()));
+		remaining(this,"Equip",view.equip);
+		if(!presentation.routes.isEmpty() || !view.valueEvidence.roles.isEmpty()) {
+			for(com.ironpath.advisor.ValueEvidence.Role role:view.valueEvidence.roles) {
+				for(String alternative:role.alternatives) { text(this,"Adequate owned alternative: "+alternative); }
+			}
+			for(com.ironpath.advisor.UpgradePresentation.RouteChoice choice:presentation.routes) {
+				if(choice.preparationUpgrade==null) { continue; }
+				KnowledgeCatalog.Upgrade preparation=catalog.upgrades.stream().filter(u->u.id.equals(choice.preparationUpgrade)).findFirst().orElseThrow();
+				label(this,"Optional preparation: "+preparation.title);
+				text(this,"Preparation: "+(choice.preparationOwned?"already owned":choice.preparationBand.label)+" · acquisition: "+choice.acquisitionBand.label);
+				text(this,choice.reason); text(this,"Combined hours unavailable; compare with starting the direct method.");
+			}
 		}
-		JPanel assumptions=section(this,"Acquisition model and inputs"); text(assumptions,estimate.modelVersion + " · reviewed " + estimate.reviewed + " · " + estimate.reason);
-		text(assumptions, estimate.numerator + "/" + estimate.denominator + " per " + estimate.trialUnit + ". Recipient: " + estimate.recipient);
-		for (String assumption : estimate.assumptions) { text(assumptions,assumption); }
+		JPanel basis=section(this,"Estimate basis and route evidence"); basis.setName("acquisition-evidence");
+		text(basis,presentation.effort.reason); text(basis,presentation.effort.gap);
+		text(basis,"Method/profile: "+presentation.effort.profile+" · "+presentation.effort.version);
+		if(estimate!=null) { estimateBasis(basis,estimate,actions,expectedView); }
+		if(!view.path.isEmpty()) { label(basis,"Full recipe and ALL/ANY alternatives"); requirements(basis,view.path); }
+		label(basis,"Complete route evidence"); requirements(basis,selected.requirements);
+		label(basis,"Equipment requirements"); requirements(basis,view.equip);
+		for(Advisor.RouteView route:view.routes) {
+			if(route!=selected) { label(basis,"Alternative: "+route.decision.title); text(basis,route.next); requirements(basis,route.requirements); }
+			text(basis,route.decision.tradeoff);
+			if(actions!=null && actions.canEdit()) { button(basis,"Skip this activity",()->{if(valid(expectedView,actions)){actions.skip(route.decision.activity,true);}}); }
+		}
+		for(com.ironpath.advisor.ProgressionKnowledge.Context context:catalog.progression.contexts) {
+			if(context.activity.equals(view.pursuit.activity)) {
+				for(com.ironpath.advisor.ProgressionKnowledge.Preparation option:context.preparation) { text(basis,option.constraint+": "+option.label); }
+			}
+		}
+		for(String reward:view.shared) { text(basis,reward); }
+		sources(basis,view.evidenceSources,catalog);
+	}
+	private void remaining(JPanel parent,String heading,List<Advisor.Requirement> requirements)
+	{
+		List<Advisor.Requirement> missing=requirements.stream().filter(r->r.truth!=Truth.TRUE).collect(java.util.stream.Collectors.toList());
+		if(!missing.isEmpty()) {
+			label(parent,heading);
+			for(Advisor.Requirement requirement:missing) { text(parent,(requirement.truth==Truth.UNKNOWN?"Check: ":"Remaining: ")+requirement.label); }
+		}
+
+	}
+	private void estimateBasis(JPanel parent,EffortEstimate estimate,Actions actions,long expectedView)
+	{
+		text(parent,"Scope: "+estimate.remainingOutcome+". Only this reward, not complete assembly or a full-item ETA.");
+		if(estimate.meanTrials!=null) {
+			text(parent,String.format(java.util.Locale.ROOT,"Mean %.0f kills · median %d · 90%% by %d; 10%% take longer.",estimate.meanTrials,estimate.p50,estimate.p90));
+			if(estimate.pace!=null) {
+				text(parent,String.format(java.util.Locale.ROOT,"Manual %.1f–%.1f eligible kills/hour · median %.1f h · P90 %.1f h",estimate.pace.minimumPerHour,estimate.pace.maximumPerHour,estimate.medianHours(),estimate.p90Hours()));
+				text(parent,estimate.pace.provenance+". "+estimate.pace.scope);
+			}
+			if(actions!=null && actions.canEdit()) {
+				label(parent,"Set pace (optional)"); text(parent,"Eligible kills per active hour, including cycle overhead. Number or range; session only.");
+				JTextField pace=new JTextField(estimate.pace==null?"":estimate.pace.minimumPerHour+(estimate.pace.maximumPerHour>estimate.pace.minimumPerHour?"-"+estimate.pace.maximumPerHour:""));
+				pace.setName("pace-input"); pace.getAccessibleContext().setAccessibleName("Eligible "+estimate.trialUnit+" per active hour, or range"); pace.setMaximumSize(new Dimension(213,28)); parent.add(pace);
+				button(parent,"Apply pace",()->{if(valid(expectedView,actions)){actions.pace(pace.getText());}});
+				button(parent,"Clear pace",()->{if(valid(expectedView,actions)){actions.pace("");}});
+			}
+		}
+		text(parent,estimate.modelVersion+" · reviewed "+estimate.reviewed+" · "+estimate.reason);
+		text(parent,estimate.numerator+"/"+estimate.denominator+" per "+estimate.trialUnit+". Recipient: "+estimate.recipient);
+		for(String assumption:estimate.assumptions) { text(parent,assumption); }
+		for(String exclusion:estimate.exclusions) { text(parent,exclusion); }
+		text(parent,"Fixed-rate dry kills do not reduce remaining expectation.");
 	}
 
 	private void referenceControls(JPanel parent, AccountSnapshot a, com.ironpath.advisor.CombatSetup setup, Actions actions, Map<String, Map<String, String>> referenceChoices, boolean supported)
 	{
 		boolean ranged = setup.family == com.ironpath.advisor.CombatSetup.Family.RANGED;
 		boolean melee = setup.family == com.ironpath.advisor.CombatSetup.Family.MELEE;
-		java.util.function.BiConsumer<String,String> edit = (key,value) -> actions.reference((melee ? "melee/" : ranged ? "ranged/" : "") + key,value);
+		long expectedView=view;
+		java.util.function.BiConsumer<String,String> edit = (key,value) -> { if(valid(expectedView,actions)) { actions.reference((melee ? "melee/" : ranged ? "ranged/" : "") + key,value); } };
 		text(parent, "Reference only. Empty slots are deliberate exclusions, not zero-valued unknown account gear. Prayer/boost are assumptions; quantities and remaining charges are not measured.");
 		button(parent, "Use minimal template", () -> edit.accept("template", "true"));
 		for (String slot : PoweredMagic.SLOTS)
@@ -846,25 +901,27 @@ final class IronpathPanel extends PluginPanel
 		for (Advisor.Requirement requirement : requirements)
 		{ text(parent, requirement.role + " · " + (requirement.truth == Truth.TRUE ? "Confirmed for planning" : requirement.truth == Truth.FALSE ? "Confirmed gap" : "Unknown")
 			+ ": " + requirement.label);
-			JPanel evidence = section(parent, "Evidence"); text(evidence, requirement.evidence); }
+			text(parent,requirement.evidence); }
 	}
 
 	private void controls(JPanel parent, KnowledgeCatalog catalog, Preferences preferences, AccountSnapshot account, Actions actions)
 	{
-		text(parent, "Optional goal (one at a time)");
+		long expectedView=view;
+		JPanel optional=section(parent,"Optional goal");
+		text(optional, "No goal is needed for account advice.");
 		JComboBox<Choice> goals = choices(Advisor.goalChoices(catalog), true);
 		select(goals, preferences.goal);
-		parent.add(goals);
-		button(parent, "Set goal", () -> actions.goal(((Choice) goals.getSelectedItem()).id));
-		JPanel choices = section(parent, "Skips and manual confirmations");
+		optional.add(goals);
+		button(optional, "Set goal", () -> { if(valid(expectedView,actions)){ actions.goal(((Choice) goals.getSelectedItem()).id); } });
+		JPanel choices = section(parent, "Skipped routes and reminders");
 		text(choices, "Skip an activity to exclude its acquisition route. Owned rewards stay useful; skips never complete targets.");
 		JComboBox<Choice> activitySkip = choices(catalog.activities, false);
 		choices.add(activitySkip);
-		button(choices, "Skip selected activity", () -> actions.skip(((Choice) activitySkip.getSelectedItem()).id, true));
+		button(choices, "Skip selected activity", () -> { if(valid(expectedView,actions)){ actions.skip(((Choice) activitySkip.getSelectedItem()).id, true); } });
 		catalog.activities.forEach((id, label) -> {
 			if (preferences.skipped.contains(id)) {
 				text(choices, "Skipped activity: " + label);
-				button(choices, "Restore activity", () -> actions.skip(id, false));
+				button(choices, "Restore activity", () -> { if(valid(expectedView,actions)){ actions.skip(id, false); } });
 			}
 		});
 		text(choices, "Individual reminders can also be skipped without excluding their whole activity.");
@@ -872,19 +929,20 @@ final class IronpathPanel extends PluginPanel
 		catalog.decisions.stream().filter(d -> "reviewed".equals(d.status)).forEach(d -> activities.put(d.id, d.title));
 		JComboBox<Choice> activity = choices(activities, false);
 		choices.add(activity);
-		button(choices, "Skip selected action", () -> actions.skip(((Choice) activity.getSelectedItem()).id, true));
+		button(choices, "Skip selected action", () -> { if(valid(expectedView,actions)){ actions.skip(((Choice) activity.getSelectedItem()).id, true); } });
 		for (KnowledgeCatalog.Decision decision : catalog.decisions)
 		{
 			if (!preferences.skipped.contains(decision.id)) { continue; }
 			text(choices, "Skipped: " + decision.title);
-			button(choices, "Restore action", () -> actions.skip(decision.id, false));
+			button(choices, "Restore action", () -> { if(valid(expectedView,actions)){ actions.skip(decision.id, false); } });
 		}
-		text(choices, "Manual ownership/unlocks are reversible planning assumptions. They do not confirm charged, worn or usable gear. Readable client quest/unlock facts take precedence; positive observed possession overrides manual absence.");
+		JPanel corrections=section(parent,"Correct ownership and unlocks"); corrections.setName("account-corrections");
+		text(corrections, "Manual ownership/unlocks are reversible planning assumptions. They do not confirm charged, worn or usable gear. Readable client quest/unlock facts take precedence; positive observed possession overrides manual absence.");
 		JComboBox<Choice> fact = choices(catalog.factChoices(), false);
-		choices.add(fact);
-		button(choices, "Owned / unlocked", () -> actions.confirm(((Choice) fact.getSelectedItem()).id, true));
-		button(choices, "Not owned / locked", () -> actions.confirm(((Choice) fact.getSelectedItem()).id, false));
-		button(choices, "Clear selected fact", () -> actions.confirm(((Choice) fact.getSelectedItem()).id, null));
+		corrections.add(fact); fact.setName("account-fact");
+		button(corrections, "Owned / unlocked", () -> { if(valid(expectedView,actions)){ actions.confirm(((Choice) fact.getSelectedItem()).id, true); } });
+		button(corrections, "Not owned / locked", () -> { if(valid(expectedView,actions)){ actions.confirm(((Choice) fact.getSelectedItem()).id, false); } });
+		button(corrections, "Clear selected fact", () -> { if(valid(expectedView,actions)){ actions.confirm(((Choice) fact.getSelectedItem()).id, null); } });
 		preferences.confirmations.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry ->
 		{
 			String label = catalog.factChoices().get(entry.getKey());
@@ -895,10 +953,10 @@ final class IronpathPanel extends PluginPanel
 			{ precedence = " Positive observed possession takes precedence."; }
 			if (account.fact(entry.getKey()).known())
 			{ precedence = " Readable client unlock takes precedence."; }
-			text(choices, label + ": " + entry.getValue().evidence() + "." + precedence);
-			button(choices, "Clear confirmation", () -> actions.confirm(entry.getKey(), null));
+			text(corrections,label+": manually "+(entry.getValue().value?"owned / unlocked":"not owned / locked")+"."+precedence);
+			button(corrections, "Clear confirmation", () -> { if(valid(expectedView,actions)){ actions.confirm(entry.getKey(), null); } });
 		});
-		button(choices, "Reset all planning choices", actions::clear);
+		button(choices, "Reset all planning choices", ()->{if(valid(expectedView,actions)){actions.clear();}});
 	}
 
 	private void goal(JPanel parent, Advisor.GoalView goal, KnowledgeCatalog catalog, Actions actions)
@@ -1031,7 +1089,7 @@ final class IronpathPanel extends PluginPanel
 				return new Dimension(width, (int) Math.ceil(view.getPreferredSpan(javax.swing.text.View.Y_AXIS))
 					+ insets.top + insets.bottom);
 			}
-		}; text.setLineWrap(true); text.setWrapStyleWord(true);
+		}; text.setFocusable(false); text.setLineWrap(true); text.setWrapStyleWord(true);
 		text.setMinimumSize(new Dimension(0,0));
 		text.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 		text.setFont(panel.getFont());

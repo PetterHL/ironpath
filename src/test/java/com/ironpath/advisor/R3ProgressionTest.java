@@ -40,9 +40,9 @@ public class R3ProgressionTest
 		AccountSnapshot a=items(muspah(),20997,27275,22325,11212,27226,27229,27232);
 		Advisor.UpgradeView zaryte=view(a,"zaryte-crossbow"),venator=view(a,"venator-bow");
 		assertEquals(STRONG,zaryte.valueEvidence.importance);assertTrue(zaryte.valueEvidence.independentUtility);
-		assertTrue(zaryte.card.metric.contains("Burst not quantified"));assertTrue(zaryte.valueEvidence.roles.get(0).limitation.contains("successful hit"));
+		assertTrue(zaryte.card.metric.contains("Special attack burst"));assertTrue(zaryte.valueEvidence.roles.get(0).limitation.contains("successful hit"));
 		assertEquals(CONTEXTUAL,venator.valueEvidence.importance);assertTrue(venator.valueEvidence.reasonCodes.contains("REVIEWED_ROLE_VALUE"));
-		assertEquals(Category.LONG_TERM,venator.pursuit.category);assertTrue(venator.card.metric.contains("geometry gap"));
+		assertEquals(Category.LONG_TERM,venator.pursuit.category);assertTrue(venator.card.metric.contains("Multi-target"));
 		assertFalse(advisor.upgrades(a,missing).stream().anyMatch(v->v.upgrade.id.equals("swamp-trident")||v.upgrade.id.equals("twisted-bow")||v.upgrade.id.equals("bowfa")));
 	}
 	@Test public void contextLossNarrowsBurstWithoutPretendingAnOwnedBowCoversIt()
@@ -155,11 +155,11 @@ public class R3ProgressionTest
 		List<Advisor.UpgradeView> views=advisor.upgrades(muspah(),Preferences.EMPTY);
 		Advisor.UpgradeView v=views.stream().filter(x->x.upgrade.id.equals("venator-bow")).findFirst().orElseThrow();
 		assertEquals(CONTEXTUAL,v.valueEvidence.importance);assertEquals(Category.CHECK,v.pursuit.category);
-		assertTrue(v.card.status.contains("ownership unconfirmed"));
+		assertTrue(v.card.status.contains("Check ownership"));
 		Advisor.UpgradeView core=views.stream().filter(x->x.upgrade.id.equals("necklace-of-anguish")).findFirst().orElseThrow();
 		assertEquals(KEY,core.valueEvidence.importance);assertEquals(Category.CHECK,core.pursuit.category);
 		assertTrue(core.valueEvidence.reasonCodes.contains("OWNERSHIP_CONDITIONAL_ROLE"));
-		assertTrue(core.card.status.contains("ownership unconfirmed"));
+		assertTrue(core.card.status.contains("Check ownership"));
 		assertFalse(new PursuitOverview(views,List.of(),List.of(),List.of()).longTerm.isEmpty());assertFalse(v.comparison.available(ComparisonResult.Metric.THEORETICAL_DPS));
 	}
 	@Test public void explicitSingleCombatScenarioRemovesOnlyItsBounceBenefit()

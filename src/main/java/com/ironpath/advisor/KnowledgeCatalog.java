@@ -16,6 +16,18 @@ import java.util.stream.Collectors;
 /** Bounded, bundled PvM decisions with a small set of observation predicates. */
 public final class KnowledgeCatalog
 {
+	/** Reviewed display names across observed gear and comparison families. */
+	public Map<Integer,String> itemNames()
+	{
+		Map<Integer,String> result=new java.util.TreeMap<>();
+		gear.values().stream().flatMap(List::stream).forEach(g->result.put(g.id,g.label));
+		comparison.items.forEach(i->result.put(i.id,i.label));
+		ranged.items.forEach(i->result.put(i.id,i.label));
+		melee.items.forEach(i->result.put(i.id,i.label));
+		upgrades.forEach(u->result.putIfAbsent(u.itemId,u.title));
+		return Map.copyOf(result);
+	}
+
 	public enum Kind { READ, TRAIN, ASSEMBLE, REVIEW, PLAN, ACQUIRE }
 	public enum Effort { SMALL, TRAINING, GRIND }
 	public enum Benefit { MAJOR, MODERATE, MINOR, PLANNING }

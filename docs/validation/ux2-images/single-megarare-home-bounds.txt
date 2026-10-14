@@ -1,0 +1,31 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Tormented bracelet
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=29] +2 max hit
+card-baseline java.awt.Rectangle[x=0,y=69,width=199,height=24] Compared with Barrows gloves
+card-status java.awt.Rectangle[x=0,y=93,width=199,height=24] Medium remaining effort
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Occult necklace
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=29] +2 max hit
+card-baseline java.awt.Rectangle[x=0,y=69,width=199,height=24] Compared with Amulet of fury
+card-status java.awt.Rectangle[x=0,y=93,width=199,height=24] Medium remaining effort
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Toxic blowpipe
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=29] +1.21 DPS
+card-baseline java.awt.Rectangle[x=0,y=69,width=199,height=44] Compared with Bow of faerdhinen (corrupted)
+card-status java.awt.Rectangle[x=0,y=113,width=199,height=24] Medium remaining effort
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Necklace of rupture
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=29] +2 max hit
+card-baseline java.awt.Rectangle[x=0,y=69,width=199,height=24] Compared with Amulet of fury
+card-status java.awt.Rectangle[x=0,y=93,width=199,height=24] Long-term
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Abyssal tentacle
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=29] +0.00 DPS
+card-baseline java.awt.Rectangle[x=0,y=69,width=199,height=24] Compared with Abyssal whip
+card-status java.awt.Rectangle[x=0,y=93,width=199,height=24] Medium remaining effort
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Ancestral robe top
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=29] +1 max hit
+card-baseline java.awt.Rectangle[x=0,y=69,width=199,height=44] Compared with Ahrim's robetop [4712]
+card-status java.awt.Rectangle[x=0,y=113,width=199,height=24] Long-term
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Dizana's quiver
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=29] +1 max hit
+card-baseline java.awt.Rectangle[x=0,y=69,width=199,height=24] Compared with Empty cape
+card-status java.awt.Rectangle[x=0,y=93,width=199,height=24] Long-term
+null java.awt.Rectangle[x=6,y=1127,width=213,height=24] Demonic Gorillas
+null java.awt.Rectangle[x=6,y=1151,width=213,height=44] Useful families: necklace-of-anguish · tormented-bracelet
