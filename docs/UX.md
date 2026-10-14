@@ -1,11 +1,6 @@
 # IronPath native UI specification
 
-14 October 2026 · **AD1c priority/navigation implemented for review; client/player acceptance pending.** UX2 is stacked on EP1 #25; current main still contains the earlier R3a/UX-completion components. [New component evidence](validation/UX2.md). This specification incorporates the written decisions from “Oppsummering av UX” and account-efficient progression. [TASKS EP1/UX2](../TASKS.md#ep1--account-efficient-progression-next-implementation) is the only delivery backlog; [DESIGN progression-2](DESIGN.md#progression-intelligence-contract-version-progression-2-selected) owns ranking.
-
-**EP1 integration for review:** the current cards/details now consume typed priority, remaining effort, metric availability, estimate scope and direct/preparation choices. The homepage preserves domain order without forced long-term insertion. [225px component evidence and pending client checks](validation/EP1.md). This is the minimal order/effort integration before UX2, not the completed written visual redesign.
-**R3b family review, 14 October:** the existing native Value/Path components now expose independent melee task, soul-state and explicit target-Defence controls. A typed scope renders “Five-swing mean DPS” for Soulreaper ramp; Scythe aggregate max/per-hit accuracy and off-hand removal/restoration remain explicit. Blood-fury utility can lead a card while Value retains a negative ordinary comparison. [225px synthetic component evidence and pending client checks](validation/R3b-families.md) accompany these narrow model controls; they do not implement the separate UX2 direction below.
-
-14 October 2026 · **Selected visual advisor direction; UX2 implementation pending.** Current main contains the earlier R3a/UX-completion components. This specification incorporates the written decisions from “Oppsummering av UX” and account-efficient progression. [TASKS EP1/UX2](../TASKS.md#ep1--account-efficient-progression-next-implementation) is the only delivery backlog; [DESIGN progression-2](DESIGN.md#progression-intelligence-contract-version-progression-2-selected) owns ranking.
+14 October 2026 · integrated plugin 0.14.0 / knowledge ad1-r3b-1 / catalogue 14. UX2, AD1c, AD1b estimates and R3b controls share one native flow. [Combined evidence](validation/ad1-r3b-integration.md). Real-client/player acceptance and visual-reference comparison remain pending; TASKS AD1c-C1–C3/R8 own those checks. Original captures and per-branch reports retain their historical scope.
 
 ## Experience and scope
 

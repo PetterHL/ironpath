@@ -23,11 +23,11 @@ public final class ComparisonResult
 		PoweredMagic.Metrics after, TargetProfile target, Map<Metric, PoweredMagic.Status> support,
 		String reason, String model, String knowledge, List<String> assumptions, boolean weaponComparison, Map<Metric, String> gaps)
 	{
-		this(beforeSetup,afterSetup,before,after,target,support,reason,model,knowledge,assumptions,dpsFirst,gaps,OffenceScope.STEADY_REFERENCE);
+		this(beforeSetup,afterSetup,before,after,target,support,reason,model,knowledge,assumptions,weaponComparison,gaps,OffenceScope.STEADY_REFERENCE);
 	}
 	ComparisonResult(CombatSetup beforeSetup, CombatSetup afterSetup, PoweredMagic.Metrics before,
 		PoweredMagic.Metrics after, TargetProfile target, Map<Metric, PoweredMagic.Status> support,
-		String reason, String model, String knowledge, List<String> assumptions, boolean dpsFirst, Map<Metric, String> gaps,OffenceScope scope)
+		String reason, String model, String knowledge, List<String> assumptions, boolean weaponComparison, Map<Metric, String> gaps,OffenceScope scope)
 	{
 		offenceScope=scope;
 		this.beforeSetup = beforeSetup; this.afterSetup = afterSetup; this.before = before; this.after = after;

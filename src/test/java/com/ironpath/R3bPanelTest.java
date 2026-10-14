@@ -110,10 +110,10 @@ public class R3bPanelTest
 			JTextField defence=(JTextField)children(panel).stream().filter(c->"reference-defence".equals(c.getName())).findFirst().orElseThrow();
 			defence.setText("0");button("Apply target Defence").doClick();assertEquals(0,melee.defenceOverride);
 			assertEquals("neutral-zero-defence",ranged.target);assertEquals("neutral-zero-defence",magic.target);
-			button("Path").doClick();assertTrue(text().contains("2,000"));assertTrue(text().contains("75 Magic"));capture("soul-path");
-			button("Back to upgrades").doClick();
+			button("Acquisition").doClick();assertTrue(text().contains("2,000"));assertTrue(text().contains("75 Magic"));capture("soul-path");
+			button("← Upgrades").doClick();
 			children(panel).stream().filter(c->"open-upgrade-avernic-treads-primordial".equals(c.getName())).map(c->(JButton)c).findFirst().orElseThrow().doClick();
-			button("Path").doClick();assertTrue(text().contains("4,000"));capture("treads-primordial-path");
+			button("Acquisition").doClick();assertTrue(text().contains("4,000"));capture("treads-primordial-path");
 		} catch(Exception e){throw new RuntimeException(e);} });
 	}
 }

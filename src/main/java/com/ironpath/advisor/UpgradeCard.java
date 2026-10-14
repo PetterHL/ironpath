@@ -9,7 +9,8 @@ public final class UpgradeCard
 	public UpgradeCard(Advisor.UpgradeView view,KnowledgeCatalog catalog)
 	{
 		presentation=view.presentation; reason=view.valueEvidence.reason;
-		effort=presentation.effort.band.label+" remaining effort"; priorityReason=presentation.priorityReason;
+		effort=presentation.minimumMeanHours==null?presentation.effort.band.label+" remaining effort"
+			:String.format(java.util.Locale.ROOT,"%s: ~%.1f h mean · %s",presentation.estimateSourceKind==PaceScenario.SourceKind.MODEL_BASED?"Model-based estimate":"Manual pace scenario",presentation.maximumMeanHours,presentation.conditionalComponentWork?"if components needed":"component only"); priorityReason=presentation.priorityReason;
 		status=presentation.status;
 		UpgradePresentation.Metric value=presentation.primaryMetric;
 		String compared=presentation.baseline;

@@ -21,7 +21,9 @@
       "items": [],
       "models": [],
       "routes": [
-        "seek-titans-prayers"
+        "seek-titans-prayers",
+        "unlock-rigour",
+        "train-rigour"
       ],
       "contexts": [],
       "rewards": [
@@ -56,7 +58,9 @@
       "items": [],
       "models": [],
       "routes": [
-        "seek-titans-prayers"
+        "seek-titans-prayers",
+        "unlock-augury",
+        "train-augury"
       ],
       "contexts": [],
       "rewards": [
@@ -89,7 +93,9 @@
         21034
       ],
       "models": [],
-      "routes": [],
+      "routes": [
+        "unlock-rigour"
+      ],
       "contexts": [],
       "rewards": [
         "cox-rigour"
@@ -118,7 +124,9 @@
         21079
       ],
       "models": [],
-      "routes": [],
+      "routes": [
+        "unlock-augury"
+      ],
       "contexts": [],
       "rewards": [
         "cox-augury"
@@ -149,7 +157,13 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "items": [],
       "models": [],
-      "routes": [],
+      "routes": [
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "review-occult-switch"
+      ],
       "contexts": [],
       "efforts": [
         "plan-team-cox",
@@ -243,7 +257,11 @@
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
         "seek-avas-assembler",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -335,7 +353,12 @@
         "seek-toa-fang",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident"
       ],
       "contexts": [],
       "rewards": [
@@ -414,7 +437,12 @@
         "seek-toa-fang",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident"
       ],
       "contexts": [],
       "efforts": [
@@ -495,7 +523,12 @@
         "seek-toa-fang",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident"
       ],
       "contexts": [
         "toa"
@@ -575,7 +608,12 @@
         "seek-toa-fang",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident"
       ],
       "contexts": [],
       "rewards": [
@@ -690,7 +728,13 @@
         "pursue-torva-body",
         "pursue-torva-head",
         "pursue-torva-legs",
-        "pursue-ultor-ring"
+        "pursue-ultor-ring",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "seek-abyssal-tentacle",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "profiles": [
@@ -705,7 +749,18 @@
         "cox-effort",
         "owned-melee-effort",
         "moons-effort",
-        "royal-titans-effort"
+        "royal-titans-effort",
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ],
       "efforts": [
         "plan-team-cox",
@@ -858,7 +913,13 @@
         "pursue-torva-body",
         "pursue-torva-head",
         "pursue-torva-legs",
-        "pursue-ultor-ring"
+        "pursue-ultor-ring",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "seek-abyssal-tentacle",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "profiles": [
@@ -873,7 +934,18 @@
         "cox-effort",
         "owned-melee-effort",
         "moons-effort",
-        "royal-titans-effort"
+        "royal-titans-effort",
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ],
       "efforts": [
         "plan-team-cox",
@@ -1010,7 +1082,11 @@
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
         "seek-avas-assembler",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -1071,7 +1147,9 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "items": [],
       "models": [],
-      "routes": [],
+      "routes": [
+        "plan-team-cox"
+      ],
       "contexts": [],
       "efforts": [
         "plan-team-cox"
@@ -1100,7 +1178,8 @@
       ],
       "models": [],
       "routes": [
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident"
       ],
       "contexts": [],
       "efforts": [
@@ -1128,7 +1207,9 @@
         13576
       ],
       "models": [],
-      "routes": [],
+      "routes": [
+        "coordinate-defence-reduction"
+      ],
       "contexts": [],
       "efforts": [
         "coordinate-defence-reduction"
@@ -1151,7 +1232,9 @@
         11804
       ],
       "models": [],
-      "routes": [],
+      "routes": [
+        "coordinate-defence-reduction"
+      ],
       "contexts": [],
       "efforts": [
         "coordinate-defence-reduction"
@@ -1174,7 +1257,9 @@
         21003
       ],
       "models": [],
-      "routes": [],
+      "routes": [
+        "coordinate-defence-reduction"
+      ],
       "contexts": [],
       "efforts": [
         "coordinate-defence-reduction"
@@ -1203,7 +1288,9 @@
       "models": [],
       "routes": [
         "seek-occult-necklace",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident",
+        "review-occult-switch"
       ],
       "contexts": [],
       "efforts": [
@@ -1239,7 +1326,9 @@
       "routes": [
         "seek-occult-necklace",
         "seek-zulrah-magic-fang",
-        "pursue-amulet-of-blood-fury"
+        "pursue-amulet-of-blood-fury",
+        "assemble-swamp-trident",
+        "review-occult-switch"
       ],
       "contexts": [],
       "efforts": [
@@ -1247,7 +1336,8 @@
         "pursue-amulet-of-blood-fury"
       ],
       "profiles": [
-        "owned-neck-effort"
+        "owned-neck-effort",
+        "vyres-effort"
       ],
       "relations": [
         "r3b2-role-amulet-of-blood-fury"
@@ -1336,7 +1426,12 @@
         "pursue-torva-body",
         "pursue-torva-head",
         "pursue-torva-legs",
-        "pursue-ultor-ring"
+        "pursue-ultor-ring",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "profiles": [
@@ -1351,7 +1446,18 @@
         "cox-effort",
         "owned-melee-effort",
         "moons-effort",
-        "royal-titans-effort"
+        "royal-titans-effort",
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ],
       "efforts": [
         "plan-team-cox",
@@ -1505,7 +1611,12 @@
         "pursue-torva-body",
         "pursue-torva-head",
         "pursue-torva-legs",
-        "pursue-ultor-ring"
+        "pursue-ultor-ring",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "profiles": [
@@ -1520,7 +1631,18 @@
         "cox-effort",
         "owned-melee-effort",
         "moons-effort",
-        "royal-titans-effort"
+        "royal-titans-effort",
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ],
       "efforts": [
         "plan-team-cox",
@@ -1659,7 +1781,11 @@
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
         "seek-avas-assembler",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -1743,7 +1869,9 @@
         "seek-seas-trident",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident",
+        "train-slayer-trident"
       ],
       "contexts": [],
       "efforts": [
@@ -1798,7 +1926,12 @@
         "seek-toa-fang",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident"
       ],
       "contexts": [],
       "rewards": [
@@ -1901,7 +2034,9 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "review-olm-lance",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "efforts": [
@@ -1933,7 +2068,18 @@
         "seek-toa-fang"
       ],
       "profiles": [
-        "owned-melee-effort"
+        "owned-melee-effort",
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ],
       "activityContexts": [
         "r3b-duke-context",
@@ -2038,7 +2184,9 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "review-olm-lance",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "efforts": [
@@ -2070,7 +2218,18 @@
         "seek-toa-fang"
       ],
       "profiles": [
-        "owned-melee-effort"
+        "owned-melee-effort",
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ],
       "activityContexts": [
         "r3b-duke-context",
@@ -2130,7 +2289,9 @@
       "models": [],
       "routes": [
         "seek-occult-necklace",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident",
+        "review-occult-switch"
       ],
       "contexts": [],
       "efforts": [
@@ -2163,7 +2324,9 @@
       "models": [],
       "routes": [
         "seek-occult-necklace",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident",
+        "review-occult-switch"
       ],
       "contexts": [],
       "efforts": [
@@ -2190,7 +2353,9 @@
         27100
       ],
       "models": [],
-      "routes": [],
+      "routes": [
+        "coordinate-defence-reduction"
+      ],
       "contexts": [],
       "efforts": [
         "coordinate-defence-reduction"
@@ -2213,7 +2378,9 @@
         20370
       ],
       "models": [],
-      "routes": [],
+      "routes": [
+        "coordinate-defence-reduction"
+      ],
       "contexts": [],
       "efforts": [
         "coordinate-defence-reduction"
@@ -2236,7 +2403,9 @@
         28035
       ],
       "models": [],
-      "routes": [],
+      "routes": [
+        "coordinate-defence-reduction"
+      ],
       "contexts": [],
       "efforts": [
         "coordinate-defence-reduction"
@@ -2288,7 +2457,12 @@
         "seek-toa-fang",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident"
       ],
       "contexts": [],
       "rewards": [
@@ -2367,7 +2541,12 @@
         "seek-toa-fang",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident"
       ],
       "contexts": [],
       "rewards": [
@@ -2444,7 +2623,12 @@
         "seek-toa-fang",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident"
       ],
       "contexts": [],
       "rewards": [
@@ -2524,7 +2708,11 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
         "seek-crystal-body",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -2615,7 +2803,11 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
         "seek-crystal-legs",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -2706,7 +2898,11 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
         "seek-crystal-helm",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "coordinate-defence-reduction",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -3194,7 +3390,16 @@
         "pursue-torva-body",
         "pursue-torva-head",
         "pursue-torva-legs",
-        "pursue-ultor-ring"
+        "pursue-ultor-ring",
+        "unlock-rigour",
+        "unlock-augury",
+        "plan-team-cox",
+        "assemble-swamp-trident",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -3269,7 +3474,18 @@
         "owned-melee-effort",
         "owned-neck-effort",
         "moons-effort",
-        "royal-titans-effort"
+        "royal-titans-effort",
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ],
       "efforts": [
         "unlock-rigour",
@@ -3475,7 +3691,8 @@
       "items": [],
       "models": [],
       "routes": [
-        "seek-seas-trident"
+        "seek-seas-trident",
+        "train-slayer-trident"
       ],
       "contexts": [],
       "efforts": [
@@ -3525,7 +3742,8 @@
       "models": [],
       "routes": [
         "seek-zulrah-magic-fang",
-        "seek-toxic-blowpipe"
+        "seek-toxic-blowpipe",
+        "assemble-swamp-trident"
       ],
       "contexts": [],
       "efforts": [
@@ -3553,7 +3771,8 @@
       "items": [],
       "models": [],
       "routes": [
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident"
       ],
       "contexts": []
     },
@@ -3574,7 +3793,8 @@
       "items": [],
       "models": [],
       "routes": [
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident"
       ],
       "contexts": []
     },
@@ -3971,7 +4191,8 @@
         "seek-occult-necklace",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident"
       ],
       "contexts": [
         "neutral-zero-defence"
@@ -4010,7 +4231,8 @@
         "seek-occult-necklace",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident"
       ],
       "contexts": [
         "neutral-zero-defence"
@@ -4035,7 +4257,8 @@
       "models": [],
       "routes": [
         "seek-occult-necklace",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident"
       ],
       "contexts": [
         "dharok"
@@ -4074,7 +4297,8 @@
         "seek-occult-necklace",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident"
       ],
       "contexts": []
     },
@@ -4111,7 +4335,8 @@
         "seek-occult-necklace",
         "seek-tormented-bracelet",
         "seek-tumekens-shadow",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident"
       ],
       "contexts": []
     },
@@ -4413,7 +4638,8 @@
         "seek-avernic-treads",
         "seek-occult-necklace",
         "seek-zulrah-magic-fang",
-        "pursue-primordial-boots"
+        "pursue-primordial-boots",
+        "assemble-swamp-trident"
       ],
       "contexts": [],
       "relations": [
@@ -4421,6 +4647,9 @@
       ],
       "efforts": [
         "pursue-primordial-boots"
+      ],
+      "profiles": [
+        "cerberus-effort"
       ]
     },
     {
@@ -4450,7 +4679,8 @@
         "seek-occult-necklace",
         "seek-zulrah-magic-fang",
         "pursue-avernic-treads-primordial",
-        "pursue-primordial-boots"
+        "pursue-primordial-boots",
+        "assemble-swamp-trident"
       ],
       "contexts": [],
       "relations": [
@@ -4461,6 +4691,9 @@
       "efforts": [
         "pursue-avernic-treads-primordial",
         "pursue-primordial-boots"
+      ],
+      "profiles": [
+        "cerberus-effort"
       ]
     },
     {
@@ -4486,7 +4719,8 @@
       "routes": [
         "seek-avernic-treads",
         "seek-occult-necklace",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident"
       ],
       "contexts": [],
       "relations": [
@@ -4516,7 +4750,8 @@
       "routes": [
         "seek-avernic-treads",
         "seek-occult-necklace",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "assemble-swamp-trident"
       ],
       "contexts": [],
       "relations": [
@@ -5709,6 +5944,10 @@
       "efforts": [
         "pursue-bellator-ring",
         "pursue-ultor-ring"
+      ],
+      "profiles": [
+        "vardorvis-effort",
+        "whisperer-effort"
       ]
     },
     {
@@ -5916,6 +6155,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -6006,6 +6248,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -6040,6 +6285,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -6165,7 +6413,8 @@
       "items": [],
       "models": [],
       "routes": [
-        "seek-tormented-bracelet"
+        "seek-tormented-bracelet",
+        "seek-necklace-of-anguish"
       ],
       "contexts": [],
       "efforts": [
@@ -9496,6 +9745,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -9620,6 +9882,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -9744,6 +10019,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -9868,6 +10156,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -9992,6 +10293,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -10116,6 +10430,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -10240,6 +10567,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -10364,6 +10704,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -10488,6 +10841,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -10667,6 +11033,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -10800,6 +11179,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -10933,6 +11325,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -11066,6 +11471,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -11199,6 +11617,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -11227,6 +11658,9 @@
       ],
       "efforts": [
         "pursue-neitiznot-faceguard"
+      ],
+      "profiles": [
+        "basilisk-knights-effort"
       ]
     },
     {
@@ -11255,6 +11689,9 @@
       ],
       "efforts": [
         "pursue-neitiznot-faceguard"
+      ],
+      "profiles": [
+        "basilisk-knights-effort"
       ]
     },
     {
@@ -11355,6 +11792,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -11387,6 +11827,9 @@
       "efforts": [
         "pursue-amulet-of-rancour",
         "pursue-amulet-of-torture"
+      ],
+      "profiles": [
+        "araxxor-effort"
       ]
     },
     {
@@ -11419,6 +11862,9 @@
       "efforts": [
         "pursue-amulet-of-rancour",
         "pursue-amulet-of-torture"
+      ],
+      "profiles": [
+        "araxxor-effort"
       ]
     },
     {
@@ -11567,6 +12013,9 @@
       ],
       "efforts": [
         "pursue-primordial-boots"
+      ],
+      "profiles": [
+        "cerberus-effort"
       ]
     },
     {
@@ -11811,14 +12260,16 @@
       "licence": "CC BY-NC-SA 3.0 (source content only)",
       "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
       "decisions": [
-        "seek-scorching-bow"
+        "seek-scorching-bow",
+        "pursue-emberlight"
       ],
       "items": [
         29580
       ],
       "models": [],
       "routes": [
-        "seek-scorching-bow"
+        "seek-scorching-bow",
+        "pursue-emberlight"
       ],
       "contexts": [],
       "efforts": [
@@ -11935,7 +12386,9 @@
       ],
       "items": [],
       "models": [],
-      "routes": [],
+      "routes": [
+        "seek-scorching-bow"
+      ],
       "contexts": [],
       "rewards": [],
       "activityContexts": [],
@@ -12570,6 +13023,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -12718,6 +13184,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -12788,7 +13267,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -12851,6 +13331,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -12921,7 +13414,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -12984,6 +13478,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -13111,6 +13618,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -13180,7 +13700,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -13243,6 +13764,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -13370,6 +13904,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -13441,7 +13988,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -13504,6 +14052,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -13574,7 +14135,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -13637,6 +14199,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -13706,7 +14281,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -13769,6 +14345,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -13838,7 +14427,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -13901,6 +14491,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -13970,7 +14573,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -14033,6 +14637,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -14102,7 +14719,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -14165,6 +14783,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -14234,7 +14865,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -14297,6 +14929,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -14366,7 +15011,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -14429,6 +15075,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -14501,7 +15160,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -14564,6 +15224,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -14633,7 +15306,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -14696,6 +15370,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -14765,7 +15452,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -14828,6 +15516,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -14897,7 +15598,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -14960,6 +15662,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -15029,7 +15744,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -15092,6 +15808,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -15181,7 +15910,8 @@
         "pursue-torva-head",
         "pursue-torva-legs",
         "pursue-ultor-ring",
-        "seek-toa-fang"
+        "seek-toa-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "activityContexts": [
@@ -15244,6 +15974,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -15363,6 +16106,9 @@
       ],
       "efforts": [
         "pursue-oathplate-head"
+      ],
+      "profiles": [
+        "yama-effort"
       ]
     },
     {
@@ -15624,6 +16370,9 @@
       ],
       "efforts": [
         "pursue-ultor-ring"
+      ],
+      "profiles": [
+        "vardorvis-effort"
       ]
     },
     {
@@ -15653,6 +16402,9 @@
       ],
       "efforts": [
         "pursue-bellator-ring"
+      ],
+      "profiles": [
+        "whisperer-effort"
       ]
     },
     {
@@ -15999,6 +16751,9 @@
       "efforts": [
         "pursue-amulet-of-rancour",
         "pursue-amulet-of-torture"
+      ],
+      "profiles": [
+        "araxxor-effort"
       ]
     },
     {
@@ -16219,14 +16974,16 @@
       "reuseBasis": "Independently reviewed numerical game facts and original summaries; no source prose, implementation, images or bulk dataset reused.",
       "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
       "decisions": [
-        "pursue-emberlight"
+        "pursue-emberlight",
+        "seek-scorching-bow"
       ],
       "items": [
         29580
       ],
       "models": [],
       "routes": [
-        "pursue-emberlight"
+        "pursue-emberlight",
+        "seek-scorching-bow"
       ],
       "contexts": [],
       "activityContexts": [],
@@ -16264,6 +17021,9 @@
       ],
       "efforts": [
         "pursue-dragon-hunter-lance"
+      ],
+      "profiles": [
+        "hydra-effort"
       ]
     },
     {
@@ -16351,6 +17111,9 @@
       ],
       "efforts": [
         "pursue-ultor-ring"
+      ],
+      "profiles": [
+        "vardorvis-effort"
       ]
     },
     {
@@ -16380,6 +17143,9 @@
       ],
       "efforts": [
         "pursue-bellator-ring"
+      ],
+      "profiles": [
+        "whisperer-effort"
       ]
     },
     {
@@ -16409,6 +17175,9 @@
       ],
       "efforts": [
         "pursue-ultor-ring"
+      ],
+      "profiles": [
+        "vardorvis-effort"
       ]
     },
     {
@@ -16438,6 +17207,9 @@
       ],
       "efforts": [
         "pursue-bellator-ring"
+      ],
+      "profiles": [
+        "whisperer-effort"
       ]
     },
     {
@@ -16469,6 +17241,10 @@
       "efforts": [
         "pursue-bellator-ring",
         "pursue-ultor-ring"
+      ],
+      "profiles": [
+        "vardorvis-effort",
+        "whisperer-effort"
       ]
     },
     {
@@ -16535,6 +17311,9 @@
       ],
       "efforts": [
         "pursue-soulreaper-axe"
+      ],
+      "profiles": [
+        "melee-crafting-effort"
       ]
     },
     {
@@ -16564,6 +17343,9 @@
       ],
       "efforts": [
         "pursue-soulreaper-axe"
+      ],
+      "profiles": [
+        "melee-crafting-effort"
       ]
     },
     {
@@ -16593,6 +17375,9 @@
       ],
       "efforts": [
         "pursue-soulreaper-axe"
+      ],
+      "profiles": [
+        "melee-crafting-effort"
       ]
     },
     {
@@ -16622,6 +17407,9 @@
       ],
       "efforts": [
         "pursue-soulreaper-axe"
+      ],
+      "profiles": [
+        "melee-crafting-effort"
       ]
     },
     {
@@ -16651,6 +17439,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-rancour"
+      ],
+      "profiles": [
+        "araxxor-effort"
       ]
     },
     {
@@ -16680,6 +17471,9 @@
       ],
       "efforts": [
         "pursue-neitiznot-faceguard"
+      ],
+      "profiles": [
+        "basilisk-knights-effort"
       ]
     },
     {
@@ -16709,6 +17503,9 @@
       ],
       "efforts": [
         "pursue-primordial-boots"
+      ],
+      "profiles": [
+        "cerberus-effort"
       ]
     },
     {
@@ -16743,6 +17540,9 @@
       "efforts": [
         "pursue-amulet-of-blood-fury",
         "pursue-amulet-of-torture"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -16804,6 +17604,9 @@
         "pursue-oathplate-body",
         "pursue-oathplate-head",
         "pursue-oathplate-legs"
+      ],
+      "profiles": [
+        "yama-effort"
       ]
     },
     {
@@ -16841,6 +17644,9 @@
         "pursue-oathplate-body",
         "pursue-oathplate-head",
         "pursue-oathplate-legs"
+      ],
+      "profiles": [
+        "yama-effort"
       ]
     },
     {
@@ -16878,6 +17684,9 @@
         "pursue-oathplate-body",
         "pursue-oathplate-head",
         "pursue-oathplate-legs"
+      ],
+      "profiles": [
+        "yama-effort"
       ]
     },
     {
@@ -17005,6 +17814,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -17130,6 +17952,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -17255,6 +18090,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -17380,6 +18228,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -17505,6 +18366,19 @@
         "pursue-torva-legs",
         "pursue-ultor-ring",
         "seek-toa-fang"
+      ],
+      "profiles": [
+        "tob-effort",
+        "melee-crafting-effort",
+        "hydra-effort",
+        "nightmare-effort",
+        "yama-effort",
+        "vardorvis-effort",
+        "whisperer-effort",
+        "araxxor-effort",
+        "cerberus-effort",
+        "basilisk-knights-effort",
+        "vyres-effort"
       ]
     },
     {
@@ -17558,6 +18432,9 @@
       ],
       "efforts": [
         "pursue-soulreaper-axe"
+      ],
+      "profiles": [
+        "melee-crafting-effort"
       ]
     },
     {
@@ -17649,6 +18526,10 @@
       "efforts": [
         "pursue-soulreaper-axe",
         "pursue-ultor-ring"
+      ],
+      "profiles": [
+        "melee-crafting-effort",
+        "vardorvis-effort"
       ]
     },
     {
@@ -17705,6 +18586,9 @@
       ],
       "efforts": [
         "pursue-scythe-of-vitur"
+      ],
+      "profiles": [
+        "tob-effort"
       ]
     },
     {
@@ -17736,6 +18620,10 @@
       "efforts": [
         "pursue-bellator-ring",
         "pursue-soulreaper-axe"
+      ],
+      "profiles": [
+        "melee-crafting-effort",
+        "whisperer-effort"
       ]
     },
     {
@@ -17767,6 +18655,9 @@
       "efforts": [
         "pursue-dragon-hunter-lance",
         "pursue-ferocious-gloves"
+      ],
+      "profiles": [
+        "hydra-effort"
       ]
     },
     {
@@ -17794,6 +18685,9 @@
       ],
       "efforts": [
         "pursue-dragon-hunter-lance"
+      ],
+      "profiles": [
+        "hydra-effort"
       ]
     },
     {
@@ -17889,6 +18783,9 @@
         "pursue-inquisitor-head",
         "pursue-inquisitor-legs",
         "pursue-inquisitors-mace"
+      ],
+      "profiles": [
+        "nightmare-effort"
       ]
     },
     {
@@ -17928,6 +18825,9 @@
         "pursue-inquisitor-head",
         "pursue-inquisitor-legs",
         "pursue-inquisitors-mace"
+      ],
+      "profiles": [
+        "nightmare-effort"
       ]
     },
     {
@@ -18033,6 +18933,9 @@
         "pursue-oathplate-body",
         "pursue-oathplate-head",
         "pursue-oathplate-legs"
+      ],
+      "profiles": [
+        "yama-effort"
       ]
     },
     {
@@ -18068,6 +18971,9 @@
         "pursue-oathplate-body",
         "pursue-oathplate-head",
         "pursue-oathplate-legs"
+      ],
+      "profiles": [
+        "yama-effort"
       ]
     },
     {
@@ -18099,6 +19005,9 @@
       "efforts": [
         "pursue-amulet-of-rancour",
         "pursue-amulet-of-torture"
+      ],
+      "profiles": [
+        "araxxor-effort"
       ]
     },
     {
@@ -18153,6 +19062,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-rancour"
+      ],
+      "profiles": [
+        "araxxor-effort"
       ]
     },
     {
@@ -18180,6 +19092,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-rancour"
+      ],
+      "profiles": [
+        "araxxor-effort"
       ]
     },
     {
@@ -18265,6 +19180,9 @@
       "efforts": [
         "pursue-avernic-treads-primordial",
         "pursue-primordial-boots"
+      ],
+      "profiles": [
+        "cerberus-effort"
       ]
     },
     {
@@ -18294,6 +19212,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -18323,6 +19244,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -18352,6 +19276,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -18381,6 +19308,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -18410,6 +19340,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -18437,6 +19370,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -18464,6 +19400,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -18491,6 +19430,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -18518,6 +19460,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     },
     {
@@ -18545,6 +19490,9 @@
       ],
       "efforts": [
         "pursue-amulet-of-blood-fury"
+      ],
+      "profiles": [
+        "vyres-effort"
       ]
     }
   ],
@@ -23529,7 +24477,8 @@
         "lance",
         "tentacle",
         "twisted-bow",
-        "whip"
+        "whip",
+        "r3b2-tormented-synapse"
       ],
       "requires": [],
       "status": "reviewed",
@@ -23710,7 +24659,9 @@
           "blood-runes",
           "blood-vials"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "tob-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -23878,7 +24829,9 @@
         "allocations": [
           "blood-runes"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "melee-crafting-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -24036,7 +24989,9 @@
           "whip"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "hydra-effort",
+        "band": "LONG"
       }
     },
     {
@@ -24129,7 +25084,8 @@
         "scythe",
         "soulreaper",
         "tentacle",
-        "whip"
+        "whip",
+        "ep1-tormented-synapse"
       ],
       "requires": [],
       "status": "reviewed",
@@ -24138,7 +25094,7 @@
         "mode": "REPEATABLE",
         "burden": "HIGH",
         "tail": "ORDINARY",
-        "modeId": "melee-family-route",
+        "modeId": "ordinary-melee",
         "reason": "While Guthix Sleeps, Duradel's notes, 74 Smithing, hammer/anvil and a charged/infused Arclight plus synapse. Infusion and charges must together cover 10,000.",
         "missingMechanics": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
         "sources": [
@@ -24197,7 +25153,9 @@
           "tormented-synapse",
           "arclight-infusion"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "slayer-effort",
+        "band": "LONG"
       }
     },
     {
@@ -24353,7 +25311,9 @@
           "whip"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "nightmare-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -24457,7 +25417,7 @@
         "mode": "REPEATABLE",
         "burden": "HIGH",
         "tail": "LONG",
-        "modeId": "melee-family-route",
+        "modeId": "ordinary",
         "reason": "Owned damaged piece and Bandosian components shorten the route. Repair requires 90 Smithing; Bandos chest/tassets dismantling consumes useful owned equipment.",
         "missingMechanics": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
         "sources": [
@@ -24517,7 +25477,9 @@
         "allocations": [
           "bandos-components"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "nex-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -24621,7 +25583,7 @@
         "mode": "REPEATABLE",
         "burden": "HIGH",
         "tail": "LONG",
-        "modeId": "melee-family-route",
+        "modeId": "ordinary",
         "reason": "Owned damaged piece and Bandosian components shorten the route. Repair requires 90 Smithing; Bandos chest/tassets dismantling consumes useful owned equipment.",
         "missingMechanics": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
         "sources": [
@@ -24681,7 +25643,9 @@
         "allocations": [
           "bandos-components"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "nex-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -24785,7 +25749,7 @@
         "mode": "REPEATABLE",
         "burden": "HIGH",
         "tail": "LONG",
-        "modeId": "melee-family-route",
+        "modeId": "ordinary",
         "reason": "Owned damaged piece and Bandosian components shorten the route. Repair requires 90 Smithing; Bandos chest/tassets dismantling consumes useful owned equipment.",
         "missingMechanics": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
         "sources": [
@@ -24845,7 +25809,9 @@
         "allocations": [
           "bandos-components"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "nex-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -25011,7 +25977,9 @@
         "allocations": [
           "oathplate-materials"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "yama-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -25177,7 +26145,9 @@
         "allocations": [
           "oathplate-materials"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "yama-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -25343,7 +26313,9 @@
         "allocations": [
           "oathplate-materials"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "yama-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -25501,7 +26473,9 @@
           "whip"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "nightmare-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -25659,7 +26633,9 @@
           "whip"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "nightmare-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -25817,7 +26793,9 @@
           "whip"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "nightmare-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -25983,7 +26961,9 @@
         "allocations": [
           "chromium-ingots"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "vardorvis-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -26149,7 +27129,9 @@
         "allocations": [
           "chromium-ingots"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "whisperer-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -26263,7 +27245,7 @@
         "mode": "REPEATABLE",
         "burden": "HIGH",
         "tail": "ORDINARY",
-        "modeId": "melee-family-route",
+        "modeId": "ordinary",
         "reason": "Use owned zenyte/zenyte amulet first; 98 Crafting to make the unstrung amulet and 93 Magic to enchant. The zenyte also competes with anguish/tormented jewellery.",
         "missingMechanics": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
         "sources": [
@@ -26324,7 +27306,9 @@
         "allocations": [
           "zenyte-allocation"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "demonic-gorillas-effort",
+        "band": "LONG"
       }
     },
     {
@@ -26492,7 +27476,9 @@
         "allocations": [
           "torture-allocation"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "araxxor-effort",
+        "band": "LONG"
       }
     },
     {
@@ -26652,7 +27638,9 @@
           "whip"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "tob-effort",
+        "band": "LONG"
       }
     },
     {
@@ -26812,7 +27800,9 @@
           "whip"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "hydra-effort",
+        "band": "LONG"
       }
     },
     {
@@ -26977,7 +27967,9 @@
         "allocations": [
           "primordial-boots"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "cerberus-effort",
+        "band": "LONG"
       }
     },
     {
@@ -27135,7 +28127,9 @@
           "whip"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "basilisk-knights-effort",
+        "band": "LONG"
       }
     },
     {
@@ -27302,7 +28296,9 @@
           "primordial-boots",
           "demon-tears"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "melee-crafting-effort",
+        "band": "LONG"
       }
     },
     {
@@ -27488,7 +28484,9 @@
         "allocations": [
           "blood-shard-charges"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "vyres-effort",
+        "band": "LONG"
       }
     }
   ],
@@ -30892,7 +31890,8 @@
         "skill": "FLETCHING",
         "level": 1,
         "sources": [
-          "ep1-tormented-synapse"
+          "ep1-tormented-synapse",
+          "r3b2-tormented-synapse"
         ]
       }
     ],
@@ -31967,16 +32966,6 @@
         "crystal": false,
         "sources": [
           "r3b2-leaf-bladed-battleaxe"
-        ]
-      },
-      {
-        "id": 29580,
-        "label": "Tormented synapse",
-        "skill": "ATTACK",
-        "level": 1,
-        "crystal": false,
-        "sources": [
-          "r3b2-tormented-synapse"
         ]
       },
       {
@@ -39490,7 +40479,8 @@
         "ep1-tormented-demon",
         "ep1-tormented-synapse",
         "item-ids",
-        "twisted-bow"
+        "twisted-bow",
+        "r3b2-tormented-synapse"
       ]
     },
     {
@@ -40416,7 +41406,8 @@
         "scythe",
         "soulreaper",
         "tentacle",
-        "whip"
+        "whip",
+        "ep1-tormented-synapse"
       ],
       "applications": [
         {
@@ -57243,6 +58234,871 @@
       ],
       "detours": [],
       "gapOwner": "AD1b-B4"
+    },
+    {
+      "id": "tob-effort",
+      "activity": "tob",
+      "mode": "melee-family-route",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reviewed reward/component work; assembly, supply and learning checks remain separate",
+      "gap": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
+      "gapOwner": "AD1b-B2",
+      "sources": [
+        "fang",
+        "item-ids",
+        "lance",
+        "r3b-abyssal-tentacle-or",
+        "r3b-chivalry",
+        "r3b-combat-styles",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-incredible-reflexes",
+        "r3b-piety",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "r3b-successful-hit",
+        "r3b-super-attack",
+        "r3b-super-strength",
+        "r3b-ultimate-strength",
+        "r3b2-abyssal-bludgeon",
+        "r3b2-abyssal-dagger",
+        "r3b2-arclight",
+        "r3b2-blade-of-saeldor",
+        "r3b2-blade-of-saeldor-c",
+        "r3b2-combat-level",
+        "r3b2-damage-per-second-melee",
+        "r3b2-dragon-hunter-lance",
+        "r3b2-dragon-scimitar",
+        "r3b2-emberlight",
+        "r3b2-ghrazi-rapier",
+        "r3b2-holy-scythe-of-vitur",
+        "r3b2-inquisitor-s-armour",
+        "r3b2-inquisitor-s-mace",
+        "r3b2-july-gear",
+        "r3b2-module-combatstyles",
+        "r3b2-noxious-halberd",
+        "r3b2-osmumten-s-fang",
+        "r3b2-sanguine-scythe-of-vitur",
+        "r3b2-saradomin-sword",
+        "r3b2-scythe-of-vitur",
+        "r3b2-soulreaper-axe",
+        "r3b2-soulreaper-axe-o",
+        "r3b2-theatre-of-blood",
+        "r3b2-zamorakian-hasta",
+        "r3b2-zamorakian-spear",
+        "r3b2-zombie-axe",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "reviewed-melee-package",
+          "label": "Reviewed melee planning package",
+          "when": {
+            "test": "ITEMS",
+            "key": "r3bWeapons"
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Owned compatible gear supports planning, not encounter readiness, speed or success. Check source-specific access, tasks and supplies."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "melee-crafting-effort",
+      "activity": "melee-crafting",
+      "mode": "melee-family-route",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reviewed reward/component work; assembly, supply and learning checks remain separate",
+      "gap": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
+      "gapOwner": "AD1b-B4",
+      "sources": [
+        "fang",
+        "item-ids",
+        "lance",
+        "r3b-abyssal-tentacle-or",
+        "r3b-chivalry",
+        "r3b-combat-styles",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-incredible-reflexes",
+        "r3b-piety",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "r3b-successful-hit",
+        "r3b-super-attack",
+        "r3b-super-strength",
+        "r3b-ultimate-strength",
+        "r3b2-abyssal-bludgeon",
+        "r3b2-abyssal-dagger",
+        "r3b2-arclight",
+        "r3b2-blade-of-saeldor",
+        "r3b2-blade-of-saeldor-c",
+        "r3b2-combat-level",
+        "r3b2-damage-per-second-melee",
+        "r3b2-dragon-hunter-lance",
+        "r3b2-dragon-scimitar",
+        "r3b2-duke-sucellus",
+        "r3b2-emberlight",
+        "r3b2-executioner-s-axe-head",
+        "r3b2-eye-of-the-duke",
+        "r3b2-ghrazi-rapier",
+        "r3b2-holy-scythe-of-vitur",
+        "r3b2-inquisitor-s-armour",
+        "r3b2-inquisitor-s-mace",
+        "r3b2-july-gear",
+        "r3b2-leviathan-s-lure",
+        "r3b2-module-combatstyles",
+        "r3b2-noxious-halberd",
+        "r3b2-osmumten-s-fang",
+        "r3b2-sanguine-scythe-of-vitur",
+        "r3b2-saradomin-sword",
+        "r3b2-scythe-of-vitur",
+        "r3b2-siren-s-staff",
+        "r3b2-soulreaper-axe",
+        "r3b2-soulreaper-axe-o",
+        "r3b2-the-whisperer",
+        "r3b2-vardorvis",
+        "r3b2-zamorakian-hasta",
+        "r3b2-zamorakian-spear",
+        "r3b2-zombie-axe",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "reviewed-melee-package",
+          "label": "Reviewed melee planning package",
+          "when": {
+            "test": "ITEMS",
+            "key": "r3bWeapons"
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Owned compatible gear supports planning, not encounter readiness, speed or success. Check source-specific access, tasks and supplies."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "hydra-effort",
+      "activity": "hydra",
+      "mode": "melee-family-route",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reviewed reward/component work; assembly, supply and learning checks remain separate",
+      "gap": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
+      "gapOwner": "AD1b-B3",
+      "sources": [
+        "fang",
+        "item-ids",
+        "lance",
+        "r3b-abyssal-tentacle-or",
+        "r3b-chivalry",
+        "r3b-combat-styles",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-incredible-reflexes",
+        "r3b-piety",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "r3b-successful-hit",
+        "r3b-super-attack",
+        "r3b-super-strength",
+        "r3b-ultimate-strength",
+        "r3b2-abyssal-bludgeon",
+        "r3b2-abyssal-dagger",
+        "r3b2-alchemical-hydra",
+        "r3b2-arclight",
+        "r3b2-barbarian-training",
+        "r3b2-blade-of-saeldor",
+        "r3b2-blade-of-saeldor-c",
+        "r3b2-combat-level",
+        "r3b2-damage-per-second-melee",
+        "r3b2-dragon-hunter-lance",
+        "r3b2-dragon-scimitar",
+        "r3b2-emberlight",
+        "r3b2-ghrazi-rapier",
+        "r3b2-holy-scythe-of-vitur",
+        "r3b2-hydra-s-claw",
+        "r3b2-inquisitor-s-armour",
+        "r3b2-inquisitor-s-mace",
+        "r3b2-july-gear",
+        "r3b2-module-combatstyles",
+        "r3b2-noxious-halberd",
+        "r3b2-osmumten-s-fang",
+        "r3b2-sanguine-scythe-of-vitur",
+        "r3b2-saradomin-sword",
+        "r3b2-scythe-of-vitur",
+        "r3b2-soulreaper-axe",
+        "r3b2-soulreaper-axe-o",
+        "r3b2-zamorakian-hasta",
+        "r3b2-zamorakian-spear",
+        "r3b2-zombie-axe",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "reviewed-melee-package",
+          "label": "Reviewed melee planning package",
+          "when": {
+            "test": "ITEMS",
+            "key": "r3bWeapons"
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Owned compatible gear supports planning, not encounter readiness, speed or success. Check source-specific access, tasks and supplies."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "nightmare-effort",
+      "activity": "nightmare",
+      "mode": "melee-family-route",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reviewed reward/component work; assembly, supply and learning checks remain separate",
+      "gap": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
+      "gapOwner": "AD1b-B4",
+      "sources": [
+        "fang",
+        "item-ids",
+        "lance",
+        "r3b-abyssal-tentacle-or",
+        "r3b-chivalry",
+        "r3b-combat-styles",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-incredible-reflexes",
+        "r3b-piety",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "r3b-successful-hit",
+        "r3b-super-attack",
+        "r3b-super-strength",
+        "r3b-ultimate-strength",
+        "r3b2-abyssal-bludgeon",
+        "r3b2-abyssal-dagger",
+        "r3b2-arclight",
+        "r3b2-blade-of-saeldor",
+        "r3b2-blade-of-saeldor-c",
+        "r3b2-combat-level",
+        "r3b2-damage-per-second-melee",
+        "r3b2-dragon-hunter-lance",
+        "r3b2-dragon-scimitar",
+        "r3b2-emberlight",
+        "r3b2-ghrazi-rapier",
+        "r3b2-holy-scythe-of-vitur",
+        "r3b2-inquisitor-s-armour",
+        "r3b2-inquisitor-s-mace",
+        "r3b2-july-gear",
+        "r3b2-module-combatstyles",
+        "r3b2-noxious-halberd",
+        "r3b2-osmumten-s-fang",
+        "r3b2-phosani-s-nightmare",
+        "r3b2-sanguine-scythe-of-vitur",
+        "r3b2-saradomin-sword",
+        "r3b2-scythe-of-vitur",
+        "r3b2-soulreaper-axe",
+        "r3b2-soulreaper-axe-o",
+        "r3b2-the-nightmare",
+        "r3b2-zamorakian-hasta",
+        "r3b2-zamorakian-spear",
+        "r3b2-zombie-axe",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "reviewed-melee-package",
+          "label": "Reviewed melee planning package",
+          "when": {
+            "test": "ITEMS",
+            "key": "r3bWeapons"
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Owned compatible gear supports planning, not encounter readiness, speed or success. Check source-specific access, tasks and supplies."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "yama-effort",
+      "activity": "yama",
+      "mode": "melee-family-route",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reviewed reward/component work; assembly, supply and learning checks remain separate",
+      "gap": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
+      "gapOwner": "AD1b-B4",
+      "sources": [
+        "fang",
+        "item-ids",
+        "lance",
+        "r3b-abyssal-tentacle-or",
+        "r3b-chivalry",
+        "r3b-combat-styles",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-incredible-reflexes",
+        "r3b-piety",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "r3b-successful-hit",
+        "r3b-super-attack",
+        "r3b-super-strength",
+        "r3b-ultimate-strength",
+        "r3b2-abyssal-bludgeon",
+        "r3b2-abyssal-dagger",
+        "r3b2-arclight",
+        "r3b2-blade-of-saeldor",
+        "r3b2-blade-of-saeldor-c",
+        "r3b2-combat-level",
+        "r3b2-crushed-infernal-shale",
+        "r3b2-damage-per-second-melee",
+        "r3b2-dragon-hunter-lance",
+        "r3b2-dragon-scimitar",
+        "r3b2-emberlight",
+        "r3b2-ghrazi-rapier",
+        "r3b2-holy-scythe-of-vitur",
+        "r3b2-infernal-plate",
+        "r3b2-inquisitor-s-armour",
+        "r3b2-inquisitor-s-mace",
+        "r3b2-july-gear",
+        "r3b2-module-combatstyles",
+        "r3b2-noxious-halberd",
+        "r3b2-oathplate-armour",
+        "r3b2-oathplate-helm",
+        "r3b2-oathplate-shards",
+        "r3b2-osmumten-s-fang",
+        "r3b2-sanguine-scythe-of-vitur",
+        "r3b2-saradomin-sword",
+        "r3b2-scythe-of-vitur",
+        "r3b2-soulreaper-axe",
+        "r3b2-soulreaper-axe-o",
+        "r3b2-yama",
+        "r3b2-zamorakian-hasta",
+        "r3b2-zamorakian-spear",
+        "r3b2-zombie-axe",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "reviewed-melee-package",
+          "label": "Reviewed melee planning package",
+          "when": {
+            "test": "ITEMS",
+            "key": "r3bWeapons"
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Owned compatible gear supports planning, not encounter readiness, speed or success. Check source-specific access, tasks and supplies."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "vardorvis-effort",
+      "activity": "vardorvis",
+      "mode": "melee-family-route",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reviewed reward/component work; assembly, supply and learning checks remain separate",
+      "gap": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
+      "gapOwner": "AD1b-B3",
+      "sources": [
+        "fang",
+        "item-ids",
+        "lance",
+        "r1-chromium-ingot",
+        "r3b-abyssal-tentacle-or",
+        "r3b-chivalry",
+        "r3b-combat-styles",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-incredible-reflexes",
+        "r3b-piety",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "r3b-successful-hit",
+        "r3b-super-attack",
+        "r3b-super-strength",
+        "r3b-ultimate-strength",
+        "r3b2-abyssal-bludgeon",
+        "r3b2-abyssal-dagger",
+        "r3b2-arclight",
+        "r3b2-berserker-icon",
+        "r3b2-blade-of-saeldor",
+        "r3b2-blade-of-saeldor-c",
+        "r3b2-chromium-ingot",
+        "r3b2-combat-level",
+        "r3b2-damage-per-second-melee",
+        "r3b2-dragon-hunter-lance",
+        "r3b2-dragon-scimitar",
+        "r3b2-emberlight",
+        "r3b2-ghrazi-rapier",
+        "r3b2-holy-scythe-of-vitur",
+        "r3b2-inquisitor-s-armour",
+        "r3b2-inquisitor-s-mace",
+        "r3b2-july-gear",
+        "r3b2-module-combatstyles",
+        "r3b2-noxious-halberd",
+        "r3b2-osmumten-s-fang",
+        "r3b2-sanguine-scythe-of-vitur",
+        "r3b2-saradomin-sword",
+        "r3b2-scythe-of-vitur",
+        "r3b2-soulreaper-axe",
+        "r3b2-soulreaper-axe-o",
+        "r3b2-ultor-ring",
+        "r3b2-ultor-vestige",
+        "r3b2-vardorvis",
+        "r3b2-zamorakian-hasta",
+        "r3b2-zamorakian-spear",
+        "r3b2-zombie-axe",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "reviewed-melee-package",
+          "label": "Reviewed melee planning package",
+          "when": {
+            "test": "ITEMS",
+            "key": "r3bWeapons"
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Owned compatible gear supports planning, not encounter readiness, speed or success. Check source-specific access, tasks and supplies."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "whisperer-effort",
+      "activity": "whisperer",
+      "mode": "melee-family-route",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reviewed reward/component work; assembly, supply and learning checks remain separate",
+      "gap": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
+      "gapOwner": "AD1b-B3",
+      "sources": [
+        "fang",
+        "item-ids",
+        "lance",
+        "r1-chromium-ingot",
+        "r3b-abyssal-tentacle-or",
+        "r3b-chivalry",
+        "r3b-combat-styles",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-incredible-reflexes",
+        "r3b-piety",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "r3b-successful-hit",
+        "r3b-super-attack",
+        "r3b-super-strength",
+        "r3b-ultimate-strength",
+        "r3b2-abyssal-bludgeon",
+        "r3b2-abyssal-dagger",
+        "r3b2-arclight",
+        "r3b2-bellator-ring",
+        "r3b2-bellator-vestige",
+        "r3b2-blade-of-saeldor",
+        "r3b2-blade-of-saeldor-c",
+        "r3b2-chromium-ingot",
+        "r3b2-combat-level",
+        "r3b2-damage-per-second-melee",
+        "r3b2-dragon-hunter-lance",
+        "r3b2-dragon-scimitar",
+        "r3b2-emberlight",
+        "r3b2-ghrazi-rapier",
+        "r3b2-holy-scythe-of-vitur",
+        "r3b2-inquisitor-s-armour",
+        "r3b2-inquisitor-s-mace",
+        "r3b2-july-gear",
+        "r3b2-module-combatstyles",
+        "r3b2-noxious-halberd",
+        "r3b2-osmumten-s-fang",
+        "r3b2-sanguine-scythe-of-vitur",
+        "r3b2-saradomin-sword",
+        "r3b2-scythe-of-vitur",
+        "r3b2-soulreaper-axe",
+        "r3b2-soulreaper-axe-o",
+        "r3b2-the-whisperer",
+        "r3b2-warrior-icon",
+        "r3b2-zamorakian-hasta",
+        "r3b2-zamorakian-spear",
+        "r3b2-zombie-axe",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "reviewed-melee-package",
+          "label": "Reviewed melee planning package",
+          "when": {
+            "test": "ITEMS",
+            "key": "r3bWeapons"
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Owned compatible gear supports planning, not encounter readiness, speed or success. Check source-specific access, tasks and supplies."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "araxxor-effort",
+      "activity": "araxxor",
+      "mode": "melee-family-route",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reviewed reward/component work; assembly, supply and learning checks remain separate",
+      "gap": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
+      "gapOwner": "AD1b-B4",
+      "sources": [
+        "fang",
+        "item-ids",
+        "lance",
+        "r3b-abyssal-tentacle-or",
+        "r3b-amulet-of-rancour",
+        "r3b-amulet-of-torture",
+        "r3b-chivalry",
+        "r3b-combat-styles",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-incredible-reflexes",
+        "r3b-piety",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "r3b-successful-hit",
+        "r3b-super-attack",
+        "r3b-super-strength",
+        "r3b-ultimate-strength",
+        "r3b2-abyssal-bludgeon",
+        "r3b2-abyssal-dagger",
+        "r3b2-amulet-of-rancour",
+        "r3b2-amulet-of-rancour-s",
+        "r3b2-amulet-of-torture",
+        "r3b2-araxxor",
+        "r3b2-araxyte-fang",
+        "r3b2-arclight",
+        "r3b2-blade-of-saeldor",
+        "r3b2-blade-of-saeldor-c",
+        "r3b2-combat-level",
+        "r3b2-damage-per-second-melee",
+        "r3b2-dragon-hunter-lance",
+        "r3b2-dragon-scimitar",
+        "r3b2-emberlight",
+        "r3b2-ghrazi-rapier",
+        "r3b2-holy-scythe-of-vitur",
+        "r3b2-inquisitor-s-armour",
+        "r3b2-inquisitor-s-mace",
+        "r3b2-july-gear",
+        "r3b2-module-combatstyles",
+        "r3b2-noxious-halberd",
+        "r3b2-osmumten-s-fang",
+        "r3b2-sanguine-scythe-of-vitur",
+        "r3b2-saradomin-sword",
+        "r3b2-scythe-of-vitur",
+        "r3b2-soulreaper-axe",
+        "r3b2-soulreaper-axe-o",
+        "r3b2-zamorakian-hasta",
+        "r3b2-zamorakian-spear",
+        "r3b2-zombie-axe",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "reviewed-melee-package",
+          "label": "Reviewed melee planning package",
+          "when": {
+            "test": "ITEMS",
+            "key": "r3bWeapons"
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Owned compatible gear supports planning, not encounter readiness, speed or success. Check source-specific access, tasks and supplies."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "cerberus-effort",
+      "activity": "cerberus",
+      "mode": "melee-family-route",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reviewed reward/component work; assembly, supply and learning checks remain separate",
+      "gap": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
+      "gapOwner": "AD1b-B3",
+      "sources": [
+        "dragon-boots",
+        "fang",
+        "item-ids",
+        "lance",
+        "primordial-boots",
+        "r3b-abyssal-tentacle-or",
+        "r3b-chivalry",
+        "r3b-combat-styles",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-incredible-reflexes",
+        "r3b-piety",
+        "r3b-primordial-boots",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "r3b-successful-hit",
+        "r3b-super-attack",
+        "r3b-super-strength",
+        "r3b-ultimate-strength",
+        "r3b2-abyssal-bludgeon",
+        "r3b2-abyssal-dagger",
+        "r3b2-arclight",
+        "r3b2-blade-of-saeldor",
+        "r3b2-blade-of-saeldor-c",
+        "r3b2-combat-level",
+        "r3b2-damage-per-second-melee",
+        "r3b2-dragon-hunter-lance",
+        "r3b2-dragon-scimitar",
+        "r3b2-emberlight",
+        "r3b2-ghrazi-rapier",
+        "r3b2-holy-scythe-of-vitur",
+        "r3b2-inquisitor-s-armour",
+        "r3b2-inquisitor-s-mace",
+        "r3b2-july-gear",
+        "r3b2-module-combatstyles",
+        "r3b2-noxious-halberd",
+        "r3b2-osmumten-s-fang",
+        "r3b2-primordial-boots",
+        "r3b2-primordial-crystal",
+        "r3b2-sanguine-scythe-of-vitur",
+        "r3b2-saradomin-sword",
+        "r3b2-scythe-of-vitur",
+        "r3b2-soulreaper-axe",
+        "r3b2-soulreaper-axe-o",
+        "r3b2-zamorakian-hasta",
+        "r3b2-zamorakian-spear",
+        "r3b2-zombie-axe",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "reviewed-melee-package",
+          "label": "Reviewed melee planning package",
+          "when": {
+            "test": "ITEMS",
+            "key": "r3bWeapons"
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Owned compatible gear supports planning, not encounter readiness, speed or success. Check source-specific access, tasks and supplies."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "basilisk-knights-effort",
+      "activity": "basilisk-knights",
+      "mode": "melee-family-route",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reviewed reward/component work; assembly, supply and learning checks remain separate",
+      "gap": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
+      "gapOwner": "AD1b-B3",
+      "sources": [
+        "fang",
+        "item-ids",
+        "lance",
+        "r3b-abyssal-tentacle-or",
+        "r3b-chivalry",
+        "r3b-combat-styles",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-helm-of-neitiznot",
+        "r3b-incredible-reflexes",
+        "r3b-neitiznot-faceguard",
+        "r3b-piety",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "r3b-successful-hit",
+        "r3b-super-attack",
+        "r3b-super-strength",
+        "r3b-ultimate-strength",
+        "r3b2-abyssal-bludgeon",
+        "r3b2-abyssal-dagger",
+        "r3b2-arclight",
+        "r3b2-basilisk-jaw",
+        "r3b2-blade-of-saeldor",
+        "r3b2-blade-of-saeldor-c",
+        "r3b2-combat-level",
+        "r3b2-damage-per-second-melee",
+        "r3b2-dragon-hunter-lance",
+        "r3b2-dragon-scimitar",
+        "r3b2-emberlight",
+        "r3b2-ghrazi-rapier",
+        "r3b2-holy-scythe-of-vitur",
+        "r3b2-inquisitor-s-armour",
+        "r3b2-inquisitor-s-mace",
+        "r3b2-july-gear",
+        "r3b2-module-combatstyles",
+        "r3b2-noxious-halberd",
+        "r3b2-osmumten-s-fang",
+        "r3b2-sanguine-scythe-of-vitur",
+        "r3b2-saradomin-sword",
+        "r3b2-scythe-of-vitur",
+        "r3b2-soulreaper-axe",
+        "r3b2-soulreaper-axe-o",
+        "r3b2-zamorakian-hasta",
+        "r3b2-zamorakian-spear",
+        "r3b2-zombie-axe",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "reviewed-melee-package",
+          "label": "Reviewed melee planning package",
+          "when": {
+            "test": "ITEMS",
+            "key": "r3bWeapons"
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Owned compatible gear supports planning, not encounter readiness, speed or success. Check source-specific access, tasks and supplies."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "vyres-effort",
+      "activity": "vyres",
+      "mode": "melee-family-route",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reviewed reward/component work; assembly, supply and learning checks remain separate",
+      "gap": "Reviewed qualitative route only; trial, recipient, pacing and full resource allocation are not numerically estimated.",
+      "gapOwner": "AD1b-B3",
+      "sources": [
+        "fang",
+        "fury",
+        "item-ids",
+        "lance",
+        "r1-cosmic-rune",
+        "r1-gold-bar",
+        "r1-onyx",
+        "r3b-abyssal-tentacle-or",
+        "r3b-amulet-of-blood-fury",
+        "r3b-chivalry",
+        "r3b-combat-styles",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-incredible-reflexes",
+        "r3b-piety",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "r3b-successful-hit",
+        "r3b-super-attack",
+        "r3b-super-strength",
+        "r3b-ultimate-strength",
+        "r3b2-abyssal-bludgeon",
+        "r3b2-abyssal-dagger",
+        "r3b2-amulet-of-blood-fury",
+        "r3b2-amulet-of-fury",
+        "r3b2-arclight",
+        "r3b2-blade-of-saeldor",
+        "r3b2-blade-of-saeldor-c",
+        "r3b2-blood-shard",
+        "r3b2-combat-level",
+        "r3b2-damage-per-second-melee",
+        "r3b2-dragon-hunter-lance",
+        "r3b2-dragon-scimitar",
+        "r3b2-earth-rune",
+        "r3b2-emberlight",
+        "r3b2-fire-rune",
+        "r3b2-ghrazi-rapier",
+        "r3b2-holy-scythe-of-vitur",
+        "r3b2-inquisitor-s-armour",
+        "r3b2-inquisitor-s-mace",
+        "r3b2-july-gear",
+        "r3b2-module-combatstyles",
+        "r3b2-noxious-halberd",
+        "r3b2-onyx-amulet",
+        "r3b2-onyx-amulet-u",
+        "r3b2-osmumten-s-fang",
+        "r3b2-sanguine-scythe-of-vitur",
+        "r3b2-saradomin-sword",
+        "r3b2-scythe-of-vitur",
+        "r3b2-sins-of-the-father",
+        "r3b2-soulreaper-axe",
+        "r3b2-soulreaper-axe-o",
+        "r3b2-vyre",
+        "r3b2-vyrewatch-sentinel",
+        "r3b2-zamorakian-hasta",
+        "r3b2-zamorakian-spear",
+        "r3b2-zenyte-amulet",
+        "r3b2-zombie-axe",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "reviewed-melee-package",
+          "label": "Reviewed melee planning package",
+          "when": {
+            "test": "ITEMS",
+            "key": "r3bWeapons"
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Owned compatible gear supports planning, not encounter readiness, speed or success. Check source-specific access, tasks and supplies."
+        }
+      ],
+      "detours": []
     }
   ],
   "automaticPaces": [

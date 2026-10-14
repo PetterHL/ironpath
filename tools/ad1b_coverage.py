@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 """Reproduce acquisition coverage from the bundled active route/method contracts; no network."""
 import json
+import argparse
 from pathlib import Path
+parser=argparse.ArgumentParser()
+parser.add_argument('--output', default='docs/validation/integrated-acquisition-coverage.md')
+args=parser.parse_args()
 root=Path(__file__).resolve().parents[1]
 c=json.loads((root/'src/main/resources/com/ironpath/catalog.json').read_text())
 decisions={d['id']:d for d in c['decisions']};profiles={p['id']:p for p in c['effortProfiles']}
 models={m['route']:m for m in c['acquisitions']};paces={p['activity']:p for p in c['automaticPaces']}
 lines=['# AD1b active acquisition coverage','',
-'Generated from catalogue schema 13 by `python tools/ad1b_coverage.py`. This is evidence, not a second backlog; follow-up ownership and sequence are in TASKS AD1b-B1–B4.', '',
+f"Generated from catalogue schema {c['schemaVersion']} / knowledge {c['knowledgeVersion']} by `python tools/ad1b_coverage.py`. This is evidence, not a second backlog; follow-up ownership and sequence are in TASKS AD1b-B1–B4. Original AD1b-coverage.md retains the pre-integration evidence.", '',
 'Rows cover every active outcome × route × reviewed method. A1 = conditional component odds; A2 = component hours under an eligible pace scenario; observed A3 and complete-route hours are unavailable throughout. Automatic availability depends on the full predicates below, access, remaining components and source support. A benchmark is not a personal throughput prediction. No route means or quantiles are added across rows.', '',
 '| Outcome | Route | Activity / qualitative method | Probability/state model | Automatic hours | Manual hours | Observed / full route | Specific exclusions or gap / owner |',
 '|---|---|---|---|---|---|---|---|']
@@ -48,5 +52,5 @@ routes={r for u in active for r in u['routes']};families={decisions[r]['activity
 lines+=['','## Delivery counts and limits','',
  f"Active inventory: **{len(active)} outcomes, {len(routes)} routes, {len(families)} acquisition families**. Conditional component probability models: **{len(positive_outcomes)}/{len(active)} outcomes and {len(positive)}/{len(routes)} routes**. Five source-dependent automatic scenarios serve five families. Nine outcomes can show automatic component hours on applicable, still-acquiring accounts; the magic-fang route retains odds/manual hours because the promoted default requires already stronger magic gear. Counts are release evidence, never catalogue limits.", '',
  'Every unsupported row retains a specific blocker and TASKS owner. All full-route totals and observed pace remain unavailable. A0 fallback and this matrix do **not** complete AD1b; B1–B4 and real-client/account acceptance remain open.']
-(root/'docs/validation/AD1b-coverage.md').write_text('\n'.join(lines)+'\n')
+(root/args.output).write_text('\n'.join(lines)+'\n')
 print(f'{len(active)} outcomes / {len(routes)} routes / {len(families)} families; {len(positive_outcomes)} modelled outcomes')

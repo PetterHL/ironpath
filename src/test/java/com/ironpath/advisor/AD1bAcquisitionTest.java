@@ -39,7 +39,7 @@ public class AD1bAcquisitionTest
 		Advisor.UpgradeView overridden=view(advisor,account,"tormented-bracelet",manual);
 		assertEquals(6,overridden.presentation.minimumMeanHours,0);assertEquals(10,overridden.presentation.maximumMeanHours,0);
 		assertEquals(PaceScenario.SourceKind.USER_SCENARIO,overridden.presentation.estimateSourceKind);
-		assertTrue(new UpgradeCard(overridden).effort.startsWith("Manual pace scenario"));
+		assertTrue(new UpgradeCard(overridden,catalog).effort.startsWith("Manual pace scenario"));
 		assertEquals(auto.presentation.maximumMeanHours,view(advisor,account,"tormented-bracelet",null).presentation.maximumMeanHours);
 		PaceScenario other=new PaceScenario("zulrah","ordinary",100,100,"Different activity",TIME);
 		assertEquals(auto.presentation.maximumMeanHours,view(advisor,account,"tormented-bracelet",other).presentation.maximumMeanHours);
@@ -85,7 +85,7 @@ public class AD1bAcquisitionTest
 	{
 		AccountSnapshot account=without(ready(),23975);Advisor.UpgradeView fresh=view(account,"crystal-body");
 		assertEquals(150,fresh.pursuit.estimate.meanTrials,0);assertEquals(25,fresh.presentation.maximumMeanHours,0);
-		assertTrue(fresh.pursuit.estimate.conditionalWork);assertTrue(new UpgradeCard(fresh).effort.contains("if components needed"));assertTrue(fresh.pursuit.estimate.remainingOutcome.startsWith("Up to 3"));
+		assertTrue(fresh.pursuit.estimate.conditionalWork);assertTrue(new UpgradeCard(fresh,catalog).effort.contains("if components needed"));assertTrue(fresh.pursuit.estimate.remainingOutcome.startsWith("Up to 3"));
 		Advisor.UpgradeView partial=view(withQuantity(account,23956,2),"crystal-body");
 		assertEquals(1,partial.pursuit.estimate.remainingSuccesses);assertEquals(50,partial.pursuit.estimate.meanTrials,0);
 		assertEquals(50.0/6,partial.presentation.maximumMeanHours,1e-10);

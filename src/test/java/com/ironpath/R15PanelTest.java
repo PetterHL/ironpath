@@ -97,10 +97,10 @@ public class R15PanelTest
 			{
 				assertNotNull(button("Long-term"));capture("overview");button("Browse").doClick();capture("browse");
 				assertEquals(advisor.upgrades(account,preferences).size(),children(panel).stream().filter(c->c.getName()!=null&&c.getName().startsWith("open-upgrade-")).count());
-				open("tormented-bracelet").doClick();capture("value");button("Acquisition").doClick();assertTrue(text().contains("Mean 300 kills"));assertTrue(text().contains("hours not estimated"));capture("path-kills");
+				open("tormented-bracelet").doClick();capture("value");button("Acquisition").doClick();assertTrue(text().contains("Mean 300 trials"));assertTrue(text().contains("Model-based estimate"));capture("path-kills");
 				button("Estimate basis and route evidence").doClick();JTextField input=children(panel).stream().filter(c->"pace-input".equals(c.getName())).map(c->(JTextField)c).findFirst().orElseThrow();input.setText("40");button("Apply pace").doClick();
-				assertTrue(text().contains("Estimated mean 7.5–7.5 h"));assertTrue(text().contains("17.3 h"));assertTrue(text().contains("not a completed tormented bracelet"));capture("path-hours");
-				button("Clear pace").doClick();assertNull(pace);assertTrue(text().contains("hours not estimated"));
+				assertTrue(text().contains("Mean 7.5 h"));assertTrue(text().contains("17.3 h"));assertTrue(text().contains("not a completed tormented bracelet"));capture("path-hours");
+				button("Clear pace").doClick();assertNull(pace);assertTrue(text().contains("Model-based estimate"));
 				button("← Upgrades").doClick();button("Shared activities").doClick();children(panel).stream().filter(c->"open-activity:chambers-of-xeric/ordinary".equals(c.getName())).map(c->(JButton)c).findFirst().orElseThrow().doClick();
 				assertTrue(text().contains("Useful missing reward: Rigour"));assertTrue(text().contains("one dependent armour family"));capture("activity");button("← Upgrades").doClick();
 				open("tumekens-shadow").doClick();reference=reference.edit("target","toa");render();assertTrue(text().contains("Theoretical DPS not calculated"));capture("unsupported");

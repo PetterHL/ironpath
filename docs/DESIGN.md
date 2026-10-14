@@ -1,10 +1,6 @@
-# IronPath product and architecture
+# IronPath design
 
-AD1b extends acquisition contracts with independently authored independent-roll and repeated-success distributions, source-dependent automatic repeat-hour scenarios and conservative conditional component remainders. Matching session-only manual pace replaces the default; Clear restores it. `UpgradePresentation` exposes estimate source kind and conditional component scope for UX2/AD1c. Invalid pace withdraws only dependent hours; component models never imply a complete route total. [Current delivery and limits](validation/AD1b.md).
-
-**14 October 2026 implementation:** EP1 delivers `progression-2` for review, with catalogue-wide qualitative activity profiles, component-aware remaining work and an order-preserving preview. [Policy table, coverage and evidence](validation/EP1.md). UX2's complete visual flow remains pending. Automatic numeric acquisition profiles, passive full-cycle observation and complex totals are not delivered.
-
-Endgame intelligence design · 13 October 2026. Inspected main `cb7c2cd` and unmerged R2 PR #16 at `a501e6f`, then its concurrent review correction `32cb24a` (schema 9, `pursuit-1`). **The bounded `progression-1` migration is implemented for review in R3a; broader relationship/model coverage remains open.** See [implementation evidence](validation/R3a.md). It refines ranking and relationships while retaining comprehensive scope, existing working code and validation history. EP1's automatic qualitative effort profiles are implemented for review; R1.5b observation and complex route totals remain separately scoped work.
+**Integrated baseline, 14 October 2026:** main ships progression-2, the UX2/AD1c native flow, AD1a DPS-first/Brimstone, selective AD1b automatic component estimates and R3b melee-2. Plugin 0.14.0 / knowledge ad1-r3b-1 / catalogue 14 / preferences 2. Automatic component hours are conditional assumptions, not measured speed or full-route totals. [Combined evidence](validation/ad1-r3b-integration.md). Broader acquisition/combat coverage and real-client acceptance remain in TASKS.
 
 ## A. Stable product vision
 
@@ -113,7 +109,7 @@ Show component progress such as an observed quantity against its requirement onl
 
 ## Progression intelligence contract (version `progression-2`, selected)
 
-**EP1 domain and UX2 / AD1c rendering implemented for review; client acceptance pending.** R3a delivered the earlier `progression-1` baseline. This contract supersedes its importance-before-burden ordering and discovery insertion, as well as older `pursuit-1` ordering. Preserve historical implementation and regression evidence; update behavioural expectations only where this explicit policy change requires it. [Thirty checked relationships and the code assessment](PROGRESSION_RESEARCH.md) are the evidence; TASKS EP1/UX2 own the next migration; R3–R6 retain broader relationship and model coverage. This is an extension of the current engine, not another reset.
+**EP1 domain and UX2 / AD1c rendering are integrated; client acceptance pending.** R3a delivered the earlier `progression-1` baseline. This contract supersedes its importance-before-burden ordering and discovery insertion, as well as older `pursuit-1` ordering. Preserve historical implementation and regression evidence; update behavioural expectations only where this explicit policy change requires it. [Thirty checked relationships and the code assessment](PROGRESSION_RESEARCH.md) are the evidence; TASKS records the integrated EP1/UX2 migration and remaining AD1 acceptance; R3–R6 retain broader relationship and model coverage. This is an extension of the current engine, not another reset.
 
 ### Independent assessment
 

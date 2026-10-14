@@ -572,6 +572,7 @@ final class IronpathPanel extends PluginPanel
 		result.setForeground(copy.delta==null || copy.delta==0 ? ColorScheme.TEXT_COLOR : copy.delta>0 ? new java.awt.Color(137,218,156) : new java.awt.Color(255,160,160));
 		if(!copy.context.isEmpty()) { text(card.body,copy.context); card.body.getComponent(card.body.getComponentCount()-1).setName("card-context"); }
 		text(card.body,"Compared with "+copy.baseline); card.body.getComponent(card.body.getComponentCount()-1).setName("card-baseline");
+		if(copy.presentation.minimumMeanHours!=null) { text(card.body,copy.effort); card.body.getComponent(card.body.getComponentCount()-1).setName("card-estimate"); }
 		text(card.body,copy.presentation.priorityExplanation.cardReason); card.body.getComponent(card.body.getComponentCount()-1).setName("card-priority-reason");
 		if(copy.presentation.primaryMetric.availability==com.ironpath.advisor.UpgradePresentation.Availability.INPUT_REQUIRED) { text(card.body,copy.status); card.body.getComponent(card.body.getComponentCount()-1).setName("card-status"); }
 		card.finish(); parent.add(card);
@@ -755,7 +756,7 @@ final class IronpathPanel extends PluginPanel
 		for(com.ironpath.advisor.UpgradePresentation.Metric metric:presentation.comparisonMetrics) {
 			boolean primary=index++==0;
 			if(!primary && metric.delta!=null && metric.delta==0) { continue; }
-			String title=metric.kind==ComparisonResult.Metric.THEORETICAL_DPS?"Theoretical DPS":metric.kind==ComparisonResult.Metric.MAX_HIT?"Max hit":"Hit chance";
+			String title=metric.kind==ComparisonResult.Metric.THEORETICAL_DPS?(metric.offenceScope==ComparisonResult.OffenceScope.NEXT_FIVE_SWINGS?"Five-swing mean DPS":"Theoretical DPS"):metric.kind==ComparisonResult.Metric.MAX_HIT?"Max hit":"Hit chance";
 			String value=metric.delta==null?title+" not calculated":metric.kind==ComparisonResult.Metric.MAX_HIT
 				?String.format(java.util.Locale.ROOT,"%s  %.0f → %.0f  (%+.0f)",title,metric.before,metric.after,metric.delta)
 				:metric.kind==ComparisonResult.Metric.THEORETICAL_DPS?String.format(java.util.Locale.ROOT,"%s  %.2f → %.2f  (%s)",title,metric.before,metric.after,metric.absoluteDpsDelta())
@@ -766,6 +767,13 @@ final class IronpathPanel extends PluginPanel
 		}
 		for(com.ironpath.advisor.UpgradePresentation.SlotChange change:presentation.changes.stream().skip(1).collect(java.util.stream.Collectors.toList())) {
 			text(parent,change.label+": "+change.beforeName+" → "+change.afterName);
+		}
+		for(com.ironpath.advisor.UpgradePresentation.SlotChange change:presentation.changes) {
+			if(change.slot.equals("shield")) {
+				text(parent,change.afterId==0?"Off-hand removed for a two-handed replacement."
+					:change.beforeId==0?"Observed off-hand restored for the one-handed alternative."
+					:"Off-hand changed for the complete compatible alternative.");
+			}
 		}
 		if(presentation.beforeTicks!=null && !presentation.beforeTicks.equals(presentation.afterTicks)) {
 			text(parent,String.format(java.util.Locale.ROOT,"Attack interval %d → %d ticks (%.1f → %.1f s)",presentation.beforeTicks,presentation.afterTicks,presentation.beforeTicks*0.6,presentation.afterTicks*0.6));
@@ -807,11 +815,15 @@ final class IronpathPanel extends PluginPanel
 		else { text(this,presentation.effort.suitability.label+" · "+presentation.effort.method); }
 		EffortEstimate estimate=view.pursuit.estimate;
 		if(presentation.minimumMeanHours!=null) {
-			text(this,String.format(java.util.Locale.ROOT,"Estimated mean %.1f–%.1f h · manual scenario",presentation.minimumMeanHours,presentation.maximumMeanHours));
-			text(this,presentation.estimateScope+". Scenario sensitivity, not an RNG interval or deadline.");
+			text(this,estimate.pace.sourceKind==com.ironpath.advisor.PaceScenario.SourceKind.MODEL_BASED?"Model-based estimate":"Manual pace scenario");
+			text(this,String.format(java.util.Locale.ROOT,"Mean %.1f h · component acquisition only%s",presentation.maximumMeanHours,presentation.conditionalComponentWork?" · if components needed":""));
+			if(presentation.minimumMeanHours<presentation.maximumMeanHours) {
+				text(this,String.format(java.util.Locale.ROOT,"Pace sensitivity: mean %.1f–%.1f h; scenario range, not an RNG interval.",presentation.minimumMeanHours,presentation.maximumMeanHours));
+			}
+			text(this,presentation.estimateScope+". Access, learning, supplies and assembly excluded; no full-item ETA.");
 		} else if(estimate!=null && estimate.meanTrials!=null) {
-			text(this,String.format(java.util.Locale.ROOT,"%s · mean %.0f eligible kills",estimate.remainingOutcome,estimate.meanTrials));
-			text(this,"Next reward only; hours not estimated.");
+			text(this,String.format(java.util.Locale.ROOT,"%s · mean %.0f eligible trials",estimate.remainingOutcome,estimate.meanTrials));
+			text(this,"Component only; hours not estimated.");
 		} else { text(this,"Hours not estimated; "+presentation.effort.scope+"."); }
 		JPanel requirements=section(this,"Access, equipment and preparation"); requirements.setName("acquisition-requirements");
 		remaining(requirements,"Access",path.stream().filter(r->r.role.equals("ACCESS")||r.role.equals("PREREQUISITE")).collect(java.util.stream.Collectors.toList()));
@@ -833,7 +845,7 @@ final class IronpathPanel extends PluginPanel
 		JPanel basis=section(this,"Estimate basis and route evidence"); basis.setName("acquisition-evidence");
 		text(basis,presentation.effort.reason); text(basis,presentation.effort.gap);
 		text(basis,"Method/profile: "+presentation.effort.profile+" · "+presentation.effort.version);
-		if(estimate!=null) { estimateBasis(basis,estimate,actions,expectedView); }
+		if(estimate!=null) { estimateBasis(basis,estimate,actions,expectedView); if(estimate.pace!=null) { sources(basis,estimate.pace.sources,catalog); } }
 		if(!view.path.isEmpty()) { label(basis,"Full recipe and ALL/ANY alternatives"); requirements(basis,view.path); }
 		label(basis,"Complete route evidence"); requirements(basis,selected.requirements);
 		label(basis,"Equipment requirements"); requirements(basis,view.equip);
@@ -863,21 +875,24 @@ final class IronpathPanel extends PluginPanel
 	{
 		text(parent,"Scope: "+estimate.remainingOutcome+". Only this reward, not complete assembly or a full-item ETA.");
 		if(estimate.meanTrials!=null) {
-			text(parent,String.format(java.util.Locale.ROOT,"Mean %.0f kills · median %d · 90%% by %d; 10%% take longer.",estimate.meanTrials,estimate.p50,estimate.p90));
+			text(parent,String.format(java.util.Locale.ROOT,"Mean %.0f trials · median %d · 90%% by %d; 10%% take longer.",estimate.meanTrials,estimate.p50,estimate.p90));
 			if(estimate.pace!=null) {
-				text(parent,String.format(java.util.Locale.ROOT,"Manual %.1f–%.1f eligible kills/hour · median %.1f h · P90 %.1f h",estimate.pace.minimumPerHour,estimate.pace.maximumPerHour,estimate.medianHours(),estimate.p90Hours()));
+				text(parent,String.format(java.util.Locale.ROOT,(estimate.pace.sourceKind==com.ironpath.advisor.PaceScenario.SourceKind.MODEL_BASED?"Model-based":"Manual")+" %.1f–%.1f eligible trials/hour · median %.1f h · P90 %.1f h",estimate.pace.minimumPerHour,estimate.pace.maximumPerHour,estimate.medianHours(),estimate.p90Hours()));
 				text(parent,estimate.pace.provenance+". "+estimate.pace.scope);
+				for(String assumption:estimate.pace.assumptions) { text(parent,assumption); }
+				for(String exclusion:estimate.pace.exclusions) { text(parent,exclusion); }
 			}
 			if(actions!=null && actions.canEdit()) {
-				label(parent,"Set pace (optional)"); text(parent,"Eligible kills per active hour, including cycle overhead. Number or range; session only.");
-				JTextField pace=new JTextField(estimate.pace==null?"":estimate.pace.minimumPerHour+(estimate.pace.maximumPerHour>estimate.pace.minimumPerHour?"-"+estimate.pace.maximumPerHour:""));
-				pace.setName("pace-input"); pace.getAccessibleContext().setAccessibleName("Eligible "+estimate.trialUnit+" per active hour, or range"); pace.setMaximumSize(new Dimension(213,28)); parent.add(pace);
-				button(parent,"Apply pace",()->{if(valid(expectedView,actions)){actions.pace(pace.getText());}});
-				button(parent,"Clear pace",()->{if(valid(expectedView,actions)){actions.pace("");}});
+				label(parent,"Set pace (optional)"); text(parent,"Eligible completed trials per active hour, including repeat overhead. Number or range; session only; Clear restores a supported automatic default.");
+				JTextField pace=new JTextField(estimate.pace==null || estimate.pace.sourceKind==com.ironpath.advisor.PaceScenario.SourceKind.MODEL_BASED?"":estimate.pace.minimumPerHour+(estimate.pace.maximumPerHour>estimate.pace.minimumPerHour?"-"+estimate.pace.maximumPerHour:""));
+				pace.setFont(parent.getFont()); pace.setAlignmentX(LEFT_ALIGNMENT);
+				pace.setName("pace-input"); pace.getAccessibleContext().setAccessibleName("Eligible "+estimate.trialUnit+" per active hour, or range"); pace.setMaximumSize(new Dimension(213,Math.max(28,pace.getPreferredSize().height))); parent.add(pace);
+				button(parent,"Apply pace",()->{if(valid(expectedView,actions)){actions.pace(estimate.activity,estimate.mode,estimate.methodKey,pace.getText());}});
+				button(parent,"Clear pace",()->{if(valid(expectedView,actions)){actions.pace(estimate.activity,estimate.mode,estimate.methodKey,"");}});
 			}
 		}
 		text(parent,estimate.modelVersion+" · reviewed "+estimate.reviewed+" · "+estimate.reason);
-		text(parent,estimate.numerator+"/"+estimate.denominator+" per "+estimate.trialUnit+". Recipient: "+estimate.recipient);
+		text(parent,estimate.numerator+"/"+estimate.denominator+" per roll · "+estimate.rolls+" roll(s) per "+estimate.trialUnit+". Recipient: "+estimate.recipient);
 		for(String assumption:estimate.assumptions) { text(parent,assumption); }
 		for(String exclusion:estimate.exclusions) { text(parent,exclusion); }
 		text(parent,"Fixed-rate dry kills do not reduce remaining expectation.");
@@ -949,6 +964,8 @@ final class IronpathPanel extends PluginPanel
 			button(parent,"Apply soul state",()->edit.accept("souls",((Choice)souls.getSelectedItem()).id));
 			text(parent,"Target Defence scenario: -1 uses the reviewed reference. A lower value is an explicit assumption, not proof of a landed special or team reduction.");
 			JTextField defence=new JTextField(Integer.toString(setup.defenceOverride)); defence.setName("reference-defence"); parent.add(defence);
+			defence.setFont(parent.getFont()); defence.setAlignmentX(LEFT_ALIGNMENT);
+			defence.setMaximumSize(new Dimension(213,Math.max(28,defence.getPreferredSize().height)));
 			button(parent,"Apply target Defence",()->edit.accept("defence",defence.getText().trim()));
 		}
 		if (supported) { button(parent, "Confirm reference", () -> edit.accept("confirm", "true")); }
@@ -1077,6 +1094,9 @@ final class IronpathPanel extends PluginPanel
 	private JPanel section(JPanel parent, String label)
 	{
 		JPanel details = new JPanel(); details.setFont(parent.getFont()); details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS)); details.setVisible(false);
+		details.setAlignmentX(LEFT_ALIGNMENT);
+		details.setMinimumSize(new Dimension(0,0));
+		details.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 12,Integer.MAX_VALUE));
 		details.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		button(parent, label, () -> { details.setVisible(!details.isVisible()); revalidate(); });
 		parent.add(details); return details;
