@@ -1,0 +1,56 @@
+{
+  "reviewed": "2026-10-14",
+  "revision": "5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03",
+  "resolvedClient": "1.13.1",
+  "scope": "Public API/event contracts only; runtime mapping, timing and useful capture fractions require actual-client validation. No source code or dataset imported.",
+  "sources": [
+    {
+      "path": "runelite-api/src/main/java/net/runelite/api/events/ActorDeath.java",
+      "url": "https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-api/src/main/java/net/runelite/api/events/ActorDeath.java",
+      "sha256": "b1a05c7487c41454ba26eff226904c6e88576be2d73dbc8468c4770e541bcb5b",
+      "bytes": 1599
+    },
+    {
+      "path": "runelite-client/src/main/java/net/runelite/client/events/ServerNpcLoot.java",
+      "url": "https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-client/src/main/java/net/runelite/client/events/ServerNpcLoot.java",
+      "sha256": "6ce4340ecd6596074d7e6a558d342594d12d2f8d13abdf2a99cb7555f5c9db5b",
+      "bytes": 1708
+    },
+    {
+      "path": "runelite-client/src/main/java/net/runelite/client/plugins/loottracker/LootTrackerPlugin.java",
+      "url": "https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-client/src/main/java/net/runelite/client/plugins/loottracker/LootTrackerPlugin.java",
+      "sha256": "bf5b9e6ae200082f215cb5e7202683132f484f0f8728f48a207c447e1f1bfd5a",
+      "bytes": 61750
+    },
+    {
+      "path": "runelite-client/src/main/java/net/runelite/client/plugins/attackstyles/AttackStylesPlugin.java",
+      "url": "https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-client/src/main/java/net/runelite/client/plugins/attackstyles/AttackStylesPlugin.java",
+      "sha256": "1faf65a269a4591f9c06a3a1c9216ad92138ab3035419e7e68dd768b287788b2",
+      "bytes": 14000
+    },
+    {
+      "path": "runelite-api/src/main/java/net/runelite/api/gameval/VarPlayerID.java",
+      "url": "https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-api/src/main/java/net/runelite/api/gameval/VarPlayerID.java",
+      "sha256": "cd1d27a88778cbf793941ac9a5379486ae44e4eb55b71127508b91a1ec50d131",
+      "bytes": 163115
+    },
+    {
+      "path": "runelite-api/src/main/java/net/runelite/api/gameval/NpcID.java",
+      "url": "https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-api/src/main/java/net/runelite/api/gameval/NpcID.java",
+      "sha256": "6afa1a51c4f03ba60159544e90ec3c8d002337165ea90a9cfcf8510798caf47a",
+      "bytes": 1305346
+    },
+    {
+      "path": "runelite-api/src/main/java/net/runelite/api/IndexedObjectSet.java",
+      "url": "https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-api/src/main/java/net/runelite/api/IndexedObjectSet.java",
+      "sha256": "6e46fc40a7b88793d14ff857f1e11654ee8613d70138ce8cb7a0c5b451896520",
+      "bytes": 1862
+    },
+    {
+      "path": "runelite-api/src/main/java/net/runelite/api/WorldView.java",
+      "url": "https://github.com/runelite/runelite/blob/5ac57c9d9dc3f47efc9d98d1cad25753e7c82f03/runelite-api/src/main/java/net/runelite/api/WorldView.java",
+      "sha256": "b850bb82a73f58a06439e3f2c8e5ffc0eb67e4c1fc41102204930c90932cd7f6",
+      "bytes": 7535
+    }
+  ]
+}

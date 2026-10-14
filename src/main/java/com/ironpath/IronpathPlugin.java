@@ -70,13 +70,20 @@ public class IronpathPlugin extends Plugin
 	private boolean bankDirty;
 	private String bankIdentity;
 	private int loginTicks;
+	RecentBossObserver recentBoss;
+	volatile com.ironpath.encounter.KillImpactResult recentImpact;
+	private volatile long recentTicket;
+	private long lastRecentKey, lastRecentObservationKey;
 
 	@Override
 	protected void startUp()
 	{
 		running = true;
+		recentBoss=new RecentBossObserver(client);
+		recentImpact=null; lastRecentKey=lastRecentObservationKey=0; ++recentTicket;
 		long startup = ++lifecycle;
 		session.clear();
+		clearRecentBoss();
 		dirty = true;
 		bankDirty = false;
 		bankIdentity = null;
@@ -117,6 +124,7 @@ public class IronpathPlugin extends Plugin
 		running = false;
 		++lifecycle;
 		session.clear();
+		clearRecentBoss();
 		SwingUtilities.invokeLater(() ->
 		{
 			// UI ownership stays on the EDT, including cleanup of an in-flight startup.
@@ -138,6 +146,7 @@ public class IronpathPlugin extends Plugin
 	@Subscribe public void onRuneScapeProfileChanged(RuneScapeProfileChanged event) { invalidate("Character profile changed; observations cleared."); }
 	@Subscribe public void onStatChanged(StatChanged event)
 	{
+		if(recentReady()) { recentBoss.sample(); }
 		AccountSnapshot previous = session.snapshot();
 		if (previous == null || !Integer.valueOf(client.getRealSkillLevel(event.getSkill())).equals(previous.level(event.getSkill().name())))
 		{
@@ -146,12 +155,13 @@ public class IronpathPlugin extends Plugin
 	}
 	@Subscribe public void onVarbitChanged(VarbitChanged event)
 	{
+		if(recentReady()) { recentBoss.sample(); }
 		AccountSnapshot previous = session.snapshot();
 		// Only selected quest progress invalidates quest facts. Script evaluation stays in the coalesced read.
-		boolean questChanged = Set.of(VarbitID.SOTE, VarbitID.BCS, VarbitID.PMOON_QUEST, VarbitID.MM2_PROGRESS).contains(event.getVarbitId())
+		boolean questChanged = Set.of(VarbitID.SOTE, VarbitID.BCS, VarbitID.PMOON_QUEST, VarbitID.MM2_PROGRESS, VarbitID.VIKINGEXILE).contains(event.getVarbitId())
 			|| Set.of(VarPlayerID.SOTE_PRIMARY, VarPlayerID.BCS_PRIMARY, VarPlayerID.PMOON_MAIN,
 				VarPlayerID.REGICIDE_QUEST, VarPlayerID.NEX_PERM, VarPlayerID.VMQ4_PRIMARY,
-				VarPlayerID.MM2_QUEST, VarPlayerID.DT2_PRIMARY, VarPlayerID.DRAGONSLAYER2_MAIN, VarPlayerID.MYQ6_PRIMARY).contains(event.getVarpId());
+				VarPlayerID.MM2_QUEST, VarPlayerID.DT2_PRIMARY, VarPlayerID.DRAGONSLAYER2_MAIN, VarPlayerID.MYQ6_PRIMARY, VarPlayerID.FRIS_R1, VarPlayerID.FRIS_R2).contains(event.getVarpId());
 		if (previous == null || !supported() || questChanged || !previous.rigour.known() || !previous.augury.known()
 			|| (previous.rigour.value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_RIGOUR_UNLOCKED)
 			|| (previous.augury.value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_AUGURY_UNLOCKED)
@@ -167,6 +177,10 @@ public class IronpathPlugin extends Plugin
 	@Subscribe public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		int id = event.getContainerId();
+		if(recentReady()) {
+			if(id==InventoryID.WORN) { recentBoss.sample(); }
+			if(id==InventoryID.INV) { recentBoss.inventoryChanged(); }
+		}
 		if (id == InventoryID.INV || id == InventoryID.WORN || id == InventoryID.BANK) { dirty = true; }
 		if (id == InventoryID.BANK) { bankDirty = true; bankIdentity = identity(); }
 	}
@@ -174,6 +188,7 @@ public class IronpathPlugin extends Plugin
 	private void invalidate(String reason)
 	{
 		session.clear(); // Immediate token invalidation even if a profile event arrives off-thread.
+		clearRecentBoss();
 		render(reason, null);
 		long token = session.generation();
 		clientThread.invokeLater(() ->
@@ -200,9 +215,12 @@ public class IronpathPlugin extends Plugin
 		if (before != session.generation())
 		{
 			dirty = true;
+			clearRecentBoss();
 			bankDirty = bankDirty && identity.equals(bankIdentity);
 			loadPreferences(session.generation(), identity);
 		}
+		recentBoss.tick();
+		publishRecentBoss();
 		if (!dirty) { return; }
 		long token = session.generation();
 		AccountSnapshot previous = session.snapshot();
@@ -223,11 +241,58 @@ public class IronpathPlugin extends Plugin
 
 	private void clearUnavailable(String message)
 	{
-		if (session.identity() != null) { session.clear(); }
+		if (session.identity() != null) { session.clear(); clearRecentBoss(); }
 		bankDirty = false;
 		bankIdentity = null;
 		dirty = true;
 		render(message, null);
+	}
+
+	private boolean recentReady()
+	{ return recentBoss!=null && running && session.snapshot()!=null && current(session.generation(),session.identity()); }
+	private void clearRecentBoss()
+	{
+		++recentTicket; recentImpact=null; lastRecentKey=lastRecentObservationKey=0;
+		if(recentBoss!=null) { recentBoss.reset(session.generation()); }
+	}
+	@Subscribe public void onNpcSpawned(net.runelite.api.events.NpcSpawned event)
+	{ if(recentReady()) { recentBoss.spawn(event.getNpc()); } }
+	@Subscribe public void onNpcDespawned(net.runelite.api.events.NpcDespawned event)
+	{ if(recentReady()) { recentBoss.despawn(event.getNpc()); } }
+	@Subscribe public void onNpcChanged(net.runelite.api.events.NpcChanged event)
+	{ if(recentReady()) { recentBoss.changed(event.getNpc()); } }
+	@Subscribe public void onActorDeath(net.runelite.api.events.ActorDeath event)
+	{ if(recentReady()) { recentBoss.death(event.getActor()); } }
+	@Subscribe public void onHitsplatApplied(net.runelite.api.events.HitsplatApplied event)
+	{ if(recentReady()) { recentBoss.hit(event); } }
+	@Subscribe public void onServerNpcLoot(net.runelite.client.events.ServerNpcLoot event)
+	{ if(recentReady()) { recentBoss.loot(event); } }
+	private void publishRecentBoss()
+	{
+		if(!session.preferencesLoaded() || session.snapshot()==null) { return; }
+		var summaries=recentBoss.capture.recent();
+		if(!summaries.isEmpty() && summaries.get(summaries.size()-1).key!=lastRecentObservationKey)
+		{
+			lastRecentObservationKey=summaries.get(summaries.size()-1).key;
+			if(summaries.get(summaries.size()-1).outcome!=com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE)
+			{ render("Recent encounter evidence updated locally.",session.snapshot()); }
+		}
+		var summary=summaries.stream().filter(s->s.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE)
+			.reduce((first,last)->last).orElse(null);
+		if(summary==null || summary.key==lastRecentKey) { return; }
+		lastRecentKey=summary.key;
+		long ticket=++recentTicket, token=session.generation();
+		String expectedIdentity=session.identity();
+		AccountSnapshot captured=session.snapshot(); Preferences choices=session.preferences();
+		KnowledgeCatalog knowledge=catalog;
+		executor.execute(()->{
+			var result=new com.ironpath.advisor.RecentBossComparison(knowledge).evaluate(summary,captured,choices);
+			clientThread.invokeLater(()->{
+				if(ticket!=recentTicket || !current(token,expectedIdentity)) { return; }
+				recentImpact=result;
+				render("Recent boss comparison updated locally.",session.snapshot());
+			});
+		});
 	}
 
 	private String identity()
@@ -289,11 +354,12 @@ public class IronpathPlugin extends Plugin
 		String storageStatus = session.storageStatus();
 		List<Advisor.Recommendation> recommendations = snapshot == null || !loaded ? List.of() : advisor.evaluate(snapshot, preferences);
 		com.ironpath.advisor.PoweredMagic.Setup reference = catalog == null ? null : session.reference(catalog);
-		List<Advisor.UpgradeView> upgrades = snapshot == null || !loaded ? List.of() : advisor.upgrades(snapshot, preferences, reference, session.rangedReference(catalog), session.pace());
+		List<Advisor.UpgradeView> upgrades = snapshot == null || !loaded ? List.of() : advisor.upgrades(snapshot, preferences, reference, session.rangedReference(catalog), session.meleeReference(catalog), session.pace());
 		com.ironpath.advisor.PursuitOverview overview = new com.ironpath.advisor.PursuitOverview(upgrades,
 			snapshot == null || !loaded ? List.of() : advisor.activityOpportunities(snapshot, preferences, upgrades),
 			snapshot == null || !loaded ? List.of() : advisor.quickActions(snapshot, preferences),
-			snapshot == null || !loaded ? List.of() : advisor.availableActivities(snapshot, preferences));
+			snapshot == null || !loaded ? List.of() : advisor.availableActivities(snapshot, preferences),
+			snapshot == null || !loaded ? List.of() : advisor.ownedUpgrades(snapshot, preferences));
 		Advisor.GoalView goal = snapshot == null || !loaded ? null : advisor.goal(snapshot, preferences);
 		List<String> reasons = snapshot == null || !loaded || !recommendations.isEmpty() ? List.of()
 			: advisor.explainNoAdvice(snapshot, preferences);
@@ -312,6 +378,22 @@ public class IronpathPlugin extends Plugin
 				if (catalog.factChoices().containsKey(key)) { changePreferences(token, expectedIdentity, p -> p.confirm(key, value, Instant.now())); }
 			}
 			public void clear() { changePreferences(token, expectedIdentity, p -> Preferences.EMPTY); }
+			public void recentBoss(boolean enabled)
+			{
+				clientThread.invokeLater(()->{
+					if(!IronpathPlugin.this.current(token,expectedIdentity)) { return; }
+					IronpathPlugin.this.clearRecentBoss(); recentBoss.enable(enabled,session.generation());
+					render(enabled ? "Experimental recent boss enabled for this session." : "Recent boss disabled and cleared.",session.snapshot());
+				});
+			}
+			public void clearRecentBoss()
+			{
+				clientThread.invokeLater(()->{
+					if(!IronpathPlugin.this.current(token,expectedIdentity)) { return; }
+					IronpathPlugin.this.clearRecentBoss();
+					render("Recent kills cleared from memory.",session.snapshot());
+				});
+			}
 			public boolean current() { return running && session.currentView(token, revision) && session.snapshot() == snapshot; }
 			public boolean canEdit() { return session.writable(); }
 			public void reference(String key, String value)
@@ -345,9 +427,13 @@ public class IronpathPlugin extends Plugin
 				});
 			}
 		};
+		var recentResult=recentImpact;
+		boolean recentIsEnabled=recentBoss!=null && recentBoss.enabled();
+		var recentEvidence=recentBoss==null ? List.<com.ironpath.encounter.EncounterSummary>of() : recentBoss.capture.recent();
 		SwingUtilities.invokeLater(() ->
 		{
 			if (!running || panel == null || !session.currentView(token, revision) || session.snapshot() != snapshot) { return; }
+			panel.recentBoss(recentResult,recentIsEnabled,recentEvidence);
 			panel.render(status, snapshot, recommendations, catalog, goal, preferences, actions, storageStatus, reasons, overview, reference);
 		});
 	}

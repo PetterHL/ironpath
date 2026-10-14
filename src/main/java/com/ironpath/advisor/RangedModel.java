@@ -43,6 +43,12 @@ public final class RangedModel
 	}
 	public static PoweredMagic.Metrics calculate(int level, CombatSetup setup, TargetProfile target, Map<Integer,RangedItem> items)
 	{
+		return calculateVisible(level + (setup.rangingPotion ? 4 + level / 10 : 0),setup,target,items);
+	}
+	/** Exact sampled visible level, including drains/decay; never infer a potion from it. */
+	public static PoweredMagic.Metrics calculateVisible(int visible, CombatSetup setup, TargetProfile target, Map<Integer,RangedItem> items)
+	{
+		if (visible < 1 || visible > 200) { throw new IllegalArgumentException("Visible Ranged level unavailable"); }
 		RangedItem weapon = items.get(setup.slots.get("weapon"));
 		if (weapon == null || weapon.weapon == null) { throw new IllegalArgumentException("Missing ranged weapon"); }
 		Long defence = target.rangedDefenceRoll(weapon.defenceType);
@@ -61,7 +67,6 @@ public final class RangedModel
 		RangedItem cape = items.get(setup.slots.get("cape"));
 		if (cape != null && cape.chargedQuiver && (ammoKind(weapon) == RangedItem.Ammo.ARROW || ammoKind(weapon) == RangedItem.Ammo.BOLT))
 		{ attack += 10; strength += 1; }
-		int visible = level + (setup.rangingPotion ? 4 + level / 10 : 0);
 		int style = setup.rangedStyle == Style.ACCURATE ? 3 : 0;
 		int effectiveAttack = visible * setup.rangedPrayer.accuracy / 100 + style + 8;
 		int effectiveStrength = visible * setup.rangedPrayer.strength / 100 + style + 8;

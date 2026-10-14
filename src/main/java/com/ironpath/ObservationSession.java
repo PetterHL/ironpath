@@ -16,6 +16,7 @@ final class ObservationSession
 	private AccountSnapshot snapshot;
 	private final MagicReference reference = new MagicReference();
 	private final com.ironpath.advisor.RangedReference rangedReference = new com.ironpath.advisor.RangedReference();
+	private final com.ironpath.advisor.MeleeReference meleeReference = new com.ironpath.advisor.MeleeReference();
 	private com.ironpath.advisor.PaceScenario pace;
 	private Preferences preferences = Preferences.EMPTY;
 	private boolean loaded, writable;
@@ -58,11 +59,14 @@ final class ObservationSession
 	{ return snapshot == null || !loaded ? null : reference.update(snapshot, preferences, catalog); }
 	synchronized com.ironpath.advisor.CombatSetup rangedReference(KnowledgeCatalog catalog)
 	{ return snapshot == null || !loaded ? null : rangedReference.update(snapshot, preferences, catalog); }
+	synchronized com.ironpath.advisor.CombatSetup meleeReference(KnowledgeCatalog catalog)
+	{ return snapshot == null || !loaded ? null : meleeReference.update(snapshot, preferences, catalog); }
 	synchronized boolean editReference(long token, long viewRevision, String currentIdentity, AccountSnapshot expected,
 		String key, String value, KnowledgeCatalog catalog)
 	{
 		if (!accepts(token, currentIdentity) || revision != viewRevision || snapshot != expected || snapshot == null || !loaded
-			|| !(key.startsWith("ranged/") ? rangedReference.edit(key.substring(7), value, snapshot, preferences, catalog)
+			|| !(key.startsWith("melee/") ? meleeReference.edit(key.substring(6), value, snapshot, preferences, catalog)
+				: key.startsWith("ranged/") ? rangedReference.edit(key.substring(7), value, snapshot, preferences, catalog)
 				: reference.edit(key, value, snapshot, preferences, catalog))) { return false; }
 		revision++; return true;
 	}
@@ -75,6 +79,7 @@ final class ObservationSession
 		snapshot = null;
 		reference.clear();
 		rangedReference.clear();
+		meleeReference.clear();
 		pace = null;
 		preferences = Preferences.EMPTY; loaded = false; writable = false;
 		storageStatus = "Loading local character preferences…";

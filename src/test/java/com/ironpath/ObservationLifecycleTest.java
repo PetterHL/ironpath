@@ -288,4 +288,28 @@ public class ObservationLifecycleTest
 		assertThrows(IllegalStateException.class, () -> plugin.reader.read(com.ironpath.model.Observation.unknown()));
 	}
 
+	@Test public void queuedRecentBossResultCannotSurviveProfileLoadingDisableOrAccountSwitch()
+	{
+		for(String boundary:java.util.List.of("profile","loading","account"))
+		{
+			observeBank();
+			plugin.recentBoss.enable(true,plugin.session.generation());
+			var capture=plugin.recentBoss.capture;
+			var state=com.ironpath.advisor.RecentBossComparisonTest.state(25867,0,99);
+			var context=new com.ironpath.encounter.EncounterContext(null,null,"zilyana","ordinary","normal",1,"solo",java.util.Map.of());
+			capture.start(99,plugin.session.generation(),context,"synthetic",10,state);
+			capture.localDamage(11,20);
+			for(int i=11;i<20;i++) { capture.sample(i,state); }
+			capture.death(20); capture.loot(20); capture.sample(25,state);
+			plugin.onGameTick(new GameTick());
+			assertFalse("Comparison publication should be queued",delayed.isEmpty());
+			if(boundary.equals("profile")) { plugin.onProfileChanged(new ProfileChanged()); }
+			else if(boundary.equals("loading")) { plugin.onGameStateChanged(new GameStateChanged()); }
+			else { when(client.getAccountHash()).thenReturn(2L); plugin.onGameTick(new GameTick()); }
+			while(!delayed.isEmpty()) { delayed.remove().run(); }
+			assertNull("Stale publication at "+boundary,plugin.recentImpact);
+			assertTrue(plugin.recentBoss.capture.recent().isEmpty());
+		}
+	}
+
 }

@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 10,
-  "knowledgeVersion": "r3a-3",
+  "schemaVersion": 11,
+  "knowledgeVersion": "r3b-1",
   "reviewed": "2026-10-14",
   "sources": [
     {
@@ -775,7 +775,8 @@
         "seek-occult-necklace",
         "seek-titans-prayers",
         "seek-toa-fang",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "seek-abyssal-tentacle"
       ],
       "items": [
         4151,
@@ -788,7 +789,8 @@
         "seek-occult-necklace",
         "seek-titans-prayers",
         "seek-toa-fang",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": []
     },
@@ -811,7 +813,8 @@
         "seek-occult-necklace",
         "seek-titans-prayers",
         "seek-toa-fang",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "seek-abyssal-tentacle"
       ],
       "items": [
         12006
@@ -822,7 +825,8 @@
         "seek-occult-necklace",
         "seek-titans-prayers",
         "seek-toa-fang",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "seek-abyssal-tentacle"
       ],
       "contexts": []
     },
@@ -1559,7 +1563,8 @@
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
         "seek-avas-assembler",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "seek-abyssal-tentacle"
       ],
       "items": [
         564,
@@ -1768,7 +1773,33 @@
         33027,
         33029,
         28687,
-        28688
+        28688,
+        26484,
+        21009,
+        23528,
+        7158,
+        1333,
+        10828,
+        24271,
+        11832,
+        11834,
+        10551,
+        24780,
+        19553,
+        29801,
+        12954,
+        22322,
+        22981,
+        11773,
+        25264,
+        26770,
+        11772,
+        25262,
+        26769,
+        6570,
+        21295,
+        22114,
+        12004
       ],
       "models": [],
       "routes": [
@@ -1804,7 +1835,8 @@
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
         "seek-avas-assembler",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "seek-abyssal-tentacle"
       ],
       "contexts": [],
       "rewards": [
@@ -7653,6 +7685,831 @@
         "rupture-core-neck",
         "treads-hybrid-role"
       ]
+    },
+    {
+      "id": "r3b-damage-per-second-melee",
+      "url": "https://oldschool.runescape.wiki/w/Damage_per_second/Melee?oldid=15371684",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15371684",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [
+        "seek-abyssal-tentacle"
+      ],
+      "items": [],
+      "models": [
+        "melee-1"
+      ],
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "contexts": [
+        "neutral-zero-defence"
+      ]
+    },
+    {
+      "id": "r3b-successful-hit",
+      "url": "https://oldschool.runescape.wiki/w/Successful_hit?oldid=15341618",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15341618",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [],
+      "models": [
+        "melee-1"
+      ],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-piety",
+      "url": "https://oldschool.runescape.wiki/w/Piety?oldid=15273846",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15273846",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [],
+      "models": [
+        "melee-1"
+      ],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-chivalry",
+      "url": "https://oldschool.runescape.wiki/w/Chivalry?oldid=15293964",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15293964",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [],
+      "models": [
+        "melee-1"
+      ],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-super-attack",
+      "url": "https://oldschool.runescape.wiki/w/Super_attack?oldid=15184104",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15184104",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [],
+      "models": [
+        "melee-1"
+      ],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-super-strength",
+      "url": "https://oldschool.runescape.wiki/w/Super_strength?oldid=15184084",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15184084",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [],
+      "models": [
+        "melee-1"
+      ],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-incredible-reflexes",
+      "url": "https://oldschool.runescape.wiki/w/Incredible_Reflexes?oldid=15354739",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15354739",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [],
+      "models": [
+        "melee-1"
+      ],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-ultimate-strength",
+      "url": "https://oldschool.runescape.wiki/w/Ultimate_Strength?oldid=15354738",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15354738",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [],
+      "models": [
+        "melee-1"
+      ],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-combat-styles",
+      "url": "https://oldschool.runescape.wiki/w/Module%3ACombatStyles?oldid=15299810",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki combat-style factual metadata",
+      "revision": "15299810",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [],
+      "models": [
+        "melee-1"
+      ],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-abyssal-whip",
+      "url": "https://oldschool.runescape.wiki/w/Abyssal_whip?oldid=15326130",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15326130",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [
+        "seek-abyssal-tentacle"
+      ],
+      "items": [
+        4151,
+        12773,
+        12774
+      ],
+      "models": [],
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "contexts": []
+    },
+    {
+      "id": "r3b-abyssal-tentacle",
+      "url": "https://oldschool.runescape.wiki/w/Abyssal_tentacle?oldid=15364127",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15364127",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [
+        "seek-abyssal-tentacle"
+      ],
+      "items": [
+        12006
+      ],
+      "models": [],
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "contexts": []
+    },
+    {
+      "id": "r3b-abyssal-tentacle-or",
+      "url": "https://oldschool.runescape.wiki/w/Abyssal_tentacle_(or)?oldid=15329233",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15329233",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [
+        "seek-abyssal-tentacle"
+      ],
+      "items": [
+        26484
+      ],
+      "models": [],
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "contexts": []
+    },
+    {
+      "id": "r3b-dragon-sword",
+      "url": "https://oldschool.runescape.wiki/w/Dragon_sword?oldid=15343642",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15343642",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [
+        "seek-abyssal-tentacle"
+      ],
+      "items": [
+        21009
+      ],
+      "models": [],
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "contexts": []
+    },
+    {
+      "id": "r3b-sarachnis-cudgel",
+      "url": "https://oldschool.runescape.wiki/w/Sarachnis_cudgel?oldid=15197800",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15197800",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [
+        "seek-abyssal-tentacle"
+      ],
+      "items": [
+        23528
+      ],
+      "models": [],
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "contexts": []
+    },
+    {
+      "id": "r3b-dragon-2h-sword",
+      "url": "https://oldschool.runescape.wiki/w/Dragon_2h_sword?oldid=15331442",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15331442",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [
+        "seek-abyssal-tentacle"
+      ],
+      "items": [
+        7158
+      ],
+      "models": [],
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "contexts": []
+    },
+    {
+      "id": "r3b-rune-scimitar",
+      "url": "https://oldschool.runescape.wiki/w/Rune_scimitar?oldid=15346885",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15346885",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [
+        "seek-abyssal-tentacle"
+      ],
+      "items": [
+        1333
+      ],
+      "models": [],
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "contexts": []
+    },
+    {
+      "id": "r3b-helm-of-neitiznot",
+      "url": "https://oldschool.runescape.wiki/w/Helm_of_Neitiznot?oldid=15320122",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15320122",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        10828
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-neitiznot-faceguard",
+      "url": "https://oldschool.runescape.wiki/w/Neitiznot_faceguard?oldid=15327850",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15327850",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        24271
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-bandos-chestplate",
+      "url": "https://oldschool.runescape.wiki/w/Bandos_chestplate?oldid=15360501",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15360501",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        11832
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-bandos-tassets",
+      "url": "https://oldschool.runescape.wiki/w/Bandos_tassets?oldid=15371734",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15371734",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        11834
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-fighter-torso",
+      "url": "https://oldschool.runescape.wiki/w/Fighter_torso?oldid=15366125",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15366125",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        10551
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-amulet-of-fury",
+      "url": "https://oldschool.runescape.wiki/w/Amulet_of_fury?oldid=15366576",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15366576",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        6585
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-amulet-of-blood-fury",
+      "url": "https://oldschool.runescape.wiki/w/Amulet_of_blood_fury?oldid=15355928",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15355928",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        24780
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-amulet-of-torture",
+      "url": "https://oldschool.runescape.wiki/w/Amulet_of_torture?oldid=15187468",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15187468",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        19553
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-amulet-of-rancour",
+      "url": "https://oldschool.runescape.wiki/w/Amulet_of_rancour?oldid=15343231",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15343231",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        29801
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-dragon-defender",
+      "url": "https://oldschool.runescape.wiki/w/Dragon_defender?oldid=15363213",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15363213",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        12954
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-avernic-defender",
+      "url": "https://oldschool.runescape.wiki/w/Avernic_defender?oldid=15365476",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15365476",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        22322
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-barrows-gloves",
+      "url": "https://oldschool.runescape.wiki/w/Barrows_gloves?oldid=15322401",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15322401",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        7462
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-ferocious-gloves",
+      "url": "https://oldschool.runescape.wiki/w/Ferocious_gloves?oldid=15301367",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15301367",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        22981
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-dragon-boots",
+      "url": "https://oldschool.runescape.wiki/w/Dragon_boots?oldid=15364734",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15364734",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        11840
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-primordial-boots",
+      "url": "https://oldschool.runescape.wiki/w/Primordial_boots?oldid=15290842",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15290842",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        13239
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-berserker-ring-i",
+      "url": "https://oldschool.runescape.wiki/w/Berserker_ring_(i)?oldid=15345632",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15345632",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        11773,
+        25264,
+        26770
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-warrior-ring-i",
+      "url": "https://oldschool.runescape.wiki/w/Warrior_ring_(i)?oldid=15345658",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15345658",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        11772,
+        25262,
+        26769
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-brimstone-ring",
+      "url": "https://oldschool.runescape.wiki/w/Brimstone_ring?oldid=15368603",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15368603",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        22975
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-lightbearer",
+      "url": "https://oldschool.runescape.wiki/w/Lightbearer?oldid=15299656",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15299656",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        25975
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-fire-cape",
+      "url": "https://oldschool.runescape.wiki/w/Fire_cape?oldid=15363180",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15363180",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        6570
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-infernal-cape",
+      "url": "https://oldschool.runescape.wiki/w/Infernal_cape?oldid=15359317",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15359317",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        21295
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-mythical-cape",
+      "url": "https://oldschool.runescape.wiki/w/Mythical_cape?oldid=15366320",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15366320",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [
+        22114
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
+    },
+    {
+      "id": "r3b-kraken-tentacle",
+      "url": "https://oldschool.runescape.wiki/w/Kraken_tentacle?oldid=15316741",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15316741",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [
+        "seek-abyssal-tentacle"
+      ],
+      "items": [
+        12004
+      ],
+      "models": [],
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "contexts": [],
+      "efforts": [
+        "seek-abyssal-tentacle"
+      ]
+    },
+    {
+      "id": "r3b-dharok-the-wretched",
+      "url": "https://oldschool.runescape.wiki/w/Dharok_the_Wretched?oldid=15316733",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15316733",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [
+        "dharok"
+      ]
+    },
+    {
+      "id": "r3b-general-graardor",
+      "url": "https://oldschool.runescape.wiki/w/General_Graardor?oldid=15337045",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15337045",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [
+        "graardor"
+      ]
+    },
+    {
+      "id": "r3b-cave-kraken",
+      "url": "https://oldschool.runescape.wiki/w/Cave_kraken?oldid=15342837",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15342837",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [
+        "seek-abyssal-tentacle"
+      ],
+      "items": [],
+      "models": [],
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "contexts": []
+    },
+    {
+      "id": "r3b-abyssal-demon",
+      "url": "https://oldschool.runescape.wiki/w/Abyssal_demon?oldid=15357583",
+      "author": "OSRS Wiki contributors",
+      "type": "wiki",
+      "revision": "15357583",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Independently authored summary and numerical game facts; no prose, code or images copied.",
+      "licence": "Wiki CC BY-NC-SA; numerical facts only, no licensed expressive content reused.",
+      "decisions": [
+        "seek-abyssal-tentacle"
+      ],
+      "items": [],
+      "models": [],
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "contexts": []
     }
   ],
   "decisions": [
@@ -11301,7 +12158,7 @@
       "why": "Current superior ranged neck alternative: +8 strength/+20 attack, with account-specific breakpoints.",
       "alternative": "Do not grind anguish again when rupture is owned. Recipe competes for the same zenyte-derived neck; retain it until the Maggot route is worthwhile.",
       "tradeoff": "Do not grind anguish again when rupture is owned. Recipe competes for the same zenyte-derived neck; retain it until the Maggot route is worthwhile.",
-      "effort": "Blood Moon Rises \u2192 Maggot King elder fang \u2192 84 Crafting/chisel etching \u2192 combine with anguish near bank. 90 Hitpoints to wear.",
+      "effort": "Blood Moon Rises → Maggot King elder fang → 84 Crafting/chisel etching → combine with anguish near bank. 90 Hitpoints to wear.",
       "access": "See separate hard access checks.",
       "completion": "Possession includes reviewed equivalent/empty forms; usable reference requires observed active forms and supplies.",
       "applicability": "Contextual ranged comparison, not encounter readiness.",
@@ -11350,7 +12207,7 @@
         "burden": "MODERATE",
         "tail": "ORDINARY",
         "modeId": "ordinary",
-        "reason": "Blood Moon Rises \u2192 Maggot King elder fang \u2192 84 Crafting/chisel etching \u2192 combine with anguish near bank. 90 Hitpoints to wear.",
+        "reason": "Blood Moon Rises → Maggot King elder fang → 84 Crafting/chisel etching → combine with anguish near bank. 90 Hitpoints to wear.",
         "missingMechanics": "Reviewed qualitative remaining route only; complete trial/recipient/pace models are unavailable. No acquisition hours or additive reward gains.",
         "sources": [
           "r2-necklace-of-rupture"
@@ -11493,7 +12350,7 @@
       "why": "A ranged ring breakpoint/accuracy option, compared with the strongest supported observed ring.",
       "alternative": "Lightbearer/suffering retain qualitative utility; specs, defence and recoil are separate, not zero-valued utilities.",
       "tradeoff": "Lightbearer/suffering retain qualitative utility; specs, defence and recoil are separate, not zero-valued utilities.",
-      "effort": "Leviathan vestige + archer icon +500 blood runes \u2192 venator icon \u21923 ingots/furnace/ring mould. 90 Magic/80 Crafting and Peer instruction; at least one Leviathan kill to wear.",
+      "effort": "Leviathan vestige + archer icon +500 blood runes → venator icon →3 ingots/furnace/ring mould. 90 Magic/80 Crafting and Peer instruction; at least one Leviathan kill to wear.",
       "access": "See separate hard access checks.",
       "completion": "Possession includes reviewed equivalent/empty forms; usable reference requires observed active forms and supplies.",
       "applicability": "Contextual ranged comparison, not encounter readiness.",
@@ -11545,7 +12402,7 @@
         "burden": "MODERATE",
         "tail": "ORDINARY",
         "modeId": "ordinary",
-        "reason": "Leviathan vestige + archer icon +500 blood runes \u2192 venator icon \u21923 ingots/furnace/ring mould. 90 Magic/80 Crafting and Peer instruction; at least one Leviathan kill to wear.",
+        "reason": "Leviathan vestige + archer icon +500 blood runes → venator icon →3 ingots/furnace/ring mould. 90 Magic/80 Crafting and Peer instruction; at least one Leviathan kill to wear.",
         "missingMechanics": "Reviewed qualitative remaining route only; complete trial/recipient/pace models are unavailable. No acquisition hours or additive reward gains.",
         "sources": [
           "r2-venator-ring"
@@ -11611,7 +12468,7 @@
       "why": "Ranged strength/accuracy for the hand slot; the Nex burden can outweigh a small breakpoint.",
       "alternative": "Keep Barrows gloves/complete Void where appropriate. Nex rewards are separate RNG outcomes; no simultaneous Torva/horn promise.",
       "tradeoff": "Keep Barrows gloves/complete Void where appropriate. Nex rewards are separate RNG outcomes; no simultaneous Torva/horn promise.",
-      "effort": "Frozen Door, visit killcount/key and team/supplies \u2192 Nex vambraces. 80 Ranged/45 Defence to wear.",
+      "effort": "Frozen Door, visit killcount/key and team/supplies → Nex vambraces. 80 Ranged/45 Defence to wear.",
       "access": "See separate hard access checks.",
       "completion": "Possession includes reviewed equivalent/empty forms; usable reference requires observed active forms and supplies.",
       "applicability": "Contextual ranged comparison, not encounter readiness.",
@@ -11658,7 +12515,7 @@
         "burden": "HIGH",
         "tail": "LONG",
         "modeId": "ordinary",
-        "reason": "Frozen Door, visit killcount/key and team/supplies \u2192 Nex vambraces. 80 Ranged/45 Defence to wear.",
+        "reason": "Frozen Door, visit killcount/key and team/supplies → Nex vambraces. 80 Ranged/45 Defence to wear.",
         "missingMechanics": "Reviewed qualitative remaining route only; complete trial/recipient/pace models are unavailable. No acquisition hours or additive reward gains.",
         "sources": [
           "r2-nex"
@@ -11786,7 +12643,7 @@
       "why": "Cape-slot ranged strength/accuracy and separate ammunition saving, useful before quiver.",
       "alternative": "Quiver can supersede this offensive cape; ammo saving and supply burden are not extra DPS or trip claims.",
       "tradeoff": "Quiver can supersede this offensive cape; ammo saving and supply burden are not extra DPS or trip claims.",
-      "effort": "Dragon Slayer II \u2192 Vorkath head \u2192 Ava with 75 mithril arrows and an accumulator or 4,999 coins. The first head is guaranteed at lifetime kill 50; unobserved KC or an already-used/lost head cannot establish a future guarantee.",
+      "effort": "Dragon Slayer II → Vorkath head → Ava with 75 mithril arrows and an accumulator or 4,999 coins. The first head is guaranteed at lifetime kill 50; unobserved KC or an already-used/lost head cannot establish a future guarantee.",
       "access": "See separate hard access checks.",
       "completion": "Possession includes reviewed equivalent/empty forms; usable reference requires observed active forms and supplies.",
       "applicability": "Contextual ranged comparison, not encounter readiness.",
@@ -11833,7 +12690,7 @@
         "burden": "MODERATE",
         "tail": "UNKNOWN",
         "modeId": "ordinary",
-        "reason": "Dragon Slayer II \u2192 Vorkath head \u2192 Ava with 75 mithril arrows and an accumulator or 4,999 coins. The first head is guaranteed at lifetime kill 50; unobserved KC or an already-used/lost head cannot establish a future guarantee.",
+        "reason": "Dragon Slayer II → Vorkath head → Ava with 75 mithril arrows and an accumulator or 4,999 coins. The first head is guaranteed at lifetime kill 50; unobserved KC or an already-used/lost head cannot establish a future guarantee.",
         "missingMechanics": "Head ownership and lifetime guarantee state/remaining RNG are separate; no current KC or full-item ETA. Owned head removes the drop stage.",
         "sources": [
           "r2-ava-s-assembler"
@@ -11927,6 +12784,108 @@
           "venator-shard-allocation"
         ],
         "variants": []
+      }
+    },
+    {
+      "id": "seek-abyssal-tentacle",
+      "title": "Assemble an abyssal tentacle",
+      "kind": "ACQUIRE",
+      "itemId": 12006,
+      "when": {
+        "test": "ITEMS",
+        "key": "ordinaryMeleeObserved"
+      },
+      "completeWhen": {
+        "test": "POSSESSION",
+        "key": "abyssalTentacle",
+        "value": true
+      },
+      "repeatable": false,
+      "accessWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "goals": [],
+      "notes": [],
+      "contextBenefits": [],
+      "benefitBand": "MODERATE",
+      "benefitReason": "Stronger ordinary four-tick slash than a whip; compare complete owned stab/crush and two-handed packages before spending whips.",
+      "why": "Stronger ordinary four-tick slash than a whip; compare complete owned stab/crush and two-handed packages before spending whips.",
+      "alternative": "Keep the whip for low-cost use. Owned Fang, Scythe, Soulreaper and lance require their family models; no universal tentacle upgrade is claimed.",
+      "tradeoff": "Keep the whip for low-cost use. Owned Fang, Scythe, Soulreaper and lance require their family models; no universal tentacle upgrade is claimed.",
+      "effort": "Use an owned whip and kraken tentacle first. Otherwise obtain a whip from 85-Slayer abyssal demons (boosting/access checked separately), and a tentacle from cave kraken or Kraken: 87 Slayer, 50 Magic and a cave-kraken task. Combine, then allow for whip consumption every 10,000 attacks.",
+      "access": "Assembly has no Slayer requirement. Drop stages have separate level/task conditions.",
+      "completion": "Possession removes acquisition; observed charged form is needed for a reference.",
+      "applicability": "Ordinary slash comparison; not encounter readiness.",
+      "family": "melee-abyssal-tentacle",
+      "activity": "slayer",
+      "outcome": "Abyssal tentacle",
+      "preparation": "Check current cave-kraken assignment and a suitable magic method only if its drop stage remains.",
+      "effortBand": "GRIND",
+      "sources": [
+        "item-ids",
+        "r3b-abyssal-demon",
+        "r3b-abyssal-tentacle",
+        "r3b-abyssal-tentacle-or",
+        "r3b-abyssal-whip",
+        "r3b-cave-kraken",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-kraken-tentacle",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "tentacle",
+        "whip"
+      ],
+      "requires": [],
+      "status": "reviewed",
+      "reviewed": "2026-10-14",
+      "pursuit": {
+        "mode": "REPEATABLE",
+        "burden": "MODERATE",
+        "tail": "ORDINARY",
+        "modeId": "ordinary-melee",
+        "reason": "Use an owned whip and kraken tentacle first. Otherwise obtain a whip from 85-Slayer abyssal demons (boosting/access checked separately), and a tentacle from cave kraken or Kraken: 87 Slayer, 50 Magic and a cave-kraken task. Combine, then allow for whip consumption every 10,000 attacks.",
+        "missingMechanics": "Reviewed qualitative remaining route only; complete trial/recipient/pace models are unavailable. No acquisition hours or additive reward gains.",
+        "sources": [
+          "r3b-kraken-tentacle"
+        ],
+        "allocations": [
+          "whip-consumption",
+          "kraken-tentacle-use"
+        ],
+        "variants": [
+          {
+            "when": {
+              "test": "ALL",
+              "conditions": [
+                {
+                  "test": "POSSESSION",
+                  "key": "abyssalWhip",
+                  "value": true
+                },
+                {
+                  "test": "POSSESSION",
+                  "key": "krakenTentacle",
+                  "value": true
+                }
+              ]
+            },
+            "mode": "READY",
+            "burden": "LOW",
+            "tail": "ORDINARY",
+            "reason": "Both inputs owned; only irreversible assembly remains. Whip upkeep and competing trident enhancement remain choices.",
+            "allocations": [
+              "whip-consumption",
+              "kraken-tentacle-use"
+            ]
+          }
+        ]
       }
     }
   ],
@@ -15023,6 +15982,294 @@
           "item-ids"
         ]
       }
+    ],
+    "referenceMelee": [
+      {
+        "id": 26484,
+        "label": "Abyssal tentacle (or)",
+        "skill": "ATTACK",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "r3b-abyssal-tentacle-or",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 21009,
+        "label": "Dragon sword",
+        "skill": "ATTACK",
+        "level": 60,
+        "crystal": false,
+        "sources": [
+          "r3b-dragon-sword",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 23528,
+        "label": "Sarachnis cudgel",
+        "skill": "ATTACK",
+        "level": 65,
+        "crystal": false,
+        "sources": [
+          "r3b-sarachnis-cudgel",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 7158,
+        "label": "Dragon 2h sword",
+        "skill": "ATTACK",
+        "level": 60,
+        "crystal": false,
+        "sources": [
+          "r3b-dragon-2h-sword",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 1333,
+        "label": "Rune scimitar",
+        "skill": "ATTACK",
+        "level": 40,
+        "crystal": false,
+        "sources": [
+          "r3b-rune-scimitar",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 10828,
+        "label": "Helm of Neitiznot",
+        "skill": "DEFENCE",
+        "level": 55,
+        "crystal": false,
+        "sources": [
+          "r3b-helm-of-neitiznot",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 24271,
+        "label": "Neitiznot faceguard",
+        "skill": "DEFENCE",
+        "level": 70,
+        "crystal": false,
+        "sources": [
+          "r3b-neitiznot-faceguard",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11832,
+        "label": "Bandos chestplate",
+        "skill": "DEFENCE",
+        "level": 65,
+        "crystal": false,
+        "sources": [
+          "r3b-bandos-chestplate",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11834,
+        "label": "Bandos tassets",
+        "skill": "DEFENCE",
+        "level": 65,
+        "crystal": false,
+        "sources": [
+          "r3b-bandos-tassets",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 10551,
+        "label": "Fighter torso",
+        "skill": "DEFENCE",
+        "level": 40,
+        "crystal": false,
+        "sources": [
+          "r3b-fighter-torso",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 24780,
+        "label": "Amulet of blood fury",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r3b-amulet-of-blood-fury",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 19553,
+        "label": "Amulet of torture",
+        "skill": "HITPOINTS",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "r3b-amulet-of-torture",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 29801,
+        "label": "Amulet of rancour",
+        "skill": "HITPOINTS",
+        "level": 90,
+        "crystal": false,
+        "sources": [
+          "r3b-amulet-of-rancour",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12954,
+        "label": "Dragon defender",
+        "skill": "ATTACK",
+        "level": 60,
+        "crystal": false,
+        "sources": [
+          "r3b-dragon-defender",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22322,
+        "label": "Avernic defender",
+        "skill": "ATTACK",
+        "level": 70,
+        "crystal": false,
+        "sources": [
+          "r3b-avernic-defender",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22981,
+        "label": "Ferocious gloves",
+        "skill": "ATTACK",
+        "level": 80,
+        "crystal": false,
+        "sources": [
+          "r3b-ferocious-gloves",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11773,
+        "label": "Berserker ring (i)",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r3b-berserker-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 25264,
+        "label": "Berserker ring (i)",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r3b-berserker-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 26770,
+        "label": "Berserker ring (i)",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r3b-berserker-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11772,
+        "label": "Warrior ring (i)",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r3b-warrior-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 25262,
+        "label": "Warrior ring (i)",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r3b-warrior-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 26769,
+        "label": "Warrior ring (i)",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r3b-warrior-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 6570,
+        "label": "Fire cape",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r3b-fire-cape",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 21295,
+        "label": "Infernal cape",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r3b-infernal-cape",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22114,
+        "label": "Mythical cape",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r3b-mythical-cape",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12004,
+        "label": "Kraken tentacle",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "r3b-kraken-tentacle",
+          "item-ids"
+        ]
+      }
     ]
   },
   "itemSets": {
@@ -15583,6 +16830,29 @@
     "toxicBlowpipeActive": [
       12926,
       28688
+    ],
+    "abyssalTentacle": [
+      12006,
+      26484
+    ],
+    "krakenTentacle": [
+      12004
+    ],
+    "ordinaryMeleeObserved": [
+      4151,
+      12773,
+      12774,
+      12006,
+      26484,
+      21009,
+      23528,
+      7158,
+      1333
+    ],
+    "abyssalWhip": [
+      4151,
+      12773,
+      12774
     ]
   },
   "activities": {
@@ -15684,7 +16954,10 @@
     "venatorShards": "Venator shards (presence does not prove five)",
     "ancientEssence": "Ancient essence (quantity and allocation separate)",
     "imbuedHeart": "Imbued heart",
-    "saturatedHeart": "Saturated heart"
+    "saturatedHeart": "Saturated heart",
+    "abyssalTentacle": "Abyssal tentacle (including ornamented form)",
+    "krakenTentacle": "Kraken tentacle component",
+    "abyssalWhip": "Abyssal whip (including cosmetics)"
   },
   "goals": [
     {
@@ -20276,7 +21549,7 @@
       "benefitBand": "MODERATE",
       "valueReason": "Current superior ranged neck alternative: +8 strength/+20 attack, with account-specific breakpoints.",
       "alternatives": "Do not grind anguish again when rupture is owned. Recipe competes for the same zenyte-derived neck; retain it until the Maggot route is worthwhile.",
-      "remainingWork": "Blood Moon Rises \u2192 Maggot King elder fang \u2192 84 Crafting/chisel etching \u2192 combine with anguish near bank. 90 Hitpoints to wear.",
+      "remainingWork": "Blood Moon Rises → Maggot King elder fang → 84 Crafting/chisel etching → combine with anguish near bank. 90 Hitpoints to wear.",
       "limitation": "Proposed complete ranged packages and selected target only. Supplies/loading assumed. Specials, enchanted bolt procs, encounter time and trips unavailable.",
       "sources": [
         "armadyl-crossbow",
@@ -20408,7 +21681,7 @@
             "key": "anguishOrBetter",
             "value": true
           },
-          "detail": "Zenyte/onyx/monkey-form \u2192 89/92 Crafting \u2192 93 Magic enchant; retained anguish path is independently inspectable."
+          "detail": "Zenyte/onyx/monkey-form → 89/92 Crafting → 93 Magic enchant; retained anguish path is independently inspectable."
         },
         {
           "id": "reward",
@@ -20598,7 +21871,7 @@
       "benefitBand": "MODERATE",
       "valueReason": "A ranged ring breakpoint/accuracy option, compared with the strongest supported observed ring.",
       "alternatives": "Lightbearer/suffering retain qualitative utility; specs, defence and recoil are separate, not zero-valued utilities.",
-      "remainingWork": "Leviathan vestige + archer icon +500 blood runes \u2192 venator icon \u21923 ingots/furnace/ring mould. 90 Magic/80 Crafting and Peer instruction; at least one Leviathan kill to wear.",
+      "remainingWork": "Leviathan vestige + archer icon +500 blood runes → venator icon →3 ingots/furnace/ring mould. 90 Magic/80 Crafting and Peer instruction; at least one Leviathan kill to wear.",
       "limitation": "Proposed complete ranged packages and selected target only. Supplies/loading assumed. Specials, enchanted bolt procs, encounter time and trips unavailable.",
       "sources": [
         "armadyl-crossbow",
@@ -20882,7 +22155,7 @@
       "benefitBand": "MODERATE",
       "valueReason": "Ranged strength/accuracy for the hand slot; the Nex burden can outweigh a small breakpoint.",
       "alternatives": "Keep Barrows gloves/complete Void where appropriate. Nex rewards are separate RNG outcomes; no simultaneous Torva/horn promise.",
-      "remainingWork": "Frozen Door, visit killcount/key and team/supplies \u2192 Nex vambraces. 80 Ranged/45 Defence to wear.",
+      "remainingWork": "Frozen Door, visit killcount/key and team/supplies → Nex vambraces. 80 Ranged/45 Defence to wear.",
       "limitation": "Proposed complete ranged packages and selected target only. Supplies/loading assumed. Specials, enchanted bolt procs, encounter time and trips unavailable.",
       "sources": [
         "armadyl-crossbow",
@@ -20956,7 +22229,7 @@
             "key": "vambraces",
             "value": true
           },
-          "detail": "Frozen Door, visit killcount/key and team/supplies \u2192 Nex vambraces. 80 Ranged/45 Defence to wear.",
+          "detail": "Frozen Door, visit killcount/key and team/supplies → Nex vambraces. 80 Ranged/45 Defence to wear.",
           "dependencies": {
             "mode": "ALL",
             "children": [
@@ -21137,7 +22410,7 @@
       "benefitBand": "MODERATE",
       "valueReason": "Cape-slot ranged strength/accuracy and separate ammunition saving, useful before quiver.",
       "alternatives": "Quiver can supersede this offensive cape; ammo saving and supply burden are not extra DPS or trip claims.",
-      "remainingWork": "Dragon Slayer II \u2192 Vorkath head \u2192 Ava with 75 mithril arrows and an accumulator or 4,999 coins. The first head is guaranteed at lifetime kill 50; unobserved KC or an already-used/lost head cannot establish a future guarantee.",
+      "remainingWork": "Dragon Slayer II → Vorkath head → Ava with 75 mithril arrows and an accumulator or 4,999 coins. The first head is guaranteed at lifetime kill 50; unobserved KC or an already-used/lost head cannot establish a future guarantee.",
       "limitation": "Proposed complete ranged packages and selected target only. Supplies/loading assumed. Specials, enchanted bolt procs, encounter time and trips unavailable.",
       "sources": [
         "armadyl-crossbow",
@@ -21273,6 +22546,8 @@
     },
     {
       "id": "venator-bow",
+      "browseStyle": "Ranged",
+      "browseSlot": "weapon",
       "title": "Venator bow",
       "itemId": 27610,
       "when": {
@@ -21420,6 +22695,225 @@
         "r2-toxic-blowpipe",
         "zaryte"
       ]
+    },
+    {
+      "id": "abyssal-tentacle",
+      "title": "Abyssal tentacle",
+      "itemId": 12006,
+      "when": {
+        "test": "ITEMS",
+        "key": "ordinaryMeleeObserved"
+      },
+      "ownedWhen": {
+        "test": "POSSESSION",
+        "key": "abyssalTentacle",
+        "value": true
+      },
+      "equipWhen": {
+        "test": "LEVEL",
+        "key": "ATTACK",
+        "minimum": 75
+      },
+      "routes": [
+        "seek-abyssal-tentacle"
+      ],
+      "benefitBand": "MODERATE",
+      "valueReason": "Stronger ordinary four-tick slash than a whip; compare complete owned stab/crush and two-handed packages before spending whips.",
+      "alternatives": "Keep the whip for low-cost use. Owned Fang, Scythe, Soulreaper and lance require their family models; no universal tentacle upgrade is claimed.",
+      "remainingWork": "Use an owned whip and kraken tentacle first. Otherwise obtain a whip from 85-Slayer abyssal demons (boosting/access checked separately), and a tentacle from cave kraken or Kraken: 87 Slayer, 50 Magic and a cave-kraken task. Combine, then allow for whip consumption every 10,000 attacks.",
+      "limitation": "Ordinary single-target melee only. Poison/specials, task/Salve, dragon/demon effects and endgame weapon families are pending. No sustain, kill-time or trip numbers.",
+      "sources": [
+        "item-ids",
+        "r3b-abyssal-demon",
+        "r3b-abyssal-tentacle",
+        "r3b-abyssal-tentacle-or",
+        "r3b-abyssal-whip",
+        "r3b-cave-kraken",
+        "r3b-damage-per-second-melee",
+        "r3b-dragon-2h-sword",
+        "r3b-dragon-sword",
+        "r3b-kraken-tentacle",
+        "r3b-rune-scimitar",
+        "r3b-sarachnis-cudgel",
+        "tentacle",
+        "whip"
+      ],
+      "applications": [
+        {
+          "id": "ordinary-slash",
+          "label": "Ordinary slash",
+          "text": "Stronger ordinary four-tick slash than a whip; compare complete owned stab/crush and two-handed packages before spending whips.",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          }
+        }
+      ],
+      "comparison": "MELEE",
+      "unknownSets": [],
+      "goals": [],
+      "parts": [],
+      "shared": [],
+      "headline": "Stronger ordinary four-tick slash than a whip; compare complete owned stab/crush and two-handed packages before spending whips.",
+      "effortShort": "Qualitative remaining route; no hours",
+      "status": "reviewed",
+      "reviewed": "2026-10-14",
+      "contextBenefits": [],
+      "path": [
+        {
+          "id": "whip-level",
+          "label": "85 Slayer / review a boost and access method",
+          "role": "ACCESS",
+          "completeWhen": {
+            "test": "ANY",
+            "conditions": [
+              {
+                "test": "POSSESSION",
+                "key": "abyssalWhip",
+                "value": true
+              },
+              {
+                "test": "LEVEL",
+                "key": "SLAYER",
+                "minimum": 85
+              }
+            ]
+          },
+          "detail": "Unboosted abyssal-demon route requires 85 Slayer; a valid boosted method needs a separate access/supply review. An owned whip bypasses this drop-stage check."
+        },
+        {
+          "id": "whip",
+          "label": "Obtain/keep an abyssal whip",
+          "role": "COMPONENT",
+          "completeWhen": {
+            "test": "POSSESSION",
+            "key": "abyssalWhip",
+            "value": true
+          },
+          "detail": "Owned whip removes this drop stage. Otherwise 85 Slayer (boostability/access check) and an abyssal-demon method; coloured whips count.",
+          "acquisition": true,
+          "dependencies": {
+            "mode": "ALL",
+            "children": [
+              {
+                "mode": "NODE",
+                "node": "whip-level"
+              }
+            ]
+          }
+        },
+        {
+          "id": "kraken-levels",
+          "label": "87 Slayer and 50 Magic for the drop",
+          "role": "ACCESS",
+          "completeWhen": {
+            "test": "ANY",
+            "conditions": [
+              {
+                "test": "POSSESSION",
+                "key": "krakenTentacle",
+                "value": true
+              },
+              {
+                "test": "ALL",
+                "conditions": [
+                  {
+                    "test": "LEVEL",
+                    "key": "SLAYER",
+                    "minimum": 87
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "MAGIC",
+                    "minimum": 50
+                  }
+                ]
+              }
+            ]
+          },
+          "detail": "These are drop-stage requirements, not assembly requirements. An owned tentacle bypasses them."
+        },
+        {
+          "id": "kraken-task",
+          "label": "Check cave-kraken task",
+          "role": "PREPARATION",
+          "completeWhen": {
+            "test": "ANY",
+            "conditions": [
+              {
+                "test": "POSSESSION",
+                "key": "krakenTentacle",
+                "value": true
+              },
+              {
+                "test": "FACT",
+                "key": "kraken-task",
+                "value": true
+              }
+            ]
+          },
+          "detail": "Cave kraken and Kraken require an assignment; the account task is an explicit check."
+        },
+        {
+          "id": "tentacle",
+          "label": "Obtain/keep a kraken tentacle",
+          "role": "COMPONENT",
+          "completeWhen": {
+            "test": "POSSESSION",
+            "key": "krakenTentacle",
+            "value": true
+          },
+          "detail": "Cave kraken or Kraken drop; use magic. Owned component removes this stage. No odds or pace estimate.",
+          "dependencies": {
+            "mode": "ALL",
+            "children": [
+              {
+                "mode": "NODE",
+                "node": "kraken-levels"
+              },
+              {
+                "mode": "NODE",
+                "node": "kraken-task"
+              }
+            ]
+          },
+          "acquisition": true
+        },
+        {
+          "id": "assembly",
+          "label": "Combine whip and kraken tentacle",
+          "role": "ASSEMBLY",
+          "completeWhen": {
+            "test": "POSSESSION",
+            "key": "abyssalTentacle",
+            "value": true
+          },
+          "detail": "Irreversible. Consumes the whip after 10,000 attacks including misses; tentacle remains. Ten tentacles also compete for enhanced-trident capacity.",
+          "dependencies": {
+            "mode": "ALL",
+            "children": [
+              {
+                "mode": "NODE",
+                "node": "whip"
+              },
+              {
+                "mode": "NODE",
+                "node": "tentacle"
+              }
+            ]
+          }
+        }
+      ],
+      "rewardFamily": "abyssal-tentacle",
+      "role": "melee-slash",
+      "contexts": [
+        "graardor",
+        "dharok"
+      ],
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      }
     }
   ],
   "comparison": {
@@ -22923,12 +24417,16 @@
         "sources": [
           "magic-formula",
           "magic-damage",
-          "r2-damage-per-second-ranged"
+          "r2-damage-per-second-ranged",
+          "r3b-damage-per-second-melee"
         ],
         "magicAttack": 0,
         "rangedLight": 0,
         "rangedStandard": 0,
-        "rangedHeavy": 0
+        "rangedHeavy": 0,
+        "meleeStab": 0,
+        "meleeSlash": 0,
+        "meleeCrush": 0
       },
       {
         "id": "dharok",
@@ -22939,8 +24437,13 @@
         "variant": "STANDARD",
         "scalingSupported": true,
         "sources": [
-          "dharok"
-        ]
+          "dharok",
+          "r3b-dharok-the-wretched"
+        ],
+        "defenceLevel": 100,
+        "meleeStab": 252,
+        "meleeSlash": 250,
+        "meleeCrush": 244
       },
       {
         "id": "graardor",
@@ -22952,14 +24455,18 @@
         "scalingSupported": true,
         "sources": [
           "r1-general-graardor",
-          "r2-general-graardor"
+          "r2-general-graardor",
+          "r3b-general-graardor"
         ],
         "defenceLevel": 250,
         "magicAttack": 0,
         "rangedLight": 90,
         "rangedStandard": 90,
         "rangedHeavy": 90,
-        "slayer": true
+        "slayer": true,
+        "meleeStab": 90,
+        "meleeSlash": 90,
+        "meleeCrush": 90
       },
       {
         "id": "toa",
@@ -26011,5 +27518,713 @@
       "reviewed": "2026-10-13",
       "status": "reviewed"
     }
-  ]
+  ],
+  "melee": {
+    "modelVersion": "melee-1",
+    "sources": [
+      "r3b-damage-per-second-melee",
+      "r3b-successful-hit",
+      "r3b-piety",
+      "r3b-chivalry",
+      "r3b-super-attack",
+      "r3b-super-strength",
+      "r3b-incredible-reflexes",
+      "r3b-ultimate-strength",
+      "r3b-combat-styles"
+    ],
+    "items": [
+      {
+        "id": 4151,
+        "label": "Abyssal whip",
+        "slot": "weapon",
+        "stab": 0,
+        "slash": 82,
+        "crush": 0,
+        "strength": 82,
+        "ticks": 4,
+        "twoHanded": false,
+        "styles": [
+          "SLASH_ACCURATE",
+          "SLASH_CONTROLLED",
+          "SLASH_DEFENSIVE"
+        ],
+        "requirements": {
+          "ATTACK": 70
+        },
+        "sources": [
+          "r3b-abyssal-whip",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12773,
+        "label": "Abyssal whip",
+        "slot": "weapon",
+        "stab": 0,
+        "slash": 82,
+        "crush": 0,
+        "strength": 82,
+        "ticks": 4,
+        "twoHanded": false,
+        "styles": [
+          "SLASH_ACCURATE",
+          "SLASH_CONTROLLED",
+          "SLASH_DEFENSIVE"
+        ],
+        "requirements": {
+          "ATTACK": 70
+        },
+        "sources": [
+          "r3b-abyssal-whip",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12774,
+        "label": "Abyssal whip",
+        "slot": "weapon",
+        "stab": 0,
+        "slash": 82,
+        "crush": 0,
+        "strength": 82,
+        "ticks": 4,
+        "twoHanded": false,
+        "styles": [
+          "SLASH_ACCURATE",
+          "SLASH_CONTROLLED",
+          "SLASH_DEFENSIVE"
+        ],
+        "requirements": {
+          "ATTACK": 70
+        },
+        "sources": [
+          "r3b-abyssal-whip",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12006,
+        "label": "Abyssal tentacle",
+        "slot": "weapon",
+        "stab": 0,
+        "slash": 90,
+        "crush": 0,
+        "strength": 86,
+        "ticks": 4,
+        "twoHanded": false,
+        "styles": [
+          "SLASH_ACCURATE",
+          "SLASH_CONTROLLED",
+          "SLASH_DEFENSIVE"
+        ],
+        "requirements": {
+          "ATTACK": 75
+        },
+        "sources": [
+          "r3b-abyssal-tentacle",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 26484,
+        "label": "Abyssal tentacle (or)",
+        "slot": "weapon",
+        "stab": 0,
+        "slash": 90,
+        "crush": 0,
+        "strength": 86,
+        "ticks": 4,
+        "twoHanded": false,
+        "styles": [
+          "SLASH_ACCURATE",
+          "SLASH_CONTROLLED",
+          "SLASH_DEFENSIVE"
+        ],
+        "requirements": {
+          "ATTACK": 75
+        },
+        "sources": [
+          "r3b-abyssal-tentacle-or",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 21009,
+        "label": "Dragon sword",
+        "slot": "weapon",
+        "stab": 65,
+        "slash": 55,
+        "crush": -2,
+        "strength": 63,
+        "ticks": 4,
+        "twoHanded": false,
+        "styles": [
+          "STAB_ACCURATE",
+          "STAB_AGGRESSIVE",
+          "SLASH_AGGRESSIVE",
+          "STAB_DEFENSIVE"
+        ],
+        "requirements": {
+          "ATTACK": 60
+        },
+        "sources": [
+          "r3b-dragon-sword",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 23528,
+        "label": "Sarachnis cudgel",
+        "slot": "weapon",
+        "stab": 30,
+        "slash": 0,
+        "crush": 70,
+        "strength": 70,
+        "ticks": 4,
+        "twoHanded": false,
+        "styles": [
+          "CRUSH_ACCURATE",
+          "CRUSH_AGGRESSIVE",
+          "STAB_CONTROLLED",
+          "CRUSH_DEFENSIVE"
+        ],
+        "requirements": {
+          "ATTACK": 65
+        },
+        "sources": [
+          "r3b-sarachnis-cudgel",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 7158,
+        "label": "Dragon 2h sword",
+        "slot": "weapon",
+        "stab": -4,
+        "slash": 92,
+        "crush": 80,
+        "strength": 93,
+        "ticks": 7,
+        "twoHanded": true,
+        "styles": [
+          "SLASH_ACCURATE",
+          "SLASH_AGGRESSIVE",
+          "CRUSH_AGGRESSIVE",
+          "SLASH_DEFENSIVE"
+        ],
+        "requirements": {
+          "ATTACK": 60
+        },
+        "sources": [
+          "r3b-dragon-2h-sword",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 1333,
+        "label": "Rune scimitar",
+        "slot": "weapon",
+        "stab": 7,
+        "slash": 45,
+        "crush": -2,
+        "strength": 44,
+        "ticks": 4,
+        "twoHanded": false,
+        "styles": [
+          "SLASH_ACCURATE",
+          "SLASH_AGGRESSIVE",
+          "STAB_CONTROLLED",
+          "SLASH_DEFENSIVE"
+        ],
+        "requirements": {
+          "ATTACK": 40
+        },
+        "sources": [
+          "r3b-rune-scimitar",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 10828,
+        "label": "Helm of Neitiznot",
+        "slot": "head",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 3,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "DEFENCE": 55
+        },
+        "sources": [
+          "r3b-helm-of-neitiznot",
+          "item-ids"
+        ],
+        "equipFact": "fremennik-isles"
+      },
+      {
+        "id": 24271,
+        "label": "Neitiznot faceguard",
+        "slot": "head",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 6,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "DEFENCE": 70
+        },
+        "sources": [
+          "r3b-neitiznot-faceguard",
+          "item-ids"
+        ],
+        "equipFact": "fremennik-exiles"
+      },
+      {
+        "id": 11832,
+        "label": "Bandos chestplate",
+        "slot": "body",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 4,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "DEFENCE": 65
+        },
+        "sources": [
+          "r3b-bandos-chestplate",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11834,
+        "label": "Bandos tassets",
+        "slot": "legs",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 2,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "DEFENCE": 65
+        },
+        "sources": [
+          "r3b-bandos-tassets",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 10551,
+        "label": "Fighter torso",
+        "slot": "body",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 4,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "DEFENCE": 40
+        },
+        "sources": [
+          "r3b-fighter-torso",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 6585,
+        "label": "Amulet of fury",
+        "slot": "neck",
+        "stab": 10,
+        "slash": 10,
+        "crush": 10,
+        "strength": 8,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-amulet-of-fury",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 24780,
+        "label": "Amulet of blood fury",
+        "slot": "neck",
+        "stab": 10,
+        "slash": 10,
+        "crush": 10,
+        "strength": 8,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-amulet-of-blood-fury",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 19553,
+        "label": "Amulet of torture",
+        "slot": "neck",
+        "stab": 15,
+        "slash": 15,
+        "crush": 15,
+        "strength": 10,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "HITPOINTS": 75
+        },
+        "sources": [
+          "r3b-amulet-of-torture",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 29801,
+        "label": "Amulet of rancour",
+        "slot": "neck",
+        "stab": 25,
+        "slash": 25,
+        "crush": 25,
+        "strength": 12,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "HITPOINTS": 90
+        },
+        "sources": [
+          "r3b-amulet-of-rancour",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 12954,
+        "label": "Dragon defender",
+        "slot": "shield",
+        "stab": 25,
+        "slash": 24,
+        "crush": 23,
+        "strength": 6,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "ATTACK": 60,
+          "DEFENCE": 60
+        },
+        "sources": [
+          "r3b-dragon-defender",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22322,
+        "label": "Avernic defender",
+        "slot": "shield",
+        "stab": 30,
+        "slash": 29,
+        "crush": 28,
+        "strength": 8,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "ATTACK": 70,
+          "DEFENCE": 70
+        },
+        "sources": [
+          "r3b-avernic-defender",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 7462,
+        "label": "Barrows gloves",
+        "slot": "hands",
+        "stab": 12,
+        "slash": 12,
+        "crush": 12,
+        "strength": 12,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-barrows-gloves",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22981,
+        "label": "Ferocious gloves",
+        "slot": "hands",
+        "stab": 16,
+        "slash": 16,
+        "crush": 16,
+        "strength": 14,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "ATTACK": 80,
+          "DEFENCE": 80
+        },
+        "sources": [
+          "r3b-ferocious-gloves",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11840,
+        "label": "Dragon boots",
+        "slot": "feet",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 4,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "DEFENCE": 60
+        },
+        "sources": [
+          "r3b-dragon-boots",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 13239,
+        "label": "Primordial boots",
+        "slot": "feet",
+        "stab": 2,
+        "slash": 2,
+        "crush": 2,
+        "strength": 5,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "STRENGTH": 75,
+          "DEFENCE": 75
+        },
+        "sources": [
+          "r3b-primordial-boots",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11773,
+        "label": "Berserker ring (i)",
+        "slot": "ring",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 8,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-berserker-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 25264,
+        "label": "Berserker ring (i)",
+        "slot": "ring",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 8,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-berserker-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 26770,
+        "label": "Berserker ring (i)",
+        "slot": "ring",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 8,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-berserker-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 11772,
+        "label": "Warrior ring (i)",
+        "slot": "ring",
+        "stab": 0,
+        "slash": 8,
+        "crush": 0,
+        "strength": 0,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-warrior-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 25262,
+        "label": "Warrior ring (i)",
+        "slot": "ring",
+        "stab": 0,
+        "slash": 8,
+        "crush": 0,
+        "strength": 0,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-warrior-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 26769,
+        "label": "Warrior ring (i)",
+        "slot": "ring",
+        "stab": 0,
+        "slash": 8,
+        "crush": 0,
+        "strength": 0,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-warrior-ring-i",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22975,
+        "label": "Brimstone ring",
+        "slot": "ring",
+        "stab": 4,
+        "slash": 4,
+        "crush": 4,
+        "strength": 4,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-brimstone-ring",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 25975,
+        "label": "Lightbearer",
+        "slot": "ring",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 0,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-lightbearer",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 6570,
+        "label": "Fire cape",
+        "slot": "cape",
+        "stab": 1,
+        "slash": 1,
+        "crush": 1,
+        "strength": 4,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-fire-cape",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 21295,
+        "label": "Infernal cape",
+        "slot": "cape",
+        "stab": 4,
+        "slash": 4,
+        "crush": 4,
+        "strength": 8,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-infernal-cape",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 22114,
+        "label": "Mythical cape",
+        "slot": "cape",
+        "stab": 0,
+        "slash": 0,
+        "crush": 6,
+        "strength": 1,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "r3b-mythical-cape",
+          "item-ids"
+        ],
+        "equipFact": "dragon-slayer-ii"
+      }
+    ],
+    "unsupportedWeapons": {
+      "22978": "dragon hunter lance",
+      "26219": "Osmumten's fang",
+      "27246": "Osmumten's fang (or)",
+      "22325": "Scythe of Vitur (charged)",
+      "22486": "Scythe of Vitur (uncharged)",
+      "28338": "Soulreaper axe"
+    }
+  }
 }

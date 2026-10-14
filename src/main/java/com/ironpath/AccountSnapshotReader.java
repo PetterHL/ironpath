@@ -48,6 +48,8 @@ final class AccountSnapshotReader
 		facts.put("monkey-madness-ii", quest(Quest.MONKEY_MADNESS_II, now));
 		facts.put("blood-moon-rises", quest(Quest.THE_BLOOD_MOON_RISES, now));
 		facts.put("dragon-slayer-ii", quest(Quest.DRAGON_SLAYER_II, now));
+		facts.put("fremennik-isles", quest(Quest.THE_FREMENNIK_ISLES, now));
+		facts.put("fremennik-exiles", quest(Quest.THE_FREMENNIK_EXILES, now));
 		facts.put("deadeye", unlock(VarbitID.PRAYER_DEADEYE_UNLOCKED, now, "Deadeye unlock varbit"));
 		facts.put("mystic-vigour", unlock(VarbitID.PRAYER_MYSTIC_VIGOUR_UNLOCKED, now, "Mystic Vigour unlock varbit"));
 		return new AccountSnapshot(Observation.observed(levels, now, "real skill levels"),

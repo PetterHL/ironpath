@@ -25,7 +25,7 @@ public class R15AdviceTest
 	// Preserve the originally selected high-defence context for these R1/R1.5 regressions.
 	private List<Advisor.UpgradeView> reviewedUpgrades(Advisor evaluator, AccountSnapshot a, Preferences p)
 	{ return evaluator.upgrades(a, p, new PoweredMagic(catalog).propose(a, "graardor")).stream()
-		.filter(v -> !v.upgrade.comparison.equals("RANGED") && !v.upgrade.id.equals("venator-bow")).collect(java.util.stream.Collectors.toList()); }
+		.filter(v -> !v.upgrade.comparison.equals("RANGED") && !v.upgrade.comparison.equals("MELEE") && !v.upgrade.id.equals("venator-bow")).collect(java.util.stream.Collectors.toList()); }
 	@Before public void setup() throws Exception { catalog=KnowledgeCatalog.load(new Gson());advisor=new Advisor(catalog);missing=absent(catalog); }
 	private Advisor.UpgradeView view(AccountSnapshot a, Preferences p, String id)
 	{ return reviewedUpgrades(advisor, a,p).stream().filter(v->v.upgrade.id.equals(id)).findFirst().orElseThrow(); }

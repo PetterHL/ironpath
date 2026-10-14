@@ -12,7 +12,7 @@ An established Ironman opens IronPath without selecting a goal and discovers wor
 
 Required: partial account observation; strong-alternative recognition; contextual ranking; full reference loadouts and local combat families; multi-step acquisition; native value-first UI; maintained sources and model coverage. [CATALOGUE](docs/CATALOGUE.md) inventories all relevant families, including current release candidates and future watchlist entries. D/R/V/Q are evidence/support states, not competing backlogs. [UX](docs/UX.md) gives concrete screens.
 
-**Current implemented baseline:** main integrates R2 #16, progression design #17, R3a #18, Kill Impact design #19 and UX #20 on 14 October 2026. Plugin 0.8.3 / knowledge r3a-3 / schema 10 / preference schema 2. Kill Impact remains unimplemented design; R3b and later capability work remain open. The older R2-model #14 is superseded and preserved by its same-name tag. [Integration/cleanup record](docs/validation/main-integration-20261014.md). Earlier implementation/test records retain their original context; actual-client acceptance remains pending.
+**Current implemented baseline:** the combined 14 October integration preserves R2 #16, progression design #17, R3a #18, Kill Impact design #19 and UX #20, plus UX completion #21, the ordinary-melee/tentacle R3b increment and the opt-in KI1 Zilyana pilot #22. Plugin 0.9.0 / knowledge r3b-1 / schema 11 / preference schema 2. KI1 actual-client acceptance, KI2/KI3, remaining R3b families/conditions and later capability work stay open. [Combined integration evidence](docs/validation/ux-melee-ki1-integration.md) supplements the [earlier integration/cleanup record](docs/validation/main-integration-20261014.md); original reports/tests retain their original context.
 
 ## C. Incremental implementation
 
@@ -212,6 +212,12 @@ The normal Temurin 11.0.32.1 / Gradle 8.10 / RuneLite 1.13.1 `test build --no-da
 
 **R3b acceptance:** Fang stab versus slash and inside/outside ToA; Scythe 1×1/2×2/3×3; Soulreaper start/ramp/retained/lost stacks; defence-reduced versus unreduced Olm and crush/slash alternatives; salve/task exclusivity; incompatible off-hand; and blood-fury sustain independent of lower DPS. No universal Scythe or Fang ordering. Current July Inquisitor changes invalidate old set assumptions. PI01, PI06, PI09, PI10, PI13 and PI14 gain numeric assertions only for supported complete contexts.
 
+### R3b ordinary-melee implementation increment — 14 October 2026
+
+Review branch `r3b-standard-melee`, based on integrated main `2dd799a`. Plugin **0.9.0**, knowledge **r3b-1**, bundled schema **11**, melee **melee-1**, unchanged magic/ranged/ranking/preference versions. First reviewed ordinary melee increment: complete owned package search including one-/two-handed off-hands, actual weapon styles and accuracy/strength alternatives; native session-only reference correction; and an abyssal-tentacle outcome with remaining whip/component/task/assembly steps and resource trade-offs. Neutral, ordinary Dharok and Graardor have explicit melee defensive inputs. Unsupported equipped items and known endgame competitors cannot manufacture DPS superiority. Quest equip unlocks are distinct from ownership.
+
+[Validation, source review, original differential fixtures and native captures](docs/validation/R3b-ordinary-melee.md). Ordinary arithmetic agrees with **3,168 original full-package oracle cases** at pinned comparator `89c3e25b`; the existing ranged/magic corpora are unchanged. Temurin 11 / Gradle 8.10 / RuneLite 1.13.1 `test build --no-daemon` passes **257 tests, zero failures/errors/skips** (240 baseline + 17 new). Actual RuneLite sprites, focus/scaling, quest refresh, profile/bank transitions and player usefulness remain **pending**. This does not complete R3b: task/Salve exclusivity, dragon/demon conditions, lance/Fang/Scythe/Soulreaper, broader endgame armour/accessories/treads and their paths/utility relationships remain active requirements above. No personal kill-time or trip claim.
+
 ### R4 — Specials, synergies and encounter specialists
 
 Build on R3's role evidence and the relevant combat family; work can proceed on independent families without waiting for every R3b item. Model special burst, ruby/diamond procs, defence reduction and explicit energy budgets. Prioritise Zaryte, DWH/BGS/elder maul, Lightbearer/Death Charge, claws/burning claws, voidwaker, tonalztics and current relevant specs such as Crimson kisten/Soulflame. Preserve July changes, target HP/caps/immunities, phase/team resets, role allocation and competing energy use.
@@ -224,11 +230,11 @@ Investigate Q5 only for a concrete useful scenario after reusable attack distrib
 
 ### Personalized Kill Impact — KI1–KI3
 
-**Selected, unimplemented.** [KILL_IMPACT](docs/KILL_IMPACT.md) defines observation/model/UX contracts and the source register. Keep TASKS as the sole backlog. This adds a bounded context to the existing advisor, not a new plugin, dashboard, universal simulator or research reset.
+**KI1 experimental implementation candidate; KI2–KI3 unimplemented.** [KILL_IMPACT](docs/KILL_IMPACT.md) defines observation/model/UX contracts and the source register. Keep TASKS as the sole backlog. This adds a bounded context to the existing advisor, not a new plugin, dashboard, universal simulator or research reset.
 
 **Coverage clarification, 14 October:** the target is most relevant PvM bosses, explicitly including raid bosses/rooms in CoX/CM, ToA and ToB/hard mode. Whole-raid impact is a separate scope to evaluate and deliver where supportable. Vorkath was an example, not a required first boss or a catalogue boundary. Use the existing uncapped encounter inventory and track observation, contextual offence, personal time and whole-activity support independently. A pilot cannot establish broad coverage.
 
-**Priority and dependency decision:** complete the in-flight R3a review/client corrections and compact UI work. KI1 can then be a focused visible increment alongside R3b, reusing R1.5b observation contracts. Prioritise reusable Salve/dragon/undead interactions and common bolt effects within R3b/R4 because they unlock ordinary Vorkath setups as well as wider advice. KI2 needs distributions, supported actual inputs and a validated encounter adapter; it does not wait for every R4 specialist. KI3 follows evidence of usefulness. Neither observation nor personal seconds blocks ordinary quantitative/qualitative coverage. Recheck current branch heads before implementation; no merge is authorised here.
+**Priority and dependency decision:** complete the in-flight R3a review/client corrections and compact UI work. KI1 is delivered as the experimental candidate below alongside the first R3b increment; subsequent capture expansion can be focused visible increments, reusing R1.5b observation contracts. Prioritise reusable Salve/dragon/undead interactions and common bolt effects within R3b/R4 because they unlock ordinary Vorkath setups as well as wider advice. KI2 needs distributions, supported actual inputs and a validated encounter adapter; it does not wait for every R4 specialist. KI3 follows evidence of usefulness. Neither observation nor personal seconds blocks ordinary quantitative/qualitative coverage. Recheck current branch heads before implementation; no merge is authorised here.
 
 **KI1 — Actual kill context and tangible upgrade comparisons**
 
@@ -238,6 +244,12 @@ Investigate Q5 only for a concrete useful scenario after reusable attack distrib
 - Supply reviewed target/method facts and complete relevant interactions for the initial supported packages; if selecting Vorkath, include Salve/dragon/undead/slot interactions. Identify exact excluded setups and record how often ordinary player setups hit those gaps; an adapter that only shows unsupported messages is not a successful vertical increment.
 
 **KI1 acceptance:** shared-contract fixtures cover ordinary solo, multi-phase and raid-room contexts without boss-specific shared schema, including unknown party/scaling and precise output scope; these fixtures do not claim live raid support. Event replay and actual-client evidence for start/end, duplicate/late messages, death/teleport, mid-kill enable, missing state, transformations/index reuse, delayed hits, switch/food ambiguity, overflow and identity changes; no false completion or account leakage. Matched timer origins agree within one tick or have an investigated reason. Demonstrate worn-versus-owned-baseline differences, a genuine supported upgrade, owned alternative, recurring ammo and honest no-gain/unsupported states at native width. Report eligible-capture and numeric-coverage fractions and player comprehension, not just test counts. Keep full-cycle pace and performance persistence unavailable. If actual-client access is absent, leave those gates explicitly pending.
+
+### KI1 implementation candidate — 14 October 2026
+
+Branch `ki1-recent-boss`, plugin 0.9.0, unchanged knowledge r3a-3/schema 10/preference schema 2. Selects normal Commander Zilyana because the integrated ranged models already have reviewed target inputs and useful owned/Bowfa/tbow/accessory comparisons; Vorkath interactions remain R3b/R4 work. Implements shared optional run/room/phase/scaling/party contracts, a bounded public-event capture state machine, exact worn-state ranged comparisons and a quiet experimental Recent boss entry with Value/Path. Existing automatic advice/ranking remains independent. Personal seconds, whole-fight DPS and full-cycle pace are unavailable.
+
+[Implementation evidence and remaining acceptance](docs/validation/KI1.md) separates synthetic replay/component checks from pending actual-client mappings, eligible-kill/numeric coverage and player comprehension. Default capture is off; the session opt-in does not persist. Existing conservative region/loading resets remain. Shared raid/multi-phase fixtures demonstrate schema scope, not live adapters. This is an implementation candidate for integration, not a completed live-validation or most-boss-coverage claim.
 
 **KI2 — Validated personal seconds for comparable kills**
 
@@ -271,11 +283,31 @@ Plugin **0.8.3**, knowledge **r3a-3**, schema **10**, preference schema **2**. F
 
 This delivers the first search portion of R6 alongside R3a navigation acceptance. Initial delivery `b18351c` passed 238 tests. Review corrections preserve search caret/selection across full observation refreshes and reject deferred scroll restoration from an earlier result generation; unfocused labels cannot trigger caret-driven scrolling. JDK 11 / Gradle 8.10 / RuneLite 1.13.1 `test build --no-daemon` passes **240 tests, zero failures/errors/skips** (232-test baseline, six original and two review panel regressions; all 1,944 original ranged oracle cases retained). Broader filters, owned-use search, real-client focus/scaling and player usefulness remain pending. [Validation, matched before/after components and PC checks](docs/validation/ux-navigation.md). Existing R3a/client reports remain historical evidence.
 
+### UX completion and discovery controls — 14 October 2026
+
+Plugin **0.8.4**, knowledge **r3a-4**, schema **10**, preference schema **2** on
+`ux-completion`, based on integrated main `2dd799a`; review/integration pending.
+Compact Browse/account-evidence entry, matching Long-term/Specialist counts and a
+quiet list-update notice finish the current homepage details. Browse adds combined
+style/slot/activity/role/importance/status facets and owned/covered use inspection;
+owned possession does not imply usability, numerical benefit or a new grind.
+Value/Path reuse the item header and visibly identify the selected tab. Filters,
+expanded state, caret, focus targets and ID anchors survive Back/updates; lifecycle
+clearing and stale actions/images remain guarded.
+
+`test build --offline --no-daemon` passes **248 tests, zero failures/errors/skips**,
+retaining all **1,944** ranged oracle cases. Synthetic native/enlarged-font captures
+and the focused remaining PC checklist are in [validation](docs/validation/ux-completion.md).
+This delivers R6's current discovery controls and owned-use text entry point.
+Actual-client sprites/scaling/focus and player usefulness remain pending; comprehensive
+relationship/trail coverage, owned quantitative comparisons, R3b/R4/R5 and KI1 remain
+separate work. Historical 0.8.3 evidence above is preserved.
+
 ### R6 — Comprehensive relationship coverage and discovery
 
 Audit the uncapped CATALOGUE by **item/outcome × role × activity/method × owned alternative**, alongside numeric and acquisition support. Include every meaningful current endgame family, specialist, sidegrade and permanent PvM utility; extend when content releases. An inventory row alone is not coverage. Account for unreviewed/invalid/unsupported relationships with a reason and evidence need. No arbitrary catalogue limit and no claim of comprehensive delivery while material gaps remain unexplained.
 
-Extend R3a Browse with search and style/slot/activity/role/importance/status filters, owned-use explanations and accessible scaling. Show how a useful preparation supports an activity and what that activity can still offer; enable deeper inspectable trails with visited-ID guards as useful, without recursive rank amplification. Keep brief cards, Value/Path and UX's measured one-/two-column layout. Preferences change prominence, not truth, and all relevant conditional/long-term/deferred options remain reachable.
+The UX completion increment above implements Browse search, style/slot/activity/role/importance/status filters and owned-use text discovery. Continue reviewed relationship/use coverage, owned quantitative comparisons and actual-client accessible scaling. Show how a useful preparation supports an activity and what that activity can still offer; enable deeper inspectable trails with visited-ID guards as useful, without recursive rank amplification. Keep brief cards, Value/Path and UX's measured one-/two-column layout. Preferences change prominence, not truth, and all relevant conditional/long-term/deferred options remain reachable.
 
 **Acceptance:** all PI profiles plus the existing account/identity matrices. Mature accounts receive defensible specialist/QoL/resource choices or an honest small/no-gain result. One selected goal is never necessary. Search reveals both missing-upgrade and owned-utility explanations, with current evidence and numeric gaps distinguishable. Publish separate matrices for reviewed role relationships, adequate alternatives, paths, per-metric models and live validation. Inspect both ranked results and important omissions. Demonstrate the addition of a newly released role through data plus an existing module when possible; add explicit Java mechanics only for a genuinely new mechanic. The announced Archive remains a watchlist until release/review.
 
