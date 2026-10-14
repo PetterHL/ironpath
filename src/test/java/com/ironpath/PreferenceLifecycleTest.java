@@ -103,6 +103,7 @@ public class PreferenceLifecycleTest
 	{
 		SwingUtilities.invokeAndWait(() ->
 		{
+			if(button("Set goal")==null) { button("Based on observed gear ›").doClick(); }
 			JComboBox<?> goals = find(panel, JComboBox.class, c -> c.getItemAt(0).toString().equals("No goal"));
 			assertNotNull(goals); goals.setSelectedIndex(2); // Rigour
 			button("Set goal").doClick();
@@ -159,7 +160,7 @@ public class PreferenceLifecycleTest
 	@Test public void manualConfirmClearSkipRestoreAndResetControlsUpdateOnlyExplicitChoices() throws Exception
 	{
 		login();
-		SwingUtilities.invokeAndWait(() -> button("Owned / unlocked").doClick()); callbacks(); load();
+		SwingUtilities.invokeAndWait(() -> {button("Based on observed gear ›").doClick();button("Owned / unlocked").doClick();}); callbacks(); load();
 		assertTrue(plugin.session.preferences().confirmations.get("rigour").value);
 		SwingUtilities.invokeAndWait(() -> button("Clear selected fact").doClick()); callbacks(); load();
 		assertTrue(plugin.session.preferences().confirmations.isEmpty());

@@ -1,6 +1,6 @@
 # IronPath tasks
 
-Updated 14 October 2026: **EP1 account-efficient progression and UX2 visual advisor are the next product priority.** Selected `progression-2` and the new UX specification supersede importance-before-burden, mandatory long-term preview insertion and repeated card Value/Path buttons. EP1 now implements the domain/presentation migration for review; UX2 remains pending. Earlier implementation evidence stays historical.
+Updated 14 October 2026: **EP1 account-efficient progression and UX2 visual advisor are the next product priority.** Selected `progression-2` and the new UX specification supersede importance-before-burden, mandatory long-term preview insertion and repeated card Value/Path buttons. EP1 now implements the domain/presentation migration for review; UX2 now implements the native flow for review; real-client/player acceptance remains pending. Earlier implementation evidence stays historical.
 
 13 October foundation: endgame intelligence and native homepage refinement. [Evidence and 30 relationships](docs/PROGRESSION_RESEARCH.md); `progression-1` supersedes earlier ranking/admission policy, not delivered history. [UX](docs/UX.md) selects the visual advisor direction; earlier layout requirements remain implementation history. **This active R1 → R1.5 → R2–R8 backlog supersedes P4b/P5 and every older catalogue-size budget or sequential planning gate.** Historical briefs/results are preserved verbatim below and are not active instructions.
 
@@ -23,7 +23,7 @@ Each assignment produces useful advice, reviewed knowledge, UI evidence and mean
 | Milestone | Dependencies | Demonstrable result |
 |---|---|---|
 | EP1 — Account-efficient progression (implemented for review; client checks pending) | Integrated main; existing value/path/alternative models | Automatic account-specific effort bands, value-for-effort priority, optional reviewed scenario hours and structured presentation |
-| UX2 — Visual advisor integration (not implemented) | EP1 domain/presentation contract | Complete overview/comparison/acquisition/account flow preserving next-step order |
+| UX2 — Visual advisor integration (implemented for review; client checks pending) | EP1 domain/presentation contract | Complete overview/comparison/acquisition/account flow preserving next-step order |
 | R1 — Realistic magic and first endgame value | P4a + this reset | Full-loadout magic; Shadow/Ancestral early; numerical value influences advice; functional value/path views |
 | R1.5a — Pursuit priority and visual foundation | R1; integrated, live checks pending | Explainable categories, shared activities, native compact cards and first conditional next-shard estimate |
 | R1.5b — Effort expansion and first observation adapter | R1.5a; alongside R2, not its release gate | Multiple-roll estimates and one validated session-pace adapter |
@@ -80,7 +80,7 @@ Run the normal build and meaningful changed-domain/presentation regressions. Pre
 
 ### UX2 — Visual advisor integration
 
-**Status: selected; follows EP1's domain/presentation contract.** One coherent native UI PR covers overview, cards, comparison, acquisition and account/diagnostics under [UX](docs/UX.md). Build on reviewed EP1 (updated main after integration; stack only for the concrete dependency). Do not independently recreate ranking in Swing.
+**Status: implemented for review on `ux2-visual-advisor`, stacked on EP1 #25 `fafb745`; actual-client/player acceptance pending.** Plugin 0.11.0, unchanged ep1-1 / catalogue 12 / preference 2 and progression-2. [UX2 implementation, captures, validation and PC checklist](docs/validation/UX2.md). The delivery/acceptance specification follows. One coherent native UI PR covers overview, cards, comparison, acquisition and account/diagnostics under [UX](docs/UX.md). Build on reviewed EP1 (updated main after integration; stack only for the concrete dependency). Do not independently recreate ranking in Swing.
 
 - Render one-column native cards with genuine sprites, prominent supported result, concise baseline and at most one useful status. Whole card opens details; remove repeated card Value/Path controls and 0 Defence/reference badges.
 - Implement compact before/after comparison, one priority reason, scoped effort, source → missing work → next step and optional preparation alternatives. Keep detailed evidence behind one secondary entry.

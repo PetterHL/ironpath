@@ -1,0 +1,86 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+null java.awt.Rectangle[x=6,y=56,width=213,height=24] Your account
+null java.awt.Rectangle[x=6,y=80,width=213,height=24] Attack 99 · Strength 99 · Defence 99
+null java.awt.Rectangle[x=6,y=104,width=213,height=24] Ranged 99 · Magic 99 · Prayer 99
+null java.awt.Rectangle[x=6,y=128,width=213,height=44] Rigour: not unlocked · Augury: not unlocked
+null java.awt.Rectangle[x=6,y=172,width=213,height=44] Bank recorded this session; reopen it after changes.
+null java.awt.Rectangle[x=0,y=0,width=213,height=144] Manual ownership/unlocks are reversible planning assumptions. They do not confirm charged, worn or usable gear. Readable client quest/unlock facts take precedence; positive observed possession overrides manual absence.
+null java.awt.Rectangle[x=0,y=263,width=213,height=64] Abyssal tentacle (including ornamented form): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=357,width=213,height=44] Abyssal whip (including cosmetics): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=431,width=213,height=84] Recognised Sanguinesti/Shadow/Eye staff owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=545,width=213,height=64] Ancestral robe bottom, ordinary or twisted: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=639,width=213,height=44] Ancestral hat, ordinary or twisted: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=713,width=213,height=64] Ancestral robe top, ordinary or twisted: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=807,width=213,height=64] Ancient essence (quantity and allocation separate): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=901,width=213,height=44] Anguish or rupture necklace: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=975,width=213,height=44] Archer icon: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1049,width=213,height=44] Armadyl crossbow owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1123,width=213,height=44] Ava assembler: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1197,width=213,height=44] Eclipse atlatl owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1271,width=213,height=64] Arcane prayer scroll owned (Augury): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1365,width=213,height=44] Eye of Ayak owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1439,width=213,height=64] Supported dragon/Cerberus boots owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1533,width=213,height=64] Bowfa (any reviewed form) or twisted bow owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1627,width=213,height=44] Bowfa, including inactive/corrupted forms: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1701,width=213,height=44] Twisted buckler: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1775,width=213,height=64] Eternal/pegasian/primordial boots owned for optional treads addition: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1869,width=213,height=44] Mokhaiotl cloth owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=1943,width=213,height=64] Mokhaiotl cloth or confliction gauntlets owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2037,width=213,height=64] Swamp trident or recognised competing magic option owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2131,width=213,height=44] Crystal body including inactive form: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2205,width=213,height=44] Crystal helm including inactive form: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2279,width=213,height=44] Crystal legs including inactive form: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2353,width=213,height=64] Demon tears owned (does not confirm quantity): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2447,width=213,height=44] Own Darklight: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2521,width=213,height=44] Elder venator fang: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2595,width=213,height=44] Enhanced crystal weapon seed: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2669,width=213,height=44] Etched elder venator fang: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2743,width=213,height=44] Osmumten's fang owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2817,width=213,height=44] Imbued heart: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2891,width=213,height=44] Kraken tentacle component: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=2965,width=213,height=64] Magic fang owned (unassembled component): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3059,width=213,height=44] Own magic longbow (u): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3133,width=213,height=44] Magus icon: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3207,width=213,height=44] Magus ring: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3281,width=213,height=44] Magus vestige: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3355,width=213,height=44] Masori body, base/fortified: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3429,width=213,height=44] Masori chaps, base/fortified: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3503,width=213,height=44] Masori mask, base/fortified: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3577,width=213,height=44] Nihil horn owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3651,width=213,height=64] Nihil shards owned (does not confirm 250): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3745,width=213,height=64] Occult necklace (plain or ornamented) owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3839,width=213,height=64] Dizana quiver, uncharged/charged/blessed: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=3933,width=213,height=44] A recognised ranged weapon: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4007,width=213,height=64] Dexterous prayer scroll owned (Rigour): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4101,width=213,height=64] Rosewood blowpipe, including empty form: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4195,width=213,height=44] Necklace of rupture: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4269,width=213,height=44] Saturated heart: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4343,width=213,height=44] Own scorching bow: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4417,width=213,height=64] Seas trident owned (charged, empty or enhanced): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4511,width=213,height=64] Seas trident or supported stronger magic option owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4605,width=213,height=44] Seers icon: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4679,width=213,height=44] Seers ring (uncharge imbue before icon): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4753,width=213,height=44] Tumeken's shadow (any charge state): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4827,width=213,height=44] Squid beak: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4901,width=213,height=64] Swamp trident or supported competing magic weapon owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=4995,width=213,height=44] Tanzanite fang: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5069,width=213,height=44] Tormented bracelet owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5143,width=213,height=64] Tormented bracelet or Confliction gauntlets: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5237,width=213,height=44] Own tormented synapse: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5311,width=213,height=44] Toxic blowpipe, including empty form: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5385,width=213,height=44] Any avernic treads form owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5459,width=213,height=44] Twisted bow: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5533,width=213,height=44] Zaryte vambraces: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5607,width=213,height=64] Venator bow (ownership does not prove charged): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5701,width=213,height=44] Venator icon: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5775,width=213,height=44] Venator ring: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5849,width=213,height=64] Venator shards (presence does not prove five): manually not owned / locked.
+null java.awt.Rectangle[x=0,y=5943,width=213,height=44] Venator vestige: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=6017,width=213,height=44] Vorkath's head: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=6091,width=213,height=44] Zaryte crossbow owned: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=6165,width=213,height=44] Zenyte bracelet: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=6239,width=213,height=44] Cut zenyte: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=6313,width=213,height=44] Zenyte necklace: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=6387,width=213,height=44] Zenyte shard: manually not owned / locked.
+null java.awt.Rectangle[x=0,y=6461,width=213,height=44] Uncut zenyte: manually not owned / locked.
+null java.awt.Rectangle[x=6,y=6931,width=213,height=64] Planning choices are saved locally; observed gear and reference setups stay in session memory.

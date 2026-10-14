@@ -1,0 +1,40 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+null java.awt.Rectangle[x=6,y=84,width=213,height=38] Diagnostics
+null java.awt.Rectangle[x=6,y=122,width=213,height=72] Synthetic UX2 validation
+null java.awt.Rectangle[x=6,y=194,width=213,height=38] Synthetic local storage
+null java.awt.Rectangle[x=6,y=232,width=213,height=72] Knowledge ep1-1 · reviewed 2026-10-14
+null java.awt.Rectangle[x=6,y=304,width=213,height=174] Real levels: Prayer 99, Defence 99, Ranged 99, Magic 99. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=478,width=213,height=106] Rigour: not unlocked; Augury: not unlocked. Client varbits.
+null java.awt.Rectangle[x=6,y=584,width=213,height=140] Beneath Cursed Sands completed: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=724,width=213,height=140] The Blood Moon Rises completed: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=864,width=213,height=310] Colosseum supplies/method reviewed (not completion or readiness certification): unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=1174,width=213,height=174] CoX team/loadout and supplies reviewed (not access): unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=1348,width=213,height=140] Desert Treasure II completed: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=1488,width=213,height=208] Planning scenario: complete Doom delve 4 (not observed ability): unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=1696,width=213,height=208] Doom supplies/preparation reviewed (not delve capability): unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=1904,width=213,height=140] Dragon Slayer II completed: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=2044,width=213,height=174] Duke Sucellus defeated at least once: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=2218,width=213,height=174] Duradel's notes read (synapse assembly): unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=2392,width=213,height=140] The Final Dawn completed: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=2532,width=213,height=140] The Frozen Door completed: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=2672,width=213,height=174] Current cave-kraken task checked: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=2846,width=213,height=174] The Leviathan defeated at least once: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=3020,width=213,height=208] Monkey form/greegree available for zenyte assembly: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=3228,width=213,height=140] Monkey Madness II completed: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=3368,width=213,height=208] Muspah method and supplies reviewed (not success certification): unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=3576,width=213,height=208] Nex chamber killcount/key entry checked for this visit: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=3784,width=213,height=208] Nex team and preparation reviewed (not game access): unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=3992,width=213,height=174] Peer the Seer ring-icon instruction learned: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=4166,width=213,height=140] Regicide completed: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=4306,width=213,height=140] Secrets of the North completed: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=4446,width=213,height=208] Facemask or Slayer helmet available (manual check): unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=4654,width=213,height=208] Active smoke-devil Slayer task (manual current check): unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=4862,width=213,height=140] Song of the Elves completed: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=5002,width=213,height=174] ToA mode/loadout and supplies reviewed (not access): unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=5176,width=213,height=140] While Guthix Sleeps completed: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=5316,width=213,height=208] Intended high-HP target allows ruby-bolt special utility: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=5524,width=213,height=106] null: unlocked. synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=5630,width=213,height=208] Inventory: synthetic fixture at 2026-10-12T20:00:00Z
+Equipment: synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=5838,width=213,height=106] Bank: synthetic fixture at 2026-10-12T20:00:00Z
+null java.awt.Rectangle[x=6,y=5944,width=213,height=276] Not observed is not global absence. Manual current-task/access assumptions must be rechecked before play; their timestamps are planning provenance.

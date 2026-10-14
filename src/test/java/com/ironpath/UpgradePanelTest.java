@@ -70,7 +70,7 @@ public class UpgradePanelTest
 			assertEquals(0,children(panel).stream().filter(c->c instanceof JButton&&"Open details".equals(((JButton)c).getText())).count());
 			assertTrue(visible(button("Browse")));
 			assertTrue(children(panel).stream().anyMatch(c->c.getName()!=null&&c.getName().startsWith("open-upgrade-")&&visible(c)));
-			assertFalse(visible(button("Set goal")));assertTrue(visible(button("Account and preferences")));
+			assertTrue(children(panel).stream().noneMatch(c->c instanceof JButton&&"Set goal".equals(((JButton)c).getText())));assertTrue(visible(button("Account and preferences")));
 			for(Component c:children(panel))
 			{
 				if(c instanceof JTextArea){assertTrue(((JTextArea)c).getLineWrap());assertTrue(c.getWidth()<=PluginPanel.PANEL_WIDTH);}
@@ -115,7 +115,7 @@ public class UpgradePanelTest
 			try
 			{
 				account=com.ironpath.advisor.R1AdviceTest.postBowfa(false);setup=new PoweredMagic(catalog).propose(account);render();capture("r1-overview.png");
-				open("tumekens-shadow").doClick();assertTrue(text().contains("Off-hand removed"));capture("r1-value.png");
+				open("tumekens-shadow").doClick();assertTrue(text().contains("shield:") && text().contains("Empty shield"));capture("r1-value.png");
 				button("Path").doClick();assertTrue(text().contains("Beneath Cursed Sands"));assertFalse(text().contains("Theoretical DPS  "));capture("r1-path.png");
 				button("Value").doClick();setup=setup.edit("target","toa");render();assertTrue(text().contains("no default invocation"));capture("r1-unsupported.png");
 				button("Back to upgrades").doClick();assertTrue(visible(button("Account and preferences")));
@@ -124,7 +124,7 @@ public class UpgradePanelTest
 				account=new AccountSnapshot(base.levels,base.inventory,base.equipment,fact(items),base.rigour,base.augury,base.facts,
 					com.ironpath.model.Observation.unknown(),com.ironpath.model.Observation.unknown(),com.ironpath.model.Observation.unknown(),fact(java.util.Map.of(26231,120L)));
 				setup=new PoweredMagic(catalog).propose(account);render();button("Back to upgrades").doClick();open("zaryte-crossbow").doClick();
-				assertTrue(text().contains("specialist role"));button("Path").doClick();button("Evidence").doClick();capture("r1-zaryte-path.png");
+				assertTrue(text().contains("specialist role"));button("Path").doClick();button("Estimate basis and route evidence").doClick();capture("r1-zaryte-path.png");
 			}
 			catch(Exception failure){throw new RuntimeException(failure);}
 		});

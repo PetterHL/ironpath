@@ -1,6 +1,6 @@
 # IronPath native UI specification
 
-14 October 2026 · **Selected visual advisor direction; UX2 implementation pending.** Current main contains the earlier R3a/UX-completion components. This specification incorporates the written decisions from “Oppsummering av UX” and account-efficient progression. [TASKS EP1/UX2](../TASKS.md#ep1--account-efficient-progression-next-implementation) is the only delivery backlog; [DESIGN progression-2](DESIGN.md#progression-intelligence-contract-version-progression-2-selected) owns ranking.
+14 October 2026 · **Visual advisor implemented for review; client/player acceptance pending.** UX2 is stacked on EP1 #25; current main still contains the earlier R3a/UX-completion components. [New component evidence](validation/UX2.md). This specification incorporates the written decisions from “Oppsummering av UX” and account-efficient progression. [TASKS EP1/UX2](../TASKS.md#ep1--account-efficient-progression-next-implementation) is the only delivery backlog; [DESIGN progression-2](DESIGN.md#progression-intelligence-contract-version-progression-2-selected) owns ranking.
 
 **EP1 integration for review:** the current cards/details now consume typed priority, remaining effort, metric availability, estimate scope and direct/preparation choices. The homepage preserves domain order without forced long-term insertion. [225px component evidence and pending client checks](validation/EP1.md). This is the minimal order/effort integration before UX2, not the completed written visual redesign.
 

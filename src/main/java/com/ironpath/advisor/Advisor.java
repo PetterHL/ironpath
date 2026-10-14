@@ -261,7 +261,7 @@ public final class Advisor
 			{ evidence.add("Supported specialist value in " + contexts.stream().filter(c -> c.available(ComparisonResult.Metric.THEORETICAL_DPS) && c.dpsGain() > 1e-10)
 				.map(c -> c.target.name).collect(Collectors.joining(", ")) + ". Inspect the separate encounter results and complete inputs; gains are not added or compared as a universal score."); }
 			evidence.add("Ranking: " + ranking + " Ordinary offence evidence only. Independent roles establish personal importance; pursuit status and effort remain separate. Context count carries no priority.");
-			List<Requirement> path = new ArrayList<>();
+			List<Requirement> path = new ArrayList<>(), effectivePath=new ArrayList<>();
 			for (KnowledgeCatalog.PathNode node : upgrade.path)
 			{ path.add(new Requirement(node.label + (node.quantity != null && account.observedQuantity(node.itemId).known()
 				? " · " + account.observedQuantity(node.itemId).value() + " / " + node.quantity + " observed" : ""), pathTruth(node, account, preferences), node.detail + " "
@@ -270,13 +270,17 @@ public final class Advisor
 			if (!upgrade.path.isEmpty())
 			{
 				Map<String, KnowledgeCatalog.PathNode> nodes = upgrade.path.stream().collect(Collectors.toMap(n -> n.id, n -> n));
+				for(KnowledgeCatalog.PathNode node:remainingPath(upgrade.path.get(upgrade.path.size()-1),nodes,account,preferences)) {
+					effectivePath.add(new Requirement(node.label,pathTruth(node,account,preferences),node.detail+" "+(node.quantity==null?conditionEvidence(node.completeWhen,account,preferences):quantityEvidence(node,account)),false,node.role));
+				}
 				KnowledgeCatalog.PathNode nearest = nearestPath(upgrade.path.get(upgrade.path.size() - 1), nodes, account, preferences);
 				if (nearest != null)
 				{
 					for (int i = 0; i < routes.size(); i++) { RouteView route = routes.get(i);
 						routes.set(i, new RouteView(route.decision, route.status,
 							(pathTruth(nearest, account, preferences) == Truth.UNKNOWN ? "Check needed: " : "Remaining: ")
-							+ nearest.label + ". " + nearest.detail, route.requirements, route.available)); }
+							+ nearest.label + ". " + nearest.detail, route.requirements, route.available,
+							new Requirement(nearest.label,pathTruth(nearest,account,preferences),nearest.detail,false,nearest.role))); }
 				}
 			}
 			if (!upgrade.path.isEmpty())
@@ -296,7 +300,7 @@ public final class Advisor
 				catalog.progression.contexts.stream().filter(c->c.id.equals(role.context)).forEach(c->valueSources.addAll(c.sources));
 			}
 			result.add(new UpgradeView(upgrade, label, context == null ? upgrade.valueReason : context.reason,
-				band, evidence, applications, questions.stream().distinct().collect(Collectors.toList()), routes, equip, parts, shared, comparison, path,
+				band, evidence, applications, questions.stream().distinct().collect(Collectors.toList()), routes, equip, parts, shared, comparison, path, effectivePath,
 				melee ? meleeService.referenceChoices(account) : ranged ? rangedService.referenceChoices(account) : referenceChoices, contexts, personalValue, new ArrayList<>(valueSources)));
 		}
 		List<RecommendationRanker.Candidate> candidates = new ArrayList<>();
@@ -311,7 +315,7 @@ public final class Advisor
 			{
 				UpgradeView value=byId.get(assessment.id);
 				ranked.add(new UpgradeView(value,assessment,routeAssessments.stream().filter(a->a.id.equals(assessment.id)).collect(Collectors.toList()),
-					routeChoices(value,assessment,account,preferences)));
+					routeChoices(value,assessment,account,preferences),catalog,account));
 			}
 		}
 		List<ActivityOpportunity> activities=activityOpportunities(account,preferences,ranked);
@@ -680,9 +684,12 @@ public final class Advisor
 		public final Decision decision;
 		public final String status, next;
 		public final List<Requirement> requirements;
+		public final Requirement nextStep;
 		public final boolean available;
 		RouteView(Decision decision, String status, String next, List<Requirement> requirements, boolean available)
-		{ this.decision = decision; this.status = status; this.next = next; this.requirements = List.copyOf(requirements); this.available = available; }
+		{ this(decision,status,next,requirements,available,null); }
+		RouteView(Decision decision,String status,String next,List<Requirement> requirements,boolean available,Requirement nextStep)
+		{ this.nextStep=nextStep; this.decision = decision; this.status = status; this.next = next; this.requirements = List.copyOf(requirements); this.available = available; }
 	}
 	public static final class UpgradeView
 	{
@@ -692,7 +699,7 @@ public final class Advisor
 		public final List<String> evidence, applications, questions, shared;
 		public final List<RouteView> routes;
 		public final List<Requirement> equip, parts;
-		public final List<Requirement> path;
+		public final List<Requirement> path, remainingPath;
 		public final ComparisonResult comparison;
 		public final List<ComparisonResult> contextComparisons;
 		public final Map<String, Map<String, String>> referenceChoices;
@@ -704,30 +711,30 @@ public final class Advisor
 		public final List<PursuitAssessment> routeAssessments;
 		UpgradeView(KnowledgeCatalog.Upgrade upgrade, String label, String value, KnowledgeCatalog.Benefit band,
 			List<String> evidence, List<String> applications, List<String> questions, List<RouteView> routes,
-			List<Requirement> equip, List<Requirement> parts, List<String> shared, ComparisonResult comparison, List<Requirement> path, Map<String, Map<String, String>> referenceChoices, List<ComparisonResult> contexts, ValueEvidence valueEvidence, List<String> evidenceSources)
+			List<Requirement> equip, List<Requirement> parts, List<String> shared, ComparisonResult comparison, List<Requirement> path, List<Requirement> remainingPath, Map<String, Map<String, String>> referenceChoices, List<ComparisonResult> contexts, ValueEvidence valueEvidence, List<String> evidenceSources)
 		{
 			this.upgrade = upgrade; this.label = label; this.value = value; this.band = band;
 			this.evidence = List.copyOf(evidence); this.applications = List.copyOf(applications); this.questions = List.copyOf(questions);
 			this.routes = List.copyOf(routes); this.equip = List.copyOf(equip); this.parts = List.copyOf(parts); this.shared = List.copyOf(shared);
-			this.comparison = comparison; this.path = List.copyOf(path); this.referenceChoices = Map.copyOf(referenceChoices); this.pursuit = null;
+			this.comparison = comparison; this.path = List.copyOf(path); this.remainingPath=List.copyOf(remainingPath); this.referenceChoices = Map.copyOf(referenceChoices); this.pursuit = null;
 			contextComparisons = List.copyOf(contexts); this.valueEvidence=valueEvidence; this.evidenceSources=List.copyOf(evidenceSources); indirectReasons=List.of(); card=null; presentation=null; routeAssessments=List.of();
 		}
-		private UpgradeView(UpgradeView value, PursuitAssessment assessment, List<PursuitAssessment> assessments, List<UpgradePresentation.RouteChoice> choices)
+		private UpgradeView(UpgradeView value, PursuitAssessment assessment, List<PursuitAssessment> assessments, List<UpgradePresentation.RouteChoice> choices,KnowledgeCatalog catalog,AccountSnapshot account)
 		{
 			upgrade=value.upgrade; label=value.label; this.value=value.value; band=value.band;
 			evidence=value.evidence; applications=value.applications; questions=value.questions;
 			routes=value.routes; equip=value.equip; parts=value.parts; shared=value.shared; comparison=value.comparison;
-			path=value.path; referenceChoices=value.referenceChoices; pursuit=assessment;
+			path=value.path; remainingPath=value.remainingPath; referenceChoices=value.referenceChoices; pursuit=assessment;
 			contextComparisons=value.contextComparisons; valueEvidence=value.valueEvidence; indirectReasons=value.indirectReasons;
 			java.util.Set<String> sources=new java.util.TreeSet<>(value.evidenceSources); sources.addAll(assessment.remainingEffort.sources); evidenceSources=List.copyOf(sources);
-			routeAssessments=List.copyOf(assessments); presentation=new UpgradePresentation(this,choices); card=new UpgradeCard(this);
+			routeAssessments=List.copyOf(assessments); presentation=new UpgradePresentation(this,choices,catalog,account); card=new UpgradeCard(this,catalog);
 		}
 
 		private UpgradeView(UpgradeView value, List<String> trails)
 		{
 			upgrade=value.upgrade; label=value.label; this.value=value.value; band=value.band; evidence=value.evidence;
 			applications=value.applications; questions=value.questions; routes=value.routes; equip=value.equip; parts=value.parts;
-			shared=value.shared; comparison=value.comparison; path=value.path; referenceChoices=value.referenceChoices;
+			shared=value.shared; comparison=value.comparison; path=value.path; remainingPath=value.remainingPath; referenceChoices=value.referenceChoices;
 			pursuit=value.pursuit; contextComparisons=value.contextComparisons; valueEvidence=value.valueEvidence; indirectReasons=List.copyOf(trails); evidenceSources=value.evidenceSources; card=value.card; presentation=value.presentation; routeAssessments=value.routeAssessments;
 		}
 

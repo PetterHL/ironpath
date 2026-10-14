@@ -1,0 +1,6 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=72] Zaryte crossbow
+null java.awt.Rectangle[x=6,y=272,width=213,height=38] Special attack burst
+null java.awt.Rectangle[x=6,y=310,width=213,height=72] Ordinary DPS does not quantify this role.
+null java.awt.Rectangle[x=6,y=382,width=213,height=38] Why this position
+null java.awt.Rectangle[x=6,y=420,width=213,height=242] Adds conditional ruby-special burst; an owned bow does not cover this energy-limited role. Acquisition suitability still needs checking.

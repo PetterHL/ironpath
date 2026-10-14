@@ -1,0 +1,13 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] Zaryte crossbow
+null java.awt.Rectangle[x=6,y=150,width=213,height=24] From Nex / Zaryte components
+null java.awt.Rectangle[x=6,y=174,width=213,height=24] Remaining effort: Unavailable
+null java.awt.Rectangle[x=6,y=198,width=213,height=24] Next step
+null java.awt.Rectangle[x=6,y=222,width=213,height=104] Essential method inputs are unconfirmed; unread gear is not absent. Check oneHandRanged; observe usable gear and recheck supplies.
+null java.awt.Rectangle[x=6,y=326,width=213,height=44] Method check needed · Check a reviewed compatible method
+null java.awt.Rectangle[x=6,y=370,width=213,height=84] Hours not estimated; Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured.
+null java.awt.Rectangle[x=6,y=454,width=213,height=24] Components and assembly
+null java.awt.Rectangle[x=6,y=478,width=213,height=24] Remaining: Nihil horn
+null java.awt.Rectangle[x=6,y=502,width=213,height=24] Remaining: Armadyl crossbow
+null java.awt.Rectangle[x=6,y=526,width=213,height=24] Check: 250 nihil shards
+null java.awt.Rectangle[x=6,y=550,width=213,height=44] Remaining: Assemble Zaryte crossbow
