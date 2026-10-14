@@ -1,12 +1,14 @@
 # IronPath tasks
 
-Updated 13 October 2026, endgame intelligence and native homepage refinement. [Evidence and 30 relationships](docs/PROGRESSION_RESEARCH.md); `progression-1` supersedes earlier ranking/admission policy, not delivered history. [UX](docs/UX.md) selects the R3a card-first homepage and supersedes the earlier row-first/100px-tile layout. **This active R1 → R1.5 → R2–R8 backlog supersedes P4b/P5 and every older catalogue-size budget or sequential planning gate.** Historical briefs/results are preserved verbatim below and are not active instructions.
+Updated 14 October 2026: **EP1 account-efficient progression and UX2 visual advisor are the next product priority.** Selected `progression-2` and the new UX specification supersede importance-before-burden, mandatory long-term preview insertion and repeated card Value/Path buttons. Earlier implementation evidence remains historical; this plan update does not deliver new behaviour.
+
+13 October foundation: endgame intelligence and native homepage refinement. [Evidence and 30 relationships](docs/PROGRESSION_RESEARCH.md); `progression-1` supersedes earlier ranking/admission policy, not delivered history. [UX](docs/UX.md) selects the visual advisor direction; earlier layout requirements remain implementation history. **This active R1 → R1.5 → R2–R8 backlog supersedes P4b/P5 and every older catalogue-size budget or sequential planning gate.** Historical briefs/results are preserved verbatim below and are not active instructions.
 
 **14 October addition — Personalized Kill Impact:** [research/design](docs/KILL_IMPACT.md) selects passive recent-boss context inside IronPath, followed by validated same-method time estimates. KI1–KI3 below refine R1.5b/R4/Q5; they do not replace R3b, comprehensive coverage or the current UI work. Documentation only, no new delivered capability. The original research inspection used R3a #18 `d9e897b` before integration; the current baseline below includes the UX follow-up.
 
 ## A. Product vision
 
-An established Ironman opens IronPath without selecting a goal and discovers worthwhile PvM upgrades, understands their account-specific value, sees meaningful supported numbers, and follows a clear acquisition path. Comprehensive maintained endgame/BiS and specialist coverage is the destination; implementation size is not a product limit. See [DESIGN](docs/DESIGN.md).
+An Ironman opens IronPath without selecting a goal and discovers worthwhile PvM progress for the remaining effort on their account now, understands their account-specific value, sees meaningful supported numbers, and follows a clear acquisition path. Comprehensive maintained endgame/BiS and specialist coverage is the destination; implementation size is not a product limit. See [DESIGN](docs/DESIGN.md).
 
 ## B. Capabilities and coverage
 
@@ -20,6 +22,8 @@ Each assignment produces useful advice, reviewed knowledge, UI evidence and mean
 
 | Milestone | Dependencies | Demonstrable result |
 |---|---|---|
+| EP1 — Account-efficient progression (next; not implemented) | Integrated main; existing value/path/alternative models | Automatic account-specific effort bands, value-for-effort priority, optional reviewed scenario hours and structured presentation |
+| UX2 — Visual advisor integration (not implemented) | EP1 domain/presentation contract | Complete overview/comparison/acquisition/account flow preserving next-step order |
 | R1 — Realistic magic and first endgame value | P4a + this reset | Full-loadout magic; Shadow/Ancestral early; numerical value influences advice; functional value/path views |
 | R1.5a — Pursuit priority and visual foundation | R1; integrated, live checks pending | Explainable categories, shared activities, native compact cards and first conditional next-shard estimate |
 | R1.5b — Effort expansion and first observation adapter | R1.5a; alongside R2, not its release gate | Multiple-roll estimates and one validated session-pace adapter |
@@ -33,6 +37,61 @@ Each assignment produces useful advice, reviewed knowledge, UI evidence and mean
 | R8 — Real-client usefulness and release readiness | Continuous UI checks from R1; broad R6 coverage for comprehensive claim | Evidence from representative accounts and native UI, accurate public coverage statement |
 
 These are capability milestones, not upgrade-count targets. R6 remains open while material inventory gaps exist; new releases extend the inventory. R7 and real-client feedback run alongside feature delivery. Q1–Q5 layers in DESIGN describe calculation dependencies, not a requirement to finish all standard formulas before implementing a high-value megarare.
+
+### EP1 — Account-efficient progression (next implementation)
+
+**Status: ready for implementation; not delivered.** Start from integrated main including UX completion, ordinary melee and experimental KI1. Read AGENTS, DESIGN's selected progression-2 contract, RESEARCH's automatic profile calibration, UX and relevant CATALOGUE/PROGRESSION_RESEARCH rows. TASKS remains the only backlog.
+
+**Outcome:** without a goal or manual tempo input, rank **every supported upgrade and acquisition route** by marginal account value relative to realistic remaining effort. The policy applies across the complete active catalogue, every activity family and future promoted outcomes. Effort may be qualitative; reviewed scenario hours are optional per route. This is the next primary product increment, independent of KI2, complete combat coverage and universal acquisition modelling.
+
+**Catalogue-wide delivery requirement:** the named examples below are regression cases only, never the implementation boundary. Audit and migrate every currently supported outcome/route to the same account-specific value, suitability, remaining-effort and priority pipeline. No item-name allowlist, five-item feature, untouched legacy ordering for other items, or uniform “unknown” fallback to claim coverage. Each route needs a defensible qualitative assessment or a specific evidence gap with conditional handling. New outcomes must supply this contract at promotion. Research-only catalogue entries remain explicitly unsupported until reviewed; the inventory and coverage plan remain comprehensive.
+
+Deliver one focused engine/data PR:
+
+1. Inventory **all active upgrade outcomes, acquisition routes and activity/method families**, then review their adequate owned alternatives, preparation and remaining work. Reuse general predicates and profiles by activity/method instead of implementing one rule per example item. Synapse, blowpipe, zenyte, treads and Shadow are mandatory regression illustrations; add representative cases from the rest of the catalogue. Existing source records do not validate throughput automatically. Record qualitative-band, numeric-odds, scenario-hour and observed support separately. Complete route/variant/promotion checks before activating new recommendations.
+2. Extend immutable evaluations with method suitability and reviewed activity effort profiles, automatically selected from compatible owned gear, levels, prayers, unlocks, supplies and evidence. No account-stage multiplier or inference of skill/missing ownership. Use Short / Medium / Long / Very long or unavailable state.
+3. Evaluate remaining work and useful routes. Owned parts bypass completed stages. Compare direct acquisition with optional preparation including its own cost; adequate alternatives prevent specific premium-item requirements. Far-from-ready accounts receive useful nearer steps and no full-route hours.
+4. Implement a versioned progression-2 decision table and matched reasons. Value and effort jointly determine priority, replacing IMPORTANCE_BEFORE_BURDEN. Preserve independent specialist/QoL value and conditional evidence. No raw DPS/hour score, item-name exceptions, fabricated precision or reward-count bonuses.
+5. Change RecommendationRanker and PursuitOverview together: no preview insertion of a lower-priority long grind above better next steps. Preserve Long-term/Specialist/Browse discovery and the full supported catalogue. Define preference/tie rules explicitly and deterministically.
+6. Extend UpgradeCard/detail presentation data per UX: metrics/baseline, unavailable/action distinctions, one selected status, priority reason, effort band, optional estimate/range kind/origin/scope and next step. Connect it minimally to the current UI so order/effort are reviewable before UX2; do not deliver unused schema.
+7. Keep manual pace optional and scoped; Clear returns to a supported automatic scenario or unavailable hours. Passive full-cycle observation stays separate R1.5b work. Retain session memory, identity resets and preference semantics; version only changed contracts.
+8. Link a validation note here with the policy table, **complete outcome × route × activity/method coverage matrix**, profile/source support, before/after account queues and estimate scopes. Account for every active route, including named evidence gaps; show that non-example items use the same policy. Passing the five example families alone does not complete EP1. Update current-behaviour README statements when code actually ships.
+
+**Behavioural acceptance (conditional fixtures, not universal item order):**
+
+| Case | Required result |
+|---|---|
+| Complete active catalogue | Every supported outcome/route uses the new pipeline; no example-only allowlist or legacy-ranking bypass; omissions and support gaps are enumerated |
+| Non-example activities and future additions | Representative other families behave under the same rules; promotion requires value, suitability and effort evidence without item-name rank code |
+| Missing blowpipe/synapse, substantial supported benefit, feasible shorter acquisition | A relevant nearer improvement precedes very-long Shadow pursuit; explain account gain and remaining effort |
+| Suitable strong alternative owned | Reduce redundant acquisition value; missing the example item alone is not a role gap |
+| Doom-ready versus reviewed weaker workable package | Supported setup differences affect effort/priority; absent Scorching alone is not a hard gate |
+| Doom preparation detour | Direct and synapse-first routes include their own work; no assumed time saving or double-spent component |
+| Early account with foundational gaps | Treads stays later with no full-route hours; supported nearer steps lead without inventing early-game coverage |
+| Nearly complete account | Shadow may lead as the best justified remaining opportunity; no permanent exclusion or filler |
+| Owned shard/component and exclusive allocation | Remove only completed work; no repeated grind or shared-resource double count |
+| Substantial versus tiny benefit | A trivial cheap item does not win merely through cheapness; the policy explains the trade-off |
+| Partial evidence or unsupported timing | Conditional output, never zero hours/confirmed absence; supported qualitative effort survives missing numeric time |
+| Repaint, input order, duplicate prose, equivalent context rename | Stable rank and explanation; no artificial promotion |
+| Same eligible account with a supported better setup | No unjustified same-method effort increase; account assumptions remain explicit |
+| RNG/scenario display | Scenario sensitivity is not a confidence interval; no summed quantiles or dry-streak progress |
+
+Run the normal build and meaningful changed-domain/presentation regressions. Preserve valid arithmetic, lifecycle and ownership cases; update superseded ranking expectations with reasons. Exercise the actual advisor pipeline, not only constructed ranker candidates. Capture the integrated order/effort at native width, distinguishing harness evidence from pending client checks.
+
+### UX2 — Visual advisor integration
+
+**Status: selected; follows EP1's domain/presentation contract.** One coherent native UI PR covers overview, cards, comparison, acquisition and account/diagnostics under [UX](docs/UX.md). Build on reviewed EP1 (updated main after integration; stack only for the concrete dependency). Do not independently recreate ranking in Swing.
+
+- Render one-column native cards with genuine sprites, prominent supported result, concise baseline and at most one useful status. Whole card opens details; remove repeated card Value/Path controls and 0 Defence/reference badges.
+- Implement compact before/after comparison, one priority reason, scoped effort, source → missing work → next step and optional preparation alternatives. Keep detailed evidence behind one secondary entry.
+- Rebuild Account around understandable state/corrections with separate diagnostics. Preserve search/filter/caret/Back/scroll, owned-use inspection, asynchronous images and identity guards.
+- Distinguish unsupported input, unsupported calculation and true zero. Do not conceal missing weapon DPS with a misleading oversized max-hit claim.
+- Follow the written “Oppsummering av UX” direction now in UX.md. Available desired images are illustrative; retain provenance if supplied. No invented screenshots or gameplay numbers from mockups.
+- Consume EP1's queue and structured effort. The older UI-only instruction to preserve ranking does not require retaining progression-1. Preserve supported combat formulas and coverage.
+
+**Acceptance:** show EP1 account cases, supported comparison, Shadow unavailable metrics, concrete acquisition, account corrections and diagnostics at actual sidebar width. Check keyboard/Back/filters/scroll, long names/large fonts, sprite behaviour and account changes. Attach actual component/client screenshots with provenance, evaluated against the written/available visual reference. Build success does not establish player usefulness; record pending client checks.
+
+**Sequence:** review documentation → implement/review EP1 → implement/review UX2 → combined PC acceptance. Existing R3b/R4/R5/KI work keeps its real dependencies; do not restart completed work. Research review is part of implementation, not a new approval gate at each step. Do not merge PRs without user authorisation.
 
 ### R1 — Realistic full-loadout magic and first endgame value (implemented for review; live checks pending)
 
@@ -141,7 +200,9 @@ scaling/usefulness acceptance checks remain pending.
 
 **Acceptance:** no goal/setup wizard is needed to obtain the neutral reference; the default card no longer says Graardor reference. A slower weapon's larger max hit cannot imply higher DPS. Weapon details lead with the supported DPS result or an honest gap, while ordinary armour/jewellery retain max-hit summaries. Exact target assumptions remain inspectable and specialist usefulness stays contextual. Runtime implementation is delivered on `reference-neutral-dps`, based on PR #12 at `dbbd515`. Plugin 0.6.1, knowledge reference-1, catalogue schema 8; combat powered-magic-2, pursuit-1 and preference schema 2 remain. The neutral target is an authored assumption with Defence/Magic/magic-defence bonus all zero and ordinary magic defence roll 576; it is not an NPC stat claim. The analytical target does not count as another useful encounter in ranking breadth. New metric rows allow taller Browse value lines without reducing fonts. [Validation, independent reference checks, synthetic profiles and fresh component captures](docs/validation/neutral-reference.md). Actual-client acceptance remains pending.
 
-### R1.5b — Effort expansion and local pacing (alongside R2; not implemented)
+### R1.5b — Effort expansion and local pacing
+
+**Sequencing update:** EP1 owns catalogue-wide automatic effort assessment and bounded probability expansion needed for supported scenario hours. Reuse it here. This assignment retains validated passive full-cycle pacing and further acquisition models. Older R2 sequencing below is historical.
 
 Extend the same estimator to reviewed multiple independent rolls using Zulrah/magic fang E2; distinguish at-least-one probability from expected item count and show shared reward relevance without additive gains. **14 October sequencing refinement:** use KI1's selected encounter adapter as the first shared passive observation work instead of implementing an independent CoX collector first. Vorkath is a possible pilot, not a user-mandated target; select by usefulness, observability and mechanic reuse. It initially supplies scoped combat durations, not farming throughput. CoX completion/points/timing remains subsequent adapter coverage, with raid probability modelling independently in R5. Reuse the same completion/failure/censoring and identity contracts. If full-cycle detection cannot be validated, retain manual cycle pacing; never convert recent combat duration directly into acquisition hours.
 
@@ -169,13 +230,15 @@ Remaining paths have self/NPC singing alternatives, true component quantities an
 
 ### R3 — Relationship-aware advice and melee packages
 
+**Historical R3a delivery specification:** its implemented behaviour and original checks below are retained as evidence, not a request to repeat the old PR stack. EP1/UX2 supersede its ordering, preview-selection and card-action requirements; remaining R3b family work retains its own scope.
+
 **R3a implemented for review below; R3b remains unimplemented.** Implement DESIGN `progression-1` against the inspected R2 contracts. Preserve `pursuit-1` history and current numerical regressions; migrate behaviour explicitly rather than replacing the plugin. [Research R01–R30](docs/PROGRESSION_RESEARCH.md) supplies reviewed examples, not a hardcoded list of mandatory grinds.
 
 **R3a — Small vertical relationship increment, including useful advice:**
 
 - Add typed activity contexts/roles, independent value evidence, scoped owned alternatives and preparation options using the existing catalogue/predicate machinery. Distinguish hard access, equip, method capability and optional preparation. A utility context need not have a numeric target. Extend generic reward eligibility and remove the Doom-only `minDelve` schema dependency while retaining existing outcome/route IDs.
 - Separate personal importance from effort/status. Migrate the existing core ranged-neck, Zaryte specialist and treads preparation explanations; include Venator's researched convenience/preparation role as qualitative supported advice once its route/variants pass normal validation. Numbers must not be invented to complete this increment. Keep exact Venator geometry/breakpoints visibly unsupported until checked.
-- Correct observed R2 ranking bottlenecks: ordinary DPS does not overwrite independent utility; raw context count is not breadth; analytical reference has no breadth weight; coordination/upkeep need real evidence instead of HIGH-burden/zero placeholders; no item-name priority exemption. Use importance before burden within actionable choices, retaining comparable numerical buckets and honest long-term status.
+- Correct observed R2 ranking bottlenecks: ordinary DPS does not overwrite independent utility; raw context count is not breadth; analytical reference has no breadth weight; coordination/upkeep need real evidence instead of HIGH-burden/zero placeholders; no item-name priority exemption. R3a used importance before burden; EP1 explicitly replaces this ordering with account-value/effort priority while retaining comparable numerical buckets and honest long-term status.
 - Give activities independent access/method assessments and per-reward eligibility. Two rewards alone do not establish priority, and a reward-specific unknown must not block every known useful reward. Show one-hop indirect explanations with direct-value anchors and cycle guards; do not build recursive scores.
 - Deliver the [UX card-first homepage](docs/UX.md): sprite/name header, full-width account-value reason, supported contextual primary metric, concise status and direct Value/Path actions. Use one column at normal native width; two only when measured width/font permits the complete content. Reuse the card in Browse, introduce Specialist discovery alongside existing categories, and retain the selected neutral reference in Value. Personal importance, adequate owned alternatives and defer reasons come from evaluated evidence, not Swing text rules. This increment must visibly improve advice and its first impression, not ship unused schema alone.
 
@@ -269,7 +332,7 @@ Use the shared R4 models for spec energy/regen/debuff/reset/HP-dependent bolts a
 
 ### R5 — Complete routes, permanent rewards and selective effort models
 
-Paths and honest A0 effort ship with each outcome, not at the end of R5. Extend the existing estimator selectively: current CoX/ToA/ToB personal allocation, Nex contribution/team rules, stateful drops and multi-component processes only with complete mechanics/input review. Preserve R1.5b's bounded multiple-roll/pace work; it is not a gate to relationships or melee. No universal simulator, fixed hours from gear, or payback-time requirement for an upgrade.
+Paths and honest A0 effort ship with each outcome, not at the end of R5. Extend the existing estimator selectively: current CoX/ToA/ToB personal allocation, Nex contribution/team rules, stateful drops and multi-component processes only with complete mechanics/input review. Preserve R1.5b's bounded multiple-roll/pace work; it is not a gate to relationships or melee. EP1 brings forward reviewed automatic effort profiles and optional scenario hours; reuse its contracts. No universal simulator, unreviewed gear-to-hours multiplier, measured-performance claim from a profile, or payback-time requirement.
 
 Represent preparation **alternatives**, useful independently valuable detours, and “start this reviewed method now” alongside optional improvements. Expand acquisition/equip/unlock/active/supply states for prayers, quiver/infernal/MA2 rewards, diaries/CAs/imbues, penny, pouches and relevant travel/resupply. Add optional attention, method/team and activity preferences only when they change useful decisions; follow existing local persistence/migration rules. No questionnaire, silent performance-history storage, remote telemetry or teammates inferred from account gear.
 
@@ -325,6 +388,8 @@ Use the matrix below throughout delivery, then perform a focused end-to-end chec
 **Acceptance:** recommendation disagreements are documented and important false positives/false negatives fixed; player can explain assumptions; no misleading ownership/route/numeric claims; performance remains usable with broad coverage. State actual supported modes, contexts, models and known gaps in README. Prepare Plugin Hub naming/policy/build/notice materials only when requested; submission/publication is separately authorised. A release can honestly be partial; a comprehensive product claim requires the coverage criteria above, not passing a fixed number of tests.
 
 ## Recommendation-quality matrix
+
+Retain these coverage cases. EP1's behavioural matrix governs changed ordering and effort expectations; older requests for an early long-term preview do not override the new queue. Preserve historical test results under their original policy/version.
 
 Synthetic profiles have explicit positive/negative/unknown facts, complete reference setups and no selected goal. Keep expected examples contextual; do not encode one universal order as a golden test.
 
@@ -392,9 +457,7 @@ Branch `client-model-gap-labels` clarifies the existing per-metric gap: name onl
 
 ## Next implementation
 
-**Continue R3b melee families and relevant R4 models from updated main, alongside focused actual-client UX checks and KI1 evidence-selected capture work.** R3a relationship advice/cards and the first R6 item-name search increment are already integrated; do not rebuild them or restore the superseded R2-model implementation. Read DESIGN `progression-1`, PROGRESSION_RESEARCH R01–R30, KILL_IMPACT and the PI account matrix for the relevant scope. Keep ordinary comparison, acquisition and recent-kill metrics distinct.
-
-R1.5b pacing, complex R5 distributions, full R6 filters and remaining numeric gaps continue as documented. Brimstone and Confliction remain active quantitative gaps. Kill Impact research is not implementation or a gate to melee/current UI work. New increments must improve useful no-goal advice, preserve numerical/lifecycle regressions and report actual client checks separately. TASKS.md remains the only backlog.
+**EP1 first, then UX2**, under the complete assignments above. The integrated baseline retains ordinary melee, UX completion and experimental KI1. Review profile/source support, implement account-efficient priority and presentation contracts, then complete the coordinated visual advisor flow. This documentation PR plans the policy and UI; it does not ship them. R3b/R4 expansion, R1.5b observation and KI2/KI3 remain open without becoming gates to the first automatic effort-based advice.
 
 ## Historical task snapshots and results
 

@@ -1,10 +1,12 @@
 # IronPath product and architecture
 
-Endgame intelligence design · 13 October 2026. Inspected main `cb7c2cd` and unmerged R2 PR #16 at `a501e6f`, then its concurrent review correction `32cb24a` (schema 9, `pursuit-1`). **The bounded `progression-1` migration is implemented for review in R3a; broader relationship/model coverage remains open.** See [implementation evidence](validation/R3a.md). It refines ranking and relationships while retaining comprehensive scope, existing working code and validation history. R1.5b observation and complex route totals remain future work.
+**14 October 2026 decision:** account-efficient progression (`progression-2`) is the selected next policy; EP1/UX2 in TASKS own implementation. Current main still runs `progression-1`. This documentation change does not deliver new ranking, acquisition hours or UI. The new policy supersedes importance-first ordering and forced long-term preview insertion while retaining the relationship/value foundation.
+
+Endgame intelligence design · 13 October 2026. Inspected main `cb7c2cd` and unmerged R2 PR #16 at `a501e6f`, then its concurrent review correction `32cb24a` (schema 9, `pursuit-1`). **The bounded `progression-1` migration is implemented for review in R3a; broader relationship/model coverage remains open.** See [implementation evidence](validation/R3a.md). It refines ranking and relationships while retaining comprehensive scope, existing working code and validation history. EP1's reviewed automatic effort profiles are the next priority; R1.5b observation and complex route totals remain separately scoped work.
 
 ## A. Stable product vision
 
-**IronPath — Your path to endgame PvM** is a free, open-source, local RuneLite plugin for established Ironman accounts. Opening it should answer: **What upgrades are worthwhile for my account, why, and how do I obtain them?** No goal, setup wizard, account registration or paid API is required.
+**IronPath — Your path to endgame PvM** is a free, open-source, local RuneLite plugin for established Ironman accounts. Opening it should answer: **Which upgrades offer the most worthwhile progress for the remaining effort on my account now, why, and how do I obtain them?** No goal, setup wizard, account registration or paid API is required.
 
 The destination is comprehensive, maintained coverage of meaningful main-game endgame/BiS equipment, specialist sidegrades, prayers and permanent PvM rewards, including the bridges needed to reach them. A small implementation increment must never redefine that destination. There is no catalogue ceiling. A three-card shortlist is a presentation choice, not a coverage limit. Highly developed accounts are first-class users.
 
@@ -105,9 +107,11 @@ Example **Zaryte crossbow** (existing pinned evidence retained): The Frozen Door
 
 Show component progress such as an observed quantity against its requirement only when supported. Do not display a percentage of an RNG drop completed. Qualitative effort covers remaining skill/quest work, repeat RNG, team coordination, supplies and upkeep. Later probability/effort scenarios may use published rates with mode/scale and assumptions, never guaranteed hours or dry-streak entitlement. Shared activities list distinct potential rewards without summing gains or assuming simultaneous drops.
 
-## Progression intelligence contract (version `progression-1`)
+<a id="progression-intelligence-contract-version-progression-1"></a>
 
-**Selected design; the R3a vertical increment implements the bounded migration on R2.** Supersedes `pursuit-1` admission/order where they conflict. Preserve its implementation and regression evidence until a reviewed migration. [Thirty checked relationships and the code assessment](PROGRESSION_RESEARCH.md) are the evidence; TASKS R3–R6 are the delivery assignments. This is an extension of the current engine, not another reset.
+## Progression intelligence contract (version `progression-2`, selected)
+
+**Selected next design; implementation pending in EP1/UX2.** R3a implements the earlier `progression-1` baseline. This contract supersedes its importance-before-burden ordering and discovery insertion, as well as older `pursuit-1` ordering. Preserve historical implementation and regression evidence; update behavioural expectations only where this explicit policy change requires it. [Thirty checked relationships and the code assessment](PROGRESSION_RESEARCH.md) are the evidence; TASKS EP1/UX2 own the next migration; R3–R6 retain broader relationship and model coverage. This is an extension of the current engine, not another reset.
 
 ### Independent assessment
 
@@ -115,18 +119,19 @@ Keep the seven product principles, with three qualifications: importance is not 
 
 The existing `Benefit` plus ordinary-DPS calibration cannot carry this information. R2 can downgrade a supported utility item for a minor ordinary result, counts numeric context IDs as breadth, conflates suggested preparation with blocking conditions, and aggregates activity availability across individual rewards. Fix these specific bottlenecks while preserving comparisons, acquisition distributions, observations and identity guards.
 
-### Four independent outputs
+### Separate evidence from the next-step recommendation
 
 | Output | Meaning and examples | Never infer |
 |---|---|---|
 | General role | Core ranged neck, high-HP burst, demon specialist, lower-attention multi-target method, sustain, inventory economy | A permanent S/A/B item rank or that the account wants the activity |
 | Personal importance | **Key improvement / Strong option / Contextual option / Marginal or covered / Uncertain**, with matched reasons and a named baseline | Importance from missing ownership, an item price, a large neutral DPS number or relationship count |
 | Pursuit status | Can pursue; Plan ahead; Check first; Long-term undertaking; Optional/defer; owned use/assembly separately | Low importance from long effort, readiness from ownership, or completion from a skip |
-| Remaining effort | Route-specific prerequisites, components, skill/learning/coordination/supply burdens, RNG tail and supported A0–A4 estimates | Hours from gear, cheapness from missing estimates, or an exact learning duration |
+| Remaining effort | Account- and method-specific Short / Medium / Long / Very long bands; optional scoped scenario hours; remaining prerequisites, components and supplies | Measured performance from gear, cheapness from missing estimates, or an exact learning duration |
+| Next-step priority | A deterministic judgement of marginal account value relative to remaining effort and method suitability; drives the default queue | Importance alone, a permanent item tier, raw DPS/hour or certainty of an optimal grind |
 
 Importance is a versioned product judgement, not a measurement. **Key improvement** needs a reviewed consequential role gap or major improvement across relevant use cases. **Strong option** needs material core value or a substantial supported specialist/convenience benefit. **Contextual option** has a real narrower or preference-dependent benefit. **Marginal/covered** needs a demonstrably small role delta or an adequate/equivalent owned solution; covered is not globally useless. **Uncertain** names missing evidence. No tier requires positive sustained DPS when the established benefit is different.
 
-Rarity cannot turn a Key improvement into Marginal. Being easy to obtain cannot turn a minor accessory into Key. A long-term item may remain personally important and can be pinned without removing its burden/tail label. The current Long-term display is retained as an effort-oriented view, not a verdict that long-term progression is unimportant.
+Rarity cannot turn a Key improvement into Marginal. Being easy to obtain cannot turn a minor accessory into Key. A long-term item may remain personally important and can be pinned without removing its burden/tail label. Importance describes value; next-step priority decides where it belongs in the current queue. For a nearly complete account, a long grind may be the best remaining useful option. The current Long-term display is retained as an effort-oriented view, not a verdict that long-term progression is unimportant.
 
 ### Minimal data contracts
 
@@ -139,7 +144,9 @@ Extend the existing bundled JSON and immutable Java objects. The names below des
 | `PreparationOption` | Activity-context/role, reviewed acceptable packages (ANY/ALL), significance to the selected method, optional better alternatives, relevant constraints and sources. Separate `HARD_ACCESS`, `EQUIP`, `METHOD_CAPABILITY`, `RECOMMENDED_PREPARATION`, `OPTIONAL_IMPROVEMENT`. |
 | `ActivityReward` (extend existing) | Activity/mode → outcome/family, **reward eligibility** independent of activity access, ownership/unlock predicate, allocation group, route stage and sources. Replace Doom-only `minDelve` with typed eligibility conditions; keep existing IDs. |
 | `ValueEvidence` | Subject, role/context, current baseline, independent dimension results, applicability truth, missing inputs, comparison references and matched reasons. A dimension may be reviewed qualitative even when DPS is unsupported. |
-| `PursuitAssessment` / `ActivityOpportunity` (extend) | Importance, status, effort reference, alternatives, sufficient-now option, direct/indirect explanation trail, preference provenance, evidence/knowledge/ranker versions. Views consume this data; no domain decisions in Swing. |
+| `PursuitAssessment` / `ActivityOpportunity` (extend) | Importance, method suitability, effort band and support, next-step priority, alternatives, sufficient-now option, direct/indirect explanation trail, preference provenance, evidence/knowledge/ranker versions. Views consume this data; no domain decisions in Swing. |
+| Activity effort profile | Stable activity/mode/method ID; supported compatible package/role predicates; levels/unlocks; reviewed workload/pace assumptions, scope, source dependencies and exclusions. Effort-only or optional scenario-hour support; no global early/mid/endgame speed multiplier. |
+| Presentation result (extend existing `UpgradeCard` and detail models) | Typed metric/value/unit/baseline, availability and corrective action, selected status, priority reason, effort band, optional range and range kind, estimate origin, scope and next step. No assembled diagnostic prose as normal card content. |
 
 A small initial benefit vocabulary is enough: ordinary offence, burst/special, defence reduction, multi-target/control, sustain/defence, attention/convenience, inventory and resource economy, access. **Core/specialist are role/breadth attributes; indirect progression is a relationship trail**, not a multiplier to add to these dimensions. A relation can carry several benefits, and several relations can share a mechanic. Avoid both one Java rule per item and a universal weighted sum.
 
@@ -157,23 +164,49 @@ The default **Enemy with 0 Defence** comparison remains available as explicitly 
 4. Evaluate remaining acquisition paths and distinguish hard access from method/preparation/equip. A missing optional improvement never blocks the route. A missing capability can mark a **selected method** unsuitable while another reviewed method remains available. Unknown skill/learning is not a failed access predicate. Owned intermediate items bypass only the corresponding upstream work.
 5. Build activity opportunities from **usable or meaningfully obtainable reward outcomes** and independent access/method evidence. An ineligible or uncertain reward stays separately listed; it must not veto known eligible rewards or make the whole activity unavailable. Two rewards support a shared-value explanation, not automatic promotion. One important reward can justify an activity without inventing a second. Three Ancestral pieces remain one correlated family for discovery, while their actual distinct loot outcomes stay separate in probability models.
 6. Join `RoleSupport(item, activity context)` to that activity's account-relevant rewards for indirect explanations: “Useful at this activity, which still offers these upgrades.” Initially expose **one activity hop**, with direct value as the fixed anchor. Already adequate preparation reduces the upgrade's indirect importance. This is explainability, not multiplication of downstream item scores or recursive promotion.
-7. Rank eligible choices using the transparent policy below; retain conditional, long-term, owned-utility and deferred records in Browse/detail. Deduplicate the same reward family/acquisition activity in the small overview, without truncating coverage.
+7. Derive remaining effort and next-step priority using the policy below; rank eligible routes and choices, retaining conditional, long-term, owned-utility and deferred records in Browse/detail. Deduplicate the same reward family/acquisition activity in the small overview, without truncating coverage.
 
 These are indexed joins over ordinary lists/maps, not a graph platform. Hard component/access edges form an acyclic dependency graph. **Utility edges may cycle**: Rigour improves CoX, which awards Rigour. Never import a utility edge into hard access or let it reinforce its own importance. Visited-ID trails prevent repeated explanations; no recursive fixed-point score. Additional hops can be inspected later using the same records and cycle guards; the first visible hop is a delivery/presentation choice, not a relationship-coverage ceiling.
 
 Example: missing tbow plus useful CoX rewards gives CoX independent activity relevance. Lance has a reviewed Olm role, but owned Fang/other gear might already satisfy the chosen method. Show lance's actual marginal comfort/damage and its remaining route, alongside starting CoX now. If only tbow remains, the multi-reward rationale disappears; neither lance nor CoX receives escalating priority through the cycle.
 
-### Deterministic importance and selection
+### Account-specific effort and suitability
 
-Do not collapse the four outputs into a universal efficiency score. For immediately actionable candidates, use **importance first**, then a declared explicit preference match, evidence sufficiency, and remaining burden to distinguish otherwise similar choices. A lower burden is a trade-off/tie-breaker, not an automatic winner over meaningful core or QoL improvements. Unknown numeric support is not low confidence in an independently verified qualitative mechanic; confidence is claim-specific.
+**Universal scope:** this evaluation applies to every supported outcome, route and activity/method, including newly promoted catalogue entries. Named examples illustrate behaviour; they never define eligibility for personalisation. Share activity profiles, role predicates and route rules across items. EP1 must audit the complete active catalogue and migrate its default queue together, with a route-level coverage/support matrix. Numeric hours may be selective; the value/effort policy is not. An unsupported route needs a specific evidence gap and conditional handling, not an unexplained universal fallback or the old comparator.
 
-Use fixed buckets for any numeric tie-break: same role, target/method, baseline, metric and assumptions. Select representatives within comparable buckets, then use stable IDs between equally justified incomparable choices. Changing an arbitrary context-ID spelling or duplicating an equivalent target must not promote a candidate. Return actual matched ordering reasons, not a generic hardcoded list.
+Assess each activity/mode/method against the strongest supported **compatible owned** package, levels, prayers, unlocks, usable forms and supplies. Suggested account stages are summaries only: the same account may be well equipped for one activity and poorly equipped for another. Separate suitable, workable with limitations, substantial preparation required, and consequential unknown. A gear profile is not a claim about execution skill or completion probability.
 
-Implement the tier judgement as a small versioned policy over the evidence fields, with reason codes such as `CORE_ROLE_GAP`, `OWNED_ROLE_COVERED`, `SUBSTANTIAL_CONVENIENCE`, `METHOD_CONDITIONAL` and `OPTIONAL_PREP_DETOUR`. A relation authors significance and conditions, not its final personal tier. Family-level calibration plus the PI fixtures should decide promotion; do not add an item-name switch whenever a counterexample appears. Importance can rise when an owned alternative becomes unusable or fall when a relevant unlock/alternative is acquired, without changing the general role description.
+Reviewed profiles automatically supply a broad effort band, without a questionnaire or mandatory kills/hour input. Select an optional reviewed full-cycle pace scenario only when its applicability is established; label hours as an assumption-based estimate. RESEARCH defines A0/A2 support and the review record. Missing numeric support may still permit a reviewed qualitative band. Missing account evidence remains distinct from confirmed absence. Unread gear must not silently select the weakest profile.
 
-Only mark a choice dominated if its alternative is no worse on **all material, known dimensions** for that role/context and remaining route, and better on one. Unknown or incomparable convenience, upkeep, team roles, supply or effort means a trade-off, not dominance. Existing gain-only dominance must not decide multi-role value. Broad importance does not justify invented numeric sums across activities.
+Compute **remaining** work: remove confirmed completed stages, retain actual access/training/assembly/supply work, and account for the supported method's repeated acquisition burden. Distinguish next reward from the full item. Use Short / Medium / Long / Very long plus an explicit unsupported/unknown state; document and version the calibration rather than assigning fixed item tiers. The same outcome can change band when prerequisites, owned components or its suitable package change.
 
-Present a compact card-first homepage under [UX's R3a selection/layout policy](UX.md): a measured preview budget over the full result, with important long-term/specialist discovery before repeated roles/families. Preserve the domain order and expose why a preview representative was selected; width/repaint never changes rank. Deduplicate correlated reward families, not every distinct benefit sharing an acquisition activity. A justified activity is secondary to visible upgrade cards. Do not require exactly two pursuits, fill a quota or cap the catalogue. An all-megarare account can legitimately see a lower-attention or sustain choice, a small contextual improvement, or no material upgrades. No mandatory preference wizard; offer one consequential correction when needed.
+Evaluate direct acquisition and relevant preparation detours as separate routes. For example, starting a reviewed Doom method now versus obtaining a synapse first requires the preparation's own effort plus the remaining Doom work under that alternative. Do not charge both routes, double-count shared requirements, spend one component on competing outcomes, or assume a detour saves total time. Preserve independent value of the preparation item. If the total cannot be supported, show the qualitative trade-off or a clearly scoped partial estimate.
+
+### Deterministic next-step priority and selection
+
+The default queue answers **worthwhile progress for remaining effort now**. Personal importance and effort jointly determine priority; neither is merely a late tie-breaker. Use a small versioned decision table over account-value bands, remaining-effort bands and method suitability, with matched reason codes. Do not divide neutral DPS by hours or add unrelated utility dimensions into a universal efficiency score.
+
+Initial calibration direction (product judgements to validate in EP1, not new game facts):
+
+| Account-specific result | Expected queue treatment |
+|---|---|
+| Substantial relevant improvement, suitable method, short/medium remaining work | Strong next-step candidate |
+| Substantial improvement, workable method with relevant limitations | Adjust effort/priority using the reviewed profile; name the limitation |
+| Exceptional value, very long remaining work, nearer substantial options exist | Long-term choice behind the better current opportunities |
+| Tiny or already-covered improvement, short grind | Optional; cheapness alone does not create priority |
+| Large foundational gaps for the acquisition method | Prepare first / later progression, no full-route time; surface independently useful reachable steps |
+| Only long grinds or small useful improvements remain | Rank honest remaining choices; long-term items can lead with their label |
+| Material unknown affecting the decision | Conditional result and one useful correction; no invented low cost or blanket removal of unrelated known value |
+
+Distinguish hard access, method suitability, recommendation timing and acquisition horizon. A missing optional upgrade is never a hard requirement. Resolve these conditions before applying the value/effort policy. For equally justified candidates, use optional explicit interest, claim-specific evidence and stable comparable tie-breaks. Make preference effects explainable; a preference does not rewrite effort or factual suitability. Preserve transitivity, deterministic stable IDs and compatible metric/context buckets.
+
+Reviewed multi-target, sustain, convenience, specialist and resource benefits can justify priority independently of ordinary DPS. Shared activities may offer several account-useful rewards, but reward count or repeated relationships must not multiply score or reduce the target item's time. Cyclic utility trails remain explanatory only.
+
+Only claim dominance when the alternative is no worse on every material **known** dimension for the same role/context and route, and better on one. Unknown/incomparable benefits, upkeep, effort or overlapping scenarios imply a trade-off. Rank uncertainty must not masquerade as demonstrated dominance.
+
+The homepage consumes the domain order. Remove mandatory early insertion of long-term/specialist representatives; use persistent compact discovery links and Browse for those views. A genuinely high-priority specialist keeps its place naturally. Deduplicate the same outcome and correlated reward-family repetition without moving a lower-priority long-term choice above better next steps. Retain all supported outcomes in Browse. If only long-term choices remain, show them with their truthful horizon; do not manufacture nearer advice.
+
+EP1 changes `RecommendationRanker` and `PursuitOverview` together and exports a structured presentation result. UX2 renders it under UX.md. Reflow, sprite loading and filtering do not rerank. Preserve stable focus/scroll and make changed account evidence, rather than paint events, trigger recomputation.
 
 ### Preparation-detour safeguard
 
@@ -261,7 +294,7 @@ Extend the existing immutable catalogue and advisor contracts; names below are a
 
 Data path: client snapshot + preferences + bundled facts → existing comparison/path evaluation → acquisition evidence → pursuit/activity assessment → immutable overview/detail models → Swing. Quantitative evidence is optional independently of route and value evidence. Extend source dependencies to probabilities, reward pools, pace assumptions and observation adapters so a changed rate invalidates only affected estimates. A stale/invalid rate withdraws time/odds, not an otherwise valid value comparison.
 
-Raw observations and inferred pace stay memory-only. R1.5 permits optional manually entered pacing as a labelled scenario, never measured performance. Session observation later improves that scenario without silently changing mode/team assumptions. Persisting derived history would be a separate explicit privacy/migration design in R5; this refinement does not authorise raw account/loot persistence, remote telemetry or reading another plugin's private stores.
+Raw observations and inferred pace stay memory-only. EP1 permits automatically selected reviewed activity-profile scenarios and optional manually entered pacing, both labelled assumptions rather than measured performance. Session observation later improves that scenario without silently changing mode/team assumptions. Persisting derived history would be a separate explicit privacy/migration design in R5; this refinement does not authorise raw account/loot persistence, remote telemetry or reading another plugin's private stores.
 
 ### R2 implementation of shared comparison contracts
 
@@ -340,6 +373,6 @@ Measure actual maintenance time. The earlier 20–40-minute quiet-week estimate 
 
 ## C. Delivery and success
 
-Use R1, R1.5 and R2–R8 in [TASKS.md](../TASKS.md). Source validation, model work, UI and tests belong inside useful implementation PRs, not repeated planning gates. A concrete correctness/policy/licensing blocker applies to the affected claim or feature; it is not a blanket stop on independent catalogue work.
+Implement EP1 then UX2 in [TASKS.md](../TASKS.md), retaining R1.5 and R3–R8 for broader coverage and their actual dependencies. Source validation, model work, UI and tests belong inside useful implementation PRs, not repeated planning gates. A concrete correctness/policy/licensing blocker applies to the affected claim or feature; it is not a blanket stop on independent catalogue work.
 
 A representative midgame, post-Bowfa and advanced account must each be able to explain several useful choices and their next steps. Late-stage completion can correctly yield few or no meaningful upgrades; never pad the shortlist. Assess personal relevance, comparison trust, acquisition clarity and actual sidebar usability separately from test counts.
