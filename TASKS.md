@@ -229,6 +229,12 @@ Represent preparation **alternatives**, useful independently valuable detours, a
 
 For supported quantitative routes, distinguish next component from whole item, conditional unique weights from per-player chance, mean from quantiles, and shared/overlapping work from independent sums. A rate change withdraws affected estimates only. Current CoX weights are 60/56 totals, not the historical 69. Any persisted performance-summary proposal remains explicit work here, with its own privacy/migration design.
 
+### UX navigation follow-up — 14 October 2026
+
+Plugin **0.8.3**, knowledge **r3a-3**, schema **10**, preference schema **2**. Focused implementation on `ux-card-navigation`, based on PR #18 `d9e897b`; target `r3a-personalized-cards`. No dependencies merged. Browse gains item-name search combined with existing categories, Clear filters, accurate counts and a recoverable no-match state. Search updates only the result components, preserving its live text editor. Independent Overview/Browse anchors and stable-ID Back handle intervening account updates; lifecycle clearing drops search and all anchors. Replaced result cards and delayed imagery cannot activate the old result set.
+
+This delivers the first search portion of R6 alongside R3a navigation acceptance. JDK 11 / Gradle 8.10 / RuneLite 1.13.1 `test build --no-daemon` passes **238 tests, zero failures/errors/skips** (232-test baseline, six new panel regressions; all 1,944 original ranged oracle cases retained). Broader filters, owned-use search, real-client focus/scaling and player usefulness remain pending. [Validation, matched before/after components and PC checks](docs/validation/ux-navigation.md). Existing R3a/client reports remain historical evidence.
+
 ### R6 — Comprehensive relationship coverage and discovery
 
 Audit the uncapped CATALOGUE by **item/outcome × role × activity/method × owned alternative**, alongside numeric and acquisition support. Include every meaningful current endgame family, specialist, sidegrade and permanent PvM utility; extend when content releases. An inventory row alone is not coverage. Account for unreviewed/invalid/unsupported relationships with a reason and evidence need. No arbitrary catalogue limit and no claim of comprehensive delivery while material gaps remain unexplained.
