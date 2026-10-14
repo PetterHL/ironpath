@@ -7,11 +7,11 @@ Petter authorised cleanup of all PRs/branches followed by a combined test. The i
 | PR | Original head | Result |
 |---|---|---|
 | #14 — initial R2 family models | `f821c625` | Superseded by the package engine in #16; closed, with the complete separate history preserved as tag `r2-ranged-models` |
-| #16 — R2 ranged packages | `32cb24a8` | Merge to main with original history |
-| #17 — progression design | `75897d56` | Retarget to main and merge after #16 |
-| #18 — relationship advice/native cards | `d9e897b7` | Retarget to main and merge after #17 |
-| #20 — Browse/search/navigation and review fixes | `a8ee55a4` | Retarget to main and merge after #18 |
-| #19 — Kill Impact design | `a05b4be6` | Preserve research scope, combine with #20, reconcile current instructions and merge to main |
+| #16 — R2 ranged packages | `32cb24a8` | Merged to main with original history |
+| #17 — progression design | `75897d56` | Retargeted to main and merged after #16 |
+| #18 — relationship advice/native cards | `d9e897b7` | Retargeted to main and merged after #17 |
+| #20 — Browse/search/navigation and review fixes | `a8ee55a4` | Retargeted to main and merged after #18 |
+| #19 — Kill Impact design | `a05b4be6` | Research scope preserved; combined with #20, current instructions reconciled and merged to main |
 
 #19/#20 overlap only in documentation. The README conflict retains both the Kill Impact design and current 0.8.3 UX behaviour. Current README, AGENTS, DESIGN and TASKS now identify main as the development baseline, with R3a implemented and R3b/KI1 still future work. The historical TASKS section and existing validation reports remain unchanged. Kill Impact remains **unimplemented design**, and no live-client acceptance or release is inferred from integration.
 
@@ -37,6 +37,12 @@ Use `git switch main` and `git pull --ff-only` for current development. Old name
 
 ## Combined validation
 
-The combined application/resources/build/test tree is identical to UX head `a8ee55a4`; the reconciliation adds only research and documentation. The earlier 240-test UX result remains historical evidence until a fresh integrated-main test completes. Combined build, final PR/branch inventory and archive verification are pending at this integration-preparation commit.
+Tested main: **`2890b61f59dab0d2f18bae7615aebcc7c8ee8d71`**, after all five integration merges and branch cleanup. A fresh `./gradlew clean test build --no-daemon` on Debian 13.6 / Temurin 11.0.32.1+1 / Gradle 8.10 / RuneLite 1.13.1 passes **240 tests, zero failures/errors/skips**. All seven Gradle tasks execute from the clean tree, including the unchanged 1,944 original ranged oracle cases and both UX review regressions. Existing unchecked-template, Fontconfig-cache and Gradle-deprecation notices remain non-fatal.
+
+The combined application/resources/build/test tree is identical to UX head `a8ee55a4`; the reconciliation adds only research and documentation. This completion record changes documentation only after the fresh test. All 250 relative document/image links resolve, research/catalogue JSON parses, `git diff --check` passes and the historical TASKS section matches the pre-cleanup UX snapshot byte-for-byte.
+
+Final inventory: **zero open PRs**, **main only** in remote and local branch lists, and **nine verified annotated snapshot tags**. PRs #16–#20 are merged; #14 is closed as superseded. All eight integrated/previously merged branch heads are ancestors of main; #14's independent head is preserved by its exact archive tag. Remote deletion used explicit expected heads and an atomic push; no uninspected/new branch was deleted. Temporary local branches were removed only after main contained their commits.
+
+For the combined PC test, close the development client and run `git fetch origin`, `git switch main`, `git pull --ff-only`, then `gradlew.bat test build` and `gradlew.bat run` on Windows (or `./gradlew` on macOS/Linux). Open the bank after login and verify native cards, item recognition, Value/Path/Back, search/filter/reset, selection retention during equipment/bank updates and account/profile clearing. Follow [the UX acceptance steps](ux-navigation.md#pc-acceptance--pending) and [the Lightbearer/client follow-up](R3a-lightbearer.md#pc-retest) for concrete examples. Old branch tags reproduce their historical builds and should not be used for this combined test.
 
 Actual RuneLite sprites/focus, OS/client scaling, authenticated account/profile transitions and player usefulness remain pending in their original acceptance records. No client launch, personal-time implementation, Plugin Hub submission or publication is performed by this cleanup.
