@@ -1,6 +1,7 @@
 # Endgame coverage inventory
 
 **AD1a candidate:** all active offensive outcomes use DPS-first presentation. Brimstone's ordinary powered-magic proc is supported in powered-magic-3; Confliction history, competing unmodelled weapon families and specialist effects retain explicit per-metric gaps. [Complete evaluated active-outcome metric coverage and blocker ownership](validation/AD1a.md). This promotes no new acquisition outcome or research-only family.
+AD1b now has separate probability, automatic/manual/observed-hour and remaining-stage accounting for every active outcome/route/method in the [generated matrix](validation/AD1b-coverage.md). Nine outcomes can show automatic component hours on eligible accounts; ten have conditional component odds. This is partial acquisition coverage, not a total-route or comprehensive product claim. Family-specific omissions and the delivery schedule belong to TASKS AD1b-B1–B4.
 
 **EP1 review delivery, 14 October 2026:** [complete outcome × route × method coverage](validation/EP1.md). All 29 active outcomes / 30 routes, retained secondary decisions and shared rewards use the common value/suitability/remaining-effort pipeline; this is not a coverage ceiling. Scorching bow adds reviewed qualitative demonbane utility, exact synapse/notes/assembly and allocation facts; ordinary/demonbane numbers remain a visible model gap. A0 qualitative method support, A1 component odds, optional manual A2, automatic hours and observed performance are recorded separately. Research-only/future rows remain inactive.
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "knowledgeVersion": "ad1a-1",
+  "knowledgeVersion": "ad1-integrated-1",
   "reviewed": "2026-10-14",
   "sources": [
     {
@@ -281,6 +281,12 @@
         "seek-toa-fang",
         "seek-moons-atlatl",
         "seek-titans-prayers"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "gorilla-switch-repeat",
+        "demon-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -357,6 +363,10 @@
         "train-slayer-trident",
         "seek-seas-trident",
         "seek-toa-fang"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -433,6 +443,10 @@
         "slayer-effort",
         "cox-effort",
         "owned-neck-effort"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -511,6 +525,10 @@
         "train-slayer-trident",
         "seek-seas-trident",
         "seek-toa-fang"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -585,6 +603,10 @@
         "train-slayer-trident",
         "seek-seas-trident",
         "seek-toa-fang"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -643,6 +665,10 @@
         "seek-toa-fang",
         "seek-moons-atlatl",
         "seek-titans-prayers"
+      ],
+      "paces": [
+        "gorilla-switch-repeat",
+        "demon-switch-repeat"
       ]
     },
     {
@@ -700,6 +726,10 @@
         "seek-toa-fang",
         "seek-moons-atlatl",
         "seek-titans-prayers"
+      ],
+      "paces": [
+        "gorilla-switch-repeat",
+        "demon-switch-repeat"
       ]
     },
     {
@@ -804,6 +834,12 @@
         "seek-toa-fang",
         "seek-moons-atlatl",
         "seek-titans-prayers"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "gorilla-switch-repeat",
+        "demon-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -1056,6 +1092,10 @@
         "seek-toa-fang",
         "seek-moons-atlatl",
         "seek-titans-prayers"
+      ],
+      "paces": [
+        "gorilla-switch-repeat",
+        "demon-switch-repeat"
       ]
     },
     {
@@ -1115,6 +1155,10 @@
         "seek-toa-fang",
         "seek-moons-atlatl",
         "seek-titans-prayers"
+      ],
+      "paces": [
+        "gorilla-switch-repeat",
+        "demon-switch-repeat"
       ]
     },
     {
@@ -1223,6 +1267,12 @@
         "seek-toa-fang",
         "seek-moons-atlatl",
         "seek-titans-prayers"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "gorilla-switch-repeat",
+        "demon-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -1267,6 +1317,9 @@
       "efforts": [
         "train-slayer-trident",
         "seek-seas-trident"
+      ],
+      "paces": [
+        "zulrah-switch-repeat"
       ]
     },
     {
@@ -1341,6 +1394,10 @@
         "train-slayer-trident",
         "seek-seas-trident",
         "seek-toa-fang"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -1605,6 +1662,10 @@
         "train-slayer-trident",
         "seek-seas-trident",
         "seek-toa-fang"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -1679,6 +1740,10 @@
         "train-slayer-trident",
         "seek-seas-trident",
         "seek-toa-fang"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -1753,6 +1818,10 @@
         "train-slayer-trident",
         "seek-seas-trident",
         "seek-toa-fang"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -1838,6 +1907,12 @@
         "seek-toa-fang",
         "seek-moons-atlatl",
         "seek-titans-prayers"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "gorilla-switch-repeat",
+        "demon-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -1923,6 +1998,12 @@
         "seek-toa-fang",
         "seek-moons-atlatl",
         "seek-titans-prayers"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "gorilla-switch-repeat",
+        "demon-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -2008,6 +2089,12 @@
         "seek-toa-fang",
         "seek-moons-atlatl",
         "seek-titans-prayers"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "gorilla-switch-repeat",
+        "demon-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -2395,6 +2482,12 @@
         "seek-toa-fang",
         "seek-moons-atlatl",
         "seek-titans-prayers"
+      ],
+      "paces": [
+        "zulrah-switch-repeat",
+        "gorilla-switch-repeat",
+        "demon-switch-repeat",
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -2510,6 +2603,10 @@
       "efforts": [
         "pursue-bowfa",
         "seek-moons-atlatl"
+      ],
+      "paces": [
+        "muspah-tbow-repeat",
+        "zulrah-switch-repeat"
       ]
     },
     {
@@ -2590,7 +2687,8 @@
       "revision": "15366227",
       "decisions": [
         "assemble-swamp-trident",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "seek-toxic-blowpipe"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -2600,11 +2698,16 @@
       "items": [],
       "models": [],
       "routes": [
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "seek-toxic-blowpipe"
       ],
       "contexts": [],
       "efforts": [
         "seek-zulrah-magic-fang"
+      ],
+      "acquisitions": [
+        "next-tanzanite-fang",
+        "next-magic-fang"
       ]
     },
     {
@@ -5512,6 +5615,9 @@
         "anguish-core-neck",
         "rupture-core-neck",
         "treads-hybrid-role"
+      ],
+      "paces": [
+        "zulrah-switch-repeat"
       ]
     },
     {
@@ -5875,7 +5981,10 @@
         "seek-crystal-helm"
       ],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "paces": [
+        "zulrah-switch-repeat"
+      ]
     },
     {
       "id": "r2-crystal-body",
@@ -5920,7 +6029,10 @@
       ],
       "rewards": [],
       "acquisitions": [],
-      "activityContexts": []
+      "activityContexts": [],
+      "paces": [
+        "zulrah-switch-repeat"
+      ]
     },
     {
       "id": "r2-crystal-legs",
@@ -5965,7 +6077,10 @@
       ],
       "rewards": [],
       "acquisitions": [],
-      "activityContexts": []
+      "activityContexts": [],
+      "paces": [
+        "zulrah-switch-repeat"
+      ]
     },
     {
       "id": "r2-masori-mask",
@@ -7907,19 +8022,30 @@
       "licence": "CC BY-NC-SA 3.0; linked evidence only",
       "reuseBasis": "Independently recorded bounded stat/mechanic/route facts and original explanations. No article prose, calculator code, dataset or sprites copied.",
       "decisions": [
-        "seek-bowfa"
+        "seek-bowfa",
+        "seek-crystal-helm",
+        "seek-crystal-body",
+        "seek-crystal-legs"
       ],
       "items": [],
       "models": [],
       "routes": [
-        "seek-bowfa"
+        "seek-bowfa",
+        "seek-crystal-helm",
+        "seek-crystal-body",
+        "seek-crystal-legs"
       ],
       "contexts": [],
       "efforts": [
         "seek-bowfa"
       ],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [
+        "next-enhanced-seed",
+        "remaining-crystal-helm-seeds",
+        "remaining-crystal-body-seeds",
+        "remaining-crystal-legs-seeds"
+      ]
     },
     {
       "id": "r2-fortis-colosseum",
@@ -8129,7 +8255,9 @@
         "seek-venator-bow"
       ],
       "contexts": [],
-      "acquisitions": [],
+      "acquisitions": [
+        "remaining-venator-shards"
+      ],
       "efforts": [
         "seek-venator-bow"
       ],
@@ -8335,6 +8463,9 @@
         "anguish-core-neck",
         "rupture-core-neck",
         "treads-hybrid-role"
+      ],
+      "paces": [
+        "zulrah-switch-repeat"
       ]
     },
     {
@@ -9251,6 +9382,9 @@
       ],
       "acquisitions": [
         "next-tormented-synapse"
+      ],
+      "paces": [
+        "demon-switch-repeat"
       ]
     },
     {
@@ -9300,6 +9434,9 @@
       "activityContexts": [],
       "profiles": [
         "tormented-demons-effort"
+      ],
+      "paces": [
+        "demon-switch-repeat"
       ]
     },
     {
@@ -9373,6 +9510,9 @@
       "activityContexts": [],
       "profiles": [
         "zulrah-effort"
+      ],
+      "paces": [
+        "zulrah-switch-repeat"
       ]
     },
     {
@@ -9415,6 +9555,9 @@
       "activityContexts": [],
       "profiles": [
         "cg-effort"
+      ],
+      "paces": [
+        "cg-repeat"
       ]
     },
     {
@@ -9457,6 +9600,9 @@
       "activityContexts": [],
       "profiles": [
         "muspah-effort"
+      ],
+      "paces": [
+        "muspah-tbow-repeat"
       ]
     },
     {
@@ -9667,6 +9813,129 @@
       "activityContexts": [],
       "profiles": [
         "demonic-gorillas-effort"
+      ],
+      "paces": [
+        "gorilla-switch-repeat"
+      ]
+    },
+    {
+      "id": "ad1b-cg-repeat-benchmark",
+      "type": "Wiki-authored repeat-hour planning facts, retrieved through attributed public mirror",
+      "url": "https://osrsmethods.com/methods/completing-the-corrupted-gauntlet",
+      "revision": "sha256:99d45b7c9ad66fead8547cfb18007ab7aacfff9422f2340403c0fe5fb6ceea33",
+      "author": "OSRS Wiki contributors; delivery mirror OSRS Methods",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Original arithmetic and explanations from factual throughput/requirement evidence; no copied guide prose, tables, images or code. Canonical Wiki unavailable during review; mirror provenance and access limits recorded in AD1b evidence.",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [],
+      "rewards": [],
+      "profiles": [],
+      "paces": [
+        "cg-repeat",
+        "cg-repeat"
+      ]
+    },
+    {
+      "id": "ad1b-zulrah-switch-repeat-benchmark",
+      "type": "Wiki-authored repeat-hour planning facts, retrieved through attributed public mirror",
+      "url": "https://osrsmethods.com/methods/killing-zulrah",
+      "revision": "sha256:86b1445bc31ebcc786d29c88c0f69ec1db515ff84db351687f8b2cfec97a5bb6",
+      "author": "OSRS Wiki contributors; delivery mirror OSRS Methods",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Original arithmetic and explanations from factual throughput/requirement evidence; no copied guide prose, tables, images or code. Canonical Wiki unavailable during review; mirror provenance and access limits recorded in AD1b evidence.",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [],
+      "rewards": [],
+      "profiles": [],
+      "paces": [
+        "zulrah-switch-repeat",
+        "zulrah-switch-repeat"
+      ]
+    },
+    {
+      "id": "ad1b-gorilla-switch-repeat-benchmark",
+      "type": "Wiki-authored repeat-hour planning facts, retrieved through attributed public mirror",
+      "url": "https://osrsmethods.com/methods/killing-demonic-gorillas",
+      "revision": "sha256:3da983968a4b50060dd457e3f668346b00464167b8de1ac7d86f04001c4d3ab6",
+      "author": "OSRS Wiki contributors; delivery mirror OSRS Methods",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Original arithmetic and explanations from factual throughput/requirement evidence; no copied guide prose, tables, images or code. Canonical Wiki unavailable during review; mirror provenance and access limits recorded in AD1b evidence.",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [],
+      "rewards": [],
+      "profiles": [],
+      "paces": [
+        "gorilla-switch-repeat",
+        "gorilla-switch-repeat"
+      ]
+    },
+    {
+      "id": "ad1b-demon-switch-repeat-benchmark",
+      "type": "Wiki-authored repeat-hour planning facts, retrieved through attributed public mirror",
+      "url": "https://osrsmethods.com/methods/killing-tormented-demons",
+      "revision": "sha256:f809093cc8bdd35ba67426b0f0d4f685fa6a9ac58d8e516032d9e155504acc7b",
+      "author": "OSRS Wiki contributors; delivery mirror OSRS Methods",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Original arithmetic and explanations from factual throughput/requirement evidence; no copied guide prose, tables, images or code. Canonical Wiki unavailable during review; mirror provenance and access limits recorded in AD1b evidence.",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [],
+      "rewards": [],
+      "profiles": [],
+      "paces": [
+        "demon-switch-repeat",
+        "demon-switch-repeat"
+      ]
+    },
+    {
+      "id": "ad1b-muspah-tbow-repeat-benchmark",
+      "type": "Wiki-authored repeat-hour planning facts, retrieved through attributed public mirror",
+      "url": "https://osrsmethods.com/methods/killing-phantom-muspah-twisted-bow",
+      "revision": "sha256:b0b8694caa37fd61e3703fa55dea3a7e97264e7240f5133c0148f93a9994ec1e",
+      "author": "OSRS Wiki contributors; delivery mirror OSRS Methods",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "reuseBasis": "Original arithmetic and explanations from factual throughput/requirement evidence; no copied guide prose, tables, images or code. Canonical Wiki unavailable during review; mirror provenance and access limits recorded in AD1b evidence.",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "acquisitions": [],
+      "efforts": [],
+      "rewards": [],
+      "profiles": [],
+      "paces": [
+        "muspah-tbow-repeat",
+        "muspah-tbow-repeat"
       ]
     }
   ],
@@ -12915,7 +13184,8 @@
         "r2-seeker-arrow",
         "r2-slayer-helmet-i",
         "r2-successful-hit",
-        "r2-twisted-bow"
+        "r2-twisted-bow",
+        "r2-the-gauntlet"
       ],
       "requires": [],
       "status": "reviewed",
@@ -12999,7 +13269,8 @@
         "r2-seeker-arrow",
         "r2-slayer-helmet-i",
         "r2-successful-hit",
-        "r2-twisted-bow"
+        "r2-twisted-bow",
+        "r2-the-gauntlet"
       ],
       "requires": [],
       "status": "reviewed",
@@ -13083,7 +13354,8 @@
         "r2-seeker-arrow",
         "r2-slayer-helmet-i",
         "r2-successful-hit",
-        "r2-twisted-bow"
+        "r2-twisted-bow",
+        "r2-the-gauntlet"
       ],
       "requires": [],
       "status": "reviewed",
@@ -13172,7 +13444,8 @@
         "r2-twisted-bow",
         "twisted-bow",
         "zaryte",
-        "client-blazing-blowpipe"
+        "client-blazing-blowpipe",
+        "zulrah-route"
       ],
       "requires": [],
       "status": "reviewed",
@@ -26442,7 +26715,9 @@
         "Next shard only; not a completed tormented bracelet.",
         "Quest/access, onyx, crafting/training, assembly and supplies are excluded.",
         "One shard allocation cannot fund several jewellery choices."
-      ]
+      ],
+      "rolls": 1,
+      "requiredSuccesses": 1
     },
     {
       "id": "next-anguish-zenyte",
@@ -26468,10 +26743,12 @@
         "Includes the successful kill; past dry kills do not change the future distribution."
       ],
       "exclusions": [
-        "Next shard only; not a completed tormented bracelet.",
+        "Next shard only; not a completed necklace of anguish.",
         "Quest/access, onyx, crafting/training, assembly and supplies are excluded.",
         "One shard allocation cannot fund several jewellery choices."
-      ]
+      ],
+      "rolls": 1,
+      "requiredSuccesses": 1
     },
     {
       "id": "next-tormented-synapse",
@@ -26500,6 +26777,223 @@
         "Next synapse only; not an assembled Scorching bow or completed Doom preparation.",
         "Quest, learning, switches, supplies, 74 Fletching, notes and bow input excluded.",
         "One synapse cannot fund multiple demonbane branches."
+      ],
+      "rolls": 1,
+      "requiredSuccesses": 1
+    },
+    {
+      "id": "next-enhanced-seed",
+      "version": "acquisition-2",
+      "activity": "cg",
+      "mode": "ordinary",
+      "rewardFamily": "enhanced-crystal-weapon-seed",
+      "route": "seek-bowfa",
+      "node": "seed",
+      "recipient": "Player receiving an eligible solo reward",
+      "trialUnit": "eligible completed Corrupted Gauntlet chests",
+      "support": "REVIEWED",
+      "mechanic": "FIXED_BERNOULLI",
+      "numerator": 1,
+      "denominator": 400,
+      "requiredSuccesses": 1,
+      "rolls": 1,
+      "reviewed": "2026-10-14",
+      "reason": "Reviewed component acquisition distribution; excludes all other route stages.",
+      "sources": [
+        "r2-the-gauntlet"
+      ],
+      "assumptions": [
+        "Ordinary permanent-world rewards; independent eligible future trials, including the successful trial.",
+        "Past dry kills do not change a fixed-rate future distribution."
+      ],
+      "exclusions": [
+        "Component drops only; quest/access, training, learning, supplies, charges and assembly are excluded.",
+        "Shared or overlapping rewards are not added; the same component cannot fund multiple upgrades."
+      ]
+    },
+    {
+      "id": "remaining-crystal-helm-seeds",
+      "version": "acquisition-2",
+      "activity": "cg",
+      "mode": "ordinary",
+      "rewardFamily": "crystal-armour-seed",
+      "route": "seek-crystal-helm",
+      "node": "seeds",
+      "recipient": "Player receiving an eligible solo reward",
+      "trialUnit": "eligible completed Corrupted Gauntlet chests",
+      "support": "REVIEWED",
+      "mechanic": "REPEATED_SUCCESSES",
+      "numerator": 1,
+      "denominator": 50,
+      "requiredSuccesses": 1,
+      "rolls": 1,
+      "reviewed": "2026-10-14",
+      "reason": "Reviewed component acquisition distribution; excludes all other route stages.",
+      "sources": [
+        "r2-the-gauntlet"
+      ],
+      "assumptions": [
+        "Ordinary permanent-world rewards; independent eligible future trials, including the successful trial.",
+        "Past dry kills do not change a fixed-rate future distribution."
+      ],
+      "exclusions": [
+        "Component drops only; quest/access, training, learning, supplies, charges and assembly are excluded.",
+        "Shared or overlapping rewards are not added; the same component cannot fund multiple upgrades."
+      ]
+    },
+    {
+      "id": "remaining-crystal-body-seeds",
+      "version": "acquisition-2",
+      "activity": "cg",
+      "mode": "ordinary",
+      "rewardFamily": "crystal-armour-seed",
+      "route": "seek-crystal-body",
+      "node": "seeds",
+      "recipient": "Player receiving an eligible solo reward",
+      "trialUnit": "eligible completed Corrupted Gauntlet chests",
+      "support": "REVIEWED",
+      "mechanic": "REPEATED_SUCCESSES",
+      "numerator": 1,
+      "denominator": 50,
+      "requiredSuccesses": 3,
+      "rolls": 1,
+      "reviewed": "2026-10-14",
+      "reason": "Reviewed component acquisition distribution; excludes all other route stages.",
+      "sources": [
+        "r2-the-gauntlet"
+      ],
+      "assumptions": [
+        "Ordinary permanent-world rewards; independent eligible future trials, including the successful trial.",
+        "Past dry kills do not change a fixed-rate future distribution.",
+        "One component per successful trial; negative-binomial waiting time for the stated remaining component count."
+      ],
+      "exclusions": [
+        "Component drops only; quest/access, training, learning, supplies, charges and assembly are excluded.",
+        "Shared or overlapping rewards are not added; the same component cannot fund multiple upgrades."
+      ]
+    },
+    {
+      "id": "remaining-crystal-legs-seeds",
+      "version": "acquisition-2",
+      "activity": "cg",
+      "mode": "ordinary",
+      "rewardFamily": "crystal-armour-seed",
+      "route": "seek-crystal-legs",
+      "node": "seeds",
+      "recipient": "Player receiving an eligible solo reward",
+      "trialUnit": "eligible completed Corrupted Gauntlet chests",
+      "support": "REVIEWED",
+      "mechanic": "REPEATED_SUCCESSES",
+      "numerator": 1,
+      "denominator": 50,
+      "requiredSuccesses": 2,
+      "rolls": 1,
+      "reviewed": "2026-10-14",
+      "reason": "Reviewed component acquisition distribution; excludes all other route stages.",
+      "sources": [
+        "r2-the-gauntlet"
+      ],
+      "assumptions": [
+        "Ordinary permanent-world rewards; independent eligible future trials, including the successful trial.",
+        "Past dry kills do not change a fixed-rate future distribution.",
+        "One component per successful trial; negative-binomial waiting time for the stated remaining component count."
+      ],
+      "exclusions": [
+        "Component drops only; quest/access, training, learning, supplies, charges and assembly are excluded.",
+        "Shared or overlapping rewards are not added; the same component cannot fund multiple upgrades."
+      ]
+    },
+    {
+      "id": "next-tanzanite-fang",
+      "version": "acquisition-2",
+      "activity": "zulrah",
+      "mode": "ordinary",
+      "rewardFamily": "tanzanite-fang",
+      "route": "seek-toxic-blowpipe",
+      "node": "fang",
+      "recipient": "Player receiving an eligible solo reward",
+      "trialUnit": "eligible completed kills",
+      "support": "REVIEWED",
+      "mechanic": "INDEPENDENT_ROLLS",
+      "numerator": 1,
+      "denominator": 1024,
+      "requiredSuccesses": 1,
+      "rolls": 2,
+      "reviewed": "2026-10-14",
+      "reason": "Reviewed component acquisition distribution; excludes all other route stages.",
+      "sources": [
+        "zulrah-route"
+      ],
+      "assumptions": [
+        "Ordinary permanent-world rewards; independent eligible future trials, including the successful trial.",
+        "Past dry kills do not change a fixed-rate future distribution.",
+        "Two independent primary loot rolls per kill; completion means at least one selected fang, not expected fang quantity."
+      ],
+      "exclusions": [
+        "Component drops only; quest/access, training, learning, supplies, charges and assembly are excluded.",
+        "Shared or overlapping rewards are not added; the same component cannot fund multiple upgrades."
+      ]
+    },
+    {
+      "id": "next-magic-fang",
+      "version": "acquisition-2",
+      "activity": "zulrah",
+      "mode": "ordinary",
+      "rewardFamily": "magic-fang",
+      "route": "seek-zulrah-magic-fang",
+      "node": "magicFang",
+      "recipient": "Player receiving an eligible solo reward",
+      "trialUnit": "eligible completed kills",
+      "support": "REVIEWED",
+      "mechanic": "INDEPENDENT_ROLLS",
+      "numerator": 1,
+      "denominator": 1024,
+      "requiredSuccesses": 1,
+      "rolls": 2,
+      "reviewed": "2026-10-14",
+      "reason": "Reviewed component acquisition distribution; excludes all other route stages.",
+      "sources": [
+        "zulrah-route"
+      ],
+      "assumptions": [
+        "Ordinary permanent-world rewards; independent eligible future trials, including the successful trial.",
+        "Past dry kills do not change a fixed-rate future distribution.",
+        "Two independent primary loot rolls per kill; completion means at least one selected fang, not expected fang quantity."
+      ],
+      "exclusions": [
+        "Component drops only; quest/access, training, learning, supplies, charges and assembly are excluded.",
+        "Shared or overlapping rewards are not added; the same component cannot fund multiple upgrades."
+      ]
+    },
+    {
+      "id": "remaining-venator-shards",
+      "version": "acquisition-2",
+      "activity": "muspah",
+      "mode": "ordinary",
+      "rewardFamily": "venator-shard",
+      "route": "seek-venator-bow",
+      "node": "shards",
+      "recipient": "Player receiving an eligible solo reward",
+      "trialUnit": "eligible completed kills",
+      "support": "REVIEWED",
+      "mechanic": "REPEATED_SUCCESSES",
+      "numerator": 1,
+      "denominator": 100,
+      "requiredSuccesses": 5,
+      "rolls": 1,
+      "reviewed": "2026-10-14",
+      "reason": "Reviewed component acquisition distribution; excludes all other route stages.",
+      "sources": [
+        "r3-muspah"
+      ],
+      "assumptions": [
+        "Ordinary permanent-world rewards; independent eligible future trials, including the successful trial.",
+        "Past dry kills do not change a fixed-rate future distribution.",
+        "One component per successful trial; negative-binomial waiting time for the stated remaining component count."
+      ],
+      "exclusions": [
+        "Component drops only; quest/access, training, learning, supplies, charges and assembly are excluded.",
+        "Shared or overlapping rewards are not added; the same component cannot fund multiple upgrades."
       ]
     }
   ],
@@ -30280,7 +30774,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Assembly/charging skills and resources remain separate; no documented deterministic assembly/supply time.",
       "sources": [
         "magic-fang",
         "swamp-trident"
@@ -30298,7 +30792,8 @@
           "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "zulrah-effort",
@@ -30307,7 +30802,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Fang components only; automatic strong-switch benchmark does not cover a first Seas-trident/mage-only method. Darts/scales, learning and assembly remain separate.",
       "sources": [
         "ayak",
         "bowfa",
@@ -30399,7 +30894,8 @@
           "limitation": "Ranged phases and learning limit this method; food, prayer, travel and scales remain checks."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B1"
     },
     {
       "id": "smoke-devils-effort",
@@ -30408,7 +30904,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Occult source (ordinary/task/boss) eligibility, task supply and compatible full-cycle rate are not modelled together.",
       "sources": [
         "ayak",
         "ep1-smoke-devil",
@@ -30449,7 +30945,8 @@
           "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B3"
     },
     {
       "id": "nex-effort",
@@ -30458,7 +30955,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Personal unique allocation/participation and mode/team size must be paired with a compatible bank/entry repeat cycle; no personal rate is inferred from a team drop table.",
       "sources": [
         "armadyl-crossbow",
         "crossbow",
@@ -30506,7 +31003,8 @@
           "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B2"
     },
     {
       "id": "doom-effort",
@@ -30515,7 +31013,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Delve-specific reward rolls, selected stopping point, failures and learning need a validated completion/reward cycle. Owned gear does not establish completion probability.",
       "sources": [
         "ep1-doom-of-mokhaiotl-strategies",
         "ep1-scorching-bow",
@@ -30629,7 +31127,8 @@
           "upgrade": "scorching-bow",
           "reason": "Compare the direct supported method with obtaining Scorching first. Include its own synapse, inputs and preparation; no total time saving is established."
         }
-      ]
+      ],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "toa-effort",
@@ -30638,7 +31137,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Raid invocation/points, reward eligibility and personal recipient allocation need a current audited unique model and matching complete raid-cycle benchmark.",
       "sources": [
         "ayak",
         "bowfa",
@@ -30722,7 +31221,8 @@
           "limitation": "Mode, scaling, team/solo, supplies and completion are assumptions; equipment does not establish raid pace."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B2"
     },
     {
       "id": "chambers-of-xeric-effort",
@@ -30731,7 +31231,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Current 2026 table weights, points/caps, mode and personal recipient share need joint review with scouting/banking/team cycle pace. Conditional unique weight is not a personal raid rate.",
       "sources": [
         "ayak",
         "bowfa",
@@ -30815,7 +31315,8 @@
           "limitation": "Team roles, scouting, points, layout and supplies remain checks; no solo or raid pace inferred."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B2"
     },
     {
       "id": "demonic-gorillas-effort",
@@ -30824,7 +31325,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Next zenyte only; weaker switches lack a matching numeric benchmark. Onyx, crafting, enchanting and supplies remain separate.",
       "sources": [
         "bowfa",
         "crossbow",
@@ -30881,7 +31382,8 @@
           "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B1/B4"
     },
     {
       "id": "duke-sucellus-effort",
@@ -30890,7 +31392,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Vestige hidden roll state and ingot/icon/Seers components are unobserved; no zero-state or full-ring time is inferred.",
       "sources": [
         "ep1-duke-sucellus",
         "fang",
@@ -30932,7 +31434,8 @@
           "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B3"
     },
     {
       "id": "cg-effort",
@@ -30941,7 +31444,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Seed components only; shared seed allocation, shard gathering, singing/training/charging and learning are excluded.",
       "sources": [
         "ep1-corrupted-gauntlet"
       ],
@@ -30974,7 +31477,8 @@
           "limitation": "Outside equipment is not used. Preparation, learning, completions and shards are not inferred from bank gear."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B1 (other methods), B4 (remaining route work)"
     },
     {
       "id": "maggot-king-effort",
@@ -30983,7 +31487,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Current fang eligibility/drop mechanics and compatible full-cycle method benchmark are not jointly reviewed; etching and an anguish allocation remain separate.",
       "sources": [
         "bowfa",
         "crossbow",
@@ -31040,7 +31544,8 @@
           "limitation": "Target-specific crush/heavy-ranged alternatives and survival remain checks; no full encounter model."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "colosseum-effort",
@@ -31049,7 +31554,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Learning and failed/abandoned waves are unmodelled; owned switches cannot predict a successful completion.",
       "sources": [
         "ayak",
         "bowfa",
@@ -31133,7 +31638,8 @@
           "limitation": "Learning/failures and Sol method remain unquantified; Venator and premium weapons are optional."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "leviathan-effort",
@@ -31142,7 +31648,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Vestige hidden roll state and ingot/icon/archers components are unobserved; no zero-state or full-ring time is inferred.",
       "sources": [
         "bowfa",
         "crossbow",
@@ -31181,7 +31687,8 @@
           "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B3"
     },
     {
       "id": "vorkath-effort",
@@ -31190,7 +31697,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Random head roll and one-off 50th-kill guarantee require current lifetime counter/head-allocation evidence; ordinary successful-kill pace cannot replace that state.",
       "sources": [
         "bowfa",
         "crossbow",
@@ -31229,7 +31736,8 @@
           "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B3"
     },
     {
       "id": "muspah-effort",
@@ -31238,7 +31746,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Remaining shard stage only; automatic rate requires tbow. Bowfa/switch benchmarks and supply work are still missing.",
       "sources": [
         "ayak",
         "bowfa",
@@ -31331,7 +31839,8 @@
           "limitation": "Switches, smite-phase bolts, food and travel remain assumptions; no throughput or completed-bow time claimed."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B1/B4"
     },
     {
       "id": "slayer-effort",
@@ -31340,7 +31849,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Separate whip/Kraken component rates, eligible tasks, task renewal/training and compatible repeat-cycle pace remain unmodelled together.",
       "sources": [
         "ayak",
         "ep1-kraken-tentacle",
@@ -31389,7 +31898,8 @@
           "limitation": "Task supply, 85-Slayer whip work and irreversible whip consumption remain separate."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B3"
     },
     {
       "id": "tormented-demons-effort",
@@ -31398,7 +31908,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "Next synapse only; weaker switches lack a matching numeric benchmark. Quest/training, notes, longbow and supplies remain separate.",
       "sources": [
         "bowfa",
         "crossbow",
@@ -31456,7 +31966,8 @@
           "limitation": "Demonbane is an improvement, not a requirement to own a synapse before earning one; shield/accuracy phases and supply overhead are unmodelled."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B1/B4"
     },
     {
       "id": "rosewood-crafting-effort",
@@ -31465,7 +31976,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
-      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours. No documented complete-action hour model.",
       "sources": [
         "r2-rosewood-blowpipe"
       ],
@@ -31482,7 +31993,8 @@
           "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "rigour-scroll-effort",
@@ -31491,7 +32003,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
-      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time. No documented complete-action hour model.",
       "sources": [
         "dex-scroll",
         "item-ids",
@@ -31510,7 +32022,8 @@
           "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "prayer-training-effort",
@@ -31519,7 +32032,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
-      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time. No documented complete-action hour model.",
       "sources": [
         "rigour"
       ],
@@ -31536,7 +32049,8 @@
           "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "augury-scroll-effort",
@@ -31545,7 +32059,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
-      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time. No documented complete-action hour model.",
       "sources": [
         "arcane-scroll",
         "augury",
@@ -31564,7 +32078,8 @@
           "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "cox-effort",
@@ -31573,7 +32088,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
-      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time. No documented complete-action hour model.",
       "sources": [
         "ayak",
         "bowfa",
@@ -31610,7 +32125,8 @@
           "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "owned-melee-effort",
@@ -31619,7 +32135,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
-      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time. No documented complete-action hour model.",
       "sources": [
         "cox-kit",
         "fang",
@@ -31643,7 +32159,8 @@
           "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "owned-neck-effort",
@@ -31652,7 +32169,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
-      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time. No documented complete-action hour model.",
       "sources": [
         "ayak",
         "cox-kit",
@@ -31682,7 +32199,8 @@
           "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "moons-effort",
@@ -31691,7 +32209,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
-      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time. No documented complete-action hour model.",
       "sources": [
         "atlatl",
         "bowfa",
@@ -31722,7 +32240,8 @@
           "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
     },
     {
       "id": "royal-titans-effort",
@@ -31731,7 +32250,7 @@
       "version": "activity-effort-1",
       "reviewed": "2026-10-14",
       "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
-      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time. No documented complete-action hour model.",
       "sources": [
         "augury",
         "bowfa",
@@ -31766,7 +32285,441 @@
           "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
         }
       ],
-      "detours": []
+      "detours": [],
+      "gapOwner": "AD1b-B4"
+    }
+  ],
+  "automaticPaces": [
+    {
+      "id": "cg-repeat",
+      "version": "repeat-hour-1",
+      "activity": "cg",
+      "mode": "ordinary",
+      "reviewed": "2026-10-14",
+      "support": "REVIEWED",
+      "minimumPerHour": 6,
+      "maximumPerHour": 6,
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "FACT",
+            "key": "song-of-elves",
+            "value": true
+          },
+          {
+            "test": "LEVEL",
+            "key": "ATTACK",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "STRENGTH",
+            "minimum": 85
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 85
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 77
+          }
+        ]
+      },
+      "sources": [
+        "ad1b-cg-repeat-benchmark",
+        "ep1-corrupted-gauntlet"
+      ],
+      "scope": "Documented successful-repeat hour, including ordinary repeat overhead under the guide scenario; not a combat timer",
+      "assumptions": [
+        "Conditional on maintaining the documented repeat-hour rate with compatible switches, armour, prayers, boosts, ammunition and supplies.",
+        "Equipment establishes compatible method eligibility, not personal speed or skill. The source benchmark is a planning assumption.",
+        "No failed attempts or additional downtime beyond the repeat-hour benchmark; learning and material extra banking reduce actual throughput."
+      ],
+      "exclusions": [
+        "Supply acquisition, questing, training, initial learning, breaks and unmodelled failures are outside this scenario.",
+        "No gear-to-speed scaling or probability of successful execution is inferred."
+      ],
+      "methodLabel": "Corrupted Gauntlet with generated gear"
+    },
+    {
+      "id": "zulrah-switch-repeat",
+      "version": "repeat-hour-1",
+      "activity": "zulrah",
+      "mode": "ordinary",
+      "reviewed": "2026-10-14",
+      "support": "REVIEWED",
+      "minimumPerHour": 20,
+      "maximumPerHour": 20,
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "FACT",
+            "key": "regicide",
+            "value": true
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 78
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 45
+          },
+          {
+            "test": "USABLE",
+            "key": "swampOrBetter"
+          },
+          {
+            "test": "ANY",
+            "conditions": [
+              {
+                "test": "USABLE",
+                "key": "twistedBow"
+              },
+              {
+                "test": "ALL",
+                "conditions": [
+                  {
+                    "test": "USABLE",
+                    "key": "bowfaOwned"
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "crystalHelmOwned"
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "crystalBodyOwned"
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "crystalLegsOwned"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "sources": [
+        "ad1b-zulrah-switch-repeat-benchmark",
+        "ayak",
+        "bowfa",
+        "bowfa-route",
+        "client-blazing-blowpipe",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-zulrah-strategies",
+        "item-ids",
+        "r2-crystal-body",
+        "r2-crystal-helm",
+        "r2-crystal-legs",
+        "r2-toxic-blowpipe",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "wand"
+      ],
+      "scope": "Documented successful-repeat hour, including ordinary repeat overhead under the guide scenario; not a combat timer",
+      "assumptions": [
+        "Conditional on maintaining the documented repeat-hour rate with compatible switches, armour, prayers, boosts, ammunition and supplies.",
+        "Equipment establishes compatible method eligibility, not personal speed or skill. The source benchmark is a planning assumption.",
+        "No failed attempts or additional downtime beyond the repeat-hour benchmark; learning and material extra banking reduce actual throughput.",
+        "Reviewed Zulrah ranged alternatives permit Bowfa/full active crystal or twisted bow alongside the powered-magic switch. The 20/h guide scenario is retained without a DPS multiplier; required gear is an applicability check, not measured throughput."
+      ],
+      "exclusions": [
+        "Supply acquisition, questing, training, initial learning, breaks and unmodelled failures are outside this scenario.",
+        "No gear-to-speed scaling or probability of successful execution is inferred."
+      ],
+      "methodLabel": "Powered magic with Bowfa/crystal or twisted bow switches"
+    },
+    {
+      "id": "gorilla-switch-repeat",
+      "version": "repeat-hour-1",
+      "activity": "demonic-gorillas",
+      "mode": "ordinary",
+      "reviewed": "2026-10-14",
+      "support": "REVIEWED",
+      "minimumPerHour": 70,
+      "maximumPerHour": 70,
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "FACT",
+            "key": "monkey-madness-ii",
+            "value": true
+          },
+          {
+            "test": "LEVEL",
+            "key": "ATTACK",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "STRENGTH",
+            "minimum": 85
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "HITPOINTS",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 85
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 70
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 70
+          },
+          {
+            "test": "USABLE",
+            "key": "melee"
+          },
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          }
+        ]
+      },
+      "sources": [
+        "ad1b-gorilla-switch-repeat-benchmark",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-demonic-gorilla-strategies",
+        "fang",
+        "item-ids",
+        "lance",
+        "tentacle",
+        "twisted-bow",
+        "whip"
+      ],
+      "scope": "Documented successful-repeat hour, including ordinary repeat overhead under the guide scenario; not a combat timer",
+      "assumptions": [
+        "Conditional on maintaining the documented repeat-hour rate with compatible switches, armour, prayers, boosts, ammunition and supplies.",
+        "Equipment establishes compatible method eligibility, not personal speed or skill. The source benchmark is a planning assumption.",
+        "No failed attempts or additional downtime beyond the repeat-hour benchmark; learning and material extra banking reduce actual throughput."
+      ],
+      "exclusions": [
+        "Supply acquisition, questing, training, initial learning, breaks and unmodelled failures are outside this scenario.",
+        "No gear-to-speed scaling or probability of successful execution is inferred."
+      ],
+      "methodLabel": "Reviewed melee/ranged Gorilla switches"
+    },
+    {
+      "id": "demon-switch-repeat",
+      "version": "repeat-hour-1",
+      "activity": "tormented-demons",
+      "mode": "ordinary",
+      "reviewed": "2026-10-14",
+      "support": "REVIEWED",
+      "minimumPerHour": 55,
+      "maximumPerHour": 55,
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "FACT",
+            "key": "while-guthix-sleeps",
+            "value": true
+          },
+          {
+            "test": "LEVEL",
+            "key": "ATTACK",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "STRENGTH",
+            "minimum": 85
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "HITPOINTS",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 85
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 82
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 74
+          },
+          {
+            "test": "USABLE",
+            "key": "melee"
+          },
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          }
+        ]
+      },
+      "sources": [
+        "ad1b-demon-switch-repeat-benchmark",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-tormented-demon",
+        "ep1-tormented-demon-strategies",
+        "fang",
+        "item-ids",
+        "lance",
+        "tentacle",
+        "twisted-bow",
+        "whip"
+      ],
+      "scope": "Documented successful-repeat hour, including ordinary repeat overhead under the guide scenario; not a combat timer",
+      "assumptions": [
+        "Conditional on maintaining the documented repeat-hour rate with compatible switches, armour, prayers, boosts, ammunition and supplies.",
+        "Equipment establishes compatible method eligibility, not personal speed or skill. The source benchmark is a planning assumption.",
+        "No failed attempts or additional downtime beyond the repeat-hour benchmark; learning and material extra banking reduce actual throughput."
+      ],
+      "exclusions": [
+        "Supply acquisition, questing, training, initial learning, breaks and unmodelled failures are outside this scenario.",
+        "No gear-to-speed scaling or probability of successful execution is inferred."
+      ],
+      "methodLabel": "Reviewed melee/ranged Tormented Demon switches"
+    },
+    {
+      "id": "muspah-tbow-repeat",
+      "version": "repeat-hour-1",
+      "activity": "muspah",
+      "mode": "ordinary",
+      "reviewed": "2026-10-14",
+      "support": "REVIEWED",
+      "minimumPerHour": 25,
+      "maximumPerHour": 25,
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "FACT",
+            "key": "secrets-of-north",
+            "value": true
+          },
+          {
+            "test": "FACT",
+            "key": "muspah-preparation",
+            "value": true
+          },
+          {
+            "test": "LEVEL",
+            "key": "RANGED",
+            "minimum": 90
+          },
+          {
+            "test": "LEVEL",
+            "key": "DEFENCE",
+            "minimum": 80
+          },
+          {
+            "test": "LEVEL",
+            "key": "MAGIC",
+            "minimum": 85
+          },
+          {
+            "test": "LEVEL",
+            "key": "PRAYER",
+            "minimum": 74
+          },
+          {
+            "test": "USABLE",
+            "key": "twistedBow"
+          }
+        ]
+      },
+      "sources": [
+        "ad1b-muspah-tbow-repeat-benchmark",
+        "ayak",
+        "bowfa",
+        "bowfa-route",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-phantom-muspah-strategies",
+        "item-ids",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e",
+        "twisted-bow"
+      ],
+      "scope": "Documented successful-repeat hour, including ordinary repeat overhead under the guide scenario; not a combat timer",
+      "assumptions": [
+        "Conditional on maintaining the documented repeat-hour rate with compatible switches, armour, prayers, boosts, ammunition and supplies.",
+        "Equipment establishes compatible method eligibility, not personal speed or skill. The source benchmark is a planning assumption.",
+        "No failed attempts or additional downtime beyond the repeat-hour benchmark; learning and material extra banking reduce actual throughput."
+      ],
+      "exclusions": [
+        "Supply acquisition, questing, training, initial learning, breaks and unmodelled failures are outside this scenario.",
+        "No gear-to-speed scaling or probability of successful execution is inferred."
+      ],
+      "methodLabel": "Muspah with a twisted bow"
     }
   ]
 }

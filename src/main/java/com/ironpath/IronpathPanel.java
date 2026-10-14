@@ -71,6 +71,8 @@ final class IronpathPanel extends PluginPanel
 		void clear();
 		default void reference(String key, String value) {}
 		default void pace(String value) {}
+		default void pace(String activity, String mode, String value) { pace(value); }
+		default void pace(String activity, String mode, String methodKey, String value) { pace(activity,mode,value); }
 		default void recentBoss(boolean enabled) {}
 		default void clearRecentBoss() {}
 		default boolean current() { return true; }

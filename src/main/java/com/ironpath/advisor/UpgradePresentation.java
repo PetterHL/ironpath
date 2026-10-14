@@ -85,6 +85,8 @@ public final class UpgradePresentation
 	public final ProgressionPriority.Priority priority;
 	public final String status, priorityReason, nextStep, estimateOrigin, estimateScope;
 	public final RangeKind rangeKind;
+	public final PaceScenario.SourceKind estimateSourceKind;
+	public final boolean conditionalComponentWork;
 	public final Double minimumMeanHours, maximumMeanHours;
 	public final List<RouteChoice> routes;
 	UpgradePresentation(Advisor.UpgradeView view, List<RouteChoice> routes,KnowledgeCatalog catalog,com.ironpath.model.AccountSnapshot account)
@@ -135,12 +137,14 @@ public final class UpgradePresentation
 		nextStep=effort.suitability==RemainingEffort.Suitability.PREPARE || effort.suitability==RemainingEffort.Suitability.UNKNOWN?effort.reason
 			:next==null?"Pursue "+selected.decision.title:(next.truth==com.ironpath.model.Truth.UNKNOWN?"Check ":next.role.equals("ACTIVITY")?"":next.role.equals("COMPONENT")?"Acquire ":"Complete ")+next.label;
 		EffortEstimate estimate=view.pursuit.estimate;
+		estimateSourceKind=estimate==null||estimate.pace==null?null:estimate.pace.sourceKind;
+		conditionalComponentWork=estimate!=null&&estimate.conditionalWork;
 		boolean hours=estimate!=null && estimate.meanHours()!=null;
 		rangeKind=hours?RangeKind.SCENARIO_MEAN_SENSITIVITY:RangeKind.UNAVAILABLE;
-		minimumMeanHours=hours?estimate.meanTrials/estimate.pace.maximumPerHour:null;
+		minimumMeanHours=hours?estimate.minimumMeanHours():null;
 		maximumMeanHours=hours?estimate.meanHours():null;
 		estimateOrigin=hours?estimate.pace.provenance:"Reviewed qualitative activity profile";
-		estimateScope=estimate==null?effort.scope:estimate.remainingOutcome + "; " + (hours?estimate.pace.scope:"no hours available");
+		estimateScope=estimate==null?effort.scope:estimate.remainingOutcome + "; component acquisition only; " + (hours?estimate.pace.scope:"no hours available");
 		this.routes=List.copyOf(routes);
 	}
 	private static boolean missingLevels(com.ironpath.model.AccountSnapshot account,CombatSetup setup)
