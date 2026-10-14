@@ -244,6 +244,7 @@ public class ObservationLifecycleTest
 		assertTrue(plugin.session.snapshot().fact("final-dawn").value());
 		assertTrue(plugin.session.snapshot().fact("blood-moon-rises").value());
 		assertTrue(plugin.session.snapshot().fact("dragon-slayer-ii").value());
+		assertTrue(plugin.session.snapshot().fact("while-guthix-sleeps").value());
 		assertTrue(plugin.session.snapshot().fact("beneath-cursed-sands").source().contains("Quest.getState"));
 		when(client.getIntStack()).thenReturn(new int[]{1});
 		VarbitChanged changed = new VarbitChanged(); changed.setVarbitId(VarbitID.BCS);
@@ -261,6 +262,8 @@ public class ObservationLifecycleTest
 		when(client.getIntStack()).thenReturn(new int[]{1});
 		VarbitChanged frozen = new VarbitChanged(); frozen.setVarpId(VarPlayerID.NEX_PERM);
 		plugin.onVarbitChanged(frozen); tick(); assertFalse(plugin.session.snapshot().fact("frozen-door").value());
+		VarbitChanged wgs = new VarbitChanged(); wgs.setVarpId(VarPlayerID.WGS_PRIMARY);
+		plugin.onVarbitChanged(wgs); tick(); assertFalse(plugin.session.snapshot().fact("while-guthix-sleeps").value());
 		when(client.getVarbitValue(VarbitID.PRAYER_DEADEYE_UNLOCKED)).thenReturn(1);
 		plugin.onVarbitChanged(new VarbitChanged()); tick();
 		assertTrue(plugin.session.snapshot().fact("deadeye").value());
@@ -276,6 +279,7 @@ public class ObservationLifecycleTest
 		assertFalse(plugin.session.snapshot().fact("final-dawn").known());
 		assertFalse(plugin.session.snapshot().fact("blood-moon-rises").known());
 		assertFalse(plugin.session.snapshot().fact("dragon-slayer-ii").known());
+		assertFalse(plugin.session.snapshot().fact("while-guthix-sleeps").known());
 		assertFalse(plugin.session.snapshot().fact("deadeye").value());
 	}
 

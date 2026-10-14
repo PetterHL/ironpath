@@ -42,7 +42,7 @@ public class R3ProgressionTest
 		assertEquals(STRONG,zaryte.valueEvidence.importance);assertTrue(zaryte.valueEvidence.independentUtility);
 		assertTrue(zaryte.card.metric.contains("Burst not quantified"));assertTrue(zaryte.valueEvidence.roles.get(0).limitation.contains("successful hit"));
 		assertEquals(CONTEXTUAL,venator.valueEvidence.importance);assertTrue(venator.valueEvidence.reasonCodes.contains("REVIEWED_ROLE_VALUE"));
-		assertEquals(Category.PURSUE,venator.pursuit.category);assertTrue(venator.card.metric.contains("geometry gap"));
+		assertEquals(Category.LONG_TERM,venator.pursuit.category);assertTrue(venator.card.metric.contains("geometry gap"));
 		assertFalse(advisor.upgrades(a,missing).stream().anyMatch(v->v.upgrade.id.equals("swamp-trident")||v.upgrade.id.equals("twisted-bow")||v.upgrade.id.equals("bowfa")));
 	}
 	@Test public void contextLossNarrowsBurstWithoutPretendingAnOwnedBowCoversIt()
@@ -105,18 +105,15 @@ public class R3ProgressionTest
 		assertTrue(venator.valueEvidence.roles.stream().flatMap(r->r.alternatives.stream()).anyMatch(s->s.contains("blowpipe")));
 		assertTrue(venator.indirectReasons.stream().anyMatch(s->s.contains("quiver")));
 	}
-	@Test public void previewKeepsActionableFirstThenImportantLongTermAndSpecialistBeforeRoleRepeats()
+	@Test public void previewRetainsProgressionTwoOrderWithoutForcedLongTermOrSpecialistInsertion()
 	{
 		List<Advisor.UpgradeView> views=advisor.upgrades(muspah(),missing);
 		PursuitOverview overview=new PursuitOverview(views,List.of(),List.of(),List.of());
-		assertEquals(overview.pursuits.get(0).upgrade.id,overview.preview.get(0).upgrade.id);
-		assertEquals(Tail.LONG,overview.preview.get(1).pursuit.tail);
-		assertNotEquals(overview.preview.get(0).upgrade.role,overview.preview.get(1).upgrade.role);
-		assertTrue(overview.preview.get(2).valueEvidence.specialist);
-		assertNotEquals(overview.preview.get(0).upgrade.role,overview.preview.get(2).upgrade.role);
-		long justified=views.stream().filter(v->v.pursuit.category!=Category.DEFER).count();
-		assertEquals(views.size(),overview.all.size());assertEquals(justified,overview.preview.size());assertEquals(justified,overview.preview.stream().map(v->v.upgrade.id).distinct().count());
-		assertEquals(overview.previewReasons, new PursuitOverview(views,List.of(),List.of(),List.of()).previewReasons);
+		int previous=-1;Set<String> families=new HashSet<>();
+		for(Advisor.UpgradeView v:overview.preview){int index=views.indexOf(v);assertTrue(index>previous);previous=index;assertTrue(families.add(v.pursuit.family));}
+		long justified=views.stream().filter(v->v.pursuit.category!=Category.DEFER).map(v->v.pursuit.family).distinct().count();
+		assertEquals(views.size(),overview.all.size());assertEquals(justified,overview.preview.size());
+		assertFalse(overview.longTerm.isEmpty());assertEquals(overview.previewReasons,new PursuitOverview(views,List.of(),List.of(),List.of()).previewReasons);
 	}
 	@Test public void noFillerWhenAllDeliveredOutcomesAreOwnedAndSkipsOnlyRemoveTheirRoute()
 	{

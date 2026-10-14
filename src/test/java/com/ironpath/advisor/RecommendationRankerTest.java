@@ -20,7 +20,7 @@ public class RecommendationRankerTest
 	{
 		List<PursuitAssessment> ranked=new RecommendationRanker().rank(List.of(c("tbow",Mode.LONG_TAIL,Burden.HIGH,100),c("nearer",Mode.REPEATABLE,Burden.LOW,1),c("unknown",Mode.UNKNOWN,Burden.UNKNOWN,1000)));
 		assertEquals("nearer",ranked.get(0).id);assertEquals(Category.LONG_TERM,ranked.get(1).category);assertEquals(Category.CHECK,ranked.get(2).category);
-		assertTrue(ranked.get(0).reasonCodes.contains("IMPORTANCE_BEFORE_BURDEN"));
+		assertTrue(ranked.get(0).reasonCodes.contains("VALUE_EFFORT_TABLE"));
 	}
 	@Test public void repeatableAndBoundedAreNotOrderedAsTimeTiers()
 	{

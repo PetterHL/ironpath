@@ -1,6 +1,6 @@
 # IronPath tasks
 
-Updated 14 October 2026: **EP1 account-efficient progression and UX2 visual advisor are the next product priority.** Selected `progression-2` and the new UX specification supersede importance-before-burden, mandatory long-term preview insertion and repeated card Value/Path buttons. Earlier implementation evidence remains historical; this plan update does not deliver new behaviour.
+Updated 14 October 2026: **EP1 account-efficient progression and UX2 visual advisor are the next product priority.** Selected `progression-2` and the new UX specification supersede importance-before-burden, mandatory long-term preview insertion and repeated card Value/Path buttons. EP1 now implements the domain/presentation migration for review; UX2 remains pending. Earlier implementation evidence stays historical.
 
 13 October foundation: endgame intelligence and native homepage refinement. [Evidence and 30 relationships](docs/PROGRESSION_RESEARCH.md); `progression-1` supersedes earlier ranking/admission policy, not delivered history. [UX](docs/UX.md) selects the visual advisor direction; earlier layout requirements remain implementation history. **This active R1 → R1.5 → R2–R8 backlog supersedes P4b/P5 and every older catalogue-size budget or sequential planning gate.** Historical briefs/results are preserved verbatim below and are not active instructions.
 
@@ -14,7 +14,7 @@ An Ironman opens IronPath without selecting a goal and discovers worthwhile PvM 
 
 Required: partial account observation; strong-alternative recognition; contextual ranking; full reference loadouts and local combat families; multi-step acquisition; native value-first UI; maintained sources and model coverage. [CATALOGUE](docs/CATALOGUE.md) inventories all relevant families, including current release candidates and future watchlist entries. D/R/V/Q are evidence/support states, not competing backlogs. [UX](docs/UX.md) gives concrete screens.
 
-**Current implemented baseline:** the combined 14 October integration preserves R2 #16, progression design #17, R3a #18, Kill Impact design #19 and UX #20, plus UX completion #21, the ordinary-melee/tentacle R3b increment and the opt-in KI1 Zilyana pilot #22. Plugin 0.9.0 / knowledge r3b-1 / schema 11 / preference schema 2. KI1 actual-client acceptance, KI2/KI3, remaining R3b families/conditions and later capability work stay open. [Combined integration evidence](docs/validation/ux-melee-ki1-integration.md) supplements the [earlier integration/cleanup record](docs/validation/main-integration-20261014.md); original reports/tests retain their original context.
+**Current implementation for review:** EP1 0.10.0 / ep1-1 / schema 12 / progression-2 extends the combined build with catalogue-wide qualitative effort and priority, component routes and typed presentation. [Complete evidence and pending client checks](docs/validation/EP1.md). The combined 14 October integration preserves R2 #16, progression design #17, R3a #18, Kill Impact design #19 and UX #20, plus UX completion #21, the ordinary-melee/tentacle R3b increment and the opt-in KI1 Zilyana pilot #22. Plugin 0.9.0 / knowledge r3b-1 / schema 11 / preference schema 2. KI1 actual-client acceptance, KI2/KI3, remaining R3b families/conditions and later capability work stay open. [Combined integration evidence](docs/validation/ux-melee-ki1-integration.md) supplements the [earlier integration/cleanup record](docs/validation/main-integration-20261014.md); original reports/tests retain their original context.
 
 ## C. Incremental implementation
 
@@ -22,7 +22,7 @@ Each assignment produces useful advice, reviewed knowledge, UI evidence and mean
 
 | Milestone | Dependencies | Demonstrable result |
 |---|---|---|
-| EP1 — Account-efficient progression (next; not implemented) | Integrated main; existing value/path/alternative models | Automatic account-specific effort bands, value-for-effort priority, optional reviewed scenario hours and structured presentation |
+| EP1 — Account-efficient progression (implemented for review; client checks pending) | Integrated main; existing value/path/alternative models | Automatic account-specific effort bands, value-for-effort priority, optional reviewed scenario hours and structured presentation |
 | UX2 — Visual advisor integration (not implemented) | EP1 domain/presentation contract | Complete overview/comparison/acquisition/account flow preserving next-step order |
 | R1 — Realistic magic and first endgame value | P4a + this reset | Full-loadout magic; Shadow/Ancestral early; numerical value influences advice; functional value/path views |
 | R1.5a — Pursuit priority and visual foundation | R1; integrated, live checks pending | Explainable categories, shared activities, native compact cards and first conditional next-shard estimate |
@@ -40,7 +40,7 @@ These are capability milestones, not upgrade-count targets. R6 remains open whil
 
 ### EP1 — Account-efficient progression (next implementation)
 
-**Status: ready for implementation; not delivered.** Start from integrated main including UX completion, ordinary melee and experimental KI1. Read AGENTS, DESIGN's selected progression-2 contract, RESEARCH's automatic profile calibration, UX and relevant CATALOGUE/PROGRESSION_RESEARCH rows. TASKS remains the only backlog.
+**Status: implemented for review; actual-client/player acceptance pending.** [EP1 policy, complete coverage/source matrix, before/after queues, build and native component evidence](docs/validation/EP1.md). Plugin 0.10.0 / knowledge ep1-1 / schema 12 / progression-2; preference schema 2 and combat formulas retained. Automatic qualitative A0 covers all active contracts; selective A1 and optional manual A2 are scoped to the next component. No automatic full-cycle hours or observed performance is promoted. The delivery/acceptance specification below remains for review. Started from integrated main including UX completion, ordinary melee and experimental KI1. Read AGENTS, DESIGN's selected progression-2 contract, RESEARCH's automatic profile calibration, UX and relevant CATALOGUE/PROGRESSION_RESEARCH rows. TASKS remains the only backlog.
 
 **Outcome:** without a goal or manual tempo input, rank **every supported upgrade and acquisition route** by marginal account value relative to realistic remaining effort. The policy applies across the complete active catalogue, every activity family and future promoted outcomes. Effort may be qualitative; reviewed scenario hours are optional per route. This is the next primary product increment, independent of KI2, complete combat coverage and universal acquisition modelling.
 
@@ -457,7 +457,7 @@ Branch `client-model-gap-labels` clarifies the existing per-metric gap: name onl
 
 ## Next implementation
 
-**EP1 first, then UX2**, under the complete assignments above. The integrated baseline retains ordinary melee, UX completion and experimental KI1. Review profile/source support, implement account-efficient priority and presentation contracts, then complete the coordinated visual advisor flow. This documentation PR plans the policy and UI; it does not ship them. R3b/R4 expansion, R1.5b observation and KI2/KI3 remain open without becoming gates to the first automatic effort-based advice.
+**Review EP1, then implement UX2**, under the complete assignments above. EP1 now supplies the catalogue-wide domain order, qualitative profiles and presentation contracts for review, retaining ordinary melee, UX completion and experimental KI1. Complete the coordinated visual advisor flow using that contract; actual-client calibration remains pending. R3b/R4 expansion, R1.5b observation and KI2/KI3 remain open without becoming gates to the first automatic effort-based advice.
 
 ## Historical task snapshots and results
 

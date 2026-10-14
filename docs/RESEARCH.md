@@ -1,8 +1,14 @@
 # IronPath research and evidence
 
+## EP1 implementation review — 14 October 2026
+
+[Validation and complete profile/source matrix](validation/EP1.md) records fresh Wiki revision retrieval, original qualitative calibration and the `progression-2` table for every active route and retained broader record. Scorching/synapse is promoted with exact forms, quest/notes/assembly, exclusive allocation and a qualitative Doom role. WGS uses the public Quest API with coalesced refresh; note knowledge remains an explicit unknown/planning fact. Owned Scorching and active Venator keep strongest-owned ranged DPS claims unavailable while unaffected reference metrics remain supported.
+
+A0 method/remaining-work bands are automatic. A1 next-synapse and anguish-zenyte models extend the existing fixed next-bracelet-shard estimator. A2 remains an optional matched manual scenario; no automatic numeric full-cycle profile is promoted. The gorilla benchmark's task/gear/supply assumptions do not validate the broad selected profile or full acquisition cycle. Clear restores unavailable hours. A probability withdrawal removes odds/time while retaining separately reviewed qualitative effort/value. Existing combat arithmetic, notices, privacy and client evidence are preserved; player calibration remains pending.
+
 ## Account-efficient progression — 14 October 2026 decision
 
-Selected product policy, **not new gameplay research or implemented estimates**. EP1 in TASKS will review activity effort profiles and migrate to DESIGN's `progression-2`. The existing relationship research supplies candidate roles/alternatives, not validated throughput. Synapse, blowpipe, zenyte, treads and Shadow are representative validation cases, not fixed priority rules or a coverage ceiling. Profile review covers the entire active catalogue by shared activity/method families; EP1 must report every supported route's qualitative/numerical support and any specific gap. Example-only profile coverage is not the intended delivery.
+Selected product policy, **not new gameplay research or implemented estimates**. The original documentation decision below preceded the EP1 implementation review above. TASKS owns its status. The existing relationship research supplies candidate roles/alternatives, not validated throughput. Synapse, blowpipe, zenyte, treads and Shadow are representative validation cases, not fixed priority rules or a coverage ceiling. Profile review covers the entire active catalogue by shared activity/method families; EP1 must report every supported route's qualitative/numerical support and any specific gap. Example-only profile coverage is not the intended delivery.
 
 Automatic qualitative effort is permitted at A0 with a reviewed rationale. Automatic scenario hours use A2 only after both reward mechanics and a compatible full-cycle pace scenario are reviewed. The account selects the applicable profile; it does not establish observed speed, skill or raid success. No personal kill history is required for this first increment.
 

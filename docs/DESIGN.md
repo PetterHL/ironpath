@@ -1,8 +1,8 @@
 # IronPath product and architecture
 
-**14 October 2026 decision:** account-efficient progression (`progression-2`) is the selected next policy; EP1/UX2 in TASKS own implementation. Current main still runs `progression-1`. This documentation change does not deliver new ranking, acquisition hours or UI. The new policy supersedes importance-first ordering and forced long-term preview insertion while retaining the relationship/value foundation.
+**14 October 2026 implementation:** EP1 delivers `progression-2` for review, with catalogue-wide qualitative activity profiles, component-aware remaining work and an order-preserving preview. [Policy table, coverage and evidence](validation/EP1.md). UX2's complete visual flow remains pending. Automatic numeric acquisition profiles, passive full-cycle observation and complex totals are not delivered.
 
-Endgame intelligence design · 13 October 2026. Inspected main `cb7c2cd` and unmerged R2 PR #16 at `a501e6f`, then its concurrent review correction `32cb24a` (schema 9, `pursuit-1`). **The bounded `progression-1` migration is implemented for review in R3a; broader relationship/model coverage remains open.** See [implementation evidence](validation/R3a.md). It refines ranking and relationships while retaining comprehensive scope, existing working code and validation history. EP1's reviewed automatic effort profiles are the next priority; R1.5b observation and complex route totals remain separately scoped work.
+Endgame intelligence design · 13 October 2026. Inspected main `cb7c2cd` and unmerged R2 PR #16 at `a501e6f`, then its concurrent review correction `32cb24a` (schema 9, `pursuit-1`). **The bounded `progression-1` migration is implemented for review in R3a; broader relationship/model coverage remains open.** See [implementation evidence](validation/R3a.md). It refines ranking and relationships while retaining comprehensive scope, existing working code and validation history. EP1's automatic qualitative effort profiles are implemented for review; R1.5b observation and complex route totals remain separately scoped work.
 
 ## A. Stable product vision
 
@@ -111,7 +111,7 @@ Show component progress such as an observed quantity against its requirement onl
 
 ## Progression intelligence contract (version `progression-2`, selected)
 
-**Selected next design; implementation pending in EP1/UX2.** R3a implements the earlier `progression-1` baseline. This contract supersedes its importance-before-burden ordering and discovery insertion, as well as older `pursuit-1` ordering. Preserve historical implementation and regression evidence; update behavioural expectations only where this explicit policy change requires it. [Thirty checked relationships and the code assessment](PROGRESSION_RESEARCH.md) are the evidence; TASKS EP1/UX2 own the next migration; R3–R6 retain broader relationship and model coverage. This is an extension of the current engine, not another reset.
+**EP1 domain implementation for review; UX2 rendering pending.** R3a delivered the earlier `progression-1` baseline. This contract supersedes its importance-before-burden ordering and discovery insertion, as well as older `pursuit-1` ordering. Preserve historical implementation and regression evidence; update behavioural expectations only where this explicit policy change requires it. [Thirty checked relationships and the code assessment](PROGRESSION_RESEARCH.md) are the evidence; TASKS EP1/UX2 own the next migration; R3–R6 retain broader relationship and model coverage. This is an extension of the current engine, not another reset.
 
 ### Independent assessment
 

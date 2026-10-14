@@ -32,19 +32,19 @@ public class PreferencesAdvisorTest
 		return new AccountSnapshot(fact(levels), base.inventory, base.equipment, base.bank, rigour, augury);
 	}
 
-	@Test public void higherValuePrecedesGoalPreferenceWhileGoalKeepsItsOwnNextAction()
+	@Test public void remainingEffortJointlyControlsQueueWhileGoalKeepsItsOwnNextAction()
 	{
 		AccountSnapshot account = account(70, Set.of(4151, 22978, 9185, 11907, 12932, 1755, 13576), fact(true), fact(true));
 		List<String> general = ids(account, Preferences.EMPTY);
-		assertEquals(3, general.size()); assertEquals("train-rigour", general.get(0));
+		assertEquals(3, general.size()); assertEquals("assemble-swamp-trident", general.get(0));
 		Preferences augury = Preferences.EMPTY.goal("train-augury");
-		assertEquals("train-rigour", ids(account, augury).get(0)); // Major value precedes the selected moderate goal.
+		assertEquals("assemble-swamp-trident", ids(account, augury).get(0)); // Ready owned-component work precedes unreviewed training effort.
 		assertTrue(advisor.goal(account, augury).nextAction.contains("Prayer to 77"));
 		assertTrue(advisor.availableActivities(account, augury).stream().anyMatch(r -> r.decision.id.equals("train-augury")));
 		Preferences cox = Preferences.EMPTY.goal("plan-team-cox");
-		assertEquals("train-rigour", ids(account, cox).get(0));
+		assertEquals("assemble-swamp-trident", ids(account, cox).get(0));
 		assertTrue(advisor.goal(account, cox).nextAction.contains("defence-reduction"));
-		assertFalse(ids(account, cox).contains("plan-team-cox"));
+		assertTrue(advisor.availableActivities(account, cox).stream().anyMatch(r -> r.decision.id.equals("plan-team-cox")));
 		assertEquals(ids(account, cox), ids(account, cox));
 		assertEquals(3, advisor.evaluate(account, cox).stream().map(r -> r.decision.family).distinct().count());
 		assertTrue(advisor.availableActivities(account, augury).stream().filter(r -> r.decision.id.equals("train-augury")).findFirst().orElseThrow().evidence.stream().anyMatch(e -> e.contains("directly supports selected goal")));
@@ -153,8 +153,8 @@ public class PreferencesAdvisorTest
 		Preferences manual = Preferences.EMPTY.confirm("item-12932", false, TIME).confirm("rigour", true, TIME);
 		Advisor.GoalView goal = advisor.goal(account, manual.goal("assemble-swamp-trident"));
 		assertEquals(Truth.TRUE, goal.requirements.get(0).truth);
-		assertEquals("train-rigour", ids(account, manual).get(0));
-		assertTrue(advisor.evaluate(account, manual).get(0).evidence.stream().anyMatch(e -> e.contains("manual planning confirmation")));
+		assertEquals("assemble-swamp-trident", ids(account, manual).get(0));
+		assertTrue(advisor.availableActivities(account, manual).stream().filter(r->r.decision.id.equals("train-rigour")).findFirst().orElseThrow().evidence.stream().anyMatch(e -> e.contains("manual planning confirmation")));
 		AccountSnapshot readable = new AccountSnapshot(account.levels, account.inventory, account.equipment, account.bank, fact(false), fact(true));
 		assertFalse(ids(readable, manual).contains("train-rigour"));
 		assertFalse(readable.rigour.value());

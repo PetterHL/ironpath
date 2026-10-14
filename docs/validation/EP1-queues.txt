@@ -1,0 +1,141 @@
+## post-bowfa
+tormented-bracelet | STRONG | WORTHWHILE | PURSUE | MEDIUM | SUITABLE | Next zenyte shard; no hours available
+occult-necklace | STRONG | WORTHWHILE | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+toxic-blowpipe | STRONG | WORTHWHILE | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+scorching-bow | STRONG | WORTHWHILE | PURSUE | MEDIUM | WORKABLE | Next tormented synapse; no hours available
+necklace-of-rupture | STRONG | LATER | LONG_TERM | LONG | WORKABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+abyssal-tentacle | CONTEXTUAL | LATER | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-top | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-bottom | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+dizanas-quiver | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | WORKABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+venator-bow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+tumekens-shadow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | VERY_LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+twisted-bow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | VERY_LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+necklace-of-anguish | KEY | CONDITIONAL | CHECK | MEDIUM | SUITABLE | Next zenyte shard; no hours available
+zaryte-crossbow | STRONG | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+avas-assembler | CONTEXTUAL | CONDITIONAL | CHECK | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+magus-ring | CONTEXTUAL | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+venator-ring | CONTEXTUAL | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+zaryte-vambraces | CONTEXTUAL | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+avernic-treads | CONTEXTUAL | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-hat | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-mask | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-chaps | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-body | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+## doom-workable
+tormented-bracelet | STRONG | WORTHWHILE | PURSUE | MEDIUM | SUITABLE | Next zenyte shard; no hours available
+occult-necklace | STRONG | WORTHWHILE | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+abyssal-tentacle | CONTEXTUAL | LATER | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+necklace-of-rupture | STRONG | LATER | LONG_TERM | LONG | WORKABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-top | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-bottom | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+venator-bow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+avernic-treads | CONTEXTUAL | LONG_HORIZON | LONG_TERM | VERY_LONG | WORKABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+tumekens-shadow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | VERY_LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+zaryte-crossbow | STRONG | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+magus-ring | CONTEXTUAL | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+necklace-of-anguish | KEY | CONDITIONAL | CHECK | MEDIUM | SUITABLE | Next zenyte shard; no hours available
+avas-assembler | UNCERTAIN | CONDITIONAL | CHECK | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+toxic-blowpipe | UNCERTAIN | CONDITIONAL | CHECK | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+dizanas-quiver | UNCERTAIN | CONDITIONAL | CHECK | LONG | WORKABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-body | UNCERTAIN | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-chaps | UNCERTAIN | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-mask | UNCERTAIN | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+venator-ring | UNCERTAIN | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+twisted-bow | UNCERTAIN | CONDITIONAL | CHECK | VERY_LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+zaryte-vambraces | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-hat | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+## doom-ready
+tormented-bracelet | STRONG | WORTHWHILE | PURSUE | MEDIUM | SUITABLE | Next zenyte shard; no hours available
+occult-necklace | STRONG | WORTHWHILE | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+abyssal-tentacle | CONTEXTUAL | LATER | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+necklace-of-rupture | STRONG | LATER | LONG_TERM | LONG | WORKABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-top | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-bottom | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+avernic-treads | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+venator-bow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+tumekens-shadow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | VERY_LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+zaryte-crossbow | STRONG | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+magus-ring | CONTEXTUAL | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+necklace-of-anguish | KEY | CONDITIONAL | CHECK | MEDIUM | SUITABLE | Next zenyte shard; no hours available
+avas-assembler | UNCERTAIN | CONDITIONAL | CHECK | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+toxic-blowpipe | UNCERTAIN | CONDITIONAL | CHECK | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+dizanas-quiver | UNCERTAIN | CONDITIONAL | CHECK | LONG | WORKABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-body | UNCERTAIN | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-chaps | UNCERTAIN | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-mask | UNCERTAIN | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+venator-ring | UNCERTAIN | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+twisted-bow | UNCERTAIN | CONDITIONAL | CHECK | VERY_LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+zaryte-vambraces | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-hat | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+## owned-components
+necklace-of-anguish | KEY | NEXT | PURSUE | SHORT | SUITABLE | Next zenyte shard; no hours available
+tormented-bracelet | STRONG | NEXT | PURSUE | SHORT | SUITABLE | Next zenyte shard; no hours available
+toxic-blowpipe | STRONG | NEXT | PURSUE | SHORT | SUITABLE | Remaining assembly and resources only
+scorching-bow | STRONG | NEXT | PURSUE | SHORT | SUITABLE | Next tormented synapse; no hours available
+zaryte-crossbow | STRONG | NEXT | PURSUE | SHORT | SUITABLE | Remaining assembly and resources only
+occult-necklace | STRONG | WORTHWHILE | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+necklace-of-rupture | STRONG | LATER | LONG_TERM | LONG | WORKABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+abyssal-tentacle | CONTEXTUAL | LATER | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-top | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-bottom | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+dizanas-quiver | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | WORKABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+venator-bow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+zaryte-vambraces | CONTEXTUAL | LONG_HORIZON | LONG_TERM | VERY_LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+tumekens-shadow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | VERY_LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+twisted-bow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | VERY_LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+avas-assembler | CONTEXTUAL | CONDITIONAL | CHECK | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+magus-ring | CONTEXTUAL | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+venator-ring | CONTEXTUAL | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+avernic-treads | CONTEXTUAL | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+twisted-buckler | UNCERTAIN | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-hat | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-mask | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-chaps | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-body | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+## early
+abyssal-tentacle | CONTEXTUAL | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+magus-ring | UNCERTAIN | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-hat | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-bottom | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-top | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+avas-assembler | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+dizanas-quiver | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-body | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-chaps | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-mask | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+occult-necklace | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+tormented-bracelet | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Next zenyte shard; no hours available
+toxic-blowpipe | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+tumekens-shadow | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+twisted-bow | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+venator-ring | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+zaryte-vambraces | UNCERTAIN | CONDITIONAL | CHECK | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+necklace-of-anguish | MARGINAL | OPTIONAL | DEFER | UNKNOWN | PREPARE | Next zenyte shard; no hours available
+necklace-of-rupture | MARGINAL | OPTIONAL | DEFER | UNKNOWN | PREPARE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+## single-megarare
+tormented-bracelet | STRONG | WORTHWHILE | PURSUE | MEDIUM | SUITABLE | Next zenyte shard; no hours available
+occult-necklace | STRONG | WORTHWHILE | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+toxic-blowpipe | STRONG | WORTHWHILE | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+necklace-of-rupture | STRONG | LATER | LONG_TERM | LONG | WORKABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+abyssal-tentacle | CONTEXTUAL | LATER | PURSUE | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-top | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-robe-bottom | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+dizanas-quiver | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | WORKABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+avernic-treads | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-body | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+venator-bow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+tumekens-shadow | CONTEXTUAL | LONG_HORIZON | LONG_TERM | VERY_LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+necklace-of-anguish | KEY | CONDITIONAL | CHECK | MEDIUM | SUITABLE | Next zenyte shard; no hours available
+zaryte-crossbow | STRONG | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+avas-assembler | CONTEXTUAL | CONDITIONAL | CHECK | MEDIUM | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+magus-ring | CONTEXTUAL | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+venator-ring | CONTEXTUAL | CONDITIONAL | CHECK | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+zaryte-vambraces | CONTEXTUAL | CONDITIONAL | CHECK | UNKNOWN | UNKNOWN | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+ancestral-hat | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-chaps | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+masori-mask | MARGINAL | OPTIONAL | DEFER | LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+scorching-bow | MARGINAL | OPTIONAL | DEFER | MEDIUM | WORKABLE | Next tormented synapse; no hours available
+## nearly-complete
+tumekens-shadow | STRONG | LONG_HORIZON | LONG_TERM | VERY_LONG | SUITABLE | Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured
+## unread-bank
