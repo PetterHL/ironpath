@@ -25,7 +25,7 @@ public class UX2PresentationTest
 				}
 				if(!view.card.context.isEmpty() && view.valueEvidence.specialist && view.comparison.available(ComparisonResult.Metric.THEORETICAL_DPS) && view.comparison.dpsGain()<=1e-10) {
 					var contextual=view.contextComparisons.stream().filter(c->c.available(ComparisonResult.Metric.THEORETICAL_DPS)&&c.dpsGain()>1e-10).findFirst().orElse(null);
-					if(contextual!=null && contextual.beforeSetup!=null) { assertEquals(catalog.itemNames().get(contextual.beforeSetup.slots.get("weapon")),view.card.baseline); }
+					if(contextual!=null && contextual.beforeSetup!=null) { assertEquals(catalog.itemNames().get(contextual.beforeSetup.slots.get("weapon"))+(contextual.changesSetup()?" setup":""),view.card.baseline); }
 				}
 				assertFalse(view.presentation.status.contains(" · "));
 				assertFalse(view.presentation.nextStep.startsWith("METHOD:"));

@@ -34,7 +34,7 @@ final class ProgressionEvaluator
 		}
 		// Explicit encounter comparisons remain independent of the selected analytical reference.
 		if (contexts.stream().anyMatch(c->c.available(ComparisonResult.Metric.THEORETICAL_DPS)&&c.dpsGain()>1e-10
-			&& (c.primaryMetric==ComparisonResult.Metric.THEORETICAL_DPS || c.before.dps>0 && c.dpsGain()/c.before.dps>=0.05)))
+			&& (c.weaponComparison || c.before.dps>0 && c.dpsGain()/c.before.dps>=0.05)))
 		{
 			if (importance.ordinal()>CONTEXTUAL.ordinal()) { importance=CONTEXTUAL; reason="Useful encounter trade-off over owned packages; neutral value is separate."; }
 			specialist |= !numeric || comparison.dpsGain()<=1e-10; codes.add("SUPPORTED_ENCOUNTER_TRADEOFF");

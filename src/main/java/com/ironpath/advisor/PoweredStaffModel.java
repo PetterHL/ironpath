@@ -37,6 +37,12 @@ final class PoweredStaffModel
 		int max = Math.max(1, base) * (1000 + damage) / 1000;
 		long roll = (long) effective * Math.max(0, 64 + attack), defence = target.defenceRoll();
 		double chance = PoweredMagic.hitChance(roll, defence);
+		// Independent per-attack mixture: the proc ignores 10% of the defence roll,
+		// not 10% of the level, and must not be replaced by an averaged defence.
+		if (setup.slots.values().stream().filter(id -> id > 0).anyMatch(id -> items.get(id).brimstoneEffect))
+		{
+			chance = (3 * chance + PoweredMagic.hitChance(roll, defence * 9 / 10)) / 4;
+		}
 		// Sang's July 2026 successful-hit proc precedes the final successful-zero floor.
 		// Non-proc (80%) zero becomes 1; proc (20%) adds 8, including to zero.
 		double mean = weapon.weapon.equals("SANG") ? max / 2.0 + 1.6 + 0.8 / (max + 1.0) : PoweredMagic.successfulMean(max);

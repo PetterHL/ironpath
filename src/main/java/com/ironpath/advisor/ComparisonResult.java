@@ -15,18 +15,27 @@ public final class ComparisonResult
 	public final String reason, modelVersion, knowledgeVersion;
 	public final List<String> assumptions;
 	public final Metric primaryMetric;
+	/** Domain classification retained independently of the displayed metric. */
+	public final boolean weaponComparison;
 	ComparisonResult(CombatSetup beforeSetup, CombatSetup afterSetup, PoweredMagic.Metrics before,
 		PoweredMagic.Metrics after, TargetProfile target, Map<Metric, PoweredMagic.Status> support,
-		String reason, String model, String knowledge, List<String> assumptions, boolean dpsFirst, Map<Metric, String> gaps)
+		String reason, String model, String knowledge, List<String> assumptions, boolean weaponComparison, Map<Metric, String> gaps)
 	{
 		this.beforeSetup = beforeSetup; this.afterSetup = afterSetup; this.before = before; this.after = after;
 		this.target = target; this.support = Map.copyOf(support); this.reason = reason;
 		this.gaps = Map.copyOf(gaps);
 		modelVersion = model; knowledgeVersion = knowledge; this.assumptions = List.copyOf(assumptions);
-		primaryMetric = dpsFirst ? Metric.THEORETICAL_DPS : Metric.MAX_HIT;
+		this.weaponComparison = weaponComparison;
+		primaryMetric = Metric.THEORETICAL_DPS;
 	}
 	public boolean available(Metric metric) { return support.get(metric) != PoweredMagic.Status.UNSUPPORTED; }
 	public double dpsGain() { return available(Metric.THEORETICAL_DPS) ? after.dps - before.dps : Double.NaN; }
+	public boolean changesSetup()
+	{
+		if(beforeSetup==null || afterSetup==null) { return false; }
+		long changes=PoweredMagic.SLOTS.stream().filter(s->!java.util.Objects.equals(beforeSetup.slots.get(s),afterSetup.slots.get(s))).count();
+		return changes+(beforeSetup.loadedAmmo==afterSetup.loadedAmmo?0:1)>1;
+	}
 	public String headline()
 	{
 		if (before == null) { return primaryMetric == Metric.THEORETICAL_DPS ? "DPS unavailable · model gap" : "Combat value · model gap"; }

@@ -1,6 +1,6 @@
 # IronPath tasks
 
-Updated 14 October 2026: **AD1 — Useful upgrade advice is the next combined product delivery: DPS-first results, automatic acquisition time and understandable priority in a completed UX2 flow.** EP1 and UX2 are implementation candidates in open PRs, not accepted product completion. AD1 supersedes the unchanged-speed armour/jewellery max-hit-first rule and makes automatic numerical effort an explicit delivery. Prioritise this over the next catalogue expansion or KI2/KI3 increment. Preserve earlier evidence; this plan update implements no runtime behaviour.
+Updated 14 October 2026: **AD1 useful upgrade advice is the next product delivery. AD1a is implemented for review on this branch; full reported-account reproduction and real-client acceptance remain pending.** Selected `progression-2` and the new UX specification supersede importance-before-burden, mandatory long-term preview insertion and repeated card Value/Path buttons. EP1 now implements the domain/presentation migration for review; UX2 now implements the native flow for review; real-client/player acceptance remains pending. Earlier implementation evidence stays historical.
 
 13 October foundation: endgame intelligence and native homepage refinement. [Evidence and 30 relationships](docs/PROGRESSION_RESEARCH.md); `progression-1` supersedes earlier ranking/admission policy, not delivered history. [UX](docs/UX.md) selects the visual advisor direction; earlier layout requirements remain implementation history. **This active R1 → R1.5 → R2–R8 backlog supersedes P4b/P5 and every older catalogue-size budget or sequential planning gate.** Historical briefs/results are preserved verbatim below and are not active instructions.
 
@@ -41,11 +41,13 @@ These are capability milestones, not upgrade-count targets. R6 remains open whil
 
 ### AD1 — Useful upgrade advice
 
-**Status: planned, not implemented or accepted.** One product delivery, split into AD1a–AD1c below. The user should be able to answer: what should I obtain, how much does it improve my account, and how much work remains?
+**Status: in progress; AD1a has an implementation candidate, while joint acceptance and AD1b/AD1c remain open.** One product delivery, split into AD1a–AD1c below. The user should be able to answer: what should I obtain, how much does it improve my account, and how much work remains?
 
 **Verified delivery boundary:** [EP1 #25](https://github.com/PetterHL/ironpath/pull/25) at `fafb745` implements catalogue-wide qualitative effort and progression-2 priority for review. Its [report](https://github.com/PetterHL/ironpath/blob/fafb7459c413add5d4a89b693c660cda70bf556f/docs/validation/EP1.md) records selective next-component odds/manual hours and no promoted automatic numerical full-cycle benchmark. [UX2 #26](https://github.com/PetterHL/ironpath/pull/26) at `54d9c239` is stacked on EP1; its [report](https://github.com/PetterHL/ironpath/blob/54d9c2399071f7ff124f819dfa5a40d8d60a7f29/docs/validation/UX2.md) preserves those calculation limits and leaves real-client/player acceptance pending. Neither PR is merged by this planning update. Keep main's delivered baseline distinct from these candidates.
 
 #### AD1a — DPS-first value and calculation coverage
+
+**Implementation for review:** plugin 0.12.0 / ad1a-1 / schema 13 / powered-magic-3. Stacked on UX2 #26 at `54d9c239` for its typed card/detail contract; EP1 #25, UX2 #26 and plan #27 remain open and unmerged. [Implementation, full active-outcome metric matrix, blocker ownership and pending acceptance](docs/validation/AD1a.md). Brimstone, relative DPS and complete package labels are implemented; the full reported setup was not available, so the real magic/ranged reproduction is explicitly pending. The original requirements follow.
 
 - Lead ordinary offensive upgrades with supported relative theoretical DPS gain, including rings, gloves and armour; max hit is secondary. Details show absolute DPS before → after and delta. For zero baseline show absolute change without division by zero. Specialist/spec/comfort utility may lead where ordinary DPS does not describe the benefit.
 - Separate a supported result hidden by presentation from a true missing calculation. Reproduce the reported Magus-versus-Brimstone and ranged cases against Petter's recorded setup, with explicit inputs/provenance; do not substitute a convenient all-supported synthetic account and claim the issue resolved.
@@ -494,11 +496,11 @@ Two supplied RuneLite screenshots confirm the integrated Enemy with 0 Defence la
 
 Branch `client-model-gap-labels` clarifies the existing per-metric gap: name only present items, distinguish before/after/both, and explain it beside the Value metrics. Brimstone is not described as an attack-history effect. Keep supported max hit, DPS-first/max-hit-first presentation, numeric support boundaries and known-equipment references. An explicit empty-ring control can test the supported numeric view; it does not establish actual Brimstone DPS. Plugin patch 0.6.2, knowledge reference-1, schema 8 and powered-magic-2 remain. [Validation](docs/validation/client-model-gap-labels.md).
 
-**Quantitative follow-up alongside R2:** review and implement Brimstone's accuracy proc with independent hand/reference fixtures and contextual strongest-owned-ring comparisons. This concrete model gap blocks supported DPS on the tested reference; do not silently drop the ring or treat its effect as zero. Confliction's one-handed history remains a separate task in the existing magic/remaining-model coverage. The explanation fix implements neither mechanic.
+**Historical quantitative follow-up (Brimstone implemented for review in AD1a; remaining Confliction work stays open):** review and implement Brimstone's accuracy proc with independent hand/reference fixtures and contextual strongest-owned-ring comparisons. This concrete model gap blocks supported DPS on the tested reference; do not silently drop the ring or treat its effect as zero. Confliction's one-handed history remains a separate task in the existing magic/remaining-model coverage. The explanation fix implements neither mechanic.
 
 ## Next implementation
 
-**Review EP1, then implement UX2**, under the complete assignments above. EP1 now supplies the catalogue-wide domain order, qualitative profiles and presentation contracts for review, retaining ordinary melee, UX completion and experimental KI1. Complete the coordinated visual advisor flow using that contract; actual-client calibration remains pending. R3b/R4 expansion, R1.5b observation and KI2/KI3 remain open without becoming gates to the first automatic effort-based advice.
+**Review EP1 #25, UX2 #26 and the AD1a candidate against their actual dependencies.** Complete AD1a reported-account/client verification and the named mechanic follow-ups; then deliver AD1b automatic supported acquisition hours and AD1c visible priority/UX completion under the assignments above. No merge is authorised by this implementation. Preserve ordinary melee, experimental KI1 and all pending client evidence. R3b/R4, observation and KI2/KI3 keep their concrete dependencies without replacing AD1 priority.
 
 ## Historical task snapshots and results
 

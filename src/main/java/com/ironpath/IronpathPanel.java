@@ -687,26 +687,35 @@ final class IronpathPanel extends PluginPanel
 			if(presentation.comparisonMetrics.stream().noneMatch(m->m.delta!=null)) { return; }
 		}
 		for(com.ironpath.advisor.UpgradePresentation.SlotChange change:presentation.changes.stream().limit(1).collect(java.util.stream.Collectors.toList())) {
-			label(parent,change.slot.equals("shield")?"Off-hand":change.slot.substring(0,1).toUpperCase(java.util.Locale.ROOT)+change.slot.substring(1));
+			label(parent,presentation.comparisonLabel);
+			if(presentation.setupChange) { text(parent,"Complete compatible setups; all changed equipment is listed below."); }
 			itemSummary(parent,"Before",change.beforeId,change.beforeName,current);
 			itemSummary(parent,"After",change.afterId,change.afterName,current);
 		}
 		if(presentation.changes.isEmpty()) { text(parent,"Compared with "+presentation.baseline); }
 		if(!presentation.contextLabel.isEmpty()) { text(parent,presentation.contextLabel); }
 		int index=0;
+		if(presentation.primaryMetric.delta!=null && presentation.primaryMetric.availability!=com.ironpath.advisor.UpgradePresentation.Availability.QUALITATIVE) {
+			label(parent,presentation.primaryMetric.headline());
+			JTextArea headline=(JTextArea)parent.getComponent(parent.getComponentCount()-1);headline.setName("detail-primary-result");
+			headline.setFont(parent.getFont().deriveFont(java.awt.Font.BOLD,parent.getFont().getSize2D()+4));
+			double gain=presentation.primaryMetric.delta;
+			headline.setForeground(gain>0?new java.awt.Color(137,218,156):gain<0?new java.awt.Color(255,160,160):parent.getForeground());
+		}
 		for(com.ironpath.advisor.UpgradePresentation.Metric metric:presentation.comparisonMetrics) {
 			boolean primary=index++==0;
 			if(!primary && metric.delta!=null && metric.delta==0) { continue; }
 			String title=metric.kind==ComparisonResult.Metric.THEORETICAL_DPS?"Theoretical DPS":metric.kind==ComparisonResult.Metric.MAX_HIT?"Max hit":"Hit chance";
 			String value=metric.delta==null?title+" not calculated":metric.kind==ComparisonResult.Metric.MAX_HIT
 				?String.format(java.util.Locale.ROOT,"%s  %.0f → %.0f  (%+.0f)",title,metric.before,metric.after,metric.delta)
+				:metric.kind==ComparisonResult.Metric.THEORETICAL_DPS?String.format(java.util.Locale.ROOT,"%s  %.2f → %.2f  (%s)",title,metric.before,metric.after,metric.absoluteDpsDelta())
 				:String.format(java.util.Locale.ROOT,"%s  %.2f → %.2f  (%+.2f%s)",title,metric.before,metric.after,metric.delta,metric.kind==ComparisonResult.Metric.HIT_CHANCE?" pp":"");
 			text(parent,value); JTextArea row=(JTextArea)parent.getComponent(parent.getComponentCount()-1); row.setName("detail-metric-"+metric.kind);
 			if(primary && metric.delta!=null && presentation.primaryMetric.availability!=com.ironpath.advisor.UpgradePresentation.Availability.QUALITATIVE) { row.setFont(parent.getFont().deriveFont(java.awt.Font.BOLD,parent.getFont().getSize2D()+2)); }
 			if(metric.delta!=null && metric.delta!=0) { row.setForeground(metric.delta>0?new java.awt.Color(137,218,156):new java.awt.Color(255,160,160)); }
 		}
 		for(com.ironpath.advisor.UpgradePresentation.SlotChange change:presentation.changes.stream().skip(1).collect(java.util.stream.Collectors.toList())) {
-			text(parent,change.slot+": "+change.beforeName+" → "+change.afterName);
+			text(parent,change.label+": "+change.beforeName+" → "+change.afterName);
 		}
 		if(presentation.beforeTicks!=null && !presentation.beforeTicks.equals(presentation.afterTicks)) {
 			text(parent,String.format(java.util.Locale.ROOT,"Attack interval %d → %d ticks (%.1f → %.1f s)",presentation.beforeTicks,presentation.afterTicks,presentation.beforeTicks*0.6,presentation.afterTicks*0.6));

@@ -29,7 +29,7 @@ The card itself opens details by mouse or keyboard with visible focus. Remove re
 
 Choose one concise, decision-relevant effort/priority explanation instead of concatenating badges. Group recurring ownership/account checks in a shared Account correction entry; “Check ownership” must not routinely replace effort or useful priority information on each card. Retain a specific card-level check when it materially changes interpretation, keeping unknown distinct from confirmed absence. A priority label must explain a difference, not merely repeat queue position.
 
-**DPS-first for ordinary offensive upgrades:** weapons, rings, gloves, armour and other offensive equipment lead with supported relative theoretical DPS change; max hit is an optional secondary result. This replaces the unchanged-speed max-hit-first rule. A zero baseline uses absolute DPS delta without a percentage. Details retain absolute before/after and delta. Missing DPS must not be concealed behind an oversized max-hit figure implying a complete comparison. Reviewed special-attack, comfort or other utility may lead when ordinary DPS does not describe the benefit. AD1a owns concrete model fixes as well as display selection.
+AD1a makes all ordinary offensive upgrades lead with supported relative theoretical DPS, including unchanged-speed armour/jewellery. Zero baseline uses absolute DPS change; details show absolute before/after/delta and secondary max hit. Multi-slot weapon/off-hand/ammunition changes are labelled as complete setups. Missing offensive DPS must not be concealed behind an oversized max-hit figure implying a complete comparison. Reviewed utility may be the primary result when ordinary DPS does not describe it.
 
 ### Shared reference and acquisition estimates
 

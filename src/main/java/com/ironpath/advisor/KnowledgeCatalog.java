@@ -60,7 +60,7 @@ public final class KnowledgeCatalog
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 12 || document.decisions == null
+		if (document.schemaVersion != 13 || document.decisions == null
 			|| document.decisions.isEmpty())
 		{
 			throw new IllegalArgumentException("Unsupported or incomplete PvM catalogue");
@@ -359,7 +359,7 @@ public final class KnowledgeCatalog
 			if (ranged.items.stream().filter(i -> i.weapon == family).anyMatch(w -> !RangedModel.compatible(w,ammo)))
 			{ throw new IllegalArgumentException("Invalid supplied candidate ammunition"); }
 		}
-		if (comparison == null || !"powered-magic-2".equals(comparison.modelVersion)
+		if (comparison == null || !"powered-magic-3".equals(comparison.modelVersion)
 			|| comparison.targets == null || comparison.targets.isEmpty()
 			|| comparison.items == null || comparison.items.isEmpty())
 		{ throw new IllegalArgumentException("Unsupported comparison contract"); }
@@ -400,6 +400,9 @@ public final class KnowledgeCatalog
 				|| (item.slot.equals("weapon") ? !Set.of("SEAS", "SWAMP", "SANG", "EYE", "SHADOW").contains(item.weapon == null ? "" : item.weapon) : item.weapon != null))
 			{ throw new IllegalArgumentException("Invalid supported slot metadata"); }
 			require(item.label); evidence(item.sources);
+			if (item.brimstoneEffect && (!item.slot.equals("ring") || item.unsupportedAccuracy
+				|| !item.sources.contains("r1-brimstone-ring")))
+			{ throw new IllegalArgumentException("Brimstone effect requires reviewed ring mechanics"); }
 			if (item.twoHanded != "SHADOW".equals(item.weapon)) { throw new IllegalArgumentException("Invalid hand compatibility"); }
 			if (item.requirements != null) { item.requirements.forEach((skill, level) -> {
 				if (!SKILLS.contains(skill) || level < 1 || level > 99) { throw new IllegalArgumentException("Invalid equip requirement"); }
@@ -872,7 +875,7 @@ public final class KnowledgeCatalog
 	{
 		public int id, magicAttack, damagePercent;
 		public Integer damagePermille;
-		public boolean twoHanded, historyEffect, unsupportedAccuracy;
+		public boolean twoHanded, historyEffect, unsupportedAccuracy, brimstoneEffect;
 		public Map<String, Integer> requirements;
 		public String label, slot, weapon;
 		public List<String> sources;

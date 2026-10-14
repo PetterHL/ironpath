@@ -125,4 +125,22 @@ public class UX2PanelTest
 			button("account-evidence").doClick();capture("large-font-account");button("Diagnostics").doClick();capture("large-font-diagnostics");
 		} catch(Exception e){throw new RuntimeException(e);} });
 	}
+	@Test public void ad1aDpsFirstAndCompletePackageChangesRemainReadableAtNativeWidth() throws Exception {
+		SwingUtilities.invokeAndWait(()->{try {
+			for(float font:List.of(12f,20f)) {
+				account=AD1aComparisonTest.brimstoneFixture();reference=null;panel=new IronpathPanel();panel.setFont(panel.getFont().deriveFont(font));render();
+				button("Browse").doClick();button("open-upgrade-magus-ring").doClick();
+				assertTrue(shown().contains("% DPS"));assertTrue(shown().contains("Brimstone ring"));
+				assertFalse(shown().contains("Theoretical DPS not calculated"));
+				assertTrue(shown().indexOf("Max hit")<0 || shown().indexOf("Theoretical DPS")<shown().indexOf("Max hit"));capture("ad1a-magus-"+(int)font);
+				account=AD1aComparisonTest.bucklerFixture();panel=new IronpathPanel();panel.setFont(panel.getFont().deriveFont(font));render();
+				button("Browse").doClick();button("open-upgrade-twisted-buckler").doClick();
+				assertTrue(shown().contains("Setup change"));assertFalse(shown().contains("Theoretical DPS not calculated"));
+				assertTrue(shown().contains("Blazing blowpipe"));assertTrue(shown().contains("Rune crossbow"));
+				assertTrue(shown().contains("Twisted buckler"));assertTrue(shown().contains("Dragon dart"));
+				assertTrue(shown().contains("No loaded darts"));assertTrue(shown().contains("Runite bolts"));
+				capture("ad1a-buckler-"+(int)font);
+			}
+		} catch(Exception e){throw new RuntimeException(e);} });
+	}
 }

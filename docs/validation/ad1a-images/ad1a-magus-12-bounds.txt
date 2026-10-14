@@ -1,0 +1,10 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] Magus ring
+null java.awt.Rectangle[x=6,y=150,width=213,height=24] Ring
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] Before: Brimstone ring
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] After: Magus ring
+detail-primary-result java.awt.Rectangle[x=6,y=254,width=213,height=32] <0.1% DPS gain
+detail-metric-THEORETICAL_DPS java.awt.Rectangle[x=6,y=286,width=213,height=52] Theoretical DPS  7.20 → 7.20  (gain <0.01)
+detail-metric-HIT_CHANCE java.awt.Rectangle[x=6,y=338,width=213,height=24] Hit chance  98.54 → 98.57  (+0.04 pp)
+null java.awt.Rectangle[x=6,y=362,width=213,height=24] Why this position
+null java.awt.Rectangle[x=6,y=386,width=213,height=64] Small or no ordinary gain over Brimstone ring. Acquisition suitability still needs checking.
