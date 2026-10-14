@@ -28,7 +28,15 @@ The matching before/after account is `R2AdviceTest.postBowfa()` with `R15Fixture
 
 `R3PanelTest` adds six regressions for combined search/category/reset and deterministic order; retained live editor/caret and stale result actions; Path/Back and observation refresh; lifecycle clearing and old controls; independent Overview/Browse anchors and filter reset to top; native/enlarged-font empty states; and Back after an earlier upgrade disappears. Related checks share fixtures within these tests. Existing panel, preference/observation lifecycle, recommendation and numeric regressions remain.
 
-Baseline: JDK 11 / Gradle 8.10 / RuneLite 1.13.1 `test build --no-daemon` passed **232 tests**. Final build on Debian 13.6 / Temurin 11.0.32.1+1 / Gradle 8.10 / RuneLite 1.13.1 passes **238 tests, zero failures/errors/skips**, retaining all **1,944** original ranged oracle cases. `git diff --check` passes. The headless environment emits font-cache and existing Gradle deprecation notices; neither prevents the checks. No new dependency, combat mechanic or source retrieval is introduced.
+Baseline: JDK 11 / Gradle 8.10 / RuneLite 1.13.1 `test build --no-daemon` passed **232 tests**. The initial UX delivery at `b18351c` passed **238 tests, zero failures/errors/skips**, retaining all **1,944** original ranged oracle cases. The headless environment emits font-cache and existing Gradle deprecation notices; neither prevents the checks. No new dependency, combat mechanic or source retrieval is introduced.
+
+## Review corrections — 14 October 2026
+
+Two new control tests fail against the initial delivery: an account refresh moves the active search caret from position **2 to 15**, losing a backwards selection, and deferred anchor restoration moves a newly searched list from **0 to 81 pixels**. The original typing-only caret test did not exercise full observation refreshes.
+
+Full renders now capture both search-caret ends and restore them synchronously before attaching the new field's document listener. Selection direction and insertion/replacement positions survive observation updates; lifecycle clearing resets both ends. Deferred account restoration uses the same view/account/result-generation checks as navigation, so a subsequent search invalidates the old callback. Read-only labels allow caret-driven scrolling only while focused, preventing their own deferred repaint from displacing fresh results; intentional focused text selection retains normal scrolling.
+
+The two regressions check replacement of a backwards selection, subsequent insertion in the middle after another update, and the final top position after queued callbacks drain. Existing lifecycle coverage also checks selection clearing. Final Debian 13.6 / Temurin 11.0.32.1+1 / Gradle 8.10 / RuneLite 1.13.1 `test build --no-daemon` passes **240 tests, zero failures/errors/skips**, including the unchanged **1,944** original ranged oracle cases. `git diff --check` passes. Captures above retain their initial delivery context; these fixes do not change the layout. Actual-client focus/scaling and player acceptance remain pending.
 
 ## PC acceptance — pending
 

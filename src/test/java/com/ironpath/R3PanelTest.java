@@ -266,7 +266,7 @@ public class R3PanelTest
 		JTextField[] old=new JTextField[1]; JButton[] clear=new JButton[1];
 		SwingUtilities.invokeAndWait(()->{
 			button("Specialist").doClick(); clear[0]=button("Clear filters");
-			old[0]=(JTextField)named("browse-search"); old[0].setText("venator");
+			old[0]=(JTextField)named("browse-search"); old[0].setText("venator"); old[0].setCaretPosition(6); old[0].moveCaretPosition(2);
 			panel.render("Account changed",null,List.of(),catalog,null,Preferences.EMPTY,null,"",List.of());
 			clear[0].doClick(); old[0].setText("twisted");
 		});
@@ -276,6 +276,8 @@ public class R3PanelTest
 			assertNotNull(named("homepage-deck")); button("Browse").doClick();
 			assertEquals("All",((JComboBox<?>)named("browse-category")).getSelectedItem());
 			assertEquals("",((JTextField)named("browse-search")).getText());
+			assertEquals(0,((JTextField)named("browse-search")).getCaret().getDot());
+			assertEquals(0,((JTextField)named("browse-search")).getCaret().getMark());
 		});
 	}
 	@Test public void overviewAndBrowseKeepIndependentAnchorsAndFiltersStartAtTop() throws Exception
@@ -339,6 +341,40 @@ public class R3PanelTest
 			int after=SwingUtilities.convertPoint(named("upgrade-card-necklace-of-anguish"),0,0,panel).y;
 			assertTrue("Owning tormented removes an earlier card",after<before[0]);
 			assertEquals(after+5,scroll.getViewport().getViewPosition().y);
+		});
+	}
+	@Test public void accountRefreshPreservesSearchCaretSelectionAndReplacementPosition() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			button("Browse").doClick();
+			JTextField search=(JTextField)named("browse-search"); search.setText("zaryte crossbow");
+			// A backwards selection must preserve its active end, not just the sorted bounds.
+			search.setCaretPosition(6); search.moveCaretPosition(2);
+			account=items(account,19544); render();
+			JTextField refreshed=(JTextField)named("browse-search");
+			assertEquals(2,refreshed.getCaret().getDot()); assertEquals(6,refreshed.getCaret().getMark());
+			assertEquals("ryte",refreshed.getSelectedText());
+			refreshed.replaceSelection("X"); assertEquals("zaX crossbow",refreshed.getText());
+			refreshed.setCaretPosition(2); account=items(account,12002); render();
+			JTextField next=(JTextField)named("browse-search"); assertEquals(2,next.getCaretPosition());
+			next.replaceSelection("Y"); assertEquals("zaYX crossbow",next.getText());
+		});
+	}
+	@Test public void deferredAccountAnchorCannotOverrideNewSearchScroll() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{ button("Browse").doClick(); size(); scroll.setSize(242,600); layout(scroll); size(); });
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			scroll.getViewport().setViewPosition(new Point(0,81));
+			// Queue restoration from the old result set, then type before that callback runs.
+			account=items(account,19544); render(); size();
+			((JTextField)named("browse-search")).setText("zaryte"); size();
+			assertEquals(0,scroll.getViewport().getViewPosition().y);
+		});
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			assertEquals("zaryte",((JTextField)named("browse-search")).getText());
+			assertEquals(2,cardIds().size()); assertEquals(0,scroll.getViewport().getViewPosition().y);
 		});
 	}
 }

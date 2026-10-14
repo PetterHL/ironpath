@@ -39,6 +39,8 @@ final class IronpathPanel extends PluginPanel
 	private boolean pathDetail, browse;
 	private String category = "All", returnFocus;
 	private String query = "";
+	private JTextField searchField;
+	private int searchDot, searchMark;
 	private Anchor homeAnchor, browseAnchor, detailAnchor;
 	private long view, browseResultsView;
 	private Runnable refresh;
@@ -76,6 +78,10 @@ final class IronpathPanel extends PluginPanel
 	{
 		List<Advisor.UpgradeView> upgrades = overview.all;
 		if (!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
+		if (snapshot!=null && searchField!=null && query.equals(searchField.getText())) {
+			searchDot=searchField.getCaret().getDot(); searchMark=searchField.getCaret().getMark();
+		}
+		searchField=null;
 		javax.swing.JViewport liveViewport=(javax.swing.JViewport)SwingUtilities.getAncestorOfClass(javax.swing.JViewport.class,this);
 		Anchor updateAnchor=snapshot!=null && renderedOverview!=null && overview!=renderedOverview && detail==null ? captureAnchor(liveViewport) : null;
 		boolean lostDetail=snapshot!=null && detail!=null && upgrades.stream().noneMatch(u -> u.upgrade.id.equals(detail))
@@ -84,7 +90,7 @@ final class IronpathPanel extends PluginPanel
 		renderedOverview=snapshot==null ? null : overview;
 		long currentView = ++view;
 		refresh = () -> render(status, snapshot, advice, catalog, goal, preferences, actions, storageStatus, reasons, overview, reference);
-		if (snapshot == null) { pathDetail = false; homeAnchor = browseAnchor = detailAnchor = null; browse = false; category = "All"; query = ""; returnFocus = null; }
+		if (snapshot == null) { pathDetail = false; homeAnchor = browseAnchor = detailAnchor = null; browse = false; category = "All"; query = ""; searchDot=searchMark=0; returnFocus = null; }
 		if (snapshot == null || upgrades.stream().noneMatch(u -> u.upgrade.id.equals(detail))
 			&& overview.activities.stream().noneMatch(a -> ("activity:" + a.id).equals(detail))) { detail = null; }
 		removeAll(); setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -144,7 +150,7 @@ final class IronpathPanel extends PluginPanel
 		if (snapshot==null) { text(this,"Open the bank after login to improve account evidence."); }
 		revalidate(); repaint();
 		if (updateAnchor!=null && liveViewport!=null)
-		{ Anchor anchor=updateAnchor; SwingUtilities.invokeLater(()->{ if(valid(currentView,actions)) { restoreAnchor(liveViewport,anchor); } }); }
+		{ restoreNavigation(liveViewport,updateAnchor,null,currentView,actions); }
 	}
 
 	private void navigate(String id, long expectedView, Actions actions)
@@ -262,6 +268,7 @@ final class IronpathPanel extends PluginPanel
 		button(this, "Overview", () -> switchList(false,expectedView,actions)).setName("browse-overview");
 		text(this,"Search upgrades");
 		JTextField search=new JTextField(query); search.setName("browse-search"); search.setFont(getFont());
+		search.setCaretPosition(Math.min(searchMark,query.length())); search.moveCaretPosition(Math.min(searchDot,query.length())); searchField=search;
 		search.setForeground(ColorScheme.TEXT_COLOR); search.setBackground(ColorScheme.DARKER_GRAY_COLOR); search.setCaretColor(ColorScheme.TEXT_COLOR);
 		search.setAlignmentX(LEFT_ALIGNMENT); search.setMaximumSize(new Dimension(Integer.MAX_VALUE,search.getPreferredSize().height));
 		search.getAccessibleContext().setAccessibleName("Search upgrades by item name"); add(search);
@@ -795,6 +802,11 @@ final class IronpathPanel extends PluginPanel
 	{
 		JTextArea text = new JTextArea(message)
 		{
+			@Override public void scrollRectToVisible(java.awt.Rectangle bounds)
+			{
+				// A newly rendered label's deferred caret repaint must not scroll the result list.
+				if (isFocusOwner()) { super.scrollRectToVisible(bounds); }
+			}
 			@Override public Dimension getPreferredSize()
 			{
 				int width = getParent() == null || getParent().getWidth() <= 0 ? 201 : Math.max(1, getParent().getWidth() - getParent().getInsets().left - getParent().getInsets().right);
