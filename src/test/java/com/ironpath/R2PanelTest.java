@@ -65,9 +65,9 @@ public class R2PanelTest
 				@SuppressWarnings("unchecked") JComboBox<Object> target=(JComboBox<Object>)children(panel).stream().filter(c->"reference-target".equals(c.getName())).findFirst().orElseThrow();
 				for(int i=0;i<target.getItemCount();i++){if(target.getItemAt(i).toString().contains("Zilyana")){target.setSelectedIndex(i);}}
 				button("Apply target").doClick();assertEquals("zilyana",ranged.target);assertEquals("neutral-zero-defence",magic.target);
-				button("Path").doClick();assertTrue(text().contains("Hours not estimated")||text().contains("Remaining effort"));capture("tbow-path");
-				button("Back to upgrades").doClick();open("necklace-of-anguish");button("Path").doClick();assertTrue(text().contains("92 Crafting"));assertFalse(text().contains("Bracelet mould"));capture("anguish-path");
-				button("Back to upgrades").doClick();account=R15Fixtures.items(account,12926);ranged=ranged.edit("weapon","12926").edit("loaded-ammo","-1");render();open("twisted-bow");
+				button("Acquisition").doClick();assertTrue(text().contains("Hours not estimated")||text().contains("Remaining effort"));capture("tbow-path");
+				button("← Upgrades").doClick();open("necklace-of-anguish");button("Acquisition").doClick();assertTrue(text().contains("92 Crafting"));assertFalse(text().contains("Bracelet mould"));capture("anguish-path");
+				button("← Upgrades").doClick();account=R15Fixtures.items(account,12926);ranged=ranged.edit("weapon","12926").edit("loaded-ammo","-1");render();open("twisted-bow");
 				assertTrue(text().contains("DPS not calculated")||text().contains("DPS and hit chance gap"));assertTrue(text().contains("unobserved")||text().contains("not observed"));capture("ammo-gap");
 			}
 			catch(Exception e){throw new RuntimeException(e);}

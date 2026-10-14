@@ -62,9 +62,9 @@ public class R15PanelTest
 				open("tumekens-shadow").doClick();
 				assertTrue(text().indexOf("Theoretical DPS")<text().indexOf("Max hit  "));
 				assertTrue(text().contains("4 → 5 ticks (2.4 → 3.0 s)"));capture("neutral-weapon-value");
-				button("Back to upgrades").doClick();open("ancestral-hat").doClick();
+				button("← Upgrades").doClick();open("ancestral-hat").doClick();
 				assertTrue(text().indexOf("Theoretical DPS")<text().indexOf("Max hit  "));capture("neutral-armour-value");
-				button("Back to upgrades").doClick();reference=reference.edit("hands","31106");render();
+				button("← Upgrades").doClick();reference=reference.edit("hands","31106");render();
 				assertTrue(text().contains("DPS not calculated"));open("tumekens-shadow").doClick();
 				assertTrue(text().contains("Before: confliction gauntlets: one-handed miss-history reroll"));
 				assertFalse(text().contains("Brimstone ring: accuracy proc"));
@@ -84,7 +84,7 @@ public class R15PanelTest
 					open(id).doClick();
 					assertFalse(text().contains("Theoretical DPS not calculated"));
 					assertTrue(text().indexOf("Theoretical DPS")<text().indexOf("Max hit  "));
-					capture("brimstone-supported-"+id);button("Back to upgrades").doClick();
+					capture("brimstone-supported-"+id);button("← Upgrades").doClick();
 				}
 			}
 			catch(Exception failure){throw new RuntimeException(failure);}
@@ -97,14 +97,14 @@ public class R15PanelTest
 			{
 				assertNotNull(button("Long-term"));capture("overview");button("Browse").doClick();capture("browse");
 				assertEquals(advisor.upgrades(account,preferences).size(),children(panel).stream().filter(c->c.getName()!=null&&c.getName().startsWith("open-upgrade-")).count());
-				open("tormented-bracelet").doClick();capture("value");button("Path").doClick();assertTrue(text().contains("Mean 300 kills"));assertTrue(text().contains("hours not estimated"));capture("path-kills");
+				open("tormented-bracelet").doClick();capture("value");button("Acquisition").doClick();assertTrue(text().contains("Mean 300 kills"));assertTrue(text().contains("hours not estimated"));capture("path-kills");
 				button("Estimate basis and route evidence").doClick();JTextField input=children(panel).stream().filter(c->"pace-input".equals(c.getName())).map(c->(JTextField)c).findFirst().orElseThrow();input.setText("40");button("Apply pace").doClick();
 				assertTrue(text().contains("Estimated mean 7.5–7.5 h"));assertTrue(text().contains("17.3 h"));assertTrue(text().contains("not a completed tormented bracelet"));capture("path-hours");
 				button("Clear pace").doClick();assertNull(pace);assertTrue(text().contains("hours not estimated"));
-				button("Back to upgrades").doClick();button("Shared activities").doClick();children(panel).stream().filter(c->"open-activity:chambers-of-xeric/ordinary".equals(c.getName())).map(c->(JButton)c).findFirst().orElseThrow().doClick();
-				assertTrue(text().contains("Useful missing reward: Rigour"));assertTrue(text().contains("one dependent armour family"));capture("activity");button("Back to upgrades").doClick();
+				button("← Upgrades").doClick();button("Shared activities").doClick();children(panel).stream().filter(c->"open-activity:chambers-of-xeric/ordinary".equals(c.getName())).map(c->(JButton)c).findFirst().orElseThrow().doClick();
+				assertTrue(text().contains("Useful missing reward: Rigour"));assertTrue(text().contains("one dependent armour family"));capture("activity");button("← Upgrades").doClick();
 				open("tumekens-shadow").doClick();reference=reference.edit("target","toa");render();assertTrue(text().contains("Theoretical DPS not calculated"));capture("unsupported");
-				button("Back to upgrades").doClick();button("Overview").doClick();preferences=Preferences.EMPTY;render();capture("unknown");
+				button("← Upgrades").doClick();button("Recommended").doClick();preferences=Preferences.EMPTY;render();capture("unknown");
 				preferences=absent(catalog);account=items(developed(true),12002,19544,28313,21018,21021,21024,26374,31097);account=items(account,catalog.upgrades.stream().mapToInt(u->u.itemId).toArray());reference=new PoweredMagic(catalog).propose(account, "graardor");render();capture("empty");
 				assertTrue(text().contains("No remaining supported upgrade"));
 			}
@@ -141,7 +141,7 @@ public class R15PanelTest
 		SwingUtilities.invokeAndWait(()->{
 			button("Browse").doClick();JComboBox<?> filter=children(panel).stream().filter(c->"browse-category".equals(c.getName())).map(c->(JComboBox<?>)c).findFirst().orElseThrow();filter.setSelectedItem("Long-term");
 			JButton shadow=open("tumekens-shadow");assertNotNull(shadow.getAccessibleContext().getAccessibleName());assertNotNull(shadow.getInputMap().get(KeyStroke.getKeyStroke("ENTER")));
-			shadow.getActionMap().get("open-card").actionPerformed(new java.awt.event.ActionEvent(shadow,0,""));JButton oldPath=button("Path");button("Back to upgrades").doClick();
+			shadow.getActionMap().get("open-card").actionPerformed(new java.awt.event.ActionEvent(shadow,0,""));JButton oldPath=button("Acquisition");button("← Upgrades").doClick();
 			assertTrue(text().contains("Long-term"));oldPath.doClick();assertFalse(text().contains("Acquisition paths"));
 			panel.render("Account changed",null,List.of(),catalog,null,Preferences.EMPTY,null,"",List.of());shadow.doClick();oldPath.doClick();assertFalse(text().contains("Tumeken"));
 		});

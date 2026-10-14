@@ -1,0 +1,12 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] Tumeken's shadow
+null java.awt.Rectangle[x=6,y=156,width=213,height=24] Weapon
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=44] Before: trident of the swamp
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] After: Tumeken's shadow
+detail-metric-THEORETICAL_DPS java.awt.Rectangle[x=6,y=264,width=213,height=24] Theoretical DPS not calculated
+detail-metric-MAX_HIT java.awt.Rectangle[x=6,y=288,width=213,height=24] Max hit  34 → 46  (+12)
+detail-metric-HIT_CHANCE java.awt.Rectangle[x=6,y=312,width=213,height=24] Hit chance not calculated
+null java.awt.Rectangle[x=6,y=336,width=213,height=24] Attack interval 4 → 5 ticks (2.4 → 3.0 s)
+null java.awt.Rectangle[x=6,y=360,width=213,height=64] Before: confliction gauntlets: one-handed miss-history reroll is not modelled.
+null java.awt.Rectangle[x=6,y=424,width=213,height=24] Why this position
+null java.awt.Rectangle[x=6,y=448,width=213,height=84] Personal gain not established; very long remaining effort. A supported comparison is needed before claiming personal offensive gain.

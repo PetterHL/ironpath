@@ -113,7 +113,7 @@ Show component progress such as an observed quantity against its requirement onl
 
 ## Progression intelligence contract (version `progression-2`, selected)
 
-**EP1 domain implementation for review; UX2 rendering pending.** R3a delivered the earlier `progression-1` baseline. This contract supersedes its importance-before-burden ordering and discovery insertion, as well as older `pursuit-1` ordering. Preserve historical implementation and regression evidence; update behavioural expectations only where this explicit policy change requires it. [Thirty checked relationships and the code assessment](PROGRESSION_RESEARCH.md) are the evidence; TASKS EP1/UX2 own the next migration; R3–R6 retain broader relationship and model coverage. This is an extension of the current engine, not another reset.
+**EP1 domain and UX2 / AD1c rendering implemented for review; client acceptance pending.** R3a delivered the earlier `progression-1` baseline. This contract supersedes its importance-before-burden ordering and discovery insertion, as well as older `pursuit-1` ordering. Preserve historical implementation and regression evidence; update behavioural expectations only where this explicit policy change requires it. [Thirty checked relationships and the code assessment](PROGRESSION_RESEARCH.md) are the evidence; TASKS EP1/UX2 own the next migration; R3–R6 retain broader relationship and model coverage. This is an extension of the current engine, not another reset.
 
 ### Independent assessment
 

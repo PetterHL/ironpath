@@ -70,7 +70,7 @@ public class UpgradePanelTest
 			assertEquals(0,children(panel).stream().filter(c->c instanceof JButton&&"Open details".equals(((JButton)c).getText())).count());
 			assertTrue(visible(button("Browse")));
 			assertTrue(children(panel).stream().anyMatch(c->c.getName()!=null&&c.getName().startsWith("open-upgrade-")&&visible(c)));
-			assertTrue(children(panel).stream().noneMatch(c->c instanceof JButton&&"Set goal".equals(((JButton)c).getText())));assertTrue(visible(button("Account and preferences")));
+			assertTrue(children(panel).stream().noneMatch(c->c instanceof JButton&&"Set goal".equals(((JButton)c).getText())));assertTrue(visible(button("Account")));
 			for(Component c:children(panel))
 			{
 				if(c instanceof JTextArea){assertTrue(((JTextArea)c).getLineWrap());assertTrue(c.getWidth()<=PluginPanel.PANEL_WIDTH);}
@@ -82,12 +82,14 @@ public class UpgradePanelTest
 	@Test public void actualDetailsBackAndTargetedConfirmClearUpdateTheOutcome() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{
-			open("swamp-trident").doClick();assertTrue(visible(button("Back to upgrades")));assertTrue(text().contains("25 → 28"));
-			button("Confirm not owned").doClick();assertFalse(preferences.confirmations.get("owns-swampOrBetter").value);
-			button("Clear confirmation").doClick();assertFalse(preferences.confirmations.containsKey("owns-swampOrBetter"));
-			button("Already owned").doClick();assertTrue(preferences.confirmations.get("owns-swampOrBetter").value);
+			open("swamp-trident").doClick();assertTrue(visible(button("← Upgrades")));assertTrue(text().contains("25 → 28"));
+			button("Account corrections").doClick();
+			children(panel).stream().filter(c->("account-check-owns-swampOrBetter").equals(c.getName())).map(c->(JButton)c).findFirst().orElseThrow().doClick();
+			button("Not owned / locked").doClick();assertFalse(preferences.confirmations.get("owns-swampOrBetter").value);
+			button("Clear selected fact").doClick();assertFalse(preferences.confirmations.containsKey("owns-swampOrBetter"));
+			button("Owned / unlocked").doClick();assertTrue(preferences.confirmations.get("owns-swampOrBetter").value);
 			assertFalse(advisor.upgrades(account,preferences).stream().anyMatch(v->v.upgrade.id.equals("swamp-trident")));
-			open("occult-necklace").doClick();button("Back to upgrades").doClick();assertTrue(visible(button("Account and preferences")));
+			button("← Upgrades").doClick();open("occult-necklace").doClick();button("← Upgrades").doClick();assertTrue(visible(button("Account")));
 		});
 	}
 
@@ -116,15 +118,15 @@ public class UpgradePanelTest
 			{
 				account=com.ironpath.advisor.R1AdviceTest.postBowfa(false);setup=new PoweredMagic(catalog).propose(account);render();capture("r1-overview.png");
 				open("tumekens-shadow").doClick();assertTrue(text().contains("Off-hand:") && text().contains("Empty shield"));capture("r1-value.png");
-				button("Path").doClick();assertTrue(text().contains("Beneath Cursed Sands"));assertFalse(text().contains("Theoretical DPS  "));capture("r1-path.png");
-				button("Value").doClick();setup=setup.edit("target","toa");render();assertTrue(text().contains("no default invocation"));capture("r1-unsupported.png");
-				button("Back to upgrades").doClick();assertTrue(visible(button("Account and preferences")));
-				setup=setup.edit("target","graardor");render();open("magus-ring").doClick();button("Path").doClick();assertTrue(text().contains("ALL/ANY"));capture("r1-assembly-path.png");
+				button("Acquisition").doClick();assertTrue(text().contains("Beneath Cursed Sands"));assertFalse(text().contains("Theoretical DPS  "));capture("r1-path.png");
+				button("Impact").doClick();setup=setup.edit("target","toa");render();assertTrue(text().contains("no default invocation"));capture("r1-unsupported.png");
+				button("← Upgrades").doClick();assertTrue(visible(button("Account")));
+				setup=setup.edit("target","graardor");render();open("magus-ring").doClick();button("Acquisition").doClick();assertTrue(text().contains("ALL/ANY"));capture("r1-assembly-path.png");
 				AccountSnapshot base=account;java.util.Set<Integer> items=new java.util.HashSet<>(base.bank.value());items.addAll(Set.of(11785,26372));
 				account=new AccountSnapshot(base.levels,base.inventory,base.equipment,fact(items),base.rigour,base.augury,base.facts,
 					com.ironpath.model.Observation.unknown(),com.ironpath.model.Observation.unknown(),com.ironpath.model.Observation.unknown(),fact(java.util.Map.of(26231,120L)));
-				setup=new PoweredMagic(catalog).propose(account);render();button("Back to upgrades").doClick();open("zaryte-crossbow").doClick();
-				assertTrue(text().contains("specialist role"));button("Path").doClick();button("Estimate basis and route evidence").doClick();capture("r1-zaryte-path.png");
+				setup=new PoweredMagic(catalog).propose(account);render();button("← Upgrades").doClick();open("zaryte-crossbow").doClick();
+				assertTrue(text().contains("specialist role"));button("Acquisition").doClick();button("Estimate basis and route evidence").doClick();capture("r1-zaryte-path.png");
 			}
 			catch(Exception failure){throw new RuntimeException(failure);}
 		});
@@ -135,7 +137,7 @@ public class UpgradePanelTest
 		SwingUtilities.invokeAndWait(()->{
 			holder[0]=new javax.swing.JScrollPane(panel);holder[0].setSize(PluginPanel.PANEL_WIDTH,600);
 			panel.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH,4000));holder[0].doLayout();holder[0].getViewport().setViewPosition(new java.awt.Point(0,350));
-			open("swamp-trident").doClick();oldPath[0]=button("Path");button("Back to upgrades").doClick();
+			open("swamp-trident").doClick();oldPath[0]=button("Acquisition");button("← Upgrades").doClick();
 		});
 		SwingUtilities.invokeAndWait(()->{
 			assertEquals(350,holder[0].getViewport().getViewPosition().y);

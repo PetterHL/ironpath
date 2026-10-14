@@ -1,0 +1,7 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+null java.awt.Rectangle[x=6,y=128,width=213,height=38] Your account
+null java.awt.Rectangle[x=6,y=166,width=213,height=72] Attack 99 · Strength 99 · Defence 99
+null java.awt.Rectangle[x=6,y=238,width=213,height=72] Ranged 99 · Magic 99 · Prayer 99
+null java.awt.Rectangle[x=6,y=310,width=213,height=72] Rigour: not unlocked · Augury: not unlocked
+null java.awt.Rectangle[x=6,y=382,width=213,height=106] Bank recorded this session; reopen it after changes.
+null java.awt.Rectangle[x=6,y=854,width=213,height=174] Planning choices are saved locally; observed gear and reference setups stay in session memory.
