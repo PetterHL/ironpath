@@ -127,11 +127,13 @@ public class FullLoadoutMagicTest
 			AccountSnapshot a=account(new HashSet<>(slots.values()),99,99);
 			CombatSetup s=new CombatSetup(slots,PoweredMagic.Prayer.NONE,PoweredMagic.Boost.NONE,PoweredMagic.Style.ACCURATE,false,false,"neutral-zero-defence",Map.of());
 			ComparisonResult r=service.compare(a,Preferences.EMPTY,s,27275);
-			assertTrue(r.available(MAX_HIT)); assertFalse(r.available(HIT_CHANCE)); assertFalse(r.available(THEORETICAL_DPS));
+			assertTrue(r.available(MAX_HIT));
+			if (mode==0) { assertTrue(r.available(HIT_CHANCE));assertTrue(r.available(THEORETICAL_DPS));assertTrue(r.gaps.isEmpty());continue; }
+			assertFalse(r.available(HIT_CHANCE));assertFalse(r.available(THEORETICAL_DPS));
 			assertFalse(r.gaps.containsKey(MAX_HIT)); assertTrue(Double.isNaN(r.dpsGain()));
 			String gap=r.gaps.get(THEORETICAL_DPS);
-			assertEquals(mode!=1,gap.contains("Before and after: Brimstone ring: accuracy proc"));
-			assertEquals(mode!=0,gap.contains("Before: confliction gauntlets: one-handed accuracy stacks"));
+			assertFalse(gap.contains("Brimstone ring: accuracy proc"));
+			assertEquals(mode!=0,gap.contains("Before: confliction gauntlets: one-handed miss-history reroll"));
 			assertFalse(gap.contains("After: confliction"));
 			assertEquals(gap,r.gaps.get(HIT_CHANCE));
 		}

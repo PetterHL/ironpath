@@ -115,7 +115,7 @@ public class UpgradePanelTest
 			try
 			{
 				account=com.ironpath.advisor.R1AdviceTest.postBowfa(false);setup=new PoweredMagic(catalog).propose(account);render();capture("r1-overview.png");
-				open("tumekens-shadow").doClick();assertTrue(text().contains("shield:") && text().contains("Empty shield"));capture("r1-value.png");
+				open("tumekens-shadow").doClick();assertTrue(text().contains("Off-hand:") && text().contains("Empty shield"));capture("r1-value.png");
 				button("Path").doClick();assertTrue(text().contains("Beneath Cursed Sands"));assertFalse(text().contains("Theoretical DPS  "));capture("r1-path.png");
 				button("Value").doClick();setup=setup.edit("target","toa");render();assertTrue(text().contains("no default invocation"));capture("r1-unsupported.png");
 				button("Back to upgrades").doClick();assertTrue(visible(button("Account and preferences")));

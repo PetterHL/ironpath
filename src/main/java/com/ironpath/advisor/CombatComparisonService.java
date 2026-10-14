@@ -68,12 +68,20 @@ public final class CombatComparisonService
 			// a two-handed replacement explicitly removes it by compatibility.
 			List<Integer> shieldOptions = !weapon.twoHanded && (slots.get("shield") < 0 || slots.get("shield") > 0 && !items.containsKey(slots.get("shield")))
 				? List.of(slots.get("shield")) : shields;
-			for (int shield : shieldOptions)
+			// The proc makes flat ring accuracy an insufficient ordering rule.
+			List<Integer> rings = items.values().stream().filter(i -> i.slot.equals("ring")
+				&& a.observedItem(i.id) == Truth.TRUE && equipError(a, Preferences.EMPTY, i.id) == null)
+				.sorted(Comparator.comparingInt(i -> i.id)).map(i -> i.id).collect(Collectors.toList());
+			if (slots.get("ring") < 0 || slots.get("ring") > 0 && !items.containsKey(slots.get("ring")))
+			{ rings = List.of(slots.get("ring")); }
+			else { rings.add(0); }
+			for (int shield : shieldOptions) for (int ring : rings)
 			{
-				Map<String, Integer> candidate = new LinkedHashMap<>(slots); candidate.put("weapon", weapon.id); candidate.put("shield", shield);
+				Map<String, Integer> candidate = new LinkedHashMap<>(slots); candidate.put("weapon", weapon.id); candidate.put("shield", shield); candidate.put("ring", ring);
 				Map<String, String> origins = new LinkedHashMap<>(provenance);
 				origins.put("weapon", "Strongest supported observed staff package for this target; " + a.itemEvidence(weapon.id));
 				origins.put("shield", weapon.twoHanded ? "Removed for two-handed reference" : shield == 0 ? "Explicit empty off-hand reference alternative" : "Contextually compared observed off-hand; " + a.itemEvidence(shield));
+				origins.put("ring", ring == 0 ? "Explicit empty ring alternative" : "Contextually compared observed ring including supported effects; " + a.itemEvidence(ring));
 				PoweredMagic.Setup option = new PoweredMagic.Setup(candidate, proposal.prayer, proposal.boost, proposal.style, false, false, proposal.target, origins);
 				if (candidate.values().stream().anyMatch(id -> id < 0 || id > 0 && !items.containsKey(id))) { continue; }
 				Integer level = a.level("MAGIC"); if (level == null) { continue; }
@@ -202,8 +210,8 @@ public final class CombatComparisonService
 			+ (before.attackTicks * 0.6) + " → " + (after.attackTicks * 0.6) + " seconds); DPS uses expected damage and hit chance.");
 		assumptions.add("Sang's current successful-hit proc: 20% adds 8 damage before the final zero floor; the reported max includes that proc. Healing is not converted into trips or extra kills.");
 		assumptions.add("Sang healing, Eye specials, Confliction history, ancient/elemental spells, ToA scaling, encounter time and trips remain separate model gaps.");
-		if (a.observedItem(22975) == Truth.TRUE && !setup.slots.containsValue(22975))
-		{ assumptions.add("Observed Brimstone is a competing ring: its accuracy proc is unsupported. This reference uses the strongest supported flat-stat alternative; it does not certify Brimstone inferior."); }
+		if (List.of(setup,afterSetup).stream().anyMatch(s -> s.slots.values().stream().filter(id -> id > 0).anyMatch(id -> items.get(id).brimstoneEffect)))
+		{ assumptions.add("Brimstone: each ordinary magic attack has a 25% chance to use floor(0.9 × target defence roll). Hit chance is the weighted mixture of ordinary and proc accuracy, independently for before and after. It does not drain Magic or permanently reduce the target. Confliction one-handed history remains unsupported."); }
 		assumptions.add("Model " + catalog.comparison.modelVersion + "; knowledge " + catalog.version + "; sources " + sourceDescription(setup, afterSetup, target));
 		return new ComparisonResult(setup, afterSetup, before, after, target, support, reason, catalog.comparison.modelVersion, catalog.version, assumptions,
 			candidate.weapon != null || before.attackTicks != after.attackTicks, gaps);
@@ -217,7 +225,7 @@ public final class CombatComparisonService
 			KnowledgeCatalog.CombatItem item = items.get(id);
 			if (item.unsupportedAccuracy) { result.add(item.label + ": accuracy proc is not modelled."); }
 			if (item.historyEffect && !items.get(setup.slots.get("weapon")).twoHanded)
-			{ result.add(item.label + ": one-handed accuracy stacks are not modelled."); }
+			{ result.add(item.label + ": one-handed miss-history reroll is not modelled."); }
 		}
 		return result;
 	}
