@@ -18,19 +18,22 @@ public final class MeleeReference
 		next.put("inventory-counts",value(account.inventoryQuantities)); next.put("bank-counts",value(account.bankQuantities)); next.put("equipment-counts",value(account.equipmentQuantities));
 		next.put("facts",account.facts.entrySet().stream().collect(java.util.stream.Collectors.toMap(Map.Entry::getKey,e -> value(e.getValue()))));
 		next.put("manual",preferences.confirmations.entrySet().stream().collect(java.util.stream.Collectors.toMap(Map.Entry::getKey,e -> e.getValue().value)));
-		if (!java.util.Objects.equals(inputs,next)) { setup = setup == null || !corrected ? new MeleeComparisonService(catalog).propose(account,preferences) : setup.unconfirmed(); inputs = next; }
+		if (!java.util.Objects.equals(inputs,next))
+		{ MeleeComparisonService service=new MeleeComparisonService(catalog);setup=setup==null || !corrected ? service.propose(account,preferences) : service.reconsider(account,preferences,setup.unconfirmed());inputs=next; }
 		return setup;
 	}
 	private Object value(com.ironpath.model.Observation<?> o) { return o.known() ? o.value() : "unknown"; }
 	public boolean edit(String key, String value, AccountSnapshot a, Preferences p, KnowledgeCatalog catalog)
 	{
-		if (setup == null || !PoweredMagic.SLOTS.contains(key) && !java.util.Set.of("prayer","boost","style","target","template","confirm").contains(key)) { return false; }
+		if (setup == null || !PoweredMagic.SLOTS.contains(key) && !java.util.Set.of("prayer","boost","style","target","template","confirm","task","souls","defence").contains(key)) { return false; }
 		try
 		{
 			MeleeComparisonService service = new MeleeComparisonService(catalog);
 			CombatSetup next = setup.edit(key,value);
 			if (key.equals("target") && !service.referenceChoices(a).get("target").containsKey(value)) { return false; }
+			if (key.equals("defence") && (next.defenceOverride < -1 || next.defenceOverride > service.targetDefence(next.target))) { return false; }
 			if (key.equals("confirm") && service.validate(a,p,next) != null) { return false; }
+			if (java.util.Set.of("target","task","souls","defence","prayer","boost").contains(key)) { next=service.reconsider(a,p,next); }
 			setup = next; corrected = true; return true;
 		}
 		catch (IllegalArgumentException invalid) { return false; }

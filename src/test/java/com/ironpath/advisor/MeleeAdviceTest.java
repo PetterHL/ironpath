@@ -69,7 +69,7 @@ public class MeleeAdviceTest
 	{
 		AccountSnapshot a=ordinary();CombatSetup before=service.propose(a);
 		assertFalse(service.compare(a,Preferences.EMPTY,before.edit("head","-1"),12006).available(ComparisonResult.Metric.MAX_HIT));
-		assertTrue(service.compare(a,Preferences.EMPTY,before.edit("neck","4081"),12006).reason.contains("Unreviewed")); // Salve is not zero.
+		assertTrue(service.compare(a,Preferences.EMPTY,before.edit("neck","4081"),12006).reason.contains("not observed")); // Reviewed Salve cannot be invented as owned.
 		assertTrue(service.compare(a,Preferences.EMPTY,before.edit("style","SLASH_AGGRESSIVE"),12006).reason.contains("stance"));
 		assertTrue(service.compare(a,Preferences.EMPTY,before.edit("target","toa"),12006).reason.contains("scaling"));
 		AccountSnapshot unread=new AccountSnapshot(a.levels,Observation.unknown(),Observation.unknown(),Observation.unknown(),a.rigour,a.augury,a.facts);
@@ -79,7 +79,7 @@ public class MeleeAdviceTest
 	}
 	@Test public void unmodelledStrongOwnedFamiliesWithholdSuperiorityButRetainUnaffectedMetrics()
 	{
-		for(int id:List.of(26219,22325,28338,22978))
+		for(int id:List.of(28997,34027,4718,20727))
 		{
 			AccountSnapshot a=R15Fixtures.items(ordinary(),id);ComparisonResult c=service.compare(a,Preferences.EMPTY,service.propose(a),12006);
 			assertFalse(c.available(ComparisonResult.Metric.THEORETICAL_DPS));assertTrue(c.available(ComparisonResult.Metric.MAX_HIT));assertTrue(c.available(ComparisonResult.Metric.HIT_CHANCE));
@@ -127,11 +127,19 @@ public class MeleeAdviceTest
 	}
 	@Test public void malformedMeleeContractsFailClosed() throws Exception
 	{
-		for(String mutation:List.of("missing-stat","bad-style","partial-target","unknown-source","hands"))
+		for(String mutation:List.of("missing-stat","missing-family","missing-effect","bad-style","partial-target","unknown-source","hands","wrong-effect-slot","invalid-size","invalid-demon-effect","invalid-batch"))
 		{
 			JsonObject doc=new JsonParser().parse(new InputStreamReader(getClass().getResourceAsStream("/com/ironpath/catalog.json"))).getAsJsonObject();
 			JsonObject item=doc.getAsJsonObject("melee").getAsJsonArray("items").get(0).getAsJsonObject();
 			if(mutation.equals("missing-stat")){item.remove("strength");}
+			if(mutation.equals("missing-family")){item.remove("family");}
+			if(mutation.equals("missing-effect")){item.remove("effect");}
+			if(mutation.equals("wrong-effect-slot")){item.addProperty("effect","SALVE");}
+			if(mutation.equals("invalid-size")){doc.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().addProperty("size",0);}
+			if(mutation.equals("invalid-demon-effect")){doc.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().addProperty("demonbanePercent",-1);}
+			if(mutation.equals("invalid-batch"))
+			{ for(var u:doc.getAsJsonArray("upgrades")) { if(u.getAsJsonObject().get("id").getAsString().equals("oathplate-head"))
+				{ for(var n:u.getAsJsonObject().getAsJsonArray("path")) { if(n.getAsJsonObject().has("batchItemId")) { n.getAsJsonObject().addProperty("batchSize",0); } } } } }
 			if(mutation.equals("bad-style")){item.getAsJsonArray("styles").set(0,new com.google.gson.JsonPrimitive("INVENTED"));}
 			if(mutation.equals("partial-target")){doc.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().remove("meleeSlash");}
 			if(mutation.equals("unknown-source")){item.getAsJsonArray("sources").add("unreviewed");}

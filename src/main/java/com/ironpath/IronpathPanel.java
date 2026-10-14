@@ -933,9 +933,23 @@ final class IronpathPanel extends PluginPanel
 			JComboBox<Choice> darts = choices(referenceChoices.getOrDefault("loaded-ammo",Map.of()),false);
 			select(darts,Integer.toString(setup.loadedAmmo)); darts.setName("reference-loaded-ammo"); parent.add(darts);
 			button(parent,"Assume loaded darts",() -> { if (darts.getSelectedItem() != null) { edit.accept("loaded-ammo",((Choice) darts.getSelectedItem()).id); } });
+		}
+		if (ranged || melee)
+		{
 			Map<String,String> tasks = new java.util.LinkedHashMap<>(); tasks.put("false","Off-task"); tasks.put("true","On eligible Slayer task (assumed)");
 			JComboBox<Choice> task = choices(tasks,false); select(task,Boolean.toString(setup.onTask)); task.setName("reference-task"); parent.add(task);
 			button(parent,"Apply task assumption",() -> edit.accept("task",((Choice) task.getSelectedItem()).id));
+		}
+		if (melee)
+		{
+			text(parent,"Soulreaper state applies only to that weapon. Stacks are assumed before each attack; ramp averages the next five swings from zero.");
+			Map<String,String> states=new java.util.LinkedHashMap<>();
+			for (com.ironpath.advisor.MeleeModel.Souls state:com.ironpath.advisor.MeleeModel.Souls.values()) { states.put(state.name(),state.label()); }
+			JComboBox<Choice> souls=choices(states,false); select(souls,setup.souls.name()); souls.setName("reference-souls"); parent.add(souls);
+			button(parent,"Apply soul state",()->edit.accept("souls",((Choice)souls.getSelectedItem()).id));
+			text(parent,"Target Defence scenario: -1 uses the reviewed reference. A lower value is an explicit assumption, not proof of a landed special or team reduction.");
+			JTextField defence=new JTextField(Integer.toString(setup.defenceOverride)); defence.setName("reference-defence"); parent.add(defence);
+			button(parent,"Apply target Defence",()->edit.accept("defence",defence.getText().trim()));
 		}
 		if (supported) { button(parent, "Confirm reference", () -> edit.accept("confirm", "true")); }
 	}
