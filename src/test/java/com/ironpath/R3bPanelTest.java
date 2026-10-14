@@ -62,8 +62,8 @@ public class R3bPanelTest
 			JComboBox<?> target=(JComboBox<?>)children(panel).stream().filter(c->"reference-target".equals(c.getName())).findFirst().orElseThrow();
 			for(int i=0;i<target.getItemCount();i++){if(target.getItemAt(i).toString().contains("Graardor")){target.setSelectedIndex(i);}}
 			button("Apply target").doClick();assertEquals("graardor",melee.target);assertEquals("neutral-zero-defence",magic.target);assertEquals("neutral-zero-defence",ranged.target);
-			button("Path").doClick();assertTrue(text().contains("10,000"));assertTrue(text().contains("87 Slayer"));capture("path");button("Estimate basis and route evidence").doClick();capture("path-expanded");
-			button("Back to upgrades").doClick();account=R15Fixtures.items(account,26219);render();open();assertTrue(text().contains("competing melee"));assertTrue(text().contains("THEORETICAL_DPS:"));assertFalse(text().contains("DPS and hit chance gap:"));assertTrue(text().contains("Max hit"));capture("family-gap");
+			button("Acquisition").doClick();assertTrue(text().contains("10,000"));assertTrue(text().contains("87 Slayer"));capture("path");button("Estimate basis and route evidence").doClick();capture("path-expanded");
+			button("← Upgrades").doClick();account=R15Fixtures.items(account,26219);render();open();assertTrue(text().contains("competing melee"));assertTrue(text().contains("THEORETICAL_DPS:"));assertFalse(text().contains("DPS and hit chance gap:"));assertTrue(text().contains("Max hit"));capture("family-gap");
 		} catch(Exception e){throw new RuntimeException(e);} });
 	}
 	@Test public void staleMeleeEditsConfirmationAndLifecycleStateStayIsolated() throws Exception

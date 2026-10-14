@@ -1,0 +1,9 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] Tumeken's shadow
+null java.awt.Rectangle[x=6,y=156,width=213,height=24] Compared with trident of the swamp
+detail-metric-THEORETICAL_DPS java.awt.Rectangle[x=6,y=180,width=213,height=24] Theoretical DPS not calculated
+detail-metric-MAX_HIT java.awt.Rectangle[x=6,y=204,width=213,height=24] Max hit not calculated
+detail-metric-HIT_CHANCE java.awt.Rectangle[x=6,y=228,width=213,height=24] Hit chance not calculated
+null java.awt.Rectangle[x=6,y=252,width=213,height=64] Unknown reference slot: head. Observe or explicitly correct this input.
+null java.awt.Rectangle[x=6,y=316,width=213,height=24] Why this position
+null java.awt.Rectangle[x=6,y=340,width=213,height=104] Useful in the reviewed encounters; very long remaining effort. The remaining grind keeps this behind nearer worthwhile options when available.

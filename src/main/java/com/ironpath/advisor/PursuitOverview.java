@@ -14,6 +14,7 @@ public final class PursuitOverview
 	public final Map<String,String> previewReasons;
 	public final List<ActivityOpportunity> activities;
 	public final List<OwnedUpgrade> owned;
+	public final AccountChecks checks;
 	public final List<Advisor.Recommendation> quickActions, broadAdvice;
 	public PursuitOverview(List<Advisor.UpgradeView> all, List<ActivityOpportunity> activities,
 		List<Advisor.Recommendation> quickActions, List<Advisor.Recommendation> broadAdvice)
@@ -22,7 +23,7 @@ public final class PursuitOverview
 		List<Advisor.Recommendation> quickActions, List<Advisor.Recommendation> broadAdvice, List<OwnedUpgrade> owned)
 	{
 		this.owned=List.copyOf(owned);
-		this.all=List.copyOf(all); this.activities=List.copyOf(activities);
+		this.all=List.copyOf(all); checks=new AccountChecks(all); this.activities=List.copyOf(activities);
 		this.quickActions=List.copyOf(quickActions); this.broadAdvice=List.copyOf(broadAdvice);
 		List<Advisor.UpgradeView> active=new ArrayList<>(), longer=new ArrayList<>(), checks=new ArrayList<>();
 		for (Advisor.UpgradeView view : all)

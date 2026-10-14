@@ -1,0 +1,16 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] Twisted buckler
+null java.awt.Rectangle[x=6,y=156,width=213,height=24] Setup change
+null java.awt.Rectangle[x=6,y=180,width=213,height=44] Complete compatible setups; all changed equipment is listed below.
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] Before: Blazing blowpipe
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] After: Rune crossbow
+detail-primary-result java.awt.Rectangle[x=6,y=304,width=213,height=32] -35.9% DPS
+detail-metric-THEORETICAL_DPS java.awt.Rectangle[x=6,y=336,width=213,height=52] Theoretical DPS  8.25 → 5.29  (-2.96)
+detail-metric-MAX_HIT java.awt.Rectangle[x=6,y=388,width=213,height=24] Max hit  20 → 32  (+12)
+detail-metric-HIT_CHANCE java.awt.Rectangle[x=6,y=412,width=213,height=24] Hit chance  98.49 → 98.95  (+0.46 pp)
+null java.awt.Rectangle[x=6,y=436,width=213,height=44] Off-hand: Empty shield → Twisted buckler
+null java.awt.Rectangle[x=6,y=480,width=213,height=44] Ammunition: Empty ammo → Runite bolts
+null java.awt.Rectangle[x=6,y=524,width=213,height=44] Loaded darts: Dragon dart → No loaded darts
+null java.awt.Rectangle[x=6,y=568,width=213,height=24] Attack interval 2 → 5 ticks (1.2 → 3.0 s)
+null java.awt.Rectangle[x=6,y=592,width=213,height=24] Why this position
+null java.awt.Rectangle[x=6,y=616,width=213,height=104] Useful in the reviewed encounters; effort needs checking, method unconfirmed. Check compatible gear and levels in Acquisition before choosing this method.

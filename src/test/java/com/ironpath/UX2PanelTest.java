@@ -49,7 +49,7 @@ public class UX2PanelTest
 	private void layout(Container c) { c.doLayout();for(Component child:c.getComponents())if(child instanceof Container)layout((Container)child); }
 	private void size() { panel.setSize(225,20000);for(int i=0;i<6;i++)layout(panel);panel.setSize(225,panel.getPreferredSize().height);for(int i=0;i<6;i++)layout(panel); }
 	private void capture(String name) throws Exception {
-		size();Path dir=Path.of("build/validation/ux2/images");Files.createDirectories(dir);
+		size();Path dir=Path.of("build/validation/ad1c/images");Files.createDirectories(dir);
 		BufferedImage image=new BufferedImage(225,600,BufferedImage.TYPE_INT_RGB);Graphics2D g=image.createGraphics();g.setColor(panel.getBackground());g.fillRect(0,0,225,600);panel.printAll(g);g.setColor(panel.getBackground());g.fillRect(0,0,225,600);panel.printAll(g);g.dispose();ImageIO.write(image,"png",dir.resolve(name+".png").toFile());
 		for(Component c:children(panel))if(visible(c)&&(c instanceof JTextArea||c instanceof JButton||c instanceof JLabel)) {
 			Point at=SwingUtilities.convertPoint(c,0,0,panel);
@@ -72,20 +72,21 @@ public class UX2PanelTest
 				assertFalse(shown().contains("0 Defence"));assertFalse(shown().contains("long tail"));assertFalse(shown().contains("model gap"));
 				for(Component c:children(panel))if(c.getName()!=null&&c.getName().startsWith("upgrade-card-")&&visible(c)) {
 					assertEquals(1,children((Container)c).stream().filter(x->x instanceof JButton).count());
-					assertEquals(1,children((Container)c).stream().filter(x->"card-status".equals(x.getName())).count());
+					assertEquals(1,children((Container)c).stream().filter(x->"card-priority-reason".equals(x.getName())).count());
+					assertTrue(children((Container)c).stream().filter(x->"card-status".equals(x.getName())).count()<=1);
 				}
 			}
 		} catch(Exception e){throw new RuntimeException(e);} });
 	}
 	@Test public void compactComparisonAcquisitionAndSecondaryBasisRemainDistinct() throws Exception {
 		SwingUtilities.invokeAndWait(()->{try {
-			button("Browse").doClick();button("open-upgrade-toxic-blowpipe").doClick();capture("supported-blowpipe-value");assertTrue(shown().contains("Theoretical DPS"));button("Back to upgrades").doClick();button("open-upgrade-zaryte-crossbow").doClick();capture("zaryte-value");
+			button("Browse").doClick();button("open-upgrade-toxic-blowpipe").doClick();capture("supported-blowpipe-value");assertTrue(shown().contains("Theoretical DPS"));button("← Upgrades").doClick();button("open-upgrade-zaryte-crossbow").doClick();capture("zaryte-value");
 			assertTrue(shown().contains("Why this position"));assertTrue(shown().contains("Special attack burst"));
 			assertFalse(shown().contains("0 Defence"));assertFalse(visible(named("value-evidence")));
 			button("Evidence and calculation basis").doClick();assertTrue(shown().contains("Enemy with 0 Defence"));
-			button("Path").doClick();capture("zaryte-path");assertTrue(shown().contains("From Nex"));assertTrue(shown().contains("Next step"));
+			button("Acquisition").doClick();capture("zaryte-path");assertTrue(shown().contains("From Nex"));assertTrue(shown().contains("Next step"));
 			assertFalse(shown().contains("Model "));assertFalse(visible(named("acquisition-evidence")));
-			button("Back to upgrades").doClick();button("open-upgrade-masori-body").doClick();button("Path").doClick();capture("masori-path");
+			button("← Upgrades").doClick();button("open-upgrade-masori-body").doClick();button("Acquisition").doClick();capture("masori-path");
 			assertTrue(shown().contains("Tombs of Amascut"));assertTrue(shown().contains("Hours not estimated"));
 		} catch(Exception e){throw new RuntimeException(e);} });
 	}
@@ -101,16 +102,16 @@ public class UX2PanelTest
 	}
 	@Test public void accountCorrectionsDiagnosticsAndStaleActionsPreserveIdentity() throws Exception {
 		SwingUtilities.invokeAndWait(()->{try {
-			button("account-evidence").doClick();capture("account");assertFalse(shown().contains("varbits"));assertFalse(shown().contains("Knowledge "));assertFalse(shown().contains("Synthetic local storage"));
+			button("Account").doClick();capture("account");assertFalse(shown().contains("varbits"));assertFalse(shown().contains("Knowledge "));assertFalse(shown().contains("Synthetic local storage"));
 			button("Correct ownership and unlocks").doClick();JButton old=button("Owned / unlocked");capture("account-corrections");
 			button("Diagnostics").doClick();capture("diagnostics");assertTrue(shown().contains("Knowledge "));assertTrue(shown().contains("Client varbits"));assertTrue(shown().contains("Bank:"));
 			button("Back to account").doClick();int previous=edits;old.doClick();assertEquals(previous,edits);
-			button("Back to upgrades").doClick();assertNotNull(named("homepage-deck"));
+			button("← Upgrades").doClick();assertNotNull(named("homepage-deck"));
 		} catch(Exception e){throw new RuntimeException(e);} });
 	}
 	@Test public void manualPaceIsScopedAndClearReturnsToUnavailableHours() throws Exception {
 		SwingUtilities.invokeAndWait(()->{try {
-			button("Browse").doClick();button("open-upgrade-tormented-bracelet").doClick();button("Path").doClick();
+			button("Browse").doClick();button("open-upgrade-tormented-bracelet").doClick();button("Acquisition").doClick();
 			assertFalse(shown().contains("Estimated mean"));button("Estimate basis and route evidence").doClick();((JTextField)named("pace-input")).setText("30-60");button("Apply pace").doClick();capture("manual-next-shard");
 			assertTrue(shown().contains("Estimated mean"));assertTrue(shown().contains("Next zenyte shard"));assertTrue(shown().contains("manual scenario"));
 			button("Estimate basis and route evidence").doClick();button("Clear pace").doClick();assertFalse(shown().contains("Estimated mean"));
@@ -121,8 +122,8 @@ public class UX2PanelTest
 			panel.setFont(panel.getFont().deriveFont(20f));render();capture("large-font-home");button("Browse").doClick();((JTextField)named("browse-search")).setText("zaryte");
 			JButton card=button("open-upgrade-zaryte-crossbow");assertEquals("open-card",card.getInputMap().get(KeyStroke.getKeyStroke("ENTER")));assertEquals("open-card",card.getInputMap().get(KeyStroke.getKeyStroke("SPACE")));
 			card.getActionMap().get("open-card").actionPerformed(new java.awt.event.ActionEvent(card,0,"Enter"));capture("large-font-value");
-			button("Path").doClick();capture("large-font-path");button("Back to upgrades").doClick();assertEquals("zaryte",((JTextField)named("browse-search")).getText());
-			button("account-evidence").doClick();capture("large-font-account");button("Diagnostics").doClick();capture("large-font-diagnostics");
+			button("Acquisition").doClick();capture("large-font-path");button("← Upgrades").doClick();assertEquals("zaryte",((JTextField)named("browse-search")).getText());
+			button("Account").doClick();capture("large-font-account");button("Diagnostics").doClick();capture("large-font-diagnostics");
 		} catch(Exception e){throw new RuntimeException(e);} });
 	}
 	@Test public void ad1aDpsFirstAndCompletePackageChangesRemainReadableAtNativeWidth() throws Exception {
@@ -143,4 +144,24 @@ public class UX2PanelTest
 			}
 		} catch(Exception e){throw new RuntimeException(e);} });
 	}
+	@Test public void groupedOwnershipCorrectionsReturnToTheSameDetailAndRejectStaleEdits() throws Exception {
+		SwingUtilities.invokeAndWait(()->{try {
+			account=ClientEquipmentRegressionTest.reportedLightbearerFixture();preferences=Preferences.EMPTY;panel=new IronpathPanel();render();
+			assertTrue(shown().contains("Recommended order"));assertFalse(shown().contains("Check ownership"));
+			button("Browse").doClick();((JTextField)named("browse-search")).setText("zaryte");button("open-upgrade-zaryte-vambraces").doClick();
+			button("Acquisition").doClick();button("Account").doClick();button("Checks affecting advice").doClick();
+			AccountChecks.Check check=overview.checks.ownership.stream().filter(c->c.outcomes.size()>1).findFirst().orElseThrow();
+			button("account-check-"+check.key).doClick();
+			assertTrue(visible(named("account-corrections")));
+			assertEquals(catalog.factChoices().get(check.key),((JComboBox<?>)named("account-fact")).getSelectedItem().toString());
+			capture("shared-correction");JButton stale=button("Not owned / locked");
+			button("← Upgrades").doClick();assertTrue(shown().contains("Next step"));
+			assertEquals("Selected view",button("Acquisition").getAccessibleContext().getAccessibleDescription());
+			int previous=edits;stale.doClick();assertEquals(previous,edits);
+			button("← Upgrades").doClick();assertEquals("zaryte",((JTextField)named("browse-search")).getText());
+			button("Account").doClick();button("Not owned / locked").doClick();
+			assertTrue(overview.checks.ownership.stream().noneMatch(c->c.key.equals(check.key)));
+		} catch(Exception e){throw new RuntimeException(e);} });
+	}
+
 }

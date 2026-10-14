@@ -103,7 +103,7 @@ public class PreferenceLifecycleTest
 	{
 		SwingUtilities.invokeAndWait(() ->
 		{
-			if(button("Set goal")==null) { button("Based on observed gear ›").doClick(); }
+			if(button("Set goal")==null) { button("Account").doClick(); }
 			JComboBox<?> goals = find(panel, JComboBox.class, c -> c.getItemAt(0).toString().equals("No goal"));
 			assertNotNull(goals); goals.setSelectedIndex(2); // Rigour
 			button("Set goal").doClick();
@@ -160,7 +160,7 @@ public class PreferenceLifecycleTest
 	@Test public void manualConfirmClearSkipRestoreAndResetControlsUpdateOnlyExplicitChoices() throws Exception
 	{
 		login();
-		SwingUtilities.invokeAndWait(() -> {button("Based on observed gear ›").doClick();button("Owned / unlocked").doClick();}); callbacks(); load();
+		SwingUtilities.invokeAndWait(() -> {button("Account").doClick();button("Owned / unlocked").doClick();}); callbacks(); load();
 		assertTrue(plugin.session.preferences().confirmations.get("rigour").value);
 		SwingUtilities.invokeAndWait(() -> button("Clear selected fact").doClick()); callbacks(); load();
 		assertTrue(plugin.session.preferences().confirmations.isEmpty());
@@ -183,7 +183,7 @@ public class PreferenceLifecycleTest
 		when(client.getItemContainer(InventoryID.INV)).thenReturn(inventory);when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
 		login();
 		SwingUtilities.invokeAndWait(()->{
-			button("Browse").doClick();find(panel,JButton.class,b->"open-upgrade-tormented-bracelet".equals(b.getName())).doClick();button("Path").doClick();
+			button("Browse").doClick();find(panel,JButton.class,b->"open-upgrade-tormented-bracelet".equals(b.getName())).doClick();button("Acquisition").doClick();
 			javax.swing.JTextField input=find(panel,javax.swing.JTextField.class,c->"pace-input".equals(c.getName()));assertNotNull(input);
 			input.setText("30-50");button("Apply pace").doClick();
 		});callbacks();assertEquals(30,plugin.session.pace().minimumPerHour,0);assertEquals(50,plugin.session.pace().maximumPerHour,0);
@@ -204,7 +204,7 @@ public class PreferenceLifecycleTest
 		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
 		login(); KnowledgeCatalog catalog = KnowledgeCatalog.load(new Gson());
 		SwingUtilities.invokeAndWait(() -> find(panel,JButton.class,b -> "open-upgrade-swamp-trident".equals(b.getName())).doClick());
-		JButton oldBack=button("Back to upgrades"),oldConfirm=button("Confirm reference");
+		JButton oldBack=button("← Upgrades"),oldConfirm=button("Confirm reference");
 		SwingUtilities.invokeAndWait(() -> oldConfirm.doClick());callbacks();
 		assertTrue(plugin.session.reference(catalog).confirmed);assertTrue(files.isEmpty());
 		SwingUtilities.invokeAndWait(() -> {

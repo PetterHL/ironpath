@@ -1,6 +1,6 @@
 # IronPath native UI specification
 
-14 October 2026 · **Visual advisor implemented for review; client/player acceptance pending.** UX2 is stacked on EP1 #25; current main still contains the earlier R3a/UX-completion components. [New component evidence](validation/UX2.md). This specification incorporates the written decisions from “Oppsummering av UX” and account-efficient progression. [TASKS EP1/UX2](../TASKS.md#ep1--account-efficient-progression-next-implementation) is the only delivery backlog; [DESIGN progression-2](DESIGN.md#progression-intelligence-contract-version-progression-2-selected) owns ranking.
+14 October 2026 · **AD1c priority/navigation implemented for review; client/player acceptance pending.** UX2 is stacked on EP1 #25; current main still contains the earlier R3a/UX-completion components. [New component evidence](validation/UX2.md). This specification incorporates the written decisions from “Oppsummering av UX” and account-efficient progression. [TASKS EP1/UX2](../TASKS.md#ep1--account-efficient-progression-next-implementation) is the only delivery backlog; [DESIGN progression-2](DESIGN.md#progression-intelligence-contract-version-progression-2-selected) owns ranking.
 
 **EP1 integration for review:** the current cards/details now consume typed priority, remaining effort, metric availability, estimate scope and direct/preparation choices. The homepage preserves domain order without forced long-term insertion. [225px component evidence and pending client checks](validation/EP1.md). This is the minimal order/effort integration before UX2, not the completed written visual redesign.
 
@@ -11,6 +11,12 @@ The homepage answers: **Which upgrades are most worthwhile for the effort on my 
 Build in native Swing/PluginPanel with genuine ItemManager sprites. Use calm dark surfaces, gold names/headings, prominent supported numbers and quiet secondary information. Green means a positive change, red a concrete negative change, neutral unavailable information. Colour always has a text/value equivalent.
 
 Use one column at normal RuneLite sidebar width; validate the actual viewport (the existing pinned source indicates a 225px panel with roughly 213px inner width). Two columns are optional only when real font metrics and complete content fit. Never require widening, smaller fonts, horizontal scrolling or clipped names. Keep header, search, filters and navigation compact. Enlarged reference images are not sizing specifications.
+
+## Navigation
+
+Use **Upgrades / Account** at the top. **Recommended / Browse** are variants of the same upgrade overview. Recommended explicitly says **Recommended order**, preserving progression-2's domain queue. Inside an item use **← Upgrades** and **Impact / Acquisition**; returning from Account restores the originating view. Use full labels at enlarged fonts, wrapping navigation when necessary. Diagnostics stays under Account.
+
+Collect unresolved ownership facts once under Account, with the affected-outcome count and a focused correction. Cards show supported gain, actual baseline and concise value/remaining-work copy. Only a material comparison-input correction needs its own short card status. Unknown ownership makes a choice conditional; it does not erase supported effort, role or numbers. The detailed reason identifies the consequential check without presenting a precise efficiency score. [AD1c evidence](validation/AD1c.md).
 
 ## Homepage and order
 
@@ -23,7 +29,7 @@ Use one column at normal RuneLite sidebar width; validate the actual viewport (t
 
 ## Card contract
 
-A compact card contains an item icon and full wrapping name; one prominent supported metric or useful documented specialist property; at most one additional useful metric; concise actual comparison baseline; and **at most one** short status when it changes the decision, for example Medium grind, Long-term or a concrete correctable input.
+A compact card contains an item icon and full wrapping name; one prominent supported metric or useful documented specialist property; at most one additional useful metric; concise actual comparison baseline; and a concise typed value/remaining-work reason, plus **at most one** short status when it changes the decision, for example Medium grind, Long-term or a concrete correctable input.
 
 The card itself opens details by mouse or keyboard with visible focus. Remove repeated **Value / Path** buttons from every card; retain both destinations inside details. Do not render internal importance tiers, reason-code lists, “long tail”, model-gap prose, generic “check inputs” or repeated ownership warnings as normal card content.
 
