@@ -15,6 +15,7 @@ public final class BrowseMetadata
 		if (upgrade.browseSlot!=null) { slots.add(upgrade.browseSlot); }
 		catalog.ranged.items.stream().filter(i->i.id==upgrade.itemId).forEach(i->{ styles.add("Ranged"); slots.add(i.slot); });
 		catalog.comparison.items.stream().filter(i->i.id==upgrade.itemId).forEach(i->{ styles.add("Magic"); slots.add(i.slot); });
+		catalog.melee.items.stream().filter(i->i.id==upgrade.itemId).forEach(i->{ styles.add("Melee"); slots.add(i.slot); });
 		this.styles=Set.copyOf(styles); this.slots=Set.copyOf(slots);
 		activities=catalog.decisions.stream().filter(d->upgrade.routes.contains(d.id)).map(d->d.activity).collect(Collectors.toUnmodifiableSet());
 		Set<String> roles=new LinkedHashSet<>(); roles.add(upgrade.role);

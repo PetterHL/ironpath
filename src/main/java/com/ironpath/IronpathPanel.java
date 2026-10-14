@@ -256,25 +256,23 @@ final class IronpathPanel extends PluginPanel
 		if (goal!=null) { goal(parent,goal,catalog,actions); }
 	}
 
-    private void recentControls(JPanel parent,Actions actions)
-    {
-        long currentView=view;
-				if(actions!=null)
-				{
-					button(parent,recentEnabled ? "Disable recent boss (experimental)" : "Enable recent boss (experimental)",()->{
-						if(valid(currentView,actions)) { actions.recentBoss(!recentEnabled); }
-					}).setName("toggle-recent-boss");
-					if(recentEnabled)
-					{
-						text(parent,"Zilyana pilot · session memory only. Wait for the next observed spawn; live-client validation pending.");
-						String counts=java.util.Arrays.stream(com.ironpath.encounter.EncounterSummary.Outcome.values()).map(o->
-							o.name().toLowerCase(java.util.Locale.ROOT)+" "+recentSummaries.stream().filter(k->k.outcome==o).count())
-							.collect(java.util.stream.Collectors.joining(" · "));
-						text(parent,counts);
-						button(parent,"Clear recent kills",()->{ if(valid(currentView,actions)) { actions.clearRecentBoss(); } });
-					}
-				}
-    }
+	private void recentControls(JPanel parent,Actions actions)
+	{
+		long currentView=view;
+		if(actions==null) { return; }
+		button(parent,recentEnabled ? "Disable recent boss (experimental)" : "Enable recent boss (experimental)",()->{
+			if(valid(currentView,actions)) { actions.recentBoss(!recentEnabled); }
+		}).setName("toggle-recent-boss");
+		if(recentEnabled)
+		{
+			text(parent,"Zilyana pilot · session memory only. Wait for the next observed spawn; live-client validation pending.");
+			String counts=java.util.Arrays.stream(com.ironpath.encounter.EncounterSummary.Outcome.values()).map(o->
+				o.name().toLowerCase(java.util.Locale.ROOT)+" "+recentSummaries.stream().filter(k->k.outcome==o).count())
+				.collect(java.util.stream.Collectors.joining(" · "));
+			text(parent,counts);
+			button(parent,"Clear recent kills",()->{ if(valid(currentView,actions)) { actions.clearRecentBoss(); } });
+		}
+	}
 
 	private void restoreNavigation(javax.swing.JViewport viewport, Anchor anchor, String focus, long expectedView, Actions actions)
 	{
