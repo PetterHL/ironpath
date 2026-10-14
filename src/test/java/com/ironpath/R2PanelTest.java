@@ -56,19 +56,19 @@ public class R2PanelTest
 			try
 			{
 				panel=new IronpathPanel();render();capture("overview");button("Browse").doClick();capture("browse");
-				assertTrue(text().contains("Enemy with 0 Defence"));
-				assertTrue(children(panel).stream().filter(c->"comparison-headline".equals(c.getName())).map(c->((JTextArea)c).getText()).anyMatch(s->s.contains("Zilyana")));
+				assertFalse(text().contains("Enemy with 0 Defence"));
+				assertTrue(children(panel).stream().filter(c->"card-context".equals(c.getName())).map(c->((JTextArea)c).getText()).anyMatch(s->s.contains("Zilyana")));
 				open("twisted-bow");assertTrue(text().indexOf("Theoretical DPS  ")<text().indexOf("Max hit  "));
 				assertFalse(text().contains("Unknown reference"));
-				button("Reviewed encounter trade-offs").doClick();assertTrue("Target",text().contains("Commander Zilyana"));
+				button("Evidence and calculation basis").doClick();assertTrue("Target",text().contains("Commander Zilyana"));
 				assertTrue("Supply provenance",text().contains("Candidate-only supplied ammunition")||text().contains("Observed ammunition"));capture("tbow-value");
 				@SuppressWarnings("unchecked") JComboBox<Object> target=(JComboBox<Object>)children(panel).stream().filter(c->"reference-target".equals(c.getName())).findFirst().orElseThrow();
 				for(int i=0;i<target.getItemCount();i++){if(target.getItemAt(i).toString().contains("Zilyana")){target.setSelectedIndex(i);}}
 				button("Apply target").doClick();assertEquals("zilyana",ranged.target);assertEquals("neutral-zero-defence",magic.target);
-				button("Path").doClick();assertTrue(text().contains("No acquisition hours" )||text().contains("No hours")||text().contains("Effort"));capture("tbow-path");
+				button("Path").doClick();assertTrue(text().contains("Hours not estimated")||text().contains("Remaining effort"));capture("tbow-path");
 				button("Back to upgrades").doClick();open("necklace-of-anguish");button("Path").doClick();assertTrue(text().contains("92 Crafting"));assertFalse(text().contains("Bracelet mould"));capture("anguish-path");
 				button("Back to upgrades").doClick();account=R15Fixtures.items(account,12926);ranged=ranged.edit("weapon","12926").edit("loaded-ammo","-1");render();open("twisted-bow");
-				assertTrue(text().contains("DPS unavailable")||text().contains("DPS and hit chance gap"));assertTrue(text().contains("unobserved")||text().contains("not observed"));capture("ammo-gap");
+				assertTrue(text().contains("DPS not calculated")||text().contains("DPS and hit chance gap"));assertTrue(text().contains("unobserved")||text().contains("not observed"));capture("ammo-gap");
 			}
 			catch(Exception e){throw new RuntimeException(e);}
 		});

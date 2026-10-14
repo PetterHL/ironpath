@@ -2,45 +2,34 @@ package com.ironpath.advisor;
 
 import java.util.Locale;
 
-/** Evaluated card copy; Swing only measures and renders these fields. */
+/** Evaluated compact copy, derived from typed values; no ranking or report parsing in Swing. */
 public final class UpgradeCard
 {
-	public final String reason, metric, status, effort, priorityReason;
+	public final String reason, metric, status, effort, priorityReason, baseline, context;
+	public final Double delta;
 	public final UpgradePresentation presentation;
-	public UpgradeCard(Advisor.UpgradeView view)
+	public UpgradeCard(Advisor.UpgradeView view,KnowledgeCatalog catalog)
 	{
-		reason=view.valueEvidence.reason;
-		presentation=view.presentation; effort=presentation.effort.band.label + " remaining effort"; priorityReason=presentation.priorityReason;
-		ComparisonResult comparison=view.comparison;
-		if (view.valueEvidence.independentUtility)
-		{
-			metric=view.valueEvidence.roles.stream().filter(r->r.applicable==com.ironpath.model.Truth.TRUE && !r.covered
-				&& r.dimension!=ProgressionKnowledge.Dimension.ORDINARY_OFFENCE)
-				.map(r->r.dimension==ProgressionKnowledge.Dimension.BURST ? "Burst not quantified · HP/energy check"
-					: r.dimension==ProgressionKnowledge.Dimension.INVENTORY ? "Slot savings not quantified · method check"
-					: r.dimension==ProgressionKnowledge.Dimension.CONTROL ? "Demonbane/control · DPS model gap"
-					: r.dimension==ProgressionKnowledge.Dimension.MULTI_TARGET || r.dimension==ProgressionKnowledge.Dimension.CONVENIENCE ? "Bounce DPS unavailable · geometry gap"
-					: "Reviewed resource value · numeric model gap").findFirst().orElse("Role value · numeric model gap");
+		presentation=view.presentation; reason=view.valueEvidence.reason;
+		effort=presentation.effort.band.label+" remaining effort"; priorityReason=presentation.priorityReason;
+		status=presentation.status;
+		UpgradePresentation.Metric value=presentation.primaryMetric;
+		String compared=presentation.baseline;
+		String scope=presentation.contextLabel;
+		if(view.valueEvidence.independentUtility) { metric=presentation.utility; delta=null;
+			if(view.upgrade.comparison.equals("NONE")) { compared=view.valueEvidence.roles.stream().flatMap(r->r.alternatives.stream()).findFirst().orElse("No confirmed role alternative"); } }
+		else {
+			ComparisonResult result=view.comparison;
+			if(view.valueEvidence.specialist && result.available(ComparisonResult.Metric.THEORETICAL_DPS) && result.dpsGain()<=1e-10) {
+				ComparisonResult contextual=view.contextComparisons.stream().filter(c->c.available(ComparisonResult.Metric.THEORETICAL_DPS)&&c.dpsGain()>1e-10).findFirst().orElse(null);
+				if(contextual!=null) { value=new UpgradePresentation.Metric(contextual,compared,false); scope=contextual.target.name;
+					if(contextual.beforeSetup!=null) { compared=catalog.itemNames().getOrDefault(contextual.beforeSetup.slots.get("weapon"),"Unobserved weapon"); }
+				}
+			}
+			delta=value.delta;
+			metric=value.delta==null?(value.kind==ComparisonResult.Metric.THEORETICAL_DPS?"DPS not calculated":"Comparison not calculated")
+				:value.kind==ComparisonResult.Metric.THEORETICAL_DPS?String.format(Locale.ROOT,"%+.2f DPS",value.delta):String.format(Locale.ROOT,"%+.0f max hit",value.delta);
 		}
-		else if (view.valueEvidence.specialist && comparison.available(ComparisonResult.Metric.THEORETICAL_DPS) && comparison.dpsGain()<=1e-10)
-		{
-			metric=view.contextComparisons.stream().filter(c->c.available(ComparisonResult.Metric.THEORETICAL_DPS)&&c.dpsGain()>1e-10)
-				.map(UpgradeCard::metric).findFirst().orElse(metric(comparison));
-		}
-		else { metric=metric(comparison); }
-		String check=view.pursuit.blockers.isEmpty() ? "" : view.pursuit.blockers.get(0);
-		if (check.contains(": ")) { check=check.substring(check.indexOf(": ")+2); }
-		status=view.pursuit.category.label + (view.pursuit.tail==PursuitAssessment.Tail.LONG ? " · long tail" : "") + (!view.questions.isEmpty() ? " · ownership unconfirmed"
-			: view.pursuit.category==PursuitAssessment.Category.CHECK || view.pursuit.category==PursuitAssessment.Category.PLAN ? " · " + check
-			: "");
-	}
-	private static String metric(ComparisonResult result)
-	{
-		String target=result.target==null ? "reference" : result.target.name;
-		if (result.primaryMetric==ComparisonResult.Metric.THEORETICAL_DPS)
-		{ return result.available(ComparisonResult.Metric.THEORETICAL_DPS) ? String.format(Locale.ROOT,"DPS %+.2f · %s",result.dpsGain(),target) : "DPS unavailable · model gap"; }
-		if (result.available(ComparisonResult.Metric.MAX_HIT))
-		{ return String.format(Locale.ROOT,"Max hit %+d · %s",result.after.maxHit-result.before.maxHit,target); }
-		return "DPS unavailable · model gap";
+		context=scope; baseline=compared;
 	}
 }

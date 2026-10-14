@@ -1,0 +1,11 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] Toxic blowpipe
+null java.awt.Rectangle[x=6,y=150,width=213,height=24] Weapon
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=44] Before: Bow of faerdhinen (corrupted)
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] After: Toxic blowpipe
+detail-metric-THEORETICAL_DPS java.awt.Rectangle[x=6,y=258,width=213,height=52] Theoretical DPS  6.63 → 7.83  (+1.21)
+detail-metric-MAX_HIT java.awt.Rectangle[x=6,y=310,width=213,height=24] Max hit  32 → 19  (-13)
+detail-metric-HIT_CHANCE java.awt.Rectangle[x=6,y=334,width=213,height=24] Hit chance  99.24 → 98.45  (-0.79 pp)
+null java.awt.Rectangle[x=6,y=358,width=213,height=24] Attack interval 4 → 2 ticks (2.4 → 1.2 s)
+null java.awt.Rectangle[x=6,y=382,width=213,height=24] Why this position
+null java.awt.Rectangle[x=6,y=406,width=213,height=84] Supported ordinary improvement over Bow of faerdhinen (corrupted). Medium remaining effort with the reviewed compatible method.

@@ -121,7 +121,7 @@ Run the normal build and meaningful changed-domain/presentation regressions. Pre
 
 ### UX2 — Visual advisor integration
 
-**Status: implemented for review in open PR #26, stacked on EP1 #25; actual-client/player acceptance and AD1c completion remain open.** The following contract is retained for review; AD1a supersedes its old metric choice and AD1b adds automatic hours. One coherent native UI PR covers overview, cards, comparison, acquisition and account/diagnostics under [UX](docs/UX.md). Build on reviewed EP1 (updated main after integration; stack only for the concrete dependency). Do not independently recreate ranking in Swing.
+**Status: implemented for review on `ux2-visual-advisor`, stacked on EP1 #25 `fafb745`; actual-client/player acceptance pending.** Plugin 0.11.0, unchanged ep1-1 / catalogue 12 / preference 2 and progression-2. [UX2 implementation, captures, validation and PC checklist](docs/validation/UX2.md). The delivery/acceptance specification follows. One coherent native UI PR covers overview, cards, comparison, acquisition and account/diagnostics under [UX](docs/UX.md). Build on reviewed EP1 (updated main after integration; stack only for the concrete dependency). Do not independently recreate ranking in Swing.
 
 - Render one-column native cards with genuine sprites, prominent supported result, concise baseline and at most one useful status. Whole card opens details; remove repeated card Value/Path controls and 0 Defence/reference badges.
 - Implement compact before/after comparison, one priority reason, scoped effort, source → missing work → next step and optional preparation alternatives. Keep detailed evidence behind one secondary entry.

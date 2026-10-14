@@ -1,0 +1,25 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Abyssal tentacle
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=29] +0.00 DPS
+card-baseline java.awt.Rectangle[x=0,y=69,width=199,height=24] Compared with Abyssal whip
+card-status java.awt.Rectangle[x=0,y=93,width=199,height=24] Check acquisition method
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Magus ring
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=54] Comparison not calculated
+card-baseline java.awt.Rectangle[x=0,y=94,width=199,height=24] Compared with Seers ring
+card-status java.awt.Rectangle[x=0,y=118,width=199,height=24] Long remaining effort
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Ancestral hat
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=54] Comparison not calculated
+card-baseline java.awt.Rectangle[x=0,y=94,width=199,height=44] Compared with Ahrim's hood [4708]
+card-status java.awt.Rectangle[x=0,y=138,width=199,height=24] Preparation needed
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Ava's assembler
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=54] Comparison not calculated
+card-baseline java.awt.Rectangle[x=0,y=94,width=199,height=44] Compared with Explicitly empty reference cape
+card-status java.awt.Rectangle[x=0,y=138,width=199,height=24] Observe a usable weapon
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Dizana's quiver
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=54] Comparison not calculated
+card-baseline java.awt.Rectangle[x=0,y=94,width=199,height=44] Compared with Explicitly empty reference cape
+card-status java.awt.Rectangle[x=0,y=138,width=199,height=24] Observe a usable weapon
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Masori body
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=54] Comparison not calculated
+card-baseline java.awt.Rectangle[x=0,y=94,width=199,height=44] Compared with Explicitly empty reference body
+card-status java.awt.Rectangle[x=0,y=138,width=199,height=24] Observe a usable weapon
