@@ -27,7 +27,7 @@ public final class KnowledgeCatalog
 		"beneath-cursed-sands", "perilous-moons", "deadeye", "mystic-vigour", "final-dawn", "frozen-door",
 		"smoke-task", "smoke-protection", "nex-entry", "nex-team", "zaryte-context", "zaryte-shards", "doom-preparation", "treads-tears", "desert-treasure-ii", "monkey-madness-ii", "duke-defeated", "peer-ring-icons", "cox-preparation", "toa-preparation", "monkey-form",
 		"multi-combat-method", "secrets-of-north", "muspah-preparation", "doom-delve-two", "doom-delve-three", "doom-delve-four",
-		"blood-moon-rises", "dragon-slayer-ii", "leviathan-defeated", "colosseum-preparation", "zilyana-entry");
+		"blood-moon-rises", "dragon-slayer-ii", "leviathan-defeated", "colosseum-preparation", "zilyana-entry", "knight-waves", "kraken-task", "fremennik-isles", "fremennik-exiles");
 	public final Map<String, Goal> goals;
 	public final Map<String, String> activities;
 	private final Map<String, String> ownershipLabels;
@@ -37,6 +37,7 @@ public final class KnowledgeCatalog
 	public final List<Upgrade> upgrades;
 	public final ComparisonSpec comparison;
 	public final RangedSpec ranged;
+	public final MeleeSpec melee;
 	public final Map<String, AcquisitionModel> acquisitionModels;
 	public final List<ActivityReward> activityRewards;
 	public final ProgressionKnowledge progression;
@@ -46,7 +47,7 @@ public final class KnowledgeCatalog
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 10 || document.decisions == null
+		if (document.schemaVersion != 11 || document.decisions == null
 			|| document.decisions.isEmpty())
 		{
 			throw new IllegalArgumentException("Unsupported or incomplete PvM catalogue");
@@ -223,7 +224,7 @@ public final class KnowledgeCatalog
 			if (upgrade == null) { throw new IllegalArgumentException("Missing upgrade outcome"); }
 			stableId(upgrade.id);
 			if (!upgradeIds.add(upgrade.id) || upgrade.benefitBand == null || !itemIds.contains(upgrade.itemId)
-				|| !Set.of("NONE", "POWERED_MAGIC", "RANGED").contains(require(upgrade.comparison))
+				|| !Set.of("NONE", "POWERED_MAGIC", "RANGED", "MELEE").contains(require(upgrade.comparison))
 				|| upgrade.routes == null || upgrade.routes.isEmpty()
 				|| !ids.containsAll(upgrade.routes) || new HashSet<>(upgrade.routes).size() != upgrade.routes.size()
 				|| upgrade.goals == null || new HashSet<>(upgrade.goals).size() != upgrade.goals.size()
@@ -289,6 +290,25 @@ public final class KnowledgeCatalog
 		}
 		upgrades = List.copyOf(document.upgrades);
 		comparison = document.comparison;
+		melee = document.melee;
+		if (melee==null || !MeleeModel.VERSION.equals(melee.modelVersion) || melee.items==null || melee.items.isEmpty() || melee.unsupportedWeapons==null)
+		{ throw new IllegalArgumentException("Missing melee contract"); }
+		evidence(melee.sources);
+		Set<Integer> meleeIds=new HashSet<>();
+		for (MeleeItem item : melee.items)
+		{
+			if (item==null || !itemIds.contains(item.id) || !meleeIds.add(item.id) || !PoweredMagic.SLOTS.contains(require(item.slot))
+				|| item.stab==null || item.slash==null || item.crush==null || item.strength==null || item.ticks==null
+				|| item.stab < -100 || item.stab > 300 || item.slash < -100 || item.slash > 300 || item.crush < -100 || item.crush > 300
+				|| item.strength < -100 || item.strength > 300 || item.equipFact!=null && !FACTS.contains(item.equipFact) || item.requirements==null || item.styles==null || item.styles.stream().anyMatch(java.util.Objects::isNull)
+				|| new HashSet<>(item.styles).size()!=item.styles.size()
+				|| item.slot.equals("weapon") && (item.styles.isEmpty() || item.ticks<2 || item.ticks>10)
+				|| !item.slot.equals("weapon") && (!item.styles.isEmpty() || item.ticks!=0 || item.twoHanded))
+			{ throw new IllegalArgumentException("Invalid melee item/style/compatibility contract"); }
+			require(item.label); evidence(item.sources);
+			item.requirements.forEach((skill,level)->{ if (!SKILLS.contains(skill) || level==null || level<1 || level>99) { throw new IllegalArgumentException("Invalid melee equip requirement"); } });
+		}
+		melee.unsupportedWeapons.forEach((id,label)->{ if (!itemIds.contains(id) || meleeIds.contains(id)) { throw new IllegalArgumentException("Invalid unsupported melee family"); } require(label); });
 		ranged = document.ranged;
 		if (ranged == null || !RangedModel.VERSION.equals(ranged.modelVersion) || ranged.items == null || ranged.items.isEmpty()
 			|| ranged.candidateAmmo == null) { throw new IllegalArgumentException("Missing ranged contract"); }
@@ -341,6 +361,10 @@ public final class KnowledgeCatalog
 				|| target.rangedStandard != null && (target.rangedLight == null || target.rangedHeavy == null || target.defenceLevel == null || target.magicAttack == null)
 				|| target.analytical && (target.xerician || target.dragon || target.slayer || target.rangedLight == null || target.rangedStandard == null || target.rangedHeavy == null
 					|| target.rangedLight != 0 || target.rangedStandard != 0 || target.rangedHeavy != 0 || target.magicAttack == null || target.magicAttack != 0)
+				|| target.meleeStab != null && (target.meleeStab < -64 || target.meleeStab > 10000 || target.meleeSlash==null || target.meleeCrush==null || target.defenceLevel==null)
+				|| target.meleeSlash != null && (target.meleeStab==null || target.meleeSlash < -64 || target.meleeSlash > 10000)
+				|| target.meleeCrush != null && (target.meleeStab==null || target.meleeCrush < -64 || target.meleeCrush > 10000)
+				|| target.analytical && (target.meleeStab==null || target.meleeStab!=0 || target.meleeSlash!=0 || target.meleeCrush!=0)
 				|| target.variant.equals("TOA") && target.scalingSupported)
 			{ throw new IllegalArgumentException("Unsupported target profile/scaling"); }
 		}
@@ -430,17 +454,18 @@ public final class KnowledgeCatalog
 		for (Source source : sources.values())
 		{
 			if (!itemIds.containsAll(source.items) || !ids.containsAll(source.routes)
-				|| !targetIds.containsAll(source.contexts) || source.models.stream().anyMatch(m -> !m.equals(comparison.modelVersion) && !m.equals(ranged.modelVersion))
+				|| !targetIds.containsAll(source.contexts) || source.models.stream().anyMatch(m -> !m.equals(comparison.modelVersion) && !m.equals(ranged.modelVersion) && !m.equals(melee.modelVersion))
 				|| source.acquisitions.stream().anyMatch(id -> !models.containsKey(id) || !models.get(id).sources.contains(source.id))
 				|| source.efforts.stream().anyMatch(id -> !ids.contains(id) || byId.get(id).pursuit == null || !byId.get(id).pursuit.sources.contains(source.id))
 				|| source.rewards.stream().anyMatch(id -> activityRewards.stream().noneMatch(r -> r.id.equals(id) && r.sources.contains(source.id))))
 			{ throw new IllegalArgumentException("Unknown source dependency"); }
-			if (!source.models.isEmpty() && !comparison.sources.contains(source.id) && !ranged.sources.contains(source.id)
+			if (!source.models.isEmpty() && !comparison.sources.contains(source.id) && !ranged.sources.contains(source.id) && !melee.sources.contains(source.id)
 				|| source.routes.stream().anyMatch(id -> !byId.get(id).sources.contains(source.id)))
 			{ throw new IllegalArgumentException("Inconsistent source model/route dependency"); }
 			for (int id : source.items) { if (gear.values().stream().flatMap(List::stream).noneMatch(g -> g.id == id && g.sources.contains(source.id))
 				&& comparison.items.stream().noneMatch(i -> i.id == id && i.sources.contains(source.id))
-				&& ranged.items.stream().noneMatch(i -> i.id == id && i.sources.contains(source.id)))
+				&& ranged.items.stream().noneMatch(i -> i.id == id && i.sources.contains(source.id))
+				&& melee.items.stream().noneMatch(i -> i.id == id && i.sources.contains(source.id)))
 				{ throw new IllegalArgumentException("Inconsistent source item dependency"); } }
 			for (String id : source.contexts) { if (comparison.targets.stream().noneMatch(t -> t.id.equals(id) && t.sources.contains(source.id)))
 				{ throw new IllegalArgumentException("Inconsistent source context dependency"); } }
@@ -534,6 +559,10 @@ public final class KnowledgeCatalog
 		choices.put("dragon-slayer-ii", "Dragon Slayer II completed");
 		choices.put("leviathan-defeated", "The Leviathan defeated at least once");
 		choices.put("colosseum-preparation", "Colosseum supplies/method reviewed (not completion or readiness certification)");
+		choices.put("fremennik-isles", "The Fremennik Isles completed (helm equip)");
+		choices.put("fremennik-exiles", "The Fremennik Exiles completed (faceguard equip)");
+		choices.put("knight-waves", "King's Ransom and Knight Waves completed (Chivalry/Piety unlock)");
+		choices.put("kraken-task", "Current cave-kraken task checked");
 		choices.put("zilyana-entry", "Saradomin GWD 70 Agility, rope and visit entry checked");
 		choices.put("monkey-madness-ii", "Monkey Madness II completed");
 		choices.put("duke-defeated", "Duke Sucellus defeated at least once");
@@ -696,6 +725,7 @@ public final class KnowledgeCatalog
 		List<Upgrade> upgrades;
 		ComparisonSpec comparison;
 		RangedSpec ranged;
+		MeleeSpec melee;
 		List<AcquisitionSpec> acquisitions;
 		List<ActivityReward> activityRewards;
 		List<ProgressionKnowledge.Context> activityContexts;
@@ -747,6 +777,13 @@ public final class KnowledgeCatalog
 		public List<String> sources;
 		public List<CombatItem> items;
 		public List<TargetProfile> targets;
+	}
+	public static final class MeleeSpec
+	{
+		public String modelVersion;
+		public List<String> sources;
+		public List<MeleeItem> items;
+		public Map<Integer,String> unsupportedWeapons;
 	}
 	public static final class RangedSpec
 	{

@@ -632,7 +632,7 @@ final class IronpathPanel extends PluginPanel
 		setup = comparison.beforeSetup == null ? setup : comparison.beforeSetup;
 		if (comparison.beforeSetup != null && comparison.afterSetup != null)
 		{
-			String slot = upgrade.comparison.equals("RANGED") ? catalog.ranged.items.stream().filter(i -> i.id == upgrade.itemId).map(i -> i.slot).findFirst().orElse("weapon") : catalog.comparison.items.stream().filter(i -> i.id == upgrade.itemId).map(i -> i.slot).findFirst().orElse("weapon");
+			String slot = upgrade.comparison.equals("MELEE") ? catalog.melee.items.stream().filter(i -> i.id == upgrade.itemId).map(i -> i.slot).findFirst().orElse("weapon") : upgrade.comparison.equals("RANGED") ? catalog.ranged.items.stream().filter(i -> i.id == upgrade.itemId).map(i -> i.slot).findFirst().orElse("weapon") : catalog.comparison.items.stream().filter(i -> i.id == upgrade.itemId).map(i -> i.slot).findFirst().orElse("weapon");
 			itemSummary(this, "Before", comparison.beforeSetup.slots.get(slot), catalog);
 			itemSummary(this, "After", comparison.afterSetup.slots.get(slot), catalog);
 			if (!comparison.beforeSetup.slots.get("shield").equals(comparison.afterSetup.slots.get("shield")))
@@ -649,7 +649,7 @@ final class IronpathPanel extends PluginPanel
 			boolean dpsFirst = comparison.primaryMetric == ComparisonResult.Metric.THEORETICAL_DPS;
 			text(this, dpsFirst ? dps : max); text(this, dpsFirst ? max : dps);
 			String gap = comparison.gaps.get(ComparisonResult.Metric.THEORETICAL_DPS);
-			if (gap != null) { text(this, "DPS and hit chance gap: " + gap); }
+			if (gap != null) { text(this, (comparison.available(ComparisonResult.Metric.HIT_CHANCE) ? "DPS gap: " : "DPS and hit chance gap: ") + gap); }
 			text(this, comparison.available(ComparisonResult.Metric.HIT_CHANCE) ? String.format(java.util.Locale.ROOT,
 				"Hit chance  %.1f%% → %.1f%%", comparison.before.hitChance * 100, comparison.after.hitChance * 100) : "Hit chance unavailable · model gap");
 			text(this, String.format(java.util.Locale.ROOT, "Attack interval  %d → %d ticks (%.1f → %.1f s)",
@@ -702,7 +702,8 @@ final class IronpathPanel extends PluginPanel
 		JLabel icon = new JLabel(label); icon.setForeground(ColorScheme.TEXT_COLOR);
 		if (id > 0 && itemManager != null) { itemManager.getImage(id).addTo(icon); } parent.add(icon);
 		text(parent, id == 0 ? "Deliberately empty slot" : catalog.comparison.items.stream().filter(i -> i.id == id).map(i -> i.label).findFirst()
-			.orElseGet(() -> catalog.ranged.items.stream().filter(i -> i.id == id).map(i -> i.label).findFirst().orElse("Unknown reference")));
+			.orElseGet(() -> catalog.ranged.items.stream().filter(i -> i.id == id).map(i -> i.label).findFirst()
+				.orElseGet(() -> catalog.melee.items.stream().filter(i -> i.id == id).map(i -> i.label).findFirst().orElse("Unknown reference"))));
 	}
 
 	private void acquisition(Advisor.UpgradeView view, KnowledgeCatalog catalog, Actions actions)
@@ -778,7 +779,8 @@ final class IronpathPanel extends PluginPanel
 	private void referenceControls(JPanel parent, AccountSnapshot a, com.ironpath.advisor.CombatSetup setup, Actions actions, Map<String, Map<String, String>> referenceChoices, boolean supported)
 	{
 		boolean ranged = setup.family == com.ironpath.advisor.CombatSetup.Family.RANGED;
-		java.util.function.BiConsumer<String,String> edit = (key,value) -> actions.reference((ranged ? "ranged/" : "") + key,value);
+		boolean melee = setup.family == com.ironpath.advisor.CombatSetup.Family.MELEE;
+		java.util.function.BiConsumer<String,String> edit = (key,value) -> actions.reference((melee ? "melee/" : ranged ? "ranged/" : "") + key,value);
 		text(parent, "Reference only. Empty slots are deliberate exclusions, not zero-valued unknown account gear. Prayer/boost are assumptions; quantities and remaining charges are not measured.");
 		button(parent, "Use minimal template", () -> edit.accept("template", "true"));
 		for (String slot : PoweredMagic.SLOTS)
@@ -804,7 +806,15 @@ final class IronpathPanel extends PluginPanel
 				if (key.equals("style")) { for (com.ironpath.advisor.RangedModel.Style value : com.ironpath.advisor.RangedModel.Style.values()) { options.put(value.name(), value.name()); } }
 				if (key.equals("boost")) { options.put("false","No boost"); options.put("true","Ranging potion (full boost assumed)"); }
 			}
-			JComboBox<Choice> choice = choices(options, false); select(choice, key.equals("target") ? setup.target : ranged
+			if (melee && !key.equals("target"))
+			{
+				options.clear();
+				if (key.equals("prayer")) { for (com.ironpath.advisor.MeleeModel.Prayer value : com.ironpath.advisor.MeleeModel.Prayer.values()) { options.put(value.name(),value.label()); } }
+				if (key.equals("boost")) { for (com.ironpath.advisor.MeleeModel.Boost value : com.ironpath.advisor.MeleeModel.Boost.values()) { options.put(value.name(),value.label()); } }
+				if (key.equals("style")) { options.putAll(referenceChoices.getOrDefault("styles-"+setup.slots.get("weapon"),Map.of())); }
+			}
+			JComboBox<Choice> choice = choices(options, false); select(choice, key.equals("target") ? setup.target : melee
+				? key.equals("prayer") ? setup.meleePrayer.name() : key.equals("boost") ? setup.meleeBoost.name() : setup.meleeStyle.name() : ranged
 				? key.equals("prayer") ? setup.rangedPrayer.name() : key.equals("boost") ? Boolean.toString(setup.rangingPotion) : setup.rangedStyle.name()
 				: key.equals("prayer") ? setup.prayer.name() : key.equals("boost") ? setup.boost.name() : setup.style.name());
 			choice.setName("reference-" + key);

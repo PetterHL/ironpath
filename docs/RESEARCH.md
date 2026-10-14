@@ -1,5 +1,13 @@
 # IronPath research and evidence
 
+## R3b ordinary melee — 14 October 2026
+
+Actual direct Wiki API revision/content retrieval covered ordinary effective levels, attack/defence rolls, successful-zero damage, attack intervals, Piety/Chivalry and paired 15% prayers, full super attack/strength boosts, selected weapon styles, 35 exact supported offensive item forms, target defensive facts and the complete whip/tentacle route. Bundled `r3b-*` records pin revisions, review/access dates and item/model/route/context dependencies. Combat style pairs were checked against `Module:CombatStyles` revision **15299810** as factual metadata; no Lua code is included. Neitiznot's current capitalization changed in August 2026; the reviewed canonical page is `Helm_of_Neitiznot` revision **15320122**.
+
+The Java family is independently authored. Development-only comparator **89c3e25b344aea90d0189746e4b5f73dde0f0383** ran separately under `/tmp`; the plugin contains only original synthetic inputs/results and an original comparator harness, with no GPL code or bulk equipment dataset. The comparator also cross-checked all 35 item forms and ordinary Dharok/Graardor defensive facts. Development checks caught incorrect tentative Dharok defence bonuses and Emir's Arena ring IDs; final records use Wiki-reviewed Dharok **100 Defence, 252/250/244** and ring IDs **26770/26769**. These corrected inputs were rerun before freezing the corpus. [Evidence and exclusions](validation/R3b-ordinary-melee.md).
+
+Whip consumption is **10,000 attacks including misses**, with the component retained. Cave kraken drop access is **87 Slayer, 50 Magic and assignment**; those are not assembly requirements. Ten tentacles compete for enhanced-trident capacity. There is no quantitative poison, healing, spec, task/Salve, creature-bane, set, time/trip or acquisition-pace extension. Existing future/current-family coverage requirements remain open. Source prose, source tables, calculator implementations/data and web images are not redistributed.
+
 ## Personalized Kill Impact — 14 October 2026
 
 [Independent research/design](KILL_IMPACT.md) inspects main `cb7c2cd` and the open R2/#17/R3a stack through #18 `d9e897b`, public RuneLite observation APIs/core consumers, pinned Wiki calculator TTK/distribution code, current mechanics pages and Hub guidance. [Source metadata](research/kill-impact-sources.json) records 22 entries, retrieved-response hashes where available and qualified review scope. No live kills, feature-specific Hub ruling, imported implementation or new runtime validation is claimed.

@@ -19,7 +19,8 @@ final class ProgressionEvaluator
 		boolean numeric=comparison.available(ComparisonResult.Metric.THEORETICAL_DPS), specialist=false, utility=false, excluded=false;
 		if (comparison.beforeSetup != null)
 		{
-			String slot=upgrade.comparison.equals("RANGED") ? catalog.ranged.items.stream().filter(i->i.id==upgrade.itemId).map(i->i.slot).findFirst().orElse("weapon")
+			String slot=upgrade.comparison.equals("MELEE") ? catalog.melee.items.stream().filter(i->i.id==upgrade.itemId).map(i->i.slot).findFirst().orElse("weapon")
+				: upgrade.comparison.equals("RANGED") ? catalog.ranged.items.stream().filter(i->i.id==upgrade.itemId).map(i->i.slot).findFirst().orElse("weapon")
 				: catalog.comparison.items.stream().filter(i->i.id==upgrade.itemId).map(i->i.slot).findFirst().orElse("weapon");
 			Integer id=comparison.beforeSetup.slots.get(slot);
 			baseline=catalog.gear.values().stream().flatMap(List::stream).filter(g->java.util.Objects.equals(id,g.id)).map(g->g.label).findFirst().orElse(id != null && id==0 ? "Explicitly empty reference " + slot : "Selected reference " + slot);

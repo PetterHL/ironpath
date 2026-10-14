@@ -2,6 +2,8 @@
 
 13 October 2026 · **Selected R3a design; implemented for review, actual-client acceptance pending.** This supersedes the R1.5 row-first homepage and 100px Browse-cell rule. It refines presentation only: DESIGN `progression-1`, established research, quantitative coverage and the uncapped catalogue remain authoritative. [TASKS R3a](../TASKS.md#r3--relationship-aware-advice-and-melee-packages) is the sole implementation backlog.
 
+**R3b ordinary melee, 14 October:** the existing native cards and Value/Path now support a melee family with independent session-only corrections. Controls list the selected weapon’s actual attack types/stances and label proposed prayers/boosts. Value names incompatible off-hands and unreviewed-family gaps; Path separates component ownership, drop access/task and irreversible whip consumption. [Synthetic 225px captures and pending client acceptance](validation/R3b-ordinary-melee.md).
+
 ## Decision and evidence
 
 **Use a card-first upgrade advisor: compact, sprite-led, full-width cards at the ordinary RuneLite width.** Use two columns only when the actual native viewport and font can retain the same useful content. Do not require a wider window or make widening part of onboarding. Browse uses the same readable cards.

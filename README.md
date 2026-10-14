@@ -2,7 +2,9 @@
 
 **Your path to endgame PvM**
 
-KI1 + UX integration development build · 14 October 2026 · plugin 0.9.0 · knowledge r3a-4 · schema 10
+Combined UX + ordinary melee + KI1 build · 14 October 2026 · plugin 0.9.0 · knowledge r3b-1 · schema 11
+
+**R3b first increment:** ordinary melee now compares complete supported owned one-/two-handed packages, actual stab/slash/crush styles, prayer/full-super-potion assumptions, max hit, hit chance and theoretical DPS. Abyssal tentacle has a Value/Path outcome with owned-component bypasses and explicit whip consumption. Neutral, ordinary Dharok and Graardor are reviewed contexts. Observed Fang/Scythe/Soulreaper/lance competitors keep the DPS-superiority claim unavailable while unaffected reference metrics remain visible. [Support, validation and pending client checks](docs/validation/R3b-ordinary-melee.md). Task/Salve, demon/dragon multipliers, endgame families, broader armour/treads, specials and time/trip metrics remain open R3b/R4 work.
 
 **UX completion for review:** compact Browse/account entry, counted Long-term/Specialist discovery and a quiet list-update notice complete the current homepage details. Browse combines item-name search with style/slot/activity/role/importance/status filters, and offers owned/covered use explanations without new acquisition advice. Value/Path share the item header and show the selected tab. Filters, caret and ID anchors survive Back/updates and clear on account changes. [Component evidence and pending real-client checks](docs/validation/ux-completion.md). Broader R6 relationship/model coverage remains open; no client/player acceptance is claimed.
 
