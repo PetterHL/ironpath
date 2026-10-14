@@ -1,0 +1,8 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+null java.awt.Rectangle[x=6,y=86,width=213,height=24] Your account
+null java.awt.Rectangle[x=6,y=110,width=213,height=24] Attack 90 · Strength 90 · Defence 90
+null java.awt.Rectangle[x=6,y=134,width=213,height=24] Ranged 99 · Magic 99 · Prayer 90
+null java.awt.Rectangle[x=6,y=158,width=213,height=24] Rigour: unlocked · Augury: unlocked
+null java.awt.Rectangle[x=6,y=182,width=213,height=44] Bank recorded this session; reopen it after changes.
+null java.awt.Rectangle[x=0,y=0,width=213,height=144] Manual ownership/unlocks are reversible planning assumptions. They do not confirm charged, worn or usable gear. Readable client quest/unlock facts take precedence; positive observed possession overrides manual absence.
+null java.awt.Rectangle[x=6,y=699,width=213,height=64] Planning choices are saved locally; observed gear and reference setups stay in session memory.

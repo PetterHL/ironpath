@@ -1,0 +1,13 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+null java.awt.Rectangle[x=6,y=172,width=213,height=38] Recommended order
+null java.awt.Rectangle[x=6,y=210,width=213,height=174] Value and remaining work for your account. Choices with unresolved checks stay conditional.
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=72] Tormented bracelet
+comparison-headline java.awt.Rectangle[x=0,y=72,width=199,height=43] +6.3% DPS
+card-baseline java.awt.Rectangle[x=0,y=115,width=199,height=72] Compared with Barrows gloves
+card-priority-reason java.awt.Rectangle[x=0,y=187,width=199,height=140] Useful supported improvement; medium remaining effort.
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=72] Occult necklace
+comparison-headline java.awt.Rectangle[x=0,y=72,width=199,height=43] +6.2% DPS
+card-baseline java.awt.Rectangle[x=0,y=115,width=199,height=72] Compared with Amulet of fury
+card-priority-reason java.awt.Rectangle[x=0,y=187,width=199,height=140] Useful supported improvement; medium remaining effort.
+null java.awt.Rectangle[x=6,y=1212,width=213,height=38] Demonic Gorillas
+null java.awt.Rectangle[x=6,y=1250,width=213,height=106] Useful families: necklace-of-anguish · tormented-bracelet

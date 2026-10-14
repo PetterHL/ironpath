@@ -1,0 +1,7 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+null java.awt.Rectangle[x=6,y=86,width=213,height=24] Recommended order
+null java.awt.Rectangle[x=6,y=110,width=213,height=64] Value and remaining work for your account. Choices with unresolved checks stay conditional.
+card-title java.awt.Rectangle[x=46,y=0,width=153,height=40] Tumeken's shadow
+comparison-headline java.awt.Rectangle[x=0,y=40,width=199,height=29] +22.9% DPS
+card-baseline java.awt.Rectangle[x=0,y=69,width=199,height=44] Compared with trident of the swamp
+card-priority-reason java.awt.Rectangle[x=0,y=113,width=199,height=44] Useful supported improvement; very long remaining effort.

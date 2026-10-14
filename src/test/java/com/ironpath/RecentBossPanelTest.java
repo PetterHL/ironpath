@@ -66,7 +66,7 @@ public class RecentBossPanelTest
 				KillImpactResult newer=new RecentBossComparison(catalog).evaluate(summary(state(20997,11212,90),Set.of()),account,preferences);
 				panel.recentBoss(newer,true,List.of(newer.summary)); render(); assertTrue(text().contains("Rune crossbow"));
 				button("Back to recent boss").doClick(); button("recent-path-19547").doClick(); assertTrue(text().contains("Path from the captured account context")); capture("recent-path");
-				button("Back to recent boss").doClick(); button("Back to upgrades").doClick(); assertFalse(text().contains("Actually worn:"));
+				button("Back to recent boss").doClick(); button("← Upgrades").doClick(); assertFalse(text().contains("Actually worn:"));
 			}
 			catch(Exception e) { throw new RuntimeException(e); }
 		});

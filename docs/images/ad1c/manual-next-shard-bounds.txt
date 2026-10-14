@@ -1,0 +1,15 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] Tormented bracelet
+null java.awt.Rectangle[x=6,y=156,width=213,height=24] From Demonic Gorillas
+null java.awt.Rectangle[x=6,y=180,width=213,height=24] Remaining work
+null java.awt.Rectangle[x=6,y=204,width=213,height=24] Remaining: Zenyte shard
+null java.awt.Rectangle[x=6,y=228,width=213,height=24] Remaining: Combine shard with onyx
+null java.awt.Rectangle[x=6,y=252,width=213,height=24] Remaining: Cut zenyte
+null java.awt.Rectangle[x=6,y=276,width=213,height=24] Remaining: Make zenyte bracelet
+null java.awt.Rectangle[x=6,y=300,width=213,height=24] Remaining: Enchant and wear
+null java.awt.Rectangle[x=6,y=324,width=213,height=24] Next step
+null java.awt.Rectangle[x=6,y=348,width=213,height=24] Acquire Zenyte shard
+null java.awt.Rectangle[x=6,y=372,width=213,height=24] Remaining effort: Medium
+null java.awt.Rectangle[x=6,y=396,width=213,height=44] Suitable package · Compatible melee / ranged switches
+null java.awt.Rectangle[x=6,y=440,width=213,height=44] Estimated mean 5.0–10.0 h · manual scenario
+null java.awt.Rectangle[x=6,y=484,width=213,height=64] Next zenyte shard; Synthetic full-cycle manual scenario. Scenario sensitivity, not an RNG interval or deadline.

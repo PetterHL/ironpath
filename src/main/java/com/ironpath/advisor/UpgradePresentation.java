@@ -84,6 +84,7 @@ public final class UpgradePresentation
 	public final RemainingEffort effort;
 	public final ProgressionPriority.Priority priority;
 	public final String status, priorityReason, nextStep, estimateOrigin, estimateScope;
+	public final PriorityExplanation priorityExplanation;
 	public final RangeKind rangeKind;
 	public final Double minimumMeanHours, maximumMeanHours;
 	public final List<RouteChoice> routes;
@@ -119,20 +120,17 @@ public final class UpgradePresentation
 			:changes.stream().findFirst().map(c->c.beforeName).orElse(view.valueEvidence.baseline);
 		effort=view.pursuit.remainingEffort; priority=view.pursuit.priority;
 		status=primaryMetric.availability==Availability.INPUT_REQUIRED?primaryMetric.action
-			: !view.questions.isEmpty()?"Check ownership"
 			: effort.suitability==RemainingEffort.Suitability.PREPARE?"Preparation needed"
 			: effort.suitability==RemainingEffort.Suitability.UNKNOWN?"Check acquisition method"
 			: view.pursuit.category==PursuitAssessment.Category.DEFER?"Optional"
 			: view.pursuit.category==PursuitAssessment.Category.LONG_TERM?"Long-term"
 			: effort.band==RemainingEffort.Band.UNKNOWN?"Effort not estimated":effort.band.label+" remaining effort";
-		priorityReason=(primaryMetric.availability==Availability.MODEL_UNSUPPORTED && view.valueEvidence.importance==ValueEvidence.Importance.UNCERTAIN?"Personal gain is not established by the supported model.":view.valueEvidence.reason) + " " + (effort.acquisitionBypassed?"Owned components shorten the remaining work."
-			:effort.suitability==RemainingEffort.Suitability.PREPARE?"Preparation comes before this acquisition."
-			:effort.suitability==RemainingEffort.Suitability.UNKNOWN?"Acquisition suitability still needs checking."
-			:effort.band==RemainingEffort.Band.UNKNOWN?"Remaining effort is not established."
-			:effort.band.label+" remaining effort with the reviewed "+(effort.suitability==RemainingEffort.Suitability.WORKABLE?"workable":"compatible")+" method.");
+		priorityExplanation=new PriorityExplanation(view,primaryMetric.availability,utility);
+		priorityReason=priorityExplanation.detailReason;
 		Advisor.RouteView selected=view.routes.stream().filter(r->r.decision.id.equals(view.pursuit.route)).findFirst().orElseThrow();
 		Advisor.Requirement next=effort.acquisitionBypassed?selected.nextStep:selected.requirements.stream().filter(r->!r.role.equals("SUGGESTED PREPARATION") && r.truth!=com.ironpath.model.Truth.TRUE && !r.skipped).findFirst().orElse(selected.nextStep);
-		nextStep=effort.suitability==RemainingEffort.Suitability.PREPARE || effort.suitability==RemainingEffort.Suitability.UNKNOWN?effort.reason
+		nextStep=next==null && effort.suitability==RemainingEffort.Suitability.PREPARE?"Check the remaining preparation and compatible method below"
+			:next==null && effort.suitability==RemainingEffort.Suitability.UNKNOWN?"Check gear and levels for a compatible method in estimate basis"
 			:next==null?"Pursue "+selected.decision.title:(next.truth==com.ironpath.model.Truth.UNKNOWN?"Check ":next.role.equals("ACTIVITY")?"":next.role.equals("COMPONENT")?"Acquire ":"Complete ")+next.label;
 		EffortEstimate estimate=view.pursuit.estimate;
 		boolean hours=estimate!=null && estimate.meanHours()!=null;

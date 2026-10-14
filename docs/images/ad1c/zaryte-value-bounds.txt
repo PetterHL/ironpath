@@ -1,0 +1,6 @@
+225 px component, 213 px inner width. Synthetic account, fallback sprites.
+card-title java.awt.Rectangle[x=46,y=0,width=167,height=40] Zaryte crossbow
+null java.awt.Rectangle[x=6,y=156,width=213,height=24] Special attack burst
+null java.awt.Rectangle[x=6,y=180,width=213,height=44] Ordinary DPS does not quantify this role.
+null java.awt.Rectangle[x=6,y=224,width=213,height=24] Why this position
+null java.awt.Rectangle[x=6,y=248,width=213,height=104] Special attack burst; effort needs checking, method unconfirmed. Check compatible gear and levels in Acquisition before choosing this method.
