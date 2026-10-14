@@ -231,6 +231,9 @@ public final class KnowledgeCatalog
 				|| !ownershipLabels.keySet().containsAll(upgrade.unknownSets))
 			{ throw new IllegalArgumentException("Invalid upgrade references"); }
 			require(upgrade.title); require(upgrade.valueReason); require(upgrade.alternatives);
+			if (upgrade.browseStyle!=null && !Set.of("Melee","Ranged","Magic").contains(upgrade.browseStyle)
+				|| upgrade.browseSlot!=null && !PoweredMagic.SLOTS.contains(upgrade.browseSlot))
+			{ throw new IllegalArgumentException("Invalid discovery metadata"); }
 			require(upgrade.headline); require(upgrade.effortShort);
 			if (!Set.of("reviewed", "candidate").contains(require(upgrade.status))
 				|| LocalDate.parse(require(upgrade.reviewed)).isAfter(reviewed)) { throw new IllegalArgumentException("Unreviewed upgrade"); }
@@ -702,6 +705,7 @@ public final class KnowledgeCatalog
 	public static final class Upgrade
 	{
 		public String id, title, valueReason, alternatives, remainingWork, limitation, comparison, headline, effortShort, status, reviewed;
+		public String browseStyle, browseSlot;
 		public int itemId;
 		public Benefit benefitBand;
 		public Condition when, ownedWhen, equipWhen, eligibilityWhen;

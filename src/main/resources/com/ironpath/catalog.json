@@ -1,6 +1,6 @@
 {
   "schemaVersion": 10,
-  "knowledgeVersion": "r3a-3",
+  "knowledgeVersion": "r3a-4",
   "reviewed": "2026-10-14",
   "sources": [
     {
@@ -21273,6 +21273,8 @@
     },
     {
       "id": "venator-bow",
+      "browseStyle": "Ranged",
+      "browseSlot": "weapon",
       "title": "Venator bow",
       "itemId": 27610,
       "when": {

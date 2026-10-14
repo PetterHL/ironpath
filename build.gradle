@@ -26,7 +26,7 @@ dependencies {
 }
 
 group = 'com.ironpath'
-version = '0.8.3'
+version = '0.8.4'
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'

@@ -293,7 +293,8 @@ public class IronpathPlugin extends Plugin
 		com.ironpath.advisor.PursuitOverview overview = new com.ironpath.advisor.PursuitOverview(upgrades,
 			snapshot == null || !loaded ? List.of() : advisor.activityOpportunities(snapshot, preferences, upgrades),
 			snapshot == null || !loaded ? List.of() : advisor.quickActions(snapshot, preferences),
-			snapshot == null || !loaded ? List.of() : advisor.availableActivities(snapshot, preferences));
+			snapshot == null || !loaded ? List.of() : advisor.availableActivities(snapshot, preferences),
+			snapshot == null || !loaded ? List.of() : advisor.ownedUpgrades(snapshot, preferences));
 		Advisor.GoalView goal = snapshot == null || !loaded ? null : advisor.goal(snapshot, preferences);
 		List<String> reasons = snapshot == null || !loaded || !recommendations.isEmpty() ? List.of()
 			: advisor.explainNoAdvice(snapshot, preferences);

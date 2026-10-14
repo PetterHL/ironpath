@@ -2,9 +2,9 @@
 
 **Your path to endgame PvM**
 
-Integrated development build · 14 October 2026 · plugin 0.8.3 · knowledge r3a-3 · schema 10
+UX completion development build · 14 October 2026 · plugin 0.8.4 · knowledge r3a-4 · schema 10
 
-**UX follow-up:** Browse searches supported upgrades by item name, combines search with existing categories and offers Clear filters. Typing retains the live editor; observation refreshes preserve caret/selection. Overview/Browse retain independent card anchors, and Back follows the same card after account updates. [Component evidence and pending client checks](docs/validation/ux-navigation.md). Broader R6 filters and owned-use search remain pending.
+**UX completion for review:** compact Browse/account entry, counted Long-term/Specialist discovery and a quiet list-update notice complete the current homepage details. Browse combines item-name search with style/slot/activity/role/importance/status filters, and offers owned/covered use explanations without new acquisition advice. Value/Path share the item header and show the selected tab. Filters, caret and ID anchors survive Back/updates and clear on account changes. [Component evidence and pending real-client checks](docs/validation/ux-completion.md). Broader R6 relationship/model coverage remains open; no client/player acceptance is claimed.
 
 **New design, not implemented:** [Personalized Kill Impact](docs/KILL_IMPACT.md) connects supported boss kills to the existing upgrade advisor using actual worn equipment. Its coverage target is most relevant PvM bosses, including raid bosses/rooms and separately scoped whole-raid impact; Vorkath is an example, not the feature boundary. The selected delivery is recent-kill context and supported offence first, then validated same-method time estimates, then selective spec/supply expansion. [KI1–KI3 in TASKS](TASKS.md#personalized-kill-impact--ki1ki3) refines R1.5b/R4/Q5 without replacing current UI or comprehensive upgrade work. No personal kill-time feature or new live-client validation is claimed by this documentation change.
 

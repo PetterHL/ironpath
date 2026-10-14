@@ -271,11 +271,31 @@ Plugin **0.8.3**, knowledge **r3a-3**, schema **10**, preference schema **2**. F
 
 This delivers the first search portion of R6 alongside R3a navigation acceptance. Initial delivery `b18351c` passed 238 tests. Review corrections preserve search caret/selection across full observation refreshes and reject deferred scroll restoration from an earlier result generation; unfocused labels cannot trigger caret-driven scrolling. JDK 11 / Gradle 8.10 / RuneLite 1.13.1 `test build --no-daemon` passes **240 tests, zero failures/errors/skips** (232-test baseline, six original and two review panel regressions; all 1,944 original ranged oracle cases retained). Broader filters, owned-use search, real-client focus/scaling and player usefulness remain pending. [Validation, matched before/after components and PC checks](docs/validation/ux-navigation.md). Existing R3a/client reports remain historical evidence.
 
+### UX completion and discovery controls — 14 October 2026
+
+Plugin **0.8.4**, knowledge **r3a-4**, schema **10**, preference schema **2** on
+`ux-completion`, based on integrated main `2dd799a`; review/integration pending.
+Compact Browse/account-evidence entry, matching Long-term/Specialist counts and a
+quiet list-update notice finish the current homepage details. Browse adds combined
+style/slot/activity/role/importance/status facets and owned/covered use inspection;
+owned possession does not imply usability, numerical benefit or a new grind.
+Value/Path reuse the item header and visibly identify the selected tab. Filters,
+expanded state, caret, focus targets and ID anchors survive Back/updates; lifecycle
+clearing and stale actions/images remain guarded.
+
+`test build --offline --no-daemon` passes **248 tests, zero failures/errors/skips**,
+retaining all **1,944** ranged oracle cases. Synthetic native/enlarged-font captures
+and the focused remaining PC checklist are in [validation](docs/validation/ux-completion.md).
+This delivers R6's current discovery controls and owned-use text entry point.
+Actual-client sprites/scaling/focus and player usefulness remain pending; comprehensive
+relationship/trail coverage, owned quantitative comparisons, R3b/R4/R5 and KI1 remain
+separate work. Historical 0.8.3 evidence above is preserved.
+
 ### R6 — Comprehensive relationship coverage and discovery
 
 Audit the uncapped CATALOGUE by **item/outcome × role × activity/method × owned alternative**, alongside numeric and acquisition support. Include every meaningful current endgame family, specialist, sidegrade and permanent PvM utility; extend when content releases. An inventory row alone is not coverage. Account for unreviewed/invalid/unsupported relationships with a reason and evidence need. No arbitrary catalogue limit and no claim of comprehensive delivery while material gaps remain unexplained.
 
-Extend R3a Browse with search and style/slot/activity/role/importance/status filters, owned-use explanations and accessible scaling. Show how a useful preparation supports an activity and what that activity can still offer; enable deeper inspectable trails with visited-ID guards as useful, without recursive rank amplification. Keep brief cards, Value/Path and UX's measured one-/two-column layout. Preferences change prominence, not truth, and all relevant conditional/long-term/deferred options remain reachable.
+The UX completion increment above implements Browse search, style/slot/activity/role/importance/status filters and owned-use text discovery. Continue reviewed relationship/use coverage, owned quantitative comparisons and actual-client accessible scaling. Show how a useful preparation supports an activity and what that activity can still offer; enable deeper inspectable trails with visited-ID guards as useful, without recursive rank amplification. Keep brief cards, Value/Path and UX's measured one-/two-column layout. Preferences change prominence, not truth, and all relevant conditional/long-term/deferred options remain reachable.
 
 **Acceptance:** all PI profiles plus the existing account/identity matrices. Mature accounts receive defensible specialist/QoL/resource choices or an honest small/no-gain result. One selected goal is never necessary. Search reveals both missing-upgrade and owned-utility explanations, with current evidence and numeric gaps distinguishable. Publish separate matrices for reviewed role relationships, adequate alternatives, paths, per-metric models and live validation. Inspect both ranked results and important omissions. Demonstrate the addition of a newly released role through data plus an existing module when possible; add explicit Java mechanics only for a genuinely new mechanic. The announced Archive remains a watchlist until release/review.
 
