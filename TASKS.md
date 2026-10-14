@@ -224,7 +224,7 @@ Investigate Q5 only for a concrete useful scenario after reusable attack distrib
 
 ### Personalized Kill Impact — KI1–KI3
 
-**Selected, unimplemented.** [KILL_IMPACT](docs/KILL_IMPACT.md) defines observation/model/UX contracts and the source register. Keep TASKS as the sole backlog. This adds a bounded context to the existing advisor, not a new plugin, dashboard, universal simulator or research reset.
+**KI1 experimental implementation candidate; KI2–KI3 unimplemented.** [KILL_IMPACT](docs/KILL_IMPACT.md) defines observation/model/UX contracts and the source register. Keep TASKS as the sole backlog. This adds a bounded context to the existing advisor, not a new plugin, dashboard, universal simulator or research reset.
 
 **Coverage clarification, 14 October:** the target is most relevant PvM bosses, explicitly including raid bosses/rooms in CoX/CM, ToA and ToB/hard mode. Whole-raid impact is a separate scope to evaluate and deliver where supportable. Vorkath was an example, not a required first boss or a catalogue boundary. Use the existing uncapped encounter inventory and track observation, contextual offence, personal time and whole-activity support independently. A pilot cannot establish broad coverage.
 
@@ -238,6 +238,12 @@ Investigate Q5 only for a concrete useful scenario after reusable attack distrib
 - Supply reviewed target/method facts and complete relevant interactions for the initial supported packages; if selecting Vorkath, include Salve/dragon/undead/slot interactions. Identify exact excluded setups and record how often ordinary player setups hit those gaps; an adapter that only shows unsupported messages is not a successful vertical increment.
 
 **KI1 acceptance:** shared-contract fixtures cover ordinary solo, multi-phase and raid-room contexts without boss-specific shared schema, including unknown party/scaling and precise output scope; these fixtures do not claim live raid support. Event replay and actual-client evidence for start/end, duplicate/late messages, death/teleport, mid-kill enable, missing state, transformations/index reuse, delayed hits, switch/food ambiguity, overflow and identity changes; no false completion or account leakage. Matched timer origins agree within one tick or have an investigated reason. Demonstrate worn-versus-owned-baseline differences, a genuine supported upgrade, owned alternative, recurring ammo and honest no-gain/unsupported states at native width. Report eligible-capture and numeric-coverage fractions and player comprehension, not just test counts. Keep full-cycle pace and performance persistence unavailable. If actual-client access is absent, leave those gates explicitly pending.
+
+### KI1 implementation candidate — 14 October 2026
+
+Branch `ki1-recent-boss`, plugin 0.9.0, unchanged knowledge r3a-3/schema 10/preference schema 2. Selects normal Commander Zilyana because the integrated ranged models already have reviewed target inputs and useful owned/Bowfa/tbow/accessory comparisons; Vorkath interactions remain R3b/R4 work. Implements shared optional run/room/phase/scaling/party contracts, a bounded public-event capture state machine, exact worn-state ranged comparisons and a quiet experimental Recent boss entry with Value/Path. Existing automatic advice/ranking remains independent. Personal seconds, whole-fight DPS and full-cycle pace are unavailable.
+
+[Implementation evidence and remaining acceptance](docs/validation/KI1.md) separates synthetic replay/component checks from pending actual-client mappings, eligible-kill/numeric coverage and player comprehension. Default capture is off; the session opt-in does not persist. Existing conservative region/loading resets remain. Shared raid/multi-phase fixtures demonstrate schema scope, not live adapters. This is an implementation candidate for integration, not a completed live-validation or most-boss-coverage claim.
 
 **KI2 — Validated personal seconds for comparable kills**
 

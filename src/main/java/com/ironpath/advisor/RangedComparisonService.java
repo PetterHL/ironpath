@@ -77,6 +77,27 @@ public final class RangedComparisonService
 		{ proposal = packageFor(account,proposal,ownedChoices("weapon",account).get(0),false); }
 		return proposal;
 	}
+	/** Evaluate supported owned packages under the captured level/prayer/style, not neutral proposal defaults. */
+	public CombatSetup strongestObservedOwned(AccountSnapshot account, CombatSetup baseline, int visible)
+	{
+		CombatSetup strongest=null; double best=-1;
+		for(RangedItem weapon:ownedChoices("weapon",account))
+		{
+			CombatSetup option=packageFor(account,baseline,weapon,false);
+			List<CombatSetup> packages=new ArrayList<>(); packages.add(option);
+			CombatSetup fullVoid=voidPackage(account,option); if(fullVoid!=null) { packages.add(fullVoid); }
+			for(CombatSetup value:packages)
+			{
+				if(validate(account,Preferences.EMPTY,value)!=null) { continue; }
+				RangedItem ammo=items.get(RangedModel.ammoKind(weapon)==RangedItem.Ammo.DART ? value.loadedAmmo : value.slots.get("ammo"));
+				if(ammo!=null && ammo.boltEffect) { continue; }
+				double dps=RangedModel.calculateVisible(visible,value,target(baseline.target),items).dps;
+				if(dps>best) { best=dps; strongest=value; }
+			}
+		}
+		return strongest;
+	}
+
 	private List<RangedItem> ownedChoices(String slot, AccountSnapshot a)
 	{
 		return items.values().stream().filter(i -> i.slot.equals(slot) && (i.weapon != null || !slot.equals("weapon"))
@@ -193,6 +214,14 @@ public final class RangedComparisonService
 	public ComparisonResult compare(AccountSnapshot a, Preferences p, CombatSetup setup, KnowledgeCatalog.Upgrade upgrade)
 	{ return compare(a,p,setup,upgrade.itemId); }
 	public ComparisonResult compare(AccountSnapshot a, Preferences p, CombatSetup setup, int candidateId)
+	{ return compare(a,p,setup,candidateId,null); }
+	/** Freeze the worn baseline and observed prayer/style/level. Accessory changes retain that weapon. */
+	public ComparisonResult compareObserved(AccountSnapshot a, Preferences p, CombatSetup setup, int candidateId, int visibleLevel)
+	{ return compare(a,p,setup,candidateId,visibleLevel); }
+	private PoweredMagic.Metrics metrics(AccountSnapshot a, CombatSetup setup, TargetProfile target, Integer visible)
+	{ return visible==null ? RangedModel.calculate(a.level("RANGED"),setup,target,items)
+		: RangedModel.calculateVisible(visible,setup,target,items); }
+	private ComparisonResult compare(AccountSnapshot a, Preferences p, CombatSetup setup, int candidateId, Integer visible)
 	{
 		RangedItem candidate = items.get(candidateId); boolean dpsFirst = candidate != null && candidate.weapon != null;
 		String error = validate(a,p,setup);
@@ -213,21 +242,21 @@ public final class RangedComparisonService
 		{
 			// Retain the focused reference as an option, then reconsider every supported owned weapon.
 			alternatives.add(withCandidate(setup,candidate));
-			for (RangedItem weapon : ownedChoices("weapon",a))
-			{ addPackages(alternatives,a,packageFor(a,setup,weapon,false),candidate); }
+			if (visible==null) { for (RangedItem weapon : ownedChoices("weapon",a))
+			{ addPackages(alternatives,a,packageFor(a,setup,weapon,false),candidate); } }
 		}
 		CombatSetup after = null; double strongest = -1;
 		for (CombatSetup option : alternatives)
 		{
 			if (validate(a,p,option,candidateId) != null) { continue; }
-			double value = RangedModel.calculate(a.level("RANGED"),option,target,items).dps;
+			double value = metrics(a,option,target,visible).dps;
 			if (value > strongest) { strongest = value; after = option; }
 		}
 		if (after == null) { return unavailable(setup,"No supported compatible candidate package with observed alternative weapons and ammunition.",dpsFirst); }
 		RangedItem afterWeapon = items.get(after.slots.get("weapon"));
 		RangedItem afterAmmo = items.get(RangedModel.ammoKind(afterWeapon) == RangedItem.Ammo.DART ? after.loadedAmmo : after.slots.get("ammo"));
-		PoweredMagic.Metrics beforeMetrics = RangedModel.calculate(a.level("RANGED"),setup,target,items);
-		PoweredMagic.Metrics afterMetrics = RangedModel.calculate(a.level("RANGED"),after,target,items);
+		PoweredMagic.Metrics beforeMetrics = metrics(a,setup,target,visible);
+		PoweredMagic.Metrics afterMetrics = metrics(a,after,target,visible);
 		dpsFirst |= !setup.slots.get("weapon").equals(after.slots.get("weapon")) || beforeMetrics.attackTicks != afterMetrics.attackTicks;
 		EnumMap<ComparisonResult.Metric,PoweredMagic.Status> support = support(setup.confirmed ? PoweredMagic.Status.SUPPORTED : PoweredMagic.Status.CONDITIONAL);
 		Map<ComparisonResult.Metric,String> gaps = new EnumMap<>(ComparisonResult.Metric.class);
@@ -240,9 +269,10 @@ public final class RangedComparisonService
 			gaps.put(HIT_CHANCE,gap); gaps.put(THEORETICAL_DPS,gap);
 		}
 		List<String> assumptions = new ArrayList<>();
-		assumptions.add("Complete proposed ranged reference; supplies/charges and internal dart loading are assumptions, never a quantity or current-load observation.");
+		assumptions.add(visible==null ? "Complete proposed ranged reference; supplies/charges and internal dart loading are assumptions, never a quantity or current-load observation." : "Observed worn-state baseline; exact sampled visible Ranged " + visible + ". Candidate supplies/charges are assumptions. This is ordinary target offence, not measured fight DPS or time saved.");
 		assumptions.add("Baseline slots: " + description(setup)); assumptions.add("Candidate slots: " + description(after));
-		assumptions.add("Real Ranged " + a.level("RANGED") + "; visible " + beforeMetrics.visibleMagic + "; " + setup.assumptionLabel() + ". Selected prayers/boosts are not live state; potion decay excluded.");
+		assumptions.add(visible==null ? "Real Ranged " + a.level("RANGED") + "; visible " + beforeMetrics.visibleMagic + "; " + setup.assumptionLabel() + ". Selected prayers/boosts are not live state; potion decay excluded."
+			: "Captured real Ranged " + a.level("RANGED") + "; visible " + visible + "; active " + setup.rangedPrayer + "; style " + setup.rangedStyle + ". Applies to this state only, not the entire fight or an inferred potion.");
 		assumptions.add(target.name + "; Defence " + target.defenceLevel + "; light/standard/heavy bonuses " + target.rangedLight + "/" + target.rangedStandard + "/" + target.rangedHeavy
 			+ "; Magic " + target.magicLevel + "; magic attack " + target.magicAttack + "; ranged defence rolls " + beforeMetrics.defenceRoll + " → " + afterMetrics.defenceRoll + ". No reduction or invented HP.");
 		assumptions.add("Attack bonus " + beforeMetrics.attackBonus + " → " + afterMetrics.attackBonus + "; ranged strength " + beforeMetrics.damagePercent + " → " + afterMetrics.damagePercent + ". Crystal effects require active pieces and crystal-family bows. Full Void is a package; task assumption " + setup.onTask + " applies only to reviewed eligible targets with an imbued helmet.");

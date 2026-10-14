@@ -45,6 +45,18 @@ final class IronpathPanel extends PluginPanel
 	private long view, browseResultsView;
 	private Runnable refresh;
 	private PursuitOverview renderedOverview;
+	private com.ironpath.encounter.KillImpactResult latestRecent, displayedRecent;
+	private com.ironpath.encounter.KillImpactResult.Option recentOption;
+	private List<com.ironpath.encounter.EncounterSummary> recentSummaries=List.of();
+	private boolean recentEnabled, recentView, recentPath;
+	private Anchor recentHomeAnchor, recentListAnchor;
+	private String recentReturnFocus;
+	void recentBoss(com.ironpath.encounter.KillImpactResult latest, boolean enabled,
+		List<com.ironpath.encounter.EncounterSummary> summaries)
+	{
+		latestRecent=latest; recentEnabled=enabled; recentSummaries=List.copyOf(summaries);
+		if(!enabled || latest==null) { recentView=false; displayedRecent=null; recentOption=null; }
+	}
 	IronpathPanel() { this(null); }
 	IronpathPanel(ItemManager itemManager) { this.itemManager = itemManager; }
 
@@ -56,6 +68,8 @@ final class IronpathPanel extends PluginPanel
 		void clear();
 		default void reference(String key, String value) {}
 		default void pace(String value) {}
+		default void recentBoss(boolean enabled) {}
+		default void clearRecentBoss() {}
 		default boolean current() { return true; }
 		default boolean canEdit() { return true; }
 	}
@@ -90,7 +104,7 @@ final class IronpathPanel extends PluginPanel
 		renderedOverview=snapshot==null ? null : overview;
 		long currentView = ++view;
 		refresh = () -> render(status, snapshot, advice, catalog, goal, preferences, actions, storageStatus, reasons, overview, reference);
-		if (snapshot == null) { pathDetail = false; homeAnchor = browseAnchor = detailAnchor = null; browse = false; category = "All"; query = ""; searchDot=searchMark=0; returnFocus = null; }
+		if (snapshot == null) { recentHomeAnchor=recentListAnchor=null; recentReturnFocus=null; recentView=false; displayedRecent=null; recentOption=null; latestRecent=null; pathDetail = false; homeAnchor = browseAnchor = detailAnchor = null; browse = false; category = "All"; query = ""; searchDot=searchMark=0; returnFocus = null; }
 		if (snapshot == null || upgrades.stream().noneMatch(u -> u.upgrade.id.equals(detail))
 			&& overview.activities.stream().noneMatch(a -> ("activity:" + a.id).equals(detail))) { detail = null; }
 		removeAll(); setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -100,7 +114,32 @@ final class IronpathPanel extends PluginPanel
 		if (snapshot != null && catalog != null)
 		{
 			Advisor.UpgradeView selected = upgrades.stream().filter(u -> u.upgrade.id.equals(detail)).findFirst().orElse(null);
-			if (selected != null)
+			if(recentView && displayedRecent!=null)
+			{
+				button(this,recentOption==null ? "Back to upgrades" : "Back to recent boss",()->{
+					if(!valid(currentView,actions)) { return; }
+					javax.swing.JViewport viewport=(javax.swing.JViewport)SwingUtilities.getAncestorOfClass(javax.swing.JViewport.class,this);
+					boolean toList=recentOption!=null;
+					if(toList) { recentOption=null; recentPath=false; }
+					else { recentView=false; }
+					refresh.run();
+					restoreNavigation(viewport,toList ? recentListAnchor : recentHomeAnchor,toList ? recentReturnFocus : "open-recent-boss",view,actions);
+				});
+				if(recentOption!=null && recentPath && recentOption.upgrade!=null)
+				{ text(this,"Path from the captured account context"); acquisition(recentOption.upgrade,catalog,actions); }
+				else
+				{
+					add(new RecentBossPanel(displayedRecent,recentOption,itemManager,catalog,getFont(),()->valid(currentView,actions),(option,path)->{
+						if(!valid(currentView,actions)) { return; }
+						javax.swing.JViewport viewport=(javax.swing.JViewport)SwingUtilities.getAncestorOfClass(javax.swing.JViewport.class,this);
+						recentListAnchor=captureAnchor(viewport); recentReturnFocus=(path ? "recent-path-" : "recent-value-")+option.itemId;
+						recentOption=option; recentPath=path; refresh.run();
+						restoreNavigation(viewport,null,null,view,actions);
+					}));
+					if(recentOption!=null) { for(String gap:displayedRecent.gaps) { text(this,gap); } }
+				}
+			}
+			else if (selected != null)
 			{
 				button(this, "Back to upgrades", () -> navigate(null, currentView, actions));
 				upgradeDetails(selected, snapshot, preferences, catalog, actions, reference);
@@ -115,6 +154,16 @@ final class IronpathPanel extends PluginPanel
 				if (browse) { browse(overview, reference, currentView, actions); }
 				else
 				{
+					if(latestRecent!=null)
+					{
+						button(this,"Recent boss · Commander Zilyana",()->{
+							if(!valid(currentView,actions)) { return; }
+							javax.swing.JViewport viewport=(javax.swing.JViewport)SwingUtilities.getAncestorOfClass(javax.swing.JViewport.class,this);
+							recentHomeAnchor=captureAnchor(viewport);
+							displayedRecent=latestRecent; recentView=true; recentOption=null; refresh.run();
+							restoreNavigation(viewport,null,null,view,actions);
+						}).setName("open-recent-boss");
+					}
 					JPanel discovery=new ActionLinks(); discovery.setFont(getFont());
 					button(discovery,"Browse",()->showBrowse(currentView,actions)).setName("home-browse");
 					button(discovery,"Long-term",()->showCategory("Long-term",currentView,actions)).setName("home-long-term");
@@ -140,6 +189,21 @@ final class IronpathPanel extends PluginPanel
 				for (String reason : reasons) { text(broad, reason); }
 				JPanel account = section(this, "Account and preferences");
 				text(account,"Reference setups stay in memory; explicit planning choices are saved locally. Live acceptance checks remain pending.");
+				if(actions!=null)
+				{
+					button(account,recentEnabled ? "Disable recent boss (experimental)" : "Enable recent boss (experimental)",()->{
+						if(valid(currentView,actions)) { actions.recentBoss(!recentEnabled); }
+					}).setName("toggle-recent-boss");
+					if(recentEnabled)
+					{
+						text(account,"Zilyana pilot · session memory only. Wait for the next observed spawn; live-client validation pending.");
+						String counts=java.util.Arrays.stream(com.ironpath.encounter.EncounterSummary.Outcome.values()).map(o->
+							o.name().toLowerCase(java.util.Locale.ROOT)+" "+recentSummaries.stream().filter(k->k.outcome==o).count())
+							.collect(java.util.stream.Collectors.joining(" · "));
+						text(account,counts);
+						button(account,"Clear recent kills",()->{ if(valid(currentView,actions)) { actions.clearRecentBoss(); } });
+					}
+				}
 				text(account, status); text(account, "Knowledge " + catalog.version + " · reviewed " + catalog.reviewed);
 				if (ChronoUnit.DAYS.between(catalog.reviewed, LocalDate.now()) > 90) { text(account, "Review is over 90 days old. Check sources before pursuing."); }
 				observations(account, snapshot, catalog); text(account, storageStatus);
@@ -203,7 +267,7 @@ final class IronpathPanel extends PluginPanel
 		java.util.List<java.awt.Component> cards=new java.util.ArrayList<>();
 		for (java.awt.Component child : parent.getComponents())
 		{
-			if (child.getName()!=null && child.getName().startsWith("upgrade-card-")) { cards.add(child); }
+			if (child.getName()!=null && (child.getName().startsWith("upgrade-card-") || child.getName().startsWith("recent-option-"))) { cards.add(child); }
 			else if (child instanceof java.awt.Container) { cards.addAll(namedCards((java.awt.Container)child)); }
 		}
 		return cards;
@@ -778,7 +842,7 @@ final class IronpathPanel extends PluginPanel
 		@Override public String toString() { return label; }
 	}
 
-	private static JButton button(JPanel panel, String label, Runnable action)
+	static JButton button(JPanel panel, String label, Runnable action)
 	{
 		JButton button = new JButton(label);
 		button.setFont(panel.getFont()); button.setMargin(new java.awt.Insets(2,3,2,3));
@@ -798,7 +862,7 @@ final class IronpathPanel extends PluginPanel
 	}
 	private static String level(AccountSnapshot account, String skill) { return account.level(skill) == null ? "unknown" : account.level(skill).toString(); }
 	private static String unlock(Observation<Boolean> fact) { return !fact.known() ? "unknown" : fact.value() ? "unlocked" : "not unlocked"; }
-	private static void text(JPanel panel, String message)
+	static void text(JPanel panel, String message)
 	{
 		JTextArea text = new JTextArea(message)
 		{

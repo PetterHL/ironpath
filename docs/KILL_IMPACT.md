@@ -1,6 +1,8 @@
 # Personalized Kill Impact — research and design
 
-14 October 2026 · **Selected direction; not implemented or validated in the game.**
+**KI1 implementation update, 14 October:** [the experimental Zilyana pilot](validation/KI1.md) now implements bounded capture and supported post-completion worn-state offence comparisons on `ki1-recent-boss`. The design/research evidence below retains its original scope; no KI2 seconds or actual-client acceptance is implied.
+
+Original research status, 14 October 2026 · **Selected direction; not implemented or validated in the game at research time.**
 
 Inspected `main` at `cb7c2cd874e8225581e85566f652236ee7e6feb3`, R2 #16 at `32cb24a`, documentation #17 at `75897d5`, and R3a #18 at `d9e897b7114591287a8667616969b7bd9d09a0b8`. This documentation change builds on #18 because its comparison, ranking and card contracts are concrete dependencies. No dependency is merged. [TASKS](../TASKS.md#personalized-kill-impact--ki1ki3) is the sole backlog; this document explains the design and evidence, not a competing task list.
 
