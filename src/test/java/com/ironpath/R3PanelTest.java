@@ -73,6 +73,8 @@ public class R3PanelTest
 	{ List<Component> result=new ArrayList<>();for(Component c:parent.getComponents()){result.add(c);if(c instanceof Container)result.addAll(children((Container)c));}return result; }
 	private Component named(String id) { return children(panel).stream().filter(c->id.equals(c.getName())).findFirst().orElseThrow(); }
 	private JButton button(String title) { return children(panel).stream().filter(c->c instanceof JButton).map(c->(JButton)c).filter(c->title.equals(c.getText())||title.equals(c.getToolTipText())).findFirst().orElseThrow(); }
+	private List<String> cardIds() { return children(panel).stream().map(Component::getName).filter(n->n!=null&&n.startsWith("upgrade-card-")).collect(java.util.stream.Collectors.toList()); }
+	private void settle() throws Exception { SwingUtilities.invokeAndWait(()->{}); SwingUtilities.invokeAndWait(()->{}); }
 	private String text() { return children(panel).stream().filter(c->c instanceof JTextArea).map(c->((JTextArea)c).getText()).collect(java.util.stream.Collectors.joining("\n")); }
 	private boolean visible(Component c)
 	{ for(Component p=c;p!=null;p=p.getParent()){if(!p.isVisible())return false;if(p==panel)return true;}return false; }
@@ -217,6 +219,162 @@ public class R3PanelTest
 		SwingUtilities.invokeAndWait(()->{
 			Component anchor=named("upgrade-card-necklace-of-anguish");assertEquals(5,scroll.getViewport().getViewPosition().y-SwingUtilities.convertPoint(anchor,0,0,panel).y);
 			panel.render("Profile changed",null,List.of(),catalog,null,Preferences.EMPTY,null,"",List.of());assertFalse(text().contains("Necklace of anguish"));
+		});
+	}
+	@Test public void nameSearchCombinesWithCategoryAndClearRestoresOriginalOrder() throws Exception
+	{
+		List<String> original=new ArrayList<>();
+		SwingUtilities.invokeAndWait(()->{
+			button("Browse").doClick(); original.addAll(cardIds());
+			JTextField search=(JTextField)named("browse-search");
+			assertEquals("Search upgrades by item name",search.getAccessibleContext().getAccessibleName());
+			JButton oldPath=(JButton)named("path-upgrade-necklace-of-anguish");
+			search.setText("  CROSSBOW   zaryte  "); search.setCaretPosition(7);
+			assertSame(search,named("browse-search")); // Typing retains the live text editor and focus/caret.
+			oldPath.doClick(); assertNotNull(named("browse-search"));
+		});
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			assertEquals(List.of("upgrade-card-zaryte-crossbow"),cardIds());
+			assertEquals(7,((JTextField)named("browse-search")).getCaretPosition());
+			((JComboBox<?>)named("browse-category")).setSelectedItem("Specialist");
+			assertEquals(List.of("upgrade-card-zaryte-crossbow"),cardIds());
+			((JComboBox<?>)named("browse-category")).setSelectedItem("Pursue");
+			assertTrue(cardIds().isEmpty()); assertTrue(text().contains("No matching upgrades in this category"));
+			button("Clear filters").doClick();
+			assertEquals("All",((JComboBox<?>)named("browse-category")).getSelectedItem());
+			assertEquals("",((JTextField)named("browse-search")).getText()); assertEquals(original,cardIds());
+		});
+	}
+	@Test public void searchAndCategorySurvivePathBackAndLiveAccountUpdates() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{ button("Specialist").doClick(); ((JTextField)named("browse-search")).setText("venator"); });
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			assertEquals(List.of("upgrade-card-venator-bow"),cardIds());
+			((JButton)named("path-upgrade-venator-bow")).doClick(); assertTrue(text().contains("Next:"));
+			button("Back to upgrades").doClick();
+			assertEquals("venator",((JTextField)named("browse-search")).getText());
+			assertEquals("Specialist",((JComboBox<?>)named("browse-category")).getSelectedItem());
+			account=items(account,19544); render();
+			assertEquals("venator",((JTextField)named("browse-search")).getText());
+			assertEquals(List.of("upgrade-card-venator-bow"),cardIds());
+		});
+	}
+	@Test public void pendingSearchAndOldControlsCannotRestoreClearedAccount() throws Exception
+	{
+		JTextField[] old=new JTextField[1]; JButton[] clear=new JButton[1];
+		SwingUtilities.invokeAndWait(()->{
+			button("Specialist").doClick(); clear[0]=button("Clear filters");
+			old[0]=(JTextField)named("browse-search"); old[0].setText("venator"); old[0].setCaretPosition(6); old[0].moveCaretPosition(2);
+			panel.render("Account changed",null,List.of(),catalog,null,Preferences.EMPTY,null,"",List.of());
+			clear[0].doClick(); old[0].setText("twisted");
+		});
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			assertTrue(cardIds().isEmpty()); assertFalse(text().contains("Venator bow")); render();
+			assertNotNull(named("homepage-deck")); button("Browse").doClick();
+			assertEquals("All",((JComboBox<?>)named("browse-category")).getSelectedItem());
+			assertEquals("",((JTextField)named("browse-search")).getText());
+			assertEquals(0,((JTextField)named("browse-search")).getCaret().getDot());
+			assertEquals(0,((JTextField)named("browse-search")).getCaret().getMark());
+		});
+	}
+	@Test public void overviewAndBrowseKeepIndependentAnchorsAndFiltersStartAtTop() throws Exception
+	{
+		int[] homeY=new int[1],browseY=new int[1];
+		SwingUtilities.invokeAndWait(()->{
+			size(); scroll.setSize(242,600); layout(scroll); size();
+			scroll.getViewport().setViewPosition(new Point(0,210)); homeY[0]=scroll.getViewport().getViewPosition().y;
+			button("Browse").doClick(); size();
+		});
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			assertEquals(0,scroll.getViewport().getViewPosition().y);
+			Component card=named("upgrade-card-necklace-of-anguish"); browseY[0]=SwingUtilities.convertPoint(card,0,0,panel).y+5;
+			scroll.getViewport().setViewPosition(new Point(0,browseY[0])); button("Overview").doClick(); size();
+		});
+		settle();
+		SwingUtilities.invokeAndWait(()->{ assertEquals(homeY[0],scroll.getViewport().getViewPosition().y); button("Browse").doClick(); size(); });
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			assertEquals(browseY[0],scroll.getViewport().getViewPosition().y);
+			((JComboBox<?>)named("browse-category")).setSelectedItem("Specialist"); size();
+		});
+		settle();
+		SwingUtilities.invokeAndWait(()->{ assertEquals(0,scroll.getViewport().getViewPosition().y); });
+	}
+	@Test public void browseSearchAndEmptyResultsWrapAtNativeWidthAndLargeFont() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			try { button("Browse").doClick(); capture("ux-browse"); ((JTextField)named("browse-search")).setText("zaryte"); }
+			catch(Exception e) { throw new RuntimeException(e); }
+		});
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			try { capture("ux-search"); ((JTextField)named("browse-search")).setText("no such upgrade"); }
+			catch(Exception e) { throw new RuntimeException(e); }
+		});
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			try {
+				assertTrue(cardIds().isEmpty()); assertTrue(text().contains("0 upgrades")); capture("ux-no-results");
+				panel.setFont(panel.getFont().deriveFont(20f)); render(); capture("ux-large-font");
+				JTextField search=(JTextField)named("browse-search"); assertEquals(20f,search.getFont().getSize2D(),0);
+				for(Component c:children(panel)) if(c instanceof JTextArea&&visible(c)) { assertTrue(((JTextArea)c).getText(),c.getHeight()>=c.getPreferredSize().height); }
+			}
+			catch(Exception e) { throw new RuntimeException(e); }
+		});
+	}
+	@Test public void backAnchorsToSameCardWhenEarlierUpgradeDisappearsDuringDetail() throws Exception
+	{
+		int[] before=new int[1];
+		SwingUtilities.invokeAndWait(()->{
+			button("Browse").doClick(); size(); scroll.setSize(242,600); layout(scroll); size();
+			Component card=named("upgrade-card-necklace-of-anguish"); before[0]=SwingUtilities.convertPoint(card,0,0,panel).y;
+			scroll.getViewport().setViewPosition(new Point(0,before[0]+5));
+			((JButton)named("path-upgrade-necklace-of-anguish")).doClick();
+			account=items(account,19544); render(); button("Back to upgrades").doClick(); size();
+		});
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			int after=SwingUtilities.convertPoint(named("upgrade-card-necklace-of-anguish"),0,0,panel).y;
+			assertTrue("Owning tormented removes an earlier card",after<before[0]);
+			assertEquals(after+5,scroll.getViewport().getViewPosition().y);
+		});
+	}
+	@Test public void accountRefreshPreservesSearchCaretSelectionAndReplacementPosition() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			button("Browse").doClick();
+			JTextField search=(JTextField)named("browse-search"); search.setText("zaryte crossbow");
+			// A backwards selection must preserve its active end, not just the sorted bounds.
+			search.setCaretPosition(6); search.moveCaretPosition(2);
+			account=items(account,19544); render();
+			JTextField refreshed=(JTextField)named("browse-search");
+			assertEquals(2,refreshed.getCaret().getDot()); assertEquals(6,refreshed.getCaret().getMark());
+			assertEquals("ryte",refreshed.getSelectedText());
+			refreshed.replaceSelection("X"); assertEquals("zaX crossbow",refreshed.getText());
+			refreshed.setCaretPosition(2); account=items(account,12002); render();
+			JTextField next=(JTextField)named("browse-search"); assertEquals(2,next.getCaretPosition());
+			next.replaceSelection("Y"); assertEquals("zaYX crossbow",next.getText());
+		});
+	}
+	@Test public void deferredAccountAnchorCannotOverrideNewSearchScroll() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{ button("Browse").doClick(); size(); scroll.setSize(242,600); layout(scroll); size(); });
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			scroll.getViewport().setViewPosition(new Point(0,81));
+			// Queue restoration from the old result set, then type before that callback runs.
+			account=items(account,19544); render(); size();
+			((JTextField)named("browse-search")).setText("zaryte"); size();
+			assertEquals(0,scroll.getViewport().getViewPosition().y);
+		});
+		settle();
+		SwingUtilities.invokeAndWait(()->{
+			assertEquals("zaryte",((JTextField)named("browse-search")).getText());
+			assertEquals(2,cardIds().size()); assertEquals(0,scroll.getViewport().getViewPosition().y);
 		});
 	}
 }

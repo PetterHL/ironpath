@@ -2,7 +2,9 @@
 
 **Your path to endgame PvM**
 
-R3a development build · 14 October 2026 · plugin 0.8.2 · knowledge r3a-3 · schema 10
+UX development build · 14 October 2026 · plugin 0.8.3 · knowledge r3a-3 · schema 10
+
+**UX follow-up:** Browse searches supported upgrades by item name, combines search with the existing categories and offers Clear filters. Typing keeps the same text editor; Overview/Browse retain independent scroll anchors, and Back follows the same card even when earlier recommendations disappear. This branch depends on PR #18 at `d9e897b` and targets `r3a-personalized-cards`. [Component evidence and pending client checks](docs/validation/ux-navigation.md). Broader R6 filters and owned-use search remain pending.
 
 **Client test corrections:** all crystal armour colours (including black Iorwerth and the permanent-world Deadman cosmetic) count as owned, with active/inactive bonuses kept separate. Blazing is recognised as cosmetic Toxic, and all eight treads forms have ranged stats. Lightbearer now contributes its reviewed zero ordinary ranged bonuses instead of blocking comparison. Specialist roles recognise the supported ranged weapons, including Toxic/Blazing alone. Rosewood acquisition advice is withdrawn from every view; its existing owned-item numbers remain supported, while Doom special use awaits review. See the [first correction](docs/validation/R3a-client-variants.md) and [Lightbearer/Specialist follow-up](docs/validation/R3a-lightbearer.md).
 
@@ -79,11 +81,11 @@ Reuse the existing T1–P3 RuneLite implementation and preserve its licence noti
 
 The shared main remains `cb7c2cd`. R3a depends on PR #17 at `75897d5`, including R2 PR #16 at `32cb24a`; review this implementation against that branch. [R3a validation](docs/validation/R3a.md) separates completed automated/component checks from pending client acceptance.
 
-To test R3a before integration, close the development client first:
+To test this UX follow-up before integration, close the development client first:
 
 ```sh
 git fetch origin
-git switch r3a-personalized-cards
+git switch ux-card-navigation
 ```
 
 Historical planning branches and validation reports are records, not fresh prerequisites.
@@ -103,7 +105,7 @@ Clone the repository and check out the combined implementation branch:
 ```sh
 git clone https://github.com/PetterHL/ironpath.git
 cd ironpath
-git checkout r3a-personalized-cards
+git checkout ux-card-navigation
 ```
 
 For an existing clone, close the development client, enter its `ironpath` directory,
@@ -111,7 +113,7 @@ and update the branch first:
 
 ```sh
 git fetch origin
-git switch r3a-personalized-cards
+git switch ux-card-navigation
 git pull --ff-only
 ```
 
