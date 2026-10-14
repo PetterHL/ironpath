@@ -1,6 +1,6 @@
 # IronPath native UI specification
 
-14 October 2026 · **Selected visual advisor direction; UX2 implementation pending.** Current main contains the earlier R3a/UX-completion components. This specification incorporates the written decisions from “Oppsummering av UX” and account-efficient progression. [TASKS EP1/UX2](../TASKS.md#ep1--account-efficient-progression-next-implementation) is the only delivery backlog; [DESIGN progression-2](DESIGN.md#progression-intelligence-contract-version-progression-2-selected) owns ranking.
+14 October 2026 · **UX2 is implemented for review in open PR #26; AD1a–AD1c define the next product delivery and remaining acceptance.** Current main contains the earlier R3a/UX-completion components. EP1/UX2 do not supply broad automatic hours; this specification changes requirements, not delivered runtime support. This specification incorporates the written decisions from “Oppsummering av UX” and account-efficient progression. [TASKS AD1/EP1/UX2](../TASKS.md#ad1--useful-upgrade-advice) is the only delivery backlog; [DESIGN progression-2](DESIGN.md#progression-intelligence-contract-version-progression-2-selected) owns ranking.
 
 ## Experience and scope
 
@@ -12,7 +12,7 @@ Use one column at normal RuneLite sidebar width; validate the actual viewport (t
 
 ## Homepage and order
 
-- Preserve EP1 next-step priority for the entire supported catalogue in the default deck. Layout determines how much of that sequence fits, not what outranks what.
+- Label the default Upgrades deck as recommended order and preserve EP1 next-step priority for the entire supported catalogue. Cards explain the distinguishing gain and remaining effort/priority. Layout determines how much of that sequence fits, not what outranks what.
 - Remove automatic early insertion of long-term/specialist cards merely for diversity. Keep compact Long-term / Specialist discovery and Browse all with accurate filter counts and complete supported coverage.
 - A high-priority specialist appears naturally. If long grinds are the best remaining choices, show them with their horizon. Distant outcomes remain in later progression with a useful reachable step and no unsupported full-route hours.
 - Deduplicate the same outcome/correlated family repetition without overriding stronger opportunities or hiding independent rewards from a shared activity. No filler quota or catalogue cap.
@@ -25,9 +25,9 @@ A compact card contains an item icon and full wrapping name; one prominent suppo
 
 The card itself opens details by mouse or keyboard with visible focus. Remove repeated **Value / Path** buttons from every card; retain both destinations inside details. Do not render internal importance tiers, reason-code lists, “long tail”, model-gap prose, generic “check inputs” or repeated ownership warnings as normal card content.
 
-Choose the most consequential status instead of concatenating badges. A blocking input may take precedence over the effort band, which remains in acquisition detail. Do not add a priority badge merely to restate queue position.
+Choose one concise, decision-relevant effort/priority explanation instead of concatenating badges. Group recurring ownership/account checks in a shared Account correction entry; “Check ownership” must not routinely replace effort or useful priority information on each card. Retain a specific card-level check when it materially changes interpretation, keeping unknown distinct from confirmed absence. A priority label must explain a difference, not merely repeat queue position.
 
-Weapons/weapon-changing packages lead numerically with supported DPS; unchanged-speed equipment may lead with max hit. Missing weapon DPS must not be concealed behind an oversized max-hit figure implying a complete comparison. Reviewed utility may be the primary result when ordinary DPS does not describe it.
+**DPS-first for ordinary offensive upgrades:** weapons, rings, gloves, armour and other offensive equipment lead with supported relative theoretical DPS change; max hit is an optional secondary result. This replaces the unchanged-speed max-hit-first rule. A zero baseline uses absolute DPS delta without a percentage. Details retain absolute before/after and delta. Missing DPS must not be concealed behind an oversized max-hit figure implying a complete comparison. Reviewed special-attack, comfort or other utility may lead when ordinary DPS does not describe the benefit. AD1a owns concrete model fixes as well as display selection.
 
 ### Shared reference and acquisition estimates
 
@@ -37,13 +37,13 @@ This presentation choice does not turn neutral numbers into boss performance. Ex
 
 ## Details and acquisition
 
-Open with compact Back and item identity; keep comparison/value and acquisition reachable inside the detail flow.
+Use **Upgrades / Account** as top-level navigation, **← Upgrades** with item identity inside details, and **Impact / Acquisition** as the two detail tabs. Recommended and Browse are variants of the same Upgrades view. Return to the previous search/filter/scroll/focus state.
 
-**Comparison:** current item/package → upgrade with icons and compact before/after rows for relevant changes. Normally omit unchanged stats. Name changed weapons/off-hands/sets when material. Match the actual supported calculation.
+**Comparison:** current item/package → upgrade with icons and compact before/after rows for relevant changes. Normally omit unchanged stats. Name changed weapons/off-hands/sets when material. If several slots change, label the comparison as a complete setup change. A Twisted buckler package replacing Blazing blowpipe must name the accompanying weapon/ammunition and removed slots; never imply a shield is compared directly with a weapon. Match the actual supported calculation.
 
-**Why this position:** one concrete account-specific reason or trade-off combining value and remaining effort. Example wording: “Useful demon upgrade; your current setup supports the acquisition method.” This is illustrative, not a verified claim for every synapse candidate.
+**Why this position:** one concrete account-specific reason or trade-off combining value and remaining effort, generated from typed presentation fields. Engine report prose such as “unknown value is not zero” belongs outside the normal product flow. Example wording: “Useful demon upgrade; your current setup supports the acquisition method.” This is illustrative, not a verified claim for every synapse candidate.
 
-**Acquisition:** source/activity → remaining components/requirements → next concrete action. Show Short / Medium / Long / Very long and optionally an Estimated scenario-hour range with correct scope. Name the main factor increasing work in one short line. Next-component hours must not look like full-item completion time.
+**Acquisition:** source/activity → remaining components/requirements → next concrete action. Show supported automatic model-based hours with correct remaining-work scope; Short / Medium / Long / Very long is the fallback when hours are unsupported. Manual pace is optional, not required for useful automatic estimates. Name the main factor increasing work in one short line. Next-component hours must not look like full-item completion time. Replace raw “Check: Obtain…” / “Check: Combine…” lists with a useful next action. Long missing-hours explanations and technical recipes belong in estimate basis; retain only the material concise limitation beside the result.
 
 Separate hard access, equip, components, useful preparation and optional alternatives. Completed requirements stay secondary. Present starting with an adequate owned method beside a relevant preparation detour, including the detour's work without making optional gear compulsory. Do not repeat the same boss/recipe under several headings or invent generic “Improve raid readiness” steps.
 
@@ -61,19 +61,19 @@ Quest.getState, varbits, raw observations, knowledge versions and long timestamp
 
 Extend existing UpgradeCard/detail presentation data with typed metric/value/unit/baseline, availability/correction, selected status, priority reason, effort band, optional range/kind/origin/scope and next step. Swing renders results; it does not parse engine reports or compute ranking.
 
-Keep supported zero/negative results distinct from missing account input, unsupported calculations, qualitative effort with unavailable hours, and a distant/not-yet-suitable route. Missing input offers a specific useful action. Unsupported calculation uses calm “DPS not calculated” copy, never futile input requests. Unknown is never zero, and uncertainty styling does not assert bad gear.
+Keep supported zero/negative results distinct from missing account input, unsupported calculations, qualitative effort with unavailable hours, and a distant/not-yet-suitable route. Missing input offers a specific useful action. Unsupported calculation uses calm copy with a specific missing mechanic in the calculation basis, never futile input requests. Track that gap in AD1a's coverage record; improved refusal text cannot substitute for fixing common calculation blockers. Unknown is never zero, and uncertainty styling does not assert bad gear.
 
 ## Reference images and validation
 
 The written “Oppsummering av UX” requirements override illustrative images. Its new overview/detail/account images are visual references, not authoritative stats, item relationships or prerequisites. Do not copy Ancestral/Shadow numbers. Any 0 Defence badge in a reference is excluded.
 
-This documentation update does not add or claim to inspect those new images. If available during UX2, save them with provenance and an illustrative-data note. Existing R3a captures below are historical baseline evidence, not the new design target. The written contract is sufficient to begin implementation.
+The desired new images are not attached to this planning request; this update does not claim to inspect them. Make them available in the AD1c handoff/repository with provenance and an illustrative-data note before assessing visual fidelity. Existing R3a captures are historical baseline evidence, not the new design target. Text/model work can proceed, but visual-reference comparison remains pending until the images are available.
 
 Validate actual components at standard width, long names and enlarged fonts: EP1 next-step order; a supported Zaryte-type comparison; Shadow with unsupported metrics handled correctly; a concrete Masori-type acquisition; account corrections/diagnostics; keyboard/Back/filters/scroll; zero versus unavailable; stale imagery/identity changes. Include EP1's different account profiles.
 
 Use implemented-component screenshots and identify client versus harness captures. Compare with available desired references and the written contract. Generated design images are not implementation evidence. Report pending real-client sprites/scaling/player checks; old passes are not new acceptance.
 
-EP1 migrates domain policy and presentation contracts. UX2 completes this whole normal flow using them; preserving old importance-first ranking is not a UX2 requirement. Preserve supported combat arithmetic/coverage unless a separate concrete defect requires correction. Kill Impact, full boss simulation and complete numerical acquisition coverage are not gates.
+EP1 supplies domain policy and presentation contracts; AD1c completes UX2 using them. AD1a extends calculation coverage and AD1b makes automatic acquisition time an explicit part of the product delivery, with complete active-route coverage accounting and justified individual gaps. Validate the reported account and contrasting profiles, separating hidden supported DPS from actual model gaps. Broad Kill Impact or full boss simulation is not a gate. Preserve valid arithmetic and historical test evidence; account/client usefulness remains a separate acceptance requirement.
 
 ## Historical R3a specification and evidence
 
