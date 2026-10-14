@@ -469,13 +469,36 @@ public final class Advisor
 		for (AcquisitionModel model : catalog.acquisitionModels.values().stream().sorted(Comparator.comparing(m -> m.id)).collect(Collectors.toList()))
 		{
 			if (!model.route.equals(route.decision.id)) { continue; }
-			boolean stageRemaining = steps.contains(view.upgrade.id + "/" + model.node);
-			boolean ownedIntermediate = view.upgrade.path.stream().filter(n -> n.id.equals(model.node) || n.completeWhen.test == KnowledgeCatalog.Test.POSSESSION && !n.id.equals(view.upgrade.path.get(view.upgrade.path.size()-1).id))
-				.anyMatch(n -> pathTruth(n, account, preferences) == Truth.TRUE);
-			estimate = new AcquisitionEstimator().estimate(model, stageRemaining,
-				ownedIntermediate ? "Owned shard/intermediate removes this drop stage. Check only remaining resources, skills and assembly."
-				: "Check already-owned intermediates first; a fresh shard stage is not established.",
-				unknown || blocked ? null : pace);
+			KnowledgeCatalog.PathNode component=view.upgrade.path.stream().filter(n->n.id.equals(model.node)).findFirst().orElse(null);
+			KnowledgeCatalog.Condition componentWhen=component==null ? view.upgrade.parts.stream()
+				.filter(part->model.node.equals(part.when.key)).map(part->part.when).findFirst().orElseThrow() : component.completeWhen;
+			boolean stageRemaining=component==null ? planningTruth(componentWhen,account,preferences)!=Truth.TRUE
+				:steps.contains(view.upgrade.id + "/" + model.node);
+			boolean conditional=planningTruth(componentWhen,account,preferences)==Truth.UNKNOWN;
+			int successes=model.requiredSuccesses;
+			if(component!=null && component.quantity!=null)
+			{
+				com.ironpath.model.Observation<Long> count=account.observedQuantity(component.itemId);
+				// Counts are lower bounds across storage, never an exact global remainder.
+				if(count.known()) { successes=Math.max(0,model.requiredSuccesses-(int)Math.min(count.value(),model.requiredSuccesses)); }
+				conditional=successes>0;
+			}
+			PaceScenario selected=null;
+			if(stageRemaining && truth(route.decision.accessWhen,account,preferences)==Truth.TRUE)
+			{
+				selected=catalog.automaticPaces.values().stream().filter(p->p.support==AcquisitionModel.Support.REVIEWED
+					&& p.activity.equals(model.activity) && p.mode.equals(model.mode)
+					&& planningTruth(p.when,account,preferences)==Truth.TRUE)
+					.sorted(Comparator.comparing(p->p.id)).map(AutomaticPaceProfile::scenario).findFirst().orElse(null);
+				String methodKey=selected==null?effort.profile + "/" + effort.version + "/" + effort.method:selected.methodKey;
+				if(pace!=null && pace.activity.equals(model.activity) && pace.mode.equals(model.mode)
+					&& (pace.methodKey==null || pace.methodKey.equals(methodKey))
+					&& (effort.suitability==RemainingEffort.Suitability.SUITABLE || effort.suitability==RemainingEffort.Suitability.WORKABLE))
+				{ selected=pace; }
+			}
+			estimate=new AcquisitionEstimator().estimate(model,stageRemaining,
+				"Owned component/intermediate removes this drop stage; remaining route work is separate.",selected,successes,conditional,
+				selected==null?effort.profile + "/" + effort.version + "/" + effort.method:selected.methodKey);
 			// Probability support is independent of reviewed qualitative effort. A withdrawn numerical
 			// claim removes its odds/hours, rather than erasing the separately reviewed A0 route.
 		}
