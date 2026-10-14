@@ -143,4 +143,4 @@ Preview: tormented-bracelet, zaryte-crossbow, venator-bow, necklace-of-anguish, 
 tumekens-shadow | STRONG | LONG_TERM
 Preview: tumekens-shadow
 ## unread-bank
-Preview: 
+Preview:

@@ -358,7 +358,7 @@ Generated from EP1Fixtures against isolated baseline main **e3f02bc** and this i
 | early | abyssal-tentacle, avas-assembler, occult-necklace, tormented-bracelet | abyssal-tentacle, avas-assembler, occult-necklace, tormented-bracelet | abyssal-tentacle, magus-ring, ancestral-hat, ancestral-robe-bottom | abyssal-tentacle, magus-ring, ancestral-hat, avas-assembler |
 | single-megarare | tormented-bracelet, occult-necklace, toxic-blowpipe, necklace-of-rupture | tormented-bracelet, zaryte-crossbow, venator-bow, necklace-of-anguish | tormented-bracelet, occult-necklace, toxic-blowpipe, necklace-of-rupture | tormented-bracelet, occult-necklace, toxic-blowpipe, necklace-of-rupture |
 | nearly-complete | tumekens-shadow | tumekens-shadow | tumekens-shadow | tumekens-shadow |
-| unread-bank | No eligible result |  | No eligible result | No eligible result |
+| unread-bank | No eligible result | No eligible result | No eligible result | No eligible result |
 
 The fresh post-Bowfa queue keeps several nearer substantial improvements before Shadow, and the preview no longer inserts Shadow above those choices. Owned parts remove only their own work. Doom-ready/workable profiles change effort without creating premium access requirements. An account with only Shadow remaining can honestly lead with a very-long result. Early/partial inputs produce specific preparation/observation checks rather than cheap or false-missing assumptions.
 
