@@ -2,6 +2,8 @@
 
 13 October 2026. Plugin **0.8.1**, knowledge **r3a-2**, bundled schema **10**, preference schema **2**. This follows the R3a implementation on PR #18 and retains its dependency on documentation PR #17 at `75897d5`. No PR is merged.
 
+**Historical correction:** the report below records 0.8.1 as tested. Petter's next client check confirmed the repeated crystal/blowpipe cards were gone, but exposed unsupported Lightbearer and rejected Rosewood's acquisition role. The [0.8.2 follow-up](R3a-lightbearer.md) withdraws Rosewood from all recommendation views, fixes Lightbearer and connects specialist roles to the supported ranged weapons. The captures and 228-test count below retain their original context.
+
 Petter supplied real-client Home, Zaryte vambraces Value and Shadow Path screenshots and reported black crystal armour, Toxic/Blazing blowpipe and Avernic treads (max). The screenshots show item sprites and exposed incorrect repeat-acquisition checks, unsupported ranged feet and confusing Rosewood discovery. They establish those specific failures, not the player's complete bank, levels, viewport/scaling settings or a successful client acceptance matrix. The reported boot ID was initially misread as 31047; the max treads ID is 31097. No ID remapping was added.
 
 ## Changes and evidence

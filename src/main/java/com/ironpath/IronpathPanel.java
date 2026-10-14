@@ -239,7 +239,9 @@ final class IronpathPanel extends PluginPanel
 		text(this, visible.size() + " upgrades · " + category);
 		BrowseGrid grid = new BrowseGrid(); grid.setName("browse-grid");
 		for (Advisor.UpgradeView upgrade : visible) { upgradeCard(grid, upgrade, reference, expectedView, actions, true); } add(grid);
-		if (visible.isEmpty()) { text(this, overview.all.isEmpty() ? "No remaining supported upgrade from these observations. Unknown is not absence; no priorities are added to fill the list." : "No supported outcome in this category. All retains conditional, specialist and small-gain choices."); }
+		if (visible.isEmpty()) { text(this, category.equals("Specialist")
+			? "No remaining reviewed specialist upgrade is established from observed gear. Owned outcomes, skipped routes or unconfirmed method inputs can leave this filter empty. All shows other supported upgrades."
+			: overview.all.isEmpty() ? "No remaining supported upgrade from these observations. Unknown is not absence; no priorities are added to fill the list." : "No supported outcome in this category. All retains conditional, specialist and small-gain choices."); }
 		if (!overview.activities.isEmpty())
 		{
 			JPanel activities=section(this, "Shared activities");

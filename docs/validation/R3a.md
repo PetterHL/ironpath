@@ -4,6 +4,8 @@
 
 ## What changes for an account
 
+Subsequent client findings and their implementation are recorded separately: [coloured crystal/Blazing/treads](R3a-client-variants.md), then [Lightbearer, Specialist eligibility and Rosewood withdrawal](R3a-lightbearer.md). Original versions, counts and captures below retain their historical context; the latest build is 0.8.2 with 232 passing tests.
+
 Personal importance, pursuit status and remaining work are independent. The ordinary comparison remains evidence for its own metric; it cannot erase reviewed burst, convenience or inventory roles. Among actionable choices, importance precedes preference, claim evidence and burden. Numerical ties only compare compatible role/target/setup/model buckets. Context-ID spelling, duplicate relationships and prose/target counts carry no priority. There is no Shadow-ID exemption or universal efficiency score.
 
 The unchanged ordinary calibration distinguishes material gains at 5%; the new family policy distinguishes a major ordinary improvement at 25%. These are declared judgements over compatible comparisons, not thresholds for specials or QoL. Small accessory changes in a second target do not become significant merely by adding contexts. Reviewed weapon/weapon-switch trade-offs remain contextual. Qualitative confidence belongs to the claim, independently of DPS support. Unknown coordination/upkeep prevent unsupported numerical dominance.

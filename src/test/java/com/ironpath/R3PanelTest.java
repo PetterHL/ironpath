@@ -39,26 +39,34 @@ public class R3PanelTest
 			public void skip(String id,boolean v) { preferences=preferences.skip(id,v);render(); }
 		},"Synthetic local storage",List.of(),overview,new PoweredMagic(catalog).propose(account));
 	}
-	@Test public void reportedEquipmentGetsUsefulHomeAndAnExplicitOptionalRosewoodInSpecialist() throws Exception
+	@Test public void reportedLightbearerHasNumbersAndSpecialistWithoutRosewood() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{
 			try
 			{
-				account=ClientEquipmentRegressionTest.reportedGearFixture(); preferences=Preferences.EMPTY; render();
+				account=ClientEquipmentRegressionTest.reportedLightbearerFixture(); preferences=Preferences.EMPTY; render();
 				assertTrue(children(panel).stream().noneMatch(c->"upgrade-card-rosewood-blowpipe".equals(c.getName())));
 				assertTrue(children(panel).stream().noneMatch(c->"upgrade-card-crystal-body".equals(c.getName())||"upgrade-card-toxic-blowpipe".equals(c.getName())));
-				capture("client-gear-home"); button("Specialist").doClick();
-				assertNotNull(named("upgrade-card-rosewood-blowpipe"));
-				assertTrue(text().contains("Owned Toxic/Blazing blowpipe is stronger")); assertTrue(text().contains("scale-free"));
-				size();
-				int optionalY=SwingUtilities.convertPoint(named("upgrade-card-rosewood-blowpipe"),0,0,panel).y;
-				capture("client-gear-specialist",Math.max(0,optionalY-60));
+				capture("lightbearer-home"); button("Specialist").doClick();
+				assertNotNull(named("upgrade-card-venator-bow"));
+				assertTrue(children(panel).stream().noneMatch(c->"upgrade-card-rosewood-blowpipe".equals(c.getName())));
+				capture("lightbearer-specialist");
 				((JComboBox<?>)named("browse-category")).setSelectedItem("All");
 				((JButton)named("open-upgrade-zaryte-vambraces")).doClick();
-				assertFalse(text().contains("Unreviewed or incompatible ranged item 31097"));
-				capture("client-gear-value");
+				assertFalse(text().contains("Unreviewed or incompatible ranged item"));
+				assertTrue(text().contains("Theoretical DPS")); capture("lightbearer-value");
 			}
 			catch(Exception e){throw new RuntimeException(e);}
+		});
+	}
+	@Test public void emptySpecialistExplainsScopeAndKeepsOtherBrowseChoices() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			account=ClientEquipmentRegressionTest.unreadDartsFixture();
+			preferences=Preferences.EMPTY.skip("muspah",true); render(); button("Specialist").doClick();
+			assertTrue(text().contains("0 upgrades")); assertTrue(text().contains("Owned outcomes, skipped routes or unconfirmed method inputs"));
+			((JComboBox<?>)named("browse-category")).setSelectedItem("All");
+			assertNotNull(named("upgrade-card-zaryte-vambraces"));
 		});
 	}
 	private List<Component> children(Container parent)

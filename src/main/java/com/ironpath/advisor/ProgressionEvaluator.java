@@ -73,14 +73,6 @@ final class ProgressionEvaluator
 			if (!alternatives.isEmpty()) { codes.add("ADEQUATE_OWNED_METHOD"); }
 		}
 		if (!numeric && roles.isEmpty() && excluded) { importance=MARGINAL; reason="No reviewed utility in the selected contexts; other uses remain optional."; codes.add("METHOD_NO_BENEFIT"); }
-		RangedItem candidate=catalog.ranged.items.stream().filter(i->i.id==upgrade.itemId).findFirst().orElse(null);
-		KnowledgeCatalog.Condition toxic=new KnowledgeCatalog.Condition(); toxic.test=KnowledgeCatalog.Test.USABLE; toxic.key="toxicBlowpipeActive";
-		if (candidate!=null && candidate.weapon==RangedItem.Weapon.ROSEWOOD && !utility && truth.apply(toxic)==Truth.TRUE)
-		{
-			importance=MARGINAL; specialist=true;
-			reason="Owned Toxic/Blazing blowpipe is stronger for ordinary attacks. Rosewood is an optional scale-free alternative; check supplies separately.";
-			codes.add("OWNED_STRONGER_BLOWPIPE");
-		}
 		return new ValueEvidence(importance,reason,baseline,specialist,utility,codes.stream().distinct().collect(java.util.stream.Collectors.toList()),roles);
 	}
 }

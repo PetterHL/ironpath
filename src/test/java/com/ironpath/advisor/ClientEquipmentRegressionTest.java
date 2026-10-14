@@ -40,10 +40,15 @@ public class ClientEquipmentRegressionTest
 	}
 	private List<Advisor.UpgradeView> views(AccountSnapshot a)
 	{ return advisor.upgrades(a,Preferences.EMPTY); }
-	private Advisor.UpgradeView rosewood(AccountSnapshot a)
-	{ return views(a).stream().filter(v->v.upgrade.id.equals("rosewood-blowpipe")).findFirst().orElseThrow(); }
+	private boolean recommendsRosewood(AccountSnapshot a, Preferences preferences)
+	{ return advisor.upgrades(a,preferences).stream().anyMatch(v->v.upgrade.id.equals("rosewood-blowpipe"))
+		|| advisor.evaluate(a,preferences).stream().anyMatch(v->v.decision.id.equals("seek-rosewood-blowpipe")); }
 	public static AccountSnapshot reportedGearFixture()
 	{ return equipped(Map.of("weapon",28688,"head",27729,"body",27721,"legs",27725,"feet",31097),25867,11230); }
+	public static AccountSnapshot reportedLightbearerFixture()
+	{ return equipped(Map.of("weapon",28688,"head",27729,"body",27721,"legs",27725,"feet",31097,"hands",7462,"ring",25975),11230); }
+	public static AccountSnapshot unreadDartsFixture()
+	{ return equipped(Map.of("weapon",28688,"ring",25975)); }
 
 	@Test public void everyCrystalColourSuppressesRepeatAcquisitionAndKeepsFullBowfaBonuses()
 	{
@@ -96,14 +101,13 @@ public class ClientEquipmentRegressionTest
 			assertTrue(views(a).stream().noneMatch(v->v.upgrade.id.equals("toxic-blowpipe")));
 			assertFalse(service.compare(a,Preferences.EMPTY,service.propose(a),12926).available(THEORETICAL_DPS));
 			assertFalse(service.choices("weapon",a).containsKey(Integer.toString(empty)));
-			assertFalse(rosewood(equipped(Map.of("weapon",25867),empty)).pursuit.reasonCodes.contains("OWNED_STRONGER_BLOWPIPE"));
+			assertFalse(recommendsRosewood(equipped(Map.of("weapon",25867),empty),Preferences.EMPTY));
 		}
 		AccountSnapshot unreadDarts=equipped(Map.of("weapon",28688));
 		assertFalse(service.compare(unreadDarts,Preferences.EMPTY,service.propose(unreadDarts),19547).available(THEORETICAL_DPS));
 		AccountSnapshot bow=equipped(Map.of("weapon",25867));
 		Preferences manual=Preferences.EMPTY.confirm("owns-toxicBlowpipe",true,TIME);
-		assertFalse(advisor.upgrades(bow,manual).stream().filter(v->v.upgrade.id.equals("rosewood-blowpipe"))
-			.findFirst().orElseThrow().pursuit.reasonCodes.contains("OWNED_STRONGER_BLOWPIPE"));
+		assertFalse(recommendsRosewood(bow,manual));
 	}
 	@Test public void allEightTreadsFormsSupportRangedWithoutLosingTheirDifferentStrength()
 	{
@@ -123,23 +127,57 @@ public class ClientEquipmentRegressionTest
 		List<Advisor.UpgradeView> all=views(a);
 		assertTrue(all.stream().noneMatch(v->v.upgrade.id.startsWith("crystal-")||v.upgrade.id.equals("toxic-blowpipe")||v.upgrade.id.equals("avernic-treads")));
 		assertTrue(all.stream().filter(v->v.upgrade.id.equals("zaryte-vambraces")).findFirst().orElseThrow().comparison.available(THEORETICAL_DPS));
-		Advisor.UpgradeView optional=rosewood(a);
-		assertEquals(PursuitAssessment.Category.DEFER,optional.pursuit.category);
-		assertTrue(optional.card.reason.contains("scale-free")); assertTrue(optional.valueEvidence.specialist);
+		assertFalse(recommendsRosewood(a,Preferences.EMPTY));
 		PursuitOverview overview=new PursuitOverview(all,List.of(),List.of(),List.of());
-		assertTrue(overview.all.stream().anyMatch(v->v.upgrade.id.equals(optional.upgrade.id)));
-		assertFalse(overview.preview.stream().anyMatch(v->v.upgrade.id.equals(optional.upgrade.id)));
+		assertTrue(overview.all.stream().noneMatch(v->v.upgrade.id.equals("rosewood-blowpipe")));
 		assertTrue(overview.preview.stream().noneMatch(v->v.pursuit.category==PursuitAssessment.Category.DEFER));
 	}
-	@Test public void observedStrongerBlowpipeExplainsRosewoodEvenWhenAnotherSlotIsUnknown()
+	@Test public void withdrawingRosewoodDoesNotEraseUnsupportedEquipmentGaps()
 	{
 		AccountSnapshot a=equipped(Map.of("weapon",28688,"feet",99999),11230);
-		Advisor.UpgradeView optional=rosewood(a);
-		assertFalse(optional.comparison.available(THEORETICAL_DPS)); assertTrue(optional.comparison.reason.contains("99999"));
-		assertEquals(PursuitAssessment.Category.DEFER,optional.pursuit.category);
-		assertTrue(optional.card.reason.contains("Owned Toxic/Blazing"));
+		assertFalse(recommendsRosewood(a,Preferences.EMPTY));
+		ComparisonResult c=service.compare(a,Preferences.EMPTY,service.propose(a),26235);
+		assertFalse(c.available(THEORETICAL_DPS)); assertTrue(c.reason.contains("99999"));
 		// Never remap an unrelated ID to the reported boots or erase an unreviewed contribution.
 		AccountSnapshot arrowtips=equipped(Map.of("weapon",28688,"feet",31047),11230);
 		assertTrue(service.validate(arrowtips,Preferences.EMPTY,service.propose(arrowtips)).contains("31047"));
+	}
+	@Test public void lightbearerHasZeroOrdinaryContributionAndRestoresTheCompleteReference()
+	{
+		AccountSnapshot a=equipped(Map.of("weapon",28688,"feet",31097,"hands",7462,"ring",25975),11230);
+		ComparisonResult c=service.compare(a,Preferences.EMPTY,service.propose(a),26235);
+		assertTrue(c.reason,c.available(THEORETICAL_DPS)); assertEquals(Integer.valueOf(25975),c.beforeSetup.slots.get("ring"));
+		AccountSnapshot emptyRing=equipped(Map.of("weapon",28688,"feet",31097,"hands",7462),11230);
+		ComparisonResult without=service.compare(emptyRing,Preferences.EMPTY,service.propose(emptyRing),26235);
+		assertEquals(without.before.dps,c.before.dps,1e-12); assertEquals(without.after.dps,c.after.dps,1e-12);
+		assertEquals(57,c.before.attackBonus); assertEquals(58,c.before.damagePercent,0);
+		assertTrue(service.referenceChoices(a).get("ring").containsKey("25975"));
+		AccountSnapshot unknown=equipped(Map.of("weapon",28688,"ring",99999),11230);
+		assertFalse(service.compare(unknown,Preferences.EMPTY,service.propose(unknown),26235).available(THEORETICAL_DPS));
+	}
+	@Test public void toxicAndBlazingAloneSupportSpecialistDiscoveryWithoutLegacyBowOwnership()
+	{
+		for (int pipe : new int[]{12926,28688})
+		{
+			AccountSnapshot a=equipped(Map.of("weapon",pipe,"feet",31097,"ring",25975),11230);
+			Advisor.UpgradeView venator=views(a).stream().filter(v->v.upgrade.id.equals("venator-bow")).findFirst().orElseThrow();
+			assertTrue(venator.valueEvidence.specialist); assertTrue(venator.valueEvidence.independentUtility);
+			assertFalse(recommendsRosewood(a,Preferences.EMPTY));
+			AccountSnapshot unreadAmmo=equipped(Map.of("weapon",pipe,"ring",25975));
+			assertTrue(views(unreadAmmo).stream().anyMatch(v->v.upgrade.id.equals("venator-bow")));
+			assertFalse(service.compare(unreadAmmo,Preferences.EMPTY,service.propose(unreadAmmo),26235).available(THEORETICAL_DPS));
+			assertTrue(views(equipped(Map.of("weapon",pipe),11230,27610)).stream().noneMatch(v->v.upgrade.id.equals("venator-bow")));
+		}
+	}
+	@Test public void rosewoodAcquisitionIsInactiveAcrossWeakAndStrongBaselinesButOwnedNumbersRemain()
+	{
+		for (AccountSnapshot a : List.of(equipped(Map.of("weapon",9185),9144),equipped(Map.of("weapon",28688),11230),
+			equipped(Map.of("weapon",31583),811)))
+		{
+			assertFalse(recommendsRosewood(a,Preferences.EMPTY));
+			assertFalse(recommendsRosewood(a,Preferences.EMPTY.confirm("owns-rosewoodBlowpipe",false,TIME)));
+		}
+		AccountSnapshot owned=equipped(Map.of("weapon",31583),811);
+		assertTrue(service.compare(owned,Preferences.EMPTY,service.propose(owned),26235).available(THEORETICAL_DPS));
 	}
 }

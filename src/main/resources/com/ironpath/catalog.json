@@ -1,7 +1,7 @@
 {
   "schemaVersion": 10,
-  "knowledgeVersion": "r3a-2",
-  "reviewed": "2026-10-13",
+  "knowledgeVersion": "r3a-3",
+  "reviewed": "2026-10-14",
   "sources": [
     {
       "id": "rigour",
@@ -199,7 +199,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -575,7 +576,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -888,7 +890,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -1366,7 +1369,8 @@
         "seek-toa-fang",
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
-        "seek-crystal-body"
+        "seek-crystal-body",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -1426,7 +1430,8 @@
         "seek-toa-fang",
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
-        "seek-crystal-legs"
+        "seek-crystal-legs",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -1486,7 +1491,8 @@
         "seek-toa-fang",
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
-        "seek-crystal-helm"
+        "seek-crystal-helm",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -1797,7 +1803,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "rewards": [
@@ -2540,7 +2547,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "items": [
         26231,
@@ -2563,14 +2571,19 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "efforts": [
         "seek-zaryte-crossbow"
       ],
       "relations": [
-        "zaryte-ruby-burst"
+        "zaryte-ruby-burst",
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
       ],
       "activityContexts": [
         "ruby-burst"
@@ -2647,7 +2660,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "items": [
         11785
@@ -2668,11 +2682,16 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "relations": [
-        "zaryte-ruby-burst"
+        "zaryte-ruby-burst",
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
       ]
     },
     {
@@ -3977,15 +3996,17 @@
       "url": "https://oldschool.runescape.wiki/w/Lightbearer?oldid=15299656",
       "revision": "15299656",
       "author": "OSRS Wiki contributors",
-      "accessed": "2026-10-13",
-      "reviewed": "2026-10-13",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
       "licence": "CC BY-NC-SA 3.0 (linked source content only)",
-      "reuseBasis": "Individual current page, variants, requirements and mechanics reviewed. Independently authored facts/explanations; no source prose, tables, images or dataset redistributed.",
+      "reuseBasis": "Individual current page, variants, requirements and mechanics reviewed. Independently authored facts/explanations; no source prose, tables, images or dataset redistributed. Rechecked zero ordinary ranged bonuses for equipped Lightbearer; special-energy regeneration is not a constant DPS multiplier.",
       "decisions": [],
       "items": [
         25975
       ],
-      "models": [],
+      "models": [
+        "ranged-1"
+      ],
       "routes": [],
       "contexts": []
     },
@@ -4662,7 +4683,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "items": [
         23983
@@ -4682,12 +4704,19 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "efforts": [],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
+      ]
     },
     {
       "id": "r2-twisted-bow",
@@ -4772,7 +4801,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "items": [
         12926,
@@ -4793,7 +4823,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "efforts": [
@@ -4803,7 +4834,10 @@
       "acquisitions": [],
       "relations": [
         "venator-attention",
-        "venator-colosseum"
+        "venator-colosseum",
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role"
       ]
     },
     {
@@ -4833,7 +4867,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "items": [
         31583,
@@ -4859,14 +4894,21 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "efforts": [
         "seek-rosewood-blowpipe"
       ],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
+      ]
     },
     {
       "id": "r2-magic-shortbow-i",
@@ -4892,7 +4934,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "items": [
         12788
@@ -4912,12 +4955,19 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "efforts": [],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
+      ]
     },
     {
       "id": "r2-rune-crossbow",
@@ -4964,7 +5014,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "items": [
         21902
@@ -4984,12 +5035,19 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "efforts": [],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
+      ]
     },
     {
       "id": "r2-armadyl-crossbow",
@@ -5057,7 +5115,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "items": [
         21012
@@ -5077,12 +5136,19 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
-        "seek-avas-assembler"
+        "seek-avas-assembler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "efforts": [],
       "rewards": [],
-      "acquisitions": []
+      "acquisitions": [],
+      "relations": [
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role",
+        "venator-attention"
+      ]
     },
     {
       "id": "r2-crystal-helm",
@@ -7315,7 +7381,9 @@
         27612
       ],
       "models": [],
-      "routes": [],
+      "routes": [
+        "seek-venator-bow"
+      ],
       "contexts": [],
       "acquisitions": [],
       "efforts": [],
@@ -7346,7 +7414,9 @@
         27614
       ],
       "models": [],
-      "routes": [],
+      "routes": [
+        "seek-venator-bow"
+      ],
       "contexts": [],
       "acquisitions": [],
       "efforts": [
@@ -7372,7 +7442,9 @@
       ],
       "items": [],
       "models": [],
-      "routes": [],
+      "routes": [
+        "seek-venator-bow"
+      ],
       "contexts": [],
       "acquisitions": [],
       "efforts": [
@@ -7405,7 +7477,9 @@
         27616
       ],
       "models": [],
-      "routes": [],
+      "routes": [
+        "seek-venator-bow"
+      ],
       "contexts": [],
       "acquisitions": [],
       "efforts": [],
@@ -7431,7 +7505,9 @@
       ],
       "items": [],
       "models": [],
-      "routes": [],
+      "routes": [
+        "seek-venator-bow"
+      ],
       "contexts": [],
       "acquisitions": [],
       "efforts": [],
@@ -7479,7 +7555,9 @@
       ],
       "items": [],
       "models": [],
-      "routes": [],
+      "routes": [
+        "seek-venator-bow"
+      ],
       "contexts": [],
       "acquisitions": [],
       "efforts": [],
@@ -7537,7 +7615,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-avas-assembler",
-        "seek-twisted-buckler"
+        "seek-twisted-buckler",
+        "seek-venator-bow"
       ],
       "items": [
         28687,
@@ -7560,7 +7639,8 @@
         "seek-venator-ring",
         "seek-zaryte-vambraces",
         "seek-avas-assembler",
-        "seek-twisted-buckler"
+        "seek-twisted-buckler",
+        "seek-venator-bow"
       ],
       "contexts": [],
       "efforts": [],
@@ -7568,7 +7648,10 @@
       "acquisitions": [],
       "relations": [
         "venator-attention",
-        "venator-colosseum"
+        "venator-colosseum",
+        "anguish-core-neck",
+        "rupture-core-neck",
+        "treads-hybrid-role"
       ]
     }
   ],
@@ -10762,7 +10845,7 @@
         "client-blazing-blowpipe"
       ],
       "requires": [],
-      "status": "reviewed",
+      "status": "candidate",
       "reviewed": "2026-10-13",
       "pursuit": {
         "mode": "BOUNDED",
@@ -11814,7 +11897,16 @@
         "r3-secrets",
         "r3-venator-bow",
         "r3-venator-shard",
-        "twisted-bow"
+        "twisted-bow",
+        "armadyl-crossbow",
+        "client-blazing-blowpipe",
+        "r2-crystal-bow",
+        "r2-dragon-crossbow",
+        "r2-dragon-hunter-crossbow",
+        "r2-magic-shortbow-i",
+        "r2-rosewood-blowpipe",
+        "r2-toxic-blowpipe",
+        "zaryte"
       ],
       "requires": [],
       "status": "reviewed",
@@ -19296,7 +19388,7 @@
       "shared": [],
       "headline": "A scale-free fast light-attack alternative, correctly capped at rune darts.",
       "effortShort": "Qualitative remaining route; no hours",
-      "status": "reviewed",
+      "status": "candidate",
       "reviewed": "2026-10-13",
       "contextBenefits": [],
       "path": [
@@ -21185,7 +21277,7 @@
       "itemId": 27610,
       "when": {
         "test": "USABLE",
-        "key": "ranged"
+        "key": "rangedObserved"
       },
       "ownedWhen": {
         "test": "POSSESSION",
@@ -21317,7 +21409,16 @@
         "r3-secrets",
         "r3-venator-bow",
         "r3-venator-shard",
-        "twisted-bow"
+        "twisted-bow",
+        "armadyl-crossbow",
+        "client-blazing-blowpipe",
+        "r2-crystal-bow",
+        "r2-dragon-crossbow",
+        "r2-dragon-hunter-crossbow",
+        "r2-magic-shortbow-i",
+        "r2-rosewood-blowpipe",
+        "r2-toxic-blowpipe",
+        "zaryte"
       ]
     }
   ],
@@ -23231,7 +23332,8 @@
       "r1-avernic-treads-pr-et",
       "r1-avernic-treads-pe-et",
       "r1-avernic-treads-max",
-      "client-blazing-blowpipe"
+      "client-blazing-blowpipe",
+      "r1-lightbearer"
     ],
     "items": [
       {
@@ -25327,6 +25429,18 @@
           "r1-avernic-treads-max",
           "item-ids"
         ]
+      },
+      {
+        "id": 25975,
+        "label": "Lightbearer",
+        "slot": "ring",
+        "attack": 0,
+        "strength": 0,
+        "requirements": {},
+        "sources": [
+          "item-ids",
+          "r1-lightbearer"
+        ]
       }
     ],
     "candidateAmmo": {
@@ -25582,7 +25696,7 @@
         "conditions": [
           {
             "test": "USABLE",
-            "key": "ranged"
+            "key": "rangedObserved"
           },
           {
             "test": "POSSESSION",
@@ -25607,7 +25721,16 @@
         "item-ids",
         "r2-necklace-of-anguish",
         "r2-necklace-of-rupture",
-        "twisted-bow"
+        "twisted-bow",
+        "armadyl-crossbow",
+        "client-blazing-blowpipe",
+        "r2-crystal-bow",
+        "r2-dragon-crossbow",
+        "r2-dragon-hunter-crossbow",
+        "r2-magic-shortbow-i",
+        "r2-rosewood-blowpipe",
+        "r2-toxic-blowpipe",
+        "zaryte"
       ],
       "reviewed": "2026-10-13",
       "status": "reviewed"
@@ -25624,7 +25747,7 @@
         "conditions": [
           {
             "test": "USABLE",
-            "key": "ranged"
+            "key": "rangedObserved"
           },
           {
             "test": "POSSESSION",
@@ -25649,7 +25772,16 @@
         "item-ids",
         "r2-necklace-of-anguish",
         "r2-necklace-of-rupture",
-        "twisted-bow"
+        "twisted-bow",
+        "armadyl-crossbow",
+        "client-blazing-blowpipe",
+        "r2-crystal-bow",
+        "r2-dragon-crossbow",
+        "r2-dragon-hunter-crossbow",
+        "r2-magic-shortbow-i",
+        "r2-rosewood-blowpipe",
+        "r2-toxic-blowpipe",
+        "zaryte"
       ],
       "reviewed": "2026-10-13",
       "status": "reviewed"
@@ -25702,7 +25834,7 @@
         "conditions": [
           {
             "test": "USABLE",
-            "key": "ranged"
+            "key": "rangedObserved"
           },
           {
             "test": "USABLE",
@@ -25758,7 +25890,16 @@
         "swamp-trident",
         "trident",
         "trident-e",
-        "twisted-bow"
+        "twisted-bow",
+        "armadyl-crossbow",
+        "client-blazing-blowpipe",
+        "r2-crystal-bow",
+        "r2-dragon-crossbow",
+        "r2-dragon-hunter-crossbow",
+        "r2-magic-shortbow-i",
+        "r2-rosewood-blowpipe",
+        "r2-toxic-blowpipe",
+        "zaryte"
       ],
       "reviewed": "2026-10-13",
       "status": "reviewed"
@@ -25772,7 +25913,7 @@
       "significance": "CONTEXTUAL",
       "when": {
         "test": "USABLE",
-        "key": "ranged"
+        "key": "rangedObserved"
       },
       "noBenefitWhen": {
         "test": "FACT",
@@ -25811,7 +25952,14 @@
         "r3-muspah",
         "r3-venator-bow",
         "twisted-bow",
-        "client-blazing-blowpipe"
+        "client-blazing-blowpipe",
+        "armadyl-crossbow",
+        "r2-crystal-bow",
+        "r2-dragon-crossbow",
+        "r2-dragon-hunter-crossbow",
+        "r2-magic-shortbow-i",
+        "r2-rosewood-blowpipe",
+        "zaryte"
       ],
       "reviewed": "2026-10-13",
       "status": "reviewed"
