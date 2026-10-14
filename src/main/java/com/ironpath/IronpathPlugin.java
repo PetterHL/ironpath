@@ -158,10 +158,10 @@ public class IronpathPlugin extends Plugin
 		if(recentReady()) { recentBoss.sample(); }
 		AccountSnapshot previous = session.snapshot();
 		// Only selected quest progress invalidates quest facts. Script evaluation stays in the coalesced read.
-		boolean questChanged = Set.of(VarbitID.SOTE, VarbitID.BCS, VarbitID.PMOON_QUEST, VarbitID.MM2_PROGRESS, VarbitID.VIKINGEXILE).contains(event.getVarbitId())
+		boolean questChanged = Set.of(VarbitID.SOTE, VarbitID.BCS, VarbitID.PMOON_QUEST, VarbitID.MM2_PROGRESS, VarbitID.VIKINGEXILE, VarbitID.WGS).contains(event.getVarbitId())
 			|| Set.of(VarPlayerID.SOTE_PRIMARY, VarPlayerID.BCS_PRIMARY, VarPlayerID.PMOON_MAIN,
 				VarPlayerID.REGICIDE_QUEST, VarPlayerID.NEX_PERM, VarPlayerID.VMQ4_PRIMARY,
-				VarPlayerID.MM2_QUEST, VarPlayerID.DT2_PRIMARY, VarPlayerID.DRAGONSLAYER2_MAIN, VarPlayerID.MYQ6_PRIMARY, VarPlayerID.FRIS_R1, VarPlayerID.FRIS_R2).contains(event.getVarpId());
+				VarPlayerID.MM2_QUEST, VarPlayerID.DT2_PRIMARY, VarPlayerID.DRAGONSLAYER2_MAIN, VarPlayerID.MYQ6_PRIMARY, VarPlayerID.FRIS_R1, VarPlayerID.FRIS_R2, VarPlayerID.WGS_PRIMARY).contains(event.getVarpId());
 		if (previous == null || !supported() || questChanged || !previous.rigour.known() || !previous.augury.known()
 			|| (previous.rigour.value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_RIGOUR_UNLOCKED)
 			|| (previous.augury.value() ? 1 : 0) != client.getVarbitValue(VarbitID.PRAYER_AUGURY_UNLOCKED)

@@ -2,7 +2,7 @@
 
 **Your path to endgame PvM**
 
-Combined UX + ordinary melee + KI1 build · 14 October 2026 · plugin 0.9.0 · knowledge r3b-1 · schema 11
+EP1 account-efficient progression · 14 October 2026 · plugin 0.10.0 · knowledge ep1-1 · schema 12
 
 **R3b first increment:** ordinary melee now compares complete supported owned one-/two-handed packages, actual stab/slash/crush styles, prayer/full-super-potion assumptions, max hit, hit chance and theoretical DPS. Abyssal tentacle has a Value/Path outcome with owned-component bypasses and explicit whip consumption. Neutral, ordinary Dharok and Graardor are reviewed contexts. Observed Fang/Scythe/Soulreaper/lance competitors keep the DPS-superiority claim unavailable while unaffected reference metrics remain visible. [Support, validation and pending client checks](docs/validation/R3b-ordinary-melee.md). Task/Salve, demon/dragon multipliers, endgame families, broader armour/treads, specials and time/trip metrics remain open R3b/R4 work.
 
@@ -39,11 +39,13 @@ The intended product is a free, open-source RuneLite sidebar that automatically 
 
 ## Progression advice
 
-**Next delivery — AD1, planned:** [Useful upgrade advice](TASKS.md#ad1--useful-upgrade-advice) combines DPS-first offensive comparisons (including armour/jewellery), supported automatic remaining acquisition hours, and visible value/effort priority in the completed Upgrades → Impact/Acquisition flow. [EP1 #25](https://github.com/PetterHL/ironpath/pull/25) and [UX2 #26](https://github.com/PetterHL/ironpath/pull/26) are open implementation candidates; they provide qualitative effort/priority and presentation, not broad automatic numeric time or completed client acceptance. [DESIGN](docs/DESIGN.md) and [UX](docs/UX.md) contain the revised contracts. Prioritise AD1 before the next catalogue expansion or KI2/KI3. The remaining runtime descriptions, including main's unchanged-speed max-hit-first behaviour, describe the existing baseline; this documentation update ships no new calculations or UI.
+**EP1 implemented for review:** every active outcome, acquisition route, retained broad decision and shared activity reward uses `progression-2`: marginal account value and remaining effort jointly determine next-step priority. Reviewed method profiles select Short / Medium / Long / Very long effort automatically, with explicit preparation/unknown handling and completed-component bypasses. The homepage preserves that domain order and retains Long-term/Specialist/Browse discovery. [Policy, full coverage, same-account queues and component evidence](docs/validation/EP1.md).
 
-The documentation-only [research review](docs/PROGRESSION_RESEARCH.md) checks 30 varied relationships against current mechanics, strategies and qualified player experience. The implemented [progression-1 policy](docs/validation/R3a.md) separates an item's role, personal importance, pursuit status and remaining effort. It adds adequate owned alternatives, multi-dimensional utility and explainable item → activity → reward relationships without a graph service or a universal efficiency score.
+Scorching bow adds reviewed demonbane utility and an exclusive synapse/assembly route, with a separate Doom preparation alternative and no assumed total-time saving. Its owned ordinary/demonbane family remains a visible ranged model gap. Zenyte and synapse probabilities cover the next component only. Optional manual pace is session-only; no automatic full-cycle hours, observed performance or full-item ETA is promoted. UX2's full visual/comparison/account flow remains pending; EP1 connects order, effort and typed presentation to the current native UI.
 
-The R3a vertical increment now implements this policy for the supported relationships. Broader melee, specials, permanent rewards and preference work remain in R3b–R6. [TASKS R3–R6](TASKS.md) now starts with a useful relationship-aware vertical increment, then melee/specialist models, complete paths and comprehensive discovery. Existing numerical/lifecycle behaviour and pending client evidence remain. Highly developed accounts and comprehensive endgame coverage stay first-class; the 30 research examples are not a catalogue cap.
+The original [research review](docs/PROGRESSION_RESEARCH.md) checks 30 varied relationships against current mechanics, strategies and qualified player experience. The implemented [progression-1 policy](docs/validation/R3a.md) separates an item's role, personal importance, pursuit status and remaining effort. It adds adequate owned alternatives, multi-dimensional utility and explainable item → activity → reward relationships without a graph service or a universal efficiency score.
+
+R3a delivered the earlier relationship policy; EP1 migrates its order while retaining those value and alternative contracts. Broader melee, specials, permanent rewards and preference work remain in R3b–R6. [TASKS R3–R6](TASKS.md) now starts with a useful relationship-aware vertical increment, then melee/specialist models, complete paths and comprehensive discovery. Existing numerical/lifecycle behaviour and pending client evidence remain. Highly developed accounts and comprehensive endgame coverage stay first-class; the 30 research examples are not a catalogue cap.
 
 **R3a native UI direction:** [UX](docs/UX.md) selects compact visual item cards with real RuneLite sprites, short account-specific value, supported contextual numbers and direct Value/Path actions. The normal narrow panel uses one column; two require enough measured width and readable content. Several relevant choices and visible Long-term/Specialist discovery lead the homepage; account controls and optional goals stay secondary. The card-first implementation and synthetic component captures are in [R3a validation](docs/validation/R3a.md). Real sprites, client scaling and player usefulness remain pending; [the documentation review](docs/validation/R3a-ui-direction.md) retains its original history.
 
@@ -59,7 +61,7 @@ Recommendations must explain what changes relative to owned alternatives, where 
 
 The architecture stays one local Java RuneLite plugin with bundled reviewed knowledge and native Swing UI. The main investment is accurate knowledge, reusable combat mechanics and useful presentation. We are not adding a backend, subscriptions or per-user AI. See the independent feasibility assessment and trade-offs in the design.
 
-**Progression priority:** `progression-1` orders actionable choices by personal importance, explicit interest, claim evidence and remaining burden. Ordinary numbers only break compatible setup/context ties; the analytical reference and raw context/prose counts add no breadth. Long-tail status remains visible independently of importance. Scoped utility and adequate owned alternatives survive unrelated DPS gaps. Source-linked one-hop explanations never feed back into rank. [Historical pursuit-1 evidence](docs/validation/R1.5a.md) is preserved.
+**Progression priority:** `progression-2` applies a reviewed value/effort decision table after access, method suitability and consequential account checks. Optional interest and claim evidence refine equal priority cells. Ordinary numbers only break compatible setup/context ties; the analytical reference and raw context/prose counts add no breadth. Long-tail status remains visible independently of importance. Scoped utility and adequate owned alternatives survive unrelated DPS gaps. Source-linked one-hop explanations never feed back into rank. [Historical pursuit-1 evidence](docs/validation/R1.5a.md) is preserved.
 
 ## Read and work
 
@@ -163,9 +165,10 @@ Path removes confirmed owned seeds/fangs/intermediates before a new grind. Owned
 
 ## Use the retained advisor workflow
 
-1. Open with **no goal** and observe the bank. The overview offers up to two
-   **Worth pursuing** rows, one justified **Worth doing** activity, a long-term
-   preview and a consequential check. Empty groups stay empty. **Browse** has
+1. Open with **no goal** and observe the bank. The overview shows a measured
+   prefix of the account value/effort queue, a justified activity and a consequential
+   check. Long-term/Specialist links retain discovery without inserting lower-priority
+   grinds into the preview. Empty groups stay empty. **Browse** has
    All / Pursue / Long-term / Check and retains specialist/deferred choices.
    Two columns fall back to one when width, names or fonts need more space.
 2. Activate a card by mouse, Enter or Space. **Value** shows supported metrics

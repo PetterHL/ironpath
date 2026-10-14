@@ -74,6 +74,8 @@ final class ProgressionEvaluator
 			if (!alternatives.isEmpty()) { codes.add("ADEQUATE_OWNED_METHOD"); }
 		}
 		if (!numeric && roles.isEmpty() && excluded) { importance=MARGINAL; reason="No reviewed utility in the selected contexts; other uses remain optional."; codes.add("METHOD_NO_BENEFIT"); }
+		if (!numeric && !roles.isEmpty() && roles.stream().allMatch(r->r.applicable==Truth.TRUE && r.covered))
+		{ importance=MARGINAL; reason="Adequate owned alternatives cover the reviewed role; inspect other uses before new acquisition."; }
 		return new ValueEvidence(importance,reason,baseline,specialist,utility,codes.stream().distinct().collect(java.util.stream.Collectors.toList()),roles);
 	}
 }

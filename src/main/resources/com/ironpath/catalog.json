@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 11,
-  "knowledgeVersion": "r3b-1",
+  "schemaVersion": 12,
+  "knowledgeVersion": "ep1-1",
   "reviewed": "2026-10-14",
   "sources": [
     {
@@ -26,6 +26,16 @@
       "contexts": [],
       "rewards": [
         "cox-rigour"
+      ],
+      "efforts": [
+        "unlock-rigour",
+        "train-rigour",
+        "seek-titans-prayers"
+      ],
+      "profiles": [
+        "rigour-scroll-effort",
+        "prayer-training-effort",
+        "royal-titans-effort"
       ]
     },
     {
@@ -51,6 +61,15 @@
       "contexts": [],
       "rewards": [
         "cox-augury"
+      ],
+      "efforts": [
+        "unlock-augury",
+        "train-augury",
+        "seek-titans-prayers"
+      ],
+      "profiles": [
+        "augury-scroll-effort",
+        "royal-titans-effort"
       ]
     },
     {
@@ -74,6 +93,12 @@
       "contexts": [],
       "rewards": [
         "cox-rigour"
+      ],
+      "efforts": [
+        "unlock-rigour"
+      ],
+      "profiles": [
+        "rigour-scroll-effort"
       ]
     },
     {
@@ -97,6 +122,12 @@
       "contexts": [],
       "rewards": [
         "cox-augury"
+      ],
+      "efforts": [
+        "unlock-augury"
+      ],
+      "profiles": [
+        "augury-scroll-effort"
       ]
     },
     {
@@ -119,7 +150,18 @@
       "items": [],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "plan-team-cox",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "review-occult-switch"
+      ],
+      "profiles": [
+        "cox-effort",
+        "owned-melee-effort",
+        "owned-neck-effort"
+      ]
     },
     {
       "id": "bowfa",
@@ -155,7 +197,8 @@
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
         "seek-avas-assembler",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "seek-scorching-bow"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -210,10 +253,34 @@
         "anguish-core-neck",
         "rupture-core-neck",
         "treads-hybrid-role",
-        "venator-attention"
+        "venator-attention",
+        "scorching-doom-control"
       ],
       "activityContexts": [
         "muspah-bowfa"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "demonic-gorillas-effort",
+        "maggot-king-effort",
+        "colosseum-effort",
+        "leviathan-effort",
+        "vorkath-effort",
+        "muspah-effort",
+        "tormented-demons-effort",
+        "cox-effort",
+        "moons-effort",
+        "royal-titans-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "pursue-bowfa",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -271,6 +338,25 @@
       ],
       "relations": [
         "treads-hybrid-role"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "smoke-devils-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "colosseum-effort",
+        "muspah-effort",
+        "slayer-effort",
+        "cox-effort",
+        "owned-neck-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-toa-fang"
       ]
     },
     {
@@ -322,13 +408,31 @@
       ],
       "contexts": [],
       "efforts": [
-        "assemble-swamp-trident"
+        "assemble-swamp-trident",
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-toa-fang"
       ],
       "rewards": [
         "cox-augury"
       ],
       "relations": [
         "treads-hybrid-role"
+      ],
+      "profiles": [
+        "owned-magic-effort",
+        "zulrah-effort",
+        "smoke-devils-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "colosseum-effort",
+        "muspah-effort",
+        "slayer-effort",
+        "cox-effort",
+        "owned-neck-effort"
       ]
     },
     {
@@ -388,6 +492,25 @@
       ],
       "relations": [
         "treads-hybrid-role"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "smoke-devils-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "colosseum-effort",
+        "muspah-effort",
+        "slayer-effort",
+        "cox-effort",
+        "owned-neck-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-toa-fang"
       ]
     },
     {
@@ -443,6 +566,25 @@
       ],
       "relations": [
         "treads-hybrid-role"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "smoke-devils-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "colosseum-effort",
+        "muspah-effort",
+        "slayer-effort",
+        "cox-effort",
+        "owned-neck-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-toa-fang"
       ]
     },
     {
@@ -459,7 +601,8 @@
         "seek-occult-necklace",
         "seek-titans-prayers",
         "seek-toa-fang",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "seek-scorching-bow"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -478,7 +621,29 @@
         "seek-toa-fang",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "profiles": [
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "demonic-gorillas-effort",
+        "duke-sucellus-effort",
+        "maggot-king-effort",
+        "colosseum-effort",
+        "slayer-effort",
+        "tormented-demons-effort",
+        "cox-effort",
+        "owned-melee-effort",
+        "moons-effort",
+        "royal-titans-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
+      ]
     },
     {
       "id": "lance",
@@ -494,7 +659,8 @@
         "seek-occult-necklace",
         "seek-titans-prayers",
         "seek-toa-fang",
-        "seek-zulrah-magic-fang"
+        "seek-zulrah-magic-fang",
+        "seek-scorching-bow"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -512,7 +678,29 @@
         "seek-toa-fang",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "profiles": [
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "demonic-gorillas-effort",
+        "duke-sucellus-effort",
+        "maggot-king-effort",
+        "colosseum-effort",
+        "slayer-effort",
+        "tormented-demons-effort",
+        "cox-effort",
+        "owned-melee-effort",
+        "moons-effort",
+        "royal-titans-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
+      ]
     },
     {
       "id": "crossbow",
@@ -544,7 +732,8 @@
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
         "seek-avas-assembler",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "seek-scorching-bow"
       ],
       "author": "OSRS Wiki contributors",
       "accessed": "2026-10-12",
@@ -587,10 +776,34 @@
         "anguish-core-neck",
         "rupture-core-neck",
         "treads-hybrid-role",
-        "venator-attention"
+        "venator-attention",
+        "scorching-doom-control"
       ],
       "activityContexts": [
         "muspah-bowfa"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "nex-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "demonic-gorillas-effort",
+        "maggot-king-effort",
+        "colosseum-effort",
+        "leviathan-effort",
+        "vorkath-effort",
+        "muspah-effort",
+        "tormented-demons-effort",
+        "cox-effort",
+        "moons-effort",
+        "royal-titans-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -609,7 +822,13 @@
       "items": [],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "plan-team-cox"
+      ],
+      "profiles": [
+        "cox-effort"
+      ]
     },
     {
       "id": "magic-fang",
@@ -637,6 +856,9 @@
       "efforts": [
         "assemble-swamp-trident",
         "seek-zulrah-magic-fang"
+      ],
+      "profiles": [
+        "owned-magic-effort"
       ]
     },
     {
@@ -657,7 +879,10 @@
       ],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "coordinate-defence-reduction"
+      ]
     },
     {
       "id": "godsword",
@@ -677,7 +902,10 @@
       ],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "coordinate-defence-reduction"
+      ]
     },
     {
       "id": "maul",
@@ -697,7 +925,10 @@
       ],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "coordinate-defence-reduction"
+      ]
     },
     {
       "id": "occult",
@@ -726,7 +957,11 @@
       ],
       "contexts": [],
       "efforts": [
-        "seek-occult-necklace"
+        "seek-occult-necklace",
+        "review-occult-switch"
+      ],
+      "profiles": [
+        "owned-neck-effort"
       ]
     },
     {
@@ -754,7 +989,13 @@
         "seek-occult-necklace",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "review-occult-switch"
+      ],
+      "profiles": [
+        "owned-neck-effort"
+      ]
     },
     {
       "id": "whip",
@@ -776,7 +1017,8 @@
         "seek-titans-prayers",
         "seek-toa-fang",
         "seek-zulrah-magic-fang",
-        "seek-abyssal-tentacle"
+        "seek-abyssal-tentacle",
+        "seek-scorching-bow"
       ],
       "items": [
         4151,
@@ -792,7 +1034,29 @@
         "seek-zulrah-magic-fang",
         "seek-abyssal-tentacle"
       ],
-      "contexts": []
+      "contexts": [],
+      "profiles": [
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "demonic-gorillas-effort",
+        "duke-sucellus-effort",
+        "maggot-king-effort",
+        "colosseum-effort",
+        "slayer-effort",
+        "tormented-demons-effort",
+        "cox-effort",
+        "owned-melee-effort",
+        "moons-effort",
+        "royal-titans-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
+      ]
     },
     {
       "id": "tentacle",
@@ -814,7 +1078,8 @@
         "seek-titans-prayers",
         "seek-toa-fang",
         "seek-zulrah-magic-fang",
-        "seek-abyssal-tentacle"
+        "seek-abyssal-tentacle",
+        "seek-scorching-bow"
       ],
       "items": [
         12006
@@ -828,7 +1093,29 @@
         "seek-zulrah-magic-fang",
         "seek-abyssal-tentacle"
       ],
-      "contexts": []
+      "contexts": [],
+      "profiles": [
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "demonic-gorillas-effort",
+        "duke-sucellus-effort",
+        "maggot-king-effort",
+        "colosseum-effort",
+        "slayer-effort",
+        "tormented-demons-effort",
+        "cox-effort",
+        "owned-melee-effort",
+        "moons-effort",
+        "royal-titans-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
+      ]
     },
     {
       "id": "twisted-bow",
@@ -866,7 +1153,8 @@
         "seek-zaryte-vambraces",
         "seek-twisted-buckler",
         "seek-avas-assembler",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "seek-scorching-bow"
       ],
       "items": [
         20997
@@ -906,10 +1194,35 @@
         "rupture-core-neck",
         "treads-hybrid-role",
         "venator-attention",
-        "venator-colosseum"
+        "venator-colosseum",
+        "scorching-doom-control"
       ],
       "activityContexts": [
         "muspah-bowfa"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "doom-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "demonic-gorillas-effort",
+        "maggot-king-effort",
+        "colosseum-effort",
+        "leviathan-effort",
+        "vorkath-effort",
+        "muspah-effort",
+        "tormented-demons-effort",
+        "cox-effort",
+        "moons-effort",
+        "royal-titans-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "pursue-bowfa",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -950,7 +1263,11 @@
         "seek-tumekens-shadow",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "train-slayer-trident",
+        "seek-seas-trident"
+      ]
     },
     {
       "id": "ayak",
@@ -1005,6 +1322,25 @@
       ],
       "relations": [
         "treads-hybrid-role"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "smoke-devils-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "colosseum-effort",
+        "muspah-effort",
+        "slayer-effort",
+        "cox-effort",
+        "owned-neck-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-toa-fang"
       ]
     },
     {
@@ -1026,7 +1362,13 @@
       ],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "review-olm-lance"
+      ],
+      "profiles": [
+        "owned-melee-effort"
+      ]
     },
     {
       "id": "soulreaper",
@@ -1046,7 +1388,13 @@
       ],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "review-olm-lance"
+      ],
+      "profiles": [
+        "owned-melee-effort"
+      ]
     },
     {
       "id": "occult-or",
@@ -1073,7 +1421,13 @@
         "seek-occult-necklace",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "review-occult-switch"
+      ],
+      "profiles": [
+        "owned-neck-effort"
+      ]
     },
     {
       "id": "fury-or",
@@ -1100,7 +1454,13 @@
         "seek-occult-necklace",
         "seek-zulrah-magic-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "review-occult-switch"
+      ],
+      "profiles": [
+        "owned-neck-effort"
+      ]
     },
     {
       "id": "maul-or",
@@ -1120,7 +1480,10 @@
       ],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "coordinate-defence-reduction"
+      ]
     },
     {
       "id": "godsword-or",
@@ -1140,7 +1503,10 @@
       ],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "coordinate-defence-reduction"
+      ]
     },
     {
       "id": "warhammer-cr",
@@ -1160,7 +1526,10 @@
       ],
       "models": [],
       "routes": [],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "coordinate-defence-reduction"
+      ]
     },
     {
       "id": "trident-e",
@@ -1217,6 +1586,25 @@
       ],
       "relations": [
         "treads-hybrid-role"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "smoke-devils-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "colosseum-effort",
+        "muspah-effort",
+        "slayer-effort",
+        "cox-effort",
+        "owned-neck-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-toa-fang"
       ]
     },
     {
@@ -1272,6 +1660,25 @@
       ],
       "relations": [
         "treads-hybrid-role"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "smoke-devils-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "colosseum-effort",
+        "muspah-effort",
+        "slayer-effort",
+        "cox-effort",
+        "owned-neck-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-toa-fang"
       ]
     },
     {
@@ -1327,6 +1734,25 @@
       ],
       "relations": [
         "treads-hybrid-role"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "smoke-devils-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "colosseum-effort",
+        "muspah-effort",
+        "slayer-effort",
+        "cox-effort",
+        "owned-neck-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-toa-fang"
       ]
     },
     {
@@ -1351,7 +1777,8 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
         "seek-crystal-body",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "seek-scorching-bow"
       ],
       "items": [
         23975,
@@ -1384,10 +1811,33 @@
         "anguish-core-neck",
         "rupture-core-neck",
         "treads-hybrid-role",
-        "venator-attention"
+        "venator-attention",
+        "scorching-doom-control"
       ],
       "activityContexts": [
         "muspah-bowfa"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "demonic-gorillas-effort",
+        "maggot-king-effort",
+        "colosseum-effort",
+        "leviathan-effort",
+        "vorkath-effort",
+        "muspah-effort",
+        "tormented-demons-effort",
+        "cox-effort",
+        "moons-effort",
+        "royal-titans-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -1412,7 +1862,8 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
         "seek-crystal-legs",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "seek-scorching-bow"
       ],
       "items": [
         23979,
@@ -1445,10 +1896,33 @@
         "anguish-core-neck",
         "rupture-core-neck",
         "treads-hybrid-role",
-        "venator-attention"
+        "venator-attention",
+        "scorching-doom-control"
       ],
       "activityContexts": [
         "muspah-bowfa"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "demonic-gorillas-effort",
+        "maggot-king-effort",
+        "colosseum-effort",
+        "leviathan-effort",
+        "vorkath-effort",
+        "muspah-effort",
+        "tormented-demons-effort",
+        "cox-effort",
+        "moons-effort",
+        "royal-titans-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -1473,7 +1947,8 @@
         "seek-zaryte-crossbow",
         "seek-zulrah-magic-fang",
         "seek-crystal-helm",
-        "seek-venator-bow"
+        "seek-venator-bow",
+        "seek-scorching-bow"
       ],
       "items": [
         23971,
@@ -1506,10 +1981,33 @@
         "anguish-core-neck",
         "rupture-core-neck",
         "treads-hybrid-role",
-        "venator-attention"
+        "venator-attention",
+        "scorching-doom-control"
       ],
       "activityContexts": [
         "muspah-bowfa"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "demonic-gorillas-effort",
+        "maggot-king-effort",
+        "colosseum-effort",
+        "leviathan-effort",
+        "vorkath-effort",
+        "muspah-effort",
+        "tormented-demons-effort",
+        "cox-effort",
+        "moons-effort",
+        "royal-titans-effort"
+      ],
+      "efforts": [
+        "plan-team-cox",
+        "coordinate-defence-reduction",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -1564,7 +2062,8 @@
         "seek-twisted-buckler",
         "seek-avas-assembler",
         "seek-venator-bow",
-        "seek-abyssal-tentacle"
+        "seek-abyssal-tentacle",
+        "seek-scorching-bow"
       ],
       "items": [
         564,
@@ -1852,11 +2351,50 @@
         "zaryte-ruby-burst",
         "treads-hybrid-role",
         "venator-attention",
-        "venator-colosseum"
+        "venator-colosseum",
+        "scorching-doom-control"
       ],
       "activityContexts": [
         "colosseum-switch",
         "muspah-bowfa"
+      ],
+      "profiles": [
+        "zulrah-effort",
+        "smoke-devils-effort",
+        "nex-effort",
+        "doom-effort",
+        "toa-effort",
+        "chambers-of-xeric-effort",
+        "demonic-gorillas-effort",
+        "duke-sucellus-effort",
+        "maggot-king-effort",
+        "colosseum-effort",
+        "leviathan-effort",
+        "vorkath-effort",
+        "muspah-effort",
+        "slayer-effort",
+        "tormented-demons-effort",
+        "rigour-scroll-effort",
+        "augury-scroll-effort",
+        "cox-effort",
+        "owned-melee-effort",
+        "owned-neck-effort",
+        "moons-effort",
+        "royal-titans-effort"
+      ],
+      "efforts": [
+        "unlock-rigour",
+        "unlock-augury",
+        "plan-team-cox",
+        "review-olm-lance",
+        "coordinate-defence-reduction",
+        "review-occult-switch",
+        "pursue-bowfa",
+        "train-slayer-trident",
+        "seek-seas-trident",
+        "seek-toa-fang",
+        "seek-moons-atlatl",
+        "seek-titans-prayers"
       ]
     },
     {
@@ -1877,7 +2415,10 @@
       "routes": [
         "pursue-bowfa"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "pursue-bowfa"
+      ]
     },
     {
       "id": "gauntlet-strategy",
@@ -1897,7 +2438,10 @@
       "routes": [
         "pursue-bowfa"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "pursue-bowfa"
+      ]
     },
     {
       "id": "sote-route",
@@ -1917,7 +2461,10 @@
       "routes": [
         "pursue-bowfa"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "pursue-bowfa"
+      ]
     },
     {
       "id": "bowfa-route",
@@ -1955,6 +2502,14 @@
       ],
       "activityContexts": [
         "muspah-bowfa"
+      ],
+      "profiles": [
+        "muspah-effort",
+        "moons-effort"
+      ],
+      "efforts": [
+        "pursue-bowfa",
+        "seek-moons-atlatl"
       ]
     },
     {
@@ -1975,7 +2530,10 @@
       "routes": [
         "pursue-bowfa"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "pursue-bowfa"
+      ]
     },
     {
       "id": "cave-kraken-route",
@@ -1996,7 +2554,11 @@
       "routes": [
         "seek-seas-trident"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "train-slayer-trident",
+        "seek-seas-trident"
+      ]
     },
     {
       "id": "kraken-route",
@@ -2016,7 +2578,10 @@
       "routes": [
         "seek-seas-trident"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-seas-trident"
+      ]
     },
     {
       "id": "zulrah-route",
@@ -2102,7 +2667,10 @@
       "routes": [
         "seek-toa-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-toa-fang"
+      ]
     },
     {
       "id": "toa-strategy",
@@ -2122,7 +2690,10 @@
       "routes": [
         "seek-toa-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-toa-fang"
+      ]
     },
     {
       "id": "bcs-route",
@@ -2142,7 +2713,10 @@
       "routes": [
         "seek-toa-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-toa-fang"
+      ]
     },
     {
       "id": "keris",
@@ -2164,7 +2738,10 @@
       "routes": [
         "seek-toa-fang"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-toa-fang"
+      ]
     },
     {
       "id": "moons-route",
@@ -2184,7 +2761,13 @@
       "routes": [
         "seek-moons-atlatl"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-moons-atlatl"
+      ],
+      "profiles": [
+        "moons-effort"
+      ]
     },
     {
       "id": "moons-strategy",
@@ -2204,7 +2787,13 @@
       "routes": [
         "seek-moons-atlatl"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-moons-atlatl"
+      ],
+      "profiles": [
+        "moons-effort"
+      ]
     },
     {
       "id": "atlatl",
@@ -2228,7 +2817,14 @@
         "pursue-bowfa",
         "seek-moons-atlatl"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "pursue-bowfa",
+        "seek-moons-atlatl"
+      ],
+      "profiles": [
+        "moons-effort"
+      ]
     },
     {
       "id": "titans-route",
@@ -2248,7 +2844,13 @@
       "routes": [
         "seek-titans-prayers"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-titans-prayers"
+      ],
+      "profiles": [
+        "royal-titans-effort"
+      ]
     },
     {
       "id": "titans-strategy",
@@ -2268,7 +2870,13 @@
       "routes": [
         "seek-titans-prayers"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-titans-prayers"
+      ],
+      "profiles": [
+        "royal-titans-effort"
+      ]
     },
     {
       "id": "deadeye-route",
@@ -2288,7 +2896,13 @@
       "routes": [
         "seek-titans-prayers"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-titans-prayers"
+      ],
+      "profiles": [
+        "royal-titans-effort"
+      ]
     },
     {
       "id": "vigour-route",
@@ -2308,7 +2922,13 @@
       "routes": [
         "seek-titans-prayers"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-titans-prayers"
+      ],
+      "profiles": [
+        "royal-titans-effort"
+      ]
     },
     {
       "id": "deadeye-scroll-route",
@@ -2330,7 +2950,13 @@
       "routes": [
         "seek-titans-prayers"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-titans-prayers"
+      ],
+      "profiles": [
+        "royal-titans-effort"
+      ]
     },
     {
       "id": "vigour-scroll-route",
@@ -2352,7 +2978,13 @@
       "routes": [
         "seek-titans-prayers"
       ],
-      "contexts": []
+      "contexts": [],
+      "efforts": [
+        "seek-titans-prayers"
+      ],
+      "profiles": [
+        "royal-titans-effort"
+      ]
     },
     {
       "id": "smoke-devil",
@@ -2619,6 +3251,9 @@
       ],
       "activityContexts": [
         "ruby-burst"
+      ],
+      "profiles": [
+        "nex-effort"
       ]
     },
     {
@@ -2724,6 +3359,9 @@
         "rupture-core-neck",
         "treads-hybrid-role",
         "venator-attention"
+      ],
+      "profiles": [
+        "nex-effort"
       ]
     },
     {
@@ -4514,7 +5152,8 @@
       "licence": "CC BY-NC-SA 3.0 (linked source content only)",
       "reuseBasis": "Individual current page, variants, requirements and mechanics reviewed. Independently authored facts/explanations; no source prose, tables, images or dataset redistributed.",
       "decisions": [
-        "seek-tormented-bracelet"
+        "seek-tormented-bracelet",
+        "seek-necklace-of-anguish"
       ],
       "items": [],
       "models": [],
@@ -4526,7 +5165,8 @@
         "seek-tormented-bracelet"
       ],
       "acquisitions": [
-        "next-zenyte-shard"
+        "next-zenyte-shard",
+        "next-anguish-zenyte"
       ]
     },
     {
@@ -4940,6 +5580,9 @@
         "rupture-core-neck",
         "treads-hybrid-role",
         "venator-attention"
+      ],
+      "profiles": [
+        "rosewood-crafting-effort"
       ]
     },
     {
@@ -5079,6 +5722,9 @@
         "rupture-core-neck",
         "treads-hybrid-role",
         "venator-attention"
+      ],
+      "profiles": [
+        "nex-effort"
       ]
     },
     {
@@ -5180,6 +5826,9 @@
         "rupture-core-neck",
         "treads-hybrid-role",
         "venator-attention"
+      ],
+      "profiles": [
+        "nex-effort"
       ]
     },
     {
@@ -8510,6 +9159,513 @@
         "seek-abyssal-tentacle"
       ],
       "contexts": []
+    },
+    {
+      "id": "ep1-tormented-synapse",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Tormented_synapse?oldid=15192516",
+      "revision": "15192516",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [
+        "seek-scorching-bow"
+      ],
+      "items": [
+        29580
+      ],
+      "models": [],
+      "routes": [
+        "seek-scorching-bow"
+      ],
+      "contexts": [],
+      "efforts": [
+        "seek-scorching-bow"
+      ],
+      "rewards": [],
+      "activityContexts": []
+    },
+    {
+      "id": "ep1-scorching-bow",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Scorching_bow?oldid=15317455",
+      "revision": "15317455",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [
+        "seek-scorching-bow"
+      ],
+      "items": [
+        29591
+      ],
+      "models": [],
+      "routes": [
+        "seek-scorching-bow"
+      ],
+      "contexts": [],
+      "efforts": [
+        "seek-scorching-bow"
+      ],
+      "rewards": [],
+      "relations": [
+        "scorching-doom-control"
+      ],
+      "activityContexts": [],
+      "profiles": [
+        "doom-effort"
+      ]
+    },
+    {
+      "id": "ep1-tormented-demon",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Tormented_Demon?oldid=15337983",
+      "revision": "15337983",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [
+        "seek-scorching-bow"
+      ],
+      "items": [],
+      "models": [],
+      "routes": [
+        "seek-scorching-bow"
+      ],
+      "contexts": [],
+      "efforts": [
+        "seek-scorching-bow"
+      ],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "tormented-demons-effort"
+      ],
+      "acquisitions": [
+        "next-tormented-synapse"
+      ]
+    },
+    {
+      "id": "ep1-doom-of-mokhaiotl-strategies",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl/Strategies?oldid=15359842",
+      "revision": "15359842",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [
+        6746
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "relations": [
+        "scorching-doom-control"
+      ],
+      "activityContexts": [],
+      "profiles": [
+        "doom-effort"
+      ]
+    },
+    {
+      "id": "ep1-tormented-demon-strategies",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Tormented_Demon/Strategies?oldid=15371090",
+      "revision": "15371090",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [
+        "seek-scorching-bow"
+      ],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "tormented-demons-effort"
+      ]
+    },
+    {
+      "id": "ep1-magic-longbow-u",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Magic_longbow_(u)?oldid=15272120",
+      "revision": "15272120",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [
+        "seek-scorching-bow"
+      ],
+      "items": [
+        70
+      ],
+      "models": [],
+      "routes": [
+        "seek-scorching-bow"
+      ],
+      "contexts": [],
+      "efforts": [
+        "seek-scorching-bow"
+      ],
+      "rewards": [],
+      "activityContexts": []
+    },
+    {
+      "id": "ep1-duradels-notes",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Duradel%27s_notes?oldid=15340433",
+      "revision": "15340433",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [
+        "seek-scorching-bow"
+      ],
+      "items": [],
+      "models": [],
+      "routes": [
+        "seek-scorching-bow"
+      ],
+      "contexts": [],
+      "efforts": [
+        "seek-scorching-bow"
+      ],
+      "rewards": [],
+      "activityContexts": []
+    },
+    {
+      "id": "ep1-zulrah-strategies",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Zulrah/Strategies?oldid=15356843",
+      "revision": "15356843",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "zulrah-effort"
+      ]
+    },
+    {
+      "id": "ep1-the-doom-of-mokhaiotl",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl?oldid=15360840",
+      "revision": "15360840",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "doom-effort"
+      ]
+    },
+    {
+      "id": "ep1-corrupted-gauntlet",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/The_Gauntlet?oldid=15367929",
+      "revision": "15367929",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "cg-effort"
+      ]
+    },
+    {
+      "id": "ep1-maggot-king-strategies",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Maggot_King/Strategies?oldid=15369482",
+      "revision": "15369482",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "maggot-king-effort"
+      ]
+    },
+    {
+      "id": "ep1-phantom-muspah-strategies",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Phantom_Muspah/Strategies?oldid=15371265",
+      "revision": "15371265",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "muspah-effort"
+      ]
+    },
+    {
+      "id": "ep1-tombs-of-amascut-strategies",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Tombs_of_Amascut/Strategies?oldid=15371504",
+      "revision": "15371504",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "toa-effort"
+      ]
+    },
+    {
+      "id": "ep1-chambers-of-xeric-strategies",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Chambers_of_Xeric/Strategies?oldid=15357585",
+      "revision": "15357585",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "chambers-of-xeric-effort"
+      ]
+    },
+    {
+      "id": "ep1-nex-strategies",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Nex/Strategies?oldid=15356013",
+      "revision": "15356013",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "nex-effort"
+      ]
+    },
+    {
+      "id": "ep1-duke-sucellus",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Duke_Sucellus?oldid=15365802",
+      "revision": "15365802",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "duke-sucellus-effort"
+      ]
+    },
+    {
+      "id": "ep1-the-leviathan",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/The_Leviathan?oldid=15356627",
+      "revision": "15356627",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "leviathan-effort"
+      ]
+    },
+    {
+      "id": "ep1-fortis-colosseum-strategies",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Fortis_Colosseum/Strategies?oldid=15370386",
+      "revision": "15370386",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "colosseum-effort"
+      ]
+    },
+    {
+      "id": "ep1-smoke-devil",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Smoke_devil?oldid=15357607",
+      "revision": "15357607",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "smoke-devils-effort"
+      ]
+    },
+    {
+      "id": "ep1-vorkath",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Vorkath?oldid=15364808",
+      "revision": "15364808",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "vorkath-effort"
+      ]
+    },
+    {
+      "id": "ep1-kraken-tentacle",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Kraken_tentacle?oldid=15316741",
+      "revision": "15316741",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "slayer-effort"
+      ]
+    },
+    {
+      "id": "ep1-demonic-gorilla-strategies",
+      "type": "Wiki mechanics / method evidence",
+      "url": "https://oldschool.runescape.wiki/w/Demonic_gorilla/Strategies?oldid=15354866",
+      "revision": "15354866",
+      "author": "OSRS Wiki contributors",
+      "accessed": "2026-10-14",
+      "reviewed": "2026-10-14",
+      "licence": "CC BY-NC-SA 3.0 (source content only)",
+      "reuseBasis": "Development-time factual/method review; original product calibration and explanations. No guide text, equipment table, images or dataset redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [],
+      "rewards": [],
+      "activityContexts": [],
+      "profiles": [
+        "demonic-gorillas-effort"
+      ]
     }
   ],
   "decisions": [
@@ -8575,7 +9731,24 @@
       "preparation": "A positive inventory/equipment/session-bank observation of the exact scroll and a known false unlock.",
       "activity": "rigour-scroll",
       "benefitBand": "MAJOR",
-      "benefitReason": "Confirmed locked permanent prayer with an observed scroll."
+      "benefitReason": "Confirmed locked permanent prayer with an observed scroll.",
+      "pursuit": {
+        "mode": "READY",
+        "burden": "LOW",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "Known local read/review/planning action with finite remaining work.",
+        "missingMechanics": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+        "sources": [
+          "dex-scroll",
+          "item-ids",
+          "rigour"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "rigour-scroll-effort",
+        "band": "SHORT"
+      }
     },
     {
       "id": "train-rigour",
@@ -8639,7 +9812,22 @@
       "preparation": "Confirmed permanent unlock, known Prayer below 74, and known Defence at least 70.",
       "activity": "prayer-training",
       "benefitBand": "MAJOR",
-      "benefitReason": "Confirmed Prayer gap for an unlocked prayer; a selected goal can put its own training first."
+      "benefitReason": "Confirmed Prayer gap for an unlocked prayer; a selected goal can put its own training first.",
+      "pursuit": {
+        "mode": "UNKNOWN",
+        "burden": "UNKNOWN",
+        "tail": "UNKNOWN",
+        "modeId": "ordinary",
+        "reason": "Prayer XP to 74, remaining bone/supply quantities and the training method are not reviewed together; unknown supply cost is not a short default.",
+        "missingMechanics": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+        "sources": [
+          "rigour"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "prayer-training-effort",
+        "band": "UNKNOWN"
+      }
     },
     {
       "id": "unlock-augury",
@@ -8703,7 +9891,24 @@
       "preparation": "A positive inventory/equipment/session-bank observation of the exact scroll and a known false unlock.",
       "activity": "augury-scroll",
       "benefitBand": "MAJOR",
-      "benefitReason": "Confirmed locked permanent prayer with an observed scroll."
+      "benefitReason": "Confirmed locked permanent prayer with an observed scroll.",
+      "pursuit": {
+        "mode": "READY",
+        "burden": "LOW",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "Known local read/review/planning action with finite remaining work.",
+        "missingMechanics": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+        "sources": [
+          "arcane-scroll",
+          "augury",
+          "item-ids"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "augury-scroll-effort",
+        "band": "SHORT"
+      }
     },
     {
       "id": "train-augury",
@@ -8777,7 +9982,22 @@
       "preparation": "Confirmed permanent unlock, known Prayer below 77, and known Defence at least 70.",
       "activity": "prayer-training",
       "benefitBand": "MODERATE",
-      "benefitReason": "Confirmed Prayer gap for an unlocked prayer; a selected goal can put its own training first."
+      "benefitReason": "Confirmed Prayer gap for an unlocked prayer; a selected goal can put its own training first.",
+      "pursuit": {
+        "mode": "UNKNOWN",
+        "burden": "UNKNOWN",
+        "tail": "UNKNOWN",
+        "modeId": "ordinary",
+        "reason": "Prayer XP to 77, remaining bone/supply quantities and the training method are not reviewed together; unknown supply cost is not a short default.",
+        "missingMechanics": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+        "sources": [
+          "augury"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "prayer-training-effort",
+        "band": "UNKNOWN"
+      }
     },
     {
       "id": "plan-team-cox",
@@ -8896,7 +10116,42 @@
       "preparation": "80+ Attack/Strength/Ranged/Magic/Hitpoints and 70+ Defence/Prayer (authored preparation baseline, not game access); recognised positive weapons and their wield levels. Bowfa selection additionally needs observed active crystal pieces and 70 Agility.",
       "activity": "cox",
       "benefitBand": "PLANNING",
-      "benefitReason": "Recognised three-style kit supports ordinary team preparation."
+      "benefitReason": "Recognised three-style kit supports ordinary team preparation.",
+      "pursuit": {
+        "mode": "BOUNDED",
+        "burden": "LOW",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "Known local read/review/planning action with finite remaining work.",
+        "missingMechanics": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+        "sources": [
+          "ayak",
+          "bowfa",
+          "cox-kit",
+          "crossbow",
+          "crystal",
+          "crystal-body",
+          "crystal-helm",
+          "crystal-legs",
+          "fang",
+          "item-ids",
+          "lance",
+          "sang",
+          "sang-holy",
+          "shadow",
+          "swamp-e",
+          "swamp-trident",
+          "tentacle",
+          "trident",
+          "trident-e",
+          "twisted-bow",
+          "whip"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "cox-effort",
+        "band": "SHORT"
+      }
     },
     {
       "id": "assemble-swamp-trident",
@@ -9021,7 +10276,9 @@
           "magic-fang"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "owned-magic-effort",
+        "band": "SHORT"
       }
     },
     {
@@ -9099,7 +10356,29 @@
       "preparation": "Owned lance and a recognised ordinary melee alternative, Attack 78+, known equipment without lance, and no recognised competing melee weapon in observed storage.",
       "activity": "owned-melee",
       "benefitBand": "MODERATE",
-      "benefitReason": "Owned dragonbane alternative for the Olm melee role."
+      "benefitReason": "Owned dragonbane alternative for the Olm melee role.",
+      "pursuit": {
+        "mode": "BOUNDED",
+        "burden": "LOW",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "Known local read/review/planning action with finite remaining work.",
+        "missingMechanics": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+        "sources": [
+          "cox-kit",
+          "fang",
+          "item-ids",
+          "lance",
+          "scythe",
+          "soulreaper",
+          "tentacle",
+          "whip"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "owned-melee-effort",
+        "band": "SHORT"
+      }
     },
     {
       "id": "coordinate-defence-reduction",
@@ -9270,7 +10549,47 @@
       "preparation": "The same recognised weapon and skill baseline as team planning, plus an observed reduction option and its wield levels. This more specific prompt shares the broad team-planning family.",
       "activity": "cox",
       "benefitBand": "MINOR",
-      "benefitReason": "Specific observed team coverage before general team planning."
+      "benefitReason": "Specific observed team coverage before general team planning.",
+      "pursuit": {
+        "mode": "BOUNDED",
+        "burden": "LOW",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "Known local read/review/planning action with finite remaining work.",
+        "missingMechanics": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+        "sources": [
+          "ayak",
+          "bowfa",
+          "cox-kit",
+          "crossbow",
+          "crystal-body",
+          "crystal-helm",
+          "crystal-legs",
+          "fang",
+          "godsword",
+          "godsword-or",
+          "item-ids",
+          "lance",
+          "maul",
+          "maul-or",
+          "sang",
+          "sang-holy",
+          "shadow",
+          "swamp-e",
+          "swamp-trident",
+          "tentacle",
+          "trident",
+          "trident-e",
+          "twisted-bow",
+          "warhammer",
+          "warhammer-cr",
+          "whip"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "cox-effort",
+        "band": "SHORT"
+      }
     },
     {
       "id": "review-occult-switch",
@@ -9346,7 +10665,35 @@
       "preparation": "Positive occult observation, currently equipped normal/ornamented fury, Magic 70+, recognised charged magic weapon with its level. Empty or unknown equipment produces no suggestion.",
       "activity": "owned-neck",
       "benefitBand": "MODERATE",
-      "benefitReason": "Owned specialised magic alternative to the equipped hybrid necklace."
+      "benefitReason": "Owned specialised magic alternative to the equipped hybrid necklace.",
+      "pursuit": {
+        "mode": "BOUNDED",
+        "burden": "LOW",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "Known local read/review/planning action with finite remaining work.",
+        "missingMechanics": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+        "sources": [
+          "ayak",
+          "cox-kit",
+          "fury",
+          "fury-or",
+          "item-ids",
+          "occult",
+          "occult-or",
+          "sang",
+          "sang-holy",
+          "shadow",
+          "swamp-e",
+          "swamp-trident",
+          "trident",
+          "trident-e"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "owned-neck-effort",
+        "band": "SHORT"
+      }
     },
     {
       "status": "reviewed",
@@ -9441,6 +10788,29 @@
         "test": "POSSESSION",
         "key": "bowfaOrBetter",
         "value": true
+      },
+      "pursuit": {
+        "mode": "UNKNOWN",
+        "burden": "HIGH",
+        "tail": "UNKNOWN",
+        "modeId": "ordinary",
+        "reason": "Reviewed repeated acquisition route with substantial remaining work.",
+        "missingMechanics": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+        "sources": [
+          "atlatl",
+          "bowfa",
+          "bowfa-route",
+          "crystal-route",
+          "gauntlet-route",
+          "gauntlet-strategy",
+          "item-ids",
+          "sote-route",
+          "twisted-bow"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "cg-effort",
+        "band": "LONG"
       }
     },
     {
@@ -9503,6 +10873,31 @@
         "test": "LEVEL",
         "key": "SLAYER",
         "minimum": 87
+      },
+      "pursuit": {
+        "mode": "UNKNOWN",
+        "burden": "UNKNOWN",
+        "tail": "UNKNOWN",
+        "modeId": "ordinary-melee",
+        "reason": "Slayer XP to 87 depends on tasks, method, supplies and remaining training. A known level gap does not establish remaining grind time.",
+        "missingMechanics": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+        "sources": [
+          "ayak",
+          "cave-kraken-route",
+          "item-ids",
+          "sang",
+          "sang-holy",
+          "shadow",
+          "swamp-e",
+          "swamp-trident",
+          "trident",
+          "trident-e",
+          "wand"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "slayer-effort",
+        "band": "UNKNOWN"
       }
     },
     {
@@ -9578,6 +10973,32 @@
         "test": "POSSESSION",
         "key": "seasOrBetter",
         "value": true
+      },
+      "pursuit": {
+        "mode": "UNKNOWN",
+        "burden": "UNKNOWN",
+        "tail": "UNKNOWN",
+        "modeId": "ordinary-melee",
+        "reason": "Kraken task supply, eligible recipient and remaining trident drop work are unreviewed. The tentacle/whip method profile does not establish this spell route; check the current task and casting supplies.",
+        "missingMechanics": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+        "sources": [
+          "ayak",
+          "cave-kraken-route",
+          "item-ids",
+          "kraken-route",
+          "sang",
+          "sang-holy",
+          "shadow",
+          "swamp-e",
+          "swamp-trident",
+          "trident",
+          "trident-e",
+          "wand"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "slayer-effort",
+        "band": "UNKNOWN"
       }
     },
     {
@@ -9722,7 +11143,9 @@
           "magic-fang"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "zulrah-effort",
+        "band": "MEDIUM"
       }
     },
     {
@@ -9841,6 +11264,43 @@
         "test": "POSSESSION",
         "key": "fang",
         "value": true
+      },
+      "pursuit": {
+        "mode": "UNKNOWN",
+        "burden": "HIGH",
+        "tail": "UNKNOWN",
+        "modeId": "ordinary",
+        "reason": "Reviewed repeated acquisition route with substantial remaining work.",
+        "missingMechanics": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+        "sources": [
+          "ayak",
+          "bcs-route",
+          "bowfa",
+          "crossbow",
+          "crystal-body",
+          "crystal-helm",
+          "crystal-legs",
+          "fang",
+          "item-ids",
+          "keris",
+          "lance",
+          "sang",
+          "sang-holy",
+          "shadow",
+          "swamp-e",
+          "swamp-trident",
+          "tentacle",
+          "toa-route",
+          "toa-strategy",
+          "trident",
+          "trident-e",
+          "twisted-bow",
+          "whip"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "toa-effort",
+        "band": "LONG"
       }
     },
     {
@@ -9960,6 +11420,35 @@
             "value": true
           }
         ]
+      },
+      "pursuit": {
+        "mode": "UNKNOWN",
+        "burden": "UNKNOWN",
+        "tail": "UNKNOWN",
+        "modeId": "ordinary",
+        "reason": "Eclipse reward/chest eligibility, set-specific remaining pieces and duplicate protection are unmodelled. The retained Moons role evidence does not validate this account's full method/preparation effort.",
+        "missingMechanics": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+        "sources": [
+          "atlatl",
+          "bowfa",
+          "bowfa-route",
+          "crossbow",
+          "crystal-body",
+          "crystal-helm",
+          "crystal-legs",
+          "fang",
+          "item-ids",
+          "lance",
+          "moons-route",
+          "moons-strategy",
+          "tentacle",
+          "twisted-bow",
+          "whip"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "moons-effort",
+        "band": "UNKNOWN"
       }
     },
     {
@@ -10142,6 +11631,39 @@
             ]
           }
         ]
+      },
+      "pursuit": {
+        "mode": "UNKNOWN",
+        "burden": "UNKNOWN",
+        "tail": "UNKNOWN",
+        "modeId": "ordinary",
+        "reason": "Personal Royal Titans reward attribution and an elemental spell/switch method are unreviewed. Powered-magic ownership does not establish fire-casting supplies or full-cycle pace.",
+        "missingMechanics": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+        "sources": [
+          "augury",
+          "bowfa",
+          "crossbow",
+          "crystal-body",
+          "crystal-helm",
+          "crystal-legs",
+          "deadeye-route",
+          "deadeye-scroll-route",
+          "fang",
+          "item-ids",
+          "lance",
+          "rigour",
+          "tentacle",
+          "titans-route",
+          "titans-strategy",
+          "twisted-bow",
+          "vigour-route",
+          "vigour-scroll-route",
+          "whip"
+        ],
+        "allocations": [],
+        "variants": [],
+        "profile": "royal-titans-effort",
+        "band": "UNKNOWN"
       }
     },
     {
@@ -10251,7 +11773,9 @@
           "occult"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "smoke-devils-effort",
+        "band": "MEDIUM"
       }
     },
     {
@@ -10379,7 +11903,8 @@
             "tail": "ORDINARY",
             "reason": "Owned horn and ACB remove their acquisition stages; confirm 250 shards and 90 Fletching before bounded assembly. No total estimate.",
             "allocations": [],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "SHORT"
           },
           {
             "when": {
@@ -10392,9 +11917,12 @@
             "tail": "UNKNOWN",
             "reason": "Owned horn removes its Nex unique stage. ACB and shard acquisition/preparation are not quantified; check their remaining work before an active-pursuit claim.",
             "allocations": [],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "UNKNOWN"
           }
-        ]
+        ],
+        "profile": "nex-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -10481,7 +12009,9 @@
           "avernic-treads"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "doom-effort",
+        "band": "LONG"
       }
     },
     {
@@ -10562,7 +12092,9 @@
           "r1-tumekens-shadow"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "toa-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -10645,7 +12177,9 @@
           "r1-ancestral-hat"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "chambers-of-xeric-effort",
+        "band": "LONG"
       }
     },
     {
@@ -10728,7 +12262,9 @@
           "r1-ancestral-robe-top"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "chambers-of-xeric-effort",
+        "band": "LONG"
       }
     },
     {
@@ -10811,7 +12347,9 @@
           "r1-ancestral-robe-bottom"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "chambers-of-xeric-effort",
+        "band": "LONG"
       }
     },
     {
@@ -10924,7 +12462,8 @@
             "allocations": [
               "zenyte"
             ],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "SHORT"
           },
           {
             "when": {
@@ -10949,7 +12488,8 @@
             "allocations": [
               "zenyte"
             ],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "SHORT"
           },
           {
             "when": {
@@ -10964,9 +12504,12 @@
             "allocations": [
               "zenyte"
             ],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "SHORT"
           }
-        ]
+        ],
+        "profile": "demonic-gorillas-effort",
+        "band": "MEDIUM"
       }
     },
     {
@@ -11067,7 +12610,8 @@
             "tail": "ORDINARY",
             "reason": "Owned Magus icon removes Duke/vestige/seers work; remaining ingots, mould and skills determine readiness.",
             "allocations": [],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "SHORT"
           },
           {
             "when": {
@@ -11100,7 +12644,8 @@
             "tail": "ORDINARY",
             "reason": "Owned vestige and ring/icon remove their reward acquisition. Check remaining learning, skills, ingots and assembly; no fresh vestige grind or hidden-state estimate.",
             "allocations": [],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "SHORT"
           },
           {
             "when": {
@@ -11113,9 +12658,12 @@
             "tail": "UNKNOWN",
             "reason": "Owned vestige removes its hidden-drop stage. The remaining seers ring/icon, ingots and assembly need their own checks; no total effort is claimed.",
             "allocations": [],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "UNKNOWN"
           }
-        ]
+        ],
+        "profile": "duke-sucellus-effort",
+        "band": "LONG"
       }
     },
     {
@@ -11202,7 +12750,9 @@
           "r2-chambers-of-xeric"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "chambers-of-xeric-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -11295,7 +12845,9 @@
         "allocations": [
           "enhanced-seed"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "cg-effort",
+        "band": "LONG"
       }
     },
     {
@@ -11377,7 +12929,9 @@
           "r2-crystal-helm"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "cg-effort",
+        "band": "MEDIUM"
       }
     },
     {
@@ -11459,7 +13013,9 @@
           "r2-crystal-body"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "cg-effort",
+        "band": "MEDIUM"
       }
     },
     {
@@ -11541,7 +13097,9 @@
           "r2-crystal-legs"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "cg-effort",
+        "band": "MEDIUM"
       }
     },
     {
@@ -11628,7 +13186,9 @@
           "r2-toxic-blowpipe"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "zulrah-effort",
+        "band": "MEDIUM"
       }
     },
     {
@@ -11715,7 +13275,9 @@
           "r2-rosewood-blowpipe"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "rosewood-crafting-effort",
+        "band": "MEDIUM"
       }
     },
     {
@@ -11804,7 +13366,9 @@
           "r2-masori-mask"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "toa-effort",
+        "band": "LONG"
       }
     },
     {
@@ -11893,7 +13457,9 @@
           "r2-masori-body"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "toa-effort",
+        "band": "LONG"
       }
     },
     {
@@ -11982,7 +13548,9 @@
           "r2-masori-chaps"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "toa-effort",
+        "band": "LONG"
       }
     },
     {
@@ -12029,10 +13597,12 @@
       "sources": [
         "armadyl-crossbow",
         "bowfa",
+        "client-blazing-blowpipe",
         "crossbow",
         "item-ids",
         "r1-blood-rune",
         "r1-cosmic-rune",
+        "r1-demonic-gorilla",
         "r1-gold-bar",
         "r1-onyx",
         "r1-soul-rune",
@@ -12063,8 +13633,7 @@
         "r2-twisted-bow",
         "r2-zenyte-necklace",
         "twisted-bow",
-        "zaryte",
-        "client-blazing-blowpipe"
+        "zaryte"
       ],
       "requires": [],
       "status": "reviewed",
@@ -12096,7 +13665,8 @@
             "allocations": [
               "zenyte"
             ],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "SHORT"
           },
           {
             "when": {
@@ -12121,9 +13691,12 @@
             "allocations": [
               "zenyte"
             ],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "SHORT"
           }
-        ]
+        ],
+        "profile": "demonic-gorillas-effort",
+        "band": "MEDIUM"
       }
     },
     {
@@ -12225,9 +13798,12 @@
             "tail": "ORDINARY",
             "reason": "Owned intermediate bypasses the acquisition stage; remaining resources/skills/assembly remain separate.",
             "allocations": [],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "SHORT"
           }
-        ]
+        ],
+        "profile": "maggot-king-effort",
+        "band": "LONG"
       }
     },
     {
@@ -12315,7 +13891,9 @@
           "r2-fortis-colosseum"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "colosseum-effort",
+        "band": "LONG"
       }
     },
     {
@@ -12420,9 +13998,12 @@
             "tail": "ORDINARY",
             "reason": "Owned intermediate bypasses the acquisition stage; remaining resources/skills/assembly remain separate.",
             "allocations": [],
-            "bypassesAcquisition": true
+            "bypassesAcquisition": true,
+            "band": "SHORT"
           }
-        ]
+        ],
+        "profile": "leviathan-effort",
+        "band": "LONG"
       }
     },
     {
@@ -12521,7 +14102,9 @@
           "r2-nex"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "nex-effort",
+        "band": "VERY_LONG"
       }
     },
     {
@@ -12608,7 +14191,9 @@
           "r2-twisted-buckler"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "chambers-of-xeric-effort",
+        "band": "LONG"
       }
     },
     {
@@ -12696,7 +14281,9 @@
           "r2-ava-s-assembler"
         ],
         "allocations": [],
-        "variants": []
+        "variants": [],
+        "profile": "vorkath-effort",
+        "band": "MEDIUM"
       }
     },
     {
@@ -12783,7 +14370,9 @@
           "ancient-essence-allocation",
           "venator-shard-allocation"
         ],
-        "variants": []
+        "variants": [],
+        "profile": "muspah-effort",
+        "band": "LONG"
       }
     },
     {
@@ -12883,9 +14472,97 @@
             "allocations": [
               "whip-consumption",
               "kraken-tentacle-use"
-            ]
+            ],
+            "band": "SHORT"
           }
-        ]
+        ],
+        "profile": "slayer-effort",
+        "band": "MEDIUM"
+      }
+    },
+    {
+      "id": "seek-scorching-bow",
+      "title": "Acquire Scorching bow",
+      "kind": "ACQUIRE",
+      "itemId": 29591,
+      "when": {
+        "test": "USABLE",
+        "key": "ranged"
+      },
+      "completeWhen": {
+        "test": "POSSESSION",
+        "key": "scorchingBow",
+        "value": true
+      },
+      "repeatable": false,
+      "accessWhen": {
+        "test": "FACT",
+        "key": "while-guthix-sleeps",
+        "value": true
+      },
+      "prepWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "goals": [],
+      "notes": [],
+      "contextBenefits": [],
+      "benefitBand": "MODERATE",
+      "benefitReason": "Demonbane ranged and binding utility; compare owned ranged and shield-interruption alternatives.",
+      "why": "Demonbane ranged and binding utility; compare owned ranged and shield-interruption alternatives.",
+      "alternative": "Owned twisted bow and a Darklight switch can support a reviewed Doom route. Bowfa kiting remains an alternative for K'ril; the binding special is distinct.",
+      "tradeoff": "Demonbane and binding are reviewed qualitatively. DPS, special cycle, Doom time and trip gains are unavailable. One synapse cannot fund Emberlight, Purging and Scorching simultaneously.",
+      "effort": "While Guthix Sleeps, read Duradel's notes, acquire or allocate one synapse, combine with a magic longbow (u) at 74 Fletching, then supply suitable arrows.",
+      "access": "While Guthix Sleeps for a fresh synapse; owned synapse bypasses that acquisition.",
+      "completion": "Scorching bow owned",
+      "applicability": "Reviewed demonbane role; not universal ranged superiority",
+      "family": "demonbane-ranged",
+      "activity": "tormented-demons",
+      "outcome": "Scorching bow",
+      "preparation": "Compatible melee/ranged switches and supplies; no owned synapse prerequisite for Tormented Demons.",
+      "effortBand": "GRIND",
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-duradels-notes",
+        "ep1-magic-longbow-u",
+        "ep1-scorching-bow",
+        "ep1-tormented-demon",
+        "ep1-tormented-demon-strategies",
+        "ep1-tormented-synapse",
+        "fang",
+        "item-ids",
+        "lance",
+        "tentacle",
+        "twisted-bow",
+        "whip"
+      ],
+      "requires": [],
+      "status": "reviewed",
+      "reviewed": "2026-10-14",
+      "pursuit": {
+        "mode": "REPEATABLE",
+        "burden": "MODERATE",
+        "tail": "ORDINARY",
+        "modeId": "ordinary",
+        "reason": "A repeated synapse drop route followed by one exclusive assembly; owned synapse removes Tormented Demon work.",
+        "missingMechanics": "No full-cycle pace or synapse-first Doom time model; arrows, learning and allocation remain separate.",
+        "sources": [
+          "ep1-tormented-synapse",
+          "ep1-scorching-bow",
+          "ep1-tormented-demon",
+          "ep1-magic-longbow-u",
+          "ep1-duradels-notes"
+        ],
+        "allocations": [
+          "tormented-synapse"
+        ],
+        "variants": [],
+        "profile": "tormented-demons-effort",
+        "band": "MEDIUM"
       }
     }
   ],
@@ -16270,6 +17947,50 @@
           "item-ids"
         ]
       }
+    ],
+    "scorchingBow": [
+      {
+        "id": 29591,
+        "label": "scorching bow",
+        "skill": "RANGED",
+        "level": 77,
+        "sources": [
+          "ep1-scorching-bow"
+        ]
+      }
+    ],
+    "tormentedSynapse": [
+      {
+        "id": 29580,
+        "label": "tormented synapse",
+        "skill": "FLETCHING",
+        "level": 1,
+        "sources": [
+          "ep1-tormented-synapse"
+        ]
+      }
+    ],
+    "magicLongbowUnstrung": [
+      {
+        "id": 70,
+        "label": "magic longbow (u)",
+        "skill": "FLETCHING",
+        "level": 1,
+        "sources": [
+          "ep1-magic-longbow-u"
+        ]
+      }
+    ],
+    "doomDarklight": [
+      {
+        "id": 6746,
+        "label": "Darklight",
+        "skill": "ATTACK",
+        "level": 50,
+        "sources": [
+          "ep1-doom-of-mokhaiotl-strategies"
+        ]
+      }
     ]
   },
   "itemSets": {
@@ -16853,6 +18574,18 @@
       4151,
       12773,
       12774
+    ],
+    "scorchingBow": [
+      29591
+    ],
+    "tormentedSynapse": [
+      29580
+    ],
+    "magicLongbowUnstrung": [
+      70
+    ],
+    "doomDarklight": [
+      6746
     ]
   },
   "activities": {
@@ -16881,7 +18614,8 @@
     "leviathan": "Leviathan",
     "vorkath": "Vorkath",
     "muspah": "Phantom Muspah",
-    "ranged-use": "Broad ranged use"
+    "ranged-use": "Broad ranged use",
+    "tormented-demons": "Tormented Demons"
   },
   "ownershipLabels": {
     "bowfaOrBetter": "Bowfa (any reviewed form) or twisted bow owned",
@@ -16957,7 +18691,11 @@
     "saturatedHeart": "Saturated heart",
     "abyssalTentacle": "Abyssal tentacle (including ornamented form)",
     "krakenTentacle": "Kraken tentacle component",
-    "abyssalWhip": "Abyssal whip (including cosmetics)"
+    "abyssalWhip": "Abyssal whip (including cosmetics)",
+    "scorchingBow": "Own scorching bow",
+    "tormentedSynapse": "Own tormented synapse",
+    "magicLongbowUnstrung": "Own magic longbow (u)",
+    "doomDarklight": "Own Darklight"
   },
   "goals": [
     {
@@ -17758,7 +19496,8 @@
                 "node": "nex-prep"
               }
             ]
-          }
+          },
+          "acquisition": true
         },
         {
           "id": "acb",
@@ -17769,7 +19508,8 @@
             "key": "armadylCrossbow",
             "value": true
           },
-          "detail": "Armadyl crossbow"
+          "detail": "Armadyl crossbow",
+          "acquisition": true
         },
         {
           "id": "shards",
@@ -18907,7 +20647,8 @@
                 "node": "access"
               }
             ]
-          }
+          },
+          "acquisition": true
         },
         {
           "id": "uncut",
@@ -19284,7 +21025,8 @@
                 "node": "access"
               }
             ]
-          }
+          },
+          "acquisition": true
         },
         {
           "id": "seers",
@@ -19295,7 +21037,8 @@
             "key": "seersRing",
             "value": true
           },
-          "detail": "Dagannoth Prime; uncharge any imbue before breaking the ring down."
+          "detail": "Dagannoth Prime; uncharge any imbue before breaking the ring down.",
+          "acquisition": true
         },
         {
           "id": "seers-icon",
@@ -22914,6 +24657,173 @@
         "test": "CONSTANT",
         "value": true
       }
+    },
+    {
+      "id": "scorching-bow",
+      "browseStyle": "Ranged",
+      "browseSlot": "weapon",
+      "title": "Scorching bow",
+      "itemId": 29591,
+      "when": {
+        "test": "USABLE",
+        "key": "ranged"
+      },
+      "ownedWhen": {
+        "test": "POSSESSION",
+        "key": "scorchingBow",
+        "value": true
+      },
+      "equipWhen": {
+        "test": "LEVEL",
+        "key": "RANGED",
+        "minimum": 77
+      },
+      "eligibilityWhen": {
+        "test": "CONSTANT",
+        "value": true
+      },
+      "routes": [
+        "seek-scorching-bow"
+      ],
+      "valueReason": "Demonbane ranged and binding utility; compare owned ranged and shield-interruption alternatives.",
+      "alternatives": "Owned twisted bow and a Darklight switch can support a reviewed Doom route. Bowfa kiting remains an alternative for K'ril; the binding special is distinct.",
+      "remainingWork": "While Guthix Sleeps, read Duradel's notes, acquire or allocate one synapse, combine with a magic longbow (u) at 74 Fletching, then supply suitable arrows.",
+      "limitation": "Demonbane and binding are reviewed qualitatively. DPS, special cycle, Doom time and trip gains are unavailable. One synapse cannot fund Emberlight, Purging and Scorching simultaneously.",
+      "benefitBand": "MODERATE",
+      "applications": [
+        {
+          "id": "demonbane-method",
+          "label": "Demonbane ranged / control",
+          "text": "Doom main-ranged and demon-only K'ril binding utility remain separate from ordinary DPS and execution skill.",
+          "when": {
+            "test": "USABLE",
+            "key": "ranged"
+          }
+        }
+      ],
+      "comparison": "NONE",
+      "unknownSets": [],
+      "goals": [],
+      "parts": [],
+      "shared": [],
+      "contextBenefits": [],
+      "headline": "Demonbane ranged/control; ordinary DPS not modelled.",
+      "effortShort": "Synapse allocation and assembly; owned parts bypass the drop.",
+      "status": "reviewed",
+      "reviewed": "2026-10-14",
+      "rewardFamily": "scorching-bow",
+      "role": "demonbane-ranged",
+      "contexts": [
+        "doom-hybrid"
+      ],
+      "path": [
+        {
+          "id": "access",
+          "label": "While Guthix Sleeps",
+          "detail": "Quest access to Tormented Demons.",
+          "role": "ACCESS",
+          "completeWhen": {
+            "test": "FACT",
+            "key": "while-guthix-sleeps",
+            "value": true
+          }
+        },
+        {
+          "id": "synapse",
+          "label": "Allocate one tormented synapse",
+          "detail": "The same synapse cannot also create Emberlight or Purging staff; input/reversion costs remain separate.",
+          "role": "COMPONENT",
+          "completeWhen": {
+            "test": "POSSESSION",
+            "key": "tormentedSynapse",
+            "value": true
+          },
+          "acquisition": true,
+          "dependencies": {
+            "mode": "NODE",
+            "node": "access"
+          }
+        },
+        {
+          "id": "notes",
+          "label": "Read Duradel's notes",
+          "detail": "Creation knowledge is separate from component ownership.",
+          "role": "ASSEMBLY",
+          "completeWhen": {
+            "test": "FACT",
+            "key": "duradel-notes",
+            "value": true
+          }
+        },
+        {
+          "id": "fletching",
+          "label": "74 Fletching",
+          "detail": "Boostable level; no temporary boost inferred.",
+          "role": "ASSEMBLY",
+          "completeWhen": {
+            "test": "LEVEL",
+            "key": "FLETCHING",
+            "minimum": 74
+          }
+        },
+        {
+          "id": "longbow",
+          "label": "Magic longbow (u)",
+          "detail": "The bow input is consumed.",
+          "role": "COMPONENT",
+          "completeWhen": {
+            "test": "POSSESSION",
+            "key": "magicLongbowUnstrung",
+            "value": true
+          }
+        },
+        {
+          "id": "reward",
+          "label": "Create Scorching bow",
+          "detail": "Combine the synapse and unstrung bow; recheck arrows before use.",
+          "role": "ASSEMBLY",
+          "completeWhen": {
+            "test": "POSSESSION",
+            "key": "scorchingBow",
+            "value": true
+          },
+          "dependencies": {
+            "mode": "ALL",
+            "children": [
+              {
+                "mode": "NODE",
+                "node": "synapse"
+              },
+              {
+                "mode": "NODE",
+                "node": "notes"
+              },
+              {
+                "mode": "NODE",
+                "node": "fletching"
+              },
+              {
+                "mode": "NODE",
+                "node": "longbow"
+              }
+            ]
+          }
+        }
+      ],
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-duradels-notes",
+        "ep1-magic-longbow-u",
+        "ep1-scorching-bow",
+        "ep1-tormented-demon",
+        "ep1-tormented-synapse",
+        "item-ids",
+        "twisted-bow"
+      ]
     }
   ],
   "comparison": {
@@ -24530,6 +26440,64 @@
         "Quest/access, onyx, crafting/training, assembly and supplies are excluded.",
         "One shard allocation cannot fund several jewellery choices."
       ]
+    },
+    {
+      "id": "next-anguish-zenyte",
+      "version": "zenyte-fixed-1",
+      "activity": "demonic-gorillas",
+      "mode": "ordinary",
+      "rewardFamily": "zenyte-shard",
+      "route": "seek-necklace-of-anguish",
+      "node": "shard",
+      "recipient": "Player eligible for the demonic gorilla loot drop",
+      "trialUnit": "eligible demonic gorilla kills",
+      "support": "REVIEWED",
+      "mechanic": "FIXED_BERNOULLI",
+      "numerator": 1,
+      "denominator": 300,
+      "reviewed": "2026-10-13",
+      "reason": "E1 reviewed fixed next-shard rate; not a jewellery completion model.",
+      "sources": [
+        "r1-demonic-gorilla"
+      ],
+      "assumptions": [
+        "Independent future eligible kills with unchanged fixed 1/300 chance.",
+        "Includes the successful kill; past dry kills do not change the future distribution."
+      ],
+      "exclusions": [
+        "Next shard only; not a completed tormented bracelet.",
+        "Quest/access, onyx, crafting/training, assembly and supplies are excluded.",
+        "One shard allocation cannot fund several jewellery choices."
+      ]
+    },
+    {
+      "id": "next-tormented-synapse",
+      "version": "synapse-fixed-1",
+      "activity": "tormented-demons",
+      "mode": "ordinary",
+      "rewardFamily": "tormented-synapse",
+      "route": "seek-scorching-bow",
+      "node": "synapse",
+      "recipient": "Player eligible for the Tormented Demon loot drop",
+      "trialUnit": "eligible Tormented Demon kills",
+      "support": "REVIEWED",
+      "mechanic": "FIXED_BERNOULLI",
+      "numerator": 1,
+      "denominator": 500,
+      "reviewed": "2026-10-14",
+      "reason": "Reviewed fixed synapse roll per eligible kill; other loot is not added to this probability.",
+      "sources": [
+        "ep1-tormented-demon"
+      ],
+      "assumptions": [
+        "Independent future eligible kills; fixed 1/500 synapse roll is resolved before other unique loot.",
+        "Successful kill included; past dry kills do not change future probability."
+      ],
+      "exclusions": [
+        "Next synapse only; not an assembled Scorching bow or completed Doom preparation.",
+        "Quest, learning, switches, supplies, 74 Fletching, notes and bow input excluded.",
+        "One synapse cannot fund multiple demonbane branches."
+      ]
     }
   ],
   "activityRewards": [
@@ -24599,7 +26567,9 @@
         "test": "CONSTANT",
         "value": true
       },
-      "tail": "ORDINARY"
+      "tail": "ORDINARY",
+      "profile": "chambers-of-xeric-effort",
+      "band": "LONG"
     },
     {
       "id": "cox-augury",
@@ -24669,7 +26639,9 @@
         "test": "CONSTANT",
         "value": true
       },
-      "tail": "ORDINARY"
+      "tail": "ORDINARY",
+      "profile": "chambers-of-xeric-effort",
+      "band": "LONG"
     },
     {
       "id": "doom-cloth",
@@ -24721,7 +26693,9 @@
         "item-ids",
         "tormented"
       ],
-      "tail": "UNKNOWN"
+      "tail": "UNKNOWN",
+      "profile": "doom-effort",
+      "band": "LONG"
     },
     {
       "id": "doom-eye",
@@ -24766,7 +26740,9 @@
         "trident",
         "trident-e"
       ],
-      "tail": "UNKNOWN"
+      "tail": "UNKNOWN",
+      "profile": "doom-effort",
+      "band": "LONG"
     },
     {
       "id": "muspah-heart-essence",
@@ -24811,7 +26787,9 @@
         "test": "POSSESSION",
         "key": "ancientEssence",
         "value": true
-      }
+      },
+      "profile": "muspah-effort",
+      "band": "LONG"
     }
   ],
   "ranged": {
@@ -26957,6 +28935,10 @@
       "DRAGON_HUNTER": 21905,
       "TOXIC": 21330,
       "ROSEWOOD": 811
+    },
+    "unsupportedWeapons": {
+      "29591": "Scorching bow ordinary/demonbane family",
+      "27612": "Venator bow single-/multi-target family"
     }
   },
   "activityContexts": [
@@ -27517,6 +29499,66 @@
       ],
       "reviewed": "2026-10-13",
       "status": "reviewed"
+    },
+    {
+      "id": "scorching-doom-control",
+      "subject": "scorching-bow",
+      "context": "doom-hybrid",
+      "role": "demonbane-control",
+      "reason": "Demonbane main-ranged and shield-interruption utility at Doom; premium megarares are optional.",
+      "limitation": "Binding requires special energy and a demon target; Doom timings and K'ril trip gains are unmodelled. Consider adequate owned methods before a synapse detour.",
+      "reviewed": "2026-10-14",
+      "status": "reviewed",
+      "dimension": "CONTROL",
+      "significance": "SUBSTANTIAL",
+      "when": {
+        "test": "ALL",
+        "conditions": [
+          {
+            "test": "USABLE",
+            "key": "ranged"
+          },
+          {
+            "test": "FACT",
+            "key": "doom-preparation",
+            "value": true
+          }
+        ]
+      },
+      "noBenefitWhen": {
+        "test": "CONSTANT",
+        "value": false
+      },
+      "alternatives": [
+        {
+          "label": "Twisted bow plus Darklight for the reviewed Doom main/switch roles; Scorching binding remains a distinct optional use.",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "USABLE",
+                "key": "twistedBow"
+              },
+              {
+                "test": "USABLE",
+                "key": "doomDarklight"
+              }
+            ]
+          },
+          "coversBenefit": true
+        }
+      ],
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-doom-of-mokhaiotl-strategies",
+        "ep1-scorching-bow",
+        "item-ids",
+        "twisted-bow"
+      ]
     }
   ],
   "melee": {
@@ -28226,5 +30268,1502 @@
       "22486": "Scythe of Vitur (uncharged)",
       "28338": "Soulreaper axe"
     }
-  }
+  },
+  "effortProfiles": [
+    {
+      "id": "owned-magic-effort",
+      "activity": "owned-magic",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "magic-fang",
+        "swamp-trident"
+      ],
+      "methods": [
+        {
+          "id": "assembly",
+          "label": "Owned-component assembly",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "zulrah-effort",
+      "activity": "zulrah",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "ayak",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-zulrah-strategies",
+        "item-ids",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e",
+        "twisted-bow"
+      ],
+      "methods": [
+        {
+          "id": "mage-switch",
+          "label": "Powered magic with ranged switch",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "MAGIC",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "HITPOINTS",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "magic"
+              },
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
+        },
+        {
+          "id": "mage-only",
+          "label": "Powered-magic-only planning method",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "MAGIC",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "HITPOINTS",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "magic"
+              }
+            ]
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "MEDIUM",
+          "limitation": "Ranged phases and learning limit this method; food, prayer, travel and scales remain checks."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "smoke-devils-effort",
+      "activity": "smoke-devils",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "ayak",
+        "ep1-smoke-devil",
+        "item-ids",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e"
+      ],
+      "methods": [
+        {
+          "id": "slayer",
+          "label": "Supported magic / smoke-devil task",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "SLAYER",
+                "minimum": 93
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "magic"
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "nex-effort",
+      "activity": "nex",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "armadyl-crossbow",
+        "crossbow",
+        "ep1-nex-strategies",
+        "item-ids",
+        "r2-dragon-crossbow",
+        "r2-dragon-hunter-crossbow",
+        "zaryte"
+      ],
+      "methods": [
+        {
+          "id": "team",
+          "label": "Reviewed team preparation with a crossbow role",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "nex-team",
+                "value": true
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "HITPOINTS",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "oneHandRanged"
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "doom-effort",
+      "activity": "doom",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "ep1-doom-of-mokhaiotl-strategies",
+        "ep1-scorching-bow",
+        "ep1-the-doom-of-mokhaiotl",
+        "item-ids",
+        "twisted-bow"
+      ],
+      "methods": [
+        {
+          "id": "main",
+          "label": "Scorching/twisted-bow main and demonbane switch",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "doom-preparation",
+                "value": true
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 90
+              },
+              {
+                "test": "LEVEL",
+                "key": "MAGIC",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "DEFENCE",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "ANY",
+                "conditions": [
+                  {
+                    "test": "USABLE",
+                    "key": "scorchingBow"
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "twistedBow"
+                  }
+                ]
+              },
+              {
+                "test": "USABLE",
+                "key": "doomDarklight"
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "LONG",
+          "limitation": "Demonbane spell swap, suitable armour/arrows and supplies remain declared method assumptions; no delve success inferred."
+        },
+        {
+          "id": "workable",
+          "label": "Scorching main with lower reviewed planning levels",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "doom-preparation",
+                "value": true
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 77
+              },
+              {
+                "test": "LEVEL",
+                "key": "MAGIC",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "DEFENCE",
+                "minimum": 70
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "scorchingBow"
+              },
+              {
+                "test": "USABLE",
+                "key": "doomDarklight"
+              }
+            ]
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "VERY_LONG",
+          "limitation": "Lower planning levels increase preparation/learning burden; no fabricated speed multiplier. Demonbane magic and supplies remain checks."
+        }
+      ],
+      "detours": [
+        {
+          "upgrade": "scorching-bow",
+          "reason": "Compare the direct supported method with obtaining Scorching first. Include its own synapse, inputs and preparation; no total time saving is established."
+        }
+      ]
+    },
+    {
+      "id": "toa-effort",
+      "activity": "toa",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "ayak",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-tombs-of-amascut-strategies",
+        "fang",
+        "item-ids",
+        "lance",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "tentacle",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "multi-style",
+          "label": "Reviewed multi-style raid preparation",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "toa-preparation",
+                "value": true
+              },
+              {
+                "test": "ALL",
+                "conditions": [
+                  {
+                    "test": "LEVEL",
+                    "key": "ATTACK",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "STRENGTH",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "RANGED",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "MAGIC",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "PRAYER",
+                    "minimum": 43
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "melee"
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "ranged"
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "magic"
+                  }
+                ]
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "LONG",
+          "limitation": "Mode, scaling, team/solo, supplies and completion are assumptions; equipment does not establish raid pace."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "chambers-of-xeric-effort",
+      "activity": "chambers-of-xeric",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "ayak",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-chambers-of-xeric-strategies",
+        "fang",
+        "item-ids",
+        "lance",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "tentacle",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "team",
+          "label": "Ordinary team multi-style preparation",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "cox-preparation",
+                "value": true
+              },
+              {
+                "test": "ALL",
+                "conditions": [
+                  {
+                    "test": "LEVEL",
+                    "key": "ATTACK",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "STRENGTH",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "RANGED",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "MAGIC",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "PRAYER",
+                    "minimum": 43
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "melee"
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "ranged"
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "magic"
+                  }
+                ]
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "LONG",
+          "limitation": "Team roles, scouting, points, layout and supplies remain checks; no solo or raid pace inferred."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "demonic-gorillas-effort",
+      "activity": "demonic-gorillas",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-demonic-gorilla-strategies",
+        "fang",
+        "item-ids",
+        "lance",
+        "tentacle",
+        "twisted-bow",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "switches",
+          "label": "Compatible melee / ranged switches",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "ATTACK",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "STRENGTH",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "melee"
+              },
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "duke-sucellus-effort",
+      "activity": "duke-sucellus",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "ep1-duke-sucellus",
+        "fang",
+        "item-ids",
+        "lance",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "melee",
+          "label": "Ordinary melee Duke planning method",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "ATTACK",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "STRENGTH",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "melee"
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "cg-effort",
+      "activity": "cg",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "ep1-corrupted-gauntlet"
+      ],
+      "methods": [
+        {
+          "id": "generated-gear",
+          "label": "Gauntlet-generated compatible equipment",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "MAGIC",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "MEDIUM",
+          "limitation": "Outside equipment is not used. Preparation, learning, completions and shards are not inferred from bank gear."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "maggot-king-effort",
+      "activity": "maggot-king",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-maggot-king-strategies",
+        "fang",
+        "item-ids",
+        "lance",
+        "tentacle",
+        "twisted-bow",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "melee-range",
+          "label": "Melee damage with a ranged larvae switch",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "ATTACK",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "STRENGTH",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "melee"
+              },
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              }
+            ]
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "LONG",
+          "limitation": "Target-specific crush/heavy-ranged alternatives and survival remain checks; no full encounter model."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "colosseum-effort",
+      "activity": "colosseum",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "ayak",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-fortis-colosseum-strategies",
+        "fang",
+        "item-ids",
+        "lance",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "tentacle",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "switches",
+          "label": "Reviewed multi-style Colosseum preparation",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "colosseum-preparation",
+                "value": true
+              },
+              {
+                "test": "ALL",
+                "conditions": [
+                  {
+                    "test": "LEVEL",
+                    "key": "ATTACK",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "STRENGTH",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "RANGED",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "MAGIC",
+                    "minimum": 75
+                  },
+                  {
+                    "test": "LEVEL",
+                    "key": "PRAYER",
+                    "minimum": 43
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "melee"
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "ranged"
+                  },
+                  {
+                    "test": "USABLE",
+                    "key": "magic"
+                  }
+                ]
+              }
+            ]
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "LONG",
+          "limitation": "Learning/failures and Sol method remain unquantified; Venator and premium weapons are optional."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "leviathan-effort",
+      "activity": "leviathan",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-the-leviathan",
+        "item-ids",
+        "twisted-bow"
+      ],
+      "methods": [
+        {
+          "id": "ranged",
+          "label": "Supported ranged Leviathan package",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "vorkath-effort",
+      "activity": "vorkath",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-vorkath",
+        "item-ids",
+        "twisted-bow"
+      ],
+      "methods": [
+        {
+          "id": "ranged",
+          "label": "Supported ranged Vorkath planning package",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "muspah-effort",
+      "activity": "muspah",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "ayak",
+        "bowfa",
+        "bowfa-route",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-phantom-muspah-strategies",
+        "item-ids",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e",
+        "twisted-bow"
+      ],
+      "methods": [
+        {
+          "id": "bowfa",
+          "label": "Bowfa/crystal Muspah method",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "muspah-preparation",
+                "value": true
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "bowfaOwned"
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
+        },
+        {
+          "id": "switch",
+          "label": "Magic/ranged switch method",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "FACT",
+                "key": "muspah-preparation",
+                "value": true
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 80
+              },
+              {
+                "test": "LEVEL",
+                "key": "MAGIC",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "magic"
+              },
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              }
+            ]
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "LONG",
+          "limitation": "Switches, smite-phase bolts, food and travel remain assumptions; no throughput or completed-bow time claimed."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "slayer-effort",
+      "activity": "slayer",
+      "mode": "ordinary-melee",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "ayak",
+        "ep1-kraken-tentacle",
+        "fang",
+        "item-ids",
+        "lance",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "tentacle",
+        "trident",
+        "trident-e",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "tentacle",
+          "label": "Whip and Kraken acquisition roles",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "SLAYER",
+                "minimum": 87
+              },
+              {
+                "test": "LEVEL",
+                "key": "MAGIC",
+                "minimum": 50
+              },
+              {
+                "test": "USABLE",
+                "key": "magic"
+              },
+              {
+                "test": "USABLE",
+                "key": "melee"
+              }
+            ]
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "MEDIUM",
+          "limitation": "Task supply, 85-Slayer whip work and irreversible whip consumption remain separate."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "tormented-demons-effort",
+      "activity": "tormented-demons",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "ep1-tormented-demon",
+        "ep1-tormented-demon-strategies",
+        "fang",
+        "item-ids",
+        "lance",
+        "tentacle",
+        "twisted-bow",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "switches",
+          "label": "Compatible melee/ranged Tormented Demon switches",
+          "when": {
+            "test": "ALL",
+            "conditions": [
+              {
+                "test": "LEVEL",
+                "key": "ATTACK",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "STRENGTH",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "RANGED",
+                "minimum": 75
+              },
+              {
+                "test": "LEVEL",
+                "key": "PRAYER",
+                "minimum": 43
+              },
+              {
+                "test": "USABLE",
+                "key": "melee"
+              },
+              {
+                "test": "USABLE",
+                "key": "ranged"
+              }
+            ]
+          },
+          "suitability": "WORKABLE",
+          "minimumBand": "MEDIUM",
+          "limitation": "Demonbane is an improvement, not a requirement to own a synapse before earning one; shield/accuracy phases and supply overhead are unmodelled."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "rosewood-crafting-effort",
+      "activity": "rosewood-crafting",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Remaining reward acquisition and checked preparation/assembly; full cycle/learning not measured",
+      "gap": "A0 qualitative calibration. No reviewed matching full-cycle throughput, personal completion probability or full-item hours.",
+      "sources": [
+        "r2-rosewood-blowpipe"
+      ],
+      "methods": [
+        {
+          "id": "crafting",
+          "label": "Owned-material crafting",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "Supply, execution and learning are assumptions; a suitable package does not certify completion."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "rigour-scroll-effort",
+      "activity": "rigour-scroll",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "sources": [
+        "dex-scroll",
+        "item-ids",
+        "rigour"
+      ],
+      "methods": [
+        {
+          "id": "planning-step",
+          "label": "Reviewed local action / preparation check",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "prayer-training-effort",
+      "activity": "prayer-training",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "sources": [
+        "rigour"
+      ],
+      "methods": [
+        {
+          "id": "planning-step",
+          "label": "Reviewed local action / preparation check",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "augury-scroll-effort",
+      "activity": "augury-scroll",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "sources": [
+        "arcane-scroll",
+        "augury",
+        "item-ids"
+      ],
+      "methods": [
+        {
+          "id": "planning-step",
+          "label": "Reviewed local action / preparation check",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "cox-effort",
+      "activity": "cox",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "sources": [
+        "ayak",
+        "bowfa",
+        "cox-kit",
+        "crossbow",
+        "crystal",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "fang",
+        "item-ids",
+        "lance",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "tentacle",
+        "trident",
+        "trident-e",
+        "twisted-bow",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "planning-step",
+          "label": "Reviewed local action / preparation check",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "owned-melee-effort",
+      "activity": "owned-melee",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "sources": [
+        "cox-kit",
+        "fang",
+        "item-ids",
+        "lance",
+        "scythe",
+        "soulreaper",
+        "tentacle",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "planning-step",
+          "label": "Reviewed local action / preparation check",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "owned-neck-effort",
+      "activity": "owned-neck",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "sources": [
+        "ayak",
+        "cox-kit",
+        "fury",
+        "fury-or",
+        "item-ids",
+        "occult",
+        "occult-or",
+        "sang",
+        "sang-holy",
+        "shadow",
+        "swamp-e",
+        "swamp-trident",
+        "trident",
+        "trident-e"
+      ],
+      "methods": [
+        {
+          "id": "planning-step",
+          "label": "Reviewed local action / preparation check",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "moons-effort",
+      "activity": "moons",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "sources": [
+        "atlatl",
+        "bowfa",
+        "bowfa-route",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "fang",
+        "item-ids",
+        "lance",
+        "moons-route",
+        "moons-strategy",
+        "tentacle",
+        "twisted-bow",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "planning-step",
+          "label": "Reviewed local action / preparation check",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
+        }
+      ],
+      "detours": []
+    },
+    {
+      "id": "royal-titans-effort",
+      "activity": "royal-titans",
+      "mode": "ordinary",
+      "version": "activity-effort-1",
+      "reviewed": "2026-10-14",
+      "scope": "Specified local action / reviewed planning step; acquisition and training totals not measured",
+      "gap": "A0 only. XP, resource supply, training method or completion pace unavailable for numerical time.",
+      "sources": [
+        "augury",
+        "bowfa",
+        "crossbow",
+        "crystal-body",
+        "crystal-helm",
+        "crystal-legs",
+        "deadeye-route",
+        "deadeye-scroll-route",
+        "fang",
+        "item-ids",
+        "lance",
+        "rigour",
+        "tentacle",
+        "titans-route",
+        "titans-strategy",
+        "twisted-bow",
+        "vigour-route",
+        "vigour-scroll-route",
+        "whip"
+      ],
+      "methods": [
+        {
+          "id": "planning-step",
+          "label": "Reviewed local action / preparation check",
+          "when": {
+            "test": "CONSTANT",
+            "value": true
+          },
+          "suitability": "SUITABLE",
+          "minimumBand": "SHORT",
+          "limitation": "This is a planning step, not certification of the activity or a full acquisition estimate."
+        }
+      ],
+      "detours": []
+    }
+  ]
 }

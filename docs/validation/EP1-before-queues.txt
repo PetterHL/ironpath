@@ -1,0 +1,146 @@
+## post-bowfa
+tormented-bracelet | STRONG | PURSUE
+occult-necklace | STRONG | PURSUE
+toxic-blowpipe | STRONG | PURSUE
+necklace-of-rupture | STRONG | PURSUE
+abyssal-tentacle | CONTEXTUAL | PURSUE
+venator-bow | CONTEXTUAL | PURSUE
+ancestral-robe-top | CONTEXTUAL | LONG_TERM
+ancestral-robe-bottom | CONTEXTUAL | LONG_TERM
+zaryte-vambraces | CONTEXTUAL | LONG_TERM
+avernic-treads | CONTEXTUAL | LONG_TERM
+tumekens-shadow | CONTEXTUAL | LONG_TERM
+twisted-bow | CONTEXTUAL | LONG_TERM
+necklace-of-anguish | KEY | CHECK
+zaryte-crossbow | STRONG | CHECK
+dizanas-quiver | CONTEXTUAL | CHECK
+venator-ring | CONTEXTUAL | CHECK
+avas-assembler | CONTEXTUAL | CHECK
+magus-ring | CONTEXTUAL | CHECK
+ancestral-hat | MARGINAL | DEFER
+masori-mask | MARGINAL | DEFER
+masori-chaps | MARGINAL | DEFER
+masori-body | MARGINAL | DEFER
+Preview: tormented-bracelet, zaryte-crossbow, venator-bow, necklace-of-anguish, toxic-blowpipe, abyssal-tentacle, avernic-treads, occult-necklace, necklace-of-rupture, ancestral-robe-top, zaryte-vambraces, tumekens-shadow, twisted-bow, dizanas-quiver, venator-ring, avas-assembler, magus-ring, ancestral-robe-bottom
+## doom-workable
+tormented-bracelet | STRONG | PURSUE
+occult-necklace | STRONG | PURSUE
+toxic-blowpipe | STRONG | PURSUE
+necklace-of-rupture | STRONG | PURSUE
+abyssal-tentacle | CONTEXTUAL | PURSUE
+venator-bow | CONTEXTUAL | PURSUE
+ancestral-robe-top | CONTEXTUAL | LONG_TERM
+ancestral-robe-bottom | CONTEXTUAL | LONG_TERM
+zaryte-vambraces | CONTEXTUAL | LONG_TERM
+avernic-treads | CONTEXTUAL | LONG_TERM
+tumekens-shadow | CONTEXTUAL | LONG_TERM
+necklace-of-anguish | KEY | CHECK
+zaryte-crossbow | STRONG | CHECK
+dizanas-quiver | CONTEXTUAL | CHECK
+venator-ring | CONTEXTUAL | CHECK
+avas-assembler | CONTEXTUAL | CHECK
+magus-ring | CONTEXTUAL | CHECK
+twisted-bow | UNCERTAIN | CHECK
+ancestral-hat | MARGINAL | DEFER
+masori-mask | MARGINAL | DEFER
+masori-chaps | MARGINAL | DEFER
+masori-body | MARGINAL | DEFER
+Preview: tormented-bracelet, zaryte-crossbow, venator-bow, necklace-of-anguish, toxic-blowpipe, abyssal-tentacle, avernic-treads, occult-necklace, necklace-of-rupture, ancestral-robe-top, zaryte-vambraces, tumekens-shadow, dizanas-quiver, venator-ring, avas-assembler, magus-ring, twisted-bow, ancestral-robe-bottom
+## doom-ready
+tormented-bracelet | STRONG | PURSUE
+occult-necklace | STRONG | PURSUE
+toxic-blowpipe | STRONG | PURSUE
+necklace-of-rupture | STRONG | PURSUE
+abyssal-tentacle | CONTEXTUAL | PURSUE
+venator-bow | CONTEXTUAL | PURSUE
+ancestral-robe-top | CONTEXTUAL | LONG_TERM
+ancestral-robe-bottom | CONTEXTUAL | LONG_TERM
+zaryte-vambraces | CONTEXTUAL | LONG_TERM
+avernic-treads | CONTEXTUAL | LONG_TERM
+tumekens-shadow | CONTEXTUAL | LONG_TERM
+twisted-bow | CONTEXTUAL | LONG_TERM
+necklace-of-anguish | KEY | CHECK
+zaryte-crossbow | STRONG | CHECK
+dizanas-quiver | CONTEXTUAL | CHECK
+venator-ring | CONTEXTUAL | CHECK
+avas-assembler | CONTEXTUAL | CHECK
+magus-ring | CONTEXTUAL | CHECK
+ancestral-hat | MARGINAL | DEFER
+masori-mask | MARGINAL | DEFER
+masori-chaps | MARGINAL | DEFER
+masori-body | MARGINAL | DEFER
+Preview: tormented-bracelet, zaryte-crossbow, venator-bow, necklace-of-anguish, toxic-blowpipe, abyssal-tentacle, avernic-treads, occult-necklace, necklace-of-rupture, ancestral-robe-top, zaryte-vambraces, tumekens-shadow, twisted-bow, dizanas-quiver, venator-ring, avas-assembler, magus-ring, ancestral-robe-bottom
+## owned-components
+necklace-of-anguish | KEY | PURSUE
+tormented-bracelet | STRONG | PURSUE
+occult-necklace | STRONG | PURSUE
+toxic-blowpipe | STRONG | PURSUE
+necklace-of-rupture | STRONG | PURSUE
+zaryte-crossbow | STRONG | PURSUE
+abyssal-tentacle | CONTEXTUAL | PURSUE
+venator-bow | CONTEXTUAL | PURSUE
+ancestral-robe-top | CONTEXTUAL | LONG_TERM
+ancestral-robe-bottom | CONTEXTUAL | LONG_TERM
+zaryte-vambraces | CONTEXTUAL | LONG_TERM
+avernic-treads | CONTEXTUAL | LONG_TERM
+tumekens-shadow | CONTEXTUAL | LONG_TERM
+twisted-bow | CONTEXTUAL | LONG_TERM
+dizanas-quiver | CONTEXTUAL | CHECK
+venator-ring | CONTEXTUAL | CHECK
+avas-assembler | CONTEXTUAL | CHECK
+magus-ring | CONTEXTUAL | CHECK
+twisted-buckler | UNCERTAIN | CHECK
+ancestral-hat | MARGINAL | DEFER
+masori-mask | MARGINAL | DEFER
+masori-chaps | MARGINAL | DEFER
+masori-body | MARGINAL | DEFER
+Preview: necklace-of-anguish, ancestral-robe-top, zaryte-crossbow, toxic-blowpipe, abyssal-tentacle, venator-bow, avernic-treads, tormented-bracelet, occult-necklace, necklace-of-rupture, zaryte-vambraces, tumekens-shadow, twisted-bow, dizanas-quiver, venator-ring, avas-assembler, magus-ring, twisted-buckler, ancestral-robe-bottom
+## early
+abyssal-tentacle | CONTEXTUAL | PURSUE
+avas-assembler | UNCERTAIN | CHECK
+occult-necklace | UNCERTAIN | CHECK
+tormented-bracelet | UNCERTAIN | CHECK
+toxic-blowpipe | UNCERTAIN | CHECK
+venator-ring | UNCERTAIN | CHECK
+ancestral-hat | UNCERTAIN | CHECK
+ancestral-robe-bottom | UNCERTAIN | CHECK
+ancestral-robe-top | UNCERTAIN | CHECK
+dizanas-quiver | UNCERTAIN | CHECK
+magus-ring | UNCERTAIN | CHECK
+masori-body | UNCERTAIN | CHECK
+masori-chaps | UNCERTAIN | CHECK
+masori-mask | UNCERTAIN | CHECK
+tumekens-shadow | UNCERTAIN | CHECK
+twisted-bow | UNCERTAIN | CHECK
+zaryte-vambraces | UNCERTAIN | CHECK
+necklace-of-rupture | MARGINAL | DEFER
+necklace-of-anguish | MARGINAL | DEFER
+Preview: abyssal-tentacle, avas-assembler, occult-necklace, tormented-bracelet, toxic-blowpipe, venator-ring, ancestral-hat, dizanas-quiver, magus-ring, masori-body, tumekens-shadow, twisted-bow, zaryte-vambraces, ancestral-robe-bottom, ancestral-robe-top, masori-chaps, masori-mask
+## single-megarare
+tormented-bracelet | STRONG | PURSUE
+occult-necklace | STRONG | PURSUE
+toxic-blowpipe | STRONG | PURSUE
+necklace-of-rupture | STRONG | PURSUE
+abyssal-tentacle | CONTEXTUAL | PURSUE
+venator-bow | CONTEXTUAL | PURSUE
+ancestral-robe-top | CONTEXTUAL | LONG_TERM
+ancestral-robe-bottom | CONTEXTUAL | LONG_TERM
+zaryte-vambraces | CONTEXTUAL | LONG_TERM
+avernic-treads | CONTEXTUAL | LONG_TERM
+masori-body | CONTEXTUAL | LONG_TERM
+tumekens-shadow | CONTEXTUAL | LONG_TERM
+necklace-of-anguish | KEY | CHECK
+zaryte-crossbow | STRONG | CHECK
+dizanas-quiver | CONTEXTUAL | CHECK
+venator-ring | CONTEXTUAL | CHECK
+avas-assembler | CONTEXTUAL | CHECK
+magus-ring | CONTEXTUAL | CHECK
+ancestral-hat | MARGINAL | DEFER
+masori-chaps | MARGINAL | DEFER
+masori-mask | MARGINAL | DEFER
+Preview: tormented-bracelet, zaryte-crossbow, venator-bow, necklace-of-anguish, toxic-blowpipe, abyssal-tentacle, avernic-treads, occult-necklace, necklace-of-rupture, ancestral-robe-top, zaryte-vambraces, masori-body, tumekens-shadow, dizanas-quiver, venator-ring, avas-assembler, magus-ring, ancestral-robe-bottom
+## nearly-complete
+tumekens-shadow | STRONG | LONG_TERM
+Preview: tumekens-shadow
+## unread-bank
+Preview:

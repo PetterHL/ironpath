@@ -496,6 +496,7 @@ final class IronpathPanel extends PluginPanel
 		itemHeader(card,upgrade.upgrade,current);
 		text(card,copy.reason); card.getComponent(card.getComponentCount()-1).setFocusable(false); card.getComponent(card.getComponentCount()-1).setName("card-reason");
 		text(card,copy.metric); card.getComponent(card.getComponentCount()-1).setFocusable(false); card.getComponent(card.getComponentCount()-1).setName("comparison-headline");
+		text(card,copy.effort); card.getComponent(card.getComponentCount()-1).setFocusable(false); card.getComponent(card.getComponentCount()-1).setName("card-effort");
 		text(card,copy.status); card.getComponent(card.getComponentCount()-1).setFocusable(false); card.getComponent(card.getComponentCount()-1).setName("card-status");
 		JPanel actionsRow=new ActionLinks(); actionsRow.setFont(getFont()); actionsRow.setOpaque(false); actionsRow.setAlignmentX(LEFT_ALIGNMENT);
 		JButton open=button(actionsRow,"Value",()->{ if (current.getAsBoolean()) { navigate(upgrade.upgrade.id,false,expectedView,actions); } });
@@ -613,6 +614,7 @@ final class IronpathPanel extends PluginPanel
 		tabs.setMaximumSize(new Dimension(213,tabHeight)); tabs.setPreferredSize(new Dimension(213,tabHeight)); tabs.setMinimumSize(new Dimension(0,tabHeight)); add(tabs);
 		if (pathDetail) { acquisition(view, catalog, actions); return; }
 		text(this,view.valueEvidence.importance.label + ": " + view.valueEvidence.reason);
+		text(this,view.presentation.priorityReason);
 		text(this,"Baseline: " + view.valueEvidence.baseline);
 		if (!view.pursuit.blockers.isEmpty()) { text(this,"Next check: " + view.pursuit.blockers.get(0)); }
 		for (com.ironpath.advisor.ValueEvidence.Role role : view.valueEvidence.roles)
@@ -707,7 +709,14 @@ final class IronpathPanel extends PluginPanel
 	private void acquisition(Advisor.UpgradeView view, KnowledgeCatalog catalog, Actions actions)
 	{
 		KnowledgeCatalog.Upgrade upgrade = view.upgrade;
-		text(this, "Next: " + (view.pursuit.blockers.isEmpty() ? view.routes.stream().filter(r -> r.decision.id.equals(view.pursuit.route)).findFirst().orElse(view.routes.get(0)).next : view.pursuit.blockers.get(0)));
+		text(this, "Next: " + view.presentation.nextStep);
+		for (com.ironpath.advisor.UpgradePresentation.RouteChoice choice : view.presentation.routes)
+		{
+			if (choice.preparationUpgrade==null) { continue; }
+			text(this,"Preparation alternative: " + choice.preparationUpgrade + ". " + choice.reason);
+			text(this,"Preparation: " + (choice.preparationOwned?"already owned":choice.preparationBand.label)
+				+ "; acquisition: " + choice.acquisitionBand.label + ". " + choice.scope + ". Combined hours unavailable.");
+		}
 		for (com.ironpath.advisor.ValueEvidence.Role role : view.valueEvidence.roles)
 		{ for (String alternative : role.alternatives) { text(this,"Owned method alternative: " + alternative); } }
 		for (com.ironpath.advisor.ProgressionKnowledge.Context context : catalog.progression.contexts)
@@ -740,9 +749,11 @@ final class IronpathPanel extends PluginPanel
 	private void effort(PursuitAssessment pursuit, Actions actions)
 	{
 		String process=pursuit.acquisitionMode == PursuitAssessment.Mode.READY ? "Assembly/claim remains" : pursuit.acquisitionMode == PursuitAssessment.Mode.BOUNDED ? "Finite remaining task" : pursuit.acquisitionMode == PursuitAssessment.Mode.REPEATABLE ? "Repeatable acquisition" : pursuit.acquisitionMode == PursuitAssessment.Mode.LONG_TAIL ? "Long-tail acquisition" : "Effort not estimated";
-		text(this, "Remaining effort: " + process + " · " + pursuit.burden.toString().toLowerCase(java.util.Locale.ROOT) + " work" + (pursuit.tail == PursuitAssessment.Tail.LONG ? " · long RNG tail" : ""));
+		text(this,"Remaining effort: " + pursuit.remainingEffort.band.label + " · " + pursuit.remainingEffort.suitability.label);
+		text(this,pursuit.remainingEffort.method + ". " + pursuit.remainingEffort.reason);
+		text(this,"Scope: " + pursuit.remainingEffort.scope + ". " + pursuit.remainingEffort.gap);
 		EffortEstimate estimate = pursuit.estimate;
-		if (estimate == null) { text(this, "Time not estimated. " + pursuit.reasons.get(1)); return; }
+		if (estimate == null) { text(this, "No acquisition hours. " + pursuit.remainingEffort.gap); return; }
 		text(this, estimate.remainingOutcome + " · next reward only");
 		if (pursuit.category == PursuitAssessment.Category.CHECK || pursuit.category == PursuitAssessment.Category.PLAN)
 		{ text(this, "Conditional planning: confirm the route/component checks above before pursuing a new shard."); }

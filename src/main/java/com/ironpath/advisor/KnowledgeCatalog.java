@@ -27,7 +27,7 @@ public final class KnowledgeCatalog
 		"beneath-cursed-sands", "perilous-moons", "deadeye", "mystic-vigour", "final-dawn", "frozen-door",
 		"smoke-task", "smoke-protection", "nex-entry", "nex-team", "zaryte-context", "zaryte-shards", "doom-preparation", "treads-tears", "desert-treasure-ii", "monkey-madness-ii", "duke-defeated", "peer-ring-icons", "cox-preparation", "toa-preparation", "monkey-form",
 		"multi-combat-method", "secrets-of-north", "muspah-preparation", "doom-delve-two", "doom-delve-three", "doom-delve-four",
-		"blood-moon-rises", "dragon-slayer-ii", "leviathan-defeated", "colosseum-preparation", "zilyana-entry", "knight-waves", "kraken-task", "fremennik-isles", "fremennik-exiles");
+		"blood-moon-rises", "dragon-slayer-ii", "leviathan-defeated", "colosseum-preparation", "zilyana-entry", "knight-waves", "kraken-task", "fremennik-isles", "fremennik-exiles", "while-guthix-sleeps", "duradel-notes");
 	public final Map<String, Goal> goals;
 	public final Map<String, String> activities;
 	private final Map<String, String> ownershipLabels;
@@ -41,13 +41,14 @@ public final class KnowledgeCatalog
 	public final Map<String, AcquisitionModel> acquisitionModels;
 	public final List<ActivityReward> activityRewards;
 	public final ProgressionKnowledge progression;
+	public final Map<String, ActivityEffortProfile> effortProfiles;
 	public final Map<String, Source> sources;
 	final Map<String, List<Gear>> gear;
 	final Map<String, List<Integer>> itemSets;
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 11 || document.decisions == null
+		if (document.schemaVersion != 12 || document.decisions == null
 			|| document.decisions.isEmpty())
 		{
 			throw new IllegalArgumentException("Unsupported or incomplete PvM catalogue");
@@ -108,7 +109,7 @@ public final class KnowledgeCatalog
 		}
 		for (Source source : sources.values())
 		{
-			if (source.decisions == null || source.decisions.isEmpty() && source.items.isEmpty() && source.models.isEmpty() && source.routes.isEmpty() && source.contexts.isEmpty() && source.activityContexts.isEmpty() && source.relations.isEmpty() || !ids.containsAll(source.decisions)
+			if (source.decisions == null || source.decisions.isEmpty() && source.items.isEmpty() && source.models.isEmpty() && source.routes.isEmpty() && source.contexts.isEmpty() && source.activityContexts.isEmpty() && source.relations.isEmpty() && source.profiles.isEmpty() || !ids.containsAll(source.decisions)
 				|| new HashSet<>(source.decisions).size() != source.decisions.size())
 			{
 				throw new IllegalArgumentException("Invalid affected decisions");
@@ -311,7 +312,7 @@ public final class KnowledgeCatalog
 		melee.unsupportedWeapons.forEach((id,label)->{ if (!itemIds.contains(id) || meleeIds.contains(id)) { throw new IllegalArgumentException("Invalid unsupported melee family"); } require(label); });
 		ranged = document.ranged;
 		if (ranged == null || !RangedModel.VERSION.equals(ranged.modelVersion) || ranged.items == null || ranged.items.isEmpty()
-			|| ranged.candidateAmmo == null) { throw new IllegalArgumentException("Missing ranged contract"); }
+			|| ranged.candidateAmmo == null || ranged.unsupportedWeapons==null) { throw new IllegalArgumentException("Missing ranged contract"); }
 		evidence(ranged.sources);
 		Set<Integer> rangedIds = new HashSet<>();
 		for (RangedItem item : ranged.items)
@@ -333,6 +334,12 @@ public final class KnowledgeCatalog
 			{ throw new IllegalArgumentException("Invalid ranged defence type"); }
 			item.requirements.forEach((skill,level) -> { if (!SKILLS.contains(skill) || level < 1 || level > 99) { throw new IllegalArgumentException("Invalid ranged equip requirement"); } });
 		}
+		ranged.unsupportedWeapons.forEach((id,label)->{if(!itemIds.contains(id)||rangedIds.contains(id)){throw new IllegalArgumentException("Invalid unsupported ranged family");}require(label);});
+		for (Upgrade upgrade : upgrades)
+		{ if ("reviewed".equals(upgrade.status) && "Ranged".equals(upgrade.browseStyle) && "weapon".equals(upgrade.browseSlot)
+			&& !rangedIds.contains(upgrade.itemId) && !ranged.unsupportedWeapons.containsKey(upgrade.itemId)
+			&& ownedVariants(upgrade.ownedWhen).stream().noneMatch(id->rangedIds.contains(id)||ranged.unsupportedWeapons.containsKey(id)))
+			{ throw new IllegalArgumentException("Ranged promotion lacks numeric support or an explicit owned-family gap: " + upgrade.id); } }
 		for (Map.Entry<String,Integer> entry : ranged.candidateAmmo.entrySet())
 		{
 			RangedItem.Weapon family = RangedItem.Weapon.valueOf(entry.getKey());
@@ -407,6 +414,46 @@ public final class KnowledgeCatalog
 			models.put(model.id, new AcquisitionModel(model));
 		}
 		acquisitionModels = Map.copyOf(models);
+		if (document.effortProfiles==null || document.effortProfiles.isEmpty()) { throw new IllegalArgumentException("Missing activity effort profiles"); }
+		Map<String,ActivityEffortProfile> profiles=new java.util.LinkedHashMap<>();
+		for (ActivityEffortProfile profile : document.effortProfiles)
+		{
+			stableId(profile.id); stableId(profile.version); stableId(profile.mode); require(profile.scope); require(profile.gap);
+			if (profiles.putIfAbsent(profile.id,profile)!=null || !activities.containsKey(profile.activity)
+				|| LocalDate.parse(require(profile.reviewed)).isAfter(reviewed) || profile.methods==null || profile.methods.isEmpty() || profile.detours==null)
+			{ throw new IllegalArgumentException("Invalid activity effort profile"); }
+			evidence(profile.sources); Decision contract=new Decision(); contract.sources=profile.sources;
+			Set<String> methodIds=new HashSet<>();
+			for (ActivityEffortProfile.Method method : profile.methods)
+			{
+				stableId(method.id); require(method.label); require(method.limitation);
+				if (!methodIds.add(method.id) || method.minimumBand==null || method.minimumBand==RemainingEffort.Band.UNKNOWN
+					|| method.suitability!=RemainingEffort.Suitability.SUITABLE && method.suitability!=RemainingEffort.Suitability.WORKABLE)
+				{ throw new IllegalArgumentException("Invalid effort method"); }
+				validate(method.when,contract,0);
+			}
+			for (ActivityEffortProfile.Detour detour : profile.detours)
+			{
+				require(detour.reason);
+				if (upgrades.stream().noneMatch(u->u.id.equals(detour.upgrade)&&u.status.equals("reviewed")))
+				{ throw new IllegalArgumentException("Unreviewed preparation detour"); }
+			}
+			for (String source : profile.sources) { if (!sources.get(source).profiles.contains(profile.id)) { throw new IllegalArgumentException("Missing profile source dependency"); } }
+			profile.methods=List.copyOf(profile.methods); profile.sources=List.copyOf(profile.sources); profile.detours=List.copyOf(profile.detours);
+		}
+		effortProfiles=Map.copyOf(profiles);
+		for (Decision decision : decisions)
+		{
+			if (!"reviewed".equals(decision.status)) { continue; }
+			EffortSpec effort=decision.pursuit;
+			ActivityEffortProfile profile=effort==null?null:profiles.get(effort.profile);
+			if (profile==null || effort.band==null || !profile.activity.equals(decision.activity) || !profile.mode.equals(effort.modeId))
+			{ throw new IllegalArgumentException("Active decision lacks reviewed value/effort contract: " + decision.id); }
+			validateEffort(effort.mode,effort.burden,effort.tail,effort.modeId,effort.reason,effort.missingMechanics,effort.allocations);
+			evidence(effort.sources);
+			if (effort.variants==null || !decision.sources.containsAll(effort.sources)) { throw new IllegalArgumentException("Incomplete decision effort contract"); }
+			for (String source : effort.sources) { if (!sources.get(source).efforts.contains(decision.id)) { throw new IllegalArgumentException("Missing decision effort dependency"); } }
+		}
 		for (Upgrade upgrade : upgrades)
 		{
 			stableId(upgrade.rewardFamily); stableId(upgrade.role);
@@ -420,6 +467,9 @@ public final class KnowledgeCatalog
 			{
 				EffortSpec effort=byId.get(route).pursuit;
 				if (effort == null) { throw new IllegalArgumentException("Missing remaining-effort metadata"); }
+				ActivityEffortProfile profile=profiles.get(effort.profile);
+				if (profile==null || effort.band==null || !profile.activity.equals(byId.get(route).activity) || !profile.mode.equals(effort.modeId))
+				{ throw new IllegalArgumentException("Route lacks reviewed effort profile"); }
 				validateEffort(effort.mode, effort.burden, effort.tail, effort.modeId, effort.reason, effort.missingMechanics, effort.allocations);
 				evidence(effort.sources);
 				if (!byId.get(route).sources.containsAll(effort.sources) || effort.variants == null) { throw new IllegalArgumentException("Missing effort evidence"); }
@@ -430,6 +480,7 @@ public final class KnowledgeCatalog
 					if (variant == null) { throw new IllegalArgumentException("Missing remaining-work variant"); }
 					validate(variant.when, contract, 0);
 					validateEffort(variant.mode, variant.burden, variant.tail, effort.modeId, variant.reason, effort.missingMechanics, variant.allocations);
+					if (variant.band==null) { throw new IllegalArgumentException("Variant lacks remaining effort band"); }
 				}
 			}
 		}
@@ -438,6 +489,9 @@ public final class KnowledgeCatalog
 		{
 			if (reward == null) { throw new IllegalArgumentException("Missing shared-activity reward"); }
 			stableId(reward.id); stableId(reward.family); stableId(reward.mode); require(reward.title);
+			ActivityEffortProfile rewardProfile=profiles.get(reward.profile);
+			if (rewardProfile==null || reward.band==null || !rewardProfile.activity.equals(reward.activity) || !rewardProfile.mode.equals(reward.mode))
+			{ throw new IllegalArgumentException("Shared reward lacks effort contract"); }
 			if (!rewardIds.add(reward.id) || !activities.containsKey(reward.activity) || reward.benefit == null || reward.tail == null || !itemIds.contains(reward.itemId))
 			{ throw new IllegalArgumentException("Invalid activity reward"); }
 			evidence(reward.sources); Decision contract=new Decision(); contract.sources=reward.sources;
@@ -504,7 +558,8 @@ public final class KnowledgeCatalog
 			for (String source : relation.sources) { if (!sources.get(source).relations.contains(relation.id)) { throw new IllegalArgumentException("Missing claim source dependency"); } }
 		}
 		for (Source source : sources.values())
-		{ if (!contextKeys.containsAll(source.activityContexts) || !relationIds.containsAll(source.relations)
+		{ if (!profiles.keySet().containsAll(source.profiles) || source.profiles.stream().anyMatch(id->!profiles.get(id).sources.contains(source.id))
+			|| !contextKeys.containsAll(source.activityContexts) || !relationIds.containsAll(source.relations)
 			|| source.relations.stream().anyMatch(id->document.roleSupport.stream().noneMatch(r->r.id.equals(id)&&r.sources.contains(source.id)))
 			|| source.activityContexts.stream().anyMatch(id->document.activityContexts.stream().noneMatch(c->c.id.equals(id)&&c.sources.contains(source.id)))) { throw new IllegalArgumentException("Unknown claim dependency"); } }
 		progression=new ProgressionKnowledge(document.activityContexts,document.roleSupport);
@@ -563,6 +618,8 @@ public final class KnowledgeCatalog
 		choices.put("fremennik-exiles", "The Fremennik Exiles completed (faceguard equip)");
 		choices.put("knight-waves", "King's Ransom and Knight Waves completed (Chivalry/Piety unlock)");
 		choices.put("kraken-task", "Current cave-kraken task checked");
+		choices.put("while-guthix-sleeps", "While Guthix Sleeps completed");
+		choices.put("duradel-notes", "Duradel's notes read (synapse assembly)");
 		choices.put("zilyana-entry", "Saradomin GWD 70 Agility, rope and visit entry checked");
 		choices.put("monkey-madness-ii", "Monkey Madness II completed");
 		choices.put("duke-defeated", "Duke Sucellus defeated at least once");
@@ -680,9 +737,14 @@ public final class KnowledgeCatalog
 		{ throw new IllegalArgumentException("Unsupported gear package predicate"); }
 	}
 
+	private Set<Integer> ownedVariants(Condition condition)
+	{
+		if (condition.test==Test.ALL || condition.test==Test.ANY) { return condition.conditions.stream().flatMap(c->ownedVariants(c).stream()).collect(Collectors.toSet()); }
+		return condition.test==Test.POSSESSION && Boolean.TRUE.equals(condition.value)?Set.copyOf(itemSets.get(condition.key)):Set.of();
+	}
 	private static void requireItemEvidence(Gear item, Decision decision)
 	{
-		if (!decision.sources.containsAll(item.sources)) { throw new IllegalArgumentException("Decision lacks item evidence"); }
+		if (!decision.sources.containsAll(item.sources)) { throw new IllegalArgumentException("Decision lacks item evidence: " + decision.id + " / " + item.label); }
 	}
 
 	private static String require(String text)
@@ -730,6 +792,7 @@ public final class KnowledgeCatalog
 		List<ActivityReward> activityRewards;
 		List<ProgressionKnowledge.Context> activityContexts;
 		List<ProgressionKnowledge.Relation> roleSupport;
+		List<ActivityEffortProfile> effortProfiles;
 	}
 
 	public static final class Upgrade
@@ -791,6 +854,7 @@ public final class KnowledgeCatalog
 		public List<String> sources;
 		public List<RangedItem> items;
 		public Map<String,Integer> candidateAmmo;
+		public Map<Integer,String> unsupportedWeapons;
 	}
 	public static final class CombatItem
 	{
@@ -824,7 +888,8 @@ public final class KnowledgeCatalog
 		public PursuitAssessment.Mode mode;
 		public PursuitAssessment.Burden burden;
 		public PursuitAssessment.Tail tail;
-		public String modeId, reason, missingMechanics;
+		public String modeId, reason, missingMechanics, profile;
+		public RemainingEffort.Band band;
 		public List<String> sources, allocations;
 		public List<EffortVariant> variants;
 	}
@@ -837,6 +902,7 @@ public final class KnowledgeCatalog
 		public String reason;
 		public List<String> allocations;
 		public boolean bypassesAcquisition;
+		public RemainingEffort.Band band;
 	}
 	public static final class AcquisitionSpec
 	{
@@ -849,6 +915,8 @@ public final class KnowledgeCatalog
 	public static final class ActivityReward
 	{
 		public String id, activity, mode, family, title;
+		public String profile;
+		public RemainingEffort.Band band;
 		public int itemId;
 		public Benefit benefit;
 		public PursuitAssessment.Tail tail;
@@ -888,7 +956,7 @@ public final class KnowledgeCatalog
 		public List<String> decisions;
 		public List<Integer> items = List.of();
 		public List<String> models = List.of(), routes = List.of(), contexts = List.of();
-		public List<String> acquisitions = List.of(), efforts = List.of(), rewards = List.of(), relations = List.of(), activityContexts = List.of();
+		public List<String> acquisitions = List.of(), efforts = List.of(), rewards = List.of(), relations = List.of(), activityContexts = List.of(), profiles = List.of();
 	}
 
 	static final class Gear

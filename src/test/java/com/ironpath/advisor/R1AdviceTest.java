@@ -25,7 +25,7 @@ public class R1AdviceTest
 	// Preserve the originally selected high-defence context for these R1/R1.5 regressions.
 	private List<Advisor.UpgradeView> reviewedUpgrades(Advisor evaluator, AccountSnapshot a, Preferences p)
 	{ return evaluator.upgrades(a, p, new PoweredMagic(catalog).propose(a, "graardor")).stream()
-		.filter(v -> !v.upgrade.comparison.equals("RANGED") && !v.upgrade.comparison.equals("MELEE") && !v.upgrade.id.equals("venator-bow")).collect(java.util.stream.Collectors.toList()); }
+		.filter(v -> !v.upgrade.comparison.equals("RANGED") && !v.upgrade.comparison.equals("MELEE") && !v.upgrade.id.equals("venator-bow") && !v.upgrade.id.equals("scorching-bow")).collect(java.util.stream.Collectors.toList()); }
 	@Before public void setup() throws Exception { catalog=KnowledgeCatalog.load(new Gson());advisor=new Advisor(catalog); }
 	public static AccountSnapshot postBowfa(boolean shadow)
 	{
@@ -91,7 +91,7 @@ public class R1AdviceTest
 	@Test public void expandedCataloguesHaveNoContentQuotaAndPathCyclesAndBadSourceLinksFailClosed() throws Exception
 	{
 		JsonObject document=new JsonParser().parse(new InputStreamReader(getClass().getResourceAsStream("/com/ironpath/catalog.json"))).getAsJsonObject();
-		for(int i=0;i<80;i++){JsonObject route=document.getAsJsonArray("decisions").get(0).getAsJsonObject().deepCopy();route.addProperty("id","expanded-route-"+i);document.getAsJsonArray("decisions").add(route);for(var source:document.getAsJsonArray("sources"))if(java.util.stream.StreamSupport.stream(route.getAsJsonArray("sources").spliterator(),false).anyMatch(x->x.equals(source.getAsJsonObject().get("id"))))source.getAsJsonObject().getAsJsonArray("decisions").add(route.get("id"));}
+		for(int i=0;i<80;i++){JsonObject route=document.getAsJsonArray("decisions").get(0).getAsJsonObject().deepCopy();route.addProperty("id","expanded-route-"+i);document.getAsJsonArray("decisions").add(route);for(var source:document.getAsJsonArray("sources"))if(java.util.stream.StreamSupport.stream(route.getAsJsonArray("sources").spliterator(),false).anyMatch(x->x.equals(source.getAsJsonObject().get("id")))){source.getAsJsonObject().getAsJsonArray("decisions").add(route.get("id"));source.getAsJsonObject().getAsJsonArray("efforts").add(route.get("id"));}}
 		assertTrue(KnowledgeCatalog.read(new Gson(),new StringReader(document.toString())).decisions.size()>64);
 		JsonObject path=document.getAsJsonArray("upgrades").get(4).getAsJsonObject().getAsJsonArray("path").get(0).getAsJsonObject();JsonObject self=new JsonObject();self.addProperty("mode","NODE");self.addProperty("node",path.get("id").getAsString());path.add("dependencies",self);
 		assertThrows(IllegalArgumentException.class,()->KnowledgeCatalog.read(new Gson(),new StringReader(document.toString())));
