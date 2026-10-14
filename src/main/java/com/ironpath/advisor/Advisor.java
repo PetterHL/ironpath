@@ -89,8 +89,13 @@ public final class Advisor
 	{ return upgrades(account, preferences, reference, null); }
 
 	public List<UpgradeView> upgrades(AccountSnapshot account, Preferences preferences, CombatSetup reference, PaceScenario pace)
+	{ return upgrades(account, preferences, reference, new RangedComparisonService(catalog).propose(account), pace); }
+
+	public List<UpgradeView> upgrades(AccountSnapshot account, Preferences preferences, CombatSetup reference, CombatSetup rangedReference, PaceScenario pace)
 	{
 		CombatComparisonService comparisonService = new CombatComparisonService(catalog);
+		RangedComparisonService rangedService = new RangedComparisonService(catalog);
+		Map<String,CombatSetup> rangedContexts = new LinkedHashMap<>();
 		Map<String, Map<String, String>> referenceChoices = new LinkedHashMap<>();
 		PoweredMagic.SLOTS.forEach(slot -> referenceChoices.put(slot, comparisonService.choices(slot, account)));
 		referenceChoices.put("target", comparisonService.targetChoices());
@@ -168,16 +173,34 @@ public final class Advisor
 			if (routes.stream().noneMatch(r -> r.available)) { label += " · Plan ahead"; }
 			if (equip.stream().anyMatch(r -> r.truth != Truth.TRUE)) { label += " · Needs equip levels"; }
 			if (band == KnowledgeCatalog.Benefit.MINOR) { label += " · Contextual / consider deferring"; }
-			ComparisonResult comparison = comparisonService.compare(account, preferences, reference, upgrade);
+			boolean ranged = upgrade.comparison.equals("RANGED");
+			ComparisonResult comparison = ranged ? rangedService.compare(account, preferences, rangedReference, upgrade)
+				: comparisonService.compare(account, preferences, reference, upgrade);
+			List<ComparisonResult> contexts = new ArrayList<>();
+			if (ranged)
+			{
+				for (String targetId : upgrade.contexts)
+				{
+					if (targetId.equals(rangedReference.target)) { continue; }
+					CombatSetup contextual = rangedContexts.computeIfAbsent(targetId,id -> rangedService.propose(account,id));
+					ComparisonResult resultForTarget = rangedService.compare(account,preferences,contextual,upgrade);
+					contexts.add(resultForTarget);
+				}
+			}
+			boolean contextualGain = contexts.stream().anyMatch(c -> c.available(ComparisonResult.Metric.THEORETICAL_DPS) && c.dpsGain() > 1e-10);
 			String ranking = "Reviewed contextual " + band + " value; combat metric gap: " + comparison.reason;
 			if (comparison.available(ComparisonResult.Metric.THEORETICAL_DPS))
 			{
 				double change = comparison.dpsGain(), relative = comparison.before.dps > 0 ? change / comparison.before.dps : 0;
-				if (change <= 1e-10) { band = KnowledgeCatalog.Benefit.MINOR; label += " · No demonstrated sustained gain; defer"; }
+				if (change <= 1e-10 && !contextualGain) { band = KnowledgeCatalog.Benefit.MINOR; label += " · No demonstrated sustained gain; defer"; }
+				else if (change <= 1e-10) { label += " · Specialist gain in a reviewed encounter; neutral result is separate"; }
 				else if (!upgrade.id.equals("tumekens-shadow")) { band = relative >= 0.05 ? KnowledgeCatalog.Benefit.MODERATE : KnowledgeCatalog.Benefit.MINOR; }
 				ranking = String.format(java.util.Locale.ROOT, "Supported marginal DPS %+.3f on %s; %s value. %s", change, comparison.target.name, band,
 					comparison.before.maxHit == comparison.after.maxHit ? "No max-hit breakpoint; accuracy is separate." : "Whole-loadout max-hit breakpoint.");
 			}
+			if (contextualGain)
+			{ evidence.add("Supported specialist value in " + contexts.stream().filter(c -> c.available(ComparisonResult.Metric.THEORETICAL_DPS) && c.dpsGain() > 1e-10)
+				.map(c -> c.target.name).collect(Collectors.joining(", ")) + ". Inspect the separate encounter results and complete inputs; gains are not added or compared as a universal score."); }
 			evidence.add("Ranking: " + ranking + " Value evidence only. Pursuit category and remaining burden determine priority before strength; encounter text count does not.");
 			List<Requirement> path = new ArrayList<>();
 			for (KnowledgeCatalog.PathNode node : upgrade.path)
@@ -207,7 +230,8 @@ public final class Advisor
 				}
 			}
 			result.add(new UpgradeView(upgrade, label, context == null ? upgrade.valueReason : context.reason,
-				band, evidence, applications, questions.stream().distinct().collect(Collectors.toList()), routes, equip, parts, shared, comparison, path, referenceChoices));
+				band, evidence, applications, questions.stream().distinct().collect(Collectors.toList()), routes, equip, parts, shared, comparison, path,
+				ranged ? rangedService.referenceChoices(account) : referenceChoices, contexts));
 		}
 		List<RecommendationRanker.Candidate> candidates = new ArrayList<>();
 		for (UpgradeView view : result)
@@ -228,6 +252,11 @@ public final class Advisor
 		PursuitAssessment.Burden burden = variant == null ? spec.burden : variant.burden;
 		PursuitAssessment.Tail tail = variant == null ? spec.tail : variant.tail;
 		String rationale = (variant == null ? spec.reason : variant.reason) + " " + spec.missingMechanics;
+		if (acquisitionStagesOwned(view.upgrade,account,preferences))
+		{
+			mode = PursuitAssessment.Mode.BOUNDED; burden = PursuitAssessment.Burden.LOW; tail = PursuitAssessment.Tail.ORDINARY;
+			rationale = "Confirmed owned acquisition stages bypass the repeat grind; only remaining resources, skills and assembly are assessed. " + spec.missingMechanics;
+		}
 		List<Requirement> remaining = new ArrayList<>(); Set<String> steps = new HashSet<>();
 		if (!view.upgrade.path.isEmpty())
 		{
@@ -279,7 +308,8 @@ public final class Advisor
 		ComparisonResult comparison = view.comparison;
 		boolean numeric = comparison.available(ComparisonResult.Metric.THEORETICAL_DPS);
 		Double gain = numeric ? comparison.dpsGain() : null;
-		boolean positive = !numeric || gain > 1e-10;
+		boolean contextualGain = view.contextComparisons.stream().anyMatch(c -> c.available(ComparisonResult.Metric.THEORETICAL_DPS) && c.dpsGain() > 1e-10);
+		boolean positive = !numeric || gain > 1e-10 || contextualGain;
 		if (!numeric && !view.upgrade.comparison.equals("NONE"))
 		{ unknown = true; blockers.add("Comparison input/model gap: " + comparison.gaps.getOrDefault(ComparisonResult.Metric.THEORETICAL_DPS, comparison.reason)); }
 		String bucket = view.upgrade.role + "/" + String.join(",", view.upgrade.contexts);
@@ -287,9 +317,10 @@ public final class Advisor
 		{
 			CombatSetup setup = comparison.beforeSetup;
 			bucket += "/" + comparison.target.id + "/" + new java.util.TreeMap<>(setup.slots)
-				+ "/" + new java.util.TreeMap<>(account.levels.value()) + "/" + setup.prayer + "/" + setup.boost + "/" + setup.style + "/" + catalog.comparison.modelVersion;
+				+ "/" + new java.util.TreeMap<>(account.levels.value()) + "/" + setup.assumptionLabel() + "/" + setup.loadedAmmo + "/" + setup.onTask + "/" + comparison.modelVersion;
 		}
 		else { bucket += "/qualitative/" + view.upgrade.id; }
+		if (contextualGain && numeric && gain <= 1e-10) { bucket += "/specialist/" + view.upgrade.id; gain = null; }
 		EffortEstimate estimate = null;
 		for (AcquisitionModel model : catalog.acquisitionModels.values().stream().sorted(Comparator.comparing(m -> m.id)).collect(Collectors.toList()))
 		{
@@ -316,6 +347,11 @@ public final class Advisor
 		if (condition.test == KnowledgeCatalog.Test.ALL || condition.test == KnowledgeCatalog.Test.ANY)
 		{ return condition.conditions.stream().flatMap(c -> ownershipKeys(c).stream()).collect(Collectors.toSet()); }
 		return condition.test == KnowledgeCatalog.Test.POSSESSION ? Set.of(condition.key) : Set.of();
+	}
+	private boolean acquisitionStagesOwned(KnowledgeCatalog.Upgrade upgrade, AccountSnapshot a, Preferences p)
+	{
+		List<KnowledgeCatalog.PathNode> acquisition = upgrade.path.stream().filter(n -> n.acquisition).collect(Collectors.toList());
+		return !acquisition.isEmpty() && acquisition.stream().allMatch(n -> pathTruth(n,a,p) == Truth.TRUE);
 	}
 
 	private void addPathRequirement(KnowledgeCatalog.PathNode node, AccountSnapshot account, Preferences preferences, List<Requirement> remaining)
@@ -374,7 +410,8 @@ public final class Advisor
 				RouteView route = view.routes.stream().filter(r -> r.decision.activity.equals(activity) && r.decision.pursuit.modeId.equals(mode)).findFirst().orElse(null);
 				if (route == null) { continue; }
 				KnowledgeCatalog.EffortVariant variant=route.decision.pursuit.variants.stream().filter(v -> truth(v.when, account, preferences) == Truth.TRUE).findFirst().orElse(null);
-				if (route.decision.kind == KnowledgeCatalog.Kind.ASSEMBLE || variant != null && variant.bypassesAcquisition)
+				if (route.decision.kind == KnowledgeCatalog.Kind.ASSEMBLE || variant != null && variant.bypassesAcquisition
+					|| acquisitionStagesOwned(view.upgrade,account,preferences))
 				{ exclusions.add(view.upgrade.title + ": owned components removed this acquisition stage; not counted as a missing activity reward."); continue; }
 				if (view.band == KnowledgeCatalog.Benefit.MINOR || view.pursuit.category == PursuitAssessment.Category.DEFER)
 				{ exclusions.add(view.upgrade.title + ": small/no demonstrated gain or dominated."); continue; }
@@ -477,16 +514,18 @@ public final class Advisor
 		public final List<Requirement> equip, parts;
 		public final List<Requirement> path;
 		public final ComparisonResult comparison;
+		public final List<ComparisonResult> contextComparisons;
 		public final Map<String, Map<String, String>> referenceChoices;
 		public final PursuitAssessment pursuit;
 		UpgradeView(KnowledgeCatalog.Upgrade upgrade, String label, String value, KnowledgeCatalog.Benefit band,
 			List<String> evidence, List<String> applications, List<String> questions, List<RouteView> routes,
-			List<Requirement> equip, List<Requirement> parts, List<String> shared, ComparisonResult comparison, List<Requirement> path, Map<String, Map<String, String>> referenceChoices)
+			List<Requirement> equip, List<Requirement> parts, List<String> shared, ComparisonResult comparison, List<Requirement> path, Map<String, Map<String, String>> referenceChoices, List<ComparisonResult> contexts)
 		{
 			this.upgrade = upgrade; this.label = label; this.value = value; this.band = band;
 			this.evidence = List.copyOf(evidence); this.applications = List.copyOf(applications); this.questions = List.copyOf(questions);
 			this.routes = List.copyOf(routes); this.equip = List.copyOf(equip); this.parts = List.copyOf(parts); this.shared = List.copyOf(shared);
 			this.comparison = comparison; this.path = List.copyOf(path); this.referenceChoices = Map.copyOf(referenceChoices); this.pursuit = null;
+			contextComparisons = List.copyOf(contexts);
 		}
 		private UpgradeView(UpgradeView value, PursuitAssessment assessment)
 		{
@@ -494,6 +533,7 @@ public final class Advisor
 			evidence=value.evidence; applications=value.applications; questions=value.questions;
 			routes=value.routes; equip=value.equip; parts=value.parts; shared=value.shared; comparison=value.comparison;
 			path=value.path; referenceChoices=value.referenceChoices; pursuit=assessment;
+			contextComparisons=value.contextComparisons;
 		}
 
 	}

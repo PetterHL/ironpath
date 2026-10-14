@@ -10,18 +10,18 @@ An established Ironman opens IronPath without selecting a goal and discovers wor
 
 Required: partial account observation; strong-alternative recognition; contextual ranking; full reference loadouts and local combat families; multi-step acquisition; native value-first UI; maintained sources and model coverage. [CATALOGUE](docs/CATALOGUE.md) inventories all relevant families, including current release candidates and future watchlist entries. D/R/V/Q are evidence/support states, not competing backlogs. [UX](docs/UX.md) gives concrete screens.
 
-**Current implemented baseline:** `main`, following the authorised integration of PRs #5–#10 on 13 October 2026. R1 remains plugin 0.5.0 / knowledge r1-1 / schema 6; R1.5a ranking, effort estimates and UI are implemented on this review branch; integration and actual-client acceptance remain pending. A fresh local `test build --no-daemon` passed all 124 tests with zero failures/errors/skips before merge; the integrated tree matched the tested head exactly. All #1–#4 commits are ancestors of main. See [integration validation](docs/validation/main-integration-20261013.md). Actual-client checks remain pending; historical reports below retain their original context.
+**Current implemented baseline:** `main`, following the authorised integration of PRs #5–#10 on 13 October 2026. R1 remains plugin 0.5.0 / knowledge r1-1 / schema 6; R1.5a, the neutral/DPS follow-up and exact magic-gap labels are integrated through main `cb7c2cd`. R2 is implemented on `r2-ranged-packages` for review; its integration and actual-client acceptance remain pending. A fresh local `test build --no-daemon` passed all 124 tests with zero failures/errors/skips before merge; the integrated tree matched the tested head exactly. All #1–#4 commits are ancestors of main. See [integration validation](docs/validation/main-integration-20261013.md). Actual-client checks remain pending; historical reports below retain their original context.
 
 ## C. Incremental implementation
 
-Each assignment produces useful advice, reviewed knowledge, UI evidence and meaningful validation in the same PR. R1.5a implementation is delivered for review below, with actual-client checks pending. Source review and ordinary PR review are part of implementation, not serial approval gates between every small slice. A contributor may split an assignment into reviewable PRs without reducing its acceptance criteria or redefining the destination.
+Each assignment produces useful advice, reviewed knowledge, UI evidence and meaningful validation in the same PR. R1.5a is integrated and R2 implementation is delivered for review below, with actual-client checks pending. Source review and ordinary PR review are part of implementation, not serial approval gates between every small slice. A contributor may split an assignment into reviewable PRs without reducing its acceptance criteria or redefining the destination.
 
 | Milestone | Dependencies | Demonstrable result |
 |---|---|---|
 | R1 — Realistic magic and first endgame value | P4a + this reset | Full-loadout magic; Shadow/Ancestral early; numerical value influences advice; functional value/path views |
-| R1.5a — Pursuit priority and visual foundation | R1; implemented for review | Explainable categories, shared activities, native compact cards and first conditional next-shard estimate |
+| R1.5a — Pursuit priority and visual foundation | R1; integrated, live checks pending | Explainable categories, shared activities, native compact cards and first conditional next-shard estimate |
 | R1.5b — Effort expansion and first observation adapter | R1.5a; alongside R2, not its release gate | Multiple-roll estimates and one validated session-pace adapter |
-| R2 — Ranged systems and major alternatives | R1 shared contracts + R1.5a presentation/ranking + reference/metric follow-up | Bowfa, tbow and other ranged packages compared correctly; meaningful post-Bowfa advice |
+| R2 — Ranged systems and major alternatives (implemented increment; review/live checks pending) | R1 shared contracts + R1.5a presentation/ranking + reference/metric follow-up | Bowfa, tbow and other ranged packages compared correctly; meaningful post-Bowfa advice |
 | R3 — Melee systems and major alternatives | R1 shared contracts; can overlap R2 | Fang, Scythe, Soulreaper and armour/specialist trade-offs with checked family models |
 | R4 — Specials and encounter specialists | Relevant R2/R3 models | Contextual specs/bolts/debuffs and specialist choices without fictitious sustained gains |
 | R5 — Acquisition and permanent-reward completeness | Route/quantity work starts in R1; extend alongside R2–R4 | Every active outcome has truthful remaining work; prayers/permanent rewards are first-class |
@@ -59,7 +59,7 @@ Slot and container-count observations retain scope/time, stay in memory and clea
 
 **Open boundaries:** no ToA phase/raid/path/party scaling, one-handed Confliction history, Brimstone accuracy proc, elemental/ancient spells, encounter times or trip model. ToA refuses numbers rather than supplying a default raid level; Confliction/Brimstone preserve supported max hit with accuracy/DPS gaps. Sang healing and Lightbearer utility remain qualitative. Native item sprites, actual client 100–200% scaling, bank refresh, player usefulness and all historical live checks remain **pending**. Screenshots use synthetic inputs and headless Swing; they do not establish game-client correctness or usefulness. R1.5 and R2–R8 remain open; no comprehensive product or Hub release is claimed.
 
-### R1.5a — Pursuit priority and visual foundation (implemented for review; actual-client checks pending)
+### R1.5a — Pursuit priority and visual foundation (integrated; actual-client checks pending)
 
 **Smallest useful increment:** reclassify R1's existing supported outcomes into defensible pursuits/activities/long-term/conditional choices and present them compactly, with an A1/A2 estimate for the next zenyte shard on the tormented route. Retain full-loadout comparisons and all existing routes. No new combat family, universal time simulator, mandatory goal, telemetry or account history store. This is one useful implementation milestone; internal commits may separate pure assessment and UI without creating another planning phase.
 
@@ -126,7 +126,7 @@ suite passes 155 tests; exact-item evidence and regression details are in the
 validation report. Corrected detail/comparison client retest and the broader
 scaling/usefulness acceptance checks remain pending.
 
-### Reference baseline and metric presentation — implemented for review; client checks pending
+### Reference baseline and metric presentation — integrated; client checks pending
 
 **User direction, 13 October 2026:** replace the automatically selected Graardor/Dharok reference with a neutral enemy with 0 Defence, based on the POH combat-dummy comparison idea. The product label is **Enemy with 0 Defence**; do not require or advertise a POH/dummy location. This is an analytical reference, not a measurement of player performance. Deliver this focused follow-up after R1.5a, alongside R1.5b if useful, and before R2's user-facing release. R2 research/models and the optional observation adapter do not depend on it.
 
@@ -144,11 +144,25 @@ Extend the same estimator to reviewed multiple independent rolls using Zulrah/ma
 
 **Acceptance:** event replay covers start/finish, duplicate messages/chest events, mid-run enable, missing events, failure/abandonment, disconnect, hop and character/profile changes. Confirm client-version compatibility. Keep completed, failed and censored counts separate; no PB-to-average substitution. Apply the proposed minimum sample/scope rules in RESEARCH, label them as calibration, and compare against a manually timed client session before automatically selecting observed pace. No persisted raw events, telemetry, other-plugin private storage or gameplay guidance. Record policy assessment for the exact adapter; do not claim approval from the existence of a core plugin. Source failures withhold the affected estimate, not R2 delivery.
 
-### R2 — Ranged packages and post-Bowfa choices
+### R2 — Ranged packages and post-Bowfa choices (implemented increment; review/live checks pending)
 
 Use R1.5a categories and card/detail contracts, plus the neutral-reference and metric presentation follow-up above; R2 mechanic research and pure models may start alongside R1.5a, but its user-facing release must use the revised priority model. R1.5b observation is optional. Implement shared ranged rolls, ammo/defence-type rules and reusable crystal/void/slayer/target effects, then Bowfa/crystal, twisted bow, blowpipe/rosewood alternatives, conventional crossbows and relevant ranged armour/jewellery. Include current Masori, quiver, anguish/rupture and ammunition candidates; verify Seeker restrictions/floor effects and revised gear rules. Promote supported bridging items from existing activity-only advice into outcomes when useful. Recognise two-handed/ammo/slot compatibility and upkeep. Review high-HP versus low-magic/low-defence contexts rather than treating tbow as universal.
 
 **Acceptance:** Bowfa+crystal does not receive Masori as a Bowfa damage upgrade; owned tbow does not erase useful Bowfa/blowpipe/spec niches; current superior jewellery/bolts/arrows affect baselines correctly; set replacement and ammunition assumptions are visible. Differential and hand tests cover scaling caps, breakpoints and invalid ammo. At least post-Bowfa and tbow-owned fixtures show changed priorities for documented reasons. Ship complete paths and native details for every new outcome. Twisted bow remains discoverable without automatically outranking supported nearer improvements; Bowfa seed/shard and shared CoX effort use reviewed qualitative fallbacks until acquisition models are validated.
+
+### R2 implementation evidence — 13 October 2026
+
+Focused branch `r2-ranged-packages` starts at updated main `cb7c2cd`, preserving R1.5a/reference/gap fixes. Plugin **0.7.0**, knowledge **r2-1**, schema **9**, ranged **ranged-1**. Seventeen additional outcomes, 69 independently reviewed ranged stat records and complete compatible proposals extend the retained magic/priority/route foundation; these are delivery counts, never coverage ceilings. Bowfa/crystal, tbow, toxic/rosewood, ordinary crossbow/MSB(i) baselines, Masori, Void/task, quiver, anguish/rupture, Venator and ranged accessories/ammo have explicit support and gaps.
+
+Neutral ranged inputs are authored separately; ordinary Graardor and Zilyana exercise defence type and high-Magic trade-offs. Tbow can remain Long-term on positive specialist evidence while losing neutral DPS; different contexts cannot form a universal numeric tie. Masori loses crystal synergy for Bowfa and is deferred when that substitution loses value. Strong owned armour/jewellery/ammo, two-handed removal, internal darts, rune-only Rosewood and bow-only seeking floor/accuracy all affect comparisons. Magic/ranged corrections are independent, session-only, invalidated by consequential observations and cleared with existing identity guards.
+
+Remaining paths have self/NPC singing alternatives, true component quantities and owned-stage bypasses. Inactive outcomes suppress duplicate acquisition without establishing usability. Toxic's current 78-Fletching/chisel recipe, necklace mould/92 Crafting, rupture etching/access, Venator icons/resources and assembler head/guarantee scope were checked. No new raid/challenge probability, hours, kill-time or trip estimate is invented. Source dependencies and schema validation cover the new contracts; preference schema/IDs and privacy remain.
+
+**Verification:** the normal Temurin 11.0.32.1 / RuneLite 1.13.1 `test build --no-daemon` passes. The final run contains **186 tests, zero failures/errors/skips**, with **1,944 original complete ranged cases** checked against pinned development-only reference `89c3e25…` plus independent caps/rounding/set/ammo/distribution hand cases. Earlier magic/ownership/lifecycle regressions remain. Combined no-goal profiles and six fresh 225-pixel Swing captures, including an unknown-ammo gap, are recorded in [R2 validation](docs/validation/R2.md) and [synthetic profiles](docs/validation/r2-scenarios.md). Source/code/data rights remain separate; no GPL code/dataset was imported. `git diff --check` passes.
+
+**Review corrections, 13 October 2026:** plugin **0.7.1** / knowledge **r2-2** in the same R2 PR. Armour/accessory comparison reconsiders supported observed owned weapon packages, retains the candidate and combat assumptions, and validates alternative ammo/off-hands. Charged/blessed quiver selection includes projectile-specific bonuses. Owned uncut/cut zenyte removes fresh gorilla work and votes for anguish while retaining downstream skill/resource checks. Rupture explicitly requires 84 Crafting for etching and final combination, including owned etched fangs. Nine new regressions plus the retained suite pass: **195 tests, zero failures/errors/skips**, including all **1,944** ranged oracle cases. See [review evidence](docs/validation/R2.md#review-corrections--13-october-2026); original delivery evidence above is preserved.
+
+**Open boundaries:** real sprites/async loading, client/OS scaling, in-game quest/bank/profile checks and player usefulness remain **pending**. Raids/scaling, enchanted bolts/specials, bounce and additional variants/armour/off-hands remain visible in CATALOGUE and R3–R8. No comprehensive coverage, real-client pass, publication or Hub approval is claimed.
 
 ### R3 — Melee packages and endgame trade-offs
 
@@ -232,7 +246,7 @@ Branch `client-model-gap-labels` clarifies the existing per-metric gap: name onl
 
 ## Next implementation
 
-**Review/integrate R1.5a and the delivered neutral-reference/DPS-first follow-up, then continue R2's ranged packages and major alternatives.** Actual-client retests remain pending in their validation reports and run alongside implementation. Read DESIGN's quantitative contract and UX's metric rules; R2's visible delivery must use these contracts. R1.5b local pacing, complex R5 distributions, full R6 filters and R8 broad usability evidence remain deferred. No new planning reset, catalogue ceiling or required-goal workflow.
+**Review/integrate the delivered R2 ranged package increment, then continue R3 melee families and relevant R4 specialists.** R1.5a/reference/gap fixes are already integrated on main. Remaining ranged coverage stays visible in CATALOGUE and R4/R6; the comprehensive product is not closed by this increment. The Brimstone magic-proc follow-up remains active alongside family work. Actual-client retests remain pending in their validation reports and run alongside implementation. Read DESIGN's quantitative contract and UX's metric rules; R2's visible delivery must use these contracts. R1.5b local pacing, complex R5 distributions, full R6 filters and R8 broad usability evidence remain deferred. No new planning reset, catalogue ceiling or required-goal workflow.
 
 The original documentation refinement had no new application-test or actual-client result. R1.5a implementation/build/component evidence is recorded above; actual-client validation remains pending.
 

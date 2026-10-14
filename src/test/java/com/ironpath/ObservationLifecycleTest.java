@@ -242,6 +242,8 @@ public class ObservationLifecycleTest
 		assertTrue(plugin.session.snapshot().fact("song-of-elves").value());
 		assertTrue(plugin.session.snapshot().fact("frozen-door").value());
 		assertTrue(plugin.session.snapshot().fact("final-dawn").value());
+		assertTrue(plugin.session.snapshot().fact("blood-moon-rises").value());
+		assertTrue(plugin.session.snapshot().fact("dragon-slayer-ii").value());
 		assertTrue(plugin.session.snapshot().fact("beneath-cursed-sands").source().contains("Quest.getState"));
 		when(client.getIntStack()).thenReturn(new int[]{1});
 		VarbitChanged changed = new VarbitChanged(); changed.setVarbitId(VarbitID.BCS);
@@ -250,6 +252,12 @@ public class ObservationLifecycleTest
 		when(client.getIntStack()).thenReturn(new int[]{2});
 		VarbitChanged dawn = new VarbitChanged(); dawn.setVarpId(VarPlayerID.VMQ4_PRIMARY);
 		plugin.onVarbitChanged(dawn); tick(); assertTrue(plugin.session.snapshot().fact("final-dawn").value());
+		when(client.getIntStack()).thenReturn(new int[]{1});
+		VarbitChanged blood = new VarbitChanged(); blood.setVarpId(VarPlayerID.MYQ6_PRIMARY);
+		plugin.onVarbitChanged(blood); tick(); assertFalse(plugin.session.snapshot().fact("blood-moon-rises").value());
+		when(client.getIntStack()).thenReturn(new int[]{2});
+		VarbitChanged dragon = new VarbitChanged(); dragon.setVarpId(VarPlayerID.DRAGONSLAYER2_MAIN);
+		plugin.onVarbitChanged(dragon); tick(); assertTrue(plugin.session.snapshot().fact("dragon-slayer-ii").value());
 		when(client.getIntStack()).thenReturn(new int[]{1});
 		VarbitChanged frozen = new VarbitChanged(); frozen.setVarpId(VarPlayerID.NEX_PERM);
 		plugin.onVarbitChanged(frozen); tick(); assertFalse(plugin.session.snapshot().fact("frozen-door").value());
@@ -266,6 +274,8 @@ public class ObservationLifecycleTest
 		assertFalse(plugin.session.snapshot().fact("song-of-elves").known());
 		assertFalse(plugin.session.snapshot().fact("frozen-door").known());
 		assertFalse(plugin.session.snapshot().fact("final-dawn").known());
+		assertFalse(plugin.session.snapshot().fact("blood-moon-rises").known());
+		assertFalse(plugin.session.snapshot().fact("dragon-slayer-ii").known());
 		assertFalse(plugin.session.snapshot().fact("deadeye").value());
 	}
 

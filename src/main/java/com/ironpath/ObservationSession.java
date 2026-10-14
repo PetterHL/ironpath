@@ -15,6 +15,7 @@ final class ObservationSession
 	private String identity;
 	private AccountSnapshot snapshot;
 	private final MagicReference reference = new MagicReference();
+	private final com.ironpath.advisor.RangedReference rangedReference = new com.ironpath.advisor.RangedReference();
 	private com.ironpath.advisor.PaceScenario pace;
 	private Preferences preferences = Preferences.EMPTY;
 	private boolean loaded, writable;
@@ -55,11 +56,14 @@ final class ObservationSession
 	}
 	synchronized PoweredMagic.Setup reference(KnowledgeCatalog catalog)
 	{ return snapshot == null || !loaded ? null : reference.update(snapshot, preferences, catalog); }
+	synchronized com.ironpath.advisor.CombatSetup rangedReference(KnowledgeCatalog catalog)
+	{ return snapshot == null || !loaded ? null : rangedReference.update(snapshot, preferences, catalog); }
 	synchronized boolean editReference(long token, long viewRevision, String currentIdentity, AccountSnapshot expected,
 		String key, String value, KnowledgeCatalog catalog)
 	{
 		if (!accepts(token, currentIdentity) || revision != viewRevision || snapshot != expected || snapshot == null || !loaded
-			|| !reference.edit(key, value, snapshot, preferences, catalog)) { return false; }
+			|| !(key.startsWith("ranged/") ? rangedReference.edit(key.substring(7), value, snapshot, preferences, catalog)
+				: reference.edit(key, value, snapshot, preferences, catalog))) { return false; }
 		revision++; return true;
 	}
 
@@ -70,6 +74,7 @@ final class ObservationSession
 		identity = null;
 		snapshot = null;
 		reference.clear();
+		rangedReference.clear();
 		pace = null;
 		preferences = Preferences.EMPTY; loaded = false; writable = false;
 		storageStatus = "Loading local character preferences…";

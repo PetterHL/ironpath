@@ -153,6 +153,12 @@ Data path: client snapshot + preferences + bundled facts → existing comparison
 
 Raw observations and inferred pace stay memory-only. R1.5 permits optional manually entered pacing as a labelled scenario, never measured performance. Session observation later improves that scenario without silently changing mode/team assumptions. Persisting derived history would be a separate explicit privacy/migration design in R5; this refinement does not authorise raw account/loot persistence, remote telemetry or reading another plugin's private stores.
 
+### R2 implementation of shared comparison contracts
+
+R2 adds an independently authored ranged-1 family to the retained combat proposal/result contracts, with typed ranged item/ammo/set metadata and per-defence-type target inputs in schema 9. Magic and ranged have separate session-only correction/confirmation owners, sharing the existing snapshot/identity guards. No prayer/boost and Rapid are the automatic ranged assumptions. Neutral Defence/Magic/magic attack/all ranged bonuses are explicitly zero; no HP, size or family effect is assigned. Existing magic arithmetic/version is unchanged.
+
+Positive reviewed specialist results may preserve a ranged long-term choice despite a neutral loss. Each contextual result has its own complete default proposal and inspectable inputs; different targets never supply a universal numerical ordering key. Confirmed owned acquisition stages lower remaining work and remove fresh activity reward votes, with quantity stages requiring actual scoped counts. No manual possession can establish supplied baseline gear or sufficient resources. See [R2 implementation and boundaries](validation/R2.md); R3–R8 and comprehensive inventory closure remain active.
+
 ## Quantitative contract and implementation strategy
 
 **Decision: extend an independently authored local Java combat core by validated mechanic families.** Reuse the P4a model as a regression baseline. The Wiki calculator remains a pinned development-time differential reference, not a runtime dependency or source of player-data export. No JS engine, webview, subprocess or cross-plugin internal dependency.

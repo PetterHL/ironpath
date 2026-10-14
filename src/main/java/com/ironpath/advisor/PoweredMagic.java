@@ -44,7 +44,7 @@ public final class PoweredMagic
 				key.equals("confirm"), key.equals("template") || minimalTemplate,
 				key.equals("target") ? value : target, origins);
 		}
-		Setup unconfirmed() { return new Setup(slots, prayer, boost, style, false, minimalTemplate, target, provenance); }
+		public Setup unconfirmed() { return new Setup(slots, prayer, boost, style, false, minimalTemplate, target, provenance); }
 	}
 	public Setup propose(AccountSnapshot account) { return service.propose(account); }
 	public Setup propose(AccountSnapshot account, String target) { return service.propose(account, target); }
