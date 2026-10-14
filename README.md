@@ -2,15 +2,17 @@
 
 **Your path to endgame PvM**
 
-**New design, not implemented:** [Personalized Kill Impact](docs/KILL_IMPACT.md) connects supported boss kills to the existing upgrade advisor using actual worn equipment. Its coverage target is most relevant PvM bosses, including raid bosses/rooms and separately scoped whole-raid impact; Vorkath is an example, not the feature boundary. The selected delivery is recent-kill context and supported offence first, then validated same-method time estimates, then selective spec/supply expansion. [KI1–KI3 in TASKS](TASKS.md#personalized-kill-impact--ki1ki3) refines R1.5b/R4/Q5 without replacing current UI or comprehensive upgrade work. No personal kill-time feature or new live-client validation is claimed by this documentation change.
+Integrated development build · 14 October 2026 · plugin 0.8.3 · knowledge r3a-3 · schema 10
 
-R3a development build · 14 October 2026 · plugin 0.8.2 · knowledge r3a-3 · schema 10
+**UX follow-up:** Browse searches supported upgrades by item name, combines search with existing categories and offers Clear filters. Typing retains the live editor; observation refreshes preserve caret/selection. Overview/Browse retain independent card anchors, and Back follows the same card after account updates. [Component evidence and pending client checks](docs/validation/ux-navigation.md). Broader R6 filters and owned-use search remain pending.
+
+**New design, not implemented:** [Personalized Kill Impact](docs/KILL_IMPACT.md) connects supported boss kills to the existing upgrade advisor using actual worn equipment. Its coverage target is most relevant PvM bosses, including raid bosses/rooms and separately scoped whole-raid impact; Vorkath is an example, not the feature boundary. The selected delivery is recent-kill context and supported offence first, then validated same-method time estimates, then selective spec/supply expansion. [KI1–KI3 in TASKS](TASKS.md#personalized-kill-impact--ki1ki3) refines R1.5b/R4/Q5 without replacing current UI or comprehensive upgrade work. No personal kill-time feature or new live-client validation is claimed by this documentation change.
 
 **Client test corrections:** all crystal armour colours (including black Iorwerth and the permanent-world Deadman cosmetic) count as owned, with active/inactive bonuses kept separate. Blazing is recognised as cosmetic Toxic, and all eight treads forms have ranged stats. Lightbearer now contributes its reviewed zero ordinary ranged bonuses instead of blocking comparison. Specialist roles recognise the supported ranged weapons, including Toxic/Blazing alone. Rosewood acquisition advice is withdrawn from every view; its existing owned-item numbers remain supported, while Doom special use awaits review. See the [first correction](docs/validation/R3a-client-variants.md) and [Lightbearer/Specialist follow-up](docs/validation/R3a-lightbearer.md).
 
-**This branch delivers R3a relationship advice and the native card-first homepage for review.** Personal importance is independent of acquisition status and effort. Anguish retains its core ranged-neck role despite a small neutral breakpoint; Zaryte keeps conditional burst value; Venator adds reviewed multi-target convenience and a five-shard route. Adequate owned switches make Venator optional preparation, and reward-specific Doom checks no longer block independently eligible rewards. Cards show account value, labelled numbers/gaps and direct Value/Path actions, with Long-term and Specialist discovery beside Browse. See [R3a evidence, counterfactuals and pending client checks](docs/validation/R3a.md).
+**Main includes R2 ranged packages, R3a relationship advice and the native card-first homepage.** Personal importance is independent of acquisition status and effort. Anguish retains its core ranged-neck role despite a small neutral breakpoint; Zaryte keeps conditional burst value; Venator adds reviewed multi-target convenience and a five-shard route. Adequate owned switches make Venator optional preparation, and reward-specific Doom checks no longer block independently eligible rewards. Cards show account value, labelled numbers/gaps and direct Value/Path actions. See [R3a evidence and pending client checks](docs/validation/R3a.md).
 
-The implementation PR targets **`docs/endgame-progression-intelligence` (PR #17, `75897d5`)**, which includes corrected R2 `32cb24a`. PR #17 remains documentation-only; neither dependency is merged by this delivery. Existing ranged/magic calculations, oracle cases and lifecycle protections remain; Rosewood acquisition advice is withdrawn in the client follow-up.
+PRs #16–#20 are integrated on main with their original commit histories; Kill Impact remains a design, while the UX increment includes both search review fixes. The superseded R2-model PR #14 is closed and preserved as the `r2-ranged-models` tag. Old branch names now identify historical snapshot tags; use main for current development. [Integration and cleanup record](docs/validation/main-integration-20261014.md).
 
 Weapons and upgrades that change the selected weapon lead with theoretical DPS; armour/jewellery retain max hit where weapon and speed are unchanged. Neutral Magic 0 is deliberately poor for tbow, so separately reviewed Graardor/Zilyana examples preserve specialist value without treating a large number as the next grind. Masori cannot manufacture a Bowfa upgrade by losing crystal synergy. Seeking arrows and charged quiver obey their actual projectile restrictions. Raid/special/bounce/time/trip coverage remains open.
 
@@ -31,9 +33,9 @@ or player-usefulness pass is claimed. No Plugin Hub submission or runtime servic
 
 The intended product is a free, open-source RuneLite sidebar that automatically identifies worthwhile Ironman PvM upgrades using observed account state: **which upgrades are worth pursuing, what difference will they make, and how do I obtain them?** Equipment, relevant prayers, skill levels and permanent unlocks are eligible. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
-**Client comparison-gap follow-up:** Value now names the unsupported accuracy item and whether it affects before, after or both reference setups. Brimstone's proc and Confliction's one-handed stacks remain separate model gaps; supported max hit stays visible. See [validation](docs/validation/client-model-gap-labels.md). This explanation patch is integrated in main `cb7c2cd` via PR #15; R2 remains a separate reviewed-development increment.
+**Client comparison-gap follow-up:** Value names the unsupported accuracy item and whether it affects before, after or both reference setups. Brimstone’s proc and Confliction’s one-handed stacks remain separate model gaps; supported max hit stays visible. See [validation](docs/validation/client-model-gap-labels.md). PR #15 and the later R2/R3a work are integrated in main.
 
-## Progression advice on this review branch
+## Progression advice
 
 The documentation-only [research review](docs/PROGRESSION_RESEARCH.md) checks 30 varied relationships against current mechanics, strategies and qualified player experience. The selected [progression-1 contract](docs/DESIGN.md#progression-intelligence-contract-version-progression-1) separates an item's role, personal importance, pursuit status and remaining effort. It adds adequate owned alternatives, multi-dimensional utility and explainable item → activity → reward relationships without a graph service or a universal efficiency score.
 
@@ -45,7 +47,7 @@ The R3a vertical increment now implements this policy for the supported relation
 
 IronPath is intended to become a comprehensive endgame PvM upgrade advisor, including BiS, meaningful specialist sidegrades, permanent rewards and the progression bridges needed to reach them. **R1 is an implementation increment, not the product boundary.** There is no catalogue ceiling or requirement to select a goal.
 
-R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. R1.5a and the neutral/DPS follow-up are integrated; this branch retains R2 and delivers **R3a relationship advice/cards** for review. R1.5b and R3–R8 extend effort, combat/specialist coverage, maintenance and real-client evidence. Useful numerical comparison is a core capability: max hit, accuracy and theoretical DPS where supported, with explicit context and honest exclusions. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
+R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. Main includes R1.5a, the neutral/DPS follow-up, R2 ranged packages, R3a relationship advice/cards and the UX search/navigation increment. R1.5b and R3b–R8 extend effort, combat/specialist coverage, maintenance and real-client evidence. Useful numerical comparison remains a core capability. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
 
 The comparison follow-up is implemented on this branch: **Enemy with 0 Defence** is the automatic powered-magic reference. Weapons show theoretical DPS before → after and its absolute delta first; unchanged-speed armour/jewellery keep max hit first. The authored target has Defence 0, Magic 0 and magic-defence bonus 0; ordinary rolls give defence roll 576 and do not guarantee accuracy or maximum damage. Details show hit chance, attack interval and per-metric gaps. See [validation and pending client checks](docs/validation/neutral-reference.md).
 
@@ -79,13 +81,13 @@ Reuse the existing T1–P3 RuneLite implementation and preserve its licence noti
 
 ## Start here
 
-The shared main remains `cb7c2cd`. R3a depends on PR #17 at `75897d5`, including R2 PR #16 at `32cb24a`; review this implementation against that branch. [R3a validation](docs/validation/R3a.md) separates completed automated/component checks from pending client acceptance.
+Main is the shared development baseline, including the R2/R3a stack and UX fixes. [Integration/cleanup record](docs/validation/main-integration-20261014.md) and [R3a validation](docs/validation/R3a.md) separate combined automated checks from pending client acceptance.
 
-To test R3a before integration, close the development client first:
+To test the integrated build, close the development client first:
 
 ```sh
 git fetch origin
-git switch r3a-personalized-cards
+git switch main
 ```
 
 Historical planning branches and validation reports are records, not fresh prerequisites.
@@ -105,7 +107,7 @@ Clone the repository and check out the combined implementation branch:
 ```sh
 git clone https://github.com/PetterHL/ironpath.git
 cd ironpath
-git checkout r3a-personalized-cards
+git checkout main
 ```
 
 For an existing clone, close the development client, enter its `ironpath` directory,
@@ -113,7 +115,7 @@ and update the branch first:
 
 ```sh
 git fetch origin
-git switch r3a-personalized-cards
+git switch main
 git pull --ff-only
 ```
 

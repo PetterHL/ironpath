@@ -43,7 +43,14 @@ See [validation/R1.md](validation/R1.md) for formula boundaries, fixtures, repro
 
 ## Current integration and historical PR stack
 
+Current development baseline: main integrates R2 #16, progression design #17, R3a #18, Kill Impact design #19 and UX #20 on 14 October 2026. Plugin 0.8.3 implements progression-1 and native card/search/navigation; Kill Impact remains design only. Earlier model #14 is archived as the `r2-ranged-models` snapshot tag rather than mixing its superseded engine into R2. [Integration and cleanup](validation/main-integration-20261014.md). New deliveries start from updated main; actual-client acceptance remains pending.
+
+<details>
+<summary>Preserved progression research inspection before integration</summary>
+
 Current research snapshot: main is `cb7c2cd`, with #12/#13/#15 integrated. R2 PR #16 advanced from `a501e6f` to `32cb24a` during this assignment; its package/necklace corrections and 195-test historical result are preserved. Earlier ranged PR #14 (`f821c625`) remains separate. This documentation change targets #16 and changes no implementation. Recheck remote state before implementation or integration. No merge is authorised by this research assignment.
+
+</details>
 
 <details>
 <summary>Earlier integration and pre-integration snapshots (preserved history)</summary>
