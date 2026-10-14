@@ -2,7 +2,7 @@
 
 **Your path to endgame PvM**
 
-**New design, not implemented:** [Personalized Kill Impact](docs/KILL_IMPACT.md) connects supported boss kills to the existing upgrade advisor using actual worn equipment. The selected delivery is recent-kill context and supported offence first, then validated same-method time estimates, then selective spec/supply expansion. [KI1–KI3 in TASKS](TASKS.md#personalized-kill-impact--ki1ki3) refines R1.5b/R4/Q5 without replacing current UI or comprehensive upgrade work. No personal kill-time feature or new live-client validation is claimed by this documentation change.
+**New design, not implemented:** [Personalized Kill Impact](docs/KILL_IMPACT.md) connects supported boss kills to the existing upgrade advisor using actual worn equipment. Its coverage target is most relevant PvM bosses, including raid bosses/rooms and separately scoped whole-raid impact; Vorkath is an example, not the feature boundary. The selected delivery is recent-kill context and supported offence first, then validated same-method time estimates, then selective spec/supply expansion. [KI1–KI3 in TASKS](TASKS.md#personalized-kill-impact--ki1ki3) refines R1.5b/R4/Q5 without replacing current UI or comprehensive upgrade work. No personal kill-time feature or new live-client validation is claimed by this documentation change.
 
 R3a development build · 14 October 2026 · plugin 0.8.2 · knowledge r3a-3 · schema 10
 

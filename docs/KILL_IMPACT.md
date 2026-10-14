@@ -10,7 +10,26 @@ Inspected `main` at `cb7c2cd874e8225581e85566f652236ee7e6feb3`, R2 #16 at `32cb2
 
 The useful promise is: **“Here are upgrades relevant to the boss you actually fight, compared with what you used.”** A supported later claim is **“Estimated average time saved on comparable kills, assuming the same method.”** We cannot truthfully promise “this exact kill would have been 8 seconds faster.” The unseen alternative has different random hits, attack opportunities and potentially phases.
 
-Deliver observed kill context plus supported offensive comparisons first. Give seconds a concrete subsequent delivery and validation gate; do not quietly substitute DPS forever. Start observation with normal post-quest solo Vorkath, but do not pretend its full encounter time is a simple first formula. Keep the current UI improvements, R3b melee coverage and R4 reusable mechanics moving. Shared capture replaces the need to build a separate first CoX observation system in R1.5b; CoX remains later activity coverage.
+Deliver observed kill context plus supported offensive comparisons first. Give seconds a concrete subsequent delivery and validation gate; do not quietly substitute DPS forever. **User clarification, 14 October: Vorkath was an example, not the product scope or a mandated first boss.** Select the first observation context by useful account coverage, observability and reusable mechanics; normal post-quest solo Vorkath is one candidate. Keep the current UI improvements, R3b melee coverage and R4 reusable mechanics moving. Shared capture supplies R1.5b's first observation work; avoid a duplicate CoX-specific collector. CoX remains explicitly included in the broader encounter/raid coverage below.
+
+## Intended coverage: most PvM bosses, including raid encounters
+
+**The product target is useful Kill Impact across most relevant PvM bosses, with raid bosses/rooms as first-class coverage and whole-raid impact as an additional calculation scope.** A small first delivery does not narrow that target. The detailed Vorkath discussion below is a worked feasibility example; its mechanics must not become assumptions embedded in shared contracts.
+
+| Encounter family | Required design scope | Delivery distinction |
+|---|---|---|
+| Ordinary solo bosses | Actual setup, target and complete kill, with method-specific timing | First pilot selected by evidence, not by the example in the original request |
+| Multi-phase/style-changing bosses | Phase boundaries, gear switches, immunity/reduction and relevant targets | Extend shared phase/setup contracts; no single full-fight DPS shortcut |
+| Team bosses | Player role/contribution, party/scaling and shared reductions | Local offensive gain can be supported before personal influence on team kill time |
+| CoX/CM, ToA and ToB/hard mode rooms/bosses | Raid → room/encounter → phase/target identity; mode, relevant scaling, team/role and actual switches | Deliver useful individual encounter comparisons without waiting for total-raid timing |
+| Complete raids | Supported non-overlapping encounter contributions plus transitions, puzzles, preparation, deaths and other overhead | Separate estimate with explicit coverage; do not multiply total raid time by local DPS or sum independent medians/quantiles |
+| Waves/multiple targets | Wave/target scope, geometry and contribution where relevant | Distinguish a target/phase gain from completion-time or readiness claims |
+
+The encounter contract must support optional parent activity/run ID, encounter/room ID, phase/target ID, mode/scaling inputs and party/role evidence from the outset. Unknown party composition or teammate damage must stay unknown; no remote party telemetry is required. Existing target profiles and combat families remain reusable. A new boss using existing mechanics should primarily add reviewed data and a small event adapter, not duplicate the estimator or recommendation system.
+
+For team content, show the player's supported offensive comparison even if team kill-time impact cannot be estimated. Never attribute all team damage or duration to the local player's loadout. For raids, show “at this boss/room/phase” versus “across this raid” explicitly. Whole-raid impact requires a shared baseline/route, mutually exclusive time segments, dependencies and overhead treatment. Unsupported rooms do not become zero and must not suppress valid supported room advice; withhold the total when missing contributions are material.
+
+Track every encounter family in the uncapped CATALOGUE by observation, contextual offence, personal time and whole-activity support separately. “Most bosses” is a coverage objective to demonstrate against that inventory, not a claim achieved by shipping one adapter or a fixed sample count. KI1 includes cross-family contract fixtures, KI2 proves reuse beyond the first boss, and KI3 explicitly delivers raid-room/team increments while maintaining the broader inventory. Prioritise by player activity and reusable mechanics; do not postpone all raid-boss advice until every solo boss or a universal raid timer is complete.
 
 ### Value and alternatives
 
@@ -68,7 +87,7 @@ Keep one Gradle plugin and a small `combat observation → encounter summary →
 
 | Contract | Essential fields and responsibility |
 |---|---|
-| `EncounterAdapter` | Versioned boss/mode IDs, start/end correlation, phase classifications, supported method families, event mappings and per-metric capabilities |
+| `EncounterAdapter` | Versioned boss/mode IDs, optional parent raid/run and room/phase identity, scaling/party/role evidence, start/end correlation, supported methods, event mappings and per-metric capabilities |
 | `CombatObservation` | Generation, encounter/spawn key, tick/sequence, observed slot state, visible levels, prayer/style/ammo evidence, attack/consumption/phase changes; immutable values, never queued mutable Actor references |
 | `EncounterSummary` | Timer scope, completion status, capture coverage, setup segments, inferred attacks/gaps, observed phase durations, source/model versions and specific unknowns |
 | `KillImpactResult` | Upgrade ID, actual used baseline, candidate package, optional best-owned comparison, supported metrics, estimated delta/range type, method assumptions, sample counts and refusal reasons |
@@ -148,13 +167,13 @@ Report sample variability, model/input sensitivity and prediction variability se
 | Brews/restores | Capture visible-level trajectory; no generic “brews improve DPS” | Healing density, drains, restored versus reboosted stats, dose sequence and encounter suitability. No recommendation to brew at every boss; actual level history is more useful initially than a hypothetical consumption optimiser (K10/K13) |
 | Defence, healing procs, supplies saved, kills/trip | Qualitative contextual value initially | Incoming damage, protection, overheal, survival/resupply and changed behaviour. Fewer eats cannot be inferred from outgoing DPS alone |
 | Movement, mechanics, player execution | Bounded method/gap/phase summaries | No “mistakes” or universal efficiency score. Same player may use a different method with new gear |
-| Team bosses, raids, multi-target fights | Boss relevance possible; personal seconds unsupported initially | Contributions, scaling, shared reductions, role/geometry and phase state; do not attribute team time to the local loadout |
+| Team bosses, raids, multi-target fights | First-class coverage target; deliver supported room/target offence before personal/team seconds where necessary | Contributions, scaling, shared reductions, role/geometry and phase state; do not attribute team time to the local loadout |
 
 Food/supply modelling is KI3, not a precondition for the first useful card. Conversely, a baseline with material unsupported brew/spec/proc effects cannot be falsely treated as a clean KI2 baseline. KI1 must expose these gaps concisely and retain qualitative advice.
 
 ## UX and recommendation integration
 
-Keep the ordinary automatic homepage primary. Add a compact **Recent boss · Vorkath** entry after a supported kill, opening the same cards filtered/contextualised to that activity. Refresh quietly after finalization; no chat spam, modal, combat overlay, forced sidebar opening or live numerical advice. A user inspecting a card keeps focus/scroll and the chosen historical baseline. Unsupported encounters do not generate repetitive failure cards.
+Keep the ordinary automatic homepage primary. Add a compact **Recent boss · [boss name]** entry (Vorkath is an illustrative label) after a supported kill, opening the same cards filtered/contextualised to that activity. Refresh quietly after finalization; no chat spam, modal, combat overlay, forced sidebar opening or live numerical advice. A user inspecting a card keeps focus/scroll and the chosen historical baseline. Unsupported encounters do not generate repetitive failure cards.
 
 Use real item sprites, one account-value reason, **one** primary supported metric and Value/Path. The selected recent context can use impact as that metric when supported; the ordinary neutral comparison remains available in Value and is not silently replaced globally. Owned alternatives get “Try owned setup”; supplies get a recurring-use label. Importance/effort/status still govern acquisition advice. Recent activity is session relevance, not an implicit permanent goal or a numeric multiplier on global rank.
 
@@ -186,7 +205,7 @@ No application tests or actual kills were executed by this research. Existing R3
 
 For KI2, use at least 30 complete observations per tested setup across multiple held-out blocks and more than one method/player where available; continue sampling when uncertainty is too broad for the claimed effect. This is an initial validation budget, not a power calculation. Predeclare a candidate practical acceptance target: held-out baseline median absolute error no greater than `max(3 seconds, 5% of typical duration)` in the advertised context, no unexplained directional bias across supported groups, and correctly typed uncertainty ranges. Report all counts, errors and exclusions. **Baseline accuracy alone does not validate upgrade savings**: paired before/after mean-delta uncertainty must also be consistent with the claim; a 3-second effect cannot be sold as measured merely because a 5-second baseline-error gate passed. Claims below validation resolution stay theoretical/provisional.
 
-Roll out KI1 as an optional experimental recent-kill context, then KI2 only per validated boss/method/candidate family. Publish eligible-capture and numeric-coverage fractions, not just successful examples. A pilot where most ordinary Vorkath loadouts are unsupported needs a concrete model-priority correction. Record user acceptance before default-enabling the surface; no telemetry is required. Expand one encounter adapter at a time based on reusable mechanics and player value. Source/client changes invalidate affected capability versions and cohorts, preserving unaffected advisor features.
+Roll out KI1 as an optional experimental recent-kill context, then KI2 only per validated boss/method/candidate family. Publish eligible-capture and numeric-coverage fractions, not just successful examples. A pilot where most ordinary Vorkath loadouts are unsupported needs a concrete model-priority correction. Record user acceptance before default-enabling the surface; no telemetry is required. Expand one encounter adapter at a time toward most relevant PvM bosses, including explicit raid-room/boss increments, based on reusable mechanics and player value. Prove reuse beyond the pilot; do not let its item, NPC or phase assumptions become shared schema constraints. Source/client changes invalidate affected capability versions and cohorts, preserving unaffected advisor features.
 
 ## Policy and maintenance scope
 
