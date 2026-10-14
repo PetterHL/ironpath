@@ -29,7 +29,7 @@ The card itself opens details by mouse or keyboard with visible focus. Remove re
 
 Choose the most consequential status instead of concatenating badges. A blocking input may take precedence over the effort band, which remains in acquisition detail. Do not add a priority badge merely to restate queue position.
 
-Weapons/weapon-changing packages lead numerically with supported DPS; unchanged-speed equipment may lead with max hit. Missing weapon DPS must not be concealed behind an oversized max-hit figure implying a complete comparison. Reviewed utility may be the primary result when ordinary DPS does not describe it.
+AD1a makes all ordinary offensive upgrades lead with supported relative theoretical DPS, including unchanged-speed armour/jewellery. Zero baseline uses absolute DPS change; details show absolute before/after/delta and secondary max hit. Multi-slot weapon/off-hand/ammunition changes are labelled as complete setups. Missing offensive DPS must not be concealed behind an oversized max-hit figure implying a complete comparison. Reviewed utility may be the primary result when ordinary DPS does not describe it.
 
 ### Shared reference and acquisition estimates
 

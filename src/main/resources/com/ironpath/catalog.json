@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 12,
-  "knowledgeVersion": "ep1-1",
+  "schemaVersion": 13,
+  "knowledgeVersion": "ad1a-1",
   "reviewed": "2026-10-14",
   "sources": [
     {
@@ -468,7 +468,7 @@
         27277
       ],
       "models": [
-        "powered-magic-2"
+        "powered-magic-3"
       ],
       "routes": [
         "seek-ancestral-hat",
@@ -3032,7 +3032,7 @@
       ],
       "items": [],
       "models": [
-        "powered-magic-2"
+        "powered-magic-3"
       ],
       "routes": [
         "seek-ancestral-hat",
@@ -3071,7 +3071,7 @@
       ],
       "items": [],
       "models": [
-        "powered-magic-2"
+        "powered-magic-3"
       ],
       "routes": [
         "seek-ancestral-hat",
@@ -3135,7 +3135,7 @@
       ],
       "items": [],
       "models": [
-        "powered-magic-2"
+        "powered-magic-3"
       ],
       "routes": [
         "seek-ancestral-hat",
@@ -3172,7 +3172,7 @@
       ],
       "items": [],
       "models": [
-        "powered-magic-2"
+        "powered-magic-3"
       ],
       "routes": [
         "seek-ancestral-hat",
@@ -4656,7 +4656,9 @@
       "items": [
         22975
       ],
-      "models": [],
+      "models": [
+        "powered-magic-3"
+      ],
       "routes": [],
       "contexts": []
     },
@@ -5229,7 +5231,7 @@
       ],
       "items": [],
       "models": [
-        "powered-magic-2"
+        "powered-magic-3"
       ],
       "routes": [
         "seek-ancestral-hat",
@@ -5275,7 +5277,7 @@
         25731
       ],
       "models": [
-        "powered-magic-2"
+        "powered-magic-3"
       ],
       "routes": [],
       "contexts": []
@@ -24827,7 +24829,7 @@
     }
   ],
   "comparison": {
-    "modelVersion": "powered-magic-2",
+    "modelVersion": "powered-magic-3",
     "sources": [
       "magic-formula",
       "magic-damage",
@@ -24835,7 +24837,8 @@
       "mystic-might",
       "augury-mechanics",
       "r1-saturated-heart",
-      "r1-jagex-gear-sweep-july-2026"
+      "r1-jagex-gear-sweep-july-2026",
+      "r1-brimstone-ring"
     ],
     "items": [
       {
@@ -26266,7 +26269,7 @@
         "requirements": {},
         "twoHanded": false,
         "historyEffect": false,
-        "unsupportedAccuracy": true
+        "brimstoneEffect": true
       },
       {
         "id": 25975,

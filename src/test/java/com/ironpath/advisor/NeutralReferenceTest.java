@@ -76,8 +76,8 @@ public class NeutralReferenceTest
 		assertEquals(Integer.valueOf(0),shadow.afterSetup.slots.get("shield"));
 		assertEquals(shadow.beforeSetup.target,shadow.afterSetup.target);
 		ComparisonResult accessory=service.compare(a,Preferences.EMPTY,s,19544);
-		assertEquals(MAX_HIT,accessory.primaryMetric);
-		assertTrue(accessory.headline().contains("max hit"));
+		assertEquals(THEORETICAL_DPS,accessory.primaryMetric);
+		assertTrue(accessory.headline().startsWith("DPS "));
 		assertEquals(accessory.before.attackTicks,accessory.after.attackTicks);
 		ComparisonResult gap=service.compare(a,Preferences.EMPTY,s.edit("hands","31106"),27275);
 		assertTrue(gap.available(MAX_HIT)); assertFalse(gap.available(THEORETICAL_DPS));

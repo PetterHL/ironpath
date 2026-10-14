@@ -2,7 +2,7 @@
 
 **Your path to endgame PvM**
 
-UX2 visual advisor + EP1 progression · 14 October 2026 · plugin 0.11.0 · knowledge ep1-1 · schema 12
+AD1a calculation/presentation candidate · 14 October 2026 · plugin 0.12.0 · knowledge ad1a-1 · schema 13
 
 **UX2 implementation for review:** whole native cards open details by mouse, Enter or Space. They show the supported gain or reviewed specialist property, the actual comparison baseline and one useful status. Value presents compact before/after changes and one account-specific priority reason; Path leads with source, remaining work and the next step. Calculation/estimate evidence stays secondary. Account presents levels, recorded gear/unlocks and reversible corrections, with a separate Diagnostics screen. EP1 queue, search/facets/owned-use, Back/scroll and identity guards are retained. [225px component captures, validation and pending PC checks](docs/validation/UX2.md). This is stacked on [EP1 #25](https://github.com/PetterHL/ironpath/pull/25); neither PR is merged by this work.
 
@@ -18,7 +18,7 @@ UX2 visual advisor + EP1 progression · 14 October 2026 · plugin 0.11.0 · know
 
 The combined integration preserves PRs #16–#20, UX completion #21, the ordinary-melee R3b increment and experimental KI1 #22 with their original histories. [Combined evidence and remaining client checks](docs/validation/ux-melee-ki1-integration.md). The superseded R2-model PR #14 is closed and preserved as the `r2-ranged-models` tag. Old branch names now identify historical snapshot tags; use main for current development. [Integration and cleanup record](docs/validation/main-integration-20261014.md).
 
-Weapons and upgrades that change the selected weapon lead with theoretical DPS; armour/jewellery retain max hit where weapon and speed are unchanged. Neutral Magic 0 is deliberately poor for tbow, so separately reviewed Graardor/Zilyana examples preserve specialist value without treating a large number as the next grind. Masori cannot manufacture a Bowfa upgrade by losing crystal synergy. Seeking arrows and charged quiver obey their actual projectile restrictions. Raid/special/bounce/time/trip coverage remains open.
+Ordinary offensive upgrades lead with supported relative theoretical DPS, including armour, rings and gloves. Details retain absolute DPS before/after/delta and secondary max hit; zero baselines use absolute DPS change. Multi-slot changes are labelled as complete setups. Neutral Magic 0 is deliberately poor for tbow, so separately reviewed Graardor/Zilyana examples preserve specialist value without treating a large number as the next grind. Masori cannot manufacture a Bowfa upgrade by losing crystal synergy. Seeking arrows and charged quiver obey their actual projectile restrictions. Raid/special/bounce/time/trip coverage remains open.
 
 **Delivered: realistic powered-magic references and first endgame value.** Shadow,
 Ancestral hat/top/bottom, tormented bracelet and Magus ring join occult, swamp,
@@ -37,7 +37,9 @@ or player-usefulness pass is claimed. No Plugin Hub submission or runtime servic
 
 The intended product is a free, open-source RuneLite sidebar that automatically identifies worthwhile Ironman PvM upgrades using observed account state: **which upgrades are worth pursuing, what difference will they make, and how do I obtain them?** Equipment, relevant prayers, skill levels and permanent unlocks are eligible. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
-**Client comparison-gap follow-up:** Value names the unsupported accuracy item and whether it affects before, after or both reference setups. Brimstone’s proc and Confliction’s one-handed stacks remain separate model gaps; supported max hit stays visible. See [validation](docs/validation/client-model-gap-labels.md). PR #15 and the later R2/R3a work are integrated in main.
+**Client comparison-gap follow-up:** Value names the unsupported accuracy item and whether it affects before, after or both reference setups. Brimstone’s accuracy proc is supported in this AD1a candidate. Confliction’s one-handed history still withholds dependent accuracy/DPS; supported max hit stays visible. See [validation](docs/validation/client-model-gap-labels.md). PR #15 and the later R2/R3a work are integrated in main.
+
+**AD1a for review:** relative DPS across ordinary offensive upgrades, Brimstone’s per-attack defence-roll mixture and explicit weapon/off-hand/ammunition package labels. Stacked on open UX2 #26, itself on EP1 #25; this branch merges neither dependency nor plan #27. [Metric coverage, source checks, limitations and pending reported-account/client acceptance](docs/validation/AD1a.md). Automatic hours and final navigation remain AD1b/AD1c.
 
 ## Progression advice
 
@@ -57,7 +59,7 @@ IronPath is intended to become a comprehensive endgame PvM upgrade advisor, incl
 
 R1 connects full supported powered-magic references to marginal-value ranking and delivers initial endgame outcomes. Main includes R1.5a, the neutral/DPS follow-up, R2 ranged packages, R3a relationship advice/cards and the UX search/navigation increment. R1.5b and R3b–R8 extend effort, combat/specialist coverage, maintenance and real-client evidence. Useful numerical comparison remains a core capability. Kill-time and trip claims need additional models; they cannot be inferred from a DPS percentage.
 
-The comparison follow-up is implemented on this branch: **Enemy with 0 Defence** is the automatic powered-magic reference. Weapons show theoretical DPS before → after and its absolute delta first; unchanged-speed armour/jewellery keep max hit first. The authored target has Defence 0, Magic 0 and magic-defence bonus 0; ordinary rolls give defence roll 576 and do not guarantee accuracy or maximum damage. Details show hit chance, attack interval and per-metric gaps. See [validation and pending client checks](docs/validation/neutral-reference.md).
+The comparison follow-up is implemented on this branch: **Enemy with 0 Defence** is the automatic powered-magic reference. All ordinary offensive equipment leads with relative theoretical DPS; details show absolute before/after/delta and secondary max hit. The authored target has Defence 0, Magic 0 and magic-defence bonus 0; ordinary rolls give defence roll 576 and do not guarantee accuracy or maximum damage. Details show hit chance, attack interval and per-metric gaps. See [validation and pending client checks](docs/validation/neutral-reference.md).
 
 Recommendations must explain what changes relative to owned alternatives, where it matters, when to defer, and how to obtain the upgrade. Strong alternatives and partial observations change the advice. An unread bank never proves an item is missing. Long-term upgrades remain visible alongside nearer opportunities.
 
@@ -193,7 +195,7 @@ Path removes confirmed owned seeds/fangs/intermediates before a new grind. Owned
    missing phase/scaling inputs instead of inventing an invocation.
 5. Numbers cover uninterrupted ordinary attacks. Sang's 20% successful-hit
    +8-damage proc is included; healing is separate. Confliction's one-handed
-   history and Brimstone accuracy procs withhold accuracy/DPS while retaining
+   history withholds accuracy/DPS while retaining
    supported max hit. Ancient/elemental spells, defence reduction, movement,
    specials, kill time and trips are outside this comparison.
 6. Path quantities are timestamped, container-scoped planning evidence. The

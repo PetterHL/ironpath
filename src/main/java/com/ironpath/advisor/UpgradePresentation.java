@@ -12,7 +12,7 @@ public final class UpgradePresentation
 		public final ComparisonResult.Metric kind;
 		public final Availability availability;
 		public final String unit, baseline, context, reason, action;
-		public final Double before, after, delta;
+		public final Double before, after, delta, relativePercent;
 		Metric(ComparisonResult comparison, String baseline, boolean qualitative)
 		{ this(comparison, comparison.primaryMetric, baseline, qualitative); }
 		Metric(ComparisonResult comparison, ComparisonResult.Metric metric, String baseline, boolean qualitative)
@@ -25,11 +25,30 @@ public final class UpgradePresentation
 			before=available?(kind==ComparisonResult.Metric.THEORETICAL_DPS?comparison.before.dps:kind==ComparisonResult.Metric.HIT_CHANCE?comparison.before.hitChance*100:(double)comparison.before.maxHit):null;
 			after=available?(kind==ComparisonResult.Metric.THEORETICAL_DPS?comparison.after.dps:kind==ComparisonResult.Metric.HIT_CHANCE?comparison.after.hitChance*100:(double)comparison.after.maxHit):null;
 			delta=available?after-before:null;
+			relativePercent=available && kind==ComparisonResult.Metric.THEORETICAL_DPS && before>0 ? delta/before*100 : null;
 			availability=qualitative?Availability.QUALITATIVE:available?delta==0?Availability.TRUE_ZERO:Availability.AVAILABLE
 				:comparison.beforeSetup!=null && (comparison.beforeSetup.slots.values().stream().anyMatch(i->i<0)||comparison.beforeSetup.loadedAmmo<0 || comparison.beforeSetup.slots.getOrDefault("weapon",0)==0 || missingLevels(account,comparison.beforeSetup))
 					?Availability.INPUT_REQUIRED:Availability.MODEL_UNSUPPORTED;
 			reason=available?"Supported selected reference":comparison.gaps.getOrDefault(kind,comparison.reason);
 			action=availability==Availability.INPUT_REQUIRED?(missingLevels(account,comparison.beforeSetup)?"Observe real combat levels":correction(comparison.beforeSetup)):availability==Availability.MODEL_UNSUPPORTED?"Inspect the model gap":"Inspect supported role / context";
+		}
+		public String headline()
+		{
+			if(delta==null) { return kind==ComparisonResult.Metric.THEORETICAL_DPS?"DPS not calculated":"Comparison not calculated"; }
+			if(kind==ComparisonResult.Metric.THEORETICAL_DPS) {
+				if(relativePercent!=null && delta!=0 && Math.abs(relativePercent)<0.05) {
+					return "<0.1% DPS "+(delta>0?"gain":"loss");
+				}
+				return relativePercent==null?absoluteDpsDelta()+" DPS"
+					:String.format(java.util.Locale.ROOT,"%+.1f%% DPS",relativePercent);
+			}
+			return String.format(java.util.Locale.ROOT,"%+.0f max hit",delta);
+		}
+		public String absoluteDpsDelta()
+		{
+			if(delta==null) { return "not calculated"; }
+			if(delta!=0 && Math.abs(delta)<0.005) { return (delta>0?"gain":"loss")+" <0.01"; }
+			return String.format(java.util.Locale.ROOT,"%+.2f",delta);
 		}
 	}
 	public static final class RouteChoice
@@ -47,15 +66,19 @@ public final class UpgradePresentation
 	}
 	public static final class SlotChange
 	{
-		public final String slot, beforeName, afterName;
+		public final String slot, label, beforeName, afterName;
 		public final int beforeId, afterId;
 		SlotChange(String slot,int before,int after,MapLookup names)
-		{ this.slot=slot; beforeId=before; afterId=after; beforeName=names.name(slot,before); afterName=names.name(slot,after); }
+		{
+			this.slot=slot; label=slot.equals("shield")?"Off-hand":slot.equals("loaded-ammo")?"Loaded darts":slot.equals("ammo")?"Ammunition":slot.substring(0,1).toUpperCase(java.util.Locale.ROOT)+slot.substring(1);
+			beforeId=before; afterId=after; beforeName=names.name(slot,before); afterName=names.name(slot,after);
+		}
 	}
 	private interface MapLookup { String name(String slot,int id); }
 	public final List<Metric> comparisonMetrics;
 	public final List<SlotChange> changes;
-	public final String contextLabel, utility, baseline, limitation;
+	public final String contextLabel, utility, baseline, limitation, comparisonLabel;
+	public final boolean setupChange;
 	public final Integer beforeTicks,afterTicks;
 	public final Metric primaryMetric;
 	public final RemainingEffort effort;
@@ -82,10 +105,18 @@ public final class UpgradePresentation
 				int before=view.comparison.beforeSetup.slots.getOrDefault(slot,-1),after=view.comparison.afterSetup.slots.getOrDefault(slot,-1);
 				if(before!=after) { changed.add(new SlotChange(slot,before,after,(key,id)->id==0?"Empty "+key:id<0?"Unobserved "+key:names.getOrDefault(id,"Unreviewed "+key+" item"))); }
 			}
+			if(view.comparison.beforeSetup.loadedAmmo!=view.comparison.afterSetup.loadedAmmo) {
+				changed.add(new SlotChange("loaded-ammo",view.comparison.beforeSetup.loadedAmmo,view.comparison.afterSetup.loadedAmmo,
+					(key,id)->id==0?"No loaded darts":id<0?"Unobserved loaded darts":names.getOrDefault(id,"Unreviewed loaded darts")));
+			}
 		}
 		changed.sort(java.util.Comparator.comparingInt((SlotChange c)->c.slot.equals("weapon")?0:c.afterId==view.upgrade.itemId?1:2));
 		changes=List.copyOf(changed);
-		baseline=view.upgrade.comparison.equals("NONE")?"Reviewed owned alternatives":changes.stream().filter(c->c.slot.equals("weapon")).findFirst().or(()->changes.stream().findFirst()).map(c->c.beforeName).orElse(view.valueEvidence.baseline);
+		setupChange=changes.size()>1;
+		comparisonLabel=setupChange?"Setup change":changes.isEmpty()?"Selected setup":changes.get(0).label;
+		baseline=view.upgrade.comparison.equals("NONE")?"Reviewed owned alternatives":setupChange && view.comparison.beforeSetup!=null
+			?names.getOrDefault(view.comparison.beforeSetup.slots.get("weapon"),"Selected weapon")+" setup"
+			:changes.stream().findFirst().map(c->c.beforeName).orElse(view.valueEvidence.baseline);
 		effort=view.pursuit.remainingEffort; priority=view.pursuit.priority;
 		status=primaryMetric.availability==Availability.INPUT_REQUIRED?primaryMetric.action
 			: !view.questions.isEmpty()?"Check ownership"
