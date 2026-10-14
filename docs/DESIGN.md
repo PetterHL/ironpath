@@ -43,7 +43,14 @@ See [validation/R1.md](validation/R1.md) for formula boundaries, fixtures, repro
 
 ## Current integration and historical PR stack
 
+Current development baseline: main integrates R2 #16, progression design #17, R3a #18, Kill Impact design #19 and UX #20 on 14 October 2026. Plugin 0.8.3 implements progression-1 and native card/search/navigation; Kill Impact remains design only. Earlier model #14 is archived as the `r2-ranged-models` snapshot tag rather than mixing its superseded engine into R2. [Integration and cleanup](validation/main-integration-20261014.md). New deliveries start from updated main; actual-client acceptance remains pending.
+
+<details>
+<summary>Preserved progression research inspection before integration</summary>
+
 Current research snapshot: main is `cb7c2cd`, with #12/#13/#15 integrated. R2 PR #16 advanced from `a501e6f` to `32cb24a` during this assignment; its package/necklace corrections and 195-test historical result are preserved. Earlier ranged PR #14 (`f821c625`) remains separate. This documentation change targets #16 and changes no implementation. Recheck remote state before implementation or integration. No merge is authorised by this research assignment.
+
+</details>
 
 <details>
 <summary>Earlier integration and pre-integration snapshots (preserved history)</summary>
@@ -261,6 +268,16 @@ Raw observations and inferred pace stay memory-only. R1.5 permits optional manua
 R2 adds an independently authored ranged-1 family to the retained combat proposal/result contracts, with typed ranged item/ammo/set metadata and per-defence-type target inputs in schema 9. Magic and ranged have separate session-only correction/confirmation owners, sharing the existing snapshot/identity guards. No prayer/boost and Rapid are the automatic ranged assumptions. Neutral Defence/Magic/magic attack/all ranged bonuses are explicitly zero; no HP, size or family effect is assigned. Existing magic arithmetic/version is unchanged.
 
 Positive reviewed specialist results may preserve a ranged long-term choice despite a neutral loss. Each contextual result has its own complete default proposal and inspectable inputs; different targets never supply a universal numerical ordering key. Confirmed owned acquisition stages lower remaining work and remove fresh activity reward votes, with quantity stages requiring actual scoped counts. No manual possession can establish supplied baseline gear or sufficient resources. See [R2 implementation and boundaries](validation/R2.md); R3–R8 and comprehensive inventory closure remain active.
+
+## Personalized Kill Impact contract (selected, not implemented)
+
+[Research and design](KILL_IMPACT.md) selects passive post-kill context within the existing advisor. Reuse ownership, comparison families, progression-1 importance, adequate alternatives and Value/Path; do not create a second catalogue or rank by seconds saved. Actual worn setup segments are distinct from an optimised reference and the strongest owned alternative. Recent boss evidence refines session relevance without creating a permanent goal or displacing account-wide advice.
+
+Keep three separate outputs: observed kill duration; modelled offence for an explicit setup/phase; and, only after validation, estimated average impact on comparable future kills under the same method. The current kill-time enum is unsupported, not an existing engine. No last-kill × DPS-ratio shortcut, PB-as-average, additive upgrade gains, skill score or automatic acquisition-hours conversion. Full distributions, finite HP/overkill/first-impact timing, material phase changes and current levels/prayers/ammo must be handled before dependent time claims.
+
+Add a small versioned encounter adapter and immutable summary/impact contracts beside the account reader. Capture bounded change evidence on the client thread; evaluate after completion outside the client thread/EDT; guard stale results by identity, generation and encounter key. Current account snapshots do not capture boosted/prayer/cadence history. Preserve conservative loading/profile resets until any broader cohort lifetime is explicitly tested. Active traces and bounded recent summaries remain in memory; no remote telemetry or silent performance persistence.
+
+Target broad support across most relevant PvM bosses, explicitly including CoX/CM, ToA and ToB/hard-mode encounters. Vorkath is a worked example and possible pilot, not a mandated first target. Shared contracts support optional raid/run, room, phase/target, mode/scaling and party/role context from the outset; local offence, team kill-time impact and whole-raid time remain distinct. KI1 delivers contextual supported offence; KI2 adds validated same-method time sensitivity with explicit phase/proc/unknown refusals; KI3 selectively extends specials/supplies/methods. Repeated kills improve cadence/variability evidence, not unseen-item causality or incorrect formulas. Samples, model sensitivity and next-kill randomness remain different uncertainties. See [TASKS KI1–KI3](../TASKS.md#personalized-kill-impact--ki1ki3) for delivery/acceptance and [UX](UX.md#recent-boss-and-kill-impact-selected-not-implemented) for the compact surface. This refines R1.5b/R4/Q5 without blocking R3b or comprehensive coverage.
 
 ## Quantitative contract and implementation strategy
 
