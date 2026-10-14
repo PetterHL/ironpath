@@ -92,10 +92,14 @@ public final class Advisor
 	{ return upgrades(account, preferences, reference, new RangedComparisonService(catalog).propose(account), pace); }
 
 	public List<UpgradeView> upgrades(AccountSnapshot account, Preferences preferences, CombatSetup reference, CombatSetup rangedReference, PaceScenario pace)
+	{ return upgrades(account,preferences,reference,rangedReference,new MeleeComparisonService(catalog).propose(account,preferences),pace); }
+
+	public List<UpgradeView> upgrades(AccountSnapshot account, Preferences preferences, CombatSetup reference, CombatSetup rangedReference, CombatSetup meleeReference, PaceScenario pace)
 	{
 		CombatComparisonService comparisonService = new CombatComparisonService(catalog);
 		RangedComparisonService rangedService = new RangedComparisonService(catalog);
-		Map<String,CombatSetup> rangedContexts = new LinkedHashMap<>(), magicContexts = new LinkedHashMap<>();
+		MeleeComparisonService meleeService = new MeleeComparisonService(catalog);
+		Map<String,CombatSetup> rangedContexts = new LinkedHashMap<>(), magicContexts = new LinkedHashMap<>(), meleeContexts = new LinkedHashMap<>();
 		Map<String, Map<String, String>> referenceChoices = new LinkedHashMap<>();
 		PoweredMagic.SLOTS.forEach(slot -> referenceChoices.put(slot, comparisonService.choices(slot, account)));
 		referenceChoices.put("target", comparisonService.targetChoices());
@@ -173,8 +177,8 @@ public final class Advisor
 			if (routes.stream().noneMatch(r -> r.available)) { label += " · Plan ahead"; }
 			if (equip.stream().anyMatch(r -> r.truth != Truth.TRUE)) { label += " · Needs equip levels"; }
 			if (band == KnowledgeCatalog.Benefit.MINOR) { label += " · Contextual / consider deferring"; }
-			boolean ranged = upgrade.comparison.equals("RANGED");
-			ComparisonResult comparison = ranged ? rangedService.compare(account, preferences, rangedReference, upgrade)
+			boolean ranged = upgrade.comparison.equals("RANGED"), melee = upgrade.comparison.equals("MELEE");
+			ComparisonResult comparison = melee ? meleeService.compare(account,preferences,meleeReference,upgrade) : ranged ? rangedService.compare(account, preferences, rangedReference, upgrade)
 				: comparisonService.compare(account, preferences, reference, upgrade);
 			List<ComparisonResult> contexts = new ArrayList<>();
 			if (ranged)
@@ -187,7 +191,16 @@ public final class Advisor
 					contexts.add(resultForTarget);
 				}
 			}
-			if (!ranged && !upgrade.comparison.equals("NONE"))
+			if (melee)
+			{
+				for (String targetId : upgrade.contexts)
+				{
+					if (targetId.equals(meleeReference.target)) { continue; }
+					CombatSetup contextual=meleeContexts.computeIfAbsent(targetId,id->meleeService.propose(account,preferences,id));
+					contexts.add(meleeService.compare(account,preferences,contextual,upgrade));
+				}
+			}
+			if (!ranged && !melee && !upgrade.comparison.equals("NONE"))
 			{
 				for (String targetId : upgrade.contexts)
 				{
@@ -247,7 +260,7 @@ public final class Advisor
 			}
 			result.add(new UpgradeView(upgrade, label, context == null ? upgrade.valueReason : context.reason,
 				band, evidence, applications, questions.stream().distinct().collect(Collectors.toList()), routes, equip, parts, shared, comparison, path,
-				ranged ? rangedService.referenceChoices(account) : referenceChoices, contexts, personalValue, new ArrayList<>(valueSources)));
+				melee ? meleeService.referenceChoices(account) : ranged ? rangedService.referenceChoices(account) : referenceChoices, contexts, personalValue, new ArrayList<>(valueSources)));
 		}
 		List<RecommendationRanker.Candidate> candidates = new ArrayList<>();
 		for (UpgradeView view : result)

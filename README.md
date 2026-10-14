@@ -2,7 +2,9 @@
 
 **Your path to endgame PvM**
 
-Integrated development build · 14 October 2026 · plugin 0.8.3 · knowledge r3a-3 · schema 10
+R3b ordinary melee review build · 14 October 2026 · plugin 0.9.0 · knowledge r3b-1 · schema 11
+
+**R3b first increment:** ordinary melee now compares complete supported owned one-/two-handed packages, actual stab/slash/crush styles, prayer/full-super-potion assumptions, max hit, hit chance and theoretical DPS. Abyssal tentacle has a Value/Path outcome with owned-component bypasses and explicit whip consumption. Neutral, ordinary Dharok and Graardor are reviewed contexts. Observed Fang/Scythe/Soulreaper/lance competitors keep the DPS-superiority claim unavailable while unaffected reference metrics remain visible. [Support, validation and pending client checks](docs/validation/R3b-ordinary-melee.md). Task/Salve, demon/dragon multipliers, endgame families, broader armour/treads, specials and time/trip metrics remain open R3b/R4 work.
 
 **UX follow-up:** Browse searches supported upgrades by item name, combines search with existing categories and offers Clear filters. Typing retains the live editor; observation refreshes preserve caret/selection. Overview/Browse retain independent card anchors, and Back follows the same card after account updates. [Component evidence and pending client checks](docs/validation/ux-navigation.md). Broader R6 filters and owned-use search remain pending.
 

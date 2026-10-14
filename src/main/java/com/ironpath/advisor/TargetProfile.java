@@ -8,6 +8,10 @@ public final class TargetProfile
 	public String id, name, variant;
 	public int npcId, magicLevel, magicDefence;
 	public Integer defenceLevel;
+	public Integer meleeStab, meleeSlash, meleeCrush;
+	public Long meleeDefenceRoll(MeleeModel.Type type)
+	{ Integer bonus=type==MeleeModel.Type.STAB ? meleeStab : type==MeleeModel.Type.SLASH ? meleeSlash : meleeCrush;
+		return defenceLevel==null || bonus==null ? null : (long)(defenceLevel+9)*(bonus+64); }
 	public Integer magicAttack, rangedLight, rangedStandard, rangedHeavy;
 	public boolean xerician, dragon, slayer;
 	public boolean analytical;
