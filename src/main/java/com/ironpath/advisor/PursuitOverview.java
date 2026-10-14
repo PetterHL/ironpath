@@ -13,10 +13,15 @@ public final class PursuitOverview
 	public final List<Advisor.UpgradeView> all, pursuits, longTerm, conditional, preview;
 	public final Map<String,String> previewReasons;
 	public final List<ActivityOpportunity> activities;
+	public final List<OwnedUpgrade> owned;
 	public final List<Advisor.Recommendation> quickActions, broadAdvice;
 	public PursuitOverview(List<Advisor.UpgradeView> all, List<ActivityOpportunity> activities,
 		List<Advisor.Recommendation> quickActions, List<Advisor.Recommendation> broadAdvice)
+	{ this(all,activities,quickActions,broadAdvice,List.of()); }
+	public PursuitOverview(List<Advisor.UpgradeView> all, List<ActivityOpportunity> activities,
+		List<Advisor.Recommendation> quickActions, List<Advisor.Recommendation> broadAdvice, List<OwnedUpgrade> owned)
 	{
+		this.owned=List.copyOf(owned);
 		this.all=List.copyOf(all); this.activities=List.copyOf(activities);
 		this.quickActions=List.copyOf(quickActions); this.broadAdvice=List.copyOf(broadAdvice);
 		List<Advisor.UpgradeView> active=new ArrayList<>(), longer=new ArrayList<>(), checks=new ArrayList<>();

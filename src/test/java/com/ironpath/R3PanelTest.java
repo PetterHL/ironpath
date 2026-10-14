@@ -32,7 +32,7 @@ public class R3PanelTest
 	private void render()
 	{
 		List<Advisor.UpgradeView> all=advisor.upgrades(account,preferences);
-		overview=new PursuitOverview(all,advisor.activityOpportunities(account,preferences,all),List.of(),List.of());
+		overview=new PursuitOverview(all,advisor.activityOpportunities(account,preferences,all),List.of(),List.of(),advisor.ownedUpgrades(account,preferences));
 		panel.render("Synthetic R3a evidence",account,List.of(),catalog,null,preferences,new IronpathPanel.Actions()
 		{
 			public void goal(String id) {} public void clear() {} public void confirm(String key,Boolean v) {}
@@ -377,4 +377,98 @@ public class R3PanelTest
 			assertEquals(2,cardIds().size()); assertEquals(0,scroll.getViewport().getViewPosition().y);
 		});
 	}
+	private void selectFacet(String key,String label)
+	{
+		JComboBox<?> combo=(JComboBox<?>)named("browse-"+key);
+		for(int i=0;i<combo.getItemCount();i++) { if(label.equals(combo.getItemAt(i).toString())) {combo.setSelectedIndex(i); return;} }
+		throw new AssertionError("Missing "+key+": "+label);
+	}
+	@Test public void discoveryCountsMatchDestinationsAndHeaderOpensAccountEvidence() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			JButton longer=(JButton)named("home-long-term"); assertEquals("Long-term ("+overview.longTerm.size()+")",longer.getText());
+			((JButton)named("account-evidence")).doClick(); assertTrue(text().contains("Bank:")); assertNotNull(named("account-back"));
+			assertTrue(children(panel).stream().noneMatch(c->"homepage-deck".equals(c.getName())));
+			button("Back to upgrades").doClick(); assertNotNull(named("homepage-deck"));
+			button("Long-term").doClick(); assertEquals(overview.longTerm.size(),cardIds().size());
+			button("Overview").doClick(); button("Specialist").doClick();
+			assertEquals(overview.all.stream().filter(u->u.valueEvidence.specialist).count(),cardIds().size());
+			((JButton)named("path-upgrade-zaryte-crossbow")).doClick(); ((JButton)named("account-evidence")).doClick();
+			button("Back to upgrades").doClick(); assertTrue(text().contains("Acquisition paths"));
+			button("Back to upgrades").doClick(); assertEquals("Specialist",((JComboBox<?>)named("browse-category")).getSelectedItem());
+			((JButton)named("path-upgrade-zaryte-crossbow")).doClick(); ((JButton)named("account-evidence")).doClick();
+			account=items(account,26374); render(); assertNotNull(named("account-back"));
+			button("Back to upgrades").doClick(); assertNotNull(named("browse-category"));
+		});
+	}
+	@Test public void combinedFacetsKeepDomainOrderAndBackRestoresExpandedFilters() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			button("Browse").doClick(); button("More filters").doClick();
+			selectFacet("style","Ranged"); selectFacet("slot","neck");
+			assertEquals(overview.all.stream().filter(u->new BrowseMetadata(catalog,u.upgrade).matches("Ranged","neck","","")).map(u->"upgrade-card-"+u.upgrade.id).collect(java.util.stream.Collectors.toList()),cardIds());
+			assertFalse(cardIds().isEmpty()); String id=cardIds().get(0).substring("upgrade-card-".length());
+			((JButton)named("path-upgrade-"+id)).doClick(); button("Back to upgrades").doClick();
+			assertTrue(visible(named("browse-style"))); assertEquals("Ranged",((JComboBox<?>)named("browse-style")).getSelectedItem().toString());
+			((JTextField)named("browse-search")).setText("not an item"); assertTrue(cardIds().isEmpty());
+			button("Clear filters").doClick(); assertEquals(overview.all.size(),cardIds().size());
+			selectFacet("role","ranged neck"); assertTrue(cardIds().contains("upgrade-card-necklace-of-anguish"));
+			selectFacet("activity","Demonic Gorillas"); assertFalse(cardIds().isEmpty());
+		});
+	}
+	@Test public void ownedSearchExplainsCoverageWithoutAcquisitionOrInventedMetrics() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			account=items(account,19544); preferences=preferences.skip("demonic-gorillas",true); render();
+			button("Browse").doClick(); button("More filters").doClick(); ((JCheckBox)named("browse-owned")).doClick();
+			((JTextField)named("browse-search")).setText("tormented");
+			assertEquals(List.of("upgrade-card-owned:tormented-bracelet"),cardIds());
+			((JButton)named("open-upgrade-owned:tormented-bracelet")).doClick();
+			assertTrue(text().contains("acquisition is not recommended")); assertTrue(text().contains("not quantified"));
+			assertTrue(children(panel).stream().noneMatch(c->c instanceof JButton&&"Path".equals(((JButton)c).getText())));
+			button("Back to upgrades").doClick(); assertEquals("tormented",((JTextField)named("browse-search")).getText());
+			((JComboBox<?>)named("browse-category")).setSelectedItem("Owned / covered"); assertEquals(1,cardIds().size());
+		});
+	}
+	@Test public void browseUpdateNoticeTracksEvidenceChangesNotRepaintOrNavigation() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			button("Browse").doClick(); render(); assertTrue(children(panel).stream().noneMatch(c->"browse-update".equals(c.getName())));
+			account=items(account,19544); render(); assertNotNull(named("browse-update"));
+			button("Overview").doClick(); button("Browse").doClick(); assertTrue(children(panel).stream().noneMatch(c->"browse-update".equals(c.getName())));
+			panel.render("Profile changed",null,List.of(),catalog,null,Preferences.EMPTY,null,"",List.of()); render(); button("Browse").doClick();
+			assertTrue(children(panel).stream().noneMatch(c->"browse-update".equals(c.getName())));
+		});
+	}
+	@Test public void facetsOwnedAndAccountActionsClearAcrossProfileChanges() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			button("Browse").doClick(); button("More filters").doClick(); selectFacet("style","Ranged");
+			((JCheckBox)named("browse-owned")).doClick(); JButton oldAccount=(JButton)named("account-evidence");
+			JComboBox<?> oldStyle=(JComboBox<?>)named("browse-style");
+			panel.render("Profile changed",null,List.of(),catalog,null,Preferences.EMPTY,null,"",List.of()); oldAccount.doClick(); oldStyle.setSelectedIndex(0);
+			render(); assertNotNull(named("homepage-deck")); button("Browse").doClick();
+			assertFalse(((JCheckBox)named("browse-owned")).isSelected()); assertEquals("Any style",((JComboBox<?>)named("browse-style")).getSelectedItem().toString());
+			assertFalse(visible(named("browse-style")));
+		});
+	}
+	@Test public void fullDiscoveryCapturesRetainWrappingWithEnlargedFont() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			try {
+				capture("ux-completion-home"); ((JButton)named("open-upgrade-tormented-bracelet")).doClick(); capture("ux-completion-value");
+				button("Path").doClick(); capture("ux-completion-path"); button("Back to upgrades").doClick();
+				((JButton)named("account-evidence")).doClick(); capture("ux-completion-account"); button("Back to upgrades").doClick();
+				button("Browse").doClick(); capture("ux-completion-browse");
+				button("More filters").doClick(); selectFacet("style","Ranged"); selectFacet("slot","neck"); capture("ux-completion-filters");
+				panel.setFont(panel.getFont().deriveFont(20f)); render(); capture("ux-completion-large-font");
+				for(Component c:children(panel)) if(c instanceof JTextArea&&visible(c)) {assertTrue(((JTextArea)c).getText(),c.getHeight()>=c.getPreferredSize().height);}
+				panel.setFont(panel.getFont().deriveFont(12f)); render(); button("Clear filters").doClick(); button("More filters").doClick();
+				((JComboBox<?>)named("browse-category")).setSelectedItem("Owned / covered"); capture("ux-completion-owned");
+				String ownedId=cardIds().get(0).substring("upgrade-card-".length()); ((JButton)named("open-upgrade-"+ownedId)).doClick(); capture("ux-completion-owned-value");
+			}
+			catch(Exception e){throw new RuntimeException(e);}
+		});
+	}
+
 }

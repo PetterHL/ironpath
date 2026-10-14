@@ -2,9 +2,9 @@
 
 **Your path to endgame PvM**
 
-Integrated development build · 14 October 2026 · plugin 0.9.0 · knowledge r3a-3 · schema 10
+KI1 + UX integration development build · 14 October 2026 · plugin 0.9.0 · knowledge r3a-4 · schema 10
 
-**UX follow-up:** Browse searches supported upgrades by item name, combines search with existing categories and offers Clear filters. Typing retains the live editor; observation refreshes preserve caret/selection. Overview/Browse retain independent card anchors, and Back follows the same card after account updates. [Component evidence and pending client checks](docs/validation/ux-navigation.md). Broader R6 filters and owned-use search remain pending.
+**UX completion for review:** compact Browse/account entry, counted Long-term/Specialist discovery and a quiet list-update notice complete the current homepage details. Browse combines item-name search with style/slot/activity/role/importance/status filters, and offers owned/covered use explanations without new acquisition advice. Value/Path share the item header and show the selected tab. Filters, caret and ID anchors survive Back/updates and clear on account changes. [Component evidence and pending real-client checks](docs/validation/ux-completion.md). Broader R6 relationship/model coverage remains open; no client/player acceptance is claimed.
 
 **KI1 implementation candidate:** opt-in **Recent boss** context for normal Commander Zilyana captures worn-state segments, observed levels/prayers/style and local engagement timing in session memory. After corroborated death/loot it compares eligible ranged upgrades, supported owned alternatives and recurring ammunition against a captured worn state. No personal seconds or full-fight DPS is claimed. Enable **Recent boss (experimental)** under Account and preferences; it waits for a subsequent observed spawn. Loading/profile/account transitions clear all recent evidence. Internal darts, active quiver, specials and unsupported gear retain visible model gaps. [Validation, limitations and pending real-client gates](docs/validation/KI1.md). KI2/KI3 and most-boss/raid coverage remain open; Zilyana is the pilot, not the product boundary.
 

@@ -81,6 +81,33 @@ public final class Advisor
 		return candidates;
 	}
 
+	/** Inspect possession-covered outcomes without inventing acquisition priority or usability. */
+	public List<OwnedUpgrade> ownedUpgrades(AccountSnapshot account, Preferences preferences)
+	{
+		List<OwnedUpgrade> result=new ArrayList<>();
+		for (KnowledgeCatalog.Upgrade upgrade : catalog.upgrades)
+		{
+			if (!"reviewed".equals(upgrade.status) || truth(upgrade.ownedWhen,account,preferences)!=Truth.TRUE) { continue; }
+			List<String> applications=upgrade.applications.stream().filter(a->truth(a.when,account,preferences)==Truth.TRUE)
+				.map(a->"Reviewed use: "+a.label).collect(Collectors.toList());
+			List<String> roles=new ArrayList<>();
+			Set<String> sources=new java.util.LinkedHashSet<>(upgrade.sources);
+			for (ProgressionKnowledge.Relation role : catalog.progression.relations)
+			{
+				if (!role.subject.equals(upgrade.id)||!"reviewed".equals(role.status)) { continue; }
+				Truth applicable=truth(role.when,account,preferences);
+				if (applicable==Truth.FALSE||truth(role.noBenefitWhen,account,preferences)==Truth.TRUE) { continue; }
+				roles.add((applicable==Truth.UNKNOWN ? "Conditional role: " : "Reviewed role: ")+role.reason+" "+role.limitation);
+				for (ProgressionKnowledge.Alternative alternative:role.alternatives)
+				{ if (truth(alternative.when,account,preferences)==Truth.TRUE) { roles.add("Adequate owned alternative: "+alternative.label); } }
+				sources.addAll(role.sources);
+			}
+			result.add(new OwnedUpgrade(upgrade,conditionEvidence(upgrade.ownedWhen,account,preferences),applications,roles,List.copyOf(sources)));
+		}
+		result.sort(Comparator.comparing(u->u.upgrade.id));
+		return List.copyOf(result);
+	}
+
 	/** Substantial outcomes, independent of route availability and selected goals. */
 	public List<UpgradeView> upgrades(AccountSnapshot account, Preferences preferences)
 	{ return upgrades(account, preferences, new CombatComparisonService(catalog).propose(account)); }
