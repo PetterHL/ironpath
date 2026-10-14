@@ -25,7 +25,7 @@ public class R15AdviceTest
 	// Preserve the originally selected high-defence context for these R1/R1.5 regressions.
 	private List<Advisor.UpgradeView> reviewedUpgrades(Advisor evaluator, AccountSnapshot a, Preferences p)
 	{ return evaluator.upgrades(a, p, new PoweredMagic(catalog).propose(a, "graardor")).stream()
-		.filter(v -> !v.upgrade.comparison.equals("RANGED")).collect(java.util.stream.Collectors.toList()); }
+		.filter(v -> !v.upgrade.comparison.equals("RANGED") && !v.upgrade.id.equals("venator-bow")).collect(java.util.stream.Collectors.toList()); }
 	@Before public void setup() throws Exception { catalog=KnowledgeCatalog.load(new Gson());advisor=new Advisor(catalog);missing=absent(catalog); }
 	private Advisor.UpgradeView view(AccountSnapshot a, Preferences p, String id)
 	{ return reviewedUpgrades(advisor, a,p).stream().filter(v->v.upgrade.id.equals(id)).findFirst().orElseThrow(); }
@@ -94,7 +94,7 @@ public class R15AdviceTest
 	{
 		AccountSnapshot a=developed(false);
 		ActivityOpportunity gorillas=advisor.activityOpportunities(a,missing,reviewedUpgrades(advisor, a,missing)).stream().filter(o->o.activity.equals("demonic-gorillas")).findFirst().orElseThrow();
-		assertEquals("Single reward route",gorillas.category);assertEquals(List.of("tormented-bracelet"),gorillas.usefulFamilies);
+		assertEquals("Worth doing",gorillas.category);assertEquals(List.of("tormented-bracelet"),gorillas.usefulFamilies);
 	}
 	@Test public void ownedShardOrIntermediateRemovesOnlyItsDropStageAndStillChecksUnknownWork()
 	{
@@ -149,7 +149,7 @@ public class R15AdviceTest
 	@Test public void raidPreparationRemainsConsequentialEvenWhenItIsNotAHardRecipeEdge()
 	{
 		assertEquals(Category.CHECK,view(withFact(developed(false),"toa-preparation",Observation.unknown()),missing,"tumekens-shadow").pursuit.category);
-		assertEquals(Category.PLAN,view(withFact(developed(false),"toa-preparation",fact(false)),missing,"tumekens-shadow").pursuit.category);
+		assertEquals(Category.CHECK,view(withFact(developed(false),"toa-preparation",fact(false)),missing,"tumekens-shadow").pursuit.category);
 		assertEquals(Category.CHECK,view(withFact(developed(false),"cox-preparation",Observation.unknown()),missing,"ancestral-robe-top").pursuit.category);
 	}
 	@Test public void sourceRecordOrderAndExtraEncounterProseCannotChangeCategoriesOrPriority() throws Exception

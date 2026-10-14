@@ -26,6 +26,7 @@ public final class KnowledgeCatalog
 	private static final Set<String> FACTS = Set.of("rigour", "augury", "song-of-elves", "regicide",
 		"beneath-cursed-sands", "perilous-moons", "deadeye", "mystic-vigour", "final-dawn", "frozen-door",
 		"smoke-task", "smoke-protection", "nex-entry", "nex-team", "zaryte-context", "zaryte-shards", "doom-preparation", "treads-tears", "desert-treasure-ii", "monkey-madness-ii", "duke-defeated", "peer-ring-icons", "cox-preparation", "toa-preparation", "monkey-form",
+		"multi-combat-method", "secrets-of-north", "muspah-preparation", "doom-delve-two", "doom-delve-three", "doom-delve-four",
 		"blood-moon-rises", "dragon-slayer-ii", "leviathan-defeated", "colosseum-preparation", "zilyana-entry");
 	public final Map<String, Goal> goals;
 	public final Map<String, String> activities;
@@ -38,13 +39,14 @@ public final class KnowledgeCatalog
 	public final RangedSpec ranged;
 	public final Map<String, AcquisitionModel> acquisitionModels;
 	public final List<ActivityReward> activityRewards;
+	public final ProgressionKnowledge progression;
 	public final Map<String, Source> sources;
 	final Map<String, List<Gear>> gear;
 	final Map<String, List<Integer>> itemSets;
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 9 || document.decisions == null
+		if (document.schemaVersion != 10 || document.decisions == null
 			|| document.decisions.isEmpty())
 		{
 			throw new IllegalArgumentException("Unsupported or incomplete PvM catalogue");
@@ -105,7 +107,7 @@ public final class KnowledgeCatalog
 		}
 		for (Source source : sources.values())
 		{
-			if (source.decisions == null || source.decisions.isEmpty() && source.items.isEmpty() && source.models.isEmpty() && source.routes.isEmpty() && source.contexts.isEmpty() || !ids.containsAll(source.decisions)
+			if (source.decisions == null || source.decisions.isEmpty() && source.items.isEmpty() && source.models.isEmpty() && source.routes.isEmpty() && source.contexts.isEmpty() && source.activityContexts.isEmpty() && source.relations.isEmpty() || !ids.containsAll(source.decisions)
 				|| new HashSet<>(source.decisions).size() != source.decisions.size())
 			{
 				throw new IllegalArgumentException("Invalid affected decisions");
@@ -236,7 +238,7 @@ public final class KnowledgeCatalog
 			evidence(upgrade.sources);
 			Decision contract = new Decision(); contract.sources = upgrade.sources;
 			validate(upgrade.when, contract, 0); validate(upgrade.ownedWhen, contract, 0);
-			validate(upgrade.equipWhen, contract, 0);
+			validate(upgrade.equipWhen, contract, 0); validate(upgrade.eligibilityWhen, contract, 0);
 			for (String route : upgrade.routes)
 			{ if (!byId.get(route).sources.containsAll(upgrade.sources)) { throw new IllegalArgumentException("Route lacks upgrade evidence"); } }
 			if (upgrade.applications == null || upgrade.applications.isEmpty()
@@ -270,10 +272,11 @@ public final class KnowledgeCatalog
 			for (SharedReward reward : upgrade.shared)
 			{
 				if (reward == null) { throw new IllegalArgumentException("Missing shared reward"); }
-				require(reward.title); require(reward.detail); evidence(reward.sources);
-				if (!upgrade.sources.containsAll(reward.sources) || reward.minDelve < 2 || reward.minDelve > 4)
+				require(reward.title); require(reward.detail); require(reward.eligibilityLabel); evidence(reward.sources);
+				if (!upgrade.sources.containsAll(reward.sources) || reward.eligibilityWhen == null || reward.retiredMinDelve != null)
 				{ throw new IllegalArgumentException("Invalid shared reward evidence"); }
 				validate(reward.when, contract, 0); validate(reward.ownedWhen, contract, 0);
+			validate(reward.eligibilityWhen, contract, 0);
 			}
 			for (ContextBenefit benefit : upgrade.contextBenefits)
 			{
@@ -384,7 +387,7 @@ public final class KnowledgeCatalog
 			{ throw new IllegalArgumentException("Missing reviewed comparison contexts"); }
 			upgrade.contexts.forEach(KnowledgeCatalog::stableId);
 			if (upgrade.contexts.stream().anyMatch(context -> !targetIds.contains(context)
-				&& !(upgrade.comparison.equals("NONE") && context.equals("reviewed-specialist"))))
+				&& !(upgrade.comparison.equals("NONE") && document.activityContexts.stream().anyMatch(c -> c.id.equals(context)))))
 			{ throw new IllegalArgumentException("Unknown reviewed comparison context"); }
 			for (String route : upgrade.routes)
 			{
@@ -408,11 +411,15 @@ public final class KnowledgeCatalog
 		{
 			if (reward == null) { throw new IllegalArgumentException("Missing shared-activity reward"); }
 			stableId(reward.id); stableId(reward.family); stableId(reward.mode); require(reward.title);
-			if (!rewardIds.add(reward.id) || !activities.containsKey(reward.activity) || reward.benefit == null || !itemIds.contains(reward.itemId))
+			if (!rewardIds.add(reward.id) || !activities.containsKey(reward.activity) || reward.benefit == null || reward.tail == null || !itemIds.contains(reward.itemId))
 			{ throw new IllegalArgumentException("Invalid activity reward"); }
 			evidence(reward.sources); Decision contract=new Decision(); contract.sources=reward.sources;
 			validate(reward.when, contract, 0); validate(reward.ownedWhen, contract, 0);
+			validate(reward.eligibilityWhen, contract, 0);
 			validate(reward.accessWhen, contract, 0); validate(reward.prepWhen, contract, 0);
+			if (reward.requiredQuantity != null)
+			{ if (reward.requiredQuantity<1) { throw new IllegalArgumentException("Invalid reward resource quantity"); } validate(reward.resourceWhen,contract,0); }
+			else if (reward.resourceWhen != null) { throw new IllegalArgumentException("Missing resource quantity"); }
 			gear.values().stream().flatMap(List::stream).filter(g -> g.id == reward.itemId).forEach(g -> requireItemEvidence(g, contract));
 			for (String source : reward.sources) { if (!sources.get(source).rewards.contains(reward.id)) { throw new IllegalArgumentException("Missing reward source dependency"); } }
 		}
@@ -435,6 +442,44 @@ public final class KnowledgeCatalog
 			for (String id : source.contexts) { if (comparison.targets.stream().noneMatch(t -> t.id.equals(id) && t.sources.contains(source.id)))
 				{ throw new IllegalArgumentException("Inconsistent source context dependency"); } }
 		}
+
+		if (document.activityContexts == null || document.roleSupport == null) { throw new IllegalArgumentException("Missing progression knowledge"); }
+		Set<String> contextKeys=new HashSet<>(), relationIds=new HashSet<>();
+		for (ProgressionKnowledge.Context context : document.activityContexts)
+		{
+			stableId(context.id); stableId(context.mode); require(context.method);
+			if (!contextKeys.add(context.id) || !activities.containsKey(context.activity) || context.preparation == null || context.resourceConflicts == null
+				|| LocalDate.parse(require(context.reviewed)).isAfter(reviewed)) { throw new IllegalArgumentException("Invalid activity context"); }
+			evidence(context.sources); Decision contract=new Decision(); contract.sources=context.sources;
+			validate(context.accessWhen,contract,0); validate(context.methodWhen,contract,0);
+			for (ProgressionKnowledge.Preparation option : context.preparation)
+			{
+				stableId(option.role); require(option.label); evidence(option.sources);
+				if (option.constraint == null || !context.sources.containsAll(option.sources)) { throw new IllegalArgumentException("Invalid preparation evidence"); }
+				validate(option.when,contract,0);
+			}
+			for (String source : context.sources) { if (!sources.get(source).activityContexts.contains(context.id)) { throw new IllegalArgumentException("Missing method source dependency"); } }
+			context.resourceConflicts.forEach(KnowledgeCatalog::require); context.resourceConflicts=List.copyOf(context.resourceConflicts);
+			context.preparation=List.copyOf(context.preparation); context.sources=List.copyOf(context.sources);
+		}
+		for (ProgressionKnowledge.Relation relation : document.roleSupport)
+		{
+			stableId(relation.id); stableId(relation.role); require(relation.reason); require(relation.limitation);
+			if (!relationIds.add(relation.id) || upgrades.stream().noneMatch(u->u.id.equals(relation.subject)) || !contextKeys.contains(relation.context)
+				|| relation.dimension == null || relation.significance == null || relation.alternatives == null
+				|| !Set.of("reviewed","candidate","withdrawn").contains(require(relation.status))
+				|| LocalDate.parse(require(relation.reviewed)).isAfter(reviewed)) { throw new IllegalArgumentException("Invalid role relationship"); }
+			evidence(relation.sources); Decision contract=new Decision(); contract.sources=relation.sources;
+			validate(relation.when,contract,0); validate(relation.noBenefitWhen,contract,0);
+			for (ProgressionKnowledge.Alternative alternative : relation.alternatives) { require(alternative.label); validate(alternative.when,contract,0); }
+			relation.alternatives=List.copyOf(relation.alternatives); relation.sources=List.copyOf(relation.sources);
+			for (String source : relation.sources) { if (!sources.get(source).relations.contains(relation.id)) { throw new IllegalArgumentException("Missing claim source dependency"); } }
+		}
+		for (Source source : sources.values())
+		{ if (!contextKeys.containsAll(source.activityContexts) || !relationIds.containsAll(source.relations)
+			|| source.relations.stream().anyMatch(id->document.roleSupport.stream().noneMatch(r->r.id.equals(id)&&r.sources.contains(source.id)))
+			|| source.activityContexts.stream().anyMatch(id->document.activityContexts.stream().noneMatch(c->c.id.equals(id)&&c.sources.contains(source.id)))) { throw new IllegalArgumentException("Unknown claim dependency"); } }
+		progression=new ProgressionKnowledge(document.activityContexts,document.roleSupport);
 
 	}
 
@@ -505,6 +550,12 @@ public final class KnowledgeCatalog
 		choices.put("zaryte-shards", "250 nihil shards confirmed (manual quantity check)");
 		choices.put("doom-preparation", "Doom supplies/preparation reviewed (not delve capability)");
 		choices.put("treads-tears", "4,000 demon tears for one optional treads addition (manual quantity check)");
+		choices.put("multi-combat-method", "Intended Venator use has eligible packed multicombat targets (manual scenario)");
+		choices.put("secrets-of-north", "Secrets of the North completed");
+		choices.put("muspah-preparation", "Muspah method and supplies reviewed (not success certification)");
+		choices.put("doom-delve-two", "Planning scenario: complete Doom delve 2 (not observed ability)");
+		choices.put("doom-delve-three", "Planning scenario: complete Doom delve 3 (not observed ability)");
+		choices.put("doom-delve-four", "Planning scenario: complete Doom delve 4 (not observed ability)");
 		ownershipLabels.entrySet().stream().sorted(Map.Entry.comparingByKey())
 			.forEach(e -> choices.put("owns-" + e.getKey(), e.getValue()));
 		gear.values().stream().flatMap(List::stream).sorted(java.util.Comparator.comparing(g -> g.label))
@@ -644,6 +695,8 @@ public final class KnowledgeCatalog
 		RangedSpec ranged;
 		List<AcquisitionSpec> acquisitions;
 		List<ActivityReward> activityRewards;
+		List<ProgressionKnowledge.Context> activityContexts;
+		List<ProgressionKnowledge.Relation> roleSupport;
 	}
 
 	public static final class Upgrade
@@ -651,7 +704,7 @@ public final class KnowledgeCatalog
 		public String id, title, valueReason, alternatives, remainingWork, limitation, comparison, headline, effortShort, status, reviewed;
 		public int itemId;
 		public Benefit benefitBand;
-		public Condition when, ownedWhen, equipWhen;
+		public Condition when, ownedWhen, equipWhen, eligibilityWhen;
 		public List<String> routes, goals, sources, unknownSets;
 		public List<Application> applications;
 		public List<Part> parts;
@@ -676,7 +729,10 @@ public final class KnowledgeCatalog
 	public static final class SharedReward
 	{
 		public String title, detail;
-		public int minDelve;
+		public String eligibilityLabel;
+		// Reject the retired schema-9 field rather than silently retaining a second source of truth.
+		@com.google.gson.annotations.SerializedName("minDelve") private Integer retiredMinDelve;
+		public Condition eligibilityWhen;
 		public Condition when, ownedWhen;
 		public List<String> sources;
 	}
@@ -754,7 +810,11 @@ public final class KnowledgeCatalog
 		public String id, activity, mode, family, title;
 		public int itemId;
 		public Benefit benefit;
+		public PursuitAssessment.Tail tail;
+		public Integer requiredQuantity;
+		public Condition resourceWhen;
 		public Condition when, ownedWhen, accessWhen, prepWhen;
+		public Condition eligibilityWhen;
 		public List<String> sources;
 	}
 
@@ -787,7 +847,7 @@ public final class KnowledgeCatalog
 		public List<String> decisions;
 		public List<Integer> items = List.of();
 		public List<String> models = List.of(), routes = List.of(), contexts = List.of();
-		public List<String> acquisitions = List.of(), efforts = List.of(), rewards = List.of();
+		public List<String> acquisitions = List.of(), efforts = List.of(), rewards = List.of(), relations = List.of(), activityContexts = List.of();
 	}
 
 	static final class Gear

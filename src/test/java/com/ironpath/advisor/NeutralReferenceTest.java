@@ -54,7 +54,9 @@ public class NeutralReferenceTest
 		// Neutral marginal loss does not remove the specialist/long-term item from discovery.
 		Advisor.UpgradeView view=new Advisor(catalog).upgrades(a,R15Fixtures.absent(catalog)).stream()
 			.filter(v->v.upgrade.id.equals("tumekens-shadow")).findFirst().orElseThrow();
-		assertEquals(PursuitAssessment.Category.DEFER,view.pursuit.category);
+		assertEquals(PursuitAssessment.Category.CHECK,view.pursuit.category);
+		assertTrue(view.comparison.dpsGain()<0);
+		assertTrue(view.contextComparisons.stream().anyMatch(c->c.available(THEORETICAL_DPS)&&c.dpsGain()>0));
 	}
 	@Test public void equalMaxHitsStillHaveDifferentDpsAtDifferentIntervals()
 	{

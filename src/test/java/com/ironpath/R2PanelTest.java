@@ -57,7 +57,7 @@ public class R2PanelTest
 			{
 				panel=new IronpathPanel();render();capture("overview");button("Browse").doClick();capture("browse");
 				assertTrue(text().contains("Enemy with 0 Defence"));
-				assertTrue(children(panel).stream().filter(c->"comparison-headline".equals(c.getName())).map(c->((JTextArea)c).getText()).noneMatch(s->s.contains("Zilyana")));
+				assertTrue(children(panel).stream().filter(c->"comparison-headline".equals(c.getName())).map(c->((JTextArea)c).getText()).anyMatch(s->s.contains("Zilyana")));
 				open("twisted-bow");assertTrue(text().indexOf("Theoretical DPS  ")<text().indexOf("Max hit  "));
 				assertFalse(text().contains("Unknown reference"));
 				button("Reviewed encounter trade-offs").doClick();assertTrue("Target",text().contains("Commander Zilyana"));
@@ -67,7 +67,7 @@ public class R2PanelTest
 				button("Apply target").doClick();assertEquals("zilyana",ranged.target);assertEquals("neutral-zero-defence",magic.target);
 				button("Path").doClick();assertTrue(text().contains("No acquisition hours" )||text().contains("No hours")||text().contains("Effort"));capture("tbow-path");
 				button("Back to upgrades").doClick();open("necklace-of-anguish");button("Path").doClick();assertTrue(text().contains("92 Crafting"));assertFalse(text().contains("Bracelet mould"));capture("anguish-path");
-				button("Back to upgrades").doClick();account=R15Fixtures.items(account,12926);ranged=ranged.edit("weapon","12926").edit("loaded-ammo","-1");render();open("rosewood-blowpipe");
+				button("Back to upgrades").doClick();account=R15Fixtures.items(account,12926);ranged=ranged.edit("weapon","12926").edit("loaded-ammo","-1");render();open("twisted-bow");
 				assertTrue(text().contains("DPS unavailable")||text().contains("DPS and hit chance gap"));assertTrue(text().contains("unobserved")||text().contains("not observed"));capture("ammo-gap");
 			}
 			catch(Exception e){throw new RuntimeException(e);}

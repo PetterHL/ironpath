@@ -20,7 +20,7 @@ public class RecommendationRankerTest
 	{
 		List<PursuitAssessment> ranked=new RecommendationRanker().rank(List.of(c("tbow",Mode.LONG_TAIL,Burden.HIGH,100),c("nearer",Mode.REPEATABLE,Burden.LOW,1),c("unknown",Mode.UNKNOWN,Burden.UNKNOWN,1000)));
 		assertEquals("nearer",ranked.get(0).id);assertEquals(Category.LONG_TERM,ranked.get(1).category);assertEquals(Category.CHECK,ranked.get(2).category);
-		assertTrue(ranked.get(0).reasonCodes.contains("READINESS_THEN_BURDEN"));
+		assertTrue(ranked.get(0).reasonCodes.contains("IMPORTANCE_BEFORE_BURDEN"));
 	}
 	@Test public void repeatableAndBoundedAreNotOrderedAsTimeTiers()
 	{
@@ -54,4 +54,17 @@ public class RecommendationRankerTest
 		{ assertEquals(first,new RecommendationRanker().rank(order).stream().map(x->x.id).collect(java.util.stream.Collectors.toList())); }
 		assertTrue(first.indexOf("c")<first.indexOf("a"));
 	}
+	@Test public void personalImportancePrecedesCheapnessAndContextSpellingHasNoPriority()
+	{
+		ValueEvidence key=new ValueEvidence(ValueEvidence.Importance.KEY,"Reviewed consequential utility gap","Owned baseline",true,true,List.of("CORE_ROLE_GAP"),List.of());
+		ValueEvidence contextual=new ValueEvidence(ValueEvidence.Importance.CONTEXTUAL,"Narrow role","Owned baseline",false,false,List.of("REVIEWED_ROLE_VALUE"),List.of());
+		// Reviewed independent utility survives negative ordinary evidence, independently of cheapness.
+		var important=new RecommendationRanker.Candidate(c("important",Mode.REPEATABLE,Burden.MODERATE,-20),key);
+		var cheap=new RecommendationRanker.Candidate(c("cheap",Mode.READY,Burden.LOW,100),contextual);
+		assertEquals("important",new RecommendationRanker().rank(List.of(cheap,important)).get(0).id);
+		var sameImportanceA=candidate("a",Mode.REPEATABLE,Burden.MODERATE,Tail.ORDINARY,"z-context",1,null,null,false,Set.of("a"),List.of());
+		var sameImportanceB=candidate("b",Mode.REPEATABLE,Burden.MODERATE,Tail.ORDINARY,"a-context",999,null,null,false,Set.of("b"),List.of());
+		assertEquals("a",new RecommendationRanker().rank(List.of(sameImportanceB,sameImportanceA)).get(0).id);
+	}
+
 }

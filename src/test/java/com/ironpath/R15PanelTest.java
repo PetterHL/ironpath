@@ -99,7 +99,7 @@ public class R15PanelTest
 		SwingUtilities.invokeAndWait(()->{
 			try
 			{
-				assertTrue(text().contains("Long-term upgrades"));capture("overview");button("Browse").doClick();capture("browse");
+				assertNotNull(button("Long-term"));capture("overview");button("Browse").doClick();capture("browse");
 				assertEquals(advisor.upgrades(account,preferences).size(),children(panel).stream().filter(c->c.getName()!=null&&c.getName().startsWith("open-upgrade-")).count());
 				open("tormented-bracelet").doClick();capture("value");button("Path").doClick();assertTrue(text().contains("Mean 300 kills"));assertTrue(text().contains("Hours unavailable"));capture("path-kills");
 				button("Set pace (optional)").doClick();JTextField input=children(panel).stream().filter(c->"pace-input".equals(c.getName())).map(c->(JTextField)c).findFirst().orElseThrow();input.setText("40");button("Apply pace").doClick();
@@ -119,7 +119,7 @@ public class R15PanelTest
 	{
 		SwingUtilities.invokeAndWait(()->{
 			button("Browse").doClick();layoutPanel();BrowseGrid grid=(BrowseGrid)children(panel).stream().filter(c->c instanceof BrowseGrid).findFirst().orElseThrow();
-			assertEquals(2,grid.columns(213));assertEquals(1,grid.columns(190));
+			assertEquals(1,grid.columns(213));assertEquals(1,grid.columns(345));assertEquals(1,grid.columns(190));
 			JTextArea title=children((Container)grid.getComponent(0)).stream().filter(c->c instanceof JTextArea).map(c->(JTextArea)c).findFirst().orElseThrow();String original=title.getText();
 			title.setText("An extraordinarily long reviewed equipment name for a supported specialist");assertEquals(1,grid.columns(213));title.setText(original);
 			float font=grid.getFont().getSize2D();for(Component child:children(grid))child.setFont(child.getFont().deriveFont(20f));
