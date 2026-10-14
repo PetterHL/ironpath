@@ -1,0 +1,706 @@
+{
+  "reviewDate": "2026-10-13",
+  "baseCommit": "a501e6fa3c022b78d3b34d8d5414059c704ae96f",
+  "purpose": "Documentation evidence metadata; not a runtime knowledge bundle",
+  "sources": [
+    {
+      "url": "https://oldschool.runescape.wiki/w/Chambers_of_Xeric?oldid=15366126",
+      "revision": "15366126",
+      "sha256": "0d63c70ec008275972c805cf4c4552448dbc2ad124b27ff4d1685dce3cacba62",
+      "id": "S01",
+      "title": "Chambers of Xeric",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R01"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Twisted_bow?oldid=15363157",
+      "revision": "15363157",
+      "sha256": "aec08aad2d04dd28c2c0eb702061a8aa8b18482633636dcf53591e6da3a64ccd",
+      "id": "S02",
+      "title": "Twisted bow",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R01",
+        "R15"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Chambers_of_Xeric/Strategies?oldid=15357585",
+      "revision": "15357585",
+      "sha256": "a992112cb0d3bf0d7e6080f610c7b675b447c83fb91df6fe9e733db1ad75c778",
+      "id": "S03",
+      "title": "Chambers of Xeric / Strategies",
+      "kind": "wiki-strategy",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R02",
+        "R03"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Dragon_hunter_lance?oldid=15264894",
+      "revision": "15264894",
+      "sha256": "fb8b5e568da9888836b2a2e6d25568ebe5499497d1b89196e82dccde9ca53159",
+      "id": "S04",
+      "title": "Dragon hunter lance",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R02"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Dragon_warhammer?oldid=15362680",
+      "revision": "15362680",
+      "sha256": "2384874e1da7cdf175b413aefc595ff7466282aeb1cf992cc03a148634595341",
+      "id": "S05",
+      "title": "Dragon warhammer",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R03",
+        "R23"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Bandos_godsword?oldid=15364757",
+      "revision": "15364757",
+      "sha256": "66a879d5fa61fbea32faccf311fc810f72e3ea2aac2b3dfa8d78dccdec29863b",
+      "id": "S06",
+      "title": "Bandos godsword",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R03",
+        "R23"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Venator_bow?oldid=15345156",
+      "revision": "15345156",
+      "sha256": "aaba83a23f0bdd243603bb3a3970f9323e5e67a59d95bb40dd884d5ba7527560",
+      "id": "S07",
+      "title": "Venator bow",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R07",
+        "R08"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Elder_maul?oldid=15240979",
+      "revision": "15240979",
+      "sha256": "51c21427487247c0eb97db2a8f6e3c97af8bc10bd8d20552dd1e037fbcac0700",
+      "id": "S08",
+      "title": "Elder maul",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R04",
+        "R23"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Rigour?oldid=14954629",
+      "revision": "14954629",
+      "sha256": "2c56394f0d37cadc6afc0444959ebebf9d19cb5545485d660129d638473d179a",
+      "id": "S09",
+      "title": "Rigour",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R05"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Necklace_of_anguish?oldid=15301384",
+      "revision": "15301384",
+      "sha256": "d01f5c1a4f7c73c2818b57fe8764e7656ebab373148273e0185ac5a0693e8954",
+      "id": "S10",
+      "title": "Necklace of anguish",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R06"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Fortis_Colosseum/Strategies?oldid=15370386",
+      "revision": "15370386",
+      "sha256": "19b0cd041daa8a2a3e1d8ab98a56571e0f46bb704d522a700122b35e2cb6a259",
+      "id": "S11",
+      "title": "Fortis Colosseum / Strategies",
+      "kind": "wiki-strategy",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R08",
+        "R09",
+        "R21"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Saradomin_godsword?oldid=15231951",
+      "revision": "15231951",
+      "sha256": "92ce9adced875006b47932302f7d13a4b0410077080af5f4a2109c8a450183eb",
+      "id": "S12",
+      "title": "Saradomin godsword",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R09"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Dizana%27s_quiver?oldid=15357677",
+      "revision": "15357677",
+      "sha256": "9f0a1de6f38b985cf03a4debfbc3437a6eae537378af5899dd7c74beff74cc3b",
+      "id": "S13",
+      "title": "Dizana's quiver",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R10"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Phantom_Muspah?oldid=15367478",
+      "revision": "15367478",
+      "sha256": "92dee09857c2c333cb0538d8524e1739354f022464575fd5c3474e5ce2a61dca",
+      "id": "S14",
+      "title": "Phantom Muspah",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R11"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Saturated_heart?oldid=15371902",
+      "revision": "15371902",
+      "sha256": "8bbc8f973c67e5f4f4655c20e480062b8204ffe684df87e227f8952e4c4c4fc3",
+      "id": "S15",
+      "title": "Saturated heart",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R11"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Zaryte_crossbow?oldid=15293439",
+      "revision": "15293439",
+      "sha256": "7cde56378d072b324cfc84bf96fd23b4ca4a9253f209c948774d3278a655f69e",
+      "id": "S16",
+      "title": "Zaryte crossbow",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R12"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Ruby_bolts_(e)?oldid=15358865",
+      "revision": "15358865",
+      "sha256": "241b760f8f589a462824ffd940ac2250b40c5e0d3b6879854c3f6de81431b29c",
+      "id": "S17",
+      "title": "Ruby bolts (e)",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R12"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Lightbearer?oldid=15299656",
+      "revision": "15299656",
+      "sha256": "8a4d983837e046b12a0e1803a5d37dd42b0d244560e282ccf2bb633114bbefe8",
+      "id": "S18",
+      "title": "Lightbearer",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R13"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Scorching_bow?oldid=15317455",
+      "revision": "15317455",
+      "sha256": "5d429fef0e6ecd3ea63c15024c694a0138f16546e2fd9218e1ef1cd17520cc01",
+      "id": "S19",
+      "title": "Scorching bow",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R14",
+        "R15",
+        "R19"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl/Strategies?oldid=15359842",
+      "revision": "15359842",
+      "sha256": "aa4d8e0a2897f08fdfa37f3cd215b5aba0284d0b64ca1ac617871933ff2ccd9a",
+      "id": "S20",
+      "title": "Doom of Mokhaiotl / Strategies",
+      "kind": "wiki-strategy",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R15",
+        "R16",
+        "R30"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl?oldid=15360840",
+      "revision": "15360840",
+      "sha256": "23b6a965867a640a5d2f44bcc078b3df67b24d048a9488d58a661a1ceb46f08b",
+      "id": "S21",
+      "title": "Doom of Mokhaiotl",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R17"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Avernic_treads?oldid=15314043",
+      "revision": "15314043",
+      "sha256": "9ede93882d77b86d7f2868dc471e74055b68c5ab67e48151971965c84b893628",
+      "id": "S22",
+      "title": "Avernic treads",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R17"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Emberlight?oldid=15358485",
+      "revision": "15358485",
+      "sha256": "264ea50bd09294ec41c070b976f3ce5a9e0ca0fd6a7a074d709a0615155ec28c",
+      "id": "S23",
+      "title": "Emberlight",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R18",
+        "R19"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Tormented_synapse?oldid=15192516",
+      "revision": "15192516",
+      "sha256": "b39c62f5c30a25df30ee2062c19d0eab5455cbc7010738fbd21bd285258e72c5",
+      "id": "S24",
+      "title": "Tormented synapse",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R19"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Osmumten%27s_fang?oldid=15236139",
+      "revision": "15236139",
+      "sha256": "2987cbdb2c66df711b5d385e68cdfc37a0e9581a5b69e3d3571deba5998be273",
+      "id": "S25",
+      "title": "Osmumten's fang",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R20"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Scythe_of_vitur?oldid=15365993",
+      "revision": "15365993",
+      "sha256": "0e7cfa29fb67d6d42e1fc5611d7bd9ab70ab1eb7965453f613d791a9b3a630ed",
+      "id": "S26",
+      "title": "Scythe of vitur",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R21"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Soulreaper_axe?oldid=15360513",
+      "revision": "15360513",
+      "sha256": "fe44d7a82a6a89846d3fb54534c0555983fbc88054a9d73d8c548a6bb4e19103",
+      "id": "S27",
+      "title": "Soulreaper axe",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R22"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Keris_partisan_of_the_sun?oldid=15314679",
+      "revision": "15314679",
+      "sha256": "ec44e10c091875aa69739f5aaf50ac6b2dea01150467c1765f224ec897c0d712",
+      "id": "S28",
+      "title": "Keris partisan of the sun",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R24"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Amulet_of_blood_fury?oldid=15355928",
+      "revision": "15355928",
+      "sha256": "463e7bc0a8b7128a018a7f07bb1a439cc10f5c75860daacb1b0bf56ff608483f",
+      "id": "S29",
+      "title": "Amulet of blood fury",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R25"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Divine_rune_pouch?oldid=15359154",
+      "revision": "15359154",
+      "sha256": "95c564aa446df26054cef8cea8eb91ec82067d81f6e8a6796e56cf54b9288d3c",
+      "id": "S30",
+      "title": "Divine rune pouch",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R26"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Ghommal%27s_lucky_penny?oldid=15352575",
+      "revision": "15352575",
+      "sha256": "069812c1325c52fd4a63fc364f777cf9582249d52771c2b90495f0d73d7f130f",
+      "id": "S31",
+      "title": "Ghommal's lucky penny",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R27"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Salve_amulet(ei)?oldid=15365051",
+      "revision": "15365051",
+      "sha256": "abfccd916a9559525a191fc5d52537bbcd23eaf18190bc4f37df54a236dbb121",
+      "id": "S32",
+      "title": "Salve amulet(ei)",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R28"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Augury?oldid=15362822",
+      "revision": "15362822",
+      "sha256": "15ab79d5e937ec7a5d469a0543df9960d88cb075f7666b38eab6d2b02bfbf2e4",
+      "id": "S33",
+      "title": "Augury",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R29"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Phantom_Muspah/Strategies?oldid=15371265",
+      "revision": "15371265",
+      "sha256": "e24a1cd8794b495d41c88c2b8a21e4f3c424902e49afcc4228c6b211b589583f",
+      "id": "S34",
+      "title": "Phantom Muspah / Strategies",
+      "kind": "wiki-strategy",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R11"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Arclight?oldid=15365331",
+      "revision": "15365331",
+      "sha256": "d847f3c8dcb5684d2638725a93a9ab18e0ebca4dc75dd62d74028dd62d9b0f7a",
+      "id": "S35",
+      "title": "Arclight",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R16"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Thrall?oldid=15357994",
+      "revision": "15357994",
+      "sha256": "ef78e7590b2a3aaeeb6a9b42c0809a2dbe7fe4b03f0b862145388d97ef13f57e",
+      "id": "S36",
+      "title": "Thrall",
+      "kind": "wiki-mechanic",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R30"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://secure.runescape.com/m=news/summer-sweep-up---agility--chambers-of-xeric-changes?oldschool=1",
+      "revision": null,
+      "sha256": "df836dca7f951696ea646962f54e49e75e8b75ec555a49cbedc4f7524fbfdab7",
+      "id": "J1",
+      "title": "Summer Sweep-Up — Agility & Chambers of Xeric Changes",
+      "kind": "official-implemented-update",
+      "published": "2026-08-12",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R01"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://secure.runescape.com/m=news/summer-sweep-up-gear--pvm-changes?oldschool=1",
+      "revision": null,
+      "sha256": "5203861ed34d2c95410093e0ae41588054cf6ee248cd37047e59279fd5bb41a6",
+      "id": "J2",
+      "title": "Summer Sweep-Up: Gear & PvM Changes",
+      "kind": "official-implemented-update",
+      "published": "2026-07-22",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R07"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://secure.runescape.com/m=news/summer-sweep-up---hunter--skilling?oldschool=1",
+      "revision": null,
+      "sha256": "f0ddc435a3412770971dc9da42fce08e12762b7b6d948f2094cf4728ee59add4",
+      "id": "J3",
+      "title": "Summer Sweep-Up — Hunter & Skilling",
+      "kind": "official-implemented-update",
+      "published": "2026-08-19",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R07"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://secure.runescape.com/m=news/summer-sweep-up-miscellaneous?oldschool=1",
+      "revision": null,
+      "sha256": "932f7fa3b5eae7bb53d9508d378a70f185e78f3bb0c145e4c0aa65cb3cc0db8f",
+      "id": "J4",
+      "title": "Summer Sweep-Up: Miscellaneous",
+      "kind": "official-implemented-update",
+      "published": "2026-09-02",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R27"
+      ],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://secure.runescape.com/m=news/the-fractured-archive---everything-you-need-to-know?oldschool=1",
+      "revision": null,
+      "sha256": "0602a7d24bb7cc3d8bacd4352d2f2f303b950ff74180241d90a199ca9f8f281e",
+      "id": "J5",
+      "title": "The Fractured Archive — Everything You Need To Know",
+      "kind": "official-announcement",
+      "published": "2026-10-06",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/User%3AOstentatio/snuffbox?oldid=15161714",
+      "revision": "15161714",
+      "sha256": "50e6ec14b718f26fe14394640e90918f1f7b80d5856fd58c4989ea78afed048d",
+      "id": "C2",
+      "title": "Attributed We Do Raids CoX/CM guide",
+      "kind": "attributed-community-strategy",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "id": "C1",
+      "title": "MasaConor: A detailed guide to AFK Venator Bow training",
+      "url": "https://www.reddit.com/r/ironscape/comments/19eksxl/a_detailed_guide_to_afk_venator_bow_training/",
+      "kind": "firsthand-preference",
+      "published": "2024-01-24",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [
+        "R07"
+      ],
+      "retrieval": "web-reader-full-page"
+    },
+    {
+      "id": "C3",
+      "title": "We Do Raids public gear-guide directory",
+      "url": "https://wedoraids.com/resources/gear-guides/",
+      "kind": "guide-directory-only",
+      "published": null,
+      "sha256": "ca621e376ca5a9139a0e0bb465976891978ffb1bd8f773b6c2a766f0d1999a62",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [],
+      "retrieval": "ordinary-https-full-page"
+    },
+    {
+      "id": "C4",
+      "title": "Venator bow Slayer: differing attention and acquisition preferences",
+      "url": "https://www.reddit.com/r/ironscape/comments/1fdxj7w",
+      "kind": "community-experience",
+      "published": "2024-09-11",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [],
+      "retrieval": "indexed-excerpts-only",
+      "limit": "Full-page open failed; excerpts support preference disagreement only, not mechanics or benchmark claims."
+    },
+    {
+      "id": "C5",
+      "title": "First quiver advice (unattributed reproduction; not a mechanics authority)",
+      "url": "https://www.runescapeguides.com/fortis-colosseum-first-dizanas-quiver-advice-osrs/",
+      "kind": "secondary-strategy-not-adopted",
+      "published": "2025-02-04",
+      "accessed": "2026-10-13",
+      "reviewed": "2026-10-13",
+      "reuse": "Original summaries and metadata only; no source text, images, code or dataset redistributed.",
+      "relationships": [],
+      "retrieval": "web-reader-full-page"
+    }
+  ],
+  "hashScope": "sha256 covers retrieved HTML response bytes where available; dynamic page markup may change. Wiki revision pins identify content; hashes are audit metadata, not a runtime dependency.",
+  "reviewedFollowupCommit": "32cb24a8db7ae807166d1f2d9844224c3be71fd6",
+  "followupScope": "Concurrent R2 review corrections inspected and preserved; research mechanics sources unchanged; no application tests rerun."
+}

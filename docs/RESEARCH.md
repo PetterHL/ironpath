@@ -1,5 +1,13 @@
 # IronPath research and evidence
 
+## Endgame progression intelligence — 13 October 2026
+
+See [the independent R2 architecture review and 30 researched relationships](PROGRESSION_RESEARCH.md), with [46 source records and retrieval metadata](research/progression-sources.json). Full current Wiki mechanics/strategy pages, official implemented changes and qualified community perspectives support the selected `progression-1` design. This is research and documentation, not new runtime knowledge, model validation or a client pass. TASKS R3–R6 and its PI account matrix are the only implementation backlog.
+
+Key refinement: general role, personal importance, effort and pursuit status stay independent. Supported convenience, sustain, multi-target, special and indirect value need role-aware alternatives; ordinary DPS cannot erase them. The source review resolves the Venator chronology: July's target-finding change was retracted, then implemented on 19 August. Exact current geometry still needs validation. CoX unique weights and consumed penny semantics require current versions. Source permissions/licences are separate from the right to paraphrase factual research; no source text/data/images or calculator code was imported.
+
+Historical sections below retain their original scope and results. Their older proposed status or inaccessible-source statements are snapshots, not current implementation instructions.
+
 ## R2 checked ranged facts — 13 October 2026
 
 The [R2 validation report](validation/R2.md) and bundled r2-* source records contain actual full-page revision-pinned review, independently authored bounded stats/recipes and original explanations. Direct ordinary HTTPS retrieval succeeded; indexed snippets were not used to promote these claims. Magic remains powered-magic-2 and the new local family is ranged-1; neither imports calculator code or a bulk equipment dataset.

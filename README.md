@@ -25,7 +25,15 @@ or player-usefulness pass is claimed. No Plugin Hub submission or runtime servic
 
 The intended product is a free, open-source RuneLite sidebar that automatically identifies worthwhile Ironman PvM upgrades using observed account state: **which upgrades are worth pursuing, what difference will they make, and how do I obtain them?** Equipment, relevant prayers, skill levels and permanent unlocks are eligible. Evaluation runs locally, without AI, API keys, registration or an owner-operated backend.
 
-**Client comparison-gap follow-up:** Value now names the unsupported accuracy item and whether it affects before, after or both reference setups. Brimstone's proc and Confliction's one-handed stacks remain separate model gaps; supported max hit stays visible. See [validation](docs/validation/client-model-gap-labels.md). This explanation patch is on `client-model-gap-labels`; main remains the integrated 0.6.1 baseline until review/integration.
+**Client comparison-gap follow-up:** Value now names the unsupported accuracy item and whether it affects before, after or both reference setups. Brimstone's proc and Confliction's one-handed stacks remain separate model gaps; supported max hit stays visible. See [validation](docs/validation/client-model-gap-labels.md). This explanation patch is integrated in main `cb7c2cd` via PR #15; R2 remains a separate reviewed-development increment.
+
+## Next design: endgame progression intelligence
+
+The documentation-only [research review](docs/PROGRESSION_RESEARCH.md) checks 30 varied relationships against current mechanics, strategies and qualified player experience. The selected [progression-1 contract](docs/DESIGN.md#progression-intelligence-contract-version-progression-1) separates an item's role, personal importance, pursuit status and remaining effort. It adds adequate owned alternatives, multi-dimensional utility and explainable item → activity → reward relationships without a graph service or a universal efficiency score.
+
+This design is **not implemented in the R2 build**. [TASKS R3–R6](TASKS.md) now starts with a useful relationship-aware vertical increment, then melee/specialist models, complete paths and comprehensive discovery. Existing numerical/lifecycle behaviour and pending client evidence remain. Highly developed accounts and comprehensive endgame coverage stay first-class; the 30 research examples are not a catalogue cap.
+
+**R3a native UI direction:** [UX](docs/UX.md) selects compact visual item cards with real RuneLite sprites, short account-specific value, supported contextual numbers and direct Value/Path actions. The normal narrow panel uses one column; two require enough measured width and readable content. Several relevant choices and visible Long-term/Specialist discovery lead the homepage; account controls and optional goals stay secondary. This is a documentation decision, not an implemented UI or completed client check. [Review evidence and handoff](docs/validation/R3a-ui-direction.md).
 
 ## Product direction
 
@@ -49,7 +57,8 @@ The architecture stays one local Java RuneLite plugin with bundled reviewed know
 | [docs/CATALOGUE.md](docs/CATALOGUE.md) | Comprehensive initial coverage inventory, promotion criteria and visible research/model gaps |
 | [docs/UX.md](docs/UX.md) | Native RuneLite design and concrete sidebar wireframes |
 | [docs/RESEARCH.md](docs/RESEARCH.md) | Current evidence, source limits, calculator reuse/licensing and historical research |
-| [TASKS.md](TASKS.md) | Active R1, R1.5 and R2–R8 assignments, quality criteria, next brief and preserved implementation/test history |
+| [TASKS.md](TASKS.md) | Single active backlog, R3–R6 intelligence work, account acceptance and preserved implementation/test history |
+| [docs/PROGRESSION_RESEARCH.md](docs/PROGRESSION_RESEARCH.md) | R2 architecture assessment, 30 relationships, decisions, qualified sources and evidence gaps |
 | [AGENTS.md](AGENTS.md) | Persistent development instructions that protect the product vision |
 
 TASKS.md is the only backlog. The catalogue is an evidence/coverage inventory, not a second task tracker. Implementation increments can be small; the intended product must not silently shrink to match them.
