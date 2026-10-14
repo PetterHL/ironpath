@@ -89,7 +89,7 @@ public class MeleeAdviceTest
 	@Test public void ownedComponentsBypassTheirDropRequirementsAndFinishedFormsSuppressAcquisition()
 	{
 		AccountSnapshot a=levels(R15Fixtures.items(ordinary(),12004),"SLAYER",1);Preferences p=R15Fixtures.absent(catalog);
-		Advisor.UpgradeView view=advice(a,p);assertEquals(PursuitAssessment.Mode.BOUNDED,view.pursuit.acquisitionMode);
+		Advisor.UpgradeView view=advice(a,p);assertEquals(PursuitAssessment.Mode.READY,view.pursuit.acquisitionMode);
 		assertTrue(view.pursuit.blockers.stream().noneMatch(s->s.contains("87")||s.contains("task")));
 		assertTrue(view.path.stream().filter(r->r.label.contains("87 Slayer")||r.label.contains("task")).allMatch(r->r.truth==com.ironpath.model.Truth.TRUE));
 		for(int form:List.of(12006,26484))

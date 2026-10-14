@@ -269,6 +269,13 @@ public final class RangedComparisonService
 			gaps.put(HIT_CHANCE,gap); gaps.put(THEORETICAL_DPS,gap);
 		}
 		List<String> assumptions = new ArrayList<>();
+		String competitors=visible!=null?"":catalog.ranged.unsupportedWeapons.entrySet().stream().filter(e->a.observedItem(e.getKey())==Truth.TRUE)
+			.sorted(Map.Entry.comparingByKey()).map(Map.Entry::getValue).collect(Collectors.joining(", "));
+		if (!competitors.isEmpty())
+		{
+			String gap="Observed competing ranged family not modelled: " + competitors + ". This supported reference cannot establish a strongest-owned DPS upgrade.";
+			support.put(THEORETICAL_DPS,PoweredMagic.Status.UNSUPPORTED);gaps.put(THEORETICAL_DPS,gap);
+		}
 		assumptions.add(visible==null ? "Complete proposed ranged reference; supplies/charges and internal dart loading are assumptions, never a quantity or current-load observation." : "Observed worn-state baseline; exact sampled visible Ranged " + visible + ". Candidate supplies/charges are assumptions. This is ordinary target offence, not measured fight DPS or time saved.");
 		assumptions.add("Baseline slots: " + description(setup)); assumptions.add("Candidate slots: " + description(after));
 		assumptions.add(visible==null ? "Real Ranged " + a.level("RANGED") + "; visible " + beforeMetrics.visibleMagic + "; " + setup.assumptionLabel() + ". Selected prayers/boosts are not live state; potion decay excluded."

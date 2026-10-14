@@ -58,13 +58,13 @@ public class BroadPvmFixturesTest
 		assertFalse(ids(unread, Preferences.EMPTY.goal("ranged-options")).contains("pursue-bowfa"));
 	}
 
-	@Test public void theSameAccountChangesPrimaryActivitiesWithCatalogueGoals()
+	@Test public void goalsRefineSupportedTiesWithoutPromotingUnknownOrLongerWork()
 	{
 		AccountSnapshot a = account(BASE, 90, false, false);
 		Preferences p = gaps();
-		assertEquals("pursue-bowfa", ids(a, p.goal("ranged-options")).get(0));
+		assertEquals("seek-zulrah-magic-fang", ids(a, p.goal("ranged-options")).get(0)); // The reviewed medium route precedes the longer CG route.
 		assertEquals("seek-zulrah-magic-fang", ids(a, p.goal("magic-upgrade")).get(0));
-		assertEquals("seek-toa-fang", ids(a, p.goal("toa-entry")).get(0));
+		assertEquals("seek-zulrah-magic-fang", ids(a, p.goal("toa-entry")).get(0)); // A goal does not rewrite method/effort evidence.
 		assertTrue(catalog.decisions.stream().filter(d -> d.id.equals("seek-zulrah-magic-fang")).findFirst().orElseThrow()
 			.goals.containsAll(List.of("toa-entry", "plan-team-cox")));
 		for (String goal : List.of("ranged-options", "magic-upgrade", "toa-entry"))
@@ -87,7 +87,7 @@ public class BroadPvmFixturesTest
 		assertTrue(moons.evidence.stream().anyMatch(e -> e.contains("manual planning confirmation (false)")));
 		assertEquals("Available preparation action", advisor.goal(a, p).status);
 		assertTrue(advisor.goal(a, p).nextAction.contains("Moons"));
-		assertEquals("pursue-bowfa", ids(a, p.skip("cg", false)).get(0));
+		assertTrue(advisor.availableActivities(a,p.skip("cg",false)).stream().anyMatch(r->r.decision.id.equals("pursue-bowfa")));
 	}
 
 	@Test public void postBowfaGetsMultipleNonCoxAcquisitionChoicesAndCrystalStillWorksAfterSkip()
@@ -142,12 +142,12 @@ public class BroadPvmFixturesTest
 	{
 		AccountSnapshot low = account(Set.of(4151, 9185, 25979), 86, true, true);
 		Preferences p = gaps().goal("magic-upgrade");
-		assertEquals("train-slayer-trident", ids(low, p).get(0));
+		assertTrue(advisor.availableActivities(low,p).stream().anyMatch(r->r.decision.id.equals("train-slayer-trident"))); // Unreviewed training effort remains conditional, rather than forced first.
 		assertFalse(ids(low, p).contains("seek-seas-trident"));
 		AccountSnapshot high = account(low.bank.value(), 87, true, true);
-		assertEquals("seek-seas-trident", ids(high, p).get(0));
+		assertTrue(advisor.availableActivities(high,p).stream().anyMatch(r->r.decision.id.equals("seek-seas-trident")));
 		assertFalse(ids(high, p).contains("train-slayer-trident"));
-		assertTrue(advisor.evaluate(high, p).get(0).decision.access.contains("current task is unobserved"));
+		assertTrue(advisor.availableActivities(high,p).stream().filter(r->r.decision.id.equals("seek-seas-trident")).findFirst().orElseThrow().decision.access.contains("current task is unobserved"));
 		assertFalse(ids(high, p.confirm("item-31115", true, TIME)).contains("seek-seas-trident"));
 		assertFalse(ids(low, p.confirm("item-31115", true, TIME)).contains("train-slayer-trident"));
 	}

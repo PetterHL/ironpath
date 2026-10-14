@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /** Partial evidence dominance followed by fixed, transitive comparison buckets. */
 public final class RecommendationRanker
 {
-	public static final String VERSION="progression-1";
+	public static final String VERSION="progression-2";
 	public static final class Candidate
 	{
 		public final String id, route, activity, activityMode, family, bucket, rationale;
@@ -28,6 +28,7 @@ public final class RecommendationRanker
 		public final Set<String> remainingSteps;
 		public final EffortEstimate estimate;
 		public final ValueEvidence evidence;
+		public final RemainingEffort remainingEffort;
 		public ValueEvidence.Importance importance() { return evidence == null ? value == KnowledgeCatalog.Benefit.MAJOR ? ValueEvidence.Importance.KEY : value == KnowledgeCatalog.Benefit.MODERATE ? ValueEvidence.Importance.STRONG : value == KnowledgeCatalog.Benefit.MINOR ? ValueEvidence.Importance.MARGINAL : ValueEvidence.Importance.UNCERTAIN : evidence.importance; }
 		public Candidate(String id, String route, String activity, String activityMode, String family, String bucket,
 			KnowledgeCatalog.Benefit value, Mode mode, Burden burden, Tail tail, String rationale,
@@ -42,14 +43,18 @@ public final class RecommendationRanker
 			this.gain=gain; this.minimumExpectedWork=minimumExpectedWork; this.maximumExpectedWork=maximumExpectedWork;
 			this.blockers=List.copyOf(blockers); this.allocations=List.copyOf(allocations);
 			this.remainingSteps=Set.copyOf(remainingSteps); this.estimate=estimate; evidence=null;
+			remainingEffort=RemainingEffort.synthetic(burden,unknown,blocked);
 		}
 		Candidate(Candidate c, ValueEvidence evidence)
+		{ this(c,evidence,c.remainingEffort); }
+		Candidate(Candidate c, ValueEvidence evidence, RemainingEffort remainingEffort)
 		{
 			id=c.id; route=c.route; activity=c.activity; activityMode=c.activityMode; family=c.family; bucket=c.bucket; rationale=c.rationale;
 			value=c.value; mode=c.mode; burden=c.burden; tail=c.tail; unknown=c.unknown; blocked=c.blocked; preferred=c.preferred;
 			nextReady=c.nextReady; positive=c.positive; coverage=c.coverage; confidence=c.confidence; coordination=c.coordination; upkeep=c.upkeep;
 			gain=c.gain; minimumExpectedWork=c.minimumExpectedWork; maximumExpectedWork=c.maximumExpectedWork; blockers=c.blockers;
 			allocations=c.allocations; remainingSteps=c.remainingSteps; estimate=c.estimate; this.evidence=evidence;
+			this.remainingEffort=remainingEffort;
 		}
 	}
 
@@ -61,34 +66,37 @@ public final class RecommendationRanker
 			Candidate dominant=candidates.stream().filter(other -> dominates(other,c)).sorted(Comparator.comparing(other -> other.id)).findFirst().orElse(null);
 			Category category=c.importance() == ValueEvidence.Importance.UNCERTAIN ? Category.CHECK : dominant != null || !c.positive && c.evidence == null || c.importance() == ValueEvidence.Importance.MARGINAL ? Category.DEFER
 				: c.unknown ? Category.CHECK : c.blocked ? Category.PLAN
-				: c.mode == Mode.UNKNOWN || c.burden == Burden.UNKNOWN || c.tail == Tail.UNKNOWN ? Category.CHECK
-				: c.mode == Mode.LONG_TAIL || c.tail == Tail.LONG || c.burden == Burden.HIGH ? Category.LONG_TERM : Category.PURSUE;
+				: c.remainingEffort.suitability==RemainingEffort.Suitability.PREPARE ? Category.PLAN
+				: c.remainingEffort.suitability==RemainingEffort.Suitability.UNKNOWN || c.remainingEffort.band==RemainingEffort.Band.UNKNOWN ? Category.CHECK
+				: c.remainingEffort.band.ordinal()>=RemainingEffort.Band.LONG.ordinal() || c.tail==Tail.LONG ? Category.LONG_TERM : Category.PURSUE;
 			String code=dominant != null ? "DOMINATED" : category == Category.DEFER ? "SMALL_OR_NO_GAIN"
 				: c.unknown ? "CONSEQUENTIAL_UNKNOWN" : c.blocked ? "PREREQUISITE_REMAINING"
 				: category == Category.CHECK ? "EFFORT_UNAVAILABLE" : category == Category.LONG_TERM ? "LONG_TAIL_OR_BURDEN" : "SUPPORTED_PURSUIT";
 			List<String> codes=new ArrayList<>(c.evidence == null ? List.of() : c.evidence.reasonCodes);
-			codes.add(code); codes.add("IMPORTANCE_BEFORE_BURDEN");
+			codes.add(code); codes.add("VALUE_EFFORT_TABLE");
+			codes.add("EFFORT_"+c.remainingEffort.band); codes.add("METHOD_"+c.remainingEffort.suitability);
 			if (c.preferred) { codes.add("OPTIONAL_INTEREST"); }
 			String reason=dominant != null ? "A compatible alternative has at least the supported value and demonstrably no more remaining work: " + dominant.id
 				: category == Category.DEFER ? "Small/no demonstrated gain in this reference; inspect specialist utility before pursuing."
 				: category == Category.CHECK ? "Check the consequential input or effort gap before treating this as an active pursuit."
 				: category == Category.PLAN ? "Complete or check the named prerequisite; value does not establish access."
 				: category == Category.LONG_TERM ? "Worth owning, with substantial remaining work or a long RNG tail; strength does not make it the next grind."
-				: "Positive account-specific value and a supported remaining route. Personal importance precedes remaining burden among actionable choices.";
+				: "Account-specific benefit and remaining effort jointly justify this next step.";
 			assessments.add(new PursuitAssessment(c,category,codes,List.of(reason,c.rationale,
-				"Importance: " + c.importance().label + ". Preference and claim evidence precede remaining burden. Numerical ties use compatible setups only; stable IDs resolve incomparable choices."),
+				"Value: " + c.importance().label + "; remaining effort: " + c.remainingEffort.band.label + "; " + c.remainingEffort.suitability.label
+					+ ". Matched progression-2 table cell: " + ProgressionPriority.of(c.importance(),c.remainingEffort,c.unknown,c.blocked,dominant!=null).label + "."),
 				dominant == null ? null : dominant.id));
 		}
 		java.util.Map<String,Candidate> byRoute=candidates.stream().collect(Collectors.toMap(c -> c.id+"/"+c.route,c -> c));
 		// Bucket identity itself carries no priority; a renamed/duplicate context cannot promote a choice.
 		java.util.Map<String,String> representatives=new java.util.HashMap<>();
 		for (Candidate candidate : candidates) { representatives.merge(candidate.bucket,candidate.id,(a,b)->a.compareTo(b)<0?a:b); }
-		assessments.sort(Comparator.comparing((PursuitAssessment a) -> a.category)
-			.thenComparing(a -> byRoute.get(a.id+"/"+a.route).importance())
+		assessments.sort(Comparator.comparing((PursuitAssessment a) -> a.priority)
 			.thenComparing(a -> !byRoute.get(a.id+"/"+a.route).preferred)
 			.thenComparing(Comparator.comparingInt((PursuitAssessment a) -> byRoute.get(a.id+"/"+a.route).confidence).reversed())
+			.thenComparing(a -> byRoute.get(a.id+"/"+a.route).importance())
+			.thenComparing(a -> a.remainingEffort.band)
 			.thenComparing(a -> !byRoute.get(a.id+"/"+a.route).nextReady)
-			.thenComparing(a -> a.burden)
 			.thenComparing(a -> representatives.get(byRoute.get(a.id+"/"+a.route).bucket))
 			.thenComparing(Comparator.comparingDouble((PursuitAssessment a) -> { Double gain=byRoute.get(a.id+"/"+a.route).gain; return gain == null ? 0 : gain; }).reversed())
 			.thenComparing(a -> a.id).thenComparing(a -> a.route));

@@ -5,7 +5,7 @@ import java.util.List;
 /** Small bundled relationship vocabulary. Utility links never enter the hard route graph. */
 public final class ProgressionKnowledge
 {
-	public enum Dimension { ORDINARY_OFFENCE, BURST, MULTI_TARGET, CONVENIENCE, INVENTORY, RESOURCE }
+	public enum Dimension { ORDINARY_OFFENCE, BURST, MULTI_TARGET, CONVENIENCE, INVENTORY, RESOURCE, CONTROL }
 	public enum Significance { CORE, SUBSTANTIAL, CONTEXTUAL }
 	public enum Constraint { METHOD_CAPABILITY, OPTIONAL_IMPROVEMENT }
 	public static final class Context

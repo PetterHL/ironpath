@@ -25,7 +25,7 @@ public class R15AdviceTest
 	// Preserve the originally selected high-defence context for these R1/R1.5 regressions.
 	private List<Advisor.UpgradeView> reviewedUpgrades(Advisor evaluator, AccountSnapshot a, Preferences p)
 	{ return evaluator.upgrades(a, p, new PoweredMagic(catalog).propose(a, "graardor")).stream()
-		.filter(v -> !v.upgrade.comparison.equals("RANGED") && !v.upgrade.comparison.equals("MELEE") && !v.upgrade.id.equals("venator-bow")).collect(java.util.stream.Collectors.toList()); }
+		.filter(v -> !v.upgrade.comparison.equals("RANGED") && !v.upgrade.comparison.equals("MELEE") && !v.upgrade.id.equals("venator-bow") && !v.upgrade.id.equals("scorching-bow")).collect(java.util.stream.Collectors.toList()); }
 	@Before public void setup() throws Exception { catalog=KnowledgeCatalog.load(new Gson());advisor=new Advisor(catalog);missing=absent(catalog); }
 	private Advisor.UpgradeView view(AccountSnapshot a, Preferences p, String id)
 	{ return reviewedUpgrades(advisor, a,p).stream().filter(v->v.upgrade.id.equals(id)).findFirst().orElseThrow(); }
@@ -70,7 +70,7 @@ public class R15AdviceTest
 			for(ActivityOpportunity activity:advisor.activityOpportunities(a,missing,views)) { report.append("- ").append(activity.title).append(": ").append(activity.category).append("; families ").append(activity.usefulFamilies).append(". ").append(activity.reason).append("\n"); }
 			report.append("\n");
 		}
-		assertTrue(cox(many,missing).category.equals("Worth doing"));
+		assertTrue(cox(many,missing).category.equals("Long-term activity"));
 		assertEquals(Category.PURSUE,view(obtainable,missing,"zaryte-crossbow").pursuit.category);
 		assertEquals(Mode.BOUNDED,view(obtainable,missing,"zaryte-crossbow").pursuit.acquisitionMode);
 		assertEquals(Category.LONG_TERM,view(onlyRare,missing,"tumekens-shadow").pursuit.category);
@@ -81,7 +81,7 @@ public class R15AdviceTest
 	{
 		AccountSnapshot a=developed(false);ActivityOpportunity shared=cox(a,missing);
 		assertEquals(Set.of("ancestral","augury","rigour"),Set.copyOf(shared.usefulFamilies));
-		assertEquals("Worth doing",shared.category);
+		assertEquals("Long-term activity",shared.category);
 		AccountSnapshot scrolls=items(a,21034,21079);shared=cox(scrolls,missing);
 		assertEquals(List.of("ancestral"),shared.usefulFamilies);assertEquals("Long-term activity",shared.category);
 		AccountSnapshot unknown=new AccountSnapshot(a.levels,a.inventory,a.equipment,a.bank,Observation.unknown(),Observation.unknown(),a.facts,a.equipmentSlots,a.inventoryQuantities,a.equipmentQuantities,a.bankQuantities);
@@ -144,7 +144,7 @@ public class R15AdviceTest
 		JsonObject doc=new JsonParser().parse(new InputStreamReader(getClass().getResourceAsStream("/com/ironpath/catalog.json"))).getAsJsonObject();doc.getAsJsonArray("acquisitions").get(0).getAsJsonObject().addProperty("support","INVALID");
 		Advisor invalid=new Advisor(KnowledgeCatalog.read(new Gson(),new StringReader(doc.toString())));
 		var v=reviewedUpgrades(invalid, a,missing).stream().filter(u->u.upgrade.id.equals("tormented-bracelet")).findFirst().orElseThrow();
-		assertEquals(Category.CHECK,v.pursuit.category);assertTrue(v.comparison.dpsGain()>0);assertNull(v.pursuit.estimate.meanTrials);
+		assertEquals(Category.PURSUE,v.pursuit.category);assertTrue(v.comparison.dpsGain()>0);assertNull(v.pursuit.estimate.meanTrials); // A0 value/effort survives withdrawal of the independent probability claim.
 	}
 	@Test public void raidPreparationRemainsConsequentialEvenWhenItIsNotAHardRecipeEdge()
 	{

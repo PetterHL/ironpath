@@ -5,10 +5,12 @@ import java.util.Locale;
 /** Evaluated card copy; Swing only measures and renders these fields. */
 public final class UpgradeCard
 {
-	public final String reason, metric, status;
+	public final String reason, metric, status, effort, priorityReason;
+	public final UpgradePresentation presentation;
 	public UpgradeCard(Advisor.UpgradeView view)
 	{
 		reason=view.valueEvidence.reason;
+		presentation=view.presentation; effort=presentation.effort.band.label + " remaining effort"; priorityReason=presentation.priorityReason;
 		ComparisonResult comparison=view.comparison;
 		if (view.valueEvidence.independentUtility)
 		{
@@ -16,7 +18,9 @@ public final class UpgradeCard
 				&& r.dimension!=ProgressionKnowledge.Dimension.ORDINARY_OFFENCE)
 				.map(r->r.dimension==ProgressionKnowledge.Dimension.BURST ? "Burst not quantified · HP/energy check"
 					: r.dimension==ProgressionKnowledge.Dimension.INVENTORY ? "Slot savings not quantified · method check"
-					: "Bounce DPS unavailable · geometry gap").findFirst().orElse("Role value · numeric model gap");
+					: r.dimension==ProgressionKnowledge.Dimension.CONTROL ? "Demonbane/control · DPS model gap"
+					: r.dimension==ProgressionKnowledge.Dimension.MULTI_TARGET || r.dimension==ProgressionKnowledge.Dimension.CONVENIENCE ? "Bounce DPS unavailable · geometry gap"
+					: "Reviewed resource value · numeric model gap").findFirst().orElse("Role value · numeric model gap");
 		}
 		else if (view.valueEvidence.specialist && comparison.available(ComparisonResult.Metric.THEORETICAL_DPS) && comparison.dpsGain()<=1e-10)
 		{
