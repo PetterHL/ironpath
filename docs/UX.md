@@ -89,6 +89,14 @@ Retain Set pace/Clear with blank default and explicit eligible-kills/hour units;
 
 **Activity:** concise title, useful reward sprites/names and factual reason. One strong useful reward can justify it; no hardcoded “Several useful rewards.” Detail separates eligible rewards, uncertain/ineligible rewards, independent access/method evidence and owned exclusions. Distinguish any useful reward from obtaining all; no additive unrelated gains or promised simultaneous drops. Skipping a route does not erase owned utility or alternatives.
 
+## Recent boss and Kill Impact (selected, not implemented)
+
+[Kill Impact](KILL_IMPACT.md) adds a quiet **Recent boss · Vorkath** entry after a supported completed kill. It opens existing contextual upgrade cards; the automatic account homepage remains primary. No popup, combat overlay, forced tab/focus change, per-kill chat message or new dashboard. Refresh after finalization and preserve a card the user is inspecting. Unsupported encounters do not fill the homepage with diagnostics.
+
+Reuse sprite/name, one account-value reason, one supported primary metric, status and Value/Path. KI1 can show ordinary-phase offence from the actual used setup. KI2 may show `Est. 3–5 s faster/kill · same method` with sample count only after validation; this is **synthetic illustrative copy**, not a computed item benefit. Keep the range type and important uncertainty clear. `Small gain; no stable time estimate` is a valid state. Keep an already-owned alternative and recurring ammunition distinct from acquisition. Do not headline a larger number from an incompatible or assumed setup.
+
+Value separates observed last/recent duration, actual setup segments, candidate package, stronger owned alternative and estimated impact. The ordinary neutral reference remains inspectable and is not overwritten by a recent boss. Disclose assumptions, source/model versions and sample quality under existing detail controls; material gaps remain beside the metric. No performance score, tick-log wall or automatic grind-hour conversion. One recent kill does not reorder the entire account by seconds saved. Use the existing native-width density and navigation/identity checks; [TASKS KI1–KI3](../TASKS.md#personalized-kill-impact--ki1ki3) owns delivery.
+
 ## Implementation boundaries and validation
 
 Reuse native Swing/PluginPanel, ItemManager, reference/comparison services and guarded navigation. Immutable presentation data, calculations outside rendering, EDT updates, one vertical scroller, no horizontal/nested card scrolling. Preserve generation/revision guards and identity isolation for clicks, delayed updates and asynchronous imagery. No browser UI, JavaFX, per-tick rebuilding, animation, backend or window/focus manipulation.

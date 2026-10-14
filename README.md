@@ -2,6 +2,8 @@
 
 **Your path to endgame PvM**
 
+**New design, not implemented:** [Personalized Kill Impact](docs/KILL_IMPACT.md) connects supported boss kills to the existing upgrade advisor using actual worn equipment. The selected delivery is recent-kill context and supported offence first, then validated same-method time estimates, then selective spec/supply expansion. [KI1–KI3 in TASKS](TASKS.md#personalized-kill-impact--ki1ki3) refines R1.5b/R4/Q5 without replacing current UI or comprehensive upgrade work. No personal kill-time feature or new live-client validation is claimed by this documentation change.
+
 R3a development build · 14 October 2026 · plugin 0.8.2 · knowledge r3a-3 · schema 10
 
 **Client test corrections:** all crystal armour colours (including black Iorwerth and the permanent-world Deadman cosmetic) count as owned, with active/inactive bonuses kept separate. Blazing is recognised as cosmetic Toxic, and all eight treads forms have ranged stats. Lightbearer now contributes its reviewed zero ordinary ranged bonuses instead of blocking comparison. Specialist roles recognise the supported ranged weapons, including Toxic/Blazing alone. Rosewood acquisition advice is withdrawn from every view; its existing owned-item numbers remain supported, while Doom special use awaits review. See the [first correction](docs/validation/R3a-client-variants.md) and [Lightbearer/Specialist follow-up](docs/validation/R3a-lightbearer.md).

@@ -1,5 +1,13 @@
 # IronPath research and evidence
 
+## Personalized Kill Impact — 14 October 2026
+
+[Independent research/design](KILL_IMPACT.md) inspects main `cb7c2cd` and the open R2/#17/R3a stack through #18 `d9e897b`, public RuneLite observation APIs/core consumers, pinned Wiki calculator TTK/distribution code, current mechanics pages and Hub guidance. [Source metadata](research/kill-impact-sources.json) records 22 entries, retrieved-response hashes where available and qualified review scope. No live kills, feature-specific Hub ruling, imported implementation or new runtime validation is claimed.
+
+Select an integrated passive recent-boss context, actual-used versus proposed/owned baselines, and staged supported offence → validated same-method time sensitivity → selective supply/spec expansion. The existing reader captures real levels/slots but not a combat timeline; current models return ordinary metrics, and kill-time enum entries remain unsupported. `Hitsplat.isMine()` supports designated local damage types, but not universal weapon/attack attribution. Boss Timers tracks respawns; Chat Commands' PB group is not a current-duration statistic. Vorkath phase changes, Salve/bolt gaps and current boosted levels preclude scaling total observed time by a DPS ratio.
+
+Repeated matched kills can refine cadence/spread, not identify unseen-item causal gains or eliminate model bias. KI2 requires finite-HP/timing/phase validation and held-out before/after comparisons; uncertainty ranges and observed durations remain distinct. KI1 reuses R1.5b's first adapter work, prioritising Vorkath over a separate first CoX collector without claiming combat duration is acquisition pace. Food/combo/brews and quiver/ammo remain explicit coverage dimensions. [TASKS KI1–KI3](../TASKS.md#personalized-kill-impact--ki1ki3) owns implementation; R3b, R4 and current UI work remain active.
+
 ## Endgame progression intelligence — 13 October 2026
 
 See [the independent R2 architecture review and 30 researched relationships](PROGRESSION_RESEARCH.md), with [46 source records and retrieval metadata](research/progression-sources.json). Full current Wiki mechanics/strategy pages, official implemented changes and qualified community perspectives support the selected `progression-1` design. This is research and documentation, not new runtime knowledge, model validation or a client pass. TASKS R3–R6 and its PI account matrix are the only implementation backlog.
