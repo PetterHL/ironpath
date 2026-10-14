@@ -71,6 +71,8 @@ final class IronpathPanel extends PluginPanel
 		void clear();
 		default void reference(String key, String value) {}
 		default void pace(String value) {}
+		default void pace(String activity, String mode, String value) { pace(value); }
+		default void pace(String activity, String mode, String methodKey, String value) { pace(activity,mode,value); }
 		default void recentBoss(boolean enabled) {}
 		default void clearRecentBoss() {}
 		default boolean current() { return true; }
@@ -725,7 +727,7 @@ final class IronpathPanel extends PluginPanel
 			for (com.ironpath.advisor.ProgressionKnowledge.Preparation option : context.preparation)
 			{ text(this,option.constraint + ": " + option.label); }
 		}
-		effort(view.pursuit, actions);
+		effort(view.pursuit, actions, catalog);
 		if (!view.path.isEmpty()) { JPanel recipe = section(this, "Recipe and ALL/ANY alternatives"); text(recipe, "ALL/ANY recipe: completed intermediates bypass upstream work. This is the full reviewed recipe, not an instruction to repeat it."); requirements(recipe, view.path); }
 		text(this, "Equip requirements (separate from acquisition)"); requirements(this, view.equip);
 		if (!view.parts.isEmpty()) { text(this, "Owned parts and additions — optional steps are labelled"); requirements(this, view.parts); }
@@ -746,43 +748,57 @@ final class IronpathPanel extends PluginPanel
 		sources(this, view.evidenceSources, catalog);
 	}
 
-	private void effort(PursuitAssessment pursuit, Actions actions)
+	private void effort(PursuitAssessment pursuit, Actions actions, KnowledgeCatalog catalog)
 	{
-		String process=pursuit.acquisitionMode == PursuitAssessment.Mode.READY ? "Assembly/claim remains" : pursuit.acquisitionMode == PursuitAssessment.Mode.BOUNDED ? "Finite remaining task" : pursuit.acquisitionMode == PursuitAssessment.Mode.REPEATABLE ? "Repeatable acquisition" : pursuit.acquisitionMode == PursuitAssessment.Mode.LONG_TAIL ? "Long-tail acquisition" : "Effort not estimated";
 		text(this,"Remaining effort: " + pursuit.remainingEffort.band.label + " · " + pursuit.remainingEffort.suitability.label);
-		text(this,pursuit.remainingEffort.method + ". " + pursuit.remainingEffort.reason);
-		text(this,"Scope: " + pursuit.remainingEffort.scope + ". " + pursuit.remainingEffort.gap);
 		EffortEstimate estimate = pursuit.estimate;
-		if (estimate == null) { text(this, "No acquisition hours. " + pursuit.remainingEffort.gap); return; }
-		text(this, estimate.remainingOutcome + " · next reward only");
+		text(this, estimate==null ? pursuit.remainingEffort.method : catalog.automaticPaces.values().stream()
+			.filter(p->(p.id + "/" + p.version).equals(estimate.methodKey)).map(p->p.methodLabel).findFirst().orElse(pursuit.remainingEffort.method));
+		if (estimate == null)
+		{
+			text(this,"No acquisition hours. " + pursuit.remainingEffort.gap);
+			JPanel basis=section(this,"Estimate basis");text(basis,pursuit.remainingEffort.reason);
+			text(basis,pursuit.remainingEffort.scope);return;
+		}
+		text(this, estimate.remainingOutcome + " · component acquisition only");
 		if (pursuit.category == PursuitAssessment.Category.CHECK || pursuit.category == PursuitAssessment.Category.PLAN)
-		{ text(this, "Conditional planning: confirm the route/component checks above before pursuing a new shard."); }
+		{ text(this, "Conditional planning: confirm the route/component checks above before pursuing new component work."); }
 		if (estimate.meanTrials == null) { text(this, estimate.reason); return; }
-		text(this, String.format(java.util.Locale.ROOT,"Mean %.0f kills · median %d\n90%% by %d eligible kills; 10%% take longer.",estimate.meanTrials,estimate.p50,estimate.p90));
-		if (estimate.pace == null) { text(this, "Hours unavailable until an explicit eligible-kills/hour scenario is supplied."); }
+		text(this, String.format(java.util.Locale.ROOT,"Mean %.0f trials · median %d\n90%% by %d eligible trials; 10%% take longer.",estimate.meanTrials,estimate.p50,estimate.p90));
+		if (estimate.pace == null) { text(this, "Hours unavailable: no supported matching automatic repeat-hour scenario. An optional compatible manual scenario can refine the basis."); }
 		else
 		{
-			text(this,String.format(java.util.Locale.ROOT,"Conditional on %.1f eligible kills/hour:\nMean %.1f h · median %.1f h\n90%% by %.1f h; 10%% later.",estimate.pace.minimumPerHour,estimate.meanHours(),estimate.medianHours(),estimate.p90Hours()));
+			text(this,String.format(java.util.Locale.ROOT,(estimate.pace.sourceKind==com.ironpath.advisor.PaceScenario.SourceKind.MODEL_BASED?"Model-based estimate":"Manual pace scenario") + " · %.1f eligible trials/hour:\nMean %.1f h · median %.1f h\n90%% by %.1f h; 10%% later.",estimate.pace.minimumPerHour,estimate.meanHours(),estimate.medianHours(),estimate.p90Hours()));
 			if (estimate.pace.maximumPerHour > estimate.pace.minimumPerHour)
-			{ text(this,String.format(java.util.Locale.ROOT,"Pace sensitivity %.1f–%.1f kills/h: mean %.1f–%.1f h. Scenario range, not a confidence interval.",estimate.pace.minimumPerHour,estimate.pace.maximumPerHour,estimate.meanTrials/estimate.pace.maximumPerHour,estimate.meanHours())); }
-			text(this, estimate.pace.provenance + ". " + estimate.pace.scope + ". Entered " + estimate.pace.entered);
+			{ text(this,String.format(java.util.Locale.ROOT,"Pace sensitivity %.1f–%.1f trials/h: mean %.1f–%.1f h. Scenario range, not a confidence interval.",estimate.pace.minimumPerHour,estimate.pace.maximumPerHour,estimate.minimumMeanHours(),estimate.meanHours())); }
 		}
-		for (String exclusion : estimate.exclusions) { text(this, exclusion); }
-		text(this, "Fixed-rate dry kills do not reduce remaining expectation. RNG has no completion bar.");
+		text(this, "Component drops only; access, learning, supplies and assembly are excluded.");
 		long expectedView=this.view;
 		if (actions != null && actions.canEdit())
 		{
-			JPanel input=section(this,"Set pace (optional)"); text(input,"Eligible kills per active hour, including your cycle overhead. A number or range; blank clears. Session only.");
-			javax.swing.JTextField pace=new javax.swing.JTextField(estimate.pace == null ? "" : Double.toString(estimate.pace.minimumPerHour)
+			JPanel input=section(this,"Set pace (optional)"); text(input,"Eligible completed trials per active hour including repeat overhead. A number or range; blank/Clear restores a supported automatic default. Session only.");
+			javax.swing.JTextField pace=new javax.swing.JTextField(estimate.pace == null || estimate.pace.sourceKind==com.ironpath.advisor.PaceScenario.SourceKind.MODEL_BASED ? "" : Double.toString(estimate.pace.minimumPerHour)
 				+ (estimate.pace.maximumPerHour > estimate.pace.minimumPerHour ? "-" + estimate.pace.maximumPerHour : ""));
-			pace.setName("pace-input"); pace.getAccessibleContext().setAccessibleName("Eligible demonic gorilla kills per active hour, or range");
+			pace.setName("pace-input"); pace.getAccessibleContext().setAccessibleName("Eligible completed trials per active hour, or range");
 			pace.setMaximumSize(new Dimension(213,28)); input.add(pace);
-			button(input,"Apply pace",() -> { if (valid(expectedView,actions)) { actions.pace(pace.getText()); } });
-			button(input,"Clear pace",() -> { if (valid(expectedView,actions)) { actions.pace(""); } });
+			button(input,"Apply pace",() -> { if (valid(expectedView,actions)) { actions.pace(estimate.activity, estimate.mode, estimate.methodKey, pace.getText()); } });
+			button(input,"Clear pace",() -> { if (valid(expectedView,actions)) { actions.pace(estimate.activity,estimate.mode, estimate.methodKey, ""); } });
 		}
-		JPanel assumptions=section(this,"Acquisition model and inputs"); text(assumptions,estimate.modelVersion + " · reviewed " + estimate.reviewed + " · " + estimate.reason);
-		text(assumptions, estimate.numerator + "/" + estimate.denominator + " per " + estimate.trialUnit + ". Recipient: " + estimate.recipient);
+		JPanel assumptions=section(this,"Acquisition model and inputs");
+		text(assumptions,pursuit.remainingEffort.reason);text(assumptions,pursuit.remainingEffort.scope + ". " + pursuit.remainingEffort.gap);
+		text(assumptions,estimate.modelVersion + " · reviewed " + estimate.reviewed + " · " + estimate.reason);
+		text(assumptions, estimate.numerator + "/" + estimate.denominator + " per roll · " + estimate.rolls + " roll(s) per " + estimate.trialUnit + ". Recipient: " + estimate.recipient);
 		for (String assumption : estimate.assumptions) { text(assumptions,assumption); }
+		for(String exclusion:estimate.exclusions) { text(assumptions,exclusion); }
+		text(assumptions,"Fixed-rate dry kills do not reduce remaining expectation. RNG has no completion bar.");
+		if(estimate.pace!=null)
+		{
+			text(assumptions,estimate.pace.provenance + ". " + estimate.pace.scope
+				+ (estimate.pace.entered==null ? ". " + estimate.pace.profile + "/" + estimate.pace.version + " · reviewed " + estimate.pace.reviewed : ". Entered " + estimate.pace.entered));
+			for(String assumption:estimate.pace.assumptions) { text(assumptions,assumption); }
+			for(String exclusion:estimate.pace.exclusions) { text(assumptions,exclusion); }
+		}
+		if(estimate.pace!=null) { sources(assumptions,estimate.pace.sources,catalog); }
 	}
 
 	private void referenceControls(JPanel parent, AccountSnapshot a, com.ironpath.advisor.CombatSetup setup, Actions actions, Map<String, Map<String, String>> referenceChoices, boolean supported)

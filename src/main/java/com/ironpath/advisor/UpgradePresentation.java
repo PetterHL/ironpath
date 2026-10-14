@@ -46,6 +46,8 @@ public final class UpgradePresentation
 	public final ProgressionPriority.Priority priority;
 	public final String status, priorityReason, nextStep, estimateOrigin, estimateScope;
 	public final RangeKind rangeKind;
+	public final PaceScenario.SourceKind estimateSourceKind;
+	public final boolean conditionalComponentWork;
 	public final Double minimumMeanHours, maximumMeanHours;
 	public final List<RouteChoice> routes;
 	UpgradePresentation(Advisor.UpgradeView view, List<RouteChoice> routes)
@@ -56,12 +58,14 @@ public final class UpgradePresentation
 		priorityReason=view.valueEvidence.importance.label + " · " + effort.band.label.toLowerCase(java.util.Locale.ROOT) + " remaining effort";
 		nextStep=view.pursuit.blockers.isEmpty()?view.routes.stream().filter(r->r.decision.id.equals(view.pursuit.route)).findFirst().orElseThrow().next:view.pursuit.blockers.get(0);
 		EffortEstimate estimate=view.pursuit.estimate;
+		estimateSourceKind=estimate==null||estimate.pace==null?null:estimate.pace.sourceKind;
+		conditionalComponentWork=estimate!=null&&estimate.conditionalWork;
 		boolean hours=estimate!=null && estimate.meanHours()!=null;
 		rangeKind=hours?RangeKind.SCENARIO_MEAN_SENSITIVITY:RangeKind.UNAVAILABLE;
-		minimumMeanHours=hours?estimate.meanTrials/estimate.pace.maximumPerHour:null;
+		minimumMeanHours=hours?estimate.minimumMeanHours():null;
 		maximumMeanHours=hours?estimate.meanHours():null;
 		estimateOrigin=hours?estimate.pace.provenance:"Reviewed qualitative activity profile";
-		estimateScope=estimate==null?effort.scope:estimate.remainingOutcome + "; " + (hours?estimate.pace.scope:"no hours available");
+		estimateScope=estimate==null?effort.scope:estimate.remainingOutcome + "; component acquisition only; " + (hours?estimate.pace.scope:"no hours available");
 		this.routes=List.copyOf(routes);
 	}
 }

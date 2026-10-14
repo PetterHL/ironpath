@@ -84,13 +84,13 @@ public class EP1ProgressionTest
 		for(Advisor.UpgradeView v:advisor.upgrades(unread(ready()),absent))
 		{if(!v.pursuit.remainingEffort.acquisitionBypassed){assertEquals(Suitability.UNKNOWN,v.pursuit.remainingEffort.suitability);assertNull(v.presentation.maximumMeanHours);}}
 	}
-	@Test public void optionalManualPaceHasHonestScopeAndClearReturnsUnavailableWithoutChangingBands()
+	@Test public void optionalManualPaceHasHonestScopeAndClearReturnsAutomaticWithoutChangingBands()
 	{
 		AccountSnapshot a=ready();PaceScenario pace=new PaceScenario("demonic-gorillas","ordinary",40,60,"Eligible kills including cycle overhead",TIME);
 		Advisor.UpgradeView manual=advisor.upgrades(a,absent,new PoweredMagic(catalog).propose(a),pace).stream().filter(v->v.upgrade.id.equals("tormented-bracelet")).findFirst().orElseThrow();
 		assertEquals(UpgradePresentation.RangeKind.SCENARIO_MEAN_SENSITIVITY,manual.presentation.rangeKind);assertEquals(5,manual.presentation.minimumMeanHours,1e-10);
 		assertEquals(7.5,manual.presentation.maximumMeanHours,1e-10);assertTrue(manual.presentation.estimateScope.contains("Next zenyte shard"));
-		Advisor.UpgradeView cleared=view(a,"tormented-bracelet");assertNull(cleared.presentation.maximumMeanHours);assertEquals(manual.pursuit.remainingEffort.band,cleared.pursuit.remainingEffort.band);
+		Advisor.UpgradeView cleared=view(a,"tormented-bracelet");assertEquals(300.0/70,cleared.presentation.maximumMeanHours,1e-10);assertEquals(PaceScenario.SourceKind.MODEL_BASED,cleared.presentation.estimateSourceKind);assertEquals(manual.pursuit.remainingEffort.band,cleared.pursuit.remainingEffort.band);
 	}
 	@Test public void unavailableProbabilityWithdrawsOnlyItsDependentEstimate() throws Exception
 	{

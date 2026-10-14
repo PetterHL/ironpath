@@ -404,7 +404,9 @@ public class IronpathPlugin extends Plugin
 					render("Reference updated in memory for this character/profile.", snapshot);
 				});
 			}
-			public void pace(String value)
+			public void pace(String value) { pace("demonic-gorillas","ordinary",value); }
+			public void pace(String activity, String mode, String value) { pace(activity,mode,null,value); }
+			public void pace(String activity, String mode, String methodKey, String value)
 			{
 				clientThread.invokeLater(() -> {
 					if (!IronpathPlugin.this.current(token, expectedIdentity) || !session.currentView(token, revision) || session.snapshot() != snapshot) { return; }
@@ -416,12 +418,12 @@ public class IronpathPlugin extends Plugin
 							String[] bounds=value.trim().split("-", -1);
 							if (bounds.length > 2) { throw new IllegalArgumentException(); }
 							double minimum=Double.parseDouble(bounds[0]), maximum=bounds.length == 1 ? minimum : Double.parseDouble(bounds[1]);
-							next=new com.ironpath.advisor.PaceScenario("demonic-gorillas", "ordinary", minimum, maximum,
-								"Eligible completed kills per active hour, including travel/banking/failures in the scenario", Instant.now());
+							next=new com.ironpath.advisor.PaceScenario(activity, mode, minimum, maximum,
+								"Eligible completed trials per active hour, including travel/banking/failures in the scenario", Instant.now(),methodKey);
 						}
 					}
 					catch (IllegalArgumentException invalid)
-					{ render("Pace needs a positive kills/hour value or range, for example 40 or 30-50; current scenario retained.", snapshot); return; }
+					{ render("Pace needs a positive completed-trials/hour value or range, for example 40 or 30-50; current scenario retained.", snapshot); return; }
 					if (session.editPace(token, revision, expectedIdentity, snapshot, next))
 					{ render("Pace scenario updated in memory; it is not measured performance.", snapshot); }
 				});

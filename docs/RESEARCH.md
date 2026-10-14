@@ -1,5 +1,7 @@
 # IronPath research and evidence
 
+AD1b selectively promotes documented successful-repeat-hour scenarios and analytic multiple-roll/repeated-component models. The [review record](validation/AD1b.md) distinguishes original pinned mechanics, attributed mirror benchmark delivery, applicability judgements, scope and source limitations; the [complete matrix](validation/AD1b-coverage.md) separates automatic/manual/observed support. No personal pace, failure probability, total-route hours or gear-to-speed multiplier is inferred. Earlier E1/E2 examples remain historical arithmetic; AD1b replaces their manual-only default where a reviewed automatic scenario applies.
+
 ## EP1 implementation review — 14 October 2026
 
 [Validation and complete profile/source matrix](validation/EP1.md) records fresh Wiki revision retrieval, original qualitative calibration and the `progression-2` table for every active route and retained broader record. Scorching/synapse is promoted with exact forms, quest/notes/assembly, exclusive allocation and a qualitative Doom role. WGS uses the public Quest API with coalesced refresh; note knowledge remains an explicit unknown/planning fact. Owned Scorching and active Venator keep strongest-owned ranged DPS claims unavailable while unaffected reference metrics remain supported.

@@ -42,13 +42,14 @@ public final class KnowledgeCatalog
 	public final List<ActivityReward> activityRewards;
 	public final ProgressionKnowledge progression;
 	public final Map<String, ActivityEffortProfile> effortProfiles;
+	public final Map<String, AutomaticPaceProfile> automaticPaces;
 	public final Map<String, Source> sources;
 	final Map<String, List<Gear>> gear;
 	final Map<String, List<Integer>> itemSets;
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 12 || document.decisions == null
+		if (document.schemaVersion != 13 || document.decisions == null
 			|| document.decisions.isEmpty())
 		{
 			throw new IllegalArgumentException("Unsupported or incomplete PvM catalogue");
@@ -64,8 +65,9 @@ public final class KnowledgeCatalog
 			{ throw new IllegalArgumentException("Invalid or duplicate source ID"); }
 			boolean wiki = require(source.url).matches("https://oldschool\\.runescape\\.wiki/w/[A-Za-z0-9_/%()-]+\\?oldid=[0-9]+");
 			boolean official = source.url.matches("https://secure\\.runescape\\.com/m=news/[a-z0-9-]+\\?oldschool=1");
+			boolean paceEvidence=source.url.matches("https://osrsmethods\\.com/methods/(completing-the-corrupted-gauntlet|killing-zulrah|killing-demonic-gorillas|killing-tormented-demons|killing-phantom-muspah-twisted-bow)");
 			boolean api = source.url.matches("https://github\\.com/runelite/runelite/blob/[a-f0-9]{40}/runelite-api/src/main/java/net/runelite/api/gameval/ItemID\\.java");
-			if (!wiki && !api && !official)
+			if (!wiki && !api && !official && !paceEvidence)
 			{
 				throw new IllegalArgumentException("Unapproved source URL");
 			}
@@ -74,7 +76,7 @@ public final class KnowledgeCatalog
 			LocalDate review = LocalDate.parse(require(source.reviewed));
 			if (accessed.isAfter(review) || review.isAfter(reviewed))
 			{ throw new IllegalArgumentException("Inconsistent source dates"); }
-			if (official ? require(source.revision).isBlank() : !(wiki ? source.url.endsWith("?oldid=" + require(source.revision)) : source.url.contains("/blob/" + require(source.revision) + "/")))
+			if (paceEvidence ? !require(source.revision).matches("sha256:[a-f0-9]{64}") : official ? require(source.revision).isBlank() : !(wiki ? source.url.endsWith("?oldid=" + require(source.revision)) : source.url.contains("/blob/" + require(source.revision) + "/")))
 			{ throw new IllegalArgumentException("Source revision mismatch"); }
 		}
 		sources = Map.copyOf(document.sources.stream().collect(Collectors.toMap(s -> s.id, s -> s)));
@@ -109,7 +111,7 @@ public final class KnowledgeCatalog
 		}
 		for (Source source : sources.values())
 		{
-			if (source.decisions == null || source.decisions.isEmpty() && source.items.isEmpty() && source.models.isEmpty() && source.routes.isEmpty() && source.contexts.isEmpty() && source.activityContexts.isEmpty() && source.relations.isEmpty() && source.profiles.isEmpty() || !ids.containsAll(source.decisions)
+			if (source.decisions == null || source.decisions.isEmpty() && source.items.isEmpty() && source.models.isEmpty() && source.routes.isEmpty() && source.contexts.isEmpty() && source.activityContexts.isEmpty() && source.relations.isEmpty() && source.profiles.isEmpty() && source.paces.isEmpty() || !ids.containsAll(source.decisions)
 				|| new HashSet<>(source.decisions).size() != source.decisions.size())
 			{
 				throw new IllegalArgumentException("Invalid affected decisions");
@@ -395,12 +397,17 @@ public final class KnowledgeCatalog
 		}
 		if (document.acquisitions == null || document.activityRewards == null) { throw new IllegalArgumentException("Missing pursuit contracts"); }
 		java.util.Map<String, AcquisitionModel> models = new java.util.LinkedHashMap<>();
+		Set<String> acquisitionRoutes=new HashSet<>();
 		for (AcquisitionSpec model : document.acquisitions)
 		{
 			if (model == null) { throw new IllegalArgumentException("Missing acquisition model"); }
 			stableId(model.id); stableId(model.version); stableId(model.mode); stableId(model.rewardFamily);
-			if (models.containsKey(model.id) || !activities.containsKey(model.activity) || !ids.contains(model.route)
-				|| model.support == null || model.mechanic == null || model.denominator <= 0 || model.numerator < 0
+			if (models.containsKey(model.id) || !acquisitionRoutes.add(model.route) || !activities.containsKey(model.activity) || !ids.contains(model.route)
+				|| model.support == null || model.mechanic == null || model.rolls<1 || model.rolls>10
+				|| model.requiredSuccesses<1 || model.requiredSuccesses>10
+				|| model.mechanic!=AcquisitionModel.Mechanic.INDEPENDENT_ROLLS && model.rolls!=1
+				|| model.mechanic!=AcquisitionModel.Mechanic.REPEATED_SUCCESSES && model.requiredSuccesses!=1
+				|| model.denominator <= 0 || model.numerator < 0
 				|| model.numerator > model.denominator || model.denominator > 1_000_000_000L
 				|| model.assumptions == null || model.assumptions.isEmpty() || model.exclusions == null || model.exclusions.isEmpty())
 			{ throw new IllegalArgumentException("Invalid acquisition mechanic/scope"); }
@@ -408,8 +415,12 @@ public final class KnowledgeCatalog
 			if (LocalDate.parse(require(model.reviewed)).isAfter(reviewed)) { throw new IllegalArgumentException("Invalid acquisition review date"); }
 			evidence(model.sources);
 			if (!byId.get(model.route).activity.equals(model.activity) || !byId.get(model.route).sources.containsAll(model.sources)
-				|| upgrades.stream().noneMatch(u -> u.routes.contains(model.route) && u.path.stream().anyMatch(n -> n.id.equals(model.node))))
+				|| upgrades.stream().noneMatch(u -> u.routes.contains(model.route) && (u.path.stream().anyMatch(n -> n.id.equals(model.node)) || u.path.isEmpty() && u.parts.stream().anyMatch(part->part.when.test==Test.POSSESSION && model.node.equals(part.when.key)))))
 			{ throw new IllegalArgumentException("Acquisition is not linked to its path stage"); }
+			if(model.mechanic==AcquisitionModel.Mechanic.REPEATED_SUCCESSES && upgrades.stream()
+				.filter(u->u.routes.contains(model.route)).flatMap(u->u.path.stream())
+				.noneMatch(n->n.id.equals(model.node) && n.quantity!=null && n.quantity==model.requiredSuccesses))
+			{ throw new IllegalArgumentException("Repeated reward model does not match its required path count"); }
 			for (String source : model.sources) { if (!sources.get(source).acquisitions.contains(model.id)) { throw new IllegalArgumentException("Missing acquisition source dependency"); } }
 			models.put(model.id, new AcquisitionModel(model));
 		}
@@ -442,6 +453,24 @@ public final class KnowledgeCatalog
 			profile.methods=List.copyOf(profile.methods); profile.sources=List.copyOf(profile.sources); profile.detours=List.copyOf(profile.detours);
 		}
 		effortProfiles=Map.copyOf(profiles);
+		if(document.automaticPaces==null) { throw new IllegalArgumentException("Missing automatic pace inventory"); }
+		Map<String,AutomaticPaceProfile> paces=new java.util.LinkedHashMap<>();
+		for(AutomaticPaceProfile pace:document.automaticPaces)
+		{
+			stableId(pace.id); stableId(pace.version); stableId(pace.mode); require(pace.scope); require(pace.methodLabel);
+			if(paces.putIfAbsent(pace.id,pace)!=null || !activities.containsKey(pace.activity) || pace.support==null
+				|| !Double.isFinite(pace.minimumPerHour) || !Double.isFinite(pace.maximumPerHour)
+				|| pace.minimumPerHour<=0 || pace.maximumPerHour<pace.minimumPerHour
+				|| LocalDate.parse(require(pace.reviewed)).isAfter(reviewed)
+				|| pace.assumptions==null || pace.assumptions.isEmpty() || pace.exclusions==null || pace.exclusions.isEmpty())
+			{ throw new IllegalArgumentException("Invalid automatic repeat-hour scenario"); }
+			evidence(pace.sources); Decision contract=new Decision(); contract.sources=pace.sources;
+			validate(pace.when,contract,0);
+			for(String source:pace.sources)
+			{ if(!sources.get(source).paces.contains(pace.id)) { throw new IllegalArgumentException("Missing pace source dependency"); } }
+			pace.sources=List.copyOf(pace.sources); pace.assumptions=List.copyOf(pace.assumptions); pace.exclusions=List.copyOf(pace.exclusions);
+		}
+		automaticPaces=Map.copyOf(paces);
 		for (Decision decision : decisions)
 		{
 			if (!"reviewed".equals(decision.status)) { continue; }
@@ -509,6 +538,7 @@ public final class KnowledgeCatalog
 		{
 			if (!itemIds.containsAll(source.items) || !ids.containsAll(source.routes)
 				|| !targetIds.containsAll(source.contexts) || source.models.stream().anyMatch(m -> !m.equals(comparison.modelVersion) && !m.equals(ranged.modelVersion) && !m.equals(melee.modelVersion))
+				|| source.paces.stream().anyMatch(id->!paces.containsKey(id)||!paces.get(id).sources.contains(source.id))
 				|| source.acquisitions.stream().anyMatch(id -> !models.containsKey(id) || !models.get(id).sources.contains(source.id))
 				|| source.efforts.stream().anyMatch(id -> !ids.contains(id) || byId.get(id).pursuit == null || !byId.get(id).pursuit.sources.contains(source.id))
 				|| source.rewards.stream().anyMatch(id -> activityRewards.stream().noneMatch(r -> r.id.equals(id) && r.sources.contains(source.id))))
@@ -793,6 +823,7 @@ public final class KnowledgeCatalog
 		List<ProgressionKnowledge.Context> activityContexts;
 		List<ProgressionKnowledge.Relation> roleSupport;
 		List<ActivityEffortProfile> effortProfiles;
+		List<AutomaticPaceProfile> automaticPaces;
 	}
 
 	public static final class Upgrade
@@ -910,6 +941,7 @@ public final class KnowledgeCatalog
 		public AcquisitionModel.Support support;
 		public AcquisitionModel.Mechanic mechanic;
 		public long numerator, denominator;
+		public int rolls=1, requiredSuccesses=1;
 		public List<String> assumptions, exclusions, sources;
 	}
 	public static final class ActivityReward
@@ -956,7 +988,7 @@ public final class KnowledgeCatalog
 		public List<String> decisions;
 		public List<Integer> items = List.of();
 		public List<String> models = List.of(), routes = List.of(), contexts = List.of();
-		public List<String> acquisitions = List.of(), efforts = List.of(), rewards = List.of(), relations = List.of(), activityContexts = List.of(), profiles = List.of();
+		public List<String> paces = List.of(), acquisitions = List.of(), efforts = List.of(), rewards = List.of(), relations = List.of(), activityContexts = List.of(), profiles = List.of();
 	}
 
 	static final class Gear

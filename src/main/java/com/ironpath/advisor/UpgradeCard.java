@@ -10,7 +10,10 @@ public final class UpgradeCard
 	public UpgradeCard(Advisor.UpgradeView view)
 	{
 		reason=view.valueEvidence.reason;
-		presentation=view.presentation; effort=presentation.effort.band.label + " remaining effort"; priorityReason=presentation.priorityReason;
+		presentation=view.presentation; effort=presentation.minimumMeanHours==null ? presentation.effort.band.label + " remaining effort"
+			: String.format(Locale.ROOT,"%s: ~%.1f h mean · %s",
+				presentation.estimateSourceKind==PaceScenario.SourceKind.MODEL_BASED?"Model-based estimate":"Manual pace scenario",presentation.maximumMeanHours,
+				presentation.conditionalComponentWork?"if components needed":"component only"); priorityReason=presentation.priorityReason;
 		ComparisonResult comparison=view.comparison;
 		if (view.valueEvidence.independentUtility)
 		{
