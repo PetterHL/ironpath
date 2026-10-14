@@ -1,5 +1,85 @@
 # IronPath native UI specification
 
+14 October 2026 · **Selected visual advisor direction; UX2 implementation pending.** Current main contains the earlier R3a/UX-completion components. This specification incorporates the written decisions from “Oppsummering av UX” and account-efficient progression. [TASKS EP1/UX2](../TASKS.md#ep1--account-efficient-progression-next-implementation) is the only delivery backlog; [DESIGN progression-2](DESIGN.md#progression-intelligence-contract-version-progression-2-selected) owns ranking.
+
+## Experience and scope
+
+The homepage answers: **Which upgrades are most worthwhile for the effort on my account now?** A card shows the useful result; details explain why and how to obtain it. Preserve supported coverage, comparisons, observation/identity protections, search, filters, owned-use discovery and guarded navigation.
+
+Build in native Swing/PluginPanel with genuine ItemManager sprites. Use calm dark surfaces, gold names/headings, prominent supported numbers and quiet secondary information. Green means a positive change, red a concrete negative change, neutral unavailable information. Colour always has a text/value equivalent.
+
+Use one column at normal RuneLite sidebar width; validate the actual viewport (the existing pinned source indicates a 225px panel with roughly 213px inner width). Two columns are optional only when real font metrics and complete content fit. Never require widening, smaller fonts, horizontal scrolling or clipped names. Keep header, search, filters and navigation compact. Enlarged reference images are not sizing specifications.
+
+## Homepage and order
+
+- Preserve EP1 next-step priority for the entire supported catalogue in the default deck. Layout determines how much of that sequence fits, not what outranks what.
+- Remove automatic early insertion of long-term/specialist cards merely for diversity. Keep compact Long-term / Specialist discovery and Browse all with accurate filter counts and complete supported coverage.
+- A high-priority specialist appears naturally. If long grinds are the best remaining choices, show them with their horizon. Distant outcomes remain in later progression with a useful reachable step and no unsupported full-route hours.
+- Deduplicate the same outcome/correlated family repetition without overriding stronger opportunities or hiding independent rewards from a shared activity. No filler quota or catalogue cap.
+- Re-evaluate on material account changes. Preserve stable-ID scroll/focus, search caret, filter state and Back. Sprite loading/repaint never changes order; show a quiet update indication where appropriate.
+- Optional goals and Recent boss remain secondary; automatic advice works without either.
+
+## Card contract
+
+A compact card contains an item icon and full wrapping name; one prominent supported metric or useful documented specialist property; at most one additional useful metric; concise actual comparison baseline; and **at most one** short status when it changes the decision, for example Medium grind, Long-term or a concrete correctable input.
+
+The card itself opens details by mouse or keyboard with visible focus. Remove repeated **Value / Path** buttons from every card; retain both destinations inside details. Do not render internal importance tiers, reason-code lists, “long tail”, model-gap prose, generic “check inputs” or repeated ownership warnings as normal card content.
+
+Choose the most consequential status instead of concatenating badges. A blocking input may take precedence over the effort band, which remains in acquisition detail. Do not add a priority badge merely to restate queue position.
+
+Weapons/weapon-changing packages lead numerically with supported DPS; unchanged-speed equipment may lead with max hit. Missing weapon DPS must not be concealed behind an oversized max-hit figure implying a complete comparison. Reviewed utility may be the primary result when ordinary DPS does not describe it.
+
+### Shared reference and acquisition estimates
+
+The normal shared analytical reference is **Enemy with 0 Defence**. Remove “0 Defence”, “Reference: 0 Defence” and equivalent shield/reference badges from cards. Explain the shared premise once under calculation basis/help, without repeating it through normal details or replacing it with another generic reference badge.
+
+This presentation choice does not turn neutral numbers into boss performance. Explicit alternative contexts and Recent boss results retain enough scope to prevent confusion. Acquisition effort uses its reviewed activity/method/package profile; neutral card DPS never supplies boss throughput.
+
+## Details and acquisition
+
+Open with compact Back and item identity; keep comparison/value and acquisition reachable inside the detail flow.
+
+**Comparison:** current item/package → upgrade with icons and compact before/after rows for relevant changes. Normally omit unchanged stats. Name changed weapons/off-hands/sets when material. Match the actual supported calculation.
+
+**Why this position:** one concrete account-specific reason or trade-off combining value and remaining effort. Example wording: “Useful demon upgrade; your current setup supports the acquisition method.” This is illustrative, not a verified claim for every synapse candidate.
+
+**Acquisition:** source/activity → remaining components/requirements → next concrete action. Show Short / Medium / Long / Very long and optionally an Estimated scenario-hour range with correct scope. Name the main factor increasing work in one short line. Next-component hours must not look like full-item completion time.
+
+Separate hard access, equip, components, useful preparation and optional alternatives. Completed requirements stay secondary. Present starting with an adequate owned method beside a relevant preparation detour, including the detour's work without making optional gear compulsory. Do not repeat the same boss/recipe under several headings or invent generic “Improve raid readiness” steps.
+
+**Estimate basis:** one quiet secondary entry contains method/profile, source/scope, assumptions/exclusions and optional pace correction. Automatic reviewed defaults work without input. Manual scenarios are labelled; Clear restores the supported automatic scenario or no hours. RNG variability and scenario sensitivity are different; no progress percentage or deadline.
+
+**Limitations and sources:** one short visible limitation when material to interpretation. Sources/calculation basis remain accessible via a discreet secondary entry. Do not replace report paragraphs with many collapsed report paragraphs.
+
+## Account and diagnostics
+
+Show relevant levels, recorded gear/unlocks and focused correction actions. Preserve observed usable equipment versus manually confirmed ownership in the model/correction flow. Surface a data gap once where it affects a decision rather than repeating it as a badge, paragraph and task.
+
+Quest.getState, varbits, raw observations, knowledge versions and long timestamps belong in separate diagnostics. Early/mid/endgame is an optional summary, not a performance multiplier, mandatory wizard or proof of boss readiness.
+
+## Structured presentation and unavailable states
+
+Extend existing UpgradeCard/detail presentation data with typed metric/value/unit/baseline, availability/correction, selected status, priority reason, effort band, optional range/kind/origin/scope and next step. Swing renders results; it does not parse engine reports or compute ranking.
+
+Keep supported zero/negative results distinct from missing account input, unsupported calculations, qualitative effort with unavailable hours, and a distant/not-yet-suitable route. Missing input offers a specific useful action. Unsupported calculation uses calm “DPS not calculated” copy, never futile input requests. Unknown is never zero, and uncertainty styling does not assert bad gear.
+
+## Reference images and validation
+
+The written “Oppsummering av UX” requirements override illustrative images. Its new overview/detail/account images are visual references, not authoritative stats, item relationships or prerequisites. Do not copy Ancestral/Shadow numbers. Any 0 Defence badge in a reference is excluded.
+
+This documentation update does not add or claim to inspect those new images. If available during UX2, save them with provenance and an illustrative-data note. Existing R3a captures below are historical baseline evidence, not the new design target. The written contract is sufficient to begin implementation.
+
+Validate actual components at standard width, long names and enlarged fonts: EP1 next-step order; a supported Zaryte-type comparison; Shadow with unsupported metrics handled correctly; a concrete Masori-type acquisition; account corrections/diagnostics; keyboard/Back/filters/scroll; zero versus unavailable; stale imagery/identity changes. Include EP1's different account profiles.
+
+Use implemented-component screenshots and identify client versus harness captures. Compare with available desired references and the written contract. Generated design images are not implementation evidence. Report pending real-client sprites/scaling/player checks; old passes are not new acceptance.
+
+EP1 migrates domain policy and presentation contracts. UX2 completes this whole normal flow using them; preserving old importance-first ranking is not a UX2 requirement. Preserve supported combat arithmetic/coverage unless a separate concrete defect requires correction. Kill Impact, full boss simulation and complete numerical acquisition coverage are not gates.
+
+## Historical R3a specification and evidence
+
+<details>
+<summary>Earlier implemented R3a/UX-completion design and validation references; superseded requirements, not current UX2 instructions</summary>
+
 13 October 2026 · **Selected R3a design; implemented for review, actual-client acceptance pending.** This supersedes the R1.5 row-first homepage and 100px Browse-cell rule. It refines presentation only: DESIGN `progression-1`, established research, quantitative coverage and the uncapped catalogue remain authoritative. [TASKS R3a](../TASKS.md#r3--relationship-aware-advice-and-melee-packages) is the sole implementation backlog.
 
 **R3b ordinary melee, 14 October:** the existing native cards and Value/Path now support a melee family with independent session-only corrections. Controls list the selected weapon’s actual attack types/stances and label proposed prayers/boosts. Value names incompatible off-hands and unreviewed-family gaps; Path separates component ownership, drop access/task and irreversible whip consumption. [Synthetic 225px captures and pending client acceptance](validation/R3b-ordinary-melee.md).
@@ -108,3 +188,5 @@ Reuse native Swing/PluginPanel, ItemManager, reference/comparison services and g
 Implement homepage, card reuse, Specialist discovery and detail entry points with the R3a relationship increment. This is not a product/research reset or schema-only release. Developer handoff and authoritative checkboxes are in [TASKS R3a](../TASKS.md#r3--relationship-aware-advice-and-melee-packages); [review record](validation/R3a-ui-direction.md) separates this documentation review from implementation evidence.
 
 Required states: rich no-goal account, post-Bowfa, all-megarare/nearly complete, only long-term choices, small specialist gains, all supported outcomes owned, unread/partial bank, unknown ownership, unsupported numbers, skipped activity, owned intermediate, long names, large font, delayed sprites and account/profile change. Record measured viewport and resolved RuneLite/OS versions at 100/125/150/200% scaling, mouse/keyboard/focus/Back behaviour, genuine sprite loads and a player finding an upgrade, explaining its value and reaching the next step. Headless captures establish component layout only. [R3a component implementation and captures](validation/R3a.md) now verify the supported layout/navigation states. **Actual-client and player checks remain pending.**
+
+</details>

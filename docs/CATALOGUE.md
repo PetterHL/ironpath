@@ -30,7 +30,9 @@ Every future coverage record should name: activity/mode/method and role; current
 
 Hard access/component DAGs remain acyclic. Utility feedback such as gear improving the raid that drops it is valid and must not become an acquisition gate or recursive score. Missing numerical coverage, missing research and a demonstrated lack of worthwhile benefit are different statuses. The 30 examples are representative evidence, not a catalogue ceiling or a global upgrade order.
 
-## Effort and acquisition representation — proposed R1.5 extension
+## Effort and acquisition representation — EP1 and later acquisition support
+
+**14 October selected update:** EP1 in TASKS adds reviewed activity/mode/method/package effort profiles under DESIGN progression-2 and RESEARCH calibration requirements. Track qualitative band support separately from numerical probability, scenario pace and observed performance. Matching gear may select a reviewed assumption-based profile, not establish personal speed or skill. Synapse, blowpipe, zenyte, treads and Shadow are initial account-calibration cases, not fixed item ranks or a catalogue limit. EP1 must inventory every active outcome/route and show how it enters the common value/suitability/effort pipeline; an evidence gap is recorded per route, not hidden by example-only coverage. The same contract applies to future promotions. No runtime support is promoted by this documentation update.
 
 Keep D/R/V/Q and the uncapped inventory unchanged: recommendation validation, combat-model support and acquisition-model support are independent. No runtime catalogue/schema data changes in this documentation PR. Add acquisition support A0–A4 per route as specified in RESEARCH, with stable activity/mode/reward-family and estimate scope, effort/tail rationale, source/model versions, roll semantics, exclusions and unsupported reasons. **Pursuit category is derived for the account, not a fixed item rank.** These mappings are design/research classifications, not newly shipped estimates or an additional backlog.
 

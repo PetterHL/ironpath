@@ -1,5 +1,11 @@
 # IronPath research and evidence
 
+## Account-efficient progression — 14 October 2026 decision
+
+Selected product policy, **not new gameplay research or implemented estimates**. EP1 in TASKS will review activity effort profiles and migrate to DESIGN's `progression-2`. The existing relationship research supplies candidate roles/alternatives, not validated throughput. Synapse, blowpipe, zenyte, treads and Shadow are representative validation cases, not fixed priority rules or a coverage ceiling. Profile review covers the entire active catalogue by shared activity/method families; EP1 must report every supported route's qualitative/numerical support and any specific gap. Example-only profile coverage is not the intended delivery.
+
+Automatic qualitative effort is permitted at A0 with a reviewed rationale. Automatic scenario hours use A2 only after both reward mechanics and a compatible full-cycle pace scenario are reviewed. The account selects the applicable profile; it does not establish observed speed, skill or raid success. No personal kill history is required for this first increment.
+
 ## R3b ordinary melee — 14 October 2026
 
 Actual direct Wiki API revision/content retrieval covered ordinary effective levels, attack/defence rolls, successful-zero damage, attack intervals, Piety/Chivalry and paired 15% prayers, full super attack/strength boosts, selected weapon styles, 35 exact supported offensive item forms, target defensive facts and the complete whip/tentacle route. Bundled `r3b-*` records pin revisions, review/access dates and item/model/route/context dependencies. Combat style pairs were checked against `Module:CombatStyles` revision **15299810** as factual metadata; no Lua code is included. Neitiznot's current capitalization changed in August 2026; the reviewed canonical page is `Helm_of_Neitiznot` revision **15320122**.
@@ -89,11 +95,25 @@ Delivery tiers (dependencies and acceptance live only in TASKS):
 |---|---|---|
 | A0 reviewed route only | Remaining prerequisites, effort/tail/coordination/upkeep labels with rationale; alternatives and shared rewards | Numerical hours/odds without reviewed mechanics |
 | A1 reviewed probability | Mean trials, median and P90 for a supported next reward under stated eligible trials | Time without pacing; full-item total if components/preparation remain unknown |
-| A2 explicit pace scenario | Conditional hour summaries using player-entered or separately reviewed cycle pace; visible sensitivity | “Your expected time” from an unobserved benchmark; exact totals across unknown prerequisites |
+| A2 explicit pace scenario | Conditional hour summaries using player-entered pace or an automatically selected, separately reviewed activity/method/package cycle scenario; visible sensitivity and origin | “Your expected time” from an unobserved benchmark; exact totals across unknown prerequisites |
 | A3 validated local observation (later) | Session-derived cycle pace for matched mode/team/setup, sample size and overhead coverage; labelled recent estimate | Historic account inference, PB-as-average, automatic transfer to harder modes/new gear |
 | A4 complex route models (later, selective) | Validated stateful/multi-component distributions or bounded analytic scenarios when useful | Universal simulator, every-item exact ETA, automatic route optimiser |
 
-A0 remains useful indefinitely for individual unsupported mechanics; it must not become an excuse to abandon quantitative coverage. A1/A2 are independent of full encounter simulation. Do not block ranged/melee models on A3/A4.
+A0 remains useful indefinitely for individual unsupported mechanics; it must not become an excuse to abandon quantitative coverage. A1/A2 are independent of full encounter simulation. A2 profile selection is an assumption-based scenario, not inference of the player's actual raid pace from gear. Do not block ranged/melee models on A3/A4.
+
+### Automatic profile calibration and evidence
+
+For every EP1 activity profile, record activity/mode/method and reward eligibility; compatible role/package, level/prayer/unlock predicates; adequacy evidence and accepted alternatives; completed-work predicates; qualitative effort rationale; optional throughput range and its provenance; cycle scope (combat, respawn, travel, banking, supplies and failures where covered); exclusions; source/review/version dependencies; and positive/negative/unknown account fixtures. These are bundled reviewed inputs, not runtime scraping or per-user AI.
+
+Do not populate arbitrary presets merely to produce numbers. Where only qualitative support exists, ship the reasoned band. A numeric profile needs an independently supported benchmark/assumption and explicit scope; guide record times and uninterrupted DPS are not full-cycle throughput. Review current mechanics and rights before reusing facts, benchmark data or text. Record unsupported modes and setup combinations.
+
+A suitable profile gives an estimate conditional on its stated execution/method assumptions; it does not certify the player's skill. Better supported gear may select a less burdensome scenario when evidence justifies it, but global early/mid/endgame multipliers and invented death probabilities are excluded. When essential account observations are missing, return a conditional/unknown result rather than assuming absent gear or selecting the weakest profile.
+
+Keep three uncertainty concepts distinct: uncertainty in the selected pace scenario, variation from random drops, and unknown prerequisite/learning work. A scenario range of mean hours is not a confidence interval or the probability the item will drop in that range. Mean/P50/P90 must retain their actual mathematical meaning where supported. Exact hour boundaries for effort bands are a versioned product calibration to document and exercise, not claimed game facts.
+
+A manual override replaces a matching automatic scenario for the same activity/mode/scope and is labelled as such; clearing restores the supported automatic default, or no hours if none exists. Keep corrections in session memory with existing identity resets. Later validated full-cycle observation may refine the scenario; a KI1 combat duration alone cannot do so.
+
+EP1 review must demonstrate the different account cases in TASKS and compare the proposed bands/optional hours with their cited benchmarks. Report quantitative and qualitative coverage separately. New source evidence invalidates only dependent profiles. Do not delay useful A0 prioritisation until all complex raid/challenge models exist.
 
 ### Acquisition mathematics and uncertainty contract
 
