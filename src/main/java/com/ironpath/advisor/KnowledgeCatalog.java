@@ -39,7 +39,8 @@ public final class KnowledgeCatalog
 		"beneath-cursed-sands", "perilous-moons", "deadeye", "mystic-vigour", "final-dawn", "frozen-door",
 		"smoke-task", "smoke-protection", "nex-entry", "nex-team", "zaryte-context", "zaryte-shards", "doom-preparation", "treads-tears", "desert-treasure-ii", "monkey-madness-ii", "duke-defeated", "peer-ring-icons", "cox-preparation", "toa-preparation", "monkey-form",
 		"multi-combat-method", "secrets-of-north", "muspah-preparation", "doom-delve-two", "doom-delve-three", "doom-delve-four",
-		"blood-moon-rises", "dragon-slayer-ii", "leviathan-defeated", "colosseum-preparation", "zilyana-entry", "knight-waves", "kraken-task", "fremennik-isles", "fremennik-exiles", "while-guthix-sleeps", "duradel-notes");
+		"blood-moon-rises", "dragon-slayer-ii", "leviathan-defeated", "colosseum-preparation", "zilyana-entry", "knight-waves", "kraken-task", "fremennik-isles", "fremennik-exiles",
+		"barbarian-training", "barbarian-hasta", "monkey-madness-i", "vardorvis-defeated", "whisperer-defeated", "hydra-task", "while-guthix-sleeps", "arclight-infusion", "duradel-notes", "yama-entry", "arachnid-task", "cerberus-task", "sins-of-father", "vyre-method");
 	public final Map<String, Goal> goals;
 	public final Map<String, String> activities;
 	private final Map<String, String> ownershipLabels;
@@ -61,7 +62,7 @@ public final class KnowledgeCatalog
 
 	private KnowledgeCatalog(Document document)
 	{
-		if (document.schemaVersion != 13 || document.decisions == null
+		if (document.schemaVersion != 14 || document.decisions == null
 			|| document.decisions.isEmpty())
 		{
 			throw new IllegalArgumentException("Unsupported or incomplete PvM catalogue");
@@ -255,7 +256,7 @@ public final class KnowledgeCatalog
 				|| LocalDate.parse(require(upgrade.reviewed)).isAfter(reviewed)) { throw new IllegalArgumentException("Unreviewed upgrade"); }
 			require(upgrade.remainingWork); require(upgrade.limitation);
 			evidence(upgrade.sources);
-			Decision contract = new Decision(); contract.sources = upgrade.sources;
+			Decision contract = new Decision(); contract.id = upgrade.id; contract.sources = upgrade.sources;
 			validate(upgrade.when, contract, 0); validate(upgrade.ownedWhen, contract, 0);
 			validate(upgrade.equipWhen, contract, 0); validate(upgrade.eligibilityWhen, contract, 0);
 			for (String route : upgrade.routes)
@@ -285,6 +286,10 @@ public final class KnowledgeCatalog
 				validate(node.completeWhen, contract, 0); validateDependencies(node.dependencies, path.keySet(), 0);
 				if (node.quantity != null && (node.quantity < 1 || node.itemId == null || !itemIds.contains(node.itemId)))
 				{ throw new IllegalArgumentException("Invalid path quantity"); }
+				if ((node.batchItemId==null)!=(node.batchSize==null) || node.batchItemId!=null &&
+					(!itemIds.contains(node.batchItemId) || node.quantity==null || node.batchSize<1 || node.quantity%node.batchSize!=0 || node.batchItemId.equals(node.itemId)))
+				{ throw new IllegalArgumentException("Invalid remaining-batch quantity"); }
+				if (node.batchItemId!=null) { gear.values().stream().flatMap(List::stream).filter(g->g.id==node.batchItemId).forEach(g->requireItemEvidence(g,contract)); }
 				if (node.quantity != null) { gear.values().stream().flatMap(List::stream).filter(g -> g.id == node.itemId).forEach(g -> requireItemEvidence(g,contract)); }
 			}
 			for (String node : path.keySet()) { visitPath(node, path, new HashSet<>(), new HashSet<>()); }
@@ -316,7 +321,14 @@ public final class KnowledgeCatalog
 				|| item.stab==null || item.slash==null || item.crush==null || item.strength==null || item.ticks==null
 				|| item.stab < -100 || item.stab > 300 || item.slash < -100 || item.slash > 300 || item.crush < -100 || item.crush > 300
 				|| item.strength < -100 || item.strength > 300 || item.equipFact!=null && !FACTS.contains(item.equipFact) || item.requirements==null || item.styles==null || item.styles.stream().anyMatch(java.util.Objects::isNull)
-				|| new HashSet<>(item.styles).size()!=item.styles.size()
+				|| item.family==null || item.effect==null || new HashSet<>(item.styles).size()!=item.styles.size()
+				|| item.minimumCombat!=null && (item.minimumCombat<3 || item.minimumCombat>126)
+				|| item.family!=MeleeModel.Weapon.ORDINARY && !item.slot.equals("weapon")
+				|| item.effect==MeleeEffects.Gear.SLAYER && !item.slot.equals("head")
+				|| (item.effect==MeleeEffects.Gear.SALVE || item.effect==MeleeEffects.Gear.SALVE_ENCHANTED) && !item.slot.equals("neck")
+				|| item.effect==MeleeEffects.Gear.INQUISITOR_HEAD && !item.slot.equals("head")
+				|| item.effect==MeleeEffects.Gear.INQUISITOR_BODY && !item.slot.equals("body")
+				|| item.effect==MeleeEffects.Gear.INQUISITOR_LEGS && !item.slot.equals("legs")
 				|| item.slot.equals("weapon") && (item.styles.isEmpty() || item.ticks<2 || item.ticks>10)
 				|| !item.slot.equals("weapon") && (!item.styles.isEmpty() || item.ticks!=0 || item.twoHanded))
 			{ throw new IllegalArgumentException("Invalid melee item/style/compatibility contract"); }
@@ -386,6 +398,9 @@ public final class KnowledgeCatalog
 				|| target.meleeSlash != null && (target.meleeStab==null || target.meleeSlash < -64 || target.meleeSlash > 10000)
 				|| target.meleeCrush != null && (target.meleeStab==null || target.meleeCrush < -64 || target.meleeCrush > 10000)
 				|| target.analytical && (target.meleeStab==null || target.meleeStab!=0 || target.meleeSlash!=0 || target.meleeCrush!=0)
+				|| target.size!=null && (target.size<1 || target.size>64)
+				|| target.demonbanePercent!=null && (target.demonbanePercent<0 || target.demonbanePercent>1000)
+				|| target.meleeScenario && (target.meleeStab==null || target.size==null || target.scalingSupported)
 				|| target.variant.equals("TOA") && target.scalingSupported)
 			{ throw new IllegalArgumentException("Unsupported target profile/scaling"); }
 		}
@@ -690,6 +705,20 @@ public final class KnowledgeCatalog
 		choices.put("doom-delve-two", "Planning scenario: complete Doom delve 2 (not observed ability)");
 		choices.put("doom-delve-three", "Planning scenario: complete Doom delve 3 (not observed ability)");
 		choices.put("doom-delve-four", "Planning scenario: complete Doom delve 4 (not observed ability)");
+		choices.put("barbarian-training", "Barbarian Firemaking (not pyres), Fishing and Smithing completed for lance equip");
+		choices.put("barbarian-hasta", "Barbarian Fishing and Smithing completed for hasta equip");
+		choices.put("monkey-madness-i", "Monkey Madness I completed for dragon scimitar equip");
+		choices.put("vardorvis-defeated", "Vardorvis defeated at least once for Ultor equip");
+		choices.put("whisperer-defeated", "The Whisperer defeated at least once for Bellator equip");
+		choices.put("hydra-task", "Current eligible Hydra assignment (recheck when task changes)");
+		choices.put("while-guthix-sleeps", "While Guthix Sleeps completed");
+		choices.put("arclight-infusion", "Selected Arclight charges plus infusion cover 10,000 for Emberlight assembly (recheck)");
+		choices.put("duradel-notes", "Duradel's notes read after While Guthix Sleeps");
+		choices.put("yama-entry", "Yama source access checked; no method readiness inferred");
+		choices.put("arachnid-task", "Current eligible araxyte assignment for Araxxor (recheck)");
+		choices.put("cerberus-task", "Current eligible hellhound assignment for Cerberus (recheck)");
+		choices.put("sins-of-father", "Sins of the Father completed for the reviewed Darkmeyer blood-shard route");
+		choices.put("vyre-method", "Compatible Vyrewatch Sentinel weapon/method and supplies checked (not general melee readiness)");
 		ownershipLabels.entrySet().stream().sorted(Map.Entry.comparingByKey())
 			.forEach(e -> choices.put("owns-" + e.getKey(), e.getValue()));
 		gear.values().stream().flatMap(List::stream).sorted(java.util.Comparator.comparing(g -> g.label))
@@ -843,6 +872,7 @@ public final class KnowledgeCatalog
 
 	public static final class Upgrade
 	{
+		public boolean reviewedRemainingStages;
 		public String id, title, valueReason, alternatives, remainingWork, limitation, comparison, headline, effortShort, status, reviewed;
 		public String browseStyle, browseSlot;
 		public int itemId;
@@ -862,7 +892,7 @@ public final class KnowledgeCatalog
 	public static final class PathNode
 	{
 		public String id, label, detail, role;
-		public Integer itemId, quantity;
+		public Integer itemId, quantity, batchItemId, batchSize;
 		public Condition completeWhen;
 		public Dependencies dependencies;
 		public boolean alternativeOnly, acquisition;

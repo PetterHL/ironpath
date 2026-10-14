@@ -59,6 +59,7 @@ public class AD1cPriorityTest
 		accounts.put("brimstone-synthetic",AD1aComparisonTest.brimstoneFixture());
 		accounts.put("bowfa-without-armour",withFact(account(Set.of(25867),99,99),"song-of-elves",fact(true)));
 		accounts.put("seas-baseline",account(Set.of(11907),99,99));
+		accounts.put("melee-with-owned-treads",R15Fixtures.items(MeleeAdviceTest.ordinary(),31088,13239));
 		Set<String> covered=new TreeSet<>();
 		StringBuilder report=new StringBuilder("# AD1c evaluated priority audit\n\nSynthetic account evidence; reported gear classes have synthetic missing inputs. No full player account or client acceptance. Confirmed-absence fixtures use explicit `absent(catalog)` planning facts; unconfirmed fixtures use `Preferences.EMPTY`. Queue positions retain progression-2's class and tie policy, not a precise DPS/time score.\n");
 		for(var profile:accounts.entrySet()) for(boolean unconfirmed:List.of(false,true)) {

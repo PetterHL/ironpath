@@ -109,12 +109,12 @@ public class UX2PanelTest
 			button("← Upgrades").doClick();assertNotNull(named("homepage-deck"));
 		} catch(Exception e){throw new RuntimeException(e);} });
 	}
-	@Test public void manualPaceIsScopedAndClearReturnsToUnavailableHours() throws Exception {
+	@Test public void manualPaceIsScopedAndClearRestoresCompatibleAutomaticHours() throws Exception {
 		SwingUtilities.invokeAndWait(()->{try {
 			button("Browse").doClick();button("open-upgrade-tormented-bracelet").doClick();button("Acquisition").doClick();
-			assertFalse(shown().contains("Estimated mean"));button("Estimate basis and route evidence").doClick();((JTextField)named("pace-input")).setText("30-60");button("Apply pace").doClick();capture("manual-next-shard");
-			assertTrue(shown().contains("Estimated mean"));assertTrue(shown().contains("Next zenyte shard"));assertTrue(shown().contains("manual scenario"));
-			button("Estimate basis and route evidence").doClick();button("Clear pace").doClick();assertFalse(shown().contains("Estimated mean"));
+			assertTrue(shown().contains("Model-based estimate"));assertTrue(shown().contains("Mean 4.3 h"));button("Estimate basis and route evidence").doClick();((JTextField)named("pace-input")).setText("30-60");button("Apply pace").doClick();capture("manual-next-shard");
+			assertTrue(shown().contains("Mean 10.0 h"));assertTrue(shown().contains("Next zenyte shard"));assertTrue(shown().contains("Manual pace scenario"));assertTrue(shown().contains("mean 5.0–10.0 h"));
+			button("Estimate basis and route evidence").doClick();button("Clear pace").doClick();assertTrue(shown().contains("Model-based estimate"));assertTrue(shown().contains("Mean 4.3 h"));
 		} catch(Exception e){throw new RuntimeException(e);} });
 	}
 	@Test public void largeFontsWrapAndKeyboardOpeningKeepsSearchAndFilters() throws Exception {

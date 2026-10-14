@@ -57,7 +57,7 @@ final class ProgressionEvaluator
 				if (relation.dimension==ProgressionKnowledge.Dimension.ORDINARY_OFFENCE && comparison.before!=null)
 				{
 					ValueEvidence.Importance conditional=relation.significance==ProgressionKnowledge.Significance.CORE ? KEY : relation.significance==ProgressionKnowledge.Significance.SUBSTANTIAL ? STRONG : CONTEXTUAL;
-					if (conditional.ordinal()<importance.ordinal()) { importance=conditional; reason="Core ranged neck over " + baseline + "; check unobserved alternatives."; }
+					if (conditional.ordinal()<importance.ordinal()) { importance=conditional; reason="Reviewed " + relation.role.replace('-',' ') + " value over " + baseline + "; check unobserved alternatives."; }
 					codes.add("OWNERSHIP_CONDITIONAL_ROLE");
 				}
 				continue;
@@ -68,7 +68,7 @@ final class ProgressionEvaluator
 			ValueEvidence.Importance roleImportance=relation.significance==ProgressionKnowledge.Significance.CORE ? KEY
 				: relation.significance==ProgressionKnowledge.Significance.SUBSTANTIAL ? STRONG : CONTEXTUAL;
 			if (roleImportance.ordinal()<importance.ordinal())
-			{ importance=roleImportance; reason=relation.dimension==ProgressionKnowledge.Dimension.ORDINARY_OFFENCE ? "Core ranged neck over " + baseline + "." : relation.reason; }
+			{ importance=roleImportance; reason=relation.dimension==ProgressionKnowledge.Dimension.ORDINARY_OFFENCE ? "Reviewed " + relation.role.replace('-',' ') + " value over " + baseline + "." : relation.reason; }
 			codes.add(relation.significance==ProgressionKnowledge.Significance.CORE ? "CORE_ROLE_GAP"
 				: relation.dimension==ProgressionKnowledge.Dimension.CONVENIENCE && relation.significance==ProgressionKnowledge.Significance.SUBSTANTIAL ? "SUBSTANTIAL_CONVENIENCE" : "REVIEWED_ROLE_VALUE");
 			if (!alternatives.isEmpty()) { codes.add("ADEQUATE_OWNED_METHOD"); }

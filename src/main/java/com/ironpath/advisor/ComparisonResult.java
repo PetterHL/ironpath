@@ -7,6 +7,8 @@ import java.util.Map;
 public final class ComparisonResult
 {
 	public enum Metric { MAX_HIT, HIT_CHANCE, THEORETICAL_DPS, EXPECTED_KILL_TIME, TRIP_PERFORMANCE }
+	public enum OffenceScope { STEADY_REFERENCE, NEXT_FIVE_SWINGS }
+	public final OffenceScope offenceScope;
 	public final CombatSetup beforeSetup, afterSetup;
 	public final PoweredMagic.Metrics before, after;
 	public final TargetProfile target;
@@ -21,6 +23,13 @@ public final class ComparisonResult
 		PoweredMagic.Metrics after, TargetProfile target, Map<Metric, PoweredMagic.Status> support,
 		String reason, String model, String knowledge, List<String> assumptions, boolean weaponComparison, Map<Metric, String> gaps)
 	{
+		this(beforeSetup,afterSetup,before,after,target,support,reason,model,knowledge,assumptions,weaponComparison,gaps,OffenceScope.STEADY_REFERENCE);
+	}
+	ComparisonResult(CombatSetup beforeSetup, CombatSetup afterSetup, PoweredMagic.Metrics before,
+		PoweredMagic.Metrics after, TargetProfile target, Map<Metric, PoweredMagic.Status> support,
+		String reason, String model, String knowledge, List<String> assumptions, boolean weaponComparison, Map<Metric, String> gaps,OffenceScope scope)
+	{
+		offenceScope=scope;
 		this.beforeSetup = beforeSetup; this.afterSetup = afterSetup; this.before = before; this.after = after;
 		this.target = target; this.support = Map.copyOf(support); this.reason = reason;
 		this.gaps = Map.copyOf(gaps);
@@ -42,7 +51,7 @@ public final class ComparisonResult
 		if (primaryMetric == Metric.THEORETICAL_DPS)
 		{
 			return (available(Metric.THEORETICAL_DPS) ? String.format(java.util.Locale.ROOT,
-				"DPS %.2f → %.2f (%+.2f)", before.dps, after.dps, dpsGain()) : "DPS unavailable · model gap")
+				(offenceScope==OffenceScope.NEXT_FIVE_SWINGS ? "Five-swing mean DPS" : "DPS")+" %.2f → %.2f (%+.2f)", before.dps, after.dps, dpsGain()) : "DPS unavailable · model gap")
 				+ " · " + target.name;
 		}
 		return String.format(java.util.Locale.ROOT, "%+d max hit · %s", after.maxHit-before.maxHit, target.name);
@@ -54,7 +63,7 @@ public final class ComparisonResult
 			"hit chance %.1f%% → %.1f%% (%+.1f percentage points)", before.hitChance * 100, after.hitChance * 100,
 			(after.hitChance - before.hitChance) * 100) : "hit chance unavailable";
 		String dps = available(Metric.THEORETICAL_DPS) ? String.format(java.util.Locale.ROOT,
-			"theoretical DPS %.2f → %.2f (%+.2f)", before.dps, after.dps, dpsGain()) : "theoretical DPS unavailable · model gap";
+			(offenceScope==OffenceScope.NEXT_FIVE_SWINGS ? "five-swing mean DPS" : "theoretical DPS")+" %.2f → %.2f (%+.2f)", before.dps, after.dps, dpsGain()) : "theoretical DPS unavailable · model gap";
 		String max = "Max hit " + before.maxHit + " → " + after.maxHit;
 		return (beforeSetup.confirmed ? "Confirmed" : "Proposed") + " reference · "
 			+ (primaryMetric == Metric.THEORETICAL_DPS ? dps + "; " + max : max + "; " + dps)

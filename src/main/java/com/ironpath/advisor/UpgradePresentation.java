@@ -13,13 +13,14 @@ public final class UpgradePresentation
 		public final Availability availability;
 		public final String unit, baseline, context, reason, action;
 		public final Double before, after, delta, relativePercent;
+		public final ComparisonResult.OffenceScope offenceScope;
 		Metric(ComparisonResult comparison, String baseline, boolean qualitative)
 		{ this(comparison, comparison.primaryMetric, baseline, qualitative); }
 		Metric(ComparisonResult comparison, ComparisonResult.Metric metric, String baseline, boolean qualitative)
 		{ this(comparison,metric,baseline,qualitative,null); }
 		Metric(ComparisonResult comparison, ComparisonResult.Metric metric,String baseline,boolean qualitative,com.ironpath.model.AccountSnapshot account)
 		{
-			kind=metric; this.baseline=baseline; context=comparison.target==null?"Reviewed role":comparison.target.name;
+			offenceScope=comparison.offenceScope; kind=metric; this.baseline=baseline; context=comparison.target==null?"Reviewed role":comparison.target.name;
 			unit=kind==ComparisonResult.Metric.THEORETICAL_DPS?"DPS":kind==ComparisonResult.Metric.HIT_CHANCE?"%":"max hit";
 			boolean available=!qualitative && comparison.before!=null && comparison.available(kind);
 			before=available?(kind==ComparisonResult.Metric.THEORETICAL_DPS?comparison.before.dps:kind==ComparisonResult.Metric.HIT_CHANCE?comparison.before.hitChance*100:(double)comparison.before.maxHit):null;
@@ -33,6 +34,10 @@ public final class UpgradePresentation
 			action=availability==Availability.INPUT_REQUIRED?(missingLevels(account,comparison.beforeSetup)?"Observe real combat levels":correction(comparison.beforeSetup)):availability==Availability.MODEL_UNSUPPORTED?"Inspect the model gap":"Inspect supported role / context";
 		}
 		public String headline()
+		{
+			return rawHeadline() + (kind==ComparisonResult.Metric.THEORETICAL_DPS && offenceScope==ComparisonResult.OffenceScope.NEXT_FIVE_SWINGS ? " · five-swing mean" : "");
+		}
+		private String rawHeadline()
 		{
 			if(delta==null) { return kind==ComparisonResult.Metric.THEORETICAL_DPS?"DPS not calculated":"Comparison not calculated"; }
 			if(kind==ComparisonResult.Metric.THEORETICAL_DPS) {
@@ -167,6 +172,7 @@ public final class UpgradePresentation
 			case CONTROL: return "Demonbane / control";
 			case MULTI_TARGET: return "Multi-target attacks";
 			case CONVENIENCE: return "Multi-target convenience";
+			case RESOURCE: return "Resource utility";
 			default: return "Reviewed resource value";
 		}
 	}

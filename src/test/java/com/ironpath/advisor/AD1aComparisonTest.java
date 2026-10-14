@@ -116,6 +116,7 @@ public class AD1aComparisonTest
 		profiles.put("brimstone-synthetic",brimstoneFixture());profiles.put("reported-ranged-classes-synthetic",bucklerFixture());
 		profiles.put("bowfa-without-armour",withFact(account(Set.of(25867),99,99),"song-of-elves",fact(true)));
 		profiles.put("seas-baseline",account(Set.of(11907),99,99));
+			profiles.put("melee-with-owned-treads",items(MeleeAdviceTest.ordinary(),31088,13239));
 		Map<String,List<String>> rows=new TreeMap<>();
 		for(var u:catalog.upgrades) { if(u.status.equals("reviewed")) { rows.put(u.id,new ArrayList<>()); } }
 		StringBuilder evidence=new StringBuilder("# AD1a evaluated metric coverage\n\nOriginal synthetic fixtures, including reported ranged gear classes with explicitly chosen missing inputs. No complete player setup was supplied. Conditional reference numbers are not measured performance. `absent(catalog)` is an explicit synthetic planning input, never inferred account absence.\n\n");

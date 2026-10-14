@@ -28,13 +28,11 @@ public class CatalogValidationTest
 
 	private JsonObject first(JsonObject document) { return document.getAsJsonArray("decisions").get(0).getAsJsonObject(); }
 
-	@Test public void rejectsDuplicateIdsReferencesAndOverBudgetCatalogues()
+	@Test public void rejectsDuplicateIdsAndUnknownReferencesWithoutACatalogueCeiling()
 	{
 		rejects(d -> d.getAsJsonArray("decisions").get(1).getAsJsonObject().addProperty("id", first(d).get("id").getAsString()));
 		rejects(d -> d.getAsJsonArray("sources").add(d.getAsJsonArray("sources").get(0).deepCopy()));
-		rejects(d -> {
-			while (d.getAsJsonArray("decisions").size() <= 64) { d.getAsJsonArray("decisions").add(first(d).deepCopy()); }
-		});
+		rejects(d -> d.getAsJsonArray("decisions").add(first(d).deepCopy()));
 		rejects(d -> first(d).getAsJsonArray("sources").add("missing-source"));
 		rejects(d -> first(d).getAsJsonArray("requires").add("missing-decision"));
 		rejects(d -> d.getAsJsonObject("itemSets").getAsJsonArray("magicFang").add(999999));

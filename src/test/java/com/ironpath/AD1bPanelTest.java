@@ -27,7 +27,7 @@ public class AD1bPanelTest
 	private List<Component> children(Container p)
 	{ List<Component> all=new ArrayList<>();for(Component c:p.getComponents()){all.add(c);if(c instanceof Container)all.addAll(children((Container)c));}return all; }
 	private JButton button(String name)
-	{ return children(panel).stream().filter(c->c instanceof JButton && name.equals(((JButton)c).getText())).map(c->(JButton)c).findFirst().orElseThrow(); }
+	{ return children(panel).stream().filter(c->c instanceof JButton && (name.equals(((JButton)c).getText())||name.equals(((JButton)c).getToolTipText()))).map(c->(JButton)c).findFirst().orElseThrow(); }
 	private JButton named(String name)
 	{ return children(panel).stream().filter(c->c instanceof JButton && name.equals(c.getName())).map(c->(JButton)c).findFirst().orElseThrow(); }
 	private JTextField input()
@@ -53,6 +53,18 @@ public class AD1bPanelTest
 	private void capture(String name) throws Exception
 	{
 		panel.setSize(225,20000);for(int i=0;i<4;i++)layout(panel);panel.setSize(225,panel.getPreferredSize().height);for(int i=0;i<4;i++)layout(panel);
+		for(Component component:children(panel)) {
+			boolean visible=true;
+			for(Component ancestor=component;ancestor!=null;ancestor=ancestor.getParent()) { visible &= ancestor.isVisible(); }
+			if(visible && (component instanceof JTextArea || component instanceof JButton || component instanceof JLabel || component instanceof JTextField)) {
+				Point at=SwingUtilities.convertPoint(component,0,0,panel);
+				assertTrue(component.getName()+" extends past native width: "+at+" "+component.getSize(),at.x>=0 && at.x+component.getWidth()<=225);
+				if(component instanceof JTextArea) {
+					assertTrue(component.getHeight()>=component.getPreferredSize().height);
+					if("acquisition-evidence".equals(component.getParent().getName())) { assertEquals("Estimate basis must use the native column",0,component.getX()); }
+				}
+			}
+		}
 		BufferedImage image=new BufferedImage(225,900,BufferedImage.TYPE_INT_RGB);Graphics2D g=image.createGraphics();g.setColor(panel.getBackground());g.fillRect(0,0,225,900);panel.printAll(g);g.dispose();
 		Path dir=Path.of("build/validation/ad1b/images");Files.createDirectories(dir);ImageIO.write(image,"png",dir.resolve(name+".png").toFile());
 	}
@@ -61,16 +73,16 @@ public class AD1bPanelTest
 		catalog=KnowledgeCatalog.load(new Gson());advisor=new Advisor(catalog);preferences=absent(catalog);account=ready();
 		SwingUtilities.invokeAndWait(()->{
 			try{
-				panel=new IronpathPanel();render();button("Browse").doClick();named("open-upgrade-scorching-bow").doClick();button("Path").doClick();
-				assertTrue(text().contains("Model-based estimate"));assertTrue(text().contains("Mean 9.1 h"));assertEquals("",input().getText());capture("synapse-automatic");
+				panel=new IronpathPanel();render();button("Browse").doClick();named("open-upgrade-scorching-bow").doClick();button("Acquisition").doClick();
+				assertTrue(text().contains("Model-based estimate"));assertTrue(text().contains("Mean 9.1 h"));button("Estimate basis and route evidence").doClick();assertEquals("",input().getText());capture("synapse-automatic");
 				input().setText("40");button("Apply pace").doClick();assertEquals("tormented-demons",appliedActivity);assertTrue(appliedMethod.startsWith("demon-switch-repeat/"));
 				assertTrue(text().contains("Manual pace scenario"));assertTrue(text().contains("Mean 12.5 h"));
 				button("Clear pace").doClick();assertNull(manual);assertTrue(text().contains("Mean 9.1 h"));
 				JButton stale=button("Apply pace");input().setText("1");current=false;stale.doClick();assertNull(manual);current=true;
-				button("Back to upgrades").doClick();named("open-upgrade-toxic-blowpipe").doClick();button("Path").doClick();
+				button("← Upgrades").doClick();named("open-upgrade-toxic-blowpipe").doClick();button("Acquisition").doClick();
 				assertTrue(text().contains("Mean 25.6 h"));capture("fang-automatic");
-				input().setText("10");button("Apply pace").doClick();assertEquals("zulrah",manual.activity);assertTrue(text().contains("Mean 51.2 h"));
-				panel.setFont(panel.getFont().deriveFont(20f));render();capture("large-font");
+				button("Estimate basis and route evidence").doClick();input().setText("10");button("Apply pace").doClick();assertEquals("zulrah",manual.activity);assertTrue(text().contains("Mean 51.2 h"));
+				panel.setFont(panel.getFont().deriveFont(20f));render();button("Estimate basis and route evidence").doClick();capture("large-font");
 			}catch(Exception e){throw new RuntimeException(e);}
 		});
 	}

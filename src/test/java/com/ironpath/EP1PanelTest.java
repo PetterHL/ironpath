@@ -50,7 +50,7 @@ public class EP1PanelTest
 				List<String> displayed=children(panel).stream().map(Component::getName).filter(n->n!=null&&n.startsWith("upgrade-card-")).map(n->n.substring("upgrade-card-".length())).collect(Collectors.toList());
 				int previous=-1;for(String id:displayed){int index=overview.all.stream().map(v->v.upgrade.id).collect(Collectors.toList()).indexOf(id);assertTrue(index>previous);previous=index;}
 				assertTrue(text().contains("remaining effort"));button("Browse").doClick();named("open-upgrade-toxic-blowpipe").doClick();assertTrue(text().contains("remaining effort"));capture("blowpipe-value");button("Acquisition").doClick();assertTrue(text().contains("Remaining effort: Medium"));capture("blowpipe-path");
-				button("← Upgrades").doClick();named("open-upgrade-scorching-bow").doClick();button("Acquisition").doClick();assertTrue(text().contains("synapse"));assertTrue(text().contains("mean 500 eligible kills"));capture("synapse-path");
+				button("← Upgrades").doClick();named("open-upgrade-scorching-bow").doClick();button("Acquisition").doClick();assertTrue(text().contains("synapse"));assertTrue(text().contains("Mean 500 trials"));capture("synapse-path");
 				button("← Upgrades").doClick();account=items(ready(),20997,6746);render();named("open-upgrade-avernic-treads").doClick();button("Acquisition").doClick();assertTrue(text().contains("Combined hours unavailable"));capture("doom-detour");
 				account=profiles(catalog).get("nearly-complete");panel=new IronpathPanel();render();assertEquals("tumekens-shadow",overview.preview.get(0).upgrade.id);capture("nearly-complete-home");
 				panel.setFont(panel.getFont().deriveFont(20f));render();capture("large-font");
