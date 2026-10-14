@@ -1,5 +1,7 @@
 # IronPath native UI specification
 
+**R3b family review, 14 October:** the existing native Value/Path components now expose independent melee task, soul-state and explicit target-Defence controls. A typed scope renders “Five-swing mean DPS” for Soulreaper ramp; Scythe aggregate max/per-hit accuracy and off-hand removal/restoration remain explicit. Blood-fury utility can lead a card while Value retains a negative ordinary comparison. [225px synthetic component evidence and pending client checks](validation/R3b-families.md) accompany these narrow model controls; they do not implement the separate UX2 direction below.
+
 14 October 2026 · **Selected visual advisor direction; UX2 implementation pending.** Current main contains the earlier R3a/UX-completion components. This specification incorporates the written decisions from “Oppsummering av UX” and account-efficient progression. [TASKS EP1/UX2](../TASKS.md#ep1--account-efficient-progression-next-implementation) is the only delivery backlog; [DESIGN progression-2](DESIGN.md#progression-intelligence-contract-version-progression-2-selected) owns ranking.
 
 ## Experience and scope

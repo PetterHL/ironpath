@@ -1,5 +1,11 @@
 # IronPath research and evidence
 
+## R3b family/condition review — 14 October 2026
+
+The independently authored `melee-2` modules use current directly retrieved exact-form and mechanics revisions, with [retrieval hashes/register](research/r3b-family-sources.json) and [validation](validation/R3b-families.md). Fang's shared-versus-independent defence rolls, Scythe's separately rounded size hits, Soulreaper's pre-attack additive stacks, Salve/task exclusion, lance/target-specific demonbane and current Inquisitor pieces are supported. The official implemented July update confirms no Soulreaper stack HP drain and removal of the old extra mace/set effect. Current Scythe offensive facts include its later accuracy change.
+
+145 exact-form offensive records agree with pinned development-only comparator `89c3e25b`; 15,936 original complete family scenarios agree on rolls/max/accuracy/DPS, retaining prior corpora. Source/code/dataset rights stay separate; no source prose, images, Lua, GPL implementation or equipment database was imported. Twenty-five new outcomes have reviewed staged routes and explicit stock conflicts; acquisition hours, numerical healing and personal time/trips remain unavailable. Blood fury's sustain evidence remains independent of its lower offence. ToA/Olm inputs are explicit fixed scenarios, not a new raid-scaling model. New training/source/boss-kill checks are explicit planning confirmations; client acceptance and wider variant/set/special/geometry coverage remain pending. Earlier sections below retain their original scope and evidence.
+
 ## Account-efficient progression — 14 October 2026 decision
 
 Selected product policy, **not new gameplay research or implemented estimates**. EP1 in TASKS will review activity effort profiles and migrate to DESIGN's `progression-2`. The existing relationship research supplies candidate roles/alternatives, not validated throughput. Synapse, blowpipe, zenyte, treads and Shadow are representative validation cases, not fixed priority rules or a coverage ceiling. Profile review covers the entire active catalogue by shared activity/method families; EP1 must report every supported route's qualitative/numerical support and any specific gap. Example-only profile coverage is not the intended delivery.

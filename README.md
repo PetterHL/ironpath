@@ -2,7 +2,11 @@
 
 **Your path to endgame PvM**
 
-Combined UX + ordinary melee + KI1 build · 14 October 2026 · plugin 0.9.0 · knowledge r3b-1 · schema 11
+R3b family review build, preserving UX + KI1 · 14 October 2026 · plugin 0.10.0 · knowledge r3b-2 · schema 12
+
+**R3b family expansion:** Fang, size-aware Scythe, explicit Soulreaper stack/ramp states, task/Salve, dragon/demon and current Inquisitor mechanics now compare complete owned packages. Endgame armour/accessories, component-aware paths, missing primordial treads additions and independent blood-fury sustain extend automatic Value/Path advice. ToA/Olm examples are labelled fixed-input scenarios; personal time/trips and automatic raid scaling remain unavailable. [Source, support, validation and pending client checks](docs/validation/R3b-families.md). This review branch starts from main `e3f02bc`; EP1/UX2 remain separate pending assignments. The first-increment paragraph below records its earlier boundaries.
+
+To test this review increment, close the development client, run `git fetch origin` and `git switch r3b-melee-families`, then use the JDK 11 Gradle build/run commands below. The existing main/integration instructions describe the shared baseline.
 
 **R3b first increment:** ordinary melee now compares complete supported owned one-/two-handed packages, actual stab/slash/crush styles, prayer/full-super-potion assumptions, max hit, hit chance and theoretical DPS. Abyssal tentacle has a Value/Path outcome with owned-component bypasses and explicit whip consumption. Neutral, ordinary Dharok and Graardor are reviewed contexts. Observed Fang/Scythe/Soulreaper/lance competitors keep the DPS-superiority claim unavailable while unaffected reference metrics remain visible. [Support, validation and pending client checks](docs/validation/R3b-ordinary-melee.md). Task/Salve, demon/dragon multipliers, endgame families, broader armour/treads, specials and time/trip metrics remain open R3b/R4 work.
 

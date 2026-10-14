@@ -254,7 +254,7 @@ public final class Advisor
 			List<Requirement> path = new ArrayList<>();
 			for (KnowledgeCatalog.PathNode node : upgrade.path)
 			{ path.add(new Requirement(node.label + (node.quantity != null && account.observedQuantity(node.itemId).known()
-				? " · " + account.observedQuantity(node.itemId).value() + " / " + node.quantity + " observed" : ""), pathTruth(node, account, preferences), node.detail + " "
+				? " · " + account.observedQuantity(node.itemId).value() + " / " + (planningQuantity(node,account)==null ? "unknown" : planningQuantity(node,account)) + " observed" : ""), pathTruth(node, account, preferences), node.detail + " "
 				+ (node.quantity == null ? conditionEvidence(node.completeWhen, account, preferences) : quantityEvidence(node, account))
 				+ dependencyDescription(node.dependencies), false, node.role)); }
 			if (!upgrade.path.isEmpty())
@@ -334,6 +334,11 @@ public final class Advisor
 		{
 			Map<String, KnowledgeCatalog.PathNode> nodes = view.upgrade.path.stream().collect(Collectors.toMap(n -> n.id, n -> n));
 			List<KnowledgeCatalog.PathNode> effective = remainingPath(view.upgrade.path.get(view.upgrade.path.size()-1), nodes, account, preferences);
+			if (view.upgrade.reviewedRemainingStages && effective.stream().noneMatch(n->n.role.equals("ACTIVITY") || n.acquisition && pathTruth(n,account,preferences)!=Truth.TRUE))
+			{
+				mode=PursuitAssessment.Mode.BOUNDED;burden=PursuitAssessment.Burden.MODERATE;tail=PursuitAssessment.Tail.ORDINARY;
+				rationale="The chosen remaining recipe has no fresh reward-acquisition stage. Remaining resources, skills and assembly still require their own checks. "+spec.missingMechanics;
+			}
 			for (KnowledgeCatalog.PathNode node : effective)
 			{
 				steps.add(view.upgrade.id + "/" + node.id);
@@ -573,16 +578,27 @@ public final class Advisor
 	private Truth pathTruth(KnowledgeCatalog.PathNode node, AccountSnapshot a, Preferences p)
 	{
 		if (node.quantity == null) { return planningTruth(node.completeWhen, a, p); }
+		Long required=planningQuantity(node,a); if(required==null) { return Truth.UNKNOWN; }
+		if(required==0) { return Truth.TRUE; }
 		Observation<Long> count = a.observedQuantity(node.itemId);
-		if (count.known() && count.value() >= node.quantity) { return Truth.TRUE; }
+		if (count.known() && count.value() >= required) { return Truth.TRUE; }
 		// Explicit global absence may establish fresh acquisition work; a container zero cannot.
 		return node.completeWhen.test==KnowledgeCatalog.Test.POSSESSION && planningTruth(node.completeWhen,a,p)==Truth.FALSE ? Truth.FALSE : Truth.UNKNOWN;
+	}
+	private Long planningQuantity(KnowledgeCatalog.PathNode node,AccountSnapshot a)
+	{
+		if(node.batchItemId==null) { return node.quantity==null ? null : node.quantity.longValue(); }
+		Observation<Long> output=a.observedQuantity(node.batchItemId);
+		return output.known() ? (node.batchSize-Math.min(node.batchSize,output.value()))*(node.quantity/node.batchSize) : null;
 	}
 	private String quantityEvidence(KnowledgeCatalog.PathNode node, AccountSnapshot a)
 	{
 		Observation<Long> count = a.observedQuantity(node.itemId);
-		return count.known() ? count.value() + " / " + node.quantity + " (largest observed container count); " + count.evidence()
-			: "Quantity unknown; ownership does not establish the required amount.";
+		Long required=planningQuantity(node,a);
+		String batch=node.batchItemId==null ? "" : " Remaining-production amount uses the largest observed batch-item count; other storage may shorten it. Unread batch quantities stay unknown.";
+		return (required==null ? "Required amount unknown; batch-item quantities are unread. " : count.known()
+			? count.value()+" / "+required+" (largest observed container count); "+count.evidence()
+			: "Quantity unknown; ownership does not establish the required amount.")+batch;
 	}
 
 	private List<String> ownershipQuestions(Condition c, AccountSnapshot a, Preferences p)

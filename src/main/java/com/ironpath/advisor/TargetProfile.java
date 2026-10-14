@@ -9,6 +9,8 @@ public final class TargetProfile
 	public int npcId, magicLevel, magicDefence;
 	public Integer defenceLevel;
 	public Integer meleeStab, meleeSlash, meleeCrush;
+	public Integer size, demonbanePercent;
+	public boolean undead, meleeScenario;
 	public Long meleeDefenceRoll(MeleeModel.Type type)
 	{ Integer bonus=type==MeleeModel.Type.STAB ? meleeStab : type==MeleeModel.Type.SLASH ? meleeSlash : meleeCrush;
 		return defenceLevel==null || bonus==null ? null : (long)(defenceLevel+9)*(bonus+64); }

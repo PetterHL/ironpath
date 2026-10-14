@@ -46,6 +46,12 @@ public class R3bPanelTest
 		panel.setSize(225,1);layout(panel);int h=panel.getPreferredSize().height;panel.setSize(225,h);layout(panel);
 		BufferedImage image=new BufferedImage(225,h,BufferedImage.TYPE_INT_RGB);java.awt.Graphics2D g=image.createGraphics();panel.printAll(g);g.dispose();
 		java.nio.file.Path dir=java.nio.file.Path.of("build/reports/r3b/images");java.nio.file.Files.createDirectories(dir);javax.imageio.ImageIO.write(image,"png",dir.resolve(name+".png").toFile());
+		if(name.startsWith("soul-") || name.startsWith("treads-"))
+		{
+			BufferedImage viewport=new BufferedImage(225,Math.min(600,h),BufferedImage.TYPE_INT_RGB);
+			java.awt.Graphics2D clip=viewport.createGraphics();panel.printAll(clip);clip.dispose();
+			javax.imageio.ImageIO.write(viewport,"png",dir.resolve(name+"-viewport.png").toFile());
+		}
 	}
 	private void layout(Container c) { c.doLayout();for(Component child:c.getComponents()){if(child instanceof Container){layout((Container)child);}} }
 	@Test public void meleeValuePathAndFocusedControlsWorkAtNativeWidth() throws Exception
@@ -63,7 +69,10 @@ public class R3bPanelTest
 			for(int i=0;i<target.getItemCount();i++){if(target.getItemAt(i).toString().contains("Graardor")){target.setSelectedIndex(i);}}
 			button("Apply target").doClick();assertEquals("graardor",melee.target);assertEquals("neutral-zero-defence",magic.target);assertEquals("neutral-zero-defence",ranged.target);
 			button("Path").doClick();assertTrue(text().contains("10,000"));assertTrue(text().contains("87 Slayer"));capture("path");button("Recipe and ALL/ANY alternatives").doClick();capture("path-expanded");
-			button("Back to upgrades").doClick();account=R15Fixtures.items(account,26219);render();open();assertTrue(text().contains("competing melee"));assertTrue(text().contains("DPS gap:"));assertFalse(text().contains("DPS and hit chance gap:"));assertTrue(text().contains("Max hit"));capture("family-gap");
+			button("Back to upgrades").doClick();account=R15Fixtures.items(account,28997);render();open();assertTrue(text().contains("competing melee"));assertTrue(text().contains("DPS gap:"));assertFalse(text().contains("DPS and hit chance gap:"));assertTrue(text().contains("Max hit"));capture("family-gap");
+				button("Back to upgrades").doClick();account=R15Fixtures.items(MeleeAdviceTest.ordinary(),22325);
+				melee=new MeleeComparisonService(catalog).propose(account).edit("weapon","22325").edit("shield","0").edit("style","SLASH_ACCURATE");
+				render();open();assertTrue(text().contains("off-hand restored"));capture("restored-off-hand");
 		} catch(Exception e){throw new RuntimeException(e);} });
 	}
 	@Test public void staleMeleeEditsConfirmationAndLifecycleStateStayIsolated() throws Exception
@@ -81,5 +90,30 @@ public class R3bPanelTest
 		s.publish(s.generation(),s.identity(),a);s.loadPreferences(s.generation(),s.identity(),Preferences.EMPTY,true);
 		assertEquals(MeleeModel.Boost.NONE,s.meleeReference(catalog).meleeBoost);assertFalse(s.meleeReference(catalog).confirmed);assertEquals("neutral-zero-defence",s.meleeReference(catalog).target);
 		s.clear();assertNull(s.meleeReference(catalog));assertTrue(s.preferences().confirmations.isEmpty());
+	}
+	@Test public void soulTaskAndDefenceScenarioControlsHaveIndependentNativeValueAndPath() throws Exception
+	{
+		catalog=KnowledgeCatalog.load(new Gson());advisor=new Advisor(catalog);
+		account=R15Fixtures.items(MeleeAdviceTest.ordinary(),31088,13239);
+		preferences=R15Fixtures.absent(catalog);
+		magic=new CombatComparisonService(catalog).propose(account);ranged=new RangedComparisonService(catalog).propose(account);
+		melee=new MeleeComparisonService(catalog).propose(account);
+		SwingUtilities.invokeAndWait(()->{try {
+			panel=new IronpathPanel();render();button("Browse").doClick();
+			children(panel).stream().filter(c->"open-upgrade-soulreaper-axe".equals(c.getName())).map(c->(JButton)c).findFirst().orElseThrow().doClick();
+			assertTrue(text().contains("no HP drain"));capture("soul-start");
+			button("Reference setup and assumptions").doClick();
+			JComboBox<?> souls=(JComboBox<?>)children(panel).stream().filter(c->"reference-souls".equals(c.getName())).findFirst().orElseThrow();
+			assertEquals(7,souls.getItemCount());souls.setSelectedIndex(6);button("Apply soul state").doClick();
+			assertEquals(MeleeModel.Souls.RAMP,melee.souls);assertTrue(text().contains("five-swing"));capture("soul-ramp");
+			button("Reference setup and assumptions").doClick();
+			JTextField defence=(JTextField)children(panel).stream().filter(c->"reference-defence".equals(c.getName())).findFirst().orElseThrow();
+			defence.setText("0");button("Apply target Defence").doClick();assertEquals(0,melee.defenceOverride);
+			assertEquals("neutral-zero-defence",ranged.target);assertEquals("neutral-zero-defence",magic.target);
+			button("Path").doClick();assertTrue(text().contains("2,000"));assertTrue(text().contains("75 Magic"));capture("soul-path");
+			button("Back to upgrades").doClick();
+			children(panel).stream().filter(c->"open-upgrade-avernic-treads-primordial".equals(c.getName())).map(c->(JButton)c).findFirst().orElseThrow().doClick();
+			button("Path").doClick();assertTrue(text().contains("4,000"));capture("treads-primordial-path");
+		} catch(Exception e){throw new RuntimeException(e);} });
 	}
 }

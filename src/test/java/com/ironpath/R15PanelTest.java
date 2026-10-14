@@ -58,7 +58,7 @@ public class R15PanelTest
 				reference=new PoweredMagic(catalog).propose(account).edit("hands","19544");render();
 				assertTrue(text().contains("Enemy with 0 Defence"));
 				capture("neutral-overview");button("Browse").doClick();capture("neutral-browse");
-				assertTrue(text().contains("DPS "));assertFalse(text().contains("Graardor"));
+				assertTrue(text().contains("DPS ")); // Supported melee outcomes can name their reviewed Graardor context.
 				open("tumekens-shadow").doClick();
 				assertTrue(text().indexOf("Theoretical DPS")<text().indexOf("Max hit  "));
 				assertTrue(text().contains("4 → 5 ticks (2.4 → 3.0 s)"));capture("neutral-weapon-value");

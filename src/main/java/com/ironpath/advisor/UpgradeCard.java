@@ -16,6 +16,7 @@ public final class UpgradeCard
 				&& r.dimension!=ProgressionKnowledge.Dimension.ORDINARY_OFFENCE)
 				.map(r->r.dimension==ProgressionKnowledge.Dimension.BURST ? "Burst not quantified · HP/energy check"
 					: r.dimension==ProgressionKnowledge.Dimension.INVENTORY ? "Slot savings not quantified · method check"
+					: r.dimension==ProgressionKnowledge.Dimension.RESOURCE ? "Resource utility not quantified · supplies/method check"
 					: "Bounce DPS unavailable · geometry gap").findFirst().orElse("Role value · numeric model gap");
 		}
 		else if (view.valueEvidence.specialist && comparison.available(ComparisonResult.Metric.THEORETICAL_DPS) && comparison.dpsGain()<=1e-10)
@@ -34,7 +35,8 @@ public final class UpgradeCard
 	{
 		String target=result.target==null ? "reference" : result.target.name;
 		if (result.primaryMetric==ComparisonResult.Metric.THEORETICAL_DPS)
-		{ return result.available(ComparisonResult.Metric.THEORETICAL_DPS) ? String.format(Locale.ROOT,"DPS %+.2f · %s",result.dpsGain(),target) : "DPS unavailable · model gap"; }
+		{ return result.available(ComparisonResult.Metric.THEORETICAL_DPS) ? String.format(Locale.ROOT,
+			(result.offenceScope==ComparisonResult.OffenceScope.NEXT_FIVE_SWINGS ? "Five-swing mean DPS" : "DPS")+" %+.2f · %s",result.dpsGain(),target) : "DPS unavailable · model gap"; }
 		if (result.available(ComparisonResult.Metric.MAX_HIT))
 		{ return String.format(Locale.ROOT,"Max hit %+d · %s",result.after.maxHit-result.before.maxHit,target); }
 		return "DPS unavailable · model gap";
