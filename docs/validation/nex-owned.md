@@ -121,4 +121,10 @@ The sample also shows base Prayer 91 and an unworn carried quiver, so its raw ze
 worn-charge flag cannot establish depleted quiver stock. The full actual ranged
 state and usable charges remain to inspect. No raw inventory/account dump is
 committed. See the [separate findings, fix and retest report](nex-live-start.md).
+
+The next client test still lacks start/end boundaries despite complete captured
+tick coverage and all phases. N2 live acceptance is still open. Build 0.16.2 adds
+event-payload handling and signal diagnostics; see the
+[second-test report](nex-live-signals.md). This does not replace the original
+0.16.0 validation results above or establish a complete live account fixture.
 The original 165-test result above remains the result for N2 commit `bab06ed`.

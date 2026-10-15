@@ -170,7 +170,7 @@ public class IronpathPlugin extends Plugin
 	{
 		if(nexReady())
 		{
-			if(event.getVarbitId()==VarbitID.NEX_BARRIER) { nex.barrier(); }
+			if(event.getVarbitId()==VarbitID.NEX_BARRIER) { nex.barrier(event.getValue()); }
 			if(NexObserver.resourceChanged(event.getVarbitId(),event.getVarpId())) { nex.sample(-1); }
 		}
 		AccountSnapshot previous = session.snapshot();

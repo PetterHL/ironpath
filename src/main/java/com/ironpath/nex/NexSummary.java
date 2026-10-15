@@ -30,10 +30,16 @@ public final class NexSummary
 		public final Integer boundaryTick, smokeTick, deathTick, barrierEndTick;
 		public final boolean continuous;
 		public final Set<String> phases;
+		public final Integer observedSmokeTick;
+		public final List<String> trace;
 		public Signals(Integer boundaryTick,Integer smokeTick,Integer deathTick,Integer barrierEndTick,boolean continuous,Set<String> phases)
+		{ this(boundaryTick,smokeTick,deathTick,barrierEndTick,continuous,phases,smokeTick,List.of()); }
+		public Signals(Integer boundaryTick,Integer smokeTick,Integer deathTick,Integer barrierEndTick,boolean continuous,Set<String> phases,
+			Integer observedSmokeTick,List<String> trace)
 		{
 			this.boundaryTick=boundaryTick; this.smokeTick=smokeTick; this.deathTick=deathTick; this.barrierEndTick=barrierEndTick;
 			this.continuous=continuous; this.phases=Set.copyOf(phases);
+			this.observedSmokeTick=observedSmokeTick; this.trace=List.copyOf(trace);
 		}
 	}
 	public final long key;

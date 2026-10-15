@@ -255,12 +255,19 @@ final class NexPanel extends PluginPanel
 	private void details(NexSummary summary, KnowledgeCatalog catalog, java.util.function.BooleanSupplier valid)
 	{
 		text("Kill #"+summary.key+" · "+summary.outcome+" · "+summary.reason);
+		text("Capture adapter "+com.ironpath.nex.NexCapture.VERSION);
 		text(summary.timerScope); text(NexSummary.DAMAGE_SCOPE);
 		if(summary.signals!=null)
 		{
 			var s=summary.signals;
 			text("Observed start boundary: "+tick(s.boundaryTick)+"\nMatched smoke: "+tick(s.smokeTick)
+				+"\nSmoke line observed: "+tick(s.observedSmokeTick)
 				+"\nNex death/dying: "+tick(s.deathTick)+"\nArena end boundary: "+tick(s.barrierEndTick));
+			String barriers=s.trace.stream().filter(line->line.contains("barrier ")).collect(java.util.stream.Collectors.joining("; "));
+			text("Barrier readings: "+(barriers.isEmpty()?"not recorded":barriers));
+			JPanel trace=ownedBody(); trace.setVisible(false);
+			button(this,"Capture signal trace",()->{ if(valid.getAsBoolean()) { trace.setVisible(!trace.isVisible()); revalidate(); repaint(); } });
+			s.trace.forEach(line->PanelWidgets.text(trace,line)); add(trace);
 			text("Observed phases: "+String.join(", ",List.of("SMOKE","SHADOW","BLOOD","ICE","ZAROS").stream().filter(s.phases::contains).toArray(String[]::new))
 				+"\nContinuous state samples: "+s.continuous);
 		}

@@ -92,3 +92,13 @@ live combat advice. Kill details now list observed start boundary, matched smoke
 Nex death/dying and arena-end ticks, observed phases and sample continuity. Missing
 signals have specific reasons; an excluded attempt is never silently promoted.
 See [first-client findings and retest](validation/nex-live-start.md).
+
+## 0.16.2 signal investigation
+
+The second client attempt still lacks arena boundaries. Kill details identify the
+adapter, show observed smoke separately from matched smoke, and list raw barrier
+transitions with callback/poll origin. A **Capture signal trace** button reveals
+the bounded nonpersistent sequence without requiring the equipment/inventory
+section to be shared. An unmatched end waits at most 20 ticks for diagnostic
+evidence; travel still flushes immediately. Acceptance criteria are unchanged.
+See [second-client findings](validation/nex-live-signals.md).

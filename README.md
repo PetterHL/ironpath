@@ -7,12 +7,14 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**15 October 2026: development build 0.16.1.** The first client test exposed a
+**15 October 2026: development build 0.16.2.** The first client test exposed a
 censored capture and an unclear active/paused status. This follow-up fixes
 reproduced smoke/start callback ordering and first-bank recognition, adds an active
 capture message and records exact eligibility signals in details. [Findings and
 required retest](docs/validation/nex-live-start.md). No complete live capture has
-been validated yet.
+been validated yet. A second test still misses both arena boundaries. The latest
+build consumes the barrier event value and exposes bounded raw signal diagnostics;
+it does not claim the capture failure is resolved. [Second-test findings](docs/validation/nex-live-signals.md).
 
 N2 compares complete owned packages against each distinct actually captured
 state. It keeps melee/ranged/spec evidence separate, preserves planning locks,

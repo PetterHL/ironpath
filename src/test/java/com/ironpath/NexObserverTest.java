@@ -112,8 +112,27 @@ public class NexObserverTest
 		phasesAndEnd(); var summary=session.recent().get(0);
 		assertEquals(Outcome.CENSORED,summary.outcome);
 		assertNull(summary.signals.boundaryTick); assertNull(summary.signals.smokeTick);
+		assertEquals(Integer.valueOf(1),summary.signals.observedSmokeTick);
+		assertTrue(summary.signals.trace.stream().anyMatch(s->s.contains("barrier initial→3 (poll)")));
+		assertTrue(summary.signals.trace.stream().anyMatch(s->s.contains("smoke line observed")));
 		assertTrue(summary.reason.contains("start boundary not observed"));
 		assertTrue(summary.signals.phases.containsAll(List.of("SMOKE","SHADOW","BLOOD","ICE","ZAROS")));
+	}
+	@Test public void eventPayloadEndIsRetainedEvenWhenNoPollSeesTheEndValue()
+	{
+		start(); tick.set(5); observer.death(boss);
+		tick.set(6); observer.barrier(2); // The independent client getter still reads 3.
+		observer.capture.flush(6);
+		var summary=session.recent().get(0);
+		assertEquals(Integer.valueOf(6),summary.signals.barrierEndTick);
+		assertTrue(summary.signals.trace.stream().anyMatch(s->s.contains("barrier 3→2 (event)")));
+		assertTrue(summary.signals.trace.stream().anyMatch(s->s.contains("Nex ActorDeath")));
+		assertEquals(Outcome.CENSORED,summary.outcome); // Missing phases are still required.
+		observer.clearActive(); tick.set(100); observer.tick(); observer.capture.flush(100);
+		observer.transition();
+		var next=session.recent().get(1);
+		assertTrue(next.signals.trace.stream().noneMatch(s->s.contains("tick 6 ") || s.contains("tick 5 ")));
+		assertTrue(summary.signals.trace.stream().anyMatch(s->s.contains("tick 6 ")));
 	}
 
 	@Test public void reviewedTargetsTransformsAndDuplicateCallbacksProduceOneCompleteSummary()
@@ -145,7 +164,7 @@ public class NexObserverTest
 	@Test public void missingDeathBarrierOrTickAndStaleDeathAfterResetCannotComplete()
 	{
 		start(); tick.set(5); observer.death(boss); observer.tick();
-		tick.set(11); observer.tick(); assertEquals(Outcome.CENSORED,session.recent().get(0).outcome);
+		tick.set(26); observer.tick(); assertEquals(Outcome.CENSORED,session.recent().get(0).outcome);
 		observer.clearActive(); observer.death(boss); observer.barrier(); assertFalse(observer.capture.active());
 		assertEquals(1,session.recent().size());
 	}

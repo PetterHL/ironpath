@@ -123,11 +123,57 @@ public class NexCaptureTest
 		}
 		var s=summaries.get(0); assertEquals(Outcome.CENSORED,s.outcome);
 		assertTrue(s.reason.contains("smoke start signal not matched")); assertNull(s.signals.smokeTick);
+		assertEquals(Integer.valueOf(11),s.signals.observedSmokeTick);
 		assertEquals(Integer.valueOf(0),s.signals.boundaryTick); assertEquals(Integer.valueOf(30),s.signals.deathTick);
 		assertEquals(Integer.valueOf(31),s.signals.barrierEndTick); assertTrue(s.signals.continuous);
 		assertEquals(5,s.signals.phases.size()); assertThrows(UnsupportedOperationException.class,()->s.signals.phases.clear());
 		c.start(100,true,NexMethod.PILOT,"a"); c.death(110); c.flush(116);
 		assertTrue(summaries.get(1).reason.contains("arena end boundary not observed"));
 		assertEquals(5,s.signals.phases.size());
+	}
+	@Test public void lateEndEvidenceIsRetainedWithoutRelaxingCompletionCorrelation()
+	{
+		List<NexSummary> summaries=new ArrayList<>(); NexCapture c=new NexCapture(summaries::add);
+		c.start(0,true,NexMethod.PILOT,"a");
+		for(int t=0;t<=43;t++)
+		{
+			if(t==5) { c.phase(t,"SHADOW",null); }
+			if(t==10) { c.phase(t,"BLOOD",null); }
+			if(t==15) { c.phase(t,"ICE",null); }
+			if(t==20) { c.phase(t,"ZAROS",null); }
+			if(t==30) { c.death(t); }
+			if(t==36) { assertTrue(c.active()); assertTrue(summaries.isEmpty()); }
+			if(t==38) { c.barrierEnd(t); }
+			c.sample(t,state(26219,22322,1000,0),null,"melee",-1,"a");
+		}
+		var summary=summaries.get(0);
+		assertEquals(Outcome.CENSORED,summary.outcome);
+		assertEquals(Integer.valueOf(38),summary.signals.barrierEndTick);
+		assertTrue(summary.reason.contains("end signals outside matching window"));
+		assertFalse(summary.reason.contains("arena end boundary not observed"));
+		assertEquals(30,summary.endTick); assertEquals(30,summary.sampledTicks);
+	}
+	@Test public void diagnosticSignalsAreBoundedImmutableAndClearedBetweenAttempts()
+	{
+		List<NexSummary> summaries=new ArrayList<>(); NexCapture c=new NexCapture(summaries::add);
+		c.start(0,false,NexMethod.PILOT,"a");
+		for(int i=0;i<200;i++) { c.signal("signal "+i); }
+		c.abort(1,Outcome.CENSORED,"test end");
+		var trace=summaries.get(0).signals.trace;
+		assertEquals(NexCapture.MAX_SIGNALS,trace.size());
+		assertEquals("signal 0",trace.get(0)); assertEquals("signal 199",trace.get(trace.size()-1));
+		assertThrows(UnsupportedOperationException.class,()->trace.clear());
+		c.start(2,false,NexMethod.PILOT,"a"); c.abort(3,Outcome.CENSORED,"next end");
+		assertTrue(summaries.get(1).signals.trace.isEmpty()); assertEquals(NexCapture.MAX_SIGNALS,trace.size());
+	}
+	@Test public void missingEndEvidenceHasABoundedDiagnosticWait()
+	{
+		List<NexSummary> summaries=new ArrayList<>(); NexCapture c=new NexCapture(summaries::add);
+		c.start(0,true,NexMethod.PILOT,"a"); c.death(10);
+		c.sample(10+NexCapture.END_WAIT-1,state(26219,22322,1000,0),null,"melee",-1,"a");
+		assertTrue(c.active());
+		c.sample(10+NexCapture.END_WAIT,state(26219,22322,1000,0),null,"melee",-1,"a");
+		assertFalse(c.active()); assertEquals(1,summaries.size());
+		assertTrue(summaries.get(0).reason.contains("arena end boundary not observed"));
 	}
 }

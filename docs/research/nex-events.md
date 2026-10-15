@@ -1,9 +1,10 @@
 # Nex public-event adapter review
 
-Reviewed 15 October 2026. Adapter `nex-public-2` (0.16.1 follow-up; N1 used `nex-public-1`), RuneLite API compiled against
+Reviewed 15 October 2026. Adapter `nex-public-3` (0.16.2 follow-up; N1 used `nex-public-1`), RuneLite API compiled against
 1.13.2. The original review is static API/source evidence. Initial client screenshots now
 show a censored attempt; complete live capture, timing agreement and player
 usefulness remain unverified. [Follow-up findings](../validation/nex-live-start.md).
+[Second-test signal investigation](../validation/nex-live-signals.md).
 
 ## Evidence and mappings
 
@@ -29,6 +30,26 @@ remain UNKNOWN until the actual smoke callback; their phase/state is not backfil
 A mid-kill arrival without an observed boundary cannot be promoted by smoke.
 End signals must correlate within five ticks. These bounded matching windows are
 adapter policy, not claims of guaranteed server timing.
+
+The second live test still has no captured start/end barrier despite all phases,
+continuous samples and a death/dying signal. Re-reading the pinned plugin confirms
+active value 3 and end transition 3→2, but **does not establish 2→3 as a necessary
+start on every bank trip**. It uses the smoke line for start instead. IronPath's
+2→3 requirement remains an unvalidated conservative restriction, not a verified
+mapping for the one-kill method. A source review and synthetic sequence do not
+establish which transitions this client actually received.
+
+Since 0.16.2, `VarbitChanged.getValue()` supplies the event value directly; tick
+polling remains a separate fallback. The public
+[event contract](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-api/src/main/java/net/runelite/api/events/VarbitChanged.java)
+labels it the new value. Missing smoke matching no longer conceals a received
+smoke line: details show both timestamps. Up to 32 client-thread signal entries
+retain the first 16 and latest 16 barrier transitions, smoke, Nex forms,
+ActorDeath/despawn and scene transitions, without account identifiers or files.
+When one end signal is missing, capture waits up to 20 ticks for diagnostic
+evidence; both present signals still require the original five-tick correlation.
+This diagnostic wait is not a newly verified server bound. Travel still flushes
+or censors immediately. Eligibility and timer origin are unchanged.
 
 Damage is aggregated by **phase/subphase at the observed impact** and spawn target.
 A hit is never assigned to the weapon worn at impact. Animation samples retain

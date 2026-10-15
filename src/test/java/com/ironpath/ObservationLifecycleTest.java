@@ -379,8 +379,21 @@ public class ObservationLifecycleTest
 		tick(); tick(); tick(); assertFalse(plugin.nexSession.suspended());
 		assertNotNull(plugin.session.snapshot()); assertTrue(plugin.session.preferencesLoaded());
 		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(3);
-		VarbitChanged start=new VarbitChanged(); start.setVarbitId(VarbitID.NEX_BARRIER); plugin.onVarbitChanged(start);
+		VarbitChanged start=new VarbitChanged(); start.setVarbitId(VarbitID.NEX_BARRIER); start.setValue(3); plugin.onVarbitChanged(start);
 		assertTrue(plugin.nex.capture.active());
+	}
+	@Test public void nexBarrierCallbackConsumesTheEventValueRatherThanRereadingTheGetter()
+	{
+		observeBank();
+		var player=mock(net.runelite.api.Player.class); var world=mock(net.runelite.api.WorldView.class);
+		var boss=mock(net.runelite.api.NPC.class);
+		when(client.getLocalPlayer()).thenReturn(player); when(player.getWorldView()).thenReturn(world);
+		when(boss.getWorldView()).thenReturn(world); when(boss.getId()).thenReturn(net.runelite.api.gameval.NpcID.NEX);
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2);
+		plugin.nex.spawn(boss); plugin.nex.barrier();
+		VarbitChanged start=new VarbitChanged(); start.setVarbitId(VarbitID.NEX_BARRIER); start.setValue(3);
+		plugin.onVarbitChanged(start);
+		assertTrue("The callback's new value is authoritative even if a separate read lags",plugin.nex.capture.active());
 	}
 	@Test public void nexHistoryClearsOnEveryHardBoundaryAndDisable()
 	{

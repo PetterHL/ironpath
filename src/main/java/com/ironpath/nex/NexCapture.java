@@ -9,16 +9,18 @@ import java.util.function.Consumer;
 /** Bounded deterministic Nex evidence machine. The adapter supplies reviewed signals and spawn keys. */
 public final class NexCapture
 {
-	public static final String VERSION="nex-public-2";
-	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, END_GRACE=5, START_GRACE=10;
+	public static final String VERSION="nex-public-3";
+	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, MAX_SIGNALS=32,
+		END_GRACE=5, END_WAIT=20, START_GRACE=10;
 	private final Consumer<NexSummary> sink;
 	private final List<NexSummary.Sample> timeline=new ArrayList<>();
 	private final Map<String,NexSummary.Damage> damage=new LinkedHashMap<>();
 	private final Set<Long> hitKeys=new HashSet<>();
+	private final List<String> signals=new ArrayList<>();
 	private final Set<String> gaps=new LinkedHashSet<>(), phases=new LinkedHashSet<>(), gear=new TreeSet<>();
 	private long serial, key;
 	private volatile NexMethod method;
-	private int start, last, sampled, lastSample, death=-1, barrierEnd=-1, smokeTick=-1, events, unclassified;
+	private int start, last, sampled, lastSample, death=-1, barrierEnd=-1, smokeTick=-1, observedSmoke=-1, events, unclassified;
 	private String phase="UNKNOWN", window="UNKNOWN", roster;
 	private boolean fullStart, boundaryObserved, continuous, rosterStable;
 
@@ -31,7 +33,7 @@ public final class NexCapture
 	{
 		if (active()) { abort(tick,Outcome.CENSORED,"New encounter before completion"); }
 		this.method=Objects.requireNonNull(method); key=++serial; start=last=tick; lastSample=tick-1;
-		this.roster=roster; boundaryObserved=boundary; fullStart=false; smokeTick=-1; continuous=true; rosterStable=roster!=null;
+		this.roster=roster; boundaryObserved=boundary; fullStart=false; smokeTick=this.observedSmoke=-1; continuous=true; rosterStable=roster!=null;
 		if(observedSmoke!=null) { correlateSmoke(observedSmoke); }
 		phase=fullStart?"SMOKE":"UNKNOWN"; window="UNKNOWN";
 		if(fullStart) { phases.add(phase); }
@@ -44,8 +46,17 @@ public final class NexCapture
 	/** A later smoke callback corroborates an already sampled boundary; it never backfills state or phase. */
 	public void correlateSmoke(int tick)
 	{
+		observeSmoke(tick);
 		if(active() && boundaryObserved && Math.abs((long)tick-start)<=START_GRACE && !fullStart)
 		{ fullStart=true; smokeTick=tick; }
+	}
+	public void observeSmoke(int tick) { if(active() && observedSmoke<0) { observedSmoke=tick; } }
+	/** Bounded in-memory diagnostics retain the beginning and most recent signals. */
+	public void signal(String entry)
+	{
+		if(!active()) { return; }
+		if(signals.size()>=MAX_SIGNALS) { signals.remove(MAX_SIGNALS/2); }
+		signals.add(entry);
 	}
 	private boolean event(int tick)
 	{
@@ -114,7 +125,9 @@ public final class NexCapture
 	{
 		if (!active() || death<0 && barrierEnd<0) { return; }
 		int signal=death<0?barrierEnd:barrierEnd<0?death:Math.max(death,barrierEnd);
-		if (!leaving && tick<signal+END_GRACE) { return; }
+		// Wait longer for diagnostic evidence; this does not relax the five-tick acceptance window.
+		int wait=death>=0 && barrierEnd>=0?END_GRACE:END_WAIT;
+		if (!leaving && tick<signal+wait) { return; }
 		boolean correlated=death>=0 && barrierEnd>=0 && Math.abs(death-barrierEnd)<=END_GRACE;
 		List<String> missing=new ArrayList<>();
 		if(!boundaryObserved) { missing.add("start boundary not observed"); }
@@ -133,12 +146,12 @@ public final class NexCapture
 	}
 	public void abort(int tick, Outcome outcome, String reason)
 	{ if (active()) { finish(outcome,reason,Math.max(start,tick)); } }
-	public void clear() { method=null; timeline.clear(); damage.clear(); hitKeys.clear(); gaps.clear(); phases.clear(); gear.clear(); death=barrierEnd=smokeTick=-1; sampled=events=unclassified=0; }
+	public void clear() { method=null; timeline.clear(); damage.clear(); hitKeys.clear(); signals.clear(); gaps.clear(); phases.clear(); gear.clear(); death=barrierEnd=smokeTick=observedSmoke=-1; sampled=events=unclassified=0; }
 	private void finish(Outcome outcome, String reason, int end)
 	{
 		String cohort=method.cohort()+":"+gear+":"+(rosterStable?roster:"unmatched-"+key);
 		NexSummary.Signals signals=new NexSummary.Signals(boundaryObserved?start:null,smokeTick<0?null:smokeTick,
-			death<0?null:death,barrierEnd<0?null:barrierEnd,continuous,phases);
+			death<0?null:death,barrierEnd<0?null:barrierEnd,continuous,phases,observedSmoke<0?null:observedSmoke,this.signals);
 		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps,signals));
 		clear();
 	}

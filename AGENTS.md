@@ -14,7 +14,7 @@
 
 ## Delivery
 
-- Current: N2 implementation in development build 0.16.1, based on N1.
+- Current: N2 implementation in development build 0.16.2, based on N1.
   Live-client/player acceptance remains open in docs/validation/nex-session.md
   and docs/validation/nex-owned.md. Nex Trio MP2, one kill per trip. Lightbearer throughout,
   upgraded Death Charge, observed melee/ranged/spec switches. Do not guess the
@@ -32,6 +32,11 @@
   phases/state for a late arrival. Record first bank visits, distinguish nearby
   NPC presence from arena state, and display active capture status. See
   docs/validation/nex-live-start.md; real-client retesting remains open.
+- Follow-up 0.16.2 (`nex-public-3`) consumes barrier event payloads and keeps
+  bounded in-memory signal diagnostics. The second test still lacks both
+  boundaries; do not claim it is fixed. The required 2→3 start transition and
+  five-tick end correlation are unvalidated policy, not established game timing.
+  See docs/validation/nex-live-signals.md before changing those rules.
 - N2 searches complete supported carried packages per captured state. Bank-only
   scenarios are conditional next-trip preparation, never current inventory
   availability or a validated joint packing plan. No global-best claim. Keep
