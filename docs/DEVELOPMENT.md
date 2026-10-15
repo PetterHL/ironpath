@@ -23,7 +23,9 @@ macOS/Linux use `./gradlew` instead. An offline build is valid when dependencies
 are already cached; document that condition rather than claiming a fresh download.
 
 `run` opens the RuneLite development client with IronPath and developer mode.
-Java assertions are enabled only for `com.ironpath...`; unit tests retain Gradle's
+Java assertions are enabled with `-ea`, as required by RuneLite's development
+plugin loader. The temporary GPU workaround excludes only
+`net.runelite.client.plugins.gpu...` with `-da`; unit tests retain Gradle's
 separate assertion configuration.
 For Jagex Account login use [RuneLite's instructions](https://github.com/runelite/runelite/wiki/Using-Jagex-Accounts).
 Never commit credentials, account captures or local configuration. If using the
@@ -39,17 +41,25 @@ asserts that a projected face distance lies inside the model diameter. No IronPa
 frame appears in that stack. Bank layout DEBUG messages preceding it are not
 evidence that bank tags caused the failure.
 
-The former development command used global `-ea`, enabling assertions in RuneLite
-and other plugins too. Build 0.16.3 uses `-ea:com.ironpath...`, retaining checks in
-our code while leaving dependencies at their default assertion policy. This
-addresses the launch configuration that enabled this particular check; it does
+Build 0.16.3 changed global `-ea` to `-ea:com.ironpath...`. That was incorrect:
+[ExternalPluginManager.loadBuiltin](https://github.com/runelite/runelite/blob/runelite-parent-1.13.2/runelite-client/src/main/java/net/runelite/client/externalplugins/ExternalPluginManager.java#L460)
+checks assertions in its own class and rejects startup when they are disabled.
+The 0.16.3 configuration/build check passed but did not exercise that API. The
+next client launch exposed this regression.
+
+Build 0.16.4 restores `-ea` and adds only
+`-da:net.runelite.client.plugins.gpu...`. This retains the required RuneLite and
+IronPath checks and excludes the GPU package as a temporary workaround. It does
 not repair GPU/model code or establish the sole cause of the frozen client. No
 GPU setting or other plugin's saved configuration is changed.
 
-Verification: JDK 11 / RuneLite 1.13.2, normal `test build` passed (6 s), with the
-unchanged 178-test suite up to date. A separate Gradle configuration check verified
-the package-scoped launch argument, global launcher assertions off, and test
-assertions still on. No graphical-client recovery is claimed from these checks.
+Verification: JDK 11 / RuneLite 1.13.2. A temporary probe executed the actual
+public `loadBuiltin(IronpathPlugin.class)` in a separate headless JVM with the
+real `run` classpath and configured JVM arguments. It **passed**, including
+checks that IronPath/RuneLite assertions are on and GPU assertions are off.
+The same probe with the old 0.16.3 arguments reproduced the exact loader rejection.
+Normal `test build` passed (6 s), with the unchanged 178-test suite up to date.
+This establishes loader compatibility, not graphical-client or Nex acceptance.
 
 If the client cannot close normally, end the affected RuneLite development
 process, update the current branch and restart with `run`. If it still freezes,

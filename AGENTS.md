@@ -14,7 +14,7 @@
 
 ## Delivery
 
-- Current: N2 implementation in development build 0.16.3, based on N1.
+- Current: N2 implementation in development build 0.16.4, based on N1.
   Live-client/player acceptance remains open in docs/validation/nex-session.md
   and docs/validation/nex-owned.md. Nex Trio MP2, one kill per trip. Lightbearer throughout,
   upgraded Death Charge, observed melee/ranged/spec switches. Do not guess the
@@ -37,10 +37,11 @@
   boundaries; do not claim it is fixed. The required 2→3 start transition and
   five-tick end correlation are unvalidated policy, not established game timing.
   See docs/validation/nex-live-signals.md before changing those rules.
-- Development launcher 0.16.3 scopes Java assertions to `com.ironpath...`.
-  A client log showed RuneLite GPU `ModelUploader:194` failing an assertion
-  enabled by the former global `-ea`. This launch change does not establish
-  that every GPU freeze is fixed; see docs/DEVELOPMENT.md.
+- Development launcher 0.16.4 keeps global `-ea`, required by RuneLite's
+  `ExternalPluginManager.loadBuiltin`, with only `net.runelite.client.plugins.gpu...`
+  excluded as a temporary GPU assertion workaround. The 0.16.3 package-only
+  setting broke startup. Verify the actual loadBuiltin guard with the run JVM
+  arguments, not just Gradle configuration. See docs/DEVELOPMENT.md.
 - N2 searches complete supported carried packages per captured state. Bank-only
   scenarios are conditional next-trip preparation, never current inventory
   availability or a validated joint packing plan. No global-best claim. Keep
