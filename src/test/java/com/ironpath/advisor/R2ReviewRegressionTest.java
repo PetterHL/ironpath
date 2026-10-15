@@ -17,13 +17,12 @@ import static org.junit.Assert.*;
 public class R2ReviewRegressionTest
 {
 	private KnowledgeCatalog catalog;
-	private Advisor advisor;
+
 	private RangedComparisonService service;
 	private Preferences missing;
 	@Before public void load() throws Exception
-	{ catalog=KnowledgeCatalog.load(new Gson()); advisor=new Advisor(catalog); service=new RangedComparisonService(catalog); missing=absent(catalog); }
-	private Advisor.UpgradeView view(AccountSnapshot a, String id)
-	{ return advisor.upgrades(a,missing).stream().filter(v->v.upgrade.id.equals(id)).findFirst().orElseThrow(); }
+	{ catalog=KnowledgeCatalog.load(new Gson()); service=new RangedComparisonService(catalog); missing=absent(catalog); }
+
 	private AccountSnapshot rangedPackages()
 	{ return account(Set.of(12926,11230,25867,27226,27229,27232,19547,28955,7462),99,99); }
 	private AccountSnapshot zenyteAccount()
@@ -39,9 +38,6 @@ public class R2ReviewRegressionTest
 		assertEquals(Integer.valueOf(0),result.afterSetup.slots.get("ammo"));
 		assertEquals(Integer.valueOf(0),result.afterSetup.slots.get("shield"));
 		assertEquals(THEORETICAL_DPS,result.primaryMetric);
-		Advisor.UpgradeView body=view(a,"crystal-body");
-		assertTrue(body.contextComparisons.stream().anyMatch(r->r.target.id.equals("graardor")&&r.dpsGain()>0));
-		assertNotEquals(PursuitAssessment.Category.DEFER,body.pursuit.category);
 	}
 	@Test public void armourCannotBorrowAnUnobservedWeaponOrItsAmmo()
 	{
@@ -77,48 +73,7 @@ public class R2ReviewRegressionTest
 		assertEquals(before.onTask,result.afterSetup.onTask);
 		assertEquals(before.target,result.afterSetup.target);
 	}
-	@Test public void ownedUncutAndCutZenyteRemoveGorillaWorkButKeepDownstreamRequirements()
-	{
-		for (int intermediate : new int[]{19496,19493})
-		{
-			AccountSnapshot a=withFact(levels(levels(items(zenyteAccount(),intermediate),"CRAFTING",70),"MAGIC",90),"monkey-madness-ii",fact(false));
-			Advisor.UpgradeView anguish=view(a,"necklace-of-anguish");
-			assertEquals(PursuitAssessment.Mode.BOUNDED,anguish.pursuit.acquisitionMode);
-			assertEquals(PursuitAssessment.Burden.LOW,anguish.pursuit.burden);
-			assertTrue(anguish.pursuit.blockers.stream().anyMatch(s->s.contains("CRAFTING >= 92")));
-			assertTrue(anguish.pursuit.blockers.stream().anyMatch(s->s.contains("MAGIC >= 93")));
-			assertTrue(anguish.pursuit.blockers.stream().anyMatch(s->s.contains("gold bar")));
-			assertEquals(intermediate==19496,anguish.pursuit.blockers.stream().anyMatch(s->s.contains("CRAFTING >= 89")));
-			assertFalse(anguish.pursuit.blockers.toString(),anguish.pursuit.blockers.stream().anyMatch(s->s.contains("Monkey Madness")||s.contains("Zenyte shard")));
-			assertFalse(advisor.activityOpportunities(a,missing,advisor.upgrades(a,missing)).stream().filter(o->o.activity.equals("demonic-gorillas")).anyMatch(o->o.usefulFamilies.contains("necklace-of-anguish")));
-		}
-	}
-	@Test public void absentZenyteKeepsTheActualGorillaAcquisition()
-	{
-		AccountSnapshot a=zenyteAccount(); Advisor.UpgradeView anguish=view(a,"necklace-of-anguish");
-		assertEquals(PursuitAssessment.Mode.REPEATABLE,anguish.pursuit.acquisitionMode);
-		assertTrue(advisor.activityOpportunities(a,missing,advisor.upgrades(a,missing)).stream().filter(o->o.activity.equals("demonic-gorillas")).anyMatch(o->o.usefulFamilies.contains("necklace-of-anguish")));
-	}
-	@Test public void ruptureNeedsCraftingForBothRawAndEtchedFang()
-	{
-		for (int fang : new int[]{33634,33636})
-		{
-			AccountSnapshot a=withFact(levels(items(zenyteAccount(),fang,19547),"CRAFTING",70),"blood-moon-rises",fact(true));
-			Advisor.UpgradeView rupture=view(a,"necklace-of-rupture");
-			assertTrue(rupture.pursuit.blockers.toString(),rupture.pursuit.blockers.stream().anyMatch(s->s.contains("CRAFTING >= 84")));
-			assertEquals(PursuitAssessment.Category.PLAN,rupture.pursuit.category);
-			assertFalse(view(levels(a,"CRAFTING",84),"necklace-of-rupture").pursuit.blockers.stream().anyMatch(s->s.contains("CRAFTING >= 84")));
-		}
-	}
-	@Test public void unknownCraftingRemainsARuptureCheck()
-	{
-		AccountSnapshot a=items(zenyteAccount(),33636,19547);
-		Map<String,Integer> known=new HashMap<>(a.levels.value()); known.remove("CRAFTING");
-		a=new AccountSnapshot(fact(known),a.inventory,a.equipment,a.bank,a.rigour,a.augury,a.facts,a.equipmentSlots,a.inventoryQuantities,a.equipmentQuantities,a.bankQuantities);
-		Advisor.UpgradeView rupture=view(a,"necklace-of-rupture");
-		assertTrue(rupture.pursuit.blockers.toString(),rupture.pursuit.blockers.stream().anyMatch(s->s.contains("CRAFTING >= 84")));
-		assertEquals(PursuitAssessment.Category.CHECK,rupture.pursuit.category);
-	}
+
 	@Test public void blessedQuiverWinsForArrowsAndBoltsWithoutAddingCrystalOrDartBonus()
 	{
 		AccountSnapshot a=account(Set.of(20997,11212,28947,28955),99,99);

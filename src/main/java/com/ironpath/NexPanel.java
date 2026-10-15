@@ -1,6 +1,8 @@
 package com.ironpath;
 
 import com.ironpath.advisor.KnowledgeCatalog;
+import com.ironpath.advisor.NexOwnedResult;
+import com.ironpath.advisor.ComparisonResult;
 import com.ironpath.model.AccountSnapshot;
 import com.ironpath.nex.NexSession;
 import com.ironpath.nex.NexSummary;
@@ -28,6 +30,9 @@ final class NexPanel extends PluginPanel
 	private final ItemManager items;
 	private String page="encounter";
 	private NexSummary inspected;
+	private NexOwnedResult inspectedOwned;
+	private int ownedIndex;
+	private int ownedPairIndex;
 	private String factKey="rigour", roleKey="melee", slotKey="weapon";
 	private Integer lockItem;
 	private Map<Integer,String> displayNames=Map.of();
@@ -37,6 +42,9 @@ final class NexPanel extends PluginPanel
 
 	void render(String status, AccountSnapshot account, Preferences prefs, KnowledgeCatalog catalog,
 		NexSession.Stats stats, boolean enabled, Actions actions, String storage)
+	{ render(status,account,prefs,catalog,stats,enabled,actions,storage,null); }
+	void render(String status, AccountSnapshot account, Preferences prefs, KnowledgeCatalog catalog,
+		NexSession.Stats stats, boolean enabled, Actions actions, String storage, NexOwnedResult owned)
 	{
 		if (!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
 		long currentView=++view;
@@ -44,22 +52,31 @@ final class NexPanel extends PluginPanel
 		if(account!=null && stats.last!=null) { stats.last.timeline.forEach(s->names.putAll(s.state.itemNames)); }
 		if(account!=null && inspected!=null) { inspected.timeline.forEach(s->names.putAll(s.state.itemNames)); }
 		displayNames=Map.copyOf(names);
-		if (account==null) { page="encounter"; inspected=null; returnPosition=null; factKey="rigour"; roleKey="melee"; slotKey="weapon"; lockItem=null; }
+		if (account==null) { page="encounter"; inspected=null; inspectedOwned=null; ownedIndex=0; returnPosition=null; factKey="rigour"; roleKey="melee"; slotKey="weapon"; lockItem=null; }
 		removeAll(); setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
 		text("IronPath"); text("Nex · Trio MP2 · One kill per trip");
 		if (account==null || actions==null) { text(status); revalidate(); repaint(); return; }
-		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage);
+		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned);
 		java.util.function.BooleanSupplier valid=()->view==currentView && actions.current();
 		JPanel nav=new ActionLinks(); nav.setFont(getFont());
 		for (String destination:List.of("encounter","setup","account"))
 		{
 			button(nav,destination.equals("encounter")?"Encounter":destination.equals("setup")?"Setup":"Account",()->{
-				if (!valid.getAsBoolean()) { return; } page=destination; inspected=null; redraw.run();
+				if (!valid.getAsBoolean()) { return; } page=destination; inspected=null; inspectedOwned=null; redraw.run();
 			});
 		}
 		add(nav);
 		if (page.equals("account")) { account(account,prefs,catalog,actions,valid,storage); }
 		else if (page.equals("setup")) { setup(prefs,stats.last,catalog,actions,valid,storage); }
+		else if(inspectedOwned!=null)
+		{
+			button(this,"Back to encounter",()->{
+				if(!valid.getAsBoolean()) { return; } inspectedOwned=null; redraw.run();
+				var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
+				if(viewport!=null && returnPosition!=null) { viewport.setViewPosition(returnPosition); }
+			});
+			ownedDetails(inspectedOwned,catalog,valid);
+		}
 		else if (inspected!=null)
 		{
 			button(this,"Back to encounter",()->{
@@ -94,13 +111,94 @@ final class NexPanel extends PluginPanel
 				text("Last attempt · "+stats.lastAttempt.outcome+" · "+stats.lastAttempt.reason);
 				button(this,"Last attempt details",()->{if(valid.getAsBoolean()) { inspected=stats.lastAttempt; redraw.run(); }});
 			}
+			if(stats.last!=null)
+			{
+				text("Improve with owned equipment");
+				if(owned==null) { text("Comparing the captured setups…"); }
+				else
+				{
+					long supported=owned.choices.stream().filter(c->c.comparison!=null && c.comparison.before!=null).count();
+					text(supported+" / "+owned.choices.size()+" state and inventory scenarios supported. Each uses its own observed setup.");
+					Set<String> roles=new HashSet<>();
+					for(var c:owned.choices)
+					{
+						if(c.bankPreparation || c.comparison==null || !roles.add(c.actual.role)) { continue; }
+						text(c.actual.role+" · tick "+c.actual.tick+" · "+c.headline()); item(c.proposed.slots.get("weapon"),catalog,valid);
+					}
+					button(this,"Owned setup comparisons",()->{
+						if(!valid.getAsBoolean()) { return; }
+						var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
+						returnPosition=viewport==null?null:viewport.getViewPosition(); inspectedOwned=owned; ownedIndex=0; ownedPairIndex=0; redraw.run();
+					}).setName("nex-owned");
+				}
+			}
 			text(stats.complete+" / "+stats.attempts+" captured attempts eligible for complete statistics · "+stats.failed+" failed · "+stats.censored+" censored/excluded. Last "+NexSession.MAX_RECENT+" attempts maximum.");
 			text("Completed summaries stay in memory across a recognized bank trip. Logout, account/profile change and Reset clear them.");
 			button(this,enabled?"Disable capture":"Enable capture",()->{if(valid.getAsBoolean()) { actions.enable(!enabled); }});
 			button(this,"Reset session",()->{if(valid.getAsBoolean()) { actions.reset(); }}).setName("nex-reset");
-			text("Owned equipment and upgrade comparisons are the next delivery.");
+			text("Spec effects, new upgrades and encounter-time estimates remain under development.");
 		}
 		revalidate(); repaint();
+	}
+	private void ownedDetails(NexOwnedResult result,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid)
+	{
+		text("Owned equipment · kill #"+result.summary.key);
+		text("Ordinary offence scenarios. Independent alternatives cannot be added together. Bank preparation requires packing and stock checks before the next trip.");
+		if(result.choices.isEmpty()) { text("No complete captured setup to compare."); return; }
+		JComboBox<String> states=new JComboBox<>(); states.setName("nex-owned-state");
+		for(var c:result.choices) { states.addItem(c.actual.role+" · tick "+c.actual.tick+" · "+c.actual.phase+(c.bankPreparation?" · bank preparation":" · carried")); }
+		states.setSelectedIndex(Math.min(ownedIndex,result.choices.size()-1)); addControl(states);
+		JPanel detail=ownedBody(); add(detail);
+		Runnable show=()->{
+			if(!valid.getAsBoolean()) { return; }
+			if(ownedIndex!=states.getSelectedIndex()) { ownedPairIndex=0; }
+			ownedIndex=states.getSelectedIndex(); detail.removeAll();
+			var c=result.choices.get(ownedIndex);
+			PanelWidgets.text(detail,c.bankPreparation?"Bank preparation scenario · not carried in this kill":"Carried alternatives at the captured state");
+			if(c.comparison==null) { PanelWidgets.text(detail,c.gap); }
+			else
+			{
+				List<ComparisonResult> pairs=new ArrayList<>(); pairs.add(c.comparison); pairs.addAll(c.alternatives);
+				JComboBox<String> options=new JComboBox<>(); options.setFont(getFont()); options.setName("nex-owned-pair");
+				options.addItem("Proposed complete package");
+				for(var pair:c.alternatives) { options.addItem(changes(pair,catalog)); }
+				options.setAlignmentX(LEFT_ALIGNMENT); options.setSelectedIndex(Math.min(ownedPairIndex,pairs.size()-1));
+				options.setMaximumSize(new Dimension(PANEL_WIDTH-12,Math.max(28,options.getPreferredSize().height))); detail.add(options);
+				JPanel value=ownedBody(); detail.add(value);
+				Runnable compare=()->{
+					if(!valid.getAsBoolean()) { return; } ownedPairIndex=options.getSelectedIndex(); value.removeAll(); var pair=pairs.get(ownedPairIndex);
+					PanelWidgets.text(value,NexOwnedResult.headline(pair));
+					PanelWidgets.text(value,ownedPairIndex==0?(c.exhaustive?"Best supported package within this search":"Best package found in a partial search")+". Global best owned remains unestablished.":"Explicit owned alternative · compare this complete package independently.");
+					PanelWidgets.text(value,pair.headline()); PanelWidgets.text(value,changes(pair,catalog));
+					PanelWidgets.text(value,"Actual ammo slot: "+name(pair.beforeSetup.slots.get("ammo"),catalog));
+					if(pair.beforeSetup.loadedAmmo>0 || pair.afterSetup.loadedAmmo>0)
+					{ PanelWidgets.text(value,"Selected quiver projectile: "+(pair.beforeSetup.loadedAmmo>0?name(pair.beforeSetup.loadedAmmo,catalog):"worn "+name(pair.beforeSetup.slots.get("ammo"),catalog))
+						+" → "+(pair.afterSetup.loadedAmmo>0?name(pair.afterSetup.loadedAmmo,catalog):"worn "+name(pair.afterSetup.slots.get("ammo"),catalog))+". Worn ammo slot listed separately."); }
+					if(pair.beforeSetup.slots.containsValue(24780) || pair.afterSetup.slots.containsValue(24780)) { PanelWidgets.text(value,"Blood fury healing and survival are not estimated; offensive loss does not establish worse overall value."); }
+					JPanel basis=ownedBody(); basis.setVisible(false);
+					button(value,"Full setups and calculation basis",()->{
+						if(valid.getAsBoolean()) { basis.setVisible(!basis.isVisible()); value.invalidate(); detail.invalidate(); invalidate(); revalidate(); repaint(); }
+					});
+					for(String slot:com.ironpath.advisor.PoweredMagic.SLOTS) { PanelWidgets.text(basis,slot+": "+name(pair.beforeSetup.slots.get(slot),catalog)+" → "+name(pair.afterSetup.slots.get(slot),catalog)); }
+					for(String assumption:pair.assumptions) { PanelWidgets.text(basis,assumption); }
+					value.add(basis);
+					value.revalidate(); revalidate();
+				}; options.addActionListener(e->compare.run()); compare.run();
+			}
+			c.coverage.forEach(g->PanelWidgets.text(detail,g)); detail.revalidate(); revalidate(); repaint();
+		}; states.addActionListener(e->show.run()); show.run();
+	}
+	private JPanel ownedBody()
+	{
+		JPanel panel=new JPanel(); panel.setFont(getFont()); panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+		panel.setAlignmentX(LEFT_ALIGNMENT); panel.setOpaque(false); return panel;
+	}
+	private String changes(ComparisonResult pair,KnowledgeCatalog catalog)
+	{
+		List<String> changes=new ArrayList<>();
+		for(String slot:com.ironpath.advisor.PoweredMagic.SLOTS)
+		{ if(!Objects.equals(pair.beforeSetup.slots.get(slot),pair.afterSetup.slots.get(slot))) { changes.add(slot+": "+name(pair.beforeSetup.slots.get(slot),catalog)+" → "+name(pair.afterSetup.slots.get(slot),catalog)); } }
+		return changes.isEmpty()?"Same package · zero change":String.join("; ",changes);
 	}
 	private void setup(Preferences prefs, NexSummary last, KnowledgeCatalog catalog, Actions actions,
 		java.util.function.BooleanSupplier valid, String storage)

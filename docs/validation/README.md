@@ -1,5 +1,9 @@
 # Validation records
 
+Current N2 implementation: [owned Nex packages](nex-owned.md), based on
+[N1 capture/session evidence](nex-session.md). Client/player acceptance stays open.
+
+
 [Nex N1 session](nex-session.md) records the capture/session implementation and
 pending live checks. [Nex transition](nex-transition.md) records the earlier cleanup.
 Current Nex work uses [TASKS N1–N4](../../TASKS.md); no Nex functionality has passed client or

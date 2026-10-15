@@ -40,7 +40,15 @@ public final class MeleeModel
 	private MeleeModel() { }
 	public static PoweredMagic.Metrics calculate(int attackLevel, int strengthLevel, CombatSetup setup, TargetProfile target, Map<Integer,MeleeItem> items)
 	{
-		if (setup.family != CombatSetup.Family.MELEE || attackLevel<1 || attackLevel>99 || strengthLevel<1 || strengthLevel>99
+		if (attackLevel<1 || attackLevel>99 || strengthLevel<1 || strengthLevel>99) { throw new IllegalArgumentException("Real melee levels outside 1–99"); }
+		boolean boosted=setup.meleeBoost==Boost.SUPER_ATTACK_STRENGTH;
+		return calculateVisible(attackLevel+(boosted ? 5+attackLevel*15/100 : 0),
+			strengthLevel+(boosted ? 5+strengthLevel*15/100 : 0),setup,target,items);
+	}
+	/** Sampled current levels, including drains and decay. Does not infer potion use. */
+	public static PoweredMagic.Metrics calculateVisible(int visibleAttack, int visibleStrength, CombatSetup setup, TargetProfile target, Map<Integer,MeleeItem> items)
+	{
+		if (setup.family != CombatSetup.Family.MELEE || visibleAttack<1 || visibleAttack>200 || visibleStrength<1 || visibleStrength>200
 			|| setup.meleeStyle == null || setup.meleePrayer == null || setup.meleeBoost == null || setup.souls == null)
 		{ throw new IllegalArgumentException("Unsupported ordinary melee inputs"); }
 		MeleeItem weapon=items.get(setup.slots.get("weapon"));
@@ -58,9 +66,6 @@ public final class MeleeModel
 			if (item==null || !slot.equals(item.slot)) { throw new IllegalArgumentException("Unknown melee contribution"); }
 			attack+=item.attack(setup.meleeStyle.type); strength+=item.strength;
 		}
-		boolean boosted=setup.meleeBoost==Boost.SUPER_ATTACK_STRENGTH;
-		int visibleAttack=attackLevel+(boosted ? 5+attackLevel*15/100 : 0);
-		int visibleStrength=strengthLevel+(boosted ? 5+strengthLevel*15/100 : 0);
 		int effectiveAttack=visibleAttack*setup.meleePrayer.attack/100+setup.meleeStyle.attack+8;
 		long roll=MeleeEffects.attackRoll((long)effectiveAttack*Math.max(0,attack+64),setup,target,weapon,items);
 		long defence=target.meleeDefenceRoll(setup.meleeStyle.type);

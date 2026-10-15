@@ -7,11 +7,17 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**15 October 2026: N1 development build 0.15.0.** The native homepage now
-captures Nex session evidence: last complete observed kill, same-cohort means,
-sample counts/ranges, excluded attempts and immutable equipment/resource timelines.
-The adapter has synthetic replay coverage; real-client mappings and player
-acceptance are still pending. [Validation and remaining checks](docs/validation/nex-session.md).
+**15 October 2026: N2 development build 0.16.0.** The encounter view now compares
+complete owned packages against each distinct actually captured state. It keeps
+melee/ranged/spec evidence separate, preserves planning locks, distinguishes
+carried alternatives from bank preparation and exposes gains, losses and zero.
+Nex ordinary offence uses exact sampled levels/prayers and a labeled base-stat
+scenario; it does not estimate kill time or personal contribution. [N2 evidence
+and remaining checks](docs/validation/nex-owned.md).
+
+N1 session capture retains last complete timing/share, comparable means/ranges,
+excluded attempts and immutable timelines. Its real-client mappings and player
+acceptance are still pending. [N1 validation](docs/validation/nex-session.md).
 
 The pilot is **Nex / Trio MP2 / one kill per trip**, with Lightbearer throughout
 and assumed upgraded Death Charge. Equipment, switches and active spell state are
@@ -22,8 +28,14 @@ Observed hitsplat share is scoped to Nex and the four named minions; it is not
 server contribution or loot eligibility. Timing uses the captured arena boundary
 and death signal, with no game-timer calibration claim.
 
-The previous general homepage is no longer a runtime navigation path. Owned-package
-recommendations, spec comparisons and estimated contribution/time remain N2–N4.
+The previous general homepage and global progression ranking are removed. The
+reported Tbow/amethyst-quiver and Fang/defender equipment has an anonymous regression
+fixture; levels, prayers, stock and phase inputs in that fixture are synthetic.
+Ancient blessing remains a physical worn item while quiver arrows are a separate
+projectile input. Conditional ordinary charged/blessed quiver offence is supported;
+finite ammo/splinter use, special attacks, healing and contribution/time remain
+N3–N4. Scorching and other unsupported alternatives leave explicit coverage gaps
+without blocking a supported pair.
 
 ## Project map
 

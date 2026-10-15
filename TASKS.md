@@ -54,7 +54,20 @@ death/teleport/mid-kill enable; several one-kill bank trips; account switch duri
 pending work; matching timer origins; no false completed kills or leaked sessions.
 Record captured/eligible fractions and real-client/player findings separately.
 
-## N2 — Better use of owned equipment
+## N2 — Better use of owned equipment (implementation for review)
+
+Development build 0.16.0 supplies immutable per-state carried-package comparisons,
+conditional bank preparation, explicit pairs, locks and coverage gaps in the Nex
+view. The old homepage/global progression policy and obsolete consumers/tests are
+removed together; shared formula/oracle, source/schema, observation and preference
+regressions remain. [Implementation and verification](docs/validation/nex-owned.md).
+
+Petter supplied the ranged and melee equipment on 15 October; an anonymous fixture
+uses those items with explicitly synthetic levels/prayers/quantities. **Acceptance
+remains open:** no real captured account with complete levels/inventory/charges,
+no validated combined bank packing plan and no player/client checks. Spec-role
+history is retained; its finite energy/effects remain N3. Supported ordinary
+pairwise offence is not global best owned or encounter throughput.
 
 Evaluate complete method-compatible owned packages across melee/ranged/spec roles.
 Compare them to the immutable actually-used timeline, respecting locks, available

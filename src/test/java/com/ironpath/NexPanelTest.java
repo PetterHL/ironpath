@@ -30,17 +30,22 @@ public class NexPanelTest
 	private static JButton button(NexPanel panel,String text)
 	{ return (JButton)children(panel).stream().filter(c->c instanceof JButton && text.equals(((JButton)c).getToolTipText())).findFirst().orElseThrow(); }
 	private static String shown(NexPanel panel)
-	{ return children(panel).stream().filter(c->c instanceof JTextArea).map(c->((JTextArea)c).getText()).reduce("",(a,b)->a+"\n"+b); }
+	{ return children(panel).stream().filter(c->c instanceof JTextArea && visible(c)).map(c->((JTextArea)c).getText()).reduce("",(a,b)->a+"\n"+b); }
+	private static boolean visible(Component component)
+	{ for(Component c=component;c!=null;c=c.getParent()) { if(!c.isVisible()) { return false; } } return true; }
 	private static void layout(Container c) { c.doLayout(); for(Component child:c.getComponents()) { if(child instanceof Container) { layout((Container)child); } } }
 	private static void capture(NexPanel panel,String name) throws Exception
 	{
-		panel.setSize(225,10000); layout(panel); int height=panel.getPreferredSize().height; panel.setSize(225,height); layout(panel);
+		panel.setSize(225,10000);
+		// Settle nested width-dependent wrapping, including a just-expanded basis.
+		for(int pass=0;pass<3;pass++) { panel.invalidate(); layout(panel); panel.setSize(225,panel.getPreferredSize().height); }
+		layout(panel); int height=panel.getHeight();
 		BufferedImage image=new BufferedImage(225,height,BufferedImage.TYPE_INT_RGB); Graphics2D graphics=image.createGraphics(); panel.printAll(graphics); graphics.dispose();
-		Path directory=Path.of("build/validation/n1"); Files.createDirectories(directory); ImageIO.write(image,"png",directory.resolve(name+".png").toFile());
+		Path directory=Path.of(name.startsWith("owned")?"build/validation/n2":"build/validation/n1"); Files.createDirectories(directory); ImageIO.write(image,"png",directory.resolve(name+".png").toFile());
 		for(Component c:children(panel))
 		{
-			if(c instanceof JTextArea && c.getWidth()>0)
-			{ assertTrue("Wrapped row width",c.getWidth()<=225); assertTrue("Wrapped row height",c.getHeight()>=c.getPreferredSize().height); }
+			if(c instanceof JTextArea && visible(c) && c.getWidth()>0)
+			{ assertTrue("Wrapped row width",c.getWidth()<=225); assertTrue("Wrapped row height: "+((JTextArea)c).getText().substring(0,Math.min(40,((JTextArea)c).getText().length())),c.getHeight()>=c.getPreferredSize().height); }
 		}
 	}
 	@Test public void encounterNavigationFreezesInspectedKillAndClearsAllDetailsOnIdentityBoundary() throws Exception
@@ -80,5 +85,41 @@ public class NexPanelTest
 			public void method(NexMethod method) {} public void confirm(String key,Boolean value) {}
 			public void reset() {} public void enable(boolean enabled) {}
 		};
+	}
+	@Test public void ownedPackagesWrapKeepFrozenHistoryAndExposeBloodFuryLossWithoutHealingClaims() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{try {
+			KnowledgeCatalog catalog=KnowledgeCatalog.load(new Gson());
+			var r=com.ironpath.advisor.NexOwnedFixtures.sample("ranged",com.ironpath.advisor.NexOwnedFixtures.state(com.ironpath.advisor.NexOwnedFixtures.ranged(),Map.of(11212,200L)));
+			var m=com.ironpath.advisor.NexOwnedFixtures.sample("melee",com.ironpath.advisor.NexOwnedFixtures.state(com.ironpath.advisor.NexOwnedFixtures.melee(),Map.of(24780,1L)));
+			var summary=com.ironpath.advisor.NexOwnedFixtures.summary(List.of(r,m));
+			var account=com.ironpath.advisor.NexOwnedFixtures.account(null);
+			var result=new com.ironpath.advisor.NexOwnedEvaluator(catalog).evaluate(summary,account,Preferences.EMPTY);
+			NexSession session=new NexSession(); session.select("a",301); session.add(summary);
+			for(float font:List.of(12f,20f))
+			{
+				NexPanel panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
+				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
+				assertTrue(shown(panel).contains("theoretical DPS")); capture(panel,"owned-main-"+(int)font);
+				button(panel,"Owned setup comparisons").doClick(); capture(panel,"owned-details-"+(int)font);
+				assertTrue(shown(panel).contains("Selected quiver projectile: Amethyst arrow"));
+				assertTrue(shown(panel).contains("ammo slot: Ancient blessing"));
+				button(panel,"Full setups and calculation basis").doClick(); capture(panel,"owned-basis-"+(int)font);
+				JComboBox<?> state=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-state".equals(c.getName())).findFirst().orElseThrow(); state.setSelectedIndex(1);
+				JComboBox<?> pair=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-pair".equals(c.getName())).findFirst().orElseThrow(); pair.setSelectedIndex(1);
+				assertTrue(shown(panel).contains("Blood fury healing and survival are not estimated")); capture(panel,"owned-loss-"+(int)font);
+				assertFalse(shown(panel).contains("Same theoretical DPS · zero change"));
+				var next=new com.ironpath.nex.NexSummary(2,100,200,100,100,0,com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE,
+					"synthetic complete",summary.cohort,summary.method,List.of(r,m),Map.of(),Set.of());
+				session.add(next); var fresh=new com.ironpath.advisor.NexOwnedEvaluator(catalog).evaluate(next,account,Preferences.EMPTY);
+				panel.render("New kill",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",fresh);
+				assertTrue(shown(panel).contains("Owned equipment · kill #1"));
+				assertTrue(shown(panel).contains("Blood fury healing and survival are not estimated"));
+				button(panel,"Back to encounter").doClick(); button(panel,"Owned setup comparisons").doClick();
+				assertTrue(shown(panel).contains("Owned equipment · kill #2"));
+				panel.render("Profile changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"",null);
+				assertFalse(shown(panel).contains("Ancient blessing")); assertFalse(shown(panel).contains("Blood fury"));
+			}
+		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
 }

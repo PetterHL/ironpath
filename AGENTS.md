@@ -14,9 +14,9 @@
 
 ## Delivery
 
-- Current: N1 implementation in development build 0.15.0; live-client/player
-  acceptance remains open in docs/validation/nex-session.md. Nex Trio MP2, one kill
-  per trip. Lightbearer throughout,
+- Current: N2 implementation in development build 0.16.0, based on N1.
+  Live-client/player acceptance remains open in docs/validation/nex-session.md
+  and docs/validation/nex-owned.md. Nex Trio MP2, one kill per trip. Lightbearer throughout,
   upgraded Death Charge, observed melee/ranged/spec switches. Do not guess the
   rest of the account or require a screenshot/manual setup form before observation.
 - Keep one Java/Gradle RuneLite plugin. Reuse independently authored combat
@@ -24,8 +24,14 @@
   No wholesale restart, universal simulator, backend or second catalogue.
 - Remove verified dead code. Replace active old UI/ranking in the delivery that
   supplies its new purpose; do not maintain two permanent products. The transition
-  retained the former UI through T0. N1 replaces its runtime homepage; old
-  presenters/ranking remain for N2 replacement/removal, without a second homepage.
+  retained the former UI through T0. N1 replaced its runtime homepage; N2 removes
+  the old presenters, global ranking policy and their obsolete tests. Retain
+  independent arithmetic, acquisition data/kernels and lifecycle regressions.
+- N2 searches complete supported carried packages per captured state. Bank-only
+  scenarios are conditional next-trip preparation, never current inventory
+  availability or a validated joint packing plan. No global-best claim. Keep
+  explicit supported pairs when another alternative has no model. See
+  docs/research/nex-owned.md for the exact offence/support contract.
 - Use short-lived branches from current main and focused PRs. Do not merge or
   publish to Plugin Hub without authorization. Do not alter unrelated work.
 - Test the affected behavior and run the normal build. Preserve arithmetic,

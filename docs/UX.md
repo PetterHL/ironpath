@@ -45,7 +45,7 @@ and scroll; fresh kills must not replace the historical baseline being inspected
   logout/account change clears them. Persistent method choice is not persistent
   performance history.
 
-## Current build
+## N1 capture foundation
 
 N1 development build 0.15.0 opens `Nex · Trio MP2 · One kill per trip`. Encounter,
 Setup and Account are the native navigation. The homepage shows last complete
@@ -61,7 +61,24 @@ required. The upgrade toggle is labeled an assumption, while raw detected Death
 Charge state is in details. Account corrections remain accessible. Method/locks
 and correction writes retain profile/generation/revision guards and serial local IO.
 
-The old general homepage is no longer reachable from the toolbar. N2–N4 have not
-supplied owned-package or new-upgrade cards, counterfactual contribution or team
-seconds. [Synthetic checks and pending native-client/player acceptance](validation/nex-session.md)
+N1 retired the old general homepage navigation. N2 adds the owned flow below;
+new-upgrade cards, counterfactual contribution and team seconds remain N3–N4. [Synthetic checks and pending native-client/player acceptance](validation/nex-session.md)
 are recorded separately; historical screenshots are not acceptance of this view.
+
+## N2 owned equipment
+
+Build 0.16.0 adds **Improve with owned equipment** after the last complete result.
+Each displayed role names its captured tick and conditional theoretical result;
+it does not summarize whole-kill improvement. **Owned setup comparisons** opens a
+frozen result with state/phase and carried/bank-preparation selection. Unsupported
+states remain inspectable with their actual evidence and a concise affected gap.
+
+A complete-package proposal is separate from explicit pairwise alternatives.
+Negative and unchanged results remain visible; blood-fury offence cannot establish
+healing or overall value. The physical ammo slot and selected quiver projectile
+are shown separately. Full slots and numerical/source assumptions expand under
+**Full setups and calculation basis**. Back restores the encounter position;
+new kills do not replace the inspected summary or selected pair. Identity resets
+clear it. Native sprites remain ItemManager images; synthetic captures use empty
+sprite wells. Ordinary/enlarged-font narrow captures are verification, not client
+or player acceptance.

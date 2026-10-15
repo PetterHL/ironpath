@@ -22,16 +22,14 @@ public class MeleeAdviceTest
 	@Before public void load() throws Exception { catalog=KnowledgeCatalog.load(new Gson());service=new MeleeComparisonService(catalog); }
 	public static AccountSnapshot ordinary()
 	{ return facts(account(Set.of(4151,10828,10551,11834,7462,6570,6585,11840,11773,12954),90,90),"fremennik-isles",fact(true)); }
-	private Advisor.UpgradeView advice(AccountSnapshot a, Preferences p)
-	{ return new Advisor(catalog).upgrades(a,p).stream().filter(v->v.upgrade.id.equals("abyssal-tentacle")).findFirst().orElseThrow(); }
+
 	@Test public void completeWhipUpgradeHasValueAndASeparateRemainingRoute()
 	{
 		AccountSnapshot a=ordinary();CombatSetup before=service.propose(a);ComparisonResult c=service.compare(a,Preferences.EMPTY,before,12006);
 		assertEquals(Integer.valueOf(4151),before.slots.get("weapon"));assertTrue(c.available(ComparisonResult.Metric.THEORETICAL_DPS));assertTrue(c.dpsGain()>0);
 		assertEquals(Integer.valueOf(12954),c.afterSetup.slots.get("shield"));assertEquals(ComparisonResult.Metric.THEORETICAL_DPS,c.primaryMetric);
 		assertEquals(4,c.after.attackTicks);assertFalse(c.available(ComparisonResult.Metric.EXPECTED_KILL_TIME));assertFalse(c.available(ComparisonResult.Metric.TRIP_PERFORMANCE));
-		Advisor.UpgradeView view=advice(a,R15Fixtures.absent(catalog));assertNotNull(view.card);assertTrue(view.path.stream().anyMatch(r->r.label.contains("Combine")));
-		assertTrue(view.upgrade.limitation.contains("Poison"));assertTrue(c.assumptions.stream().anyMatch(s->s.contains("10,000")));
+		assertTrue(c.assumptions.stream().anyMatch(s->s.contains("10,000")));
 	}
 	@Test public void bestOwnedPackageUsesDpsAndNeverKeepsAnIncompatibleDefender()
 	{
@@ -83,19 +81,10 @@ public class MeleeAdviceTest
 		{
 			AccountSnapshot a=R15Fixtures.items(ordinary(),id);ComparisonResult c=service.compare(a,Preferences.EMPTY,service.propose(a),12006);
 			assertFalse(c.available(ComparisonResult.Metric.THEORETICAL_DPS));assertTrue(c.available(ComparisonResult.Metric.MAX_HIT));assertTrue(c.available(ComparisonResult.Metric.HIT_CHANCE));
-			assertTrue(c.reason.contains("competing melee"));assertNotEquals(ValueEvidence.Importance.KEY,advice(a,R15Fixtures.absent(catalog)).valueEvidence.importance);
+			assertTrue(c.reason.contains("competing melee"));
 		}
 	}
-	@Test public void ownedComponentsBypassTheirDropRequirementsAndFinishedFormsSuppressAcquisition()
-	{
-		AccountSnapshot a=levels(R15Fixtures.items(ordinary(),12004),"SLAYER",1);Preferences p=R15Fixtures.absent(catalog);
-		Advisor.UpgradeView view=advice(a,p);assertEquals(PursuitAssessment.Mode.READY,view.pursuit.acquisitionMode);
-		assertTrue(view.pursuit.blockers.stream().noneMatch(s->s.contains("87")||s.contains("task")));
-		assertTrue(view.path.stream().filter(r->r.label.contains("87 Slayer")||r.label.contains("task")).allMatch(r->r.truth==com.ironpath.model.Truth.TRUE));
-		for(int form:List.of(12006,26484))
-		{ AccountSnapshot owned=R15Fixtures.items(a,form);assertTrue(new Advisor(catalog).upgrades(owned,p).stream().noneMatch(v->v.upgrade.id.equals("abyssal-tentacle"))); }
-		assertTrue(new Advisor(catalog).upgrades(a,p.skip("slayer",true)).stream().noneMatch(v->v.upgrade.id.equals("abyssal-tentacle")));
-	}
+
 	@Test public void prayerUnlockAndEquipRequirementsAreRevalidated()
 	{
 		AccountSnapshot a=ordinary();CombatSetup s=service.propose(a).edit("prayer","PIETY");
@@ -120,11 +109,7 @@ public class MeleeAdviceTest
 		ComparisonResult c=service.compare(a,Preferences.EMPTY,s,24780);assertEquals(0,c.dpsGain(),1e-12);
 		assertFalse(c.available(ComparisonResult.Metric.TRIP_PERFORMANCE));assertTrue(c.assumptions.stream().anyMatch(x->x.contains("lower offence never establishes lower sustain")));
 	}
-	@Test public void everyActiveOutcomeOwnedHasNoPaddedAcquisitionAdvice()
-	{
-		java.util.Set<Integer> ids=new java.util.HashSet<>(ordinary().bank.value());catalog.upgrades.forEach(u->ids.add(u.itemId));
-		AccountSnapshot a=account(ids,99,99);assertTrue(new Advisor(catalog).upgrades(a,R15Fixtures.absent(catalog)).isEmpty());
-	}
+
 	@Test public void malformedMeleeContractsFailClosed() throws Exception
 	{
 		for(String mutation:List.of("missing-stat","missing-family","missing-effect","bad-style","partial-target","unknown-source","hands","wrong-effect-slot","invalid-size","invalid-demon-effect","invalid-batch"))

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 14,
-  "knowledgeVersion": "ad1-r3b-1",
-  "reviewed": "2026-10-14",
+  "knowledgeVersion": "n2-owned-1",
+  "reviewed": "2026-10-15",
   "sources": [
     {
       "id": "rigour",
@@ -5628,7 +5628,7 @@
         31088
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [],
       "contexts": []
@@ -5648,7 +5648,7 @@
         31091
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [],
       "contexts": []
@@ -5668,7 +5668,7 @@
         31092
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [],
       "contexts": []
@@ -5688,7 +5688,7 @@
         31093
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [],
       "contexts": []
@@ -5708,7 +5708,7 @@
         31094
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [],
       "contexts": []
@@ -5728,7 +5728,7 @@
         31095
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [],
       "contexts": []
@@ -5748,7 +5748,7 @@
         31096
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [],
       "contexts": []
@@ -5768,7 +5768,7 @@
         31097
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [],
       "contexts": []
@@ -5865,7 +5865,7 @@
         25975
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [],
       "contexts": []
@@ -6679,7 +6679,7 @@
         20997
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -6806,7 +6806,7 @@
         31585
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -7765,7 +7765,7 @@
         28953
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -7978,7 +7978,7 @@
         21264
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -8269,7 +8269,7 @@
         888
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -8329,7 +8329,7 @@
       ],
       "items": [],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -8386,7 +8386,7 @@
       ],
       "items": [],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -8445,7 +8445,7 @@
       ],
       "items": [],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -8502,7 +8502,7 @@
       ],
       "items": [],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -8559,7 +8559,7 @@
       ],
       "items": [],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -8616,7 +8616,7 @@
       ],
       "items": [],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -8673,7 +8673,7 @@
       ],
       "items": [],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -8730,7 +8730,7 @@
       ],
       "items": [],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -8787,7 +8787,7 @@
       ],
       "items": [],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -9241,7 +9241,9 @@
       "routes": [
         "seek-zaryte-vambraces"
       ],
-      "contexts": [],
+      "contexts": [
+        "nex-base"
+      ],
       "efforts": [
         "seek-zaryte-vambraces"
       ],
@@ -9585,7 +9587,7 @@
         28688
       ],
       "models": [
-        "ranged-1"
+        "ranged-2"
       ],
       "routes": [
         "seek-twisted-bow",
@@ -18887,7 +18889,9 @@
         "pursue-torva-head",
         "pursue-torva-legs"
       ],
-      "contexts": [],
+      "contexts": [
+        "nex-base"
+      ],
       "activityContexts": [],
       "relations": [
         "r3b2-role-torva-body",
@@ -47967,6 +47971,28 @@
           "r3b2-ba-ba"
         ],
         "meleeScenario": true
+      },
+      {
+        "id": "nex-base",
+        "name": "Nex \u00b7 base-stat ordinary offence scenario",
+        "npcId": 11278,
+        "variant": "STANDARD",
+        "scalingSupported": true,
+        "magicLevel": 230,
+        "magicDefence": 300,
+        "magicAttack": 100,
+        "defenceLevel": 260,
+        "rangedLight": 190,
+        "rangedStandard": 190,
+        "rangedHeavy": 150,
+        "meleeStab": 40,
+        "meleeSlash": 140,
+        "meleeCrush": 60,
+        "size": 3,
+        "sources": [
+          "r2-nex",
+          "r3b2-nex"
+        ]
       }
     ]
   },
@@ -48573,7 +48599,7 @@
     }
   ],
   "ranged": {
-    "modelVersion": "ranged-1",
+    "modelVersion": "ranged-2",
     "sources": [
       "r2-ranged",
       "r2-maximum-ranged-hit",
@@ -56698,6 +56724,151 @@
         ],
         "family": "ORDINARY",
         "effect": "SLAYER"
+      },
+      {
+        "id": 28947,
+        "label": "Dizana's quiver (uncharged)",
+        "slot": "cape",
+        "requirements": {
+          "RANGED": 75
+        },
+        "sources": [
+          "r2-dizana-s-quiver",
+          "item-ids"
+        ],
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 0,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY",
+        "effect": "NONE"
+      },
+      {
+        "id": 28949,
+        "label": "Dizana's quiver",
+        "slot": "cape",
+        "requirements": {
+          "RANGED": 75
+        },
+        "sources": [
+          "r2-dizana-s-quiver",
+          "item-ids"
+        ],
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 0,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY",
+        "effect": "NONE"
+      },
+      {
+        "id": 28951,
+        "label": "Dizana's quiver (l) (uncharged)",
+        "slot": "cape",
+        "requirements": {
+          "RANGED": 75
+        },
+        "sources": [
+          "r2-dizana-s-quiver",
+          "item-ids"
+        ],
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 0,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY",
+        "effect": "NONE"
+      },
+      {
+        "id": 28953,
+        "label": "Dizana's quiver (l)",
+        "slot": "cape",
+        "requirements": {
+          "RANGED": 75
+        },
+        "sources": [
+          "r2-dizana-s-quiver",
+          "item-ids"
+        ],
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 0,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY",
+        "effect": "NONE"
+      },
+      {
+        "id": 28955,
+        "label": "Blessed Dizana's quiver",
+        "slot": "cape",
+        "requirements": {
+          "RANGED": 75
+        },
+        "sources": [
+          "r2-blessed-dizana-s-quiver",
+          "item-ids"
+        ],
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 0,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY",
+        "effect": "NONE"
+      },
+      {
+        "id": 28957,
+        "label": "Blessed Dizana's quiver (l)",
+        "slot": "cape",
+        "requirements": {
+          "RANGED": 75
+        },
+        "sources": [
+          "r2-blessed-dizana-s-quiver",
+          "item-ids"
+        ],
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 0,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY",
+        "effect": "NONE"
+      },
+      {
+        "id": 20235,
+        "label": "Ancient blessing",
+        "slot": "ammo",
+        "requirements": {},
+        "sources": [
+          "r2-ranged",
+          "item-ids"
+        ],
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 0,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY",
+        "effect": "NONE"
       }
     ],
     "unsupportedWeapons": {

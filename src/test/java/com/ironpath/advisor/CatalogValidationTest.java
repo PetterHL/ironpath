@@ -128,8 +128,8 @@ public class CatalogValidationTest
 		}
 		KnowledgeCatalog catalog = KnowledgeCatalog.read(new Gson(), new StringReader(doc.toString()));
 		assertTrue(catalog.decisions.stream().filter(d -> d.kind == KnowledgeCatalog.Kind.ACQUIRE).count() >= 4);
-		assertTrue(Advisor.goalChoices(catalog).containsKey("practice-amascut"));
-		assertFalse(Advisor.goalChoices(catalog).containsKey("toa-entry"));
+		assertTrue(catalog.goals.containsKey("practice-amascut"));
+		assertFalse(catalog.goals.containsKey("toa-entry"));
 	}
 	@Test public void rangedContractsRejectFalseCompatibilityAndIncompleteTargetInputs()
 	{

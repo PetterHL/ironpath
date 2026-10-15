@@ -56,3 +56,16 @@ used by development build 0.15.0. RuneLite 1.13.2 is the compiled dependency.
 [Validation](validation/nex-session.md) separates synthetic replays/lifecycle/UI
 checks from unperformed real-client and player checks. No account dump, live kill,
 official contribution or modeled seconds-saved result is claimed.
+
+## N2 owned-package review
+
+The [ordinary offence and owned-package contract](research/nex-owned.md) records
+the exact Nex base-stat facts, retained pinned formula/item evidence, independently
+authored quiver projectile handling, style mapping boundaries and computational
+search scope. No calculator code or dataset is imported. The direct Wiki request
+was unavailable; bounded target facts were cross-checked against the already
+pinned development reference. This is not a fresh full live-game verification.
+
+[N2 validation](validation/nex-owned.md) distinguishes reported equipment from
+synthetic levels, prayers, ammo/splinter quantities and phase windows. No private
+account dump, live kill or new distribution authorization is claimed.

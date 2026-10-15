@@ -76,4 +76,7 @@ A good baseline prediction alone does not validate a small upgrade effect.
 Record real-client event mappings, capture coverage and player usefulness separately
 from synthetic tests. N1 development build implements bounded public-event capture and session summaries;
 [its report](validation/nex-session.md) separates synthetic verification from pending
-real-client/player validation. Counterfactual offence/contribution/time remain N2–N4.
+real-client/player validation. N2 now supplies conditional per-state ordinary offence against the documented
+Nex base-stat scenario. It does not weight by worn time, attribute attacks or
+produce contribution/time. Those dependent encounter outputs remain N3–N4.
+[N2 evidence and exact limits](validation/nex-owned.md).

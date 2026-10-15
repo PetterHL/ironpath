@@ -46,12 +46,12 @@ an item silently to manufacture a weaker baseline.
 | ObservationSession, preferences, plugin generation guards | Retain identity/privacy protections; NexSession now supplies a separately tested summary lifetime |
 | CombatStateReader, immutable CombatState | Shared lightweight client-state reading extracted in T0; Nex extends evidence when mappings are validated |
 | EncounterCapture / Context / Summary | Bounded immutable concepts reused by NexCapture/Summary; adapter and banking need live validation |
-| ZilyanaObserver | Retained opt-in experiment; its single-target lifecycle is explicitly not Nex support |
-| ZilyanaWornStateComparison | Retained ordinary-Zilyana comparison with a context guard; longest worn segment is not a Nex baseline |
+| ZilyanaObserver / EncounterCapture | Retained adapter/capture regression reference; no runtime collector or navigation in the Nex plugin |
+| ZilyanaWornStateComparison | Removed in N2 with its global-policy consumer; no longest-worn Nex baseline |
 | CombatSetup, ranged/melee/magic models and comparison services | Reuse validated arithmetic, source dependencies and compatible-package handling; close actual Nex blockers |
 | KnowledgeCatalog, route/acquisition models, source registers | Retain reviewed facts, provenance and useful paths; no second catalogue or new global-grind mandate |
-| Advisor, progression ranking and pursuit presentation | Transitional consumers; replace their primary-flow policy in N2, then remove orphaned code |
-| IronpathPanel, RecentBossPanel, current navigation | NexPanel replaces the toolbar root in N1; retained presenters support N2 replacement/removal |
+| Advisor, progression ranking and pursuit presentation | Removed in N2 with obsolete global-policy tests. AccountFacts retains the pure fact-precedence contract; acquisition scope/data/kernels remain |
+| IronpathPanel, RecentBossPanel, old tiles/deck/Browse | Removed in N2; NexPanel is the sole product view |
 | CompactRowLayout | Removed in T0: no production or test references |
 
 Keep observation, encounter summaries, comparisons and presentation separate.
@@ -99,3 +99,29 @@ Observed setups include every captured switch and unknown; no longest-worn basel
 or recommendation replaces them. Saved method/locks and manual facts use preference
 schema 3. Raw state and performance remain memory-only. N2 owns package proposals;
 N3 owns the finite energy/spec model; N4 owns validated time estimates.
+
+## N2 implementation boundary
+
+Build 0.16.0 evaluates on a worker and publishes only when account identity,
+generation, account revision, preference inputs and Nex revision still match.
+A superseded job stops searching; completed results/selected history are immutable.
+No calculations run on Swing or the client thread. The optional Zilyana worker
+and collector are no longer invoked.
+
+`NexOwnedEvaluator` enumerates complete compatible supported packages for each
+captured role/state. It never substitutes a reference for the observed timeline,
+uses current visible levels (including decay/drains), keeps Lightbearer fixed and
+checks available items, equip requirements, hands, ammo, set effects and additional
+switch space. It preserves the original valid unlocked package before searching.
+A computational work limit marks a partial search and never claims an optimum.
+Carried and bank-preparation searches are distinct; bank candidates do not prove
+joint packing, sufficient stock or immediate availability. Every pair is a separate
+alternative, not an additive plan across states or roles.
+
+The selected projectile can come from captured quiver counters while Ancient
+blessing remains in the worn ammo slot. `ranged-2` adds this explicit input; existing
+arithmetic with ordinary worn ammo/internal darts is unchanged. Exact public
+counter mappings still need live checks. Spec/unknown roles, minions, Zaros and
+special windows retain scoped gaps. Ordinary offence uses the documented Nex
+base-stat scenario, not inferred defence debuffs or encounter attack opportunities.
+See [the support/evidence contract](research/nex-owned.md).

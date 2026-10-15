@@ -626,7 +626,7 @@ public final class KnowledgeCatalog
 
 	}
 
-	private static void validateEffort(PursuitAssessment.Mode mode, PursuitAssessment.Burden burden, PursuitAssessment.Tail tail,
+	private static void validateEffort(AcquisitionScope.Mode mode, AcquisitionScope.Burden burden, AcquisitionScope.Tail tail,
 		String modeId, String reason, String missingMechanics, List<String> allocations)
 	{
 		if (mode == null || burden == null || tail == null || allocations == null) { throw new IllegalArgumentException("Invalid effort support"); }
@@ -961,9 +961,9 @@ public final class KnowledgeCatalog
 
 	public static final class EffortSpec
 	{
-		public PursuitAssessment.Mode mode;
-		public PursuitAssessment.Burden burden;
-		public PursuitAssessment.Tail tail;
+		public AcquisitionScope.Mode mode;
+		public AcquisitionScope.Burden burden;
+		public AcquisitionScope.Tail tail;
 		public String modeId, reason, missingMechanics, profile;
 		public RemainingEffort.Band band;
 		public List<String> sources, allocations;
@@ -972,9 +972,9 @@ public final class KnowledgeCatalog
 	public static final class EffortVariant
 	{
 		public Condition when;
-		public PursuitAssessment.Mode mode;
-		public PursuitAssessment.Burden burden;
-		public PursuitAssessment.Tail tail;
+		public AcquisitionScope.Mode mode;
+		public AcquisitionScope.Burden burden;
+		public AcquisitionScope.Tail tail;
 		public String reason;
 		public List<String> allocations;
 		public boolean bypassesAcquisition;
@@ -996,7 +996,7 @@ public final class KnowledgeCatalog
 		public RemainingEffort.Band band;
 		public int itemId;
 		public Benefit benefit;
-		public PursuitAssessment.Tail tail;
+		public AcquisitionScope.Tail tail;
 		public Integer requiredQuantity;
 		public Condition resourceWhen;
 		public Condition when, ownedWhen, accessWhen, prepWhen;

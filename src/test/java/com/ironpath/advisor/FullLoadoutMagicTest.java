@@ -107,7 +107,6 @@ public class FullLoadoutMagicTest
 		Map<String,Integer> slots=slots(31113,1);slots.put("hands",31106);AccountSnapshot a=account(new HashSet<>(slots.values()),99,99);
 		CombatSetup s=new CombatSetup(slots,PoweredMagic.Prayer.NONE,PoweredMagic.Boost.NONE,PoweredMagic.Style.ACCURATE,false,false,"graardor",Map.of());
 		ComparisonResult r=service.compare(a,Preferences.EMPTY,s,21018);assertTrue(r.available(MAX_HIT));assertFalse(r.available(HIT_CHANCE));assertFalse(r.available(THEORETICAL_DPS));
-		assertFalse(new Advisor(catalog).upgrades(a,Preferences.EMPTY).stream().anyMatch(v->v.upgrade.id.equals("tormented-bracelet")));
 		slots.put("weapon",27275);slots.put("shield",0);AccountSnapshot shadow=account(new HashSet<>(slots.values()),99,99);
 		assertTrue(service.compare(shadow,Preferences.EMPTY,new CombatSetup(slots,s.prayer,s.boost,s.style,false,false,s.target,Map.of()),21018).available(THEORETICAL_DPS));
 	}

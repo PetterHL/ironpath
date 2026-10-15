@@ -5,7 +5,7 @@ import java.util.Map;
 /** Independently authored integer ranged family arithmetic. Sources are in the bundled contract. */
 public final class RangedModel
 {
-	public static final String VERSION = "ranged-1";
+	public static final String VERSION = "ranged-2";
 	public enum Prayer
 	{
 		NONE(100,100), EAGLE_EYE(115,115), DEADEYE(118,118), RIGOUR(120,123);
@@ -58,12 +58,14 @@ public final class RangedModel
 		{
 			int id = setup.slots.get(slot); if (id == 0) { continue; }
 			RangedItem item = items.get(id); if (item == null) { throw new IllegalArgumentException("Unknown item stats"); }
+			if (slot.equals("ammo") && setup.loadedAmmo > 0) { continue; }
 			if (slot.equals("ammo") && ammoKind(weapon) != RangedItem.Ammo.ARROW && ammoKind(weapon) != RangedItem.Ammo.BOLT) { continue; }
 			attack += item.attack; strength += item.strength; crystal += item.crystalWeight;
 		}
-		RangedItem ammo = items.get(ammoKind(weapon) == RangedItem.Ammo.DART ? setup.loadedAmmo : setup.slots.get("ammo"));
+		RangedItem ammo = items.get(setup.loadedAmmo > 0 ? setup.loadedAmmo : setup.slots.get("ammo"));
 		if (ammoKind(weapon) != RangedItem.Ammo.NONE && !compatible(weapon, ammo)) { throw new IllegalArgumentException("Invalid or unknown ammunition"); }
-		if (ammoKind(weapon) == RangedItem.Ammo.DART) { strength += ammo.strength; } // Dart accuracy never contributes to a blowpipe.
+		if (ammoKind(weapon) == RangedItem.Ammo.DART) { strength += ammo.strength; }
+		else if (setup.loadedAmmo > 0 && ammoKind(weapon) != RangedItem.Ammo.NONE) { attack += ammo.attack; strength += ammo.strength; } // Dart accuracy never contributes to a blowpipe.
 		RangedItem cape = items.get(setup.slots.get("cape"));
 		if (cape != null && cape.chargedQuiver && (ammoKind(weapon) == RangedItem.Ammo.ARROW || ammoKind(weapon) == RangedItem.Ammo.BOLT))
 		{ attack += 10; strength += 1; }
