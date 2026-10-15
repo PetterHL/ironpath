@@ -316,4 +316,65 @@ public class ObservationLifecycleTest
 		}
 	}
 
+	@Test public void nexSummarySurvivesArenaBankArenaAndAccountSwitchDuringPendingBankingClearsIt()
+	{
+		observeBank();
+		when(client.getWorld()).thenReturn(301);
+		plugin.nexSession.select("10:synthetic-character-a:1",301);
+		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(0,20,60));
+		// Establish a reviewed arena source using the actual public adapter.
+		var player=mock(net.runelite.api.Player.class); var world=mock(net.runelite.api.WorldView.class);
+		var boss=mock(net.runelite.api.NPC.class);
+		when(client.getLocalPlayer()).thenReturn(player); when(player.getWorldView()).thenReturn(world);
+		when(boss.getWorldView()).thenReturn(world); when(boss.getId()).thenReturn(net.runelite.api.gameval.NpcID.NEX);
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2);
+		plugin.nex.spawn(boss); plugin.nex.barrier();
+		GameStateChanged loading=new GameStateChanged(); loading.setGameState(GameState.LOADING);
+		plugin.onGameStateChanged(loading); assertNull(plugin.session.snapshot()); assertTrue(plugin.nexSession.suspended());
+		assertTrue(plugin.nexSession.recent().isEmpty()); assertFalse(plugin.nex.capture.active());
+		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(bankWidget);
+		tick(); tick(); assertFalse(plugin.nexSession.suspended()); assertEquals(1,plugin.nexSession.recent().size());
+		assertFalse(plugin.session.snapshot().bank.known()); // Revalidated summary is separate from the cleared account/bank dump.
+		plugin.onGameStateChanged(loading); assertTrue(plugin.nexSession.suspended());
+		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(null);
+		net.runelite.api.IndexedObjectSet actors=mock(net.runelite.api.IndexedObjectSet.class);
+		when(client.getTopLevelWorldView()).thenReturn(world); when(world.npcs()).thenReturn(actors);
+		when(actors.stream()).thenAnswer(i->java.util.stream.Stream.of(boss));
+		tick(); tick(); assertFalse(plugin.nexSession.suspended()); assertEquals(1,plugin.nexSession.recent().size());
+		plugin.nex.spawn(boss); plugin.nex.barrier(); plugin.onGameStateChanged(loading);
+		when(config.getRSProfileKey()).thenReturn("synthetic-character-b"); when(client.getAccountHash()).thenReturn(2L);
+		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(bankWidget);
+		when(actors.stream()).thenAnswer(i->java.util.stream.Stream.empty());
+		tick(); tick(); assertTrue(plugin.nexSession.recent().isEmpty());
+		assertFalse(plugin.nex.capture.active());
+	}
+	@Test public void nexHistoryClearsOnEveryHardBoundaryAndDisable()
+	{
+		for(String boundary:java.util.List.of("profile","rs-profile","logout","unsupported","reset"))
+		{
+			tick(); tick(); observeBank(); plugin.nexSession.select("synthetic",301);
+			plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(0,20,60));
+			if(boundary.equals("profile")) { plugin.onProfileChanged(new ProfileChanged()); }
+			else if(boundary.equals("rs-profile")) { plugin.onRuneScapeProfileChanged(new RuneScapeProfileChanged("a","b")); }
+			else if(boundary.equals("unsupported"))
+			{
+				when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS,WorldType.PVP)); tick();
+				when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
+			}
+			else if(boundary.equals("reset")) { plugin.nexSession.clear(); plugin.nex.clearActive(); }
+			else { GameStateChanged logout=new GameStateChanged(); logout.setGameState(GameState.LOGIN_SCREEN); plugin.onGameStateChanged(logout); }
+			assertTrue(boundary,plugin.nexSession.recent().isEmpty()); assertFalse(plugin.nex.capture.active());
+		}
+		tick(); tick(); observeBank(); plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(0,20,60));
+		plugin.shutDown(); assertTrue(plugin.nexSession.recent().isEmpty());
+	}
+
+	@Test public void supportedWorldChangeWithoutStateEventStillClearsNexTraceAndHistory()
+	{
+		observeBank(); plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(0,20,60));
+		plugin.nex.capture.start(0,true,com.ironpath.preferences.NexMethod.PILOT,"synthetic-roster");
+		assertTrue(plugin.nex.capture.active()); when(client.getWorld()).thenReturn(302); tick();
+		assertFalse(plugin.nex.capture.active()); assertTrue(plugin.nexSession.recent().isEmpty());
+	}
+
 }

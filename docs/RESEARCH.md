@@ -47,3 +47,12 @@ Use independent Java implementations. Review code, datasets, written guides and
 images separately; GPL reference availability does not permit copying into BSD
 work. Source/model changes invalidate dependent claims only. Keep licence notices,
 review dates and limitations; never fabricate a research pass from existing tests.
+
+## N1 static adapter review
+
+The [Nex public-event review](research/nex-events.md) pins the mappings, exact
+sources, independent implementation boundary, resource unknowns and session policy
+used by development build 0.15.0. RuneLite 1.13.2 is the compiled dependency.
+[Validation](validation/nex-session.md) separates synthetic replays/lifecycle/UI
+checks from unperformed real-client and player checks. No account dump, live kill,
+official contribution or modeled seconds-saved result is claimed.

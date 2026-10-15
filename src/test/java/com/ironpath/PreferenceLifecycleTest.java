@@ -50,7 +50,7 @@ public class PreferenceLifecycleTest
 	private Client client;
 	private ConfigManager config;
 	private ConfigProfile profile;
-	private IronpathPanel panel;
+	private NexPanel panel;
 	private final Queue<Runnable> workers = new ArrayDeque<>(), callbacks = new ArrayDeque<>();
 	private final Map<String, Preferences> files = new HashMap<>();
 	private boolean readFails, writeFails;
@@ -78,7 +78,7 @@ public class PreferenceLifecycleTest
 		characterA();
 		plugin.startUp(); SwingUtilities.invokeAndWait(() -> {});
 		ArgumentCaptor<NavigationButton> nav = ArgumentCaptor.forClass(NavigationButton.class);
-		verify(plugin.toolbar).addNavigation(nav.capture()); panel = (IronpathPanel) nav.getValue().getPanel();
+		verify(plugin.toolbar).addNavigation(nav.capture()); panel = (NexPanel) nav.getValue().getPanel();
 	}
 	@After public void cleanup() throws Exception { plugin.shutDown(); SwingUtilities.invokeAndWait(() -> {}); }
 	private void characterA() { when(config.getRSProfileKey()).thenReturn("synthetic-rs-a"); when(client.getAccountHash()).thenReturn(1L); }
@@ -99,141 +99,83 @@ public class PreferenceLifecycleTest
 		return null;
 	}
 	private JButton button(String label) { return find(panel, JButton.class, b -> b.getText().equals(label) || label.equals(b.getToolTipText())); }
-	private void setGoal() throws Exception
+	private void setMethod() throws Exception
 	{
-		SwingUtilities.invokeAndWait(() ->
-		{
-			if(button("Set goal")==null) { button("Account").doClick(); }
-			JComboBox<?> goals = find(panel, JComboBox.class, c -> c.getItemAt(0).toString().equals("No goal"));
-			assertNotNull(goals); goals.setSelectedIndex(2); // Rigour
-			button("Set goal").doClick();
+		SwingUtilities.invokeAndWait(()->{
+			button("Setup").doClick();
+			find(panel,javax.swing.JCheckBox.class,c->true).setSelected(false);
+			button("Save method").doClick();
 		});
 	}
 
 	@Test public void delayedLoadAndOldUiActionCannotApplyToAnotherCharacter() throws Exception
 	{
-		files.put(LocalPreferences.key(A), Preferences.EMPTY.goal("train-rigour").confirm("rigour", true, Instant.EPOCH));
+		files.put(LocalPreferences.key(A), Preferences.EMPTY.nex(new com.ironpath.preferences.NexMethod(false,Map.of())).confirm("rigour",true,Instant.EPOCH));
 		tick(); tick(); assertFalse(plugin.session.preferencesLoaded());
-		characterB(); tick(); load();
-		assertTrue(plugin.session.preferencesLoaded()); assertNull(plugin.session.preferences().goal);
+		characterB(); tick(); load(); assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
 		assertTrue(plugin.session.preferences().confirmations.isEmpty()); assertFalse(plugin.session.snapshot().bank.known());
-		characterA(); tick(); load(); assertEquals("train-rigour", plugin.session.preferences().goal);
-		setGoal(); // UI change queued while A is current.
-		characterB(); plugin.onProfileChanged(new ProfileChanged()); tick(); tick(); load();
-		assertNull(plugin.session.preferences().goal); assertFalse(files.containsKey(LocalPreferences.key(B)));
+		characterA(); tick(); load(); assertFalse(plugin.session.preferences().nex.upgradedDeathCharge);
+		setMethod(); characterB(); plugin.onProfileChanged(new ProfileChanged()); tick(); tick(); load();
+		assertTrue(plugin.session.preferences().nex.upgradedDeathCharge); assertFalse(files.containsKey(LocalPreferences.key(B)));
 	}
-
 	@Test public void acceptedSaveUsesOriginalCharacterAndRestartLoadsOnlyThatProfilesChoices() throws Exception
 	{
-		login(); setGoal(); callbacks(); // Save accepted for A, worker write still delayed.
-		characterB(); tick(); load();
-		assertEquals("train-rigour", files.get(LocalPreferences.key(A)).goal);
-		assertNull(plugin.session.preferences().goal); assertFalse(files.containsKey(LocalPreferences.key(B)));
-		characterA(); tick(); load(); assertEquals("train-rigour", plugin.session.preferences().goal);
-		when(profile.getId()).thenReturn(11L); tick(); load(); assertNull(plugin.session.preferences().goal);
-		when(profile.getId()).thenReturn(10L); tick(); load(); assertEquals("train-rigour", plugin.session.preferences().goal);
-		plugin.shutDown(); assertTrue(plugin.session.preferences().confirmations.isEmpty()); assertNull(plugin.session.preferences().goal);
-		plugin.startUp(); tick(); tick(); load(); assertEquals("train-rigour", plugin.session.preferences().goal);
+		login(); setMethod(); callbacks(); characterB(); tick(); load();
+		assertFalse(files.get(LocalPreferences.key(A)).nex.upgradedDeathCharge); assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
+		assertFalse(files.containsKey(LocalPreferences.key(B)));
+		characterA(); tick(); load(); assertFalse(plugin.session.preferences().nex.upgradedDeathCharge);
+		when(profile.getId()).thenReturn(11L); tick(); load(); assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
+		when(profile.getId()).thenReturn(10L); tick(); load(); assertFalse(plugin.session.preferences().nex.upgradedDeathCharge);
+		plugin.shutDown(); assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
+		plugin.startUp(); tick(); tick(); load(); assertFalse(plugin.session.preferences().nex.upgradedDeathCharge);
 	}
-
 	@Test public void corruptReadDisablesEditingAndDisableRejectsPendingLoads() throws Exception
 	{
-		readFails = true; login(); assertTrue(plugin.session.preferencesLoaded()); assertFalse(plugin.session.writable());
-		assertTrue(plugin.session.storageStatus().contains("Editing disabled")); assertNull(button("Set goal"));
-		readFails = false; characterB(); tick(); assertFalse(plugin.session.preferencesLoaded());
+		readFails=true; login(); assertTrue(plugin.session.preferencesLoaded()); assertFalse(plugin.session.writable());
+		assertTrue(plugin.session.storageStatus().contains("Editing disabled"));
+		setMethod(); callbacks(); load(); assertTrue(plugin.session.preferences().nex.upgradedDeathCharge); assertTrue(files.isEmpty());
+		readFails=false; characterB(); tick(); assertFalse(plugin.session.preferencesLoaded());
 		plugin.shutDown(); load(); assertFalse(plugin.session.preferencesLoaded()); assertNull(plugin.session.snapshot());
 		assertTrue(files.isEmpty());
 	}
-
 	@Test public void failedSaveIsVisibleAndUnsupportedWorldClearsPlanningState() throws Exception
 	{
-		login(); writeFails = true; setGoal(); callbacks(); load();
-		assertEquals("train-rigour", plugin.session.preferences().goal);
+		login(); writeFails=true; setMethod(); callbacks(); load(); assertFalse(plugin.session.preferences().nex.upgradedDeathCharge);
 		assertTrue(plugin.session.storageStatus().contains("save failed")); assertTrue(files.isEmpty());
-		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS, WorldType.PVP_ARENA));
-		tick(); assertNull(plugin.session.snapshot()); assertNull(plugin.session.preferences().goal);
-		assertFalse(plugin.session.preferencesLoaded());
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS,WorldType.PVP_ARENA)); tick();
+		assertNull(plugin.session.snapshot()); assertFalse(plugin.session.preferencesLoaded());
 		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS)); tick(); load();
-		assertNull(plugin.session.preferences().goal); assertTrue(plugin.session.preferencesLoaded());
+		assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
 	}
-
-	@Test public void manualConfirmClearSkipRestoreAndResetControlsUpdateOnlyExplicitChoices() throws Exception
+	@Test public void manualConfirmClearAndLocksUpdateOnlyExplicitChoices() throws Exception
 	{
-		login();
-		SwingUtilities.invokeAndWait(() -> {button("Account").doClick();button("Owned / unlocked").doClick();}); callbacks(); load();
-		assertTrue(plugin.session.preferences().confirmations.get("rigour").value);
-		SwingUtilities.invokeAndWait(() -> button("Clear selected fact").doClick()); callbacks(); load();
+		login(); SwingUtilities.invokeAndWait(()->{
+			button("Account").doClick();
+			JComboBox facts=find(panel,JComboBox.class,c->true); facts.setSelectedItem("rigour");
+			button("Owned / unlocked").doClick();
+		}); callbacks(); load(); assertTrue(plugin.session.preferences().confirmations.get("rigour").value);
+		SwingUtilities.invokeAndWait(()->button("Clear selected fact").doClick()); callbacks(); load();
 		assertTrue(plugin.session.preferences().confirmations.isEmpty());
-		SwingUtilities.invokeAndWait(() -> button("Skip selected action").doClick()); callbacks(); load();
-		assertTrue(plugin.session.preferences().skipped.contains("unlock-rigour"));
-		SwingUtilities.invokeAndWait(() -> button("Restore action").doClick()); callbacks(); load();
-		assertTrue(plugin.session.preferences().skipped.isEmpty());
-		setGoal(); callbacks(); load();
-		SwingUtilities.invokeAndWait(() -> button("Reset all planning choices").doClick()); callbacks(); load();
-		assertNull(plugin.session.preferences().goal); assertTrue(plugin.session.preferences().skipped.isEmpty());
-		assertTrue(plugin.session.preferences().confirmations.isEmpty());
-	}
-
-	@Test public void actualPaceControlsValidateRangesStayUnsavedAndRejectQueuedCrossCharacterInput() throws Exception
-	{
-		KnowledgeCatalog catalog=KnowledgeCatalog.load(new Gson());
-		files.put(LocalPreferences.key(A),com.ironpath.advisor.R15Fixtures.absent(catalog));
-		ItemContainer inventory=mock(ItemContainer.class),equipment=mock(ItemContainer.class);
-		when(inventory.getItems()).thenReturn(new Item[]{new Item(11907,1)});when(equipment.getItems()).thenReturn(new Item[0]);
-		when(client.getItemContainer(InventoryID.INV)).thenReturn(inventory);when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
-		login();
 		SwingUtilities.invokeAndWait(()->{
-			button("Browse").doClick();find(panel,JButton.class,b->"open-upgrade-tormented-bracelet".equals(b.getName())).doClick();button("Acquisition").doClick();
-			javax.swing.JTextField input=find(panel,javax.swing.JTextField.class,c->"pace-input".equals(c.getName()));assertNotNull(input);
-			input.setText("30-50");button("Apply pace").doClick();
-		});callbacks();assertEquals(30,plugin.session.pace().minimumPerHour,0);assertEquals(50,plugin.session.pace().maximumPerHour,0);
-		assertTrue(files.get(LocalPreferences.key(A)).confirmations.keySet().stream().noneMatch(k->k.contains("pace")));
-		SwingUtilities.invokeAndWait(()->{find(panel,javax.swing.JTextField.class,c->"pace-input".equals(c.getName())).setText("NaN");button("Apply pace").doClick();});callbacks();
-		assertEquals(30,plugin.session.pace().minimumPerHour,0);
-		SwingUtilities.invokeAndWait(()->button("Clear pace").doClick());callbacks();assertNull(plugin.session.pace());
-		SwingUtilities.invokeAndWait(()->{find(panel,javax.swing.JTextField.class,c->"pace-input".equals(c.getName())).setText("40");button("Apply pace").doClick();});
-		characterB();plugin.onProfileChanged(new ProfileChanged());tick();tick();load();assertNull(plugin.session.pace());
+			button("Setup").doClick();
+			find(panel,JComboBox.class,c->"nex-lock-slot".equals(c.getName())).setSelectedItem("shield");
+			JComboBox<NexPanel.ItemChoice> items=find(panel,JComboBox.class,c->"nex-lock-item".equals(c.getName()));
+			for(int i=0;i<items.getItemCount();i++) { if(items.getItemAt(i).id==22322) { items.setSelectedIndex(i); } }
+			button("Save lock / correction").doClick();
+		}); callbacks(); load(); assertTrue(plugin.session.preferences().nex.locks.containsValue(22322));
+		assertFalse(files.get(LocalPreferences.key(A)).nex.locks.isEmpty());
+		SwingUtilities.invokeAndWait(()->button("Clear selected lock").doClick()); callbacks(); load();
+		assertTrue(plugin.session.preferences().nex.locks.isEmpty());
 	}
-
-	@Test public void actualReferenceControlsRecalculateAndDelayedActionsCannotCrossCharacters() throws Exception
+	@Test public void queuedMethodOrResetCannotCrossProfileOrEncounterRevision() throws Exception
 	{
-		ItemContainer inventory = mock(ItemContainer.class), equipment = mock(ItemContainer.class);
-		when(inventory.getItems()).thenReturn(new Item[]{new Item(11907,1),new Item(6585,1)});
-		when(equipment.getItems()).thenReturn(new Item[0]);
-		when(client.getItemContainer(InventoryID.INV)).thenReturn(inventory);
-		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
-		login(); KnowledgeCatalog catalog = KnowledgeCatalog.load(new Gson());
-		SwingUtilities.invokeAndWait(() -> find(panel,JButton.class,b -> "open-upgrade-swamp-trident".equals(b.getName())).doClick());
-		JButton oldBack=button("← Upgrades"),oldConfirm=button("Confirm reference");
-		SwingUtilities.invokeAndWait(() -> oldConfirm.doClick());callbacks();
-		assertTrue(plugin.session.reference(catalog).confirmed);assertTrue(files.isEmpty());
-		SwingUtilities.invokeAndWait(() -> {
-			JComboBox<?> boost=find(panel,JComboBox.class,c -> "reference-boost".equals(c.getName()));
-			boost.setSelectedIndex(1);button("Apply boost").doClick();
-		});callbacks();
-		assertEquals(PoweredMagic.Boost.MAGIC_POTION,plugin.session.reference(catalog).boost);
-		assertFalse(plugin.session.reference(catalog).confirmed);
-		JButton delayedConfirm=button("Confirm reference");
-		SwingUtilities.invokeAndWait(() -> delayedConfirm.doClick());
-		characterB();plugin.onProfileChanged(new ProfileChanged());tick();tick();load();
-		assertFalse(plugin.session.reference(catalog).confirmed);assertEquals(PoweredMagic.Boost.NONE,plugin.session.reference(catalog).boost);
-		SwingUtilities.invokeAndWait(() -> {oldBack.doClick();oldConfirm.doClick();});callbacks();
-		assertFalse(plugin.session.reference(catalog).confirmed);assertNotNull(find(panel,JButton.class,b -> "open-upgrade-swamp-trident".equals(b.getName())));
-		assertTrue(files.isEmpty());
-	}
-
-	@Test public void actualLevelEventInvalidatesConfirmedReferenceAndOldControls() throws Exception
-	{
-		ItemContainer inventory=mock(ItemContainer.class),equipment=mock(ItemContainer.class);
-		when(inventory.getItems()).thenReturn(new Item[]{new Item(11907,1)});when(equipment.getItems()).thenReturn(new Item[0]);
-		when(client.getItemContainer(InventoryID.INV)).thenReturn(inventory);when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
-		login();KnowledgeCatalog catalog=KnowledgeCatalog.load(new Gson());
-		SwingUtilities.invokeAndWait(() -> find(panel,JButton.class,b -> "open-upgrade-swamp-trident".equals(b.getName())).doClick());
-		SwingUtilities.invokeAndWait(() -> button("Confirm reference").doClick());callbacks();assertTrue(plugin.session.reference(catalog).confirmed);
-		JButton old=button("Confirm reference");when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(93);
-		plugin.onStatChanged(new StatChanged(Skill.MAGIC,0,93,93));tick();
-		assertFalse(plugin.session.reference(catalog).confirmed);
-		assertEquals(26,new PoweredMagic(catalog).compare(plugin.session.snapshot(),plugin.session.preferences(),plugin.session.reference(catalog),"OCCULT").before.maxHit);
-		SwingUtilities.invokeAndWait(() -> old.doClick());callbacks();assertFalse(plugin.session.reference(catalog).confirmed);
+		login(); setMethod(); characterB(); tick(); load(); assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
+		setMethod();
+		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(0,20,60));
+		callbacks(); load(); assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
+		plugin.onGameTick(new GameTick()); SwingUtilities.invokeAndWait(()->{});
+		SwingUtilities.invokeAndWait(()->{button("Encounter").doClick();button("Reset session").doClick();});
+		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(100,20,60)); callbacks();
+		assertEquals(2,plugin.nexSession.recent().size());
 	}
 }

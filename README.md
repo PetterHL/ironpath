@@ -7,15 +7,23 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**15 October 2026: transition development build 0.14.1. Nex is the selected next
-pilot, not an implemented feature.** The existing general advisor and optional
-Zilyana experiment still run while the new flow is built. No Nex contribution,
-session average, special-attack comparison or seconds-saved claim ships here.
+**15 October 2026: N1 development build 0.15.0.** The native homepage now
+captures Nex session evidence: last complete observed kill, same-cohort means,
+sample counts/ranges, excluded attempts and immutable equipment/resource timelines.
+The adapter has synthetic replay coverage; real-client mappings and player
+acceptance are still pending. [Validation and remaining checks](docs/validation/nex-session.md).
 
 The pilot is **Nex / Trio MP2 / one kill per trip**, with Lightbearer throughout
-and upgraded Death Charge. Equipment, switches and spell use should be observed
-automatically, with focused corrections and saved method choices. Complete
-combat summaries will be session-only and must survive ordinary banking.
+and assumed upgraded Death Charge. Equipment, switches and active spell state are
+observed automatically. Setup exposes optional saved planning locks/corrections;
+they never overwrite the actually-worn history. Complete summaries stay in memory
+across recognized same-account bank trips and clear on logout/profile change.
+Observed hitsplat share is scoped to Nex and the four named minions; it is not
+server contribution or loot eligibility. Timing uses the captured arena boundary
+and death signal, with no game-timer calibration claim.
+
+The previous general homepage is no longer a runtime navigation path. Owned-package
+recommendations, spec comparisons and estimated contribution/time remain N2–N4.
 
 ## Project map
 

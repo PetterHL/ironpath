@@ -2,7 +2,7 @@
 
 15 October 2026. This file records support and gaps; [TASKS](../TASKS.md) owns work.
 The transition changes no runtime equipment facts or catalogue schema. Knowledge
-remains `ad1-r3b-1`, catalogue schema 14, preferences schema 2.
+remains `ad1-r3b-1`, catalogue schema 14, preferences schema 3 (explicit Nex method/locks; schemas 1/2 migrate).
 
 ## Reusable current coverage
 
@@ -24,10 +24,10 @@ the retained implementation; it does not claim Nex recommendations are ready.
 
 | Dimension | Current state | Delivery |
 |---|---|---|
-| Phase/subphase/minion and completion adapter | Not implemented | N1 |
-| Saved method, actual melee/ranged/spec packages, locks | Not implemented as a Nex flow | N1–N2 |
-| Same-session summaries surviving banking | Current reset clears them | N1 |
-| Scoped observed damage contribution | Not implemented | N1 |
+| Phase/subphase/minion and completion adapter | Static reviewed adapter + synthetic replays; live mapping validation pending | N1 |
+| Saved method, actual melee/ranged/spec packages, locks | Worn timeline, candidate role labels and explicit planning locks; package proposals pending | N1–N2 |
+| Same-session summaries surviving banking | Bounded suspended/revalidated bank round trips; mocked checks pass, live pending | N1 |
+| Scoped observed damage contribution | Classified hitsplat share for explicit Nex/minion targets, not server contribution | N1 |
 | Relevant best-owned whole-package evaluation | Existing services are starting points, not pilot acceptance | N2 |
 | Common reported blockers | Ancient blessing melee reference, owned Scorching/ranged optimum and exact actual account need reproduction | N2–N3 |
 | Voidwaker/ZCB, enchanted bolts, Lightbearer, upgraded Death Charge | No validated complete pilot energy/attack model | N3 |

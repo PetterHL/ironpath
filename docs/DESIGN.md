@@ -43,15 +43,15 @@ an item silently to manufacture a weaker baseline.
 | Existing area | Disposition and concrete next use |
 |---|---|
 | AccountSnapshotReader, AccountSnapshot, Observation | Retain scoped ownership, slots/quantities and public unlock evidence |
-| ObservationSession, preferences, plugin generation guards | Retain identity/privacy protections; N1 adds a separately tested completed-session lifetime |
+| ObservationSession, preferences, plugin generation guards | Retain identity/privacy protections; NexSession now supplies a separately tested summary lifetime |
 | CombatStateReader, immutable CombatState | Shared lightweight client-state reading extracted in T0; Nex extends evidence when mappings are validated |
-| EncounterCapture / Context / Summary | Reuse bounded immutable capture concepts; N1 must add Nex targets/phases/team signals and banking behavior |
+| EncounterCapture / Context / Summary | Bounded immutable concepts reused by NexCapture/Summary; adapter and banking need live validation |
 | ZilyanaObserver | Retained opt-in experiment; its single-target lifecycle is explicitly not Nex support |
 | ZilyanaWornStateComparison | Retained ordinary-Zilyana comparison with a context guard; longest worn segment is not a Nex baseline |
 | CombatSetup, ranged/melee/magic models and comparison services | Reuse validated arithmetic, source dependencies and compatible-package handling; close actual Nex blockers |
 | KnowledgeCatalog, route/acquisition models, source registers | Retain reviewed facts, provenance and useful paths; no second catalogue or new global-grind mandate |
 | Advisor, progression ranking and pursuit presentation | Transitional consumers; replace their primary-flow policy in N2, then remove orphaned code |
-| IronpathPanel, RecentBossPanel, current navigation | Transitional UI; replace the main flow in N1, reuse readable native components and guarded actions |
+| IronpathPanel, RecentBossPanel, current navigation | NexPanel replaces the toolbar root in N1; retained presenters support N2 replacement/removal |
 | CompactRowLayout | Removed in T0: no production or test references |
 
 Keep observation, encounter summaries, comparisons and presentation separate.
@@ -67,7 +67,7 @@ consumer, preserving its semantics and tests.
   method choices/manual facts only, using existing guarded local preference IO.
 - N1 must retain completed summaries across recognized ordinary banking, while
   ending active traces and revalidating the same character/profile. Ambiguous
-  identity and logout clear data. Current transition behavior still resets on loading.
+  identity and logout clear data. N1 suspends summaries during recognized bank travel; live account state still resets on loading.
 - Damage, contribution, phase offence, expected team time and acquisition pace
   are separate. [Kill impact](KILL_IMPACT.md) defines their evidence requirements.
 - Fewer eats, survival, longer trips and supplied resources cannot be inferred
@@ -83,3 +83,19 @@ layout code and separates shared state reading from the retained Zilyana example
 Existing formulas, catalogue/schema, persisted preferences and active advisor UI
 remain compatible. Removing that active UI before N1 would leave no working flow.
 Its replacement is explicit work, not an indefinite second product.
+
+## N1 implementation boundary
+
+Build 0.15.0 uses `NexPanel` as the only toolbar root. General ranking/homepage
+navigation is retired. Native wrapping/buttons were extracted to `PanelWidgets`;
+old presenters and model/ranking regressions remain for N2's contextual replacement
+and removal, without an alternate runtime homepage. The opt-in Zilyana classes
+remain regression/reference machinery and are not offered as Nex support.
+
+`NexObserver` supplies explicit public-event identities to the pure bounded
+`NexCapture`; `NexSession` owns the separately guarded completed-summary lifetime.
+See the [event review](research/nex-events.md) and [validation](validation/nex-session.md).
+Observed setups include every captured switch and unknown; no longest-worn baseline
+or recommendation replaces them. Saved method/locks and manual facts use preference
+schema 3. Raw state and performance remain memory-only. N2 owns package proposals;
+N3 owns the finite energy/spec model; N4 owns validated time estimates.

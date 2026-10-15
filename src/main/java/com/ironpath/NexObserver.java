@@ -1,0 +1,230 @@
+package com.ironpath;
+
+import com.ironpath.advisor.KnowledgeCatalog;
+import com.ironpath.encounter.EncounterSummary.Outcome;
+import com.ironpath.nex.NexCapture;
+import com.ironpath.nex.NexSession;
+import com.ironpath.preferences.NexMethod;
+import java.util.*;
+import net.runelite.api.*;
+import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
+
+/** Client-thread public-event adapter; mappings and limits are reviewed in docs/research/nex-events.md. */
+final class NexObserver
+{
+	final NexCapture capture;
+	private final Client client;
+	private final CombatStateReader reader;
+	private final Set<Integer> melee=new HashSet<>(), ranged=new HashSet<>();
+	private final Map<NPC,String> targets=new IdentityHashMap<>();
+	private final Set<Hitsplat> hits=Collections.newSetFromMap(new IdentityHashMap<>());
+	private NPC boss;
+	private int barrier=-1, boundary=-100, smoke=-100, bossGone=-1, view=Integer.MIN_VALUE;
+	private boolean attempted;
+	private long spawnSerial, hitSerial;
+	private NexMethod method=NexMethod.PILOT;
+	private boolean enabled=true;
+	private int rosterTick=Integer.MIN_VALUE;
+	private String cachedRoster;
+	private static final Set<Integer> RESOURCE_VARBITS=new HashSet<>();
+	static
+	{
+		for(Prayer prayer:Prayer.values()) { RESOURCE_VARBITS.add(prayer.getVarbit()); }
+		RESOURCE_VARBITS.addAll(Set.of(VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE,VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN,
+			VarbitID.WORN_ITEMS_DIZANAS_QUIVER_CHARGED,VarbitID.CHARGES_DIZANAS_QUIVER_QUANTITY));
+	}
+	static boolean resourceChanged(int varbit, int varp)
+	{
+		return RESOURCE_VARBITS.contains(varbit) || Set.of(
+			net.runelite.api.gameval.VarPlayerID.SA_ENERGY,net.runelite.api.gameval.VarPlayerID.SA_ATTACK,
+			net.runelite.api.gameval.VarPlayerID.COM_MODE,net.runelite.api.gameval.VarPlayerID.DIZANAS_QUIVER_TEMP_AMMO,
+			net.runelite.api.gameval.VarPlayerID.DIZANAS_QUIVER_TEMP_AMMO_AMOUNT).contains(varp);
+	}
+
+	NexObserver(Client client, KnowledgeCatalog catalog, NexSession session)
+	{
+		this.client=client; reader=new CombatStateReader(client); capture=new NexCapture(session::add);
+		catalog.melee.items.stream().filter(i->i.slot.equals("weapon")).forEach(i->melee.add(i.id));
+		catalog.ranged.items.stream().filter(i->i.slot.equals("weapon")).forEach(i->ranged.add(i.id));
+	}
+	synchronized boolean enabled() { return enabled; }
+	synchronized void enable(boolean value) { clearActive(); enabled=value; }
+	synchronized void method(NexMethod method)
+	{
+		if (!this.method.cohort().equals(method.cohort()))
+		{ capture.abort(client.getTickCount(),Outcome.CENSORED,"Method or planning locks changed during capture"); }
+		this.method=method;
+	}
+	static boolean bossId(int id)
+	{ return id==NpcID.NEX || id==NpcID.NEX_SPAWNING || id==NpcID.NEX_SOULSPLIT || id==NpcID.NEX_DEFLECT || id==NpcID.NEX_DYING; }
+	static String targetName(int id)
+	{
+		if (bossId(id)) { return "NEX"; }
+		switch(id)
+		{
+			case NpcID.NEX_SMOKEMAGE: return "FUMUS";
+			case NpcID.NEX_SHADOWMAGE: return "UMBRA";
+			case NpcID.NEX_BLOODMAGE: return "CRUOR";
+			case NpcID.NEX_ICEMAGE: return "GLACIES";
+			default: return null;
+		}
+	}
+	synchronized boolean inArena() { return boss!=null && (barrier==2 || barrier==3); }
+	synchronized void clearActive()
+	{ capture.clear(); targets.clear(); hits.clear(); boss=null; attempted=false; bossGone=-1; barrier=-1; boundary=smoke=-100; view=Integer.MIN_VALUE; rosterTick=Integer.MIN_VALUE; cachedRoster=null; }
+	synchronized void transition()
+	{
+		capture.flush(client.getTickCount());
+		capture.abort(client.getTickCount(),Outcome.CENSORED,"Left arena or scene loading during active capture");
+		clearActive();
+	}
+	private boolean sameView(Actor actor)
+	{ return actor!=null && actor.getWorldView()!=null && actor.getWorldView().getId()==view; }
+	synchronized void spawn(NPC actor)
+	{
+		if (!enabled || actor==null || targetName(actor.getId())==null || actor.getWorldView()==null) { return; }
+		Player local=client.getLocalPlayer();
+		if (local==null || local.getWorldView()==null || actor.getWorldView().getId()!=local.getWorldView().getId()) { return; }
+		if (bossId(actor.getId()))
+		{
+			if (boss!=null && boss!=actor)
+			{ capture.abort(client.getTickCount(),Outcome.CENSORED,"Nex spawn identity replaced"); targets.clear(); boundary=smoke=-100; }
+			if(boss!=actor) { attempted=false; }
+			boss=actor; bossGone=-1; view=actor.getWorldView().getId();
+		}
+		if (!targets.containsKey(actor))
+		{
+			if (targets.size()>=32) { capture.abort(client.getTickCount(),Outcome.CENSORED,"Target identity limit"); return; }
+			targets.put(actor,targetName(actor.getId())+"@"+actor.getWorldView().getId()+":"+actor.getIndex()+":"+(++spawnSerial));
+		}
+		if (actor==boss && actor.getId()==NpcID.NEX_DYING) { capture.death(client.getTickCount()); }
+	}
+	synchronized void changed(NPC actor)
+	{
+		if (actor==boss && !bossId(actor.getId()))
+		{ capture.abort(client.getTickCount(),Outcome.CENSORED,"Unreviewed Nex transformation"); clearActive(); }
+		else if (targetName(actor.getId())!=null) { spawn(actor); }
+	}
+	synchronized void despawn(NPC actor)
+	{
+		// Keep boss identity until the end grace window; despawn alone never completes a kill.
+		if (actor!=boss) { targets.remove(actor); } else { bossGone=client.getTickCount(); }
+	}
+	synchronized void barrier()
+	{
+		if (!enabled) { return; }
+		int next=client.getVarbitValue(VarbitID.NEX_BARRIER), tick=client.getTickCount();
+		if (barrier==2 && next==3) { boundary=tick; attempted=false; }
+		if (barrier==3 && next==2) { capture.barrierEnd(tick); }
+		if (barrier==3 && (next==0 || next==1))
+		{
+			capture.flush(tick); capture.abort(tick,Outcome.CENSORED,"Arena left before correlated completion");
+		}
+		barrier=next;
+		startIfReady(false);
+	}
+	synchronized void chat(ChatMessageType type, String message)
+	{
+		if (type!=ChatMessageType.NPC_SAY && type!=ChatMessageType.GAMEMESSAGE || message==null) { return; }
+		String text=message.replaceAll("<[^>]+>","").trim();
+		if (text.startsWith("Nex|") || text.startsWith("Nex:")) { overhead(boss,text.substring(4).trim()); }
+	}
+	synchronized void overhead(Actor actor, String raw)
+	{
+		if (!enabled || actor!=boss || !sameView(actor) || raw==null) { return; }
+		String text=raw.replaceAll("<[^>]+>","").trim().toLowerCase(Locale.ROOT);
+		int tick=client.getTickCount(); String phase=null, window=null;
+		switch(text)
+		{
+			case "fill my soul with smoke!": smoke=tick; phase="SMOKE"; break;
+			case "darken my shadow!": phase="SHADOW"; break;
+			case "flood my lungs with blood!": phase="BLOOD"; break;
+			case "infuse me with the power of ice!": phase="ICE"; break;
+			case "now, the power of zaros!": phase="ZAROS"; break;
+			case "embrace darkness!": window="EMBRACE_DARKNESS"; break;
+			case "fear the shadow!": window="FEAR_THE_SHADOW"; break;
+			case "a siphon will solve this!": window="BLOOD_SIPHON"; break;
+			case "i demand a blood sacrifice!": window="BLOOD_SACRIFICE"; break;
+			case "contain this!": window="ICE_CONTAIN"; break;
+			case "die now, in a prison of ice!": window="ICE_PRISON"; break;
+			case "fumus, don't fail me!": window="MINION_FUMUS"; break;
+			case "umbra, don't fail me!": window="MINION_UMBRA"; break;
+			case "cruor, don't fail me!": window="MINION_CRUOR"; break;
+			case "glacies, don't fail me!": window="MINION_GLACIES"; break;
+			default: return;
+		}
+		startIfReady(false);
+		if (capture.active()) { capture.phase(tick,phase,window); sample(-1); }
+	}
+	synchronized void tick()
+	{
+		if (!enabled) { return; }
+		var world=client.getTopLevelWorldView();
+		if (world!=null && world.npcs()!=null) { world.npcs().stream().filter(n->targetName(n.getId())!=null).forEach(this::spawn); }
+		barrier();
+		Player local=client.getLocalPlayer(); int tick=client.getTickCount();
+		if (capture.active() && (local==null || local.isDead()))
+		{ capture.abort(tick,local==null?Outcome.CENSORED:Outcome.FAILED,"Local player died/unavailable"); return; }
+		if(capture.active() && bossGone>=0 && tick-bossGone>NexCapture.END_GRACE)
+		{ capture.flush(tick); capture.abort(tick,Outcome.CENSORED,"Nex despawned without correlated completion"); }
+		if (capture.active() && (!sameView(local) || !sameView(boss)))
+		{ capture.abort(tick,Outcome.CENSORED,"World-view identity changed"); clearActive(); return; }
+		startIfReady(true);
+		sample(-1);
+		if(!capture.active()) { hits.clear(); }
+	}
+	private void startIfReady(boolean allowPartial)
+	{
+		if(capture.active() || attempted || boss==null || barrier!=3 || boss.getId()==NpcID.NEX_DYING || !sameView(client.getLocalPlayer())) { return; }
+		int tick=client.getTickCount();
+		boolean full=boundary==tick && smoke>=boundary-10 && smoke<=tick;
+		if(!full && !allowPartial) { return; }
+		hits.clear(); attempted=true;
+		capture.start(tick,full,method,roster());
+		// Capture the state in the boundary callback, before the following GameTick advances the clock.
+		sample(-1);
+	}
+	private String roster()
+	{
+		int tick=client.getTickCount();
+		if(rosterTick!=tick) { rosterTick=tick; cachedRoster=readRoster(); }
+		return cachedRoster;
+	}
+	private String readRoster()
+	{
+		var world=client.getTopLevelWorldView();
+		if (world==null || world.players()==null || view==Integer.MIN_VALUE) { return null; }
+		Set<String> roster=new TreeSet<>();
+		for (Player player:world.players())
+		{
+			if (player.getWorldView()==null || player.getWorldView().getId()!=view || player.getName()==null) { return null; }
+			// Session-only hashes support observed-roster cohorts, not server party membership.
+			roster.add(com.ironpath.preferences.LocalPreferences.key(player.getName().toLowerCase(Locale.ROOT)));
+		}
+		return roster.isEmpty()?null:String.join(",",roster);
+	}
+	synchronized void sample(int animation)
+	{
+		if (!enabled || !capture.active()) { return; }
+		Player local=client.getLocalPlayer();
+		String target=local!=null && local.getInteracting() instanceof NPC?targets.get((NPC)local.getInteracting()):null;
+		var state=reader.read(); int weapon=state.slots.getOrDefault("weapon",-1);
+		String role=state.specialSelected?"spec candidate":ranged.contains(weapon)?"ranged":melee.contains(weapon)?"melee":"unclassified";
+		capture.sample(client.getTickCount(),state,target,role,animation,roster());
+	}
+	synchronized void hit(HitsplatApplied event)
+	{
+		if (!enabled || !capture.active() || !(event.getActor() instanceof NPC)) { return; }
+		NPC target=(NPC)event.getActor(); Hitsplat hit=event.getHitsplat();
+		if (targetName(target.getId())==null || !sameView(target) || !targets.containsKey(target) || !hits.add(hit)) { return; }
+		if (hits.size()>NexCapture.MAX_EVENTS) { capture.abort(client.getTickCount(),Outcome.CENSORED,"Hit identity limit"); hits.clear(); return; }
+		capture.hit(client.getTickCount(),++hitSerial,targets.get(target),hit.getAmount(),hit.isMine(),hit.isOthers(),hit.getHitsplatType()==HitsplatID.HEAL);
+	}
+	synchronized void death(Actor actor)
+	{
+		if (actor==client.getLocalPlayer()) { capture.abort(client.getTickCount(),Outcome.FAILED,"Player death"); }
+		else if (actor==boss && sameView(actor)) { capture.death(client.getTickCount()); }
+	}
+}

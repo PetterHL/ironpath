@@ -62,6 +62,8 @@ public class CombatStateReaderTest
 		when(client.getVarpValue(VarPlayerID.COM_MODE)).thenReturn(1);
 		when(client.getVarpValue(VarPlayerID.SA_ENERGY)).thenReturn(750);
 		when(client.getVarpValue(VarPlayerID.SA_ATTACK)).thenReturn(1);
+		var definition=mock(net.runelite.api.ItemComposition.class);
+		when(definition.getName()).thenReturn("Rune crossbow"); when(client.getItemDefinition(9185)).thenReturn(definition);
 		CombatState before = reader.read();
 
 		when(worn.getItem(weaponSlot)).thenReturn(new Item(20997, 1));
@@ -73,6 +75,7 @@ public class CombatStateReaderTest
 		CombatState after = reader.read();
 
 		assertEquals(Integer.valueOf(9185), before.slots.get("weapon"));
+		assertEquals("Rune crossbow",before.itemNames.get(9185)); assertFalse(after.itemNames.containsKey(9185));
 		assertEquals(Integer.valueOf(20997), after.slots.get("weapon"));
 		assertEquals(Integer.valueOf(90), before.realLevels.get("RANGED"));
 		assertEquals(before.realLevels, after.realLevels);
