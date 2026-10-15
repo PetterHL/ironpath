@@ -1,6 +1,6 @@
 # R3a native UI direction review
 
-13 October 2026. **Documentation/design only; no application implementation or new client/test pass.** Acceptance and the Codex implementation handoff live in [TASKS R3a](../../TASKS.md#r3--relationship-aware-advice-and-melee-packages), not a second backlog here.
+13 October 2026. **Documentation/design only; no application implementation or new client/test pass.** Acceptance and the Codex implementation handoff live in [TASKS R3a](../archive/pre-nex-20261015/TASKS.snapshot.md#r3--relationship-aware-advice-and-melee-packages), not a second backlog here.
 
 ## Inspected baseline
 
@@ -14,7 +14,7 @@ Verified width arithmetic against RuneLite [PluginPanel at the existing pinned r
 
 The existing 225×1218 overview devotes substantial height to status sections and an activity before long-term value. Its row body wraps beside the sprite and chevron. The 225×2735 Browse image shows that two columns alone do not make contextual numbers and full names compact. A negative neutral tbow headline obscures the role that justifies retaining it. Secondary account sections are already collapsed; replacing them is not the core work.
 
-[UX](../UX.md) compares existing rows, forced two columns, a hero with mini-tiles, and equal compact visual cards. Select the last: sprite/name header, full-width account reason, meaningful contextual primary number, concise status and direct Value/Path. Normal width gets one column; two require at least 170px per card plus real font/content fit. This floor is an initial design safeguard, not a measured universal breakpoint or a wider-window requirement.
+[UX](../archive/pre-nex-20261015/UX.md) compares existing rows, forced two columns, a hero with mini-tiles, and equal compact visual cards. Select the last: sprite/name header, full-width account reason, meaningful contextual primary number, concise status and direct Value/Path. Normal width gets one column; two require at least 170px per card plus real font/content fit. This floor is an initial design safeguard, not a measured universal breakpoint or a wider-window requirement.
 
 The homepage previews several explained account-relevant choices, with prominent Long-term/Specialist discovery. Viewport budget controls preview length, never recommendation eligibility or catalogue size. Importance remains separate from effort; role/family diversity does not become a universal score. Uncertainty, qualitative utility and supported numbers all survive. No goal wizard or additional research phase.
 

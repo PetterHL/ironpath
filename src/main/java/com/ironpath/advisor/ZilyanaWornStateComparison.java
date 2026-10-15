@@ -7,13 +7,13 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/** Reuses eligibility, packages and ranking. Never proposes a substitute for the worn baseline. */
-public final class RecentBossComparison
+/** Retained ordinary Zilyana worn-state comparison, not a whole-encounter evaluator. */
+public final class ZilyanaWornStateComparison
 {
 	private final KnowledgeCatalog catalog;
 	private final RangedComparisonService service;
 	private final Map<Integer,RangedItem> items;
-	public RecentBossComparison(KnowledgeCatalog catalog)
+	public ZilyanaWornStateComparison(KnowledgeCatalog catalog)
 	{ this.catalog=catalog; service=new RangedComparisonService(catalog);
 		items=catalog.ranged.items.stream().collect(Collectors.toUnmodifiableMap(i->i.id,i->i)); }
 	public KillImpactResult evaluate(EncounterSummary summary, AccountSnapshot current, Preferences preferences)
@@ -21,6 +21,12 @@ public final class RecentBossComparison
 		EncounterSummary.Segment selected=summary.segments.stream().filter(s->s.ticks()>0).max(Comparator.comparingInt(EncounterSummary.Segment::ticks)).orElse(null);
 		List<String> gaps=new ArrayList<>(summary.gaps);
 		List<KillImpactResult.Option> options=new ArrayList<>();
+		if (!"zilyana".equals(summary.context.encounter) || !"ordinary".equals(summary.context.phase)
+			|| !"normal".equals(summary.context.mode))
+		{
+			gaps.add("This comparison supports only ordinary normal Zilyana; encounter-specific evaluation required");
+			return result(summary,selected,options,gaps);
+		}
 		if (selected==null || summary.outcome!=EncounterSummary.Outcome.COMPLETE)
 		{ gaps.add("Complete credited encounter and worn-state evidence required"); return result(summary,selected,options,gaps); }
 		CombatState state=selected.state;

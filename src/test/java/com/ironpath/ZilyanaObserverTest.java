@@ -14,9 +14,9 @@ import static org.mockito.Mockito.*;
 import static org.mockito.ArgumentMatchers.*;
 
 /** Mocked public API ordering, not evidence from actual client kills. */
-public class RecentBossObserverTest
+public class ZilyanaObserverTest
 {
-	Client client; Player player; NPC boss; WorldView view; RecentBossObserver observer;
+	Client client; Player player; NPC boss; WorldView view; ZilyanaObserver observer;
 	AtomicInteger tick=new AtomicInteger(10);
 	@Before public void setup()
 	{
@@ -32,7 +32,7 @@ public class RecentBossObserverTest
 		when(players.stream()).thenAnswer(i->java.util.stream.Stream.of(player));
 		ItemContainer worn=mock(ItemContainer.class); when(client.getItemContainer(InventoryID.WORN)).thenReturn(worn);
 		when(worn.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx())).thenReturn(new Item(25867,1));
-		observer=new RecentBossObserver(client); observer.enable(true,7);
+		observer=new ZilyanaObserver(client); observer.enable(true,7);
 	}
 	void damage()
 	{

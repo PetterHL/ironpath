@@ -13,7 +13,7 @@ import javax.swing.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static com.ironpath.advisor.RecentBossComparisonTest.*;
+import static com.ironpath.advisor.ZilyanaWornStateComparisonTest.*;
 
 /** Integration regressions at the UX / melee / recent-context boundaries. */
 public class CombinedFeaturePanelTest
@@ -56,7 +56,7 @@ public class CombinedFeaturePanelTest
     {
         SwingUtilities.invokeAndWait(()->{
             account=owned();
-            KillImpactResult result=new RecentBossComparison(catalog).evaluate(summary(state(9185,9144,103),Set.of()),account,preferences);
+            KillImpactResult result=new ZilyanaWornStateComparison(catalog).evaluate(summary(state(9185,9144,103),Set.of()),account,preferences);
             actions=new IronpathPanel.Actions()
             {
                 public void goal(String id) {} public void skip(String id,boolean value) {} public void confirm(String key,Boolean value) {} public void clear() {}

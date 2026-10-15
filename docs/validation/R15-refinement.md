@@ -1,6 +1,6 @@
 # R1.5 documentation refinement validation
 
-13 October 2026. **Documentation-only; no R1.5 application implementation or live-client validation.** Acceptance work remains in [TASKS](../../TASKS.md).
+13 October 2026. **Documentation-only; no R1.5 application implementation or live-client validation.** Acceptance work remains in [TASKS](../archive/pre-nex-20261015/TASKS.snapshot.md).
 
 ## Repository and review baseline
 
@@ -14,7 +14,7 @@ Branch `docs/effort-visual-foundation` starts at PR #9 head `309afb27ba7a6e0aee4
 - Original four-panel PNG wireframe visually inspected: native logical panel dimensions, wrapping, hierarchy, conditional estimate scope, exclusions and sprite placeholders. It is a design artifact, not a Swing/client capture.
 - Independent arithmetic check: p=1/300 yields mean 300 and P10/P50/P90 of 32/208/690 future eligible kills. At illustrative 40 kills/hour, mean is 7.5 hours and median 5.2; P90 is 17.25 before display rounding. This is a scenario, not observed throughput.
 - Multiple-roll check: `1-(1023/1024)^2 = 0.0019521713256835938`, distinct from expected quantity `2/1024 = 0.001953125`. No live Zulrah estimate was implemented.
-- Historical TASKS and RESEARCH sections compared with the R1 parent and preserved verbatim. Earlier UX is retained in [UX-20261012](../UX-20261012.md); earlier images and R1 validation artifacts remain unchanged.
+- Historical TASKS and RESEARCH sections compared with the R1 parent and preserved verbatim. Earlier UX is retained in [UX-20261012](../archive/pre-nex-20261015/UX-20261012.md); earlier images and R1 validation artifacts remain unchanged.
 - Application source, tests, runtime catalogue, build configuration and dependencies have no diff against R1. `git diff --check` passes.
 
-Current source evidence, exact Wiki revisions, RuneLite pin, access limits and proposed-model boundaries are in [RESEARCH](../RESEARCH.md). A complete current raid-loot model, personal kill/raid pace, actual item-sprite appearance, client scaling/accessibility and player usefulness remain unvalidated. R1's historical build/oracle results were not rerun or claimed as new results for this documentation change.
+Current source evidence, exact Wiki revisions, RuneLite pin, access limits and proposed-model boundaries are in [RESEARCH](../archive/pre-nex-20261015/RESEARCH.md). A complete current raid-loot model, personal kill/raid pace, actual item-sprite appearance, client scaling/accessibility and player usefulness remain unvalidated. R1's historical build/oracle results were not rerun or claimed as new results for this documentation change.

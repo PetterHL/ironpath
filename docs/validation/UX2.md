@@ -62,7 +62,7 @@ Produced by `UX2PanelTest` in `build/validation/ux2/images`; adjacent `*-bounds.
 | Separate technical evidence | [Diagnostics](ux2-images/diagnostics.png) |
 | Enlarged font | [Overview](ux2-images/large-font-home.png), [Value](ux2-images/large-font-value.png), [Path](ux2-images/large-font-path.png), [Account](ux2-images/large-font-account.png), [Diagnostics](ux2-images/large-font-diagnostics.png) |
 
-The written **“Oppsummering av UX”** incorporated into [UX.md](../UX.md) is the available desired reference. No new illustrative overview/detail/account images were supplied in this task or claimed as inspected. Older R3a/UX-completion images are preserved as historical baseline, not used as the new target. The new captures match the written hierarchy: gold identity, dark card surfaces, a prominent supported result, concise baseline, one status, whole-card details, compact changed metrics, a single visible priority reason, source/remaining/next acquisition and separate diagnostics. Larger fonts intentionally show less content per viewport.
+The written **“Oppsummering av UX”** incorporated into [UX.md](../archive/pre-nex-20261015/UX.md) is the available desired reference. No new illustrative overview/detail/account images were supplied in this task or claimed as inspected. Older R3a/UX-completion images are preserved as historical baseline, not used as the new target. The new captures match the written hierarchy: gold identity, dark card surfaces, a prominent supported result, concise baseline, one status, whole-card details, compact changed metrics, a single visible priority reason, source/remaining/next acquisition and separate diagnostics. Larger fonts intentionally show less content per viewport.
 
 ## Pending PC/player acceptance
 
