@@ -70,7 +70,7 @@ public class IronpathPlugin extends Plugin
 	private boolean bankDirty;
 	private String bankIdentity;
 	private int loginTicks;
-	RecentBossObserver recentBoss;
+	ZilyanaObserver recentBoss;
 	volatile com.ironpath.encounter.KillImpactResult recentImpact;
 	private volatile long recentTicket;
 	private long lastRecentKey, lastRecentObservationKey;
@@ -79,7 +79,7 @@ public class IronpathPlugin extends Plugin
 	protected void startUp()
 	{
 		running = true;
-		recentBoss=new RecentBossObserver(client);
+		recentBoss=new ZilyanaObserver(client);
 		recentImpact=null; lastRecentKey=lastRecentObservationKey=0; ++recentTicket;
 		long startup = ++lifecycle;
 		session.clear();
@@ -286,7 +286,7 @@ public class IronpathPlugin extends Plugin
 		AccountSnapshot captured=session.snapshot(); Preferences choices=session.preferences();
 		KnowledgeCatalog knowledge=catalog;
 		executor.execute(()->{
-			var result=new com.ironpath.advisor.RecentBossComparison(knowledge).evaluate(summary,captured,choices);
+			var result=new com.ironpath.advisor.ZilyanaWornStateComparison(knowledge).evaluate(summary,captured,choices);
 			clientThread.invokeLater(()->{
 				if(ticket!=recentTicket || !current(token,expectedIdentity)) { return; }
 				recentImpact=result;

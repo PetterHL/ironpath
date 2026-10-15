@@ -1,6 +1,5 @@
 package com.ironpath.encounter;
 
-import com.ironpath.advisor.CombatSetup;
 import java.util.Map;
 import java.util.Set;
 import java.util.Objects;

@@ -1,0 +1,67 @@
+{
+  "baseline": "e1888ffc2ef571ed6159efaeead4016f42e32646",
+  "date": "2026-10-15",
+  "transformation": "Historical notice added; relative Markdown file links pinned to the original commit. Body and factual history otherwise preserved.",
+  "files": [
+    {
+      "source": "AGENTS.md",
+      "snapshot": "docs/archive/pre-nex-20261015/AGENTS.snapshot.md",
+      "original_sha256": "1ac01c3d274e7e6fbb3d977f08c68b58c82b5d1429c054f140f0ae878f5dd8e5",
+      "snapshot_sha256": "cc92bea8912710ac0d8bc35f46b12f796ae7258476e7751d4b26cf2cc5ea5544"
+    },
+    {
+      "source": "README.md",
+      "snapshot": "docs/archive/pre-nex-20261015/README.snapshot.md",
+      "original_sha256": "c3207efff97fc52be7df182a2fdea1b5fea1f409ee443fc13b4c922d97f5cad3",
+      "snapshot_sha256": "6f6bc8a145b852f28386f6cb3429f6d34132f8c8fa8c6476eb30c4f9a1a131bb"
+    },
+    {
+      "source": "TASKS.md",
+      "snapshot": "docs/archive/pre-nex-20261015/TASKS.snapshot.md",
+      "original_sha256": "7111ae06fec7f563b3fe02d1afa1ad98b397701b5bfe3a5044fd49e2f6c234c2",
+      "snapshot_sha256": "823b9c5f7ca8e73c4adc307f9447457b3a30d371a810880029fa9e847d1f2ecf"
+    },
+    {
+      "source": "docs/DESIGN.md",
+      "snapshot": "docs/archive/pre-nex-20261015/DESIGN.md",
+      "original_sha256": "35fe11788182c735f4e66f5abfa1d39aa5ca58db6403a390b6b3213e4ee07591",
+      "snapshot_sha256": "851dfa6010114390a0927f7528c9ba12ce160038dd262b44ad23d8fc50907fd8"
+    },
+    {
+      "source": "docs/UX.md",
+      "snapshot": "docs/archive/pre-nex-20261015/UX.md",
+      "original_sha256": "ead52a384e5932d865b69a225abb3d71e5d58e6314a7ab74fd4f391fe4fc7d56",
+      "snapshot_sha256": "ace44547cb89dbaccd66e0b13b4039d5a74d64fed718613474c88fb68cf17fcb"
+    },
+    {
+      "source": "docs/CATALOGUE.md",
+      "snapshot": "docs/archive/pre-nex-20261015/CATALOGUE.md",
+      "original_sha256": "3ca20da0ea1bcd04aa47ef579ef6852cc00bc5d2a91234706764358f53b73e6e",
+      "snapshot_sha256": "b14463a542f9b04934a94a0e5c27d606ffe7f1a439641ddc669308260ff2f747"
+    },
+    {
+      "source": "docs/RESEARCH.md",
+      "snapshot": "docs/archive/pre-nex-20261015/RESEARCH.md",
+      "original_sha256": "8ed13e8be6ae7abd611638c22a920d1fc4bd5e7d0672f492281984547223c1f5",
+      "snapshot_sha256": "3d4524637a76f2c31c8e579158ccde6174b73a859f78e03bb314dda818edb1d0"
+    },
+    {
+      "source": "docs/KILL_IMPACT.md",
+      "snapshot": "docs/archive/pre-nex-20261015/KILL_IMPACT.md",
+      "original_sha256": "daebc0cd4f5e5b226cdd35f85cb34f3640fb34d9c36326b12a099f7687487ee7",
+      "snapshot_sha256": "75d45c988c8eeaf8017dd50b31f7ca901b4941156e9ec48e9ca27d57f2f9521d"
+    },
+    {
+      "source": "docs/PROGRESSION_RESEARCH.md",
+      "snapshot": "docs/archive/pre-nex-20261015/PROGRESSION_RESEARCH.md",
+      "original_sha256": "2001d84590e57734834bebd9148196dd0d22c653ed4a0981ab283cc8c8f6bf16",
+      "snapshot_sha256": "35932b7119e5f352a2154fa948858e2cb28d2ae14cb6b3e854c9ed2ad2b1136f"
+    },
+    {
+      "source": "docs/UX-20261012.md",
+      "snapshot": "docs/archive/pre-nex-20261015/UX-20261012.md",
+      "original_sha256": "2474ffcdbada84be214ccdcef065eb2a15def16337c39d9f07e24c02e5b33bf9",
+      "snapshot_sha256": "ab5e5474678a13e5c28e1a4cd3e05849eed8b5c12352354c96bc31e32bba8597"
+    }
+  ]
+}

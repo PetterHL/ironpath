@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static com.ironpath.advisor.RecentBossComparisonTest.*;
+import static com.ironpath.advisor.ZilyanaWornStateComparisonTest.*;
 
 public class RecentBossPanelTest
 {
@@ -25,7 +25,7 @@ public class RecentBossPanelTest
 	@Before public void setup() throws Exception
 	{
 		catalog=KnowledgeCatalog.load(new Gson()); advisor=new Advisor(catalog); account=owned(); preferences=R15Fixtures.absent(catalog);
-		result=new RecentBossComparison(catalog).evaluate(summary(state(9185,9144,103),Set.of()),account,preferences);
+		result=new ZilyanaWornStateComparison(catalog).evaluate(summary(state(9185,9144,103),Set.of()),account,preferences);
 		SwingUtilities.invokeAndWait(()->{ panel=new IronpathPanel(); panel.recentBoss(result,true,List.of(result.summary)); render(); });
 	}
 	void render()
@@ -63,7 +63,7 @@ public class RecentBossPanelTest
 			{
 				button("open-recent-boss").doClick(); assertTrue(text().contains("Observed engagement 54.0 s")); capture("recent-context");
 				button("recent-value-19547").doClick(); assertTrue(text().contains("Actually worn:")); assertTrue(text().contains("Rune crossbow")); capture("recent-value"); button("Inputs and sources").doClick(); capture("recent-inputs");
-				KillImpactResult newer=new RecentBossComparison(catalog).evaluate(summary(state(20997,11212,90),Set.of()),account,preferences);
+				KillImpactResult newer=new ZilyanaWornStateComparison(catalog).evaluate(summary(state(20997,11212,90),Set.of()),account,preferences);
 				panel.recentBoss(newer,true,List.of(newer.summary)); render(); assertTrue(text().contains("Rune crossbow"));
 				button("Back to recent boss").doClick(); button("recent-path-19547").doClick(); assertTrue(text().contains("Path from the captured account context")); capture("recent-path");
 				button("Back to recent boss").doClick(); button("← Upgrades").doClick(); assertFalse(text().contains("Actually worn:"));
@@ -76,7 +76,7 @@ public class RecentBossPanelTest
 		SwingUtilities.invokeAndWait(()->{
 			try
 			{
-				KillImpactResult unknown=new RecentBossComparison(catalog).evaluate(summary(state(12926,0,99),Set.of()),account,preferences);
+				KillImpactResult unknown=new ZilyanaWornStateComparison(catalog).evaluate(summary(state(12926,0,99),Set.of()),account,preferences);
 				panel.recentBoss(unknown,true,List.of(unknown.summary)); render(); button("open-recent-boss").doClick();
 				assertTrue(text().contains("Internal darts are unread")); capture("unknown-ammo");
 				panel.setFont(panel.getFont().deriveFont(20f)); render(); capture("large-font");

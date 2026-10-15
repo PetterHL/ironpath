@@ -299,7 +299,7 @@ public class ObservationLifecycleTest
 			observeBank();
 			plugin.recentBoss.enable(true,plugin.session.generation());
 			var capture=plugin.recentBoss.capture;
-			var state=com.ironpath.advisor.RecentBossComparisonTest.state(25867,0,99);
+			var state=com.ironpath.advisor.ZilyanaWornStateComparisonTest.state(25867,0,99);
 			var context=new com.ironpath.encounter.EncounterContext(null,null,"zilyana","ordinary","normal",1,"solo",java.util.Map.of());
 			capture.start(99,plugin.session.generation(),context,"synthetic",10,state);
 			capture.localDamage(11,20);

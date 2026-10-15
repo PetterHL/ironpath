@@ -1,36 +1,73 @@
 # IronPath development instructions
 
-- Integrated baseline: main, plugin 0.14.0 / knowledge ad1-r3b-1 / catalogue schema 14 / preference schema 2; powered-magic-3, ranged-1, melee-2 and progression-2. Plan #27, EP1 #25, UX2 #26, AD1a #28, AD1b #29, AD1c #30 and R3b #31 are integrated with all earlier deliveries. See docs/validation/ad1-r3b-integration.md and the unchanged original reports. Start independent work from updated main; preserve history and pending client checks.
-- AD1 remains partially delivered: broader automatic acquisition models (AD1b-B1–B4), actual reported account reproduction, visual-reference comparison and real-client/player acceptance (AD1c-C1–C3/R8) remain open. Integration is not product acceptance or permission to start new feature areas.
+## Current authority
 
-- Product: **IronPath — Your path to endgame PvM**, `PetterHL/ironpath`. Free, open-source, one local RuneLite plugin. Code, UI, documents, commits and implementation briefs are English; discussion with Petter may be Norwegian.
-- Read README.md, the active assignment in TASKS.md, docs/DESIGN.md and the relevant rows in docs/CATALOGUE.md. Consult docs/UX.md for UI, docs/RESEARCH.md for evidence and docs/PROGRESSION_RESEARCH.md for the 30 reviewed relationship examples. TASKS.md is the only backlog.
-- **Protect three distinct levels:** A stable product vision, B required capabilities/coverage, C incremental delivery. A small PR is not a small product. No fixed catalogue ceiling, arbitrary upgrade quota, CoX-only destination or goal-required workflow. Comprehensive endgame/BiS coverage and highly developed accounts are first-class requirements.
-- The primary experience automatically identifies worthwhile PvM progress for the remaining effort on this account now, explains why, and gives an acquisition path. Optional goals refine relevance. Do not replace it with a missing-item catalogue or require manual pace/configuration before useful advice.
-- Meaningful local quantitative comparison is core product work. Unsupported mechanics need honest per-metric fallback **and a visible model gap**. Do not permanently remove numbers from the roadmap because a slice is difficult. Do not invent percentages, guaranteed grind hours or kills-per-trip improvements.
-- Preserve accurate historical implementation/test evidence and pending live checks. Collapsed historical sections in TASKS/RESEARCH are records, not active instructions. Do not repeat old trials or planning phases as blanket prerequisites; fix concrete defects as found. Product success is not established by unit tests or item counts.
-- Retain the useful observation, identity, preference and evaluator foundation; refactor only against concrete needs. Remove arbitrary content caps and item/boss-specific schema bottlenecks. Do not rewrite the plugin or create a general rule language/universal simulator to avoid extending it.
-- Use supported RuneLite public Java APIs, one Gradle project and minimal dependencies. No mandatory backend, hosted database, paid API, per-user AI, gameplay automation, runtime scraping, arbitrary downloaded code, reflection or subprocess integration. Preserve third-party notices.
-- Unknown account state is not false, zero, absence or completion. Keep observation scope, time and provenance. Equipment slots, quantities, ownership families, charges, Collection Log history and permanent unlocks are distinct facts. Manual ownership cannot establish charged/usable gear or sufficient resources.
-- Read client state on the client thread into immutable snapshots. Keep raw observations and reference setups in memory. Persist only explicit preferences/manual facts in the existing plugin-owned local Filepath storage; never bank/account dumps in synced configuration, logs or remote requests.
-- Preserve character/profile identity, generation/revision guards, serial IO and preference migrations. Clear live state/reference setups on lifecycle transitions and unsupported worlds. Stale callbacks must never apply another account's results. Keep stable IDs; migrate or explicitly retire changed keys.
-- Separate outcome, contextual value and acquisition route. Separate hard access, equip conditions, preparation, ownership, usability and completion. Use typed ALL/ANY route dependencies with cycle checks. Never require a boss's reward to access that boss.
-- Relevant inaccessible upgrades remain visible with a useful next prerequisite/check. Skips exclude acquisition routes, not owned reward utility or unrelated alternatives. Shared activities do not imply simultaneous drops or additive unrelated gains. RNG drops have no percentage-completed bar.
-- Compare strongest supported owned alternatives by role/context before recommending a grind; don't manufacture weak baselines. Preserve specialist value. Account for two-handed/off-hand incompatibility, set packages, ammunition and resource competition. Optional interests never establish usefulness or readiness.
-- Keep ranking deterministic and explainable. DESIGN `progression-2` is implemented for review by EP1; UX2 consumes its contract. Preserve the catalogue-wide migration of importance-before-burden and forced long-term preview insertion. Named examples are regression cases, not feature scope; every active route and future promotion must use the common value/suitability/effort pipeline, with explicit support gaps and no legacy-ranking bypass. Account-specific marginal value and remaining effort jointly determine next-step priority. Keep role, importance, suitability, effort and priority distinct; preserve specialist, sustain, QoL and resource value. No permanent item tiers, raw DPS/hour score, additive universal score, prose-count breadth or item-name exceptions. Retain historical regression evidence and update superseded expectations explicitly.
-- Model reviewed item/use → activity-role → reward relationships with small bundled records and explicit Java mechanic families. Separate hard access/equip from method capabilities and optional preparation. Show adequate owned alternatives; avoid large marginal preparation detours without suppressing independently worthwhile upgrades. Hard routes are acyclic; utility feedback may cycle and must never amplify priority or become access. Goals/preferences refine evidence-based relevance without being required. Use claim-level sources and adverse as well as positive interactions.
-- For ordinary offensive upgrades, show supported relative theoretical DPS gain first across weapons, rings, gloves and armour; max hit is secondary even when speed is unchanged. Show absolute before/after/delta in Impact, using absolute delta for zero baselines. Utility/spec/comfort may lead when ordinary DPS is inappropriate. Distinguish hidden supported DPS from model gaps; prioritise common blockers such as Brimstone by affected comparisons. Label multi-slot weapon/off-hand/ammo changes as complete setup changes. AD1a owns this work.
-- Numerical claims require the comparison contract in DESIGN: complete compatible setup, levels, style, prayer/boost, target/phase/scaling, mechanic assumptions, provenance and model/source versions. Propose a reference automatically, allow focused correction and label assumptions. Unknown inputs must not silently become empty slots. Confirmation is not proof of measured performance.
-- Acquisition estimates use reviewed trial/recipient/mode/roll mechanics and remaining-work scope. EP1 may automatically select reviewed activity/method/package effort profiles: qualitative bands at A0, conditional scenario hours at A2 when both pace and probability support exist. Account gear selects assumptions, not measured speed, skill or success. No global early/mid/endgame multiplier or unreviewed presets. Unknown effort is not cheap; partial component time is not a full-item ETA. Keep mean, quantiles and scenario sensitivity distinct; no deadlines, summed quantiles, dry-streak progress, DPS/hour ranking or combat-timer-to-grind conversion.
-- AD1b requires supported automatic model-based hours without manual pace or personal history, using reviewed reward mechanics, compatible documented full-cycle pace and actual remaining work. Audit the whole active outcome/route/method matrix; track automatic/manual/observed support separately and assign specific unresolved gaps. Qualitative bands are fallback, not broad numerical delivery. Bring relevant R1.5b/R5 models forward; passive observation is not a prerequisite.
-- Automatic EP1 profiles work without personal history. Manual matching pace overrides are optional and session-only; Clear restores the supported automatic profile or no hours. Later R1.5b full-cycle observation requires validated public events, complete/failed/censored separation, identity guards and client checks. No PB-as-average, private-plugin scraping, telemetry or silent persistence expansion. Withdraw invalid estimates without erasing valid value/path evidence.
-- Max hit, hit chance, theoretical DPS, finite-target kill-time expectation and full encounter/trip performance are different metrics. Validate rounding, interactions and distributions. Never present HP/DPS as exact expected kill time or imply DPS directly produces extra kills/trip.
-- For Personalized Kill Impact follow docs/KILL_IMPACT.md and TASKS KI1–KI3: integrate passive post-kill context into the advisor; distinguish actually used setup, proposed reference and strongest owned alternative. Capture is not counterfactual proof. No last-kill/DPS-ratio shortcut, PB-as-average, additive savings, cross-method calibration or silent performance persistence. Keep observed duration, supported phase offence and validated same-method time estimates separate; material unknowns withhold only dependent metrics. Target most relevant PvM bosses, including raid bosses/rooms; Vorkath is an example and possible pilot, not the scope or mandated first adapter. Keep boss/phase, local-versus-team and whole-raid metrics distinct. Select the shared R1.5b pilot by evidence; do not block current UI, R3b or broad coverage.
-- Independently authored Java family modules are the selected approach. Pinned calculators are development-time references; GPL code is not approved for copying into BSD-only work. Verify code, dataset, guide and image rights separately before any reuse. Public availability and attribution alone are insufficient.
-- Ship only validated recommendation contexts with source/revision/review metadata, baseline, useful encounters, alternatives, defer conditions, acquisition route and explicit numeric support. Catalogue D/R rows and future releases remain inactive research candidates. Do not fabricate research to close a coverage row.
-- Prioritise official implemented changes over old proposals, stale calculators or community opinion. Resolve disagreements and mark known-invalid claims unavailable. Preserve evidence provenance. Record new equipment and mechanic changes in the uncapped coverage inventory.
-- Follow docs/UX.md's selected visual advisor direction and TASKS UX2. Native Swing/PluginPanel, genuine ItemManager sprites, gold names/dark surfaces, prominent supported result, concise baseline and at most one useful status. Whole cards open details; remove repeated card Value/Path actions and 0 Defence/reference badges. Explain the shared neutral premise once in calculation basis; never use neutral DPS as boss throughput. One column at standard width; additional columns require measured readable fit. Do not shrink fonts, clip information or require wider windows. Comparison, acquisition, account corrections and separate diagnostics form one coherent flow.
-- Preview length is a measured viewport budget, never a catalogue cap/filler quota. Preserve EP1 domain order; do not inject lower-priority long-term/specialist choices for variety. Keep those discovery links and all supported results in Browse; nearly complete accounts may naturally have long grinds first. Reuse typed presentation data, not engine report strings. Preserve search/filters/caret/Back/scroll, imagery and identity guards. Unsupported input, unsupported model and true zero differ; do not disguise missing weapon DPS with an oversized max-hit headline. TASKS AD1/EP1/UX2 own acceptance; group repeated ownership checks instead of replacing gain/effort on every card, and use typed reasons rather than engine prose. Use Upgrades / Account, ← Upgrades and Impact / Acquisition with preserved filters/scroll. Obtain the actual desired visual references for comparison; test Petter's reported setup and contrasting accounts. Captures/mockups do not establish real-client usefulness.
-- Follow current Plugin Hub policy, including restrictions on window/focus manipulation and content simulation. Q5 encounter/trip modelling requires specific assessment before shipping; it does not block ordinary Q1–Q4 comparison work. No playable rehearsal or live combat coaching. Hub publication still needs explicit authorisation.
-- Evaluate representative midgame, post-Bowfa, single-megarare, highly developed and nearly complete accounts. Preserve regressions for false absence, dominated advice, incompatible gear, inaccessible routes and stale identities. Report recommendation usefulness, model boundaries and actual client checks, not only automated pass counts.
-- Work independently. Iron Compass and other plugins are references, not mandatory dependencies or approval gates. Challenge assumptions with evidence, but never silently trade away comprehensive coverage, useful numbers or an automatic workflow for implementation convenience.
+- The user approved the encounter-and-method pivot and transition on 15 October
+  2026. This supersedes the old account-wide/no-goal-first product direction,
+  progression ranking requirements, parallel AD1/R roadmap and optional-boss-only
+  UX. Work in the same repository; retain useful foundations and history.
+- Read README.md, TASKS.md, docs/DESIGN.md and the relevant UX, KILL_IMPACT,
+  CATALOGUE and RESEARCH sections. TASKS.md is the only active backlog.
+- docs/archive is historical reference, never active instructions. Older
+  validation reports retain their original scope/results and pending client checks.
+- Code, UI, documents and commits are English; discussion with Petter may be Norwegian.
+
+## Delivery
+
+- Next: N1 in TASKS, Nex Trio MP2, one kill per trip. Lightbearer throughout,
+  upgraded Death Charge, observed melee/ranged/spec switches. Do not guess the
+  rest of the account or require a screenshot/manual setup form before observation.
+- Keep one Java/Gradle RuneLite plugin. Reuse independently authored combat
+  models, account observation, preferences, provenance and existing useful sources.
+  No wholesale restart, universal simulator, backend or second catalogue.
+- Remove verified dead code. Replace active old UI/ranking in the delivery that
+  supplies its new purpose; do not maintain two permanent products. The transition
+  retains the current UI and explicitly named Zilyana experiment until then.
+- Use short-lived branches from current main and focused PRs. Do not merge or
+  publish to Plugin Hub without authorization. Do not alter unrelated work.
+- Test the affected behavior and run the normal build. Preserve arithmetic,
+  unknown-state, incompatible-package and lifecycle regressions. Migrate tests
+  enforcing superseded product choices when their behavior is replaced.
+
+## Account, observation and privacy
+
+- Read public RuneLite state on the client thread into immutable snapshots.
+  Evaluate outside that thread/Swing EDT; publish guarded immutable results.
+- Unknown is not absent, zero, empty or unlocked. Keep source, time and scope;
+  ownership, exact variants, charges, quantity, equipped state and usability differ.
+- Preserve profile/character identity, generations, stale callback guards, serial
+  preference IO and migrations. Keep raw account data and combat traces in memory.
+- Persist only explicit method/preferences/manual facts in plugin-owned local
+  Filepath storage. No bank dumps, performance history, names or telemetry.
+- N1 must separately implement/test completed-session retention across ordinary
+  banking. Do not weaken current resets in this transition. Active traces must be
+  ended/censored; logout, profile change, unsupported worlds and disable clear data.
+
+## Comparison and presentation
+
+- Separate actually used setup, best relevant owned package, and owned package
+  with a hypothetical upgrade. Respect locked choices, hands, ammo, sets, switches
+  and shared spec/inventory resources. Never substitute proposed gear for observations.
+- Numerical claims require complete compatible inputs and target/phase/method,
+  relevant mechanics, provenance and model versions. Missing support blocks only
+  dependent metrics; a best-supported option is not proof of the global best.
+- Separate observed duration/damage share, theoretical offence, estimated personal
+  contribution and team time. No last-kill/DPS-ratio shortcut, additive savings,
+  PB-as-average, invented intervals, skill scores or combat-to-grind-hour conversion.
+- Model specs/Lightbearer/Death Charge as a finite energy and opportunity timeline.
+  Preserve defensive, supply, recurring-ammo and permanent-unlock distinctions.
+- Native Swing/PluginPanel and ItemManager images; readable normal panel width.
+  Quiet post-kill updates, concise results and optional details. No live combat
+  coaching, forced focus/navigation, automation or per-kill setup wizard.
+
+## Evidence and distribution
+
+- Version reviewed mechanics and dependencies. Preserve per-metric gaps and
+  withdraw known-invalid claims without suppressing unrelated supported results.
+- External calculators are development references. Do not copy GPL code/data
+  into BSD work; review code, dataset, prose and image rights separately.
+- Use supported public Java APIs. No reflection, subprocess integration, runtime
+  scraping/downloaded code, private-plugin data scraping or required other plugins.
+- Reassess the exact new encounter feature against current Plugin Hub policy
+  before distribution. Existing plugins are not approval for new behavior.
+- Unit tests and synthetic images do not establish real-client or player usefulness.
