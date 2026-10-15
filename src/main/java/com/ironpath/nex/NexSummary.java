@@ -9,7 +9,7 @@ import java.util.Set;
 /** In-memory frozen evidence. No actors, names, hit objects or mutable client state. */
 public final class NexSummary
 {
-	public static final String TIMER = "Observed arena barrier 2→3 to Nex death/dying; game ticks × 0.6";
+	public static final String TIMER = "Observed Nex smoke announcement to Nex death/dying; game ticks × 0.6. Not calibrated to the game timer.";
 	public static final String DAMAGE_SCOPE = "Observed mine / (mine + other) damage hitsplats on Nex + Fumus/Umbra/Cruor/Glacies; healing and unclassified types excluded. Not loot credit; thralls/DoT/overkill may differ.";
 	public static final class Sample
 	{
@@ -48,6 +48,7 @@ public final class NexSummary
 	public final String reason, cohort, method;
 	public final String timerScope;
 	public final List<Sample> timeline;
+	public final List<Sample> beforeStart;
 	public final Map<String,Damage> damage;
 	public final Set<String> gaps;
 	public final Signals signals;
@@ -58,12 +59,17 @@ public final class NexSummary
 	public NexSummary(long key, int start, int end, int sampled, int expected, int unclassified,
 		Outcome outcome, String reason, String cohort, String method, List<Sample> timeline,
 		Map<String,Damage> damage, Set<String> gaps, Signals signals)
+	{ this(key,start,end,sampled,expected,unclassified,outcome,reason,cohort,method,timeline,damage,gaps,signals,List.of()); }
+	public NexSummary(long key, int start, int end, int sampled, int expected, int unclassified,
+		Outcome outcome, String reason, String cohort, String method, List<Sample> timeline,
+		Map<String,Damage> damage, Set<String> gaps, Signals signals, List<Sample> beforeStart)
 	{
 		this.key=key; startTick=start; endTick=end; sampledTicks=sampled; expectedTicks=expected;
 		unclassifiedHits=unclassified; this.outcome=outcome; this.reason=reason; this.cohort=cohort; this.method=method;
 		this.timeline=List.copyOf(timeline); this.damage=Map.copyOf(damage); this.gaps=Set.copyOf(gaps);
+		this.beforeStart=List.copyOf(beforeStart);
 		this.signals=signals;
-		timerScope=outcome==Outcome.COMPLETE?TIMER:"Partial attempt: first captured tick to end/censor signal; excluded from complete averages";
+		timerScope=outcome==Outcome.COMPLETE?TIMER:"Incomplete capture; interval excluded from complete averages";
 	}
 	public double seconds() { return Math.max(0,endTick-startTick)*0.6; }
 	public long localDamage() { return damage.values().stream().mapToLong(d->d.local).sum(); }

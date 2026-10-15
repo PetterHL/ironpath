@@ -23,11 +23,12 @@ Implementation is available for review in development build 0.15.0. The Nex adap
 native session view, method/locks, immutable state/resource capture and banking
 round trips have synthetic replay/lifecycle coverage. [Evidence and pending live
 checks](docs/validation/nex-session.md). **N1 is not accepted yet:** initial client screenshots show censored attempts,
-not a validated complete capture. The [0.16.1 follow-up](docs/validation/nex-live-start.md)
-fixes reproduced start ordering/bank recognition and clarifies active status.
-The second test still misses both boundaries. [0.16.2 diagnostics](docs/validation/nex-live-signals.md)
-separate observed smoke, matched start and raw barrier transitions; the live cause
-and required start/end rules remain open.
+not a validated complete capture on the current build. The
+[0.16.5 correction](docs/validation/nex-smoke-anchor.md) replaces arena-entry
+anchoring with an observed smoke start and distinguishes dying from later arena
+completion. It preserves pre-smoke states and conservative late-arrival rejection.
+Bank recognition, explicit active status and bounded diagnostics remain. Earlier
+reports retain their original evidence and checks.
 Finish the real-client and usefulness checks before
 claiming the adapter's live mappings, capture fractions or game-timer agreement.
 

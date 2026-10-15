@@ -7,14 +7,12 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**15 October 2026: development build 0.16.4.** The first client test exposed a
-censored capture and an unclear active/paused status. This follow-up fixes
-reproduced smoke/start callback ordering and first-bank recognition, adds an active
-capture message and records exact eligibility signals in details. [Findings and
-required retest](docs/validation/nex-live-start.md). No complete live capture has
-been validated yet. A second test still misses both arena boundaries. The latest
-build consumes the barrier event value and exposes bounded raw signal diagnostics;
-it does not claim the capture failure is resolved. [Second-test findings](docs/validation/nex-live-signals.md).
+**15 October 2026: development build 0.16.5.** Nex capture now measures from the
+observed smoke announcement to death/dying, with corroborating arena completion.
+Arena entry is diagnostic; pre-smoke equipment remains separately inspectable.
+The bounded end matching accounts for dying preceding arena completion. The
+reproduced failure pattern passes synthetic replay; a complete capture on the
+updated client still needs validation. [Current capture contract and checks](docs/validation/nex-smoke-anchor.md).
 The development launcher retains RuneLite's required assertions with a temporary
 GPU-package exception, correcting the 0.16.3 startup failure; see
 [development](docs/DEVELOPMENT.md#gpu-assertion-during-development).
@@ -36,8 +34,8 @@ observed automatically. Setup exposes optional saved planning locks/corrections;
 they never overwrite the actually-worn history. Complete summaries stay in memory
 across recognized same-account bank trips and clear on logout/profile change.
 Observed hitsplat share is scoped to Nex and the four named minions; it is not
-server contribution or loot eligibility. Timing uses the captured arena boundary
-and death signal, with no game-timer calibration claim.
+server contribution or loot eligibility. Timing uses the observed smoke
+announcement and death/dying signal, with no game-timer calibration claim.
 
 The previous general homepage and global progression ranking are removed. The
 reported Tbow/amethyst-quiver and Fang/defender equipment has an anonymous regression

@@ -52,8 +52,8 @@ final class NexPanel extends PluginPanel
 		if (!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
 		long currentView=++view;
 		Map<Integer,String> names=new HashMap<>(catalog==null?Map.of():catalog.itemNames());
-		if(account!=null && stats.last!=null) { stats.last.timeline.forEach(s->names.putAll(s.state.itemNames)); }
-		if(account!=null && inspected!=null) { inspected.timeline.forEach(s->names.putAll(s.state.itemNames)); }
+		if(account!=null && stats.last!=null) { stats.last.timeline.forEach(s->names.putAll(s.state.itemNames)); stats.last.beforeStart.forEach(s->names.putAll(s.state.itemNames)); }
+		if(account!=null && inspected!=null) { inspected.timeline.forEach(s->names.putAll(s.state.itemNames)); inspected.beforeStart.forEach(s->names.putAll(s.state.itemNames)); }
 		displayNames=Map.copyOf(names);
 		if (account==null) { page="encounter"; inspected=null; inspectedOwned=null; ownedIndex=0; returnPosition=null; factKey="rigour"; roleKey="melee"; slotKey="weapon"; lockItem=null; }
 		removeAll(); setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -98,7 +98,7 @@ final class NexPanel extends PluginPanel
 			if(stats.last!=null)
 			{
 				text(String.format(Locale.ROOT,"Last complete kill · %.1f s",stats.last.seconds()));
-				text("Observed arena boundary → Nex death.");
+				text("Observed smoke announcement → Nex death/dying.");
 				text(stats.last.share()==null?"Damage share unavailable":String.format(Locale.ROOT,"Observed Nex + minion hitsplat share · %.1f%%",stats.last.share()));
 				text(String.format(Locale.ROOT,"Session mean · %.1f s · n = %d\nRange %.1f–%.1f s",stats.meanSeconds,stats.n,stats.minSeconds,stats.maxSeconds));
 				if (stats.shareN>0)
@@ -260,7 +260,7 @@ final class NexPanel extends PluginPanel
 		if(summary.signals!=null)
 		{
 			var s=summary.signals;
-			text("Observed start boundary: "+tick(s.boundaryTick)+"\nMatched smoke: "+tick(s.smokeTick)
+			text("Measured start (smoke): "+tick(s.smokeTick)+"\nArena start transition (diagnostic): "+tick(s.boundaryTick)
 				+"\nSmoke line observed: "+tick(s.observedSmokeTick)
 				+"\nNex death/dying: "+tick(s.deathTick)+"\nArena end boundary: "+tick(s.barrierEndTick));
 			String barriers=s.trace.stream().filter(line->line.contains("barrier ")).collect(java.util.stream.Collectors.joining("; "));
@@ -273,14 +273,20 @@ final class NexPanel extends PluginPanel
 		}
 		text("State coverage "+Math.min(summary.sampledTicks,summary.expectedTicks)+" / "+summary.expectedTicks+" ticks. Unclassified hits: "+summary.unclassifiedHits+". Eligible fraction counts observed attempts, not kills before capture was enabled.");
 		summary.damage.forEach((scope,damage)->text(scope+": "+damage.local+" local / "+damage.total+" observed damage"));
-		if (!summary.timeline.isEmpty())
+		if(!summary.beforeStart.isEmpty())
+		{ text(summary.beforeStart.size()+" pre-smoke state changes retained separately; excluded from fight statistics and equipment comparisons."); }
+		List<NexSummary.Sample> history=new ArrayList<>(summary.beforeStart); history.addAll(summary.timeline);
+		if (!history.isEmpty())
 		{
 			JComboBox<String> samples=new JComboBox<>();
-			for (NexSummary.Sample s:summary.timeline) { samples.addItem("Tick "+s.tick+" · "+s.phase+" · "+s.role); }
+			samples.setName("nex-history-state");
+			for(int i=0;i<history.size();i++)
+			{ var s=history.get(i); samples.addItem((i<summary.beforeStart.size()?"Before smoke · ":"")+"Tick "+s.tick+" · "+s.phase+" · "+s.role); }
+			if(!summary.timeline.isEmpty()) { samples.setSelectedIndex(summary.beforeStart.size()); }
 			addControl(samples); JPanel evidence=new JPanel(); evidence.setLayout(new BoxLayout(evidence,BoxLayout.Y_AXIS)); evidence.setFont(getFont()); add(evidence);
 			Runnable display=()->{
 				if (!valid.getAsBoolean()) { return; }
-				evidence.removeAll(); NexSummary.Sample s=summary.timeline.get(samples.getSelectedIndex());
+				evidence.removeAll(); NexSummary.Sample s=history.get(samples.getSelectedIndex());
 				PanelWidgets.text(evidence,s.phase+" / "+s.window+"\nTarget "+s.target+" · animation "+s.animation+" (launch unverified)");
 				new TreeMap<>(s.state.slots).forEach((slot,id)->PanelWidgets.text(evidence,slot+": "+name(id,catalog)));
 				PanelWidgets.text(evidence,"Base levels "+new TreeMap<>(s.state.realLevels)+"\nCurrent levels "+new TreeMap<>(s.state.visibleLevels)+"\nPrayers "+s.state.prayers);

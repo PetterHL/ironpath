@@ -127,4 +127,9 @@ tick coverage and all phases. N2 live acceptance is still open. Build 0.16.2 add
 event-payload handling and signal diagnostics; see the
 [second-test report](nex-live-signals.md). This does not replace the original
 0.16.0 validation results above or establish a complete live account fixture.
+
+Build 0.16.5 anchors at observed smoke and retains pre-smoke equipment separately.
+Those earlier states are explicitly excluded from owned fight scenarios; their
+history remains inspectable. [Capture correction and verification](nex-smoke-anchor.md)
+records the new adapter contract without changing this report's original results.
 The original 165-test result above remains the result for N2 commit `bab06ed`.

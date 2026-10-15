@@ -131,8 +131,10 @@ final class NexObserver
 	{
 		if (!enabled) { return; }
 		int tick=client.getTickCount();
-		if(next!=barrier) { signal("barrier "+(barrier<0?"initial":barrier)+"→"+next+" ("+source+")"); }
-		if (barrier==2 && next==3) { boundary=tick; attempted=false; }
+		boolean changed=next!=barrier;
+		if(changed) { signal("barrier "+(barrier<0?"initial":barrier)+"→"+next+" ("+source+")"); }
+		if (barrier==2 && next==3)
+		{ boundary=tick; if(!capture.active()) { attempted=false; } capture.barrierStart(tick); }
 		if (barrier==3 && next==2) { capture.barrierEnd(tick); }
 		if (barrier==3 && (next==0 || next==1))
 		{
@@ -140,6 +142,7 @@ final class NexObserver
 		}
 		barrier=next;
 		startIfReady(false);
+		if(changed) { sample(-1); }
 	}
 	synchronized void chat(ChatMessageType type, String message)
 	{
@@ -175,7 +178,6 @@ final class NexObserver
 		startIfReady(false);
 		if (capture.active())
 		{
-			if("SMOKE".equals(phase)) { capture.correlateSmoke(tick); }
 			capture.phase(tick,phase,window); sample(-1);
 		}
 	}
@@ -198,17 +200,22 @@ final class NexObserver
 	}
 	private void startIfReady(boolean allowPartial)
 	{
-		if(capture.active() || attempted || boss==null || barrier!=3 || boss.getId()==NpcID.NEX_DYING || !sameView(client.getLocalPlayer())) { return; }
 		int tick=client.getTickCount();
-		boolean observedBoundary=boundary==tick;
-		if(!observedBoundary && !allowPartial) { return; }
+		boolean smokeStart=smoke==tick;
+		if(capture.active())
+		{
+			if(smokeStart) { capture.anchorSmoke(tick,roster()); }
+			return;
+		}
+		if(attempted || boss==null || (barrier!=3 && !(smokeStart && barrier==2))
+			|| boss.getId()==NpcID.NEX_DYING || !sameView(client.getLocalPlayer())) { return; }
+		if(!smokeStart && !allowPartial && boundary!=tick) { return; }
 		hits.clear(); attempted=true;
-		Integer matchedSmoke=observedBoundary && smoke>=boundary-NexCapture.START_GRACE && smoke<=tick?smoke:null;
-		capture.start(tick,observedBoundary,matchedSmoke,method,roster());
+		capture.start(tick,smokeStart,method,roster());
+		if(boundary>=0 && boundary<=tick) { capture.barrierStart(boundary); }
 		signals.forEach(capture::signal);
 		signals.clear();
-		if(smoke>=tick-NexCapture.START_GRACE && smoke<=tick) { capture.observeSmoke(smoke); }
-		// Capture the state in the boundary callback, before the following GameTick advances the clock.
+		// Sample the actual start callback, without reconstructing earlier equipment or phase.
 		sample(-1);
 	}
 	private String roster()

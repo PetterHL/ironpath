@@ -76,11 +76,11 @@ public class NexPanelTest
 			session.add(NexCaptureTest.replay(0,20,60));
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
 			button(panel,"Kill and calculation details").doClick();
-			assertTrue(shown(panel).contains("Observed start boundary: tick 0"));
+			assertTrue(shown(panel).contains("Measured start (smoke): tick 0"));
 			assertTrue(shown(panel).contains("Nex death/dying: tick 30"));
 			assertTrue(shown(panel).contains("Arena end boundary: tick 31"));
 			assertTrue(shown(panel).contains("Smoke line observed: tick 0"));
-			assertTrue(shown(panel).contains("Capture adapter nex-public-3"));
+			assertTrue(shown(panel).contains("Capture adapter nex-public-4"));
 			assertTrue(shown(panel).contains("Barrier readings:"));
 			button(panel,"Capture signal trace").doClick();
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
@@ -97,6 +97,28 @@ public class NexPanelTest
 				assertTrue(shown(panel).contains("assumed for planning")); button(panel,"Encounter").doClick();
 				button(panel,"Kill and calculation details").doClick(); capture(panel,"details-"+(int)font);
 				assertTrue(shown(panel).contains("Detected one active charge"));
+			}
+		} catch(Exception ex) { throw new RuntimeException(ex); } });
+	}
+	@Test public void preSmokeHistoryRemainsInspectableWhileTheDefaultSelectionStartsAtSmoke() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{try {
+			var catalog=KnowledgeCatalog.load(new Gson()); var session=new NexSession(); session.select("a",301);
+			var base=NexCaptureTest.replay(0,20,60);
+			var before=new com.ironpath.nex.NexSummary.Sample(-10,"UNKNOWN","UNKNOWN",null,"unclassified",-1,base.timeline.get(0).state);
+			var summary=new com.ironpath.nex.NexSummary(base.key,base.startTick,base.endTick,base.sampledTicks,base.expectedTicks,
+				base.unclassifiedHits,base.outcome,base.reason,base.cohort,base.method,base.timeline,base.damage,base.gaps,base.signals,List.of(before));
+			session.add(summary);
+			for(float font:List.of(12f,20f))
+			{
+				var panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
+				panel.render("Observed",P4aFixtures.account(Set.of(11907),99,90),Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
+				button(panel,"Kill and calculation details").doClick();
+				JComboBox<?> samples=(JComboBox<?>)children(panel).stream().filter(c->"nex-history-state".equals(c.getName())).findFirst().orElseThrow();
+				assertEquals(1,samples.getSelectedIndex()); assertTrue(samples.getSelectedItem().toString().contains("SMOKE"));
+				assertTrue(shown(panel).contains("excluded from fight statistics and equipment comparisons"));
+				samples.setSelectedIndex(0); assertTrue(shown(panel).contains("UNKNOWN / UNKNOWN"));
+				capture(panel,"pre-smoke-"+(int)font);
 			}
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}

@@ -9,47 +9,58 @@ import java.util.function.Consumer;
 /** Bounded deterministic Nex evidence machine. The adapter supplies reviewed signals and spawn keys. */
 public final class NexCapture
 {
-	public static final String VERSION="nex-public-3";
+	public static final String VERSION="nex-public-4";
 	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, MAX_SIGNALS=32,
-		END_GRACE=5, END_WAIT=20, START_GRACE=10;
+		END_GRACE=5, END_WAIT=20;
 	private final Consumer<NexSummary> sink;
 	private final List<NexSummary.Sample> timeline=new ArrayList<>();
+	private final List<NexSummary.Sample> beforeStart=new ArrayList<>();
 	private final Map<String,NexSummary.Damage> damage=new LinkedHashMap<>();
 	private final Set<Long> hitKeys=new HashSet<>();
 	private final List<String> signals=new ArrayList<>();
 	private final Set<String> gaps=new LinkedHashSet<>(), phases=new LinkedHashSet<>(), gear=new TreeSet<>();
 	private long serial, key;
 	private volatile NexMethod method;
-	private int start, last, sampled, lastSample, death=-1, barrierEnd=-1, smokeTick=-1, observedSmoke=-1, events, unclassified;
+	private int origin, start, last, sampled, lastSample, boundaryTick=-1, death=-1, barrierEnd=-1,
+		smokeTick=-1, observedSmoke=-1, events, unclassified;
 	private String phase="UNKNOWN", window="UNKNOWN", roster;
-	private boolean fullStart, boundaryObserved, continuous, rosterStable;
+	private boolean fullStart, continuous, rosterStable;
 
 	public NexCapture(Consumer<NexSummary> sink) { this.sink=sink; }
 	public boolean active() { return method!=null; }
 	public long key() { return key; }
-	public void start(int tick, boolean boundary, NexMethod method, String roster)
-	{ start(tick,boundary,boundary?Integer.valueOf(tick):null,method,roster); }
-	public void start(int tick, boolean boundary, Integer observedSmoke, NexMethod method, String roster)
+	/** A true start flag denotes an actually observed smoke announcement, never arena entry. */
+	public void start(int tick, boolean smokeObserved, NexMethod method, String roster)
 	{
 		if (active()) { abort(tick,Outcome.CENSORED,"New encounter before completion"); }
-		this.method=Objects.requireNonNull(method); key=++serial; start=last=tick; lastSample=tick-1;
-		this.roster=roster; boundaryObserved=boundary; fullStart=false; smokeTick=this.observedSmoke=-1; continuous=true; rosterStable=roster!=null;
-		if(observedSmoke!=null) { correlateSmoke(observedSmoke); }
+		this.method=Objects.requireNonNull(method); key=++serial; origin=start=last=tick; lastSample=tick-1;
+		this.roster=roster; fullStart=smokeObserved; continuous=true; rosterStable=roster!=null;
+		smokeTick=observedSmoke=smokeObserved?tick:-1;
 		phase=fullStart?"SMOKE":"UNKNOWN"; window="UNKNOWN";
 		if(fullStart) { phases.add(phase); }
-		if (!boundary) { gaps.add("Start boundary missing; enabled/arrived mid-kill"); }
+		else { gaps.add("Smoke start not observed; capture may have begun before smoke or mid-kill"); }
+		baselineGaps();
+	}
+	private void baselineGaps()
+	{
 		if (roster==null) { gaps.add("Arena roster unknown; matching team composition is not established"); }
 		gaps.add("Impact weapon/launch identity unknown, including same-tick switches and delayed hits");
 		gaps.add("Phase on a boundary tick follows observed client event order");
 		gaps.add("Inventory deltas are not confirmed food/potion consumption; internal item charges may be unread");
 	}
-	/** A later smoke callback corroborates an already sampled boundary; it never backfills state or phase. */
-	public void correlateSmoke(int tick)
+	/** Anchor only an unknown pre-combat interval; retain earlier states separately without backfilling. */
+	public boolean anchorSmoke(int tick, String roster)
 	{
 		observeSmoke(tick);
-		if(active() && boundaryObserved && Math.abs((long)tick-start)<=START_GRACE && !fullStart)
-		{ fullStart=true; smokeTick=tick; }
+		if(!active() || fullStart || death>=0 || barrierEnd>=0 || !phases.isEmpty() || !window.equals("UNKNOWN")
+			|| unclassified>0 || damage.values().stream().anyMatch(d->d.total>0) || !event(tick)) { return false; }
+		beforeStart.addAll(timeline); timeline.clear(); damage.clear(); hitKeys.clear(); gaps.clear(); gear.clear();
+		start=tick; lastSample=tick-1; sampled=0; fullStart=true; smokeTick=tick;
+		phase="SMOKE"; phases.add(phase); continuous=true; this.roster=roster; rosterStable=roster!=null;
+		baselineGaps();
+		return true;
 	}
+	public void barrierStart(int tick) { if(active() && boundaryTick<0) { boundaryTick=tick; } }
 	public void observeSmoke(int tick) { if(active() && observedSmoke<0) { observedSmoke=tick; } }
 	/** Bounded in-memory diagnostics retain the beginning and most recent signals. */
 	public void signal(String entry)
@@ -63,7 +74,7 @@ public final class NexCapture
 		if (!active()) { return false; }
 		if (tick<last) { continuous=false; gaps.add("Out-of-order event"); return false; }
 		last=tick;
-		if (++events>MAX_EVENTS || tick-start>MAX_TICKS)
+		if (++events>MAX_EVENTS || tick-origin>MAX_TICKS)
 		{ abort(tick,Outcome.CENSORED,"Capture event/time limit reached"); return false; }
 		return true;
 	}
@@ -101,7 +112,7 @@ public final class NexCapture
 				if (previous==null || animation>=0 || !previous.state.equals(state) || !previous.phase.equals(phase)
 					|| !previous.window.equals(window) || !Objects.equals(previous.target,target) || !previous.role.equals(role))
 				{
-					if (timeline.size()>=MAX_SAMPLES) { abort(tick,Outcome.CENSORED,"State buffer limit reached"); return; }
+					if (timeline.size()+beforeStart.size()>=MAX_SAMPLES) { abort(tick,Outcome.CENSORED,"State buffer limit reached"); return; }
 					timeline.add(new NexSummary.Sample(tick,phase,window,target,role,animation,state));
 				}
 			}
@@ -125,13 +136,13 @@ public final class NexCapture
 	{
 		if (!active() || death<0 && barrierEnd<0) { return; }
 		int signal=death<0?barrierEnd:barrierEnd<0?death:Math.max(death,barrierEnd);
-		// Wait longer for diagnostic evidence; this does not relax the five-tick acceptance window.
+		// Dying precedes arena completion; reverse callback order gets only the shorter tolerance.
 		int wait=death>=0 && barrierEnd>=0?END_GRACE:END_WAIT;
 		if (!leaving && tick<signal+wait) { return; }
-		boolean correlated=death>=0 && barrierEnd>=0 && Math.abs(death-barrierEnd)<=END_GRACE;
+		long endLag=(long)barrierEnd-death;
+		boolean correlated=death>=0 && barrierEnd>=0 && endLag>=-END_GRACE && endLag<=END_WAIT;
 		List<String> missing=new ArrayList<>();
-		if(!boundaryObserved) { missing.add("start boundary not observed"); }
-		else if(!fullStart) { missing.add("smoke start signal not matched to boundary"); }
+		if(!fullStart) { missing.add("smoke start not observed before combat"); }
 		List<String> missingPhases=new ArrayList<>(List.of("SMOKE","SHADOW","BLOOD","ICE","ZAROS")); missingPhases.removeAll(phases);
 		if(!missingPhases.isEmpty()) { missing.add("missing phases "+String.join(", ",missingPhases)); gaps.add("Missing phase boundaries: "+String.join(", ",missingPhases)); }
 		if(!continuous) { missing.add("tick or worn-state coverage interrupted"); }
@@ -146,13 +157,13 @@ public final class NexCapture
 	}
 	public void abort(int tick, Outcome outcome, String reason)
 	{ if (active()) { finish(outcome,reason,Math.max(start,tick)); } }
-	public void clear() { method=null; timeline.clear(); damage.clear(); hitKeys.clear(); signals.clear(); gaps.clear(); phases.clear(); gear.clear(); death=barrierEnd=smokeTick=observedSmoke=-1; sampled=events=unclassified=0; }
+	public void clear() { method=null; timeline.clear(); beforeStart.clear(); damage.clear(); hitKeys.clear(); signals.clear(); gaps.clear(); phases.clear(); gear.clear(); boundaryTick=death=barrierEnd=smokeTick=observedSmoke=-1; sampled=events=unclassified=0; }
 	private void finish(Outcome outcome, String reason, int end)
 	{
-		String cohort=method.cohort()+":"+gear+":"+(rosterStable?roster:"unmatched-"+key);
-		NexSummary.Signals signals=new NexSummary.Signals(boundaryObserved?start:null,smokeTick<0?null:smokeTick,
+		String cohort=VERSION+":"+method.cohort()+":"+gear+":"+(rosterStable?roster:"unmatched-"+key);
+		NexSummary.Signals signals=new NexSummary.Signals(boundaryTick<0?null:boundaryTick,smokeTick<0?null:smokeTick,
 			death<0?null:death,barrierEnd<0?null:barrierEnd,continuous,phases,observedSmoke<0?null:observedSmoke,this.signals);
-		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps,signals));
+		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps,signals,beforeStart));
 		clear();
 	}
 }

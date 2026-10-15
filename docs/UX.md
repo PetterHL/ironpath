@@ -102,3 +102,15 @@ the bounded nonpersistent sequence without requiring the equipment/inventory
 section to be shared. An unmatched end waits at most 20 ticks for diagnostic
 evidence; travel still flushes immediately. Acceptance criteria are unchanged.
 See [second-client findings](validation/nex-live-signals.md).
+
+## 0.16.5 observed smoke start
+
+The measured interval is labeled **Observed smoke announcement → Nex death/dying**.
+Details show the measured smoke start and the optional arena start transition as
+distinct fields. A visible arena-entry transition is not an eligibility condition.
+Before-smoke states remain in the history selector with an explicit prefix and
+exclusion explanation; the default selection is the first fight state. They are
+excluded from combat statistics and owned-equipment scenarios. The start is never
+backdated, and a later smoke line cannot erase observed combat/later phases.
+End matching distinguishes dying from subsequent arena completion. Missing
+evidence remains excluded. [Contract and verification](validation/nex-smoke-anchor.md).

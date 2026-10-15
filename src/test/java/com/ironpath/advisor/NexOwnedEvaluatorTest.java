@@ -16,6 +16,16 @@ public class NexOwnedEvaluatorTest
 {
 	private KnowledgeCatalog catalog; private NexOwnedEvaluator evaluator;
 	@Before public void load() throws Exception { catalog=KnowledgeCatalog.load(new Gson()); evaluator=new NexOwnedEvaluator(catalog); }
+	@Test public void preSmokeHistoryIsRetainedButExcludedFromOwnedFightComparisons()
+	{
+		var actual=sample("ranged",state(ranged(),Map.of())); var base=summary(List.of(actual));
+		var before=new NexSummary.Sample(-10,"UNKNOWN","UNKNOWN",null,"unclassified",-1,actual.state);
+		var captured=new NexSummary(base.key,base.startTick,base.endTick,base.sampledTicks,base.expectedTicks,base.unclassifiedHits,
+			base.outcome,base.reason,base.cohort,base.method,base.timeline,base.damage,base.gaps,base.signals,List.of(before));
+		var result=evaluator.evaluate(captured,account(null),Preferences.EMPTY);
+		assertEquals(1,result.choices.size()); assertSame(actual,result.choices.get(0).actual);
+		assertEquals(1,result.summary.beforeStart.size());
+	}
 	@Test public void reportedCompleteSwitchesKeepBlessingProjectileDefenderAndZeroIdentity()
 	{
 		var r=sample("ranged",state(ranged(),Map.of(26219,1L,12954,1L)));

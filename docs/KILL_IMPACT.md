@@ -28,6 +28,10 @@ Keep bounded summaries only in memory. Show a mean over comparable complete kill
 sample count and spread; distinguish the mean of per-kill percentages from aggregate
 damage share. Failed, abandoned and censored attempts are counted separately, never
 silently inserted as fast completions or zero damage. Keep timer origins consistent.
+For `nex-public-4`, the observed interval is the smoke announcement to tracked
+Nex death/dying. Arena entry is diagnostic; arena completion corroborates the
+end after a bounded dying delay. Pre-smoke states are retained separately and
+excluded from fight metrics/comparisons. No game-timer calibration is claimed.
 
 For one-kill trips, N1 must preserve completed summaries across recognized ordinary
 banking transitions. End/censor active traces, keep clearing live account/reference

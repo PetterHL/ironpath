@@ -14,7 +14,7 @@
 
 ## Delivery
 
-- Current: N2 implementation in development build 0.16.4, based on N1.
+- Current: N2 implementation in development build 0.16.5, based on N1.
   Live-client/player acceptance remains open in docs/validation/nex-session.md
   and docs/validation/nex-owned.md. Nex Trio MP2, one kill per trip. Lightbearer throughout,
   upgraded Death Charge, observed melee/ranged/spec switches. Do not guess the
@@ -27,16 +27,17 @@
   retained the former UI through T0. N1 replaced its runtime homepage; N2 removes
   the old presenters, global ranking policy and their obsolete tests. Retain
   independent arithmetic, acquisition data/kernels and lifecycle regressions.
-- Live-test follow-up 0.16.1 (`nex-public-2`) correlates smoke on either side
-  of an actually sampled start boundary. Never invent a boundary or backfill
-  phases/state for a late arrival. Record first bank visits, distinguish nearby
-  NPC presence from arena state, and display active capture status. See
-  docs/validation/nex-live-start.md; real-client retesting remains open.
-- Follow-up 0.16.2 (`nex-public-3`) consumes barrier event payloads and keeps
-  bounded in-memory signal diagnostics. The second test still lacks both
-  boundaries; do not claim it is fixed. The required 2→3 start transition and
-  five-tick end correlation are unvalidated policy, not established game timing.
-  See docs/validation/nex-live-signals.md before changing those rules.
+- Live adapter 0.16.5 (`nex-public-4`) starts measurement at the observed Nex
+  smoke announcement, not arena entry. The 2→3 transition is diagnostic only.
+  Unknown pre-smoke states remain separately inspectable and share the same
+  buffer/time/event limits. Later phases, positive damage or unclassified hits
+  before smoke prevent re-anchoring; duplicate smoke never moves an established
+  start. No phase/state is backfilled and no old summary is promoted.
+- Corroborate death/dying with arena completion: end may follow dying by up to
+  20 ticks, with a shorter five-tick reverse-order allowance. These are bounded
+  adapter policies, not calibrated server guarantees. Keep source event values,
+  bounded diagnostics, first-bank return and hard identity/reset guards. See
+  docs/validation/nex-smoke-anchor.md; live acceptance remains open.
 - Development launcher 0.16.4 keeps global `-ea`, required by RuneLite's
   `ExternalPluginManager.loadBuiltin`, with only `net.runelite.client.plugins.gpu...`
   excluded as a temporary GPU assertion workaround. The 0.16.3 package-only
