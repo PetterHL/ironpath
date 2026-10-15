@@ -9,8 +9,8 @@ import java.util.function.Consumer;
 /** Bounded deterministic Nex evidence machine. The adapter supplies reviewed signals and spawn keys. */
 public final class NexCapture
 {
-	public static final String VERSION="nex-public-1";
-	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, END_GRACE=5;
+	public static final String VERSION="nex-public-2";
+	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, END_GRACE=5, START_GRACE=10;
 	private final Consumer<NexSummary> sink;
 	private final List<NexSummary.Sample> timeline=new ArrayList<>();
 	private final Map<String,NexSummary.Damage> damage=new LinkedHashMap<>();
@@ -18,25 +18,34 @@ public final class NexCapture
 	private final Set<String> gaps=new LinkedHashSet<>(), phases=new LinkedHashSet<>(), gear=new TreeSet<>();
 	private long serial, key;
 	private volatile NexMethod method;
-	private int start, last, sampled, lastSample, death=-1, barrierEnd=-1, events, unclassified;
+	private int start, last, sampled, lastSample, death=-1, barrierEnd=-1, smokeTick=-1, events, unclassified;
 	private String phase="UNKNOWN", window="UNKNOWN", roster;
-	private boolean fullStart, continuous, rosterStable;
+	private boolean fullStart, boundaryObserved, continuous, rosterStable;
 
 	public NexCapture(Consumer<NexSummary> sink) { this.sink=sink; }
 	public boolean active() { return method!=null; }
 	public long key() { return key; }
 	public void start(int tick, boolean boundary, NexMethod method, String roster)
+	{ start(tick,boundary,boundary?Integer.valueOf(tick):null,method,roster); }
+	public void start(int tick, boolean boundary, Integer observedSmoke, NexMethod method, String roster)
 	{
 		if (active()) { abort(tick,Outcome.CENSORED,"New encounter before completion"); }
 		this.method=Objects.requireNonNull(method); key=++serial; start=last=tick; lastSample=tick-1;
-		this.roster=roster; fullStart=boundary; continuous=true; rosterStable=roster!=null;
-		phase=boundary?"SMOKE":"UNKNOWN"; window="UNKNOWN";
-		if(boundary) { phases.add(phase); }
+		this.roster=roster; boundaryObserved=boundary; fullStart=false; smokeTick=-1; continuous=true; rosterStable=roster!=null;
+		if(observedSmoke!=null) { correlateSmoke(observedSmoke); }
+		phase=fullStart?"SMOKE":"UNKNOWN"; window="UNKNOWN";
+		if(fullStart) { phases.add(phase); }
 		if (!boundary) { gaps.add("Start boundary missing; enabled/arrived mid-kill"); }
 		if (roster==null) { gaps.add("Arena roster unknown; matching team composition is not established"); }
 		gaps.add("Impact weapon/launch identity unknown, including same-tick switches and delayed hits");
 		gaps.add("Phase on a boundary tick follows observed client event order");
 		gaps.add("Inventory deltas are not confirmed food/potion consumption; internal item charges may be unread");
+	}
+	/** A later smoke callback corroborates an already sampled boundary; it never backfills state or phase. */
+	public void correlateSmoke(int tick)
+	{
+		if(active() && boundaryObserved && Math.abs((long)tick-start)<=START_GRACE && !fullStart)
+		{ fullStart=true; smokeTick=tick; }
 	}
 	private boolean event(int tick)
 	{
@@ -107,20 +116,30 @@ public final class NexCapture
 		int signal=death<0?barrierEnd:barrierEnd<0?death:Math.max(death,barrierEnd);
 		if (!leaving && tick<signal+END_GRACE) { return; }
 		boolean correlated=death>=0 && barrierEnd>=0 && Math.abs(death-barrierEnd)<=END_GRACE;
-		boolean complete=correlated && fullStart && continuous && phases.containsAll(List.of("SMOKE","SHADOW","BLOOD","ICE","ZAROS"))
-			&& death>start && lastSample>=death-1;
-		if (phases.size()!=5) { gaps.add("Missing phase boundaries"); }
+		List<String> missing=new ArrayList<>();
+		if(!boundaryObserved) { missing.add("start boundary not observed"); }
+		else if(!fullStart) { missing.add("smoke start signal not matched to boundary"); }
+		List<String> missingPhases=new ArrayList<>(List.of("SMOKE","SHADOW","BLOOD","ICE","ZAROS")); missingPhases.removeAll(phases);
+		if(!missingPhases.isEmpty()) { missing.add("missing phases "+String.join(", ",missingPhases)); gaps.add("Missing phase boundaries: "+String.join(", ",missingPhases)); }
+		if(!continuous) { missing.add("tick or worn-state coverage interrupted"); }
+		if(death<0) { missing.add("Nex death/dying not observed"); }
+		if(barrierEnd<0) { missing.add("arena end boundary not observed"); }
+		if(death>=0 && barrierEnd>=0 && !correlated) { missing.add("end signals outside matching window"); }
+		if(death>=0 && (death<=start || lastSample<death-1)) { missing.add("final pre-death state sample missing"); }
+		boolean complete=missing.isEmpty();
 		finish(complete?Outcome.COMPLETE:Outcome.CENSORED,
-			complete?"Correlated Nex death/dying and arena barrier completion":"Missing start, phase, sample or correlated end evidence",
+			complete?"Correlated Nex death/dying and arena barrier completion":"Incomplete capture: "+String.join("; ",missing),
 			death>=0?death:signal);
 	}
 	public void abort(int tick, Outcome outcome, String reason)
 	{ if (active()) { finish(outcome,reason,Math.max(start,tick)); } }
-	public void clear() { method=null; timeline.clear(); damage.clear(); hitKeys.clear(); gaps.clear(); phases.clear(); gear.clear(); death=barrierEnd=-1; sampled=events=unclassified=0; }
+	public void clear() { method=null; timeline.clear(); damage.clear(); hitKeys.clear(); gaps.clear(); phases.clear(); gear.clear(); death=barrierEnd=smokeTick=-1; sampled=events=unclassified=0; }
 	private void finish(Outcome outcome, String reason, int end)
 	{
 		String cohort=method.cohort()+":"+gear+":"+(rosterStable?roster:"unmatched-"+key);
-		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps));
+		NexSummary.Signals signals=new NexSummary.Signals(boundaryObserved?start:null,smokeTick<0?null:smokeTick,
+			death<0?null:death,barrierEnd<0?null:barrierEnd,continuous,phases);
+		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps,signals));
 		clear();
 	}
 }

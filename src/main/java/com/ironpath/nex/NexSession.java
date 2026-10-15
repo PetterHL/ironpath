@@ -36,8 +36,13 @@ public final class NexSession
 	{
 		if (!Objects.equals(this.identity,identity) || this.world!=world || tick<suspendedAt)
 		{ clear(); return false; }
-		if (!suspended) { return true; }
-		if (tick-suspendedAt>BANKING_GRACE || arena && !returning) { clear(); return false; }
+		if (!suspended)
+		{
+			boolean nextBank=bankVisible || atBank && !arena;
+			if(atBank!=nextBank) { atBank=nextBank; ++revision; }
+			return true;
+		}
+		if (tick-suspendedAt>BANKING_GRACE || arena && !returning && !bankVisible) { clear(); return false; }
 		if (!bankVisible && !(arena && returning)) { return false; }
 		suspended=false; atBank=bankVisible; returning=false; ++revision; return true;
 	}

@@ -45,6 +45,9 @@ final class NexPanel extends PluginPanel
 	{ render(status,account,prefs,catalog,stats,enabled,actions,storage,null); }
 	void render(String status, AccountSnapshot account, Preferences prefs, KnowledgeCatalog catalog,
 		NexSession.Stats stats, boolean enabled, Actions actions, String storage, NexOwnedResult owned)
+	{ render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,false); }
+	void render(String status, AccountSnapshot account, Preferences prefs, KnowledgeCatalog catalog,
+		NexSession.Stats stats, boolean enabled, Actions actions, String storage, NexOwnedResult owned,boolean active)
 	{
 		if (!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
 		long currentView=++view;
@@ -56,7 +59,7 @@ final class NexPanel extends PluginPanel
 		removeAll(); setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
 		text("IronPath"); text("Nex · Trio MP2 · One kill per trip");
 		if (account==null || actions==null) { text(status); revalidate(); repaint(); return; }
-		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned);
+		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active);
 		java.util.function.BooleanSupplier valid=()->view==currentView && actions.current();
 		JPanel nav=new ActionLinks(); nav.setFont(getFont());
 		for (String destination:List.of("encounter","setup","account"))
@@ -90,8 +93,9 @@ final class NexPanel extends PluginPanel
 		{
 			if (status.startsWith("Nex session paused")) { text(status); }
 			else if (!enabled) { text("Capture disabled. Session cleared."); }
+			else if (active) { text("Observing the current Nex attempt. Results appear after completion."); }
 			else if (stats.last==null) { text("Ready to observe the next full Nex kill. Equipment and spell use are detected automatically."); }
-			else
+			if(stats.last!=null)
 			{
 				text(String.format(Locale.ROOT,"Last complete kill · %.1f s",stats.last.seconds()));
 				text("Observed arena boundary → Nex death.");
@@ -252,6 +256,14 @@ final class NexPanel extends PluginPanel
 	{
 		text("Kill #"+summary.key+" · "+summary.outcome+" · "+summary.reason);
 		text(summary.timerScope); text(NexSummary.DAMAGE_SCOPE);
+		if(summary.signals!=null)
+		{
+			var s=summary.signals;
+			text("Observed start boundary: "+tick(s.boundaryTick)+"\nMatched smoke: "+tick(s.smokeTick)
+				+"\nNex death/dying: "+tick(s.deathTick)+"\nArena end boundary: "+tick(s.barrierEndTick));
+			text("Observed phases: "+String.join(", ",List.of("SMOKE","SHADOW","BLOOD","ICE","ZAROS").stream().filter(s.phases::contains).toArray(String[]::new))
+				+"\nContinuous state samples: "+s.continuous);
+		}
 		text("State coverage "+Math.min(summary.sampledTicks,summary.expectedTicks)+" / "+summary.expectedTicks+" ticks. Unclassified hits: "+summary.unclassifiedHits+". Eligible fraction counts observed attempts, not kills before capture was enabled.");
 		summary.damage.forEach((scope,damage)->text(scope+": "+damage.local+" local / "+damage.total+" observed damage"));
 		if (!summary.timeline.isEmpty())
@@ -274,6 +286,7 @@ final class NexPanel extends PluginPanel
 		}
 		summary.gaps.forEach(this::text);
 	}
+	private static String tick(Integer value) { return value==null?"not observed":"tick "+value; }
 	private void account(AccountSnapshot account, Preferences prefs, KnowledgeCatalog catalog, Actions actions,
 		java.util.function.BooleanSupplier valid, String storage)
 	{

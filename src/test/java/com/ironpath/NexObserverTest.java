@@ -82,6 +82,39 @@ public class NexObserverTest
 		assertEquals(1,session.recent().get(0).startTick);
 		assertEquals(1,session.recent().get(0).timeline.get(0).tick);
 	}
+	@Test public void observedBoundaryBeforeSmokeDoesNotBecomeAMidKillEnable()
+	{
+		observer.tick();
+		tick.set(1); barrier.set(3); observer.tick();
+		assertTrue(observer.capture.active());
+		tick.set(2); observer.overhead(boss,"Fill my soul with smoke!");
+		phasesAndEnd();
+		var summary=session.recent().get(0);
+		assertEquals(Outcome.COMPLETE,summary.outcome);
+		assertEquals(1,summary.startTick);
+		assertEquals("UNKNOWN",summary.timeline.get(0).phase);
+		assertTrue(summary.timeline.stream().anyMatch(s->s.tick==2 && s.phase.equals("SMOKE")));
+		assertEquals(Integer.valueOf(1),summary.signals.boundaryTick);
+		assertEquals(Integer.valueOf(2),summary.signals.smokeTick);
+	}
+	@Test public void boundaryCallbackSamplesBeforeSmokeInTheSameTick()
+	{
+		observer.tick(); tick.set(1); barrier.set(3); observer.barrier();
+		assertTrue(observer.capture.active()); observer.overhead(boss,"Fill my soul with smoke!");
+		phasesAndEnd(); var summary=session.recent().get(0);
+		assertEquals(Outcome.COMPLETE,summary.outcome); assertEquals(1,summary.startTick);
+		assertEquals("UNKNOWN",summary.timeline.get(0).phase);
+		assertEquals(Integer.valueOf(1),summary.signals.smokeTick);
+	}
+	@Test public void smokeAfterMidKillArrivalCannotInventABoundary()
+	{
+		barrier.set(3); observer.tick(); tick.set(1); observer.overhead(boss,"Fill my soul with smoke!");
+		phasesAndEnd(); var summary=session.recent().get(0);
+		assertEquals(Outcome.CENSORED,summary.outcome);
+		assertNull(summary.signals.boundaryTick); assertNull(summary.signals.smokeTick);
+		assertTrue(summary.reason.contains("start boundary not observed"));
+		assertTrue(summary.signals.phases.containsAll(List.of("SMOKE","SHADOW","BLOOD","ICE","ZAROS")));
+	}
 
 	@Test public void reviewedTargetsTransformsAndDuplicateCallbacksProduceOneCompleteSummary()
 	{

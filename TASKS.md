@@ -22,8 +22,10 @@ retention, Death Charge recognition or impact estimates. Those are N1–N4 below
 Implementation is available for review in development build 0.15.0. The Nex adapter,
 native session view, method/locks, immutable state/resource capture and banking
 round trips have synthetic replay/lifecycle coverage. [Evidence and pending live
-checks](docs/validation/nex-session.md). **N1 is not accepted yet:** no real-client
-kills or Petter usefulness checks have been performed. Finish those checks before
+checks](docs/validation/nex-session.md). **N1 is not accepted yet:** initial client screenshots show censored attempts,
+not a validated complete capture. The [0.16.1 follow-up](docs/validation/nex-live-start.md)
+fixes reproduced start ordering/bank recognition and clarifies active status.
+Finish the real-client and usefulness checks before
 claiming the adapter's live mappings, capture fractions or game-timer agreement.
 
 Deliver one useful native flow for **Nex / Trio MP2 / one kill per trip**.

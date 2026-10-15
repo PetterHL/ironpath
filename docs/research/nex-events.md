@@ -1,15 +1,16 @@
 # Nex public-event adapter review
 
-Reviewed 15 October 2026. Adapter `nex-public-1`, RuneLite API compiled against
-1.13.2. This is a static API/source review and original implementation. Live
-mappings, capture coverage and player usefulness remain unverified.
+Reviewed 15 October 2026. Adapter `nex-public-2` (0.16.1 follow-up; N1 used `nex-public-1`), RuneLite API compiled against
+1.13.2. The original review is static API/source evidence. Initial client screenshots now
+show a censored attempt; complete live capture, timing agreement and player
+usefulness remain unverified. [Follow-up findings](../validation/nex-live-start.md).
 
 ## Evidence and mappings
 
 | Evidence | Adopted mapping | Limit |
 |---|---|---|
 | [Generated NPC IDs](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-api/src/main/java/net/runelite/api/gameval/NpcID.java) | Nex 11278–11282, including spawning, soul-split, deflect and dying; four named mages 11283–11286 | Index alone is not identity. Match actor object, world-view and a local spawn serial. Pets, prison monsters, reavers and other NPCs are excluded. Transformations preserve the same actor key; replacement censors the old attempt. |
-| [Pinned Nex droprate plugin](https://github.com/Worley03/nex-droprate-calculator/blob/48217ba0e2915e9553c922d73034c5f2866fc4a7/src/main/java/com/nexdropratecalculator/NexDroprateCalculatorPlugin.java) | `NEX_BARRIER == 3` denotes active arena; 3→2 is an end signal, 0/1 is leaving. The smoke line precedes the active fight. | Its timer and all-NPC contribution implementation are not imported. IronPath requires an observed 2→3 boundary, a recent smoke line, all phase boundaries, continuous worn samples and corroborating tracked Nex death/dying for a complete capture. |
+| [Pinned Nex droprate plugin](https://github.com/Worley03/nex-droprate-calculator/blob/48217ba0e2915e9553c922d73034c5f2866fc4a7/src/main/java/com/nexdropratecalculator/NexDroprateCalculatorPlugin.java) | `NEX_BARRIER == 3` denotes active arena; 3→2 is an end signal, 0/1 is leaving. The smoke line identifies the start; callback delivery order is not assumed. | Its timer and all-NPC contribution implementation are not imported. IronPath requires an observed 2→3 boundary, a matched smoke line, all phase boundaries, continuous worn samples and corroborating tracked Nex death/dying for a complete capture. |
 | [Nex text reference](https://github.com/luuj/nex/blob/c2a5645ba8c19b751d320f7d88449fa4b6450a8c/NexText.java), [phase reference](https://github.com/luuj/nex/blob/c2a5645ba8c19b751d320f7d88449fa4b6450a8c/NexPhase.java) | Smoke, shadow, blood, ice, Zaros and minion call lines; blood siphon/sacrifice and ice special lines | Historical public reference for message facts, not current gameplay/policy approval. No source code, strategy, prayer/tile overlays or dataset is copied. |
 | [Prior MP2 strategy review](../RESEARCH.md#pilot-evidence-reviewed-on-15-october) | Shadow has ranged windows during Embrace darkness and melee opportunities around Fear the shadow | Record those actual lines as subphases. Never label the whole phase melee or infer an attack from time wearing a style. Current attempts to fetch the mirror returned HTTP 403; this delivery does not claim a fresh strategy-page review. |
 | Public `OverheadTextChanged`, `ChatMessage`, `NpcChanged`, `ActorDeath` | Actor-bound overhead lines; narrowly accepted `Nex\|`/`Nex:` messages in NPC_SAY/GAMEMESSAGE with the tracked Nex present; death/dying + barrier end within five ticks | No line or despawn alone completes a kill. Duplicate phase lines do not erase an already observed subphase. Missing phases, end signals or tick samples censor the attempt. Unknown/mid-kill initial phase remains unknown. |
@@ -21,8 +22,12 @@ The observed timer starts at the captured **arena barrier 2→3** and ends at th
 first tracked Nex death/dying signal. It is not calibrated to the game's Nex timer;
 there is no fixed four-tick backfill or comparison between unlike timer origins.
 Start state is captured synchronously in the boundary callback, before the following
-GameTick advances the clock. Missing same-tick start evidence censors the attempt. The smoke line must be within ten ticks of the boundary;
-end signals must correlate within five ticks. These bounded matching windows are
+GameTick advances the clock. Missing same-tick boundary/state evidence censors the
+attempt. Since 0.16.1 a later smoke callback can corroborate that already sampled
+boundary within ten ticks, as can an earlier matching smoke line. Prior samples
+remain UNKNOWN until the actual smoke callback; their phase/state is not backfilled.
+A mid-kill arrival without an observed boundary cannot be promoted by smoke.
+End signals must correlate within five ticks. These bounded matching windows are
 adapter policy, not claims of guaranteed server timing.
 
 Damage is aggregated by **phase/subphase at the observed impact** and spawn target.
@@ -65,3 +70,12 @@ Only method, explicit item locks and manual facts enter local preference schema 
 Schemas 1/2 migrate their existing choices. Names, roster hashes, containers,
 performance, timelines and summaries are never serialized or logged. No runtime
 network access, scraping or other-plugin integration is added.
+
+
+The first visible same-account bank visit is recorded even without suspended
+history. A visible bank has priority over a nearby loaded Nex NPC; arena return
+requires the reviewed active/idle arena barrier state as well as a matching NPC.
+An active capture message replaces the ambiguous waiting text at the next tick.
+Frozen details expose start, matched smoke, death and arena-end ticks, phase
+coverage and continuity. Specific missing reasons replace the former generic
+completion-failure message. Hard identity/world/reset/expiry boundaries remain.

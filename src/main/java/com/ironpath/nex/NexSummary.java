@@ -24,6 +24,18 @@ public final class NexSummary
 		public final long local, total;
 		public Damage(long local, long total) { this.local=local; this.total=total; }
 	}
+	/** Exact observed signals, for explaining capture eligibility without reconstructing events. */
+	public static final class Signals
+	{
+		public final Integer boundaryTick, smokeTick, deathTick, barrierEndTick;
+		public final boolean continuous;
+		public final Set<String> phases;
+		public Signals(Integer boundaryTick,Integer smokeTick,Integer deathTick,Integer barrierEndTick,boolean continuous,Set<String> phases)
+		{
+			this.boundaryTick=boundaryTick; this.smokeTick=smokeTick; this.deathTick=deathTick; this.barrierEndTick=barrierEndTick;
+			this.continuous=continuous; this.phases=Set.copyOf(phases);
+		}
+	}
 	public final long key;
 	public final int startTick, endTick, sampledTicks, expectedTicks, unclassifiedHits;
 	public final Outcome outcome;
@@ -32,13 +44,19 @@ public final class NexSummary
 	public final List<Sample> timeline;
 	public final Map<String,Damage> damage;
 	public final Set<String> gaps;
+	public final Signals signals;
 	public NexSummary(long key, int start, int end, int sampled, int expected, int unclassified,
 		Outcome outcome, String reason, String cohort, String method, List<Sample> timeline,
 		Map<String,Damage> damage, Set<String> gaps)
+	{ this(key,start,end,sampled,expected,unclassified,outcome,reason,cohort,method,timeline,damage,gaps,null); }
+	public NexSummary(long key, int start, int end, int sampled, int expected, int unclassified,
+		Outcome outcome, String reason, String cohort, String method, List<Sample> timeline,
+		Map<String,Damage> damage, Set<String> gaps, Signals signals)
 	{
 		this.key=key; startTick=start; endTick=end; sampledTicks=sampled; expectedTicks=expected;
 		unclassifiedHits=unclassified; this.outcome=outcome; this.reason=reason; this.cohort=cohort; this.method=method;
 		this.timeline=List.copyOf(timeline); this.damage=Map.copyOf(damage); this.gaps=Set.copyOf(gaps);
+		this.signals=signals;
 		timerScope=outcome==Outcome.COMPLETE?TIMER:"Partial attempt: first captured tick to end/censor signal; excluded from complete averages";
 	}
 	public double seconds() { return Math.max(0,endTick-startTick)*0.6; }

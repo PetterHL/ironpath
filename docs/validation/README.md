@@ -1,6 +1,8 @@
 # Validation records
 
-Current N2 implementation: [owned Nex packages](nex-owned.md), based on
+Current client-test follow-up: [0.16.1 start, bank and status fixes](nex-live-start.md).
+
+N2 implementation: [owned Nex packages](nex-owned.md), based on
 [N1 capture/session evidence](nex-session.md). Client/player acceptance stays open.
 
 

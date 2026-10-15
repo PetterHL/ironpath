@@ -362,6 +362,26 @@ public class ObservationLifecycleTest
 		tick(); tick(); assertTrue(plugin.nexSession.recent().isEmpty());
 		assertFalse(plugin.nex.capture.active());
 	}
+	@Test public void firstBankVisitAndNearbyNexRecognizeReturnAndResumeCapture()
+	{
+		observeBank();
+		var player=mock(net.runelite.api.Player.class); var world=mock(net.runelite.api.WorldView.class);
+		var boss=mock(net.runelite.api.NPC.class); var actors=mock(net.runelite.api.IndexedObjectSet.class);
+		when(client.getLocalPlayer()).thenReturn(player); when(player.getWorldView()).thenReturn(world);
+		when(client.getTopLevelWorldView()).thenReturn(world); when(world.npcs()).thenReturn(actors);
+		when(actors.stream()).thenAnswer(i->java.util.stream.Stream.of(boss));
+		when(boss.getWorldView()).thenReturn(world); when(boss.getId()).thenReturn(net.runelite.api.gameval.NpcID.NEX);
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(1); tick();
+		GameStateChanged loading=new GameStateChanged(); loading.setGameState(GameState.LOADING);
+		plugin.onGameStateChanged(loading); assertTrue(plugin.nexSession.suspended());
+		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(null);
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2);
+		tick(); tick(); tick(); assertFalse(plugin.nexSession.suspended());
+		assertNotNull(plugin.session.snapshot()); assertTrue(plugin.session.preferencesLoaded());
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(3);
+		VarbitChanged start=new VarbitChanged(); start.setVarbitId(VarbitID.NEX_BARRIER); plugin.onVarbitChanged(start);
+		assertTrue(plugin.nex.capture.active());
+	}
 	@Test public void nexHistoryClearsOnEveryHardBoundaryAndDisable()
 	{
 		for(String boundary:java.util.List.of("profile","rs-profile","logout","unsupported","reset"))

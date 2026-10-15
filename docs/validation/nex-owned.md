@@ -110,3 +110,15 @@ counts and unperformed checks remain historical evidence, not acceptance of N2.
 
 These checks remain open. The implementation is reviewable before organizing the
 combined N1/N2 Nex session; no real-client/player pass is claimed.
+
+
+## First client screenshots and 0.16.1 follow-up
+
+Later screenshots provide a real censored attempt and a selected worn melee
+sample; they do not validate a complete capture or N2 numeric output. The sampled
+melee cape is Infernal cape, correcting the earlier fixture's quiver assumption.
+The sample also shows base Prayer 91 and an unworn carried quiver, so its raw zero
+worn-charge flag cannot establish depleted quiver stock. The full actual ranged
+state and usable charges remain to inspect. No raw inventory/account dump is
+committed. See the [separate findings, fix and retest report](nex-live-start.md).
+The original 165-test result above remains the result for N2 commit `bab06ed`.

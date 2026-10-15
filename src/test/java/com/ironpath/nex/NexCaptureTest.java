@@ -106,4 +106,28 @@ public class NexCaptureTest
 		NexSummary s=summaries.get(0); assertEquals(2,s.timeline.size());
 		assertEquals("EMBRACE_DARKNESS",s.timeline.get(1).window);
 	}
+	@Test public void unmatchedStartSmokeAndEndSignalsHaveSpecificReasonsAndFrozenEvidence()
+	{
+		List<NexSummary> summaries=new ArrayList<>(); NexCapture c=new NexCapture(summaries::add);
+		c.start(0,true,null,NexMethod.PILOT,"a"); c.sample(0,state(26219,22322,1000,0),null,"melee",-1,"a");
+		for(int t=1;t<=36;t++)
+		{
+			if(t==11) { c.correlateSmoke(t); c.phase(t,"SMOKE",null); }
+			if(t==15) { c.phase(t,"SHADOW",null); }
+			if(t==20) { c.phase(t,"BLOOD",null); }
+			if(t==23) { c.phase(t,"ICE",null); }
+			if(t==25) { c.phase(t,"ZAROS",null); }
+			if(t==30) { c.death(t); }
+			if(t==31) { c.barrierEnd(t); }
+			c.sample(t,state(26219,22322,1000,0),null,"melee",-1,"a");
+		}
+		var s=summaries.get(0); assertEquals(Outcome.CENSORED,s.outcome);
+		assertTrue(s.reason.contains("smoke start signal not matched")); assertNull(s.signals.smokeTick);
+		assertEquals(Integer.valueOf(0),s.signals.boundaryTick); assertEquals(Integer.valueOf(30),s.signals.deathTick);
+		assertEquals(Integer.valueOf(31),s.signals.barrierEndTick); assertTrue(s.signals.continuous);
+		assertEquals(5,s.signals.phases.size()); assertThrows(UnsupportedOperationException.class,()->s.signals.phases.clear());
+		c.start(100,true,NexMethod.PILOT,"a"); c.death(110); c.flush(116);
+		assertTrue(summaries.get(1).reason.contains("arena end boundary not observed"));
+		assertEquals(5,s.signals.phases.size());
+	}
 }

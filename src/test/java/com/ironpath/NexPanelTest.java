@@ -63,6 +63,24 @@ public class NexPanelTest
 			assertFalse(shown(panel).contains("local /")); assertFalse(shown(panel).contains("Kill #"));
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
+	@Test public void resumedCaptureReplacesThePausedBannerAndShowsConcreteEligibilitySignals() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{try {
+			var catalog=KnowledgeCatalog.load(new Gson()); var session=new NexSession(); session.select("a",301);
+			var account=P4aFixtures.account(Set.of(11907),99,90); var panel=new NexPanel(null);
+			panel.render("Nex session paused. Open a bank to revalidate.",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",null);
+			assertTrue(shown(panel).contains("Nex session paused"));
+			panel.render("Nex session updated locally.",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",null,true);
+			assertTrue(shown(panel).contains("Observing the current Nex attempt")); assertFalse(shown(panel).contains("Nex session paused"));
+			assertFalse(shown(panel).contains("Ready to observe the next"));
+			session.add(NexCaptureTest.replay(0,20,60));
+			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
+			button(panel,"Kill and calculation details").doClick();
+			assertTrue(shown(panel).contains("Observed start boundary: tick 0"));
+			assertTrue(shown(panel).contains("Nex death/dying: tick 30"));
+			assertTrue(shown(panel).contains("Arena end boundary: tick 31"));
+		} catch(Exception ex) { throw new RuntimeException(ex); } });
+	}
 	@Test public void narrowAndEnlargedFontMainSetupAndDetailsWrap() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{try {

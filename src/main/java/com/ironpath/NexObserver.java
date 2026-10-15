@@ -156,7 +156,11 @@ final class NexObserver
 			default: return;
 		}
 		startIfReady(false);
-		if (capture.active()) { capture.phase(tick,phase,window); sample(-1); }
+		if (capture.active())
+		{
+			if("SMOKE".equals(phase)) { capture.correlateSmoke(tick); }
+			capture.phase(tick,phase,window); sample(-1);
+		}
 	}
 	synchronized void tick()
 	{
@@ -179,10 +183,11 @@ final class NexObserver
 	{
 		if(capture.active() || attempted || boss==null || barrier!=3 || boss.getId()==NpcID.NEX_DYING || !sameView(client.getLocalPlayer())) { return; }
 		int tick=client.getTickCount();
-		boolean full=boundary==tick && smoke>=boundary-10 && smoke<=tick;
-		if(!full && !allowPartial) { return; }
+		boolean observedBoundary=boundary==tick;
+		if(!observedBoundary && !allowPartial) { return; }
 		hits.clear(); attempted=true;
-		capture.start(tick,full,method,roster());
+		Integer matchedSmoke=observedBoundary && smoke>=boundary-NexCapture.START_GRACE && smoke<=tick?smoke:null;
+		capture.start(tick,observedBoundary,matchedSmoke,method,roster());
 		// Capture the state in the boundary callback, before the following GameTick advances the clock.
 		sample(-1);
 	}

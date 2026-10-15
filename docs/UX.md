@@ -82,3 +82,13 @@ new kills do not replace the inspected summary or selected pair. Identity resets
 clear it. Native sprites remain ItemManager images; synthetic captures use empty
 sprite wells. Ordinary/enlarged-font narrow captures are verification, not client
 or player acceptance.
+
+## 0.16.1 live-test follow-up
+
+The main view explicitly says **Observing the current Nex attempt** during capture,
+then returns to the last completed/partial result. Travel status is refreshed when
+capture starts; a waiting message must not imply capture is inactive. This adds no
+live combat advice. Kill details now list observed start boundary, matched smoke,
+Nex death/dying and arena-end ticks, observed phases and sample continuity. Missing
+signals have specific reasons; an excluded attempt is never silently promoted.
+See [first-client findings and retest](validation/nex-live-start.md).

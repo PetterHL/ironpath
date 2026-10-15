@@ -7,13 +7,19 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**15 October 2026: N2 development build 0.16.0.** The encounter view now compares
-complete owned packages against each distinct actually captured state. It keeps
-melee/ranged/spec evidence separate, preserves planning locks, distinguishes
-carried alternatives from bank preparation and exposes gains, losses and zero.
-Nex ordinary offence uses exact sampled levels/prayers and a labeled base-stat
-scenario; it does not estimate kill time or personal contribution. [N2 evidence
-and remaining checks](docs/validation/nex-owned.md).
+**15 October 2026: development build 0.16.1.** The first client test exposed a
+censored capture and an unclear active/paused status. This follow-up fixes
+reproduced smoke/start callback ordering and first-bank recognition, adds an active
+capture message and records exact eligibility signals in details. [Findings and
+required retest](docs/validation/nex-live-start.md). No complete live capture has
+been validated yet.
+
+N2 compares complete owned packages against each distinct actually captured
+state. It keeps melee/ranged/spec evidence separate, preserves planning locks,
+distinguishes carried alternatives from bank preparation and exposes gains,
+losses and zero. Nex ordinary offence uses exact sampled levels/prayers and a
+labeled base-stat scenario; it does not estimate kill time or personal contribution.
+[N2 evidence and remaining checks](docs/validation/nex-owned.md).
 
 N1 session capture retains last complete timing/share, comparable means/ranges,
 excluded attempts and immutable timelines. Its real-client mappings and player
