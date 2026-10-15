@@ -26,7 +26,7 @@ dependencies {
 }
 
 group = 'com.ironpath'
-version = '0.16.2'
+version = '0.16.3'
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
@@ -37,7 +37,8 @@ tasks.register('run', JavaExec) {
 	classpath = sourceSets.test.runtimeClasspath
 	mainClass = pluginMainClass
 
-	jvmArgs "-ea"
+	// Check our code without enabling development-only assertions in RuneLite/plugins.
+	jvmArgs "-ea:com.ironpath..."
 	args "--developer-mode", "--debug"
 }
 
