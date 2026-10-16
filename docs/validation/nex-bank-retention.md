@@ -80,12 +80,43 @@ XDG_CACHE_HOME=/tmp/ironpath-cache ./gradlew test build --no-daemon --offline
 - The integration assertion checks the native panel's Last complete kill after
   bank revalidation. No graphical client was launched for this correction.
 
+## 0.19.2 preparation without another client run
+
+A new plugin regression reproduced another loss against 0.19.1: after a bank
+return was verified from public arena state, a second LOADING could arrive before
+the preference read completed. The observer had not yet ticked, so that verified
+scene was missing as a departure source. The same public arena evidence now
+establishes that source independently of settings IO. The test also completes an
+old queued preference read after the new scene boundary and checks that it cannot
+publish into the new live generation.
+
+Build metadata is expanded from Gradle's version into a bundled properties file,
+so the native header identifies the actual development/JAR build. A constant reset
+explanation survives fresh account reads after history loss and disappears after
+a new attempt. It contains no account identifiers or performance data and is not
+persisted/logged. A pure lifecycle test and a native panel regression verify the
+notice lifetime, frozen prior results and no old-history disclosure. Native
+225px captures at 12pt/20pt were inspected: `build/validation/n1/bank-reset-12.png`
+and `bank-reset-20.png`; these are synthetic, not client acceptance.
+
+The same normal cached-dependency `test build` command passes for 0.19.2:
+
+- **264 tests across 32 suites; zero failures, errors or skips.**
+- Three additional regressions cover the delayed preference read, reset-reason
+  lifetime and native empty-session display. The delayed-read reproduction failed
+  against 0.19.1 before the production correction.
+- `build/libs/ironpath-0.19.2.jar` contains `BuildInfo.class` and expanded
+  `com/ironpath/build.properties` with `version=0.19.2`.
+- Native 225px captures at both font sizes, `git diff --check` and changed-document
+  relative file links pass. No graphical client was launched.
+
 ## Client retest
 
-Use branch `fix/nex-banking-session`, build 0.19.1. Restarting the development
+Use branch `fix/nex-banking-session`, build 0.19.2. Restarting the development
 client starts a new in-memory session; the already cleared kill cannot be restored.
 
-1. Capture one complete Nex kill and note the displayed duration and n=1.
+1. Check the header says build 0.19.2. Capture one complete Nex kill and note
+   the displayed duration and n=1.
 2. Leave the arena, deliberately wait more than a minute before opening the bank,
    then open it. The original duration, counts and encounter details must return.
 3. Close the bank and return on the same account/profile/world. The same result
@@ -93,6 +124,10 @@ client starts a new in-memory session; the already cleared kill cannot be restor
    means combine only when the observed method/setup/team evidence matches).
 4. Check a hard boundary separately: logout/Reset clears the session, and a later
    bank opening must not revive it.
+
+If counts reset, one screenshot of Encounter now includes the build and reset
+reason. The first short retest can stop after the original result returns at the
+opened bank; further kills and hard-boundary checks can be done later.
 
 No corrected live-client result is claimed yet. Broader N1/N2 capture, resource,
 multi-trip and player checks remain open in [TASKS](../../TASKS.md).

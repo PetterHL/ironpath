@@ -14,11 +14,15 @@
 
 ## Delivery
 
-- Current: development build 0.19.1 fixes completed-history loss during bank
+- Current: development build 0.19.2 extends the 0.19.1 completed-history fix during bank
   travel on top of 0.19.0 N3c. Completed summaries have no bank-opening deadline;
   outbound nearby-Nex evidence keeps them paused until a visible bank verifies
   the same account/profile/world. A verified arena source survives an exit-barrier
-  callback only until the next scene transition. Live snapshots, active traces
+  callback only until the next scene transition. A bank return verified from
+  public arena evidence establishes the next departure source even while
+  preferences load. The panel shows bundled build metadata and a constant reset
+  explanation; reasons contain no identifiers and are never persisted/logged.
+  Live snapshots, active traces
   and stale callbacks still clear; hard identity/logout/world/reset guards remain.
   See docs/validation/nex-bank-retention.md; client retesting remains open.
 - Development build 0.19.0 adds N3c complete-package conditional

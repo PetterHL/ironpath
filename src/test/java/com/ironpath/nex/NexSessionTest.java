@@ -7,6 +7,18 @@ import static org.junit.Assert.*;
 
 public class NexSessionTest
 {
+	@Test public void resetReasonSurvivesFreshAccountReadsUntilANewAttemptWithoutExposingIdentity()
+	{
+		NexSession session=new NexSession(); session.select("private-fixture-a",301); session.add(NexCaptureTest.replay(0,20,60));
+		var frozen=session.stats(); session.suspend("private-fixture-a",301,40,true);
+		assertFalse(session.revalidate(null,301,2000,true,false));
+		var cleared=session.stats(); assertNotNull(cleared.resetReason); assertNull(cleared.last); assertEquals(0,cleared.attempts);
+		assertFalse(cleared.resetReason.contains("private-fixture")); assertNotNull(frozen.last); assertNull(frozen.resetReason);
+		session.select("private-fixture-b",301); session.revalidate("private-fixture-b",301,2001,true,false);
+		assertEquals(cleared.resetReason,session.stats().resetReason); assertNull(session.stats().last);
+		session.add(NexCaptureTest.replay(2100,20,60)); assertNull(session.stats().resetReason); assertEquals(1,session.stats().n);
+		assertEquals(0,cleared.attempts); assertNotNull(cleared.resetReason);
+	}
 	@Test public void delayedBankAndReturnKeepHiddenHistoryWithoutAOneMinuteDeadline()
 	{
 		NexSession session=new NexSession(); session.select("a",301);

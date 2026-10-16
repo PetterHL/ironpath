@@ -63,6 +63,27 @@ public class NexPanelTest
 			assertFalse(shown(panel).contains("local /")); assertFalse(shown(panel).contains("Kill #"));
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
+	@Test public void anEmptyResetSessionExplainsItsLossWithoutDisplayingOldHistory() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{try {
+			var catalog=KnowledgeCatalog.load(new Gson()); var session=new NexSession(); session.select("synthetic-a",301);
+			session.add(NexCaptureTest.replay(0,20,60));
+			assertFalse(session.suspend("synthetic-a",301,40,false));
+			var account=P4aFixtures.account(Set.of(11907),99,90); var panel=new NexPanel(null);
+			session.select("synthetic-a",301); session.revalidate("synthetic-a",301,2000,true,false);
+			for(float font:List.of(12f,20f))
+			{
+				panel.setFont(panel.getFont().deriveFont(font));
+				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
+				assertTrue(shown(panel).contains("Previous session cleared: Travel did not start"));
+				assertFalse(shown(panel).contains("synthetic-a")); assertFalse(shown(panel).contains("Last complete kill"));
+				capture(panel,"bank-reset-"+(int)font);
+			}
+			session.add(NexCaptureTest.replay(100,20,60));
+			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
+			assertTrue(shown(panel).contains("Last complete kill")); assertFalse(shown(panel).contains("Previous session cleared"));
+		} catch(Exception ex) { throw new RuntimeException(ex); } });
+	}
 	@Test public void resumedCaptureReplacesThePausedBannerAndShowsConcreteEligibilitySignals() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{try {

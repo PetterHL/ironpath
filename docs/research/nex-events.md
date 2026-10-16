@@ -79,7 +79,10 @@ travel/waiting time does not erase bounded completed evidence. A nearby Nex or
 arena-like barrier reading on the outbound leg keeps history suspended until the
 bank is opened, rather than clearing it. The adapter remembers a verified arena
 source across an exit-barrier update until its next transition/clear, preventing
-LOADING from misclassifying that departure. Unrecognized transit, logout/disconnect,
+LOADING from misclassifying that departure. Build 0.19.2 also retains a return
+scene verified from the same public arena evidence before preference IO completes,
+so a second scene transition does not depend on when settings load. Unrecognized
+transit, logout/disconnect,
 profile or account change, world change, unknown identity, disable and Reset still
 clear summaries. Returning capture cannot resume until revalidation. See the
 [client finding and regression report](../validation/nex-bank-retention.md).

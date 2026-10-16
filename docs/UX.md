@@ -174,3 +174,17 @@ complete result, session statistics and details; logout/account/profile/world
 changes and Reset still clear them. The reported empty bank-open session failed
 validation and requires retesting on the corrected build.
 [Finding, regression cases and next client check](validation/nex-bank-retention.md).
+
+## 0.19.2 test visibility
+
+The header shows the actual bundled build version on the development classpath
+and in the assembled plugin. When completed history is cleared, the empty
+Encounter page retains a short constant explanation (for example world change,
+unverified travel or Reset). Fresh account reads do not overwrite that cause;
+a new captured attempt replaces it. Explanations contain no account identifiers
+or old performance data and are neither saved nor logged. Normal travel pauses
+remain separate from reset messages.
+
+A verified bank-return scene now supplies the next departure source while settings
+IO is pending. An additional scene transition must not require a completed
+preference read to preserve history. [Verification](validation/nex-bank-retention.md).

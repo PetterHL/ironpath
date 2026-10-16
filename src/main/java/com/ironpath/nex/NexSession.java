@@ -9,6 +9,7 @@ public final class NexSession
 	public static final int MAX_RECENT=50;
 	private final Deque<NexSummary> recent=new ArrayDeque<>();
 	private String identity;
+	private String resetReason;
 	private int world, suspendedAt;
 	private boolean suspended, atBank, returning;
 	private long revision;
@@ -17,25 +18,31 @@ public final class NexSession
 	public synchronized boolean select(String identity, int world)
 	{
 		if (!Objects.equals(this.identity,identity) || this.world!=world)
-		{ clear(); this.identity=identity; this.world=world; return true; }
+		{
+			if(this.identity!=null) { clear(this.world!=world?"World changed.":"Account or profile changed."); }
+			else { clearData(); }
+			this.identity=identity; this.world=world; return true;
+		}
 		return false;
 	}
 	public synchronized void add(NexSummary summary)
 	{
 		if (identity==null || suspended) { return; }
-		recent.addLast(summary); while(recent.size()>MAX_RECENT) { recent.removeFirst(); } ++revision;
+		resetReason=null; recent.addLast(summary); while(recent.size()>MAX_RECENT) { recent.removeFirst(); } ++revision;
 	}
 	public synchronized boolean suspend(String identity, int world, int tick, boolean fromArena)
 	{
-		if ((!fromArena && !atBank && !suspended) || this.identity==null || !this.identity.equals(identity) || this.world!=world)
-		{ clear(); return false; }
+		if(this.identity==null || !this.identity.equals(identity)) { clear("Account identity changed or could not be verified."); return false; }
+		if(this.world!=world) { clear("World changed."); return false; }
+		if(!fromArena && !atBank && !suspended) { clear("Travel did not start from a verified Nex arena or bank."); return false; }
 		if (!suspended) { suspendedAt=tick; returning=atBank; atBank=false; }
 		suspended=true; ++revision; return true;
 	}
 	public synchronized boolean revalidate(String identity, int world, int tick, boolean bankVisible, boolean arena)
 	{
-		if (!Objects.equals(this.identity,identity) || this.world!=world || tick<suspendedAt)
-		{ clear(); return false; }
+		if(!Objects.equals(this.identity,identity)) { clear("Account identity changed or could not be verified."); return false; }
+		if(this.world!=world) { clear("World changed."); return false; }
+		if(tick<suspendedAt) { clear("Game tick counter restarted during travel."); return false; }
 		if (!suspended)
 		{
 			boolean nextBank=bankVisible || atBank && !arena;
@@ -47,7 +54,15 @@ public final class NexSession
 		if (!bankVisible && !(arena && returning)) { return false; }
 		suspended=false; atBank=bankVisible; returning=false; ++revision; return true;
 	}
-	public synchronized void clear() { identity=null; world=0; suspendedAt=0; suspended=atBank=returning=false; recent.clear(); ++revision; }
+	/** Only constant, non-private reason text supplied by the lifecycle; kept in memory, never logged or saved. */
+	public synchronized void clear(String reason)
+	{
+		if(reason==null) { resetReason=null; }
+		else if(!recent.isEmpty()) { resetReason=reason; }
+		clearData();
+	}
+	public synchronized void clear() { clear(null); }
+	private void clearData() { identity=null; world=0; suspendedAt=0; suspended=atBank=returning=false; recent.clear(); ++revision; }
 	public synchronized List<NexSummary> recent() { return suspended ? List.of() : List.copyOf(recent); }
 	public synchronized Stats stats()
 	{
@@ -55,16 +70,18 @@ public final class NexSession
 		NexSummary last=all.stream().filter(s->s.outcome==Outcome.COMPLETE).reduce((a,b)->b).orElse(null);
 		List<NexSummary> cohort=new ArrayList<>();
 		if (last!=null) { all.stream().filter(s->s.outcome==Outcome.COMPLETE && s.cohort.equals(last.cohort)).forEach(cohort::add); }
-		return new Stats(all,last,cohort);
+		return new Stats(all,last,cohort,resetReason);
 	}
 	public static final class Stats
 	{
 		public final NexSummary last, lastAttempt;
+		public final String resetReason;
 		public final int attempts, complete, failed, censored, n, shareN;
 		public final double meanSeconds, minSeconds, maxSeconds, meanShare, minShare, maxShare, aggregateShare;
 		public final List<NexSummary> cohort;
-		Stats(List<NexSummary> all, NexSummary last, List<NexSummary> cohort)
+		Stats(List<NexSummary> all, NexSummary last, List<NexSummary> cohort,String resetReason)
 		{
+			this.resetReason=resetReason;
 			this.last=last; lastAttempt=all.isEmpty()?null:all.get(all.size()-1); this.cohort=List.copyOf(cohort); attempts=all.size(); n=cohort.size();
 			complete=(int)all.stream().filter(s->s.outcome==Outcome.COMPLETE).count();
 			failed=(int)all.stream().filter(s->s.outcome==Outcome.FAILED).count(); censored=attempts-complete-failed;

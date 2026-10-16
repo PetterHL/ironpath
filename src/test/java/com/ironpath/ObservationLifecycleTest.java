@@ -424,6 +424,31 @@ public class ObservationLifecycleTest
 		if(component instanceof java.awt.Container) for(var child:((java.awt.Container)component).getComponents()) { result.append(panelText(child)); }
 		return result.toString();
 	}
+	@Test public void verifiedArenaReturnRemainsATravelSourceWhilePreferencesAreStillLoading()
+	{
+		observeBank();
+		var complete=com.ironpath.nex.NexCaptureTest.replay(0,20,60); plugin.nexSession.add(complete);
+		Queue<Runnable> workers=new ArrayDeque<>();
+		doAnswer(call->{workers.add(call.getArgument(0)); return null;}).when(plugin.executor).execute(any(Runnable.class));
+		var world=mock(net.runelite.api.WorldView.class); var actors=mock(net.runelite.api.IndexedObjectSet.class);
+		var boss=mock(net.runelite.api.NPC.class);
+		when(client.getTopLevelWorldView()).thenReturn(world); when(world.npcs()).thenReturn(actors);
+		when(actors.stream()).thenAnswer(i->java.util.stream.Stream.of(boss));
+		when(boss.getId()).thenReturn(net.runelite.api.gameval.NpcID.NEX);
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2);
+		GameStateChanged loading=new GameStateChanged(); loading.setGameState(GameState.LOADING);
+		GameStateChanged loggedIn=new GameStateChanged(); loggedIn.setGameState(GameState.LOGGED_IN);
+		plugin.onGameStateChanged(loading); when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(null);
+		plugin.onGameStateChanged(loggedIn); tick(); tick();
+		assertFalse(plugin.nexSession.suspended()); assertSame(complete,plugin.nexSession.stats().last);
+		assertFalse(plugin.session.preferencesLoaded()); assertFalse(workers.isEmpty());
+		// The return was verified from public arena state; a slow settings read must not lose that source.
+		plugin.onGameStateChanged(loading); assertTrue(plugin.nexSession.suspended()); assertTrue(plugin.nexSession.recent().isEmpty());
+		workers.remove().run(); while(!delayed.isEmpty()) { delayed.remove().run(); }
+		assertFalse("The old IO completion cannot publish into the new live generation",plugin.session.preferencesLoaded());
+		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(bankWidget); plugin.onGameStateChanged(loggedIn);
+		tick(); tick(); assertSame(complete,plugin.nexSession.stats().last);
+	}
 	@Test public void nexBarrierCallbackConsumesTheEventValueRatherThanRereadingTheGetter()
 	{
 		observeBank();

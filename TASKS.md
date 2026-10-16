@@ -35,7 +35,9 @@ reports retain their original evidence and checks.
 344.4 seconds and zero unclassified hits, then the bank-open view showed 0/0
 attempts. **Bank retention failed this round.** Build 0.19.1 removes the bank-opening
 expiry and premature nearby-Nex reset, and retains the arena departure source
-across an exit-barrier callback. [Finding and regression evidence](docs/validation/nex-bank-retention.md).
+across an exit-barrier callback. Build 0.19.2 also covers another scene change
+while preferences load after a verified return, and shows build/reset diagnostics.
+[Finding and regression evidence](docs/validation/nex-bank-retention.md).
 Retest the corrected build before accepting retention; prior screenshots/reports
 keep their original scopes.
 

@@ -75,6 +75,8 @@ final class NexObserver
 	synchronized boolean inArena() { return boss!=null && (barrier==2 || barrier==3); }
 	/** A barrier exit may precede LOADING. Preserve this source only until that scene transition. */
 	synchronized boolean bankTravelSource() { return arenaObserved || inArena(); }
+	/** Same public arena evidence used to revalidate a bank return, independent of preference IO readiness. */
+	synchronized void confirmArenaSource() { arenaObserved=true; }
 	synchronized void clearActive()
 	{ capture.clear(); targets.clear(); hits.clear(); signals.clear(); boss=null; attempted=arenaObserved=false; bossGone=bossForm=-1; barrier=-1; boundary=smoke=-100; view=Integer.MIN_VALUE; rosterTick=Integer.MIN_VALUE; cachedRoster=null; }
 	private void signal(String value)

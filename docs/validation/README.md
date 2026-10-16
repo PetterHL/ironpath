@@ -1,7 +1,8 @@
 # Validation records
 
-Current build 0.19.1 supplies the [bank-retention correction](nex-bank-retention.md)
-after a failed live bank test. Corrected client retesting remains open.
+Current build 0.19.2 supplies the [bank-retention correction](nex-bank-retention.md)
+after a failed live bank test, plus delayed-settings transition coverage and
+visible build/reset diagnostics. Corrected client retesting remains open.
 
 Build 0.19.0 adds [N3c complete-package conditional comparisons](nex-packages.md)
 to [N3b conditional spec/bolt damage and finite ammo](nex-spec-damage.md)
