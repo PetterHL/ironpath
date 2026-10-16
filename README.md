@@ -7,14 +7,15 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**16 October 2026: development build 0.19.2 (N1/N2/N3a/N3b/N3c).**
+**16 October 2026: development build 0.19.3 (N1/N2/N3a/N3b/N3c).**
 Bank-travel correction: completed history no longer expires while waiting to
 open the bank. It stays hidden until same-account/profile/world revalidation;
 logout, identity changes and Reset still clear it. The panel shows the build
 version and a non-private reset explanation when history is cleared. Verified
 return travel remains recognized while preferences are still loading.
-This addresses the reported
-bank reset and requires a new client round trip.
+Scene reloads inside a verified arena now resume capture without requiring a
+bank visit; Reset remains available while a revalidated account is paused.
+Client retesting remains open.
 [Finding and verification](docs/validation/nex-bank-retention.md).
 
 N3c connects complete actual, supported owned and hypothetical upgrade packages

@@ -7,6 +7,47 @@ import static org.junit.Assert.*;
 
 public class NexSessionTest
 {
+	@Test public void arenaSceneReloadKeepsCompletedHistoryAndAcceptsTheNextKillWithoutBanking()
+	{
+		NexSession session=new NexSession(); session.select("a",301);
+		var first=NexCaptureTest.replay(0,20,60); session.add(first);
+		assertTrue(session.suspend("a",301,40,true,true)); assertTrue(session.recent().isEmpty());
+		// Repeated LOADING must preserve the original reason even after the adapter was cleared.
+		assertTrue(session.suspend("a",301,41,true,false));
+		assertFalse("Missing arena NPCs during a scene rebuild are inconclusive",session.revalidate("a",301,42,false,false));
+		assertTrue(session.revalidate("a",301,2000,false,true)); assertFalse(session.suspended());
+		assertSame(first,session.stats().last);
+		session.add(NexCaptureTest.replay(2100,20,60)); assertEquals(2,session.stats().complete);
+		// A reload is not a bank visit and cannot authorize an unrelated departure.
+		assertFalse(session.suspend("a",301,2200,false)); assertTrue(session.recent().isEmpty());
+	}
+	@Test public void leavingTheArenaRevokesReloadEligibilityUntilBankVerification()
+	{
+		NexSession session=new NexSession(); session.select("a",301);
+		var first=NexCaptureTest.replay(0,20,60); session.add(first);
+		assertTrue(session.suspend("a",301,40,true,true));
+		assertFalse(session.revalidate("a",301,41,false,false,true));
+		// Neither another scene load nor a later nearby Nex can promote an outbound leg.
+		assertTrue(session.suspend("a",301,42,true,true));
+		assertFalse(session.revalidate("a",301,2000,false,true)); assertTrue(session.suspended());
+		assertTrue(session.recent().isEmpty());
+		assertTrue(session.revalidate("a",301,4000,true,true)); assertSame(first,session.stats().last);
+	}
+	@Test public void arenaReloadCannotBypassIdentityWorldClockOrResetBoundaries()
+	{
+		for(String boundary:List.of("account","unknown","world","clock","profile","reset"))
+		{
+			NexSession session=new NexSession(); session.select("a",301); session.add(NexCaptureTest.replay(0,20,60));
+			assertTrue(session.suspend("a",301,40,true,true));
+			if(boundary.equals("profile")) { session.select("b",301); }
+			else if(boundary.equals("reset")) { session.clear(); }
+			assertFalse(boundary,session.revalidate(boundary.equals("unknown")?null:boundary.equals("account")?"b":"a",
+				boundary.equals("world")?302:301,boundary.equals("clock")?39:2000,false,true));
+			assertFalse(boundary,session.suspended()); assertTrue(boundary,session.recent().isEmpty());
+			session.select("a",301); session.revalidate("a",301,4000,true,false);
+			assertTrue("A later bank cannot restore cleared history: "+boundary,session.recent().isEmpty());
+		}
+	}
 	@Test public void resetReasonSurvivesFreshAccountReadsUntilANewAttemptWithoutExposingIdentity()
 	{
 		NexSession session=new NexSession(); session.select("private-fixture-a",301); session.add(NexCaptureTest.replay(0,20,60));

@@ -188,3 +188,13 @@ remain separate from reset messages.
 A verified bank-return scene now supplies the next departure source while settings
 IO is pending. An additional scene transition must not require a completed
 preference read to preserve history. [Verification](validation/nex-bank-retention.md).
+
+## 0.19.3 arena scene reloads
+
+A scene rebuild while still in the verified Nex arena can resume observation
+without a bank visit. Completed summaries remain available after revalidation;
+active traces still end at the scene boundary. An observed departure continues
+to require bank verification, with no waiting deadline. After account/settings
+revalidation, the paused view offers Reset session with the existing view and
+identity guards. Client testing is deferred;
+[automated regression evidence](validation/nex-bank-retention.md) is recorded separately.

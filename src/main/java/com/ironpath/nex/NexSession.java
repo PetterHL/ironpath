@@ -3,7 +3,7 @@ package com.ironpath.nex;
 import com.ironpath.encounter.EncounterSummary.Outcome;
 import java.util.*;
 
-/** Separate lifetime from live account observations. Suspended evidence is inaccessible until banking revalidation. */
+/** Separate lifetime from live account observations. Suspended evidence requires same-account bank/arena revalidation. */
 public final class NexSession
 {
 	public static final int MAX_RECENT=50;
@@ -11,7 +11,7 @@ public final class NexSession
 	private String identity;
 	private String resetReason;
 	private int world, suspendedAt;
-	private boolean suspended, atBank, returning;
+	private boolean suspended, atBank, returning, arenaReload;
 	private long revision;
 	public synchronized long revision() { return revision; }
 	public synchronized boolean suspended() { return suspended; }
@@ -31,14 +31,20 @@ public final class NexSession
 		resetReason=null; recent.addLast(summary); while(recent.size()>MAX_RECENT) { recent.removeFirst(); } ++revision;
 	}
 	public synchronized boolean suspend(String identity, int world, int tick, boolean fromArena)
+	{ return suspend(identity,world,tick,fromArena,false); }
+	/** arenaScene is current arena evidence at LOADING, not a remembered departure source. */
+	public synchronized boolean suspend(String identity, int world, int tick, boolean fromArena, boolean arenaScene)
 	{
 		if(this.identity==null || !this.identity.equals(identity)) { clear("Account identity changed or could not be verified."); return false; }
 		if(this.world!=world) { clear("World changed."); return false; }
 		if(!fromArena && !atBank && !suspended) { clear("Travel did not start from a verified Nex arena or bank."); return false; }
-		if (!suspended) { suspendedAt=tick; returning=atBank; atBank=false; }
+		if (!suspended) { suspendedAt=tick; returning=atBank; arenaReload=fromArena && arenaScene && !returning; atBank=false; }
 		suspended=true; ++revision; return true;
 	}
 	public synchronized boolean revalidate(String identity, int world, int tick, boolean bankVisible, boolean arena)
+	{ return revalidate(identity,world,tick,bankVisible,arena,false); }
+	/** arenaExit requires an observed outside-arena barrier; missing NPCs alone are inconclusive. */
+	public synchronized boolean revalidate(String identity, int world, int tick, boolean bankVisible, boolean arena, boolean arenaExit)
 	{
 		if(!Objects.equals(this.identity,identity)) { clear("Account identity changed or could not be verified."); return false; }
 		if(this.world!=world) { clear("World changed."); return false; }
@@ -50,9 +56,11 @@ public final class NexSession
 			return true;
 		}
 		// Completed history is bounded by count and account lifetime, not how quickly a bank is opened.
-		// A nearby Nex can remain loaded during outbound travel; keep waiting until a bank is verified.
-		if (!bankVisible && !(arena && returning)) { return false; }
-		suspended=false; atBank=bankVisible; returning=false; ++revision; return true;
+		// LOADING can rebuild the current arena. Resume if it is still verified after loading.
+		// Once outside it, later nearby Nex evidence cannot turn an outbound leg into a reload.
+		if (arenaExit && arenaReload) { arenaReload=false; ++revision; }
+		if (!bankVisible && !(arena && (returning || arenaReload))) { return false; }
+		suspended=false; atBank=bankVisible; returning=arenaReload=false; ++revision; return true;
 	}
 	/** Only constant, non-private reason text supplied by the lifecycle; kept in memory, never logged or saved. */
 	public synchronized void clear(String reason)
@@ -62,7 +70,7 @@ public final class NexSession
 		clearData();
 	}
 	public synchronized void clear() { clear(null); }
-	private void clearData() { identity=null; world=0; suspendedAt=0; suspended=atBank=returning=false; recent.clear(); ++revision; }
+	private void clearData() { identity=null; world=0; suspendedAt=0; suspended=atBank=returning=arenaReload=false; recent.clear(); ++revision; }
 	public synchronized List<NexSummary> recent() { return suspended ? List.of() : List.copyOf(recent); }
 	public synchronized Stats stats()
 	{

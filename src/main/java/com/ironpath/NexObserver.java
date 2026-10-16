@@ -73,6 +73,7 @@ final class NexObserver
 		}
 	}
 	synchronized boolean inArena() { return boss!=null && (barrier==2 || barrier==3); }
+	synchronized boolean arenaExitObserved() { return barrier==0 || barrier==1; }
 	/** A barrier exit may precede LOADING. Preserve this source only until that scene transition. */
 	synchronized boolean bankTravelSource() { return arenaObserved || inArena(); }
 	/** Same public arena evidence used to revalidate a bank return, independent of preference IO readiness. */

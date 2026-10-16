@@ -38,8 +38,11 @@ banking transitions. End/censor active traces, keep clearing live account/refere
 data, suspend access and require same-account/profile/world revalidation. Old-generation
 callbacks cannot affect a new trace. Waiting to open the bank or a long recognized
 return leg does not expire bounded completed history. Outbound arena-like evidence
-remains suspended until bank verification. Logout, disconnect/ambiguous identity, account
-or profile change, unsupported worlds, disable and Reset clear the session.
+remains suspended until bank verification. A scene reload with arena evidence at
+its origin may resume in the same arena without banking; an observed exit revokes
+that permission, while temporarily missing NPCs do not establish an exit. Logout,
+disconnect/ambiguous identity, account or profile change, unsupported worlds,
+disable and Reset clear the session.
 Changed method/setup/team evidence separates comparable cohorts; unknown teammate
 composition must remain explicit rather than assumed identical across kills.
 

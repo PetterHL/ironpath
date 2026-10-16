@@ -14,7 +14,11 @@
 
 ## Delivery
 
-- Current: development build 0.19.2 extends the 0.19.1 completed-history fix during bank
+- Current: development build 0.19.3 fixes arena-only scene reloads being mistaken
+  for outbound bank travel. Current arena evidence at LOADING permits arena
+  revalidation; an observed exit revokes that permission. Missing NPCs alone do
+  not establish an exit. Reset remains available while paused after live account
+  revalidation. Build 0.19.2 extends the 0.19.1 completed-history fix during bank
   travel on top of 0.19.0 N3c. Completed summaries have no bank-opening deadline;
   outbound nearby-Nex evidence keeps them paused until a visible bank verifies
   the same account/profile/world. A verified arena source survives an exit-barrier

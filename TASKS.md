@@ -19,6 +19,11 @@ retention, Death Charge recognition or impact estimates. Those are N1–N4 below
 
 ## N1 — Understand the real Nex session (in progress)
 
+Build 0.19.3 corrects scene reloads inside the Nex arena without requiring a bank
+visit. Bank history remains bounded without a deadline; hard account/profile/
+world guards remain. [Regression evidence](docs/validation/nex-bank-retention.md).
+Client testing is deferred; no new live acceptance is claimed.
+
 Implementation is available for review in development build 0.15.0. The Nex adapter,
 native session view, method/locks, immutable state/resource capture and banking
 round trips have synthetic replay/lifecycle coverage. [Evidence and pending live

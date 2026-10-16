@@ -70,7 +70,12 @@ final class NexPanel extends PluginPanel
 			});
 		}
 		add(nav);
-		if(status.startsWith("Nex session paused")) { text(status); revalidate(); repaint(); return; }
+		if(status.startsWith("Nex session paused"))
+		{
+			text(status);
+			button(this,"Reset session",()->{if(valid.getAsBoolean()) { actions.reset(); }}).setName("nex-reset");
+			revalidate(); repaint(); return;
+		}
 		if (page.equals("account")) { account(account,prefs,catalog,actions,valid,storage); }
 		else if (page.equals("setup")) { setup(prefs,stats.last,catalog,actions,valid,storage); }
 		else if(inspectedOwned!=null)

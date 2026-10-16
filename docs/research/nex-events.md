@@ -87,6 +87,14 @@ profile or account change, world change, unknown identity, disable and Reset sti
 clear summaries. Returning capture cannot resume until revalidation. See the
 [client finding and regression report](../validation/nex-bank-retention.md).
 
+Build 0.19.3 distinguishes a scene rebuild from a departure: arena barrier state
+at LOADING and the adapter's current arena (or the same public scene evidence)
+permit later arena revalidation without banking. An already observed exit wins
+over a lagging getter; an exit observed after loading revokes reload eligibility.
+Repeated LOADING cannot promote an outbound leg into a reload. Missing NPCs alone
+remain inconclusive until arena evidence returns or an exit/bank is verified.
+Identity, world, clock, profile and lifecycle guards run before resumption.
+
 Statistics use complete captures in the latest complete kill's cohort: the saved
 method/locks, exact set of observed worn-role packages/levels/prayers and observed arena roster.
 Roster is sampled once per game tick. Hashes are session-only; visible people are not verified party membership.

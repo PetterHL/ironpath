@@ -110,12 +110,61 @@ The same normal cached-dependency `test build` command passes for 0.19.2:
 - Native 225px captures at both font sizes, `git diff --check` and changed-document
   relative file links pass. No graphical client was launched.
 
-## Client retest
+## 0.19.3 review regression: LOADING inside the arena
 
-Use branch `fix/nex-banking-session`, build 0.19.2. Restarting the development
+The review finding on PR #38 is confirmed. In `c1ed704`, LOADING from an
+unbanked arena sets `returning=false` and `suspended=true`. The subsequent
+same-account arena read cannot resume that outbound-only state, so `nexReady()`
+rejects the next smoke callback indefinitely. GPU expanded-map-loading changes
+are one trigger; no actual bank trip is required. The paused panel also returned
+before rendering Reset.
+
+The permanent `sceneReloadInsideArenaAllowsTheNextSmokeStartWithoutABank`
+integration test exercises repeated LOADING/LOGGED_IN, an initially cleared NPC
+list, fresh account/settings reads and the next real smoke callback, without
+opening a bank. The same test fails on `c1ed704` and passes on base `99356a1`.
+
+The fix records arena-reload eligibility separately from bank-return eligibility.
+At the first LOADING it requires the current arena barrier and the adapter's
+current arena or matching public scene evidence. A previously observed exit
+overrides a lagging getter. Repeated LOADING preserves the initial classification
+and cannot promote an outbound leg. A settled outside-arena barrier revokes
+reload eligibility; temporarily absent NPCs alone do not establish an exit.
+Matching arena evidence can then resume an arena rebuild without opening a bank.
+Completed immutable summaries survive; active traces and old live generations
+still end at the scene boundary. A reload does not establish a bank visit.
+
+Five added tests cover the integration reproduction, completed-history retention
+and repeated loading, exit/reload classification, identity/world/clock/reset
+boundaries, and the paused Reset action with rejection of an old view's button.
+The existing delayed-bank, nearby-Nex, preference-IO and lifecycle cases remain;
+the outbound integration additionally verifies that an observed exit wins over
+a lagging getter at LOADING. Reset becomes available once the live account and
+settings have been revalidated, while paused history remains hidden.
+
+The bank-history deadline remains removed. Account/profile/world, unknown
+identity, clock rollback, logout, unsupported-world, disable, worker and action
+guards remain in place. No graphical client was launched; client testing is
+deferred at Petter's request.
+
+Automated verification for 0.19.3 (JDK 11.0.32.1+1, Gradle 8.10, RuneLite 1.13.2):
+
+- Normal `test build --no-daemon --offline` with the command/environment above
+  succeeds in 54 seconds. Initial network resolution refreshed the restored
+  dependency metadata before the offline runs.
+- **269 tests across 32 suites; zero failures, errors or skips** (264 existing
+  tests plus five new regressions).
+- The identical integration reproduction fails on `c1ed704` and passes on
+  `99356a1`; it also passes in the complete corrected suite.
+- `build/libs/ironpath-0.19.3.jar` contains bundled `version=0.19.3` metadata.
+- `git diff --check` and changed-document relative file links pass.
+
+## Client retest (deferred)
+
+Use branch `fix/nex-banking-session`, build 0.19.3. Restarting the development
 client starts a new in-memory session; the already cleared kill cannot be restored.
 
-1. Check the header says build 0.19.2. Capture one complete Nex kill and note
+1. Check the header says build 0.19.3. Capture one complete Nex kill and note
    the displayed duration and n=1.
 2. Leave the arena, deliberately wait more than a minute before opening the bank,
    then open it. The original duration, counts and encounter details must return.
@@ -124,6 +173,10 @@ client starts a new in-memory session; the already cleared kill cannot be restor
    means combine only when the observed method/setup/team evidence matches).
 4. Check a hard boundary separately: logout/Reset clears the session, and a later
    bank opening must not revive it.
+5. When client testing is available, change GPU expanded map loading while still
+   in the arena. After scene/account revalidation, the next smoke must start
+   capture without visiting a bank. Reset must also be available in a paused
+   view after account/settings revalidation.
 
 If counts reset, one screenshot of Encounter now includes the build and reset
 reason. The first short retest can stop after the original result returns at the
