@@ -7,18 +7,25 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**16 October 2026: development build 0.17.0, based on the N2 0.16.5 test build.**
+**16 October 2026: combined development build 0.17.1 (N1/N2/N3a).**
 N3a adds **Owned setup comparisons → Special-attack resources**, with frozen
 energy, Death Charge and ring readings after a kill. Its separate finite energy/
 delay scenario API requires explicit inputs and does not infer spec usage or
 recommend a spec upgrade. [Scope and verification](docs/validation/nex-spec-resources.md).
 
+N2's exact locked melee cape/defender
+forms now have reviewed support. Owned comparisons open with supported scenarios,
+role/support filters and grouped explanations for unavailable states. Counts
+distinguish carried and bank preparation scenarios; they are not fight coverage.
+[Variant support and checks](docs/validation/nex-owned-variants.md).
+
 Nex capture measures from the
 observed smoke announcement to death/dying, with corroborating arena completion.
 Arena entry is diagnostic; pre-smoke equipment remains separately inspectable.
 The bounded end matching accounts for dying preceding arena completion. The
-reproduced failure pattern passes synthetic replay; a complete capture on the
-updated client still needs validation. [Current capture contract and checks](docs/validation/nex-smoke-anchor.md).
+reproduced failure pattern passes synthetic replay. Complete-result display and
+retention across a bank visit now have in-session evidence; broader session and
+player checks remain open. [Capture contract](docs/validation/nex-smoke-anchor.md).
 The development launcher retains RuneLite's required assertions with a temporary
 GPU-package exception, correcting the 0.16.3 startup failure; see
 [development](docs/DEVELOPMENT.md#gpu-assertion-during-development).

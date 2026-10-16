@@ -4,6 +4,9 @@ Reviewed 16 October 2026. Model `nex-spec-resources-1`, development build 0.17.0
 Based on N2 build 0.16.5 / capture adapter `nex-public-4`. This adds resource
 evidence and an independently authored resource scenario kernel. It does not
 complete N3's damage, upgrade selection, ammunition or supply models.
+Combined build 0.17.1 incorporates N2 0.16.6 / knowledge `n2-owned-2` without
+changing these energy/delay rules or capture adapter. The initial implementation
+and verification below retain their stated historical baseline.
 
 ## Reviewed inputs and sources
 

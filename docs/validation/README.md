@@ -1,7 +1,8 @@
 # Validation records
 
-N3a implementation: [finite spec resources and post-kill evidence](nex-spec-resources.md),
-based on the N2 0.16.5 test build. N3 damage/upgrade decisions remain open.
+Current combined build 0.17.1: N1 capture/session, N2 exact variants and comparison
+filters, and N3a [finite spec resources and post-kill evidence](nex-spec-resources.md#0171-combined-integration).
+N3 damage/upgrade decisions and combined client acceptance remain open.
 
 Current client-test follow-up: [0.16.1 start, bank and status fixes](nex-live-start.md).
 

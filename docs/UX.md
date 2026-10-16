@@ -114,6 +114,9 @@ at-cap readings are not labeled wasted energy. New results do not replace the
 inspected kill; identity reset clears it. No live coaching or capture change.
 The conditional resource scenario API has no player setup wizard or automatic
 spec recommendation. [Scope and validation](validation/nex-spec-resources.md).
+Combined build 0.17.1 retains the resource review alongside the 0.16.6 role/support
+filters and paused-travel presentation; changing an ordinary scenario filter does
+not change which kill the resource review describes.
 
 ## 0.16.5 observed smoke start
 
@@ -126,3 +129,25 @@ excluded from combat statistics and owned-equipment scenarios. The start is neve
 backdated, and a later smoke line cannot erase observed combat/later phases.
 End matching distinguishes dying from subsequent arena completion. Missing
 evidence remains excluded. [Contract and verification](validation/nex-smoke-anchor.md).
+
+## 0.16.6 comparison coverage and selection
+
+The main view counts supported carried scenarios, bank preparation and unavailable
+states separately. These counts do not represent fight/damage coverage. A missing
+ordinary role has an explicit unavailable message. **Owned setup comparisons**
+starts with supported scenarios when any exist, with role and support filters.
+**All states** and **Unavailable comparisons** retain the gaps; **Why comparisons
+are unavailable** expands grouped reason counts. An empty filter has a clear
+message and disabled state selector. Filtering does not recompute or alter history.
+Bank preparation remains labeled conditional, and identity changes clear the view.
+
+While a bank/travel session is paused, every navigation page shows the revalidation
+message. Setup must not describe temporarily hidden history as an empty session.
+The ordinary Setup content returns after revalidation without changing stored
+summaries or preferences.
+
+The main result/comparison follows the latest complete kill. An already inspected
+comparison stays frozen while the view remains valid; there is currently no
+selector for opening any earlier kill's comparison from the main view. A new
+partial attempt does not enter complete averages or replace the last complete
+baseline. Setup/history across further travel still needs live checks.

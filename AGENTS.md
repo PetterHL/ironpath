@@ -14,8 +14,8 @@
 
 ## Delivery
 
-- Current: N3a resource foundation in development build 0.17.0, based on
-  N2 build 0.16.5. N1/N2 capture testing continues independently.
+- Current: combined N1/N2/N3a development build 0.17.1, integrating N2 0.16.6
+  with the N3a resource foundation. Combined client testing remains open.
   Live-client/player acceptance remains open in docs/validation/nex-session.md
   and docs/validation/nex-owned.md. Nex Trio MP2, one kill per trip. Lightbearer throughout,
   upgraded Death Charge, observed melee/ranged/spec switches. Do not guess the
@@ -55,6 +55,12 @@
   phase/order, eligible deaths and attack opportunities. Preserve the distinction
   between sampled net changes and modeled spending/restoration. See
   docs/research/nex-spec-resources.md; N3 damage/ammo/supply acceptance stays open.
+- Knowledge `n2-owned-2` adds only exact locked Dragon defender (24143) and
+  Infernal cape (24224) melee forms. Preserve exact captured IDs and ownership;
+  do not generalize normal/locked/broken/mangled variants. Comparison filters
+  retain all immutable scenarios and grouped gaps; counts are not fight coverage.
+  See docs/validation/nex-owned-variants.md. Complete-result display and one bank
+  retention round trip have in-session evidence; broader acceptance stays open.
 - Use short-lived branches from current main and focused PRs. Do not merge or
   publish to Plugin Hub without authorization. Do not alter unrelated work.
 - Test the affected behavior and run the normal build. Preserve arithmetic,

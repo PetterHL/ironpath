@@ -161,5 +161,18 @@ public class CatalogValidationTest
 		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().addProperty("magicLevel",80));
 		rejects(d -> d.getAsJsonObject("comparison").getAsJsonArray("targets").get(0).getAsJsonObject().addProperty("magicDefence",298));
 	}
+	@Test public void equipmentFactReferencesRequireTheExactRepositoryFileAndPinnedRevision()
+	{
+		for(String url:new String[]{
+			"https://github.com/weirdgloop/osrs-dps-calc/blob/main/cdn/json/equipment.json",
+			"https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/monsters.json",
+			"https://github.com/another-owner/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/equipment.json"})
+		{
+			rejects(d->{ for(var s:d.getAsJsonArray("sources")) { var source=s.getAsJsonObject();
+				if(source.get("id").getAsString().equals("n2-locked-offence")) { source.addProperty("url",url); } } });
+		}
+		rejects(d->{ for(var s:d.getAsJsonArray("sources")) { var source=s.getAsJsonObject();
+			if(source.get("id").getAsString().equals("n2-locked-offence")) { source.addProperty("revision","0000000000000000000000000000000000000000"); } } });
+	}
 
 }

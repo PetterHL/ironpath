@@ -23,7 +23,9 @@ Implementation is available for review in development build 0.15.0. The Nex adap
 native session view, method/locks, immutable state/resource capture and banking
 round trips have synthetic replay/lifecycle coverage. [Evidence and pending live
 checks](docs/validation/nex-session.md). **N1 is not accepted yet:** initial client screenshots show censored attempts,
-not a validated complete capture on the current build. The
+historical failures rather than acceptance. Complete-result display and one
+bank-retention check have since been confirmed in-session; matched multi-trip
+means, broader lifecycle and usefulness checks remain open. The
 [0.16.5 correction](docs/validation/nex-smoke-anchor.md) replaces arena-entry
 anchoring with an observed smoke start and distinguishes dying from later arena
 completion. It preserves pre-smoke states and conservative late-arrival rejection.
@@ -70,8 +72,10 @@ regressions remain. [Implementation and verification](docs/validation/nex-owned.
 
 Petter supplied the ranged and melee equipment on 15 October; an anonymous fixture
 uses those items with explicitly synthetic levels/prayers/quantities. **Acceptance
-remains open:** no real captured account with complete levels/inventory/charges,
-no validated combined bank packing plan and no player/client checks. Spec-role
+remains open:** live capture now produces N2 results, while exact stock/charges,
+combined bank packing and player usefulness still need validation. Build 0.16.6
+adds locked melee variants plus role/support filters and grouped gaps; see
+[the correction report](docs/validation/nex-owned-variants.md). Spec-role
 history is retained; its finite energy/effects remain N3. Supported ordinary
 pairwise offence is not global best owned or encounter throughput.
 
@@ -88,8 +92,8 @@ unsupported item must not suppress a supported explicit pairwise comparison.
 
 ## N3 — Relevant upgrades and the pilot spec system
 
-**N3a resource foundation is implemented for review in 0.17.0**, on a separate
-branch based on the current N2 0.16.5 test build. Post-kill details expose frozen
+**N3a resource foundation is integrated with N2 0.16.6 in build 0.17.1.**
+Post-kill details expose frozen
 resource readings; an independent bounded scenario API checks shared energy,
 regen phase/order, cap waste, Death Charge casts/eligible procs and spec versus
 ordinary attack delays. It does not infer attacks/casts/procs or supply a spec
@@ -100,7 +104,7 @@ damage/upgrade recommendation. [Contract](docs/research/nex-spec-resources.md) a
 ammo/splinter use, actual eligible opportunities and displaced ordinary attacks;
 compare whole owned-plus-upgrade packages with acquisition and recurring costs.
 Supply effects and live/player acceptance remain open. N1/N2 acceptance above is
-unchanged; later capture fixes can be integrated into this branch before retesting.
+unchanged; combined client checks remain open after the integration.
 
 Prioritize actual Nex coverage: ammo/quiver, relevant melee packages, Voidwaker
 versus Zaryte crossbow, Lightbearer and upgraded Death Charge. Validate finite

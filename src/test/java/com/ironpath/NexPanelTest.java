@@ -85,6 +85,21 @@ public class NexPanelTest
 			button(panel,"Capture signal trace").doClick();
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
+	@Test public void setupDoesNotClaimAnEmptySessionWhileBankRevalidationHidesHistory() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{try {
+			var catalog=KnowledgeCatalog.load(new Gson()); var session=new NexSession(); session.select("a",301);
+			var account=P4aFixtures.account(Set.of(11907),99,90); var panel=new NexPanel(null);
+			String paused="Nex session paused. Open a bank to revalidate this account.";
+			panel.render(paused,account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
+			button(panel,"Setup").doClick(); assertTrue(shown(panel).contains(paused));
+			assertFalse(shown(panel).contains("No complete kill yet"));
+			session.add(NexCaptureTest.replay(0,20,60));
+			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
+			assertTrue(shown(panel).contains("Automatic observations are the baseline"));
+			assertFalse(shown(panel).contains("Nex session paused")); assertFalse(shown(panel).contains("No complete kill yet"));
+		} catch(Exception ex) { throw new RuntimeException(ex); } });
+	}
 	@Test public void narrowAndEnlargedFontMainSetupAndDetailsWrap() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{try {
@@ -199,6 +214,91 @@ public class NexPanelTest
 				assertTrue(shown(panel).contains("Owned equipment · kill #2"));
 				panel.render("Profile changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"",null);
 				assertFalse(shown(panel).contains("Ancient blessing")); assertFalse(shown(panel).contains("Blood fury"));
+			}
+		} catch(Exception ex) { throw new RuntimeException(ex); } });
+	}
+	@Test public void lockedMeleeFiltersAndResourceReviewKeepTheSameKillAcrossTravelAndNewResults() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{try {
+			var catalog=KnowledgeCatalog.load(new Gson());
+			var slots=new LinkedHashMap<>(com.ironpath.advisor.NexOwnedFixtures.melee());
+			slots.put("cape",24224); slots.put("shield",24143);
+			var state=com.ironpath.advisor.NexOwnedFixtures.state(slots,Map.of());
+			var first=com.ironpath.advisor.NexOwnedFixtures.sample("melee",state);
+			var spent=new com.ironpath.encounter.CombatState(state.slots,state.realLevels,state.visibleLevels,state.prayers,
+				state.style,500,true,state.inventory,state.resources);
+			var second=new com.ironpath.nex.NexSummary.Sample(21,first.phase,first.window,first.target,"melee",-1,spent);
+			var missing=new com.ironpath.nex.NexSummary.Sample(22,first.phase,first.window,null,"melee",-1,spent);
+			var summary=com.ironpath.advisor.NexOwnedFixtures.summary(List.of(first,second,missing));
+			var account=com.ironpath.advisor.NexOwnedFixtures.account(null);
+			var result=new com.ironpath.advisor.NexOwnedEvaluator(catalog).evaluate(summary,account,Preferences.EMPTY);
+			assertEquals(2,result.choices.stream().filter(c->c.supported()).count());
+			var session=new NexSession(); session.select("a",301); session.add(summary);
+			var panel=new NexPanel(null);
+			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
+			button(panel,"Owned setup comparisons").doClick();
+			button(panel,"Full setups and calculation basis").doClick();
+			assertTrue(shown(panel).contains("Infernal cape (l)")); assertTrue(shown(panel).contains("Dragon defender (l)"));
+			button(panel,"Special-attack resources").doClick(); button(panel,"Resource readings and rules").doClick();
+			var support=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-support-filter".equals(c.getName())).findFirst().orElseThrow();
+			support.setSelectedItem("Unavailable comparisons");
+			assertTrue(shown(panel).contains("Target unknown or minion"));
+			assertTrue(shown(panel).contains("First recorded energy 100.0% · last recorded 50.0%"));
+			var readings=(JComboBox<?>)children(panel).stream().filter(c->"nex-resource-reading".equals(c.getName())).findFirst().orElseThrow();
+			readings.setSelectedIndex(1); assertTrue(shown(panel).contains("Tick 21 · energy 50.0%"));
+			panel.render("Nex session paused. Open a bank to revalidate this account.",account,Preferences.EMPTY,catalog,
+				new NexSession().stats(),true,actions(),"local",null);
+			assertFalse(shown(panel).contains("No complete kill yet")); assertFalse(shown(panel).contains("First recorded energy"));
+			readings.setSelectedIndex(0); assertFalse(shown(panel).contains("energy 100.0%"));
+			var base=NexCaptureTest.replay(100,40,0);
+			var next=new com.ironpath.nex.NexSummary(2,base.startTick,base.endTick,base.sampledTicks,base.expectedTicks,
+				base.unclassifiedHits,base.outcome,base.reason,base.cohort,base.method,base.timeline,base.damage,base.gaps,base.signals,base.beforeStart);
+			session.add(next);
+			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",
+				new com.ironpath.advisor.NexOwnedResult(next,List.of()));
+			assertTrue(shown(panel).contains("Owned equipment · kill #1"));
+			assertTrue(shown(panel).contains("Target unknown or minion"));
+			button(panel,"Special-attack resources").doClick();
+			assertTrue(shown(panel).contains("First recorded energy 100.0% · last recorded 50.0%"));
+		} catch(Exception ex) { throw new RuntimeException(ex); } });
+	}
+	@Test public void ownedFiltersPreserveBankScopeExposeGapsAndClearOnIdentityChange() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{try {
+			var catalog=KnowledgeCatalog.load(new Gson());
+			var r=com.ironpath.advisor.NexOwnedFixtures.sample("ranged",com.ironpath.advisor.NexOwnedFixtures.state(com.ironpath.advisor.NexOwnedFixtures.ranged(),Map.of()));
+			var m=com.ironpath.advisor.NexOwnedFixtures.sample("melee",com.ironpath.advisor.NexOwnedFixtures.state(com.ironpath.advisor.NexOwnedFixtures.melee(),Map.of()));
+			var missing=new com.ironpath.nex.NexSummary.Sample(30,m.phase,m.window,null,"melee",-1,m.state);
+			var summary=com.ironpath.advisor.NexOwnedFixtures.summary(List.of(r,m,missing));
+			var account=com.ironpath.advisor.NexOwnedFixtures.account(Set.of(11212));
+			var result=new com.ironpath.advisor.NexOwnedEvaluator(catalog).evaluate(summary,account,Preferences.EMPTY);
+			assertEquals(4,result.choices.size());
+			var session=new NexSession(); session.select("a",301); session.add(summary);
+			for(float font:List.of(12f,20f))
+			{
+				var panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
+				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
+				assertTrue(shown(panel).contains("Supported scenarios: carried 2, bank preparation 1. Unavailable: 1"));
+				button(panel,"Owned setup comparisons").doClick();
+				JComboBox<?> role=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-role-filter".equals(c.getName())).findFirst().orElseThrow();
+				JComboBox<?> support=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-support-filter".equals(c.getName())).findFirst().orElseThrow();
+				JComboBox<?> states=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-state".equals(c.getName())).findFirst().orElseThrow();
+				assertEquals(3,states.getItemCount());
+				role.setSelectedItem("melee"); assertEquals(1,states.getItemCount());
+				support.setSelectedItem("All states"); assertEquals(2,states.getItemCount());
+				support.setSelectedItem("Unavailable comparisons"); assertEquals(1,states.getItemCount());
+				assertTrue(shown(panel).contains("Target unknown or minion"));
+				button(panel,"Why comparisons are unavailable").doClick();
+				assertTrue(shown(panel).contains("1 scenario · Target unknown or minion"));
+				capture(panel,"owned-filter-gaps-"+(int)font);
+				role.setSelectedItem("ranged"); assertEquals(0,states.getItemCount()); assertFalse(states.isEnabled());
+				assertTrue(shown(panel).contains("No scenarios match these filters"));
+				support.setSelectedItem("All states"); assertEquals(2,states.getItemCount()); assertTrue(states.isEnabled());
+				states.setSelectedIndex(1); assertTrue(shown(panel).contains("Bank preparation scenario"));
+				capture(panel,"owned-filter-bank-"+(int)font);
+				panel.render("Identity changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"",null);
+				role.setSelectedItem("melee"); support.setSelectedItem("All states");
+				assertFalse(shown(panel).contains("Owned equipment")); assertFalse(shown(panel).contains("Target unknown or minion"));
 			}
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}

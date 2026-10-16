@@ -1,7 +1,7 @@
 {
   "schemaVersion": 14,
-  "knowledgeVersion": "n2-owned-1",
-  "reviewed": "2026-10-15",
+  "knowledgeVersion": "n2-owned-2",
+  "reviewed": "2026-10-16",
   "sources": [
     {
       "id": "rigour",
@@ -2953,10 +2953,10 @@
       "url": "https://github.com/runelite/runelite/blob/42a6f17a6a2e8e478aa763890ecd0181a59dad38/runelite-api/src/main/java/net/runelite/api/gameval/ItemID.java",
       "revision": "42a6f17a6a2e8e478aa763890ecd0181a59dad38",
       "author": "RuneLite contributors",
-      "accessed": "2026-10-13",
-      "reviewed": "2026-10-13",
+      "accessed": "2026-10-16",
+      "reviewed": "2026-10-16",
       "licence": "BSD-2-Clause (RuneLite source)",
-      "reuseBasis": "Checked exact numeric IDs and charged, inactive, component and cosmetic names against the official API source. No source code copied; limited identifiers accompany independently checked Wiki mechanics. Rechecked all crystal clan/Deadman cosmetic IDs and empty/loaded Blazing IDs for the client variant correction.",
+      "reuseBasis": "Checked exact numeric IDs and charged, inactive, component and cosmetic names against the official API source. No source code copied; limited identifiers accompany independently checked Wiki mechanics. Rechecked all crystal clan/Deadman cosmetic IDs and empty/loaded Blazing IDs for the client variant correction. Rechecked exact locked Dragon defender and Infernal cape IDs; damaged, mangled and alternate forms are not inferred from the normal forms.",
       "decisions": [
         "assemble-swamp-trident",
         "coordinate-defence-reduction",
@@ -3329,7 +3329,9 @@
         33595,
         33634,
         33636,
-        33639
+        33639,
+        24143,
+        24224
       ],
       "models": [],
       "routes": [
@@ -19498,6 +19500,25 @@
       "profiles": [
         "vyres-effort"
       ]
+    },
+    {
+      "id": "n2-locked-offence",
+      "url": "https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/equipment.json",
+      "author": "OSRS Wiki contributors; Weird Gloop development reference",
+      "type": "pinned equipment facts cross-check",
+      "revision": "89c3e25b344aea90d0189746e4b5f73dde0f0383",
+      "accessed": "2026-10-16",
+      "reviewed": "2026-10-16",
+      "reuseBasis": "Independently checked two locked forms against the existing normal-item bonus facts and official item identifiers. Only their limited factual melee bonuses, requirements and exact IDs are recorded; no source code, guide prose, images or equipment dataset copied or redistributed.",
+      "licence": "Reference code is GPL-3.0; equipment facts derive from OSRS Wiki. Factual cross-check only; no licensed implementation or dataset redistribution.",
+      "decisions": [],
+      "items": [
+        24143,
+        24224
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
     }
   ],
   "decisions": [
@@ -31744,6 +31765,17 @@
         ]
       },
       {
+        "id": 24143,
+        "label": "Dragon defender (l)",
+        "skill": "ATTACK",
+        "level": 60,
+        "crystal": false,
+        "sources": [
+          "n2-locked-offence",
+          "item-ids"
+        ]
+      },
+      {
         "id": 22322,
         "label": "Avernic defender",
         "skill": "ATTACK",
@@ -31850,6 +31882,17 @@
         "crystal": false,
         "sources": [
           "r3b-infernal-cape",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 24224,
+        "label": "Infernal cape (l)",
+        "skill": "ATTACK",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "n2-locked-offence",
           "item-ids"
         ]
       },
@@ -53960,6 +54003,28 @@
         "effect": "NONE"
       },
       {
+        "id": 24143,
+        "label": "Dragon defender (l)",
+        "slot": "shield",
+        "stab": 25,
+        "slash": 24,
+        "crush": 23,
+        "strength": 6,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {
+          "ATTACK": 60,
+          "DEFENCE": 60
+        },
+        "sources": [
+          "n2-locked-offence",
+          "item-ids"
+        ],
+        "family": "ORDINARY",
+        "effect": "NONE"
+      },
+      {
         "id": 22322,
         "label": "Avernic defender",
         "slot": "shield",
@@ -54250,6 +54315,25 @@
         "requirements": {},
         "sources": [
           "r3b-infernal-cape",
+          "item-ids"
+        ],
+        "family": "ORDINARY",
+        "effect": "NONE"
+      },
+      {
+        "id": 24224,
+        "label": "Infernal cape (l)",
+        "slot": "cape",
+        "stab": 4,
+        "slash": 4,
+        "crush": 4,
+        "strength": 8,
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "requirements": {},
+        "sources": [
+          "n2-locked-offence",
           "item-ids"
         ],
         "family": "ORDINARY",

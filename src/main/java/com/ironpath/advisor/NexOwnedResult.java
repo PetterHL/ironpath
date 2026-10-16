@@ -1,7 +1,7 @@
 package com.ironpath.advisor;
 
 import com.ironpath.nex.NexSummary;
-import java.util.List;
+import java.util.*;
 
 /** Frozen post-kill choices. Each row is an independent alternative, never an additive trip plan. */
 public final class NexOwnedResult
@@ -31,6 +31,9 @@ public final class NexOwnedResult
 			if(comparison==null || comparison.before==null) { return "Offence unavailable · "+gap; }
 			return NexOwnedResult.headline(comparison);
 		}
+		public boolean supported() { return comparison!=null && comparison.before!=null && comparison.after!=null; }
+		public String gapReason()
+		{ return gap!=null?gap:comparison!=null?comparison.reason:"No supported complete package"; }
 	}
 	public static String headline(ComparisonResult comparison)
 	{
@@ -43,10 +46,14 @@ public final class NexOwnedResult
 	public final NexSummary summary;
 	public final List<Choice> choices;
 	public final com.ironpath.nex.NexResourceReview resources;
+	public final Map<String,Integer> gaps;
 	public NexOwnedResult(NexSummary summary, List<Choice> choices)
 	{
 		this.summary=summary; this.choices=List.copyOf(choices);
 		// Constructed with the frozen post-kill result on the existing guarded worker.
 		resources=summary==null?null:com.ironpath.nex.NexResourceReview.from(summary);
+		Map<String,Integer> counts=new LinkedHashMap<>();
+		for(Choice choice:choices) { if(!choice.supported()) { counts.merge(choice.gapReason(),1,Integer::sum); } }
+		gaps=Collections.unmodifiableMap(counts);
 	}
 }

@@ -16,6 +16,56 @@ public class NexOwnedEvaluatorTest
 {
 	private KnowledgeCatalog catalog; private NexOwnedEvaluator evaluator;
 	@Before public void load() throws Exception { catalog=KnowledgeCatalog.load(new Gson()); evaluator=new NexOwnedEvaluator(catalog); }
+	@Test public void exactLockedMeleeFormsSupportAnOrdinaryComparisonWithoutChangingCapturedIds()
+	{
+		Map<String,Integer> slots=new LinkedHashMap<>(melee()); slots.put("cape",24224); slots.put("shield",24143);
+		var actual=sample("melee",state(slots,Map.of()));
+		var result=evaluator.evaluate(summary(List.of(actual)),account(null),Preferences.EMPTY);
+		var choice=result.choices.get(0); assertNotNull(choice.gap,choice.comparison); assertNotNull(choice.comparison.before);
+		assertEquals(0,choice.comparison.dpsGain(),1e-12);
+		assertEquals(Integer.valueOf(24224),choice.comparison.beforeSetup.slots.get("cape"));
+		assertEquals(Integer.valueOf(24143),choice.proposed.slots.get("shield"));
+		assertEquals(actual.state.slots,choice.proposed.slots);
+	}
+	@Test public void lockedMeleeFormsRetainTheReviewedBonusesAndDoNotAuthorizeDamagedForms()
+	{
+		var items=catalog.melee.items.stream().collect(java.util.stream.Collectors.toMap(i->i.id,i->i));
+		assertEquals(4,items.get(24224).stab.intValue()); assertEquals(4,items.get(24224).slash.intValue());
+		assertEquals(4,items.get(24224).crush.intValue()); assertEquals(8,items.get(24224).strength.intValue());
+		assertEquals(25,items.get(24143).stab.intValue()); assertEquals(24,items.get(24143).slash.intValue());
+		assertEquals(23,items.get(24143).crush.intValue()); assertEquals(6,items.get(24143).strength.intValue());
+		for(int broken:new int[]{21287,33500,33502,20463})
+		{
+			Map<String,Integer> slots=new LinkedHashMap<>(melee()); slots.put("cape",21295);
+			slots.put(broken==20463?"shield":"cape",broken);
+			var result=evaluator.evaluate(summary(List.of(sample("melee",state(slots,Map.of())))),account(null),Preferences.EMPTY);
+			assertFalse(result.choices.get(0).supported()); assertTrue(result.choices.get(0).gap.contains("Unreviewed melee contribution"));
+		}
+	}
+	@Test public void normalMeleeItemsDoNotCreateOwnershipOfTheirLockedForms()
+	{
+		Map<String,Integer> slots=new LinkedHashMap<>(melee()); slots.put("cape",21295);
+		var actual=sample("melee",state(slots,Map.of()));
+		Map<String,Integer> locked=new LinkedHashMap<>(slots); locked.put("cape",24224); locked.put("shield",24143);
+		var pair=evaluator.compare(actual,evaluator.setup(actual,locked),account(null),Preferences.EMPTY);
+		assertNull(pair.before); assertTrue(pair.reason.contains("not carried"));
+	}
+	@Test public void repeatedUnsupportedStatesHaveGroupedReasonsWithoutLosingTheStates()
+	{
+		var actual=sample("ranged",state(ranged(),Map.of()));
+		List<NexSummary.Sample> samples=new ArrayList<>(); samples.add(actual);
+		int tick=actual.tick+1;
+		for(int energy:new int[]{0,500,1000})
+		{
+			var s=actual.state;
+			var spec=new CombatState(s.slots,s.realLevels,s.visibleLevels,s.prayers,s.style,energy,true,s.inventory,s.resources);
+			samples.add(new NexSummary.Sample(tick++,actual.phase,actual.window,actual.target,"spec candidate",-1,spec));
+		}
+		var result=evaluator.evaluate(summary(samples),account(null),Preferences.EMPTY);
+		assertEquals(4,result.choices.size()); assertEquals(1,result.choices.stream().filter(c->c.supported()).count());
+		assertEquals(1,result.gaps.size()); assertEquals(Integer.valueOf(3),result.gaps.values().iterator().next());
+		assertThrows(UnsupportedOperationException.class,()->result.gaps.clear());
+	}
 	@Test public void preSmokeHistoryIsRetainedButExcludedFromOwnedFightComparisons()
 	{
 		var actual=sample("ranged",state(ranged(),Map.of())); var base=summary(List.of(actual));

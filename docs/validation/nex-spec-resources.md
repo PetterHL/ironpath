@@ -51,3 +51,27 @@ evidence, initial spell/cooldown and restoration phase, ring-switch behavior,
 supplied attack windows, ammo/charges, target HP/bolt/spec damage and ordinary
 attacks displaced. Calibrate the exact expiry/order boundaries. Implement the
 remaining N3/N4 acceptance in TASKS without promoting this foundation to acceptance.
+
+## 0.17.1 combined integration
+
+16 October 2026. N3a is integrated with N2 0.16.6 (`f30453a`), preserving
+knowledge `n2-owned-2`, the role/support filters, grouped gaps, exact locked melee
+forms and paused-travel status. Resource review and grouped gaps are both built
+into the same immutable post-kill result on the guarded worker. Capture adapter
+`nex-public-4` and resource rules `nex-spec-resources-1` are unchanged.
+
+Four conflicting files were reconciled explicitly: development version, current
+instructions, README and the immutable result constructor. A previously unordered
+synthetic N2 fixture was corrected to use chronological, in-interval sample ticks;
+the resource review's ordering guard is preserved. An integration regression joins
+locked melee comparisons, ordinary filters, resource-reading selection, temporary
+travel suspension, stale controls and a new kill arriving during inspection.
+
+The combined JDK 11 / Gradle 8.10 / RuneLite 1.13.2 normal `test build` passed:
+**209 tests across 29 suites, zero failures/errors/skips** (33 seconds). This
+includes both branches' retained regressions and the new integration case. Native
+resource/filter captures were inspected at 225px, including enlarged resource
+text. Changed Markdown links and whitespace checks pass. The pinned equipment
+cost and RuneLite timer/handler references were fetched again; their SHA-256
+values match those recorded above. Existing acceptance limits remain open; the
+merge does not establish live resource attribution or spec damage.
