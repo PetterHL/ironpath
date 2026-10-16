@@ -12,7 +12,7 @@ import static com.ironpath.nex.SpecAttackPlan.*;
 /** Complete-package bridge, not a capture-to-attack inference or encounter/HP simulator. */
 public final class NexPackageComparison
 {
-	public static final String VERSION="nex-package-1";
+	public static final String VERSION="nex-package-2";
 	public enum Kind { ACTUAL, OWNED, UPGRADE }
 	public enum Availability { CARRIED, BANK_PREPARATION }
 	public enum Start { ATTACK_READY_NO_CHARGE_CAST_READY, OTHER }
@@ -334,6 +334,8 @@ public final class NexPackageComparison
 			{ throw new IllegalArgumentException("Weapon-internal charges/darts are outside this finite projectile model"); }
 			q=quiver(slots.get("cape"));
 			if(selected>0 && q==Quiver.NONE) { throw new IllegalArgumentException("Selected quiver projectile requires an exact quiver form"); }
+			if(selected>0 && selected!=slots.get("ammo") && RangedModel.compatible(weapon,ranged.get(slots.get("ammo"))))
+			{ throw new IllegalArgumentException("Compatible worn ammunition takes priority over selected quiver ammunition"); }
 			ammo=selected>0?selected:slots.get("ammo");
 			if(!RangedModel.compatible(weapon,ranged.get(ammo))) { throw new IllegalArgumentException("Incompatible exact selected ammunition"); }
 			requirements(loadout,scenario,ranged.get(ammo).requirements,null,null);
@@ -545,14 +547,18 @@ public final class NexPackageComparison
 	{
 		if(before.conditions!=after.conditions || !before.method.equals(after.method))
 		{ throw new IllegalArgumentException("Comparisons require the same immutable encounter conditions, method and horizon"); }
-		for(String key:before.scenario.loadouts.keySet())
+		// A loadout name is local to its scenario. Shared attack steps establish the comparison pair.
+		for(var entry:before.scenario.actions.entrySet())
 		{
-			Loadout b=before.scenario.loadouts.get(key),a=after.scenario.loadouts.get(key);
-			if(a!=null && b.state.known() && a.state.known()
+			Action next=after.scenario.actions.get(entry.getKey());
+			if(next==null) { continue; }
+			String beforeKey=entry.getValue().loadout,afterKey=next.loadout;
+			Loadout b=before.scenario.loadouts.get(beforeKey),a=after.scenario.loadouts.get(afterKey);
+			if(b.state.known() && a.state.known()
 				&& (!b.state.value().visibleLevels.equals(a.state.value().visibleLevels) || !b.state.value().realLevels.equals(a.state.value().realLevels)))
 			{ throw new IllegalArgumentException("Compared package levels must retain the same declared encounter conditions"); }
-			PackageInputs bp=before.packages.get(key),ap=after.packages.get(key);
-			if(a!=null && b.state.known() && a.state.known() && bp!=null && ap!=null && bp.melee==ap.melee
+			PackageInputs bp=before.packages.get(beforeKey),ap=after.packages.get(afterKey);
+			if(b.state.known() && a.state.known() && bp!=null && ap!=null && bp.melee==ap.melee
 				&& (!b.state.value().prayers.equals(a.state.value().prayers) || !Objects.equals(b.state.value().style,a.state.value().style)))
 			{ throw new IllegalArgumentException("Equipment alternatives must retain declared active prayers and style button within a combat family"); }
 		}

@@ -74,6 +74,28 @@ XDG_CACHE_HOME=/tmp/ironpath-cache ./gradlew test build --no-daemon
 - No historical archive files were changed. No additional client/UI claim is
   inferred from this build.
 
+## PR review corrections
+
+16 October 2026. Bridge `nex-package-2` addresses two independently reproduced
+review findings in PR #37:
+
+- Reject a selected quiver projectile when different compatible worn ammunition
+  has priority. This prevents calculating diamond-bolt damage/consumption while
+  ruby bolts are equipped. Quiver use with incompatible worn ammo and the same
+  exact projectile remain supported; recorded slots are unchanged.
+- Compare levels, and same-family prayers/style, at each shared attempted attack
+  opportunity using its action-to-loadout mapping. Scenario-local names cannot
+  bypass validation or move boosted states between opportunities. Renaming a
+  package while retaining the same states at the same steps still gives zero.
+
+Four permanent regression cases cover visible/real levels, prayers/style, renamed
+and remapped time-varying states, bolt/arrow priority and supported quiver choices.
+The original two review reproductions failed against `f147a6a` before the fixes.
+The affected package suite and the full `test build --no-daemon --offline` command
+passed on Windows with Temurin JDK 11.0.32.1 and Gradle 8.10: **257 tests across
+32 suites; zero failures, errors or skips**. Whitespace checks pass. No client
+acceptance is inferred from these automated corrections.
+
 ## Remaining validation and scope
 
 N1/N2 live event mappings, stock/charge counters, combined banking/capture checks

@@ -1,6 +1,6 @@
 # N3c: complete-package conditional comparisons
 
-16 October 2026. Build 0.19.0; bridge `nex-package-1`, knowledge `n3-package-1`,
+16 October 2026. Build 0.19.0; bridge `nex-package-2`, knowledge `n3-package-1`,
 catalogue schema 14. Reuses `melee-2`, `ranged-2`, `nex-spec-resources-1` and
 `nex-spec-plan-1`. `nex-spec-damage-2` permits inapplicable player HP for diamond
 bolts; ruby still requires known player HP. Numerical damage rules are unchanged.
@@ -29,6 +29,10 @@ projectile tiers, physical ammo versus selected quiver ammo and fixed Lightbeare
 are checked. Charged/blessed and depleted quiver offence is recomputed using
 separate complete cape packages. These calculation branches neither change the
 recorded physical cape nor imply ownership of its uncharged or blessed form.
+Compatible worn ammunition takes priority over different ammunition in the
+quiver, as documented in the [quiver mechanics](https://oldschool.runescape.wiki/w/Quivere).
+An explicit quiver selection conflicting with that priority is rejected with a
+package gap; it is never silently substituted into the recorded package.
 
 ## Explicit input contract
 
@@ -48,7 +52,7 @@ provenance, source revisions and all participating model versions.
 | Player HP / bolt eligibility | Required for ruby damage and self-cost, including low-HP suppression. Diamond and ordinary melee/arrows do not depend on player HP or ruby eligibility. Hard Kandarin is explicit for bolt procs; unknown is not no diary. |
 | Initial resources | Known energy, fixed-Lightbearer restoration phase/order, and explicit attack-ready/no-active-charge/cast-ready start. Other initial spell/readiness states are outside N3a's start contract, not silently reset. |
 | Death Charge | Explicit casts matching the selected method upgrade state; distinct eligible death keys and eligibility facts. False eligibility produces no proc event. Unknown eligibility/cast state blocks resource accounting. No proc is inferred from an NPC death or sampled delta. |
-| Package | Complete exact slots and role, real equip requirements/unlocks, visible levels, active prayers, style button and projectile selection. Proposed locks constrain suggestions; actually-used history remains immutable. Same-family equipment comparisons retain active prayers/style and all compared levels. |
+| Package | Complete exact slots and role, real equip requirements/unlocks, visible levels, active prayers, style button and projectile selection. Proposed locks constrain suggestions; actually-used history remains immutable. At each shared attempted attack step, comparisons retain all levels and, within a combat family, active prayers/style. Matching uses the common step, not scenario-local package names; time-varying states remain attached to their own opportunities. |
 | Usable stock | Exact equipment and selected projectile quantities shared across all roles. Presence in a bank or a worn/counter ID is not an automatic quantity/charge assertion. Proposed stock must stay the same; explicitly hypothetical exact items may be added only to the upgrade scenario. |
 | Joint packing | Gear/projectile inventory space reserved after supplies and unselected items, checked for every role's stowed union. Bank preparation also requires an explicit validated joint-packing fact and usable quantities; its availability remains conditional next-trip preparation. |
 | Recovery / quiver | Active recovery fact, including applied upgrade and body/obstruction restrictions; its device/cape must be compatible. Saved/lost projectile and spent/retained splinter draws are explicit conditional branch inputs. Charged quivers require exact splinter stock; blessed quivers consume none. |

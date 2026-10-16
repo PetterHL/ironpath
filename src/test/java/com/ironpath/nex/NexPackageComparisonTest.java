@@ -278,6 +278,66 @@ public class NexPackageComparisonTest
 		var changed=new Loadout("spec",f(new CombatState(previous.slots,previous.realLevels,visible,previous.prayers,previous.style,1000,false)),f(0),f(Retrieval.NONE));
 		assertThrows(IllegalArgumentException.class,()->bridge.compare(a,evaluate(c,scenario(Kind.OWNED,Map.of("s",changed),actions,stock))));
 	}
+	@Test public void renamedLoadoutsCannotChangeLevelsPrayerOrStyleAtTheSameOpportunity()
+	{
+		var base=loadout("spec",slots(27690,0,0),0); var state=base.state.value();
+		var visible=new HashMap<>(state.visibleLevels); visible.put("STRENGTH",99);
+		var real=new HashMap<>(state.realLevels); real.put("STRENGTH",98);
+		var changedStates=List.of(
+			new CombatState(state.slots,state.realLevels,visible,state.prayers,state.style,1000,false),
+			new CombatState(state.slots,real,state.visibleLevels,state.prayers,state.style,1000,false),
+			new CombatState(state.slots,state.realLevels,state.visibleLevels,Set.of(),state.style,1000,false),
+			new CombatState(state.slots,state.realLevels,state.visibleLevels,state.prayers,0,1000,false));
+		var stock=stock(List.of(base),Map.of(),0,10); var c=conditions(1,List.of(attack(0)));
+		var before=evaluate(c,scenario(Kind.ACTUAL,Map.of("observed-spec",base),Map.of(0,action("observed-spec",Attack.VOIDWAKER)),stock));
+		runnable(before);
+		for(var changed:changedStates)
+		{
+			var alternative=new Loadout("spec",f(changed),f(0),f(Retrieval.NONE));
+			var after=evaluate(c,scenario(Kind.OWNED,Map.of("candidate-spec",alternative),Map.of(0,action("candidate-spec",Attack.VOIDWAKER)),stock));
+			runnable(after); assertThrows(IllegalArgumentException.class,()->bridge.compare(before,after));
+			assertThrows(IllegalArgumentException.class,()->bridge.compare(after,before));
+		}
+		var renamed=evaluate(c,scenario(Kind.OWNED,Map.of("candidate-spec",base),Map.of(0,action("candidate-spec",Attack.VOIDWAKER)),stock));
+		runnable(renamed); assertEquals(0,bridge.compare(before,renamed).expectedDamage,0);
+	}
+	@Test public void comparisonMatchesTimeVaryingStatesByOpportunityRatherThanLoadoutName()
+	{
+		var boosted=loadout("spec",slots(27690,0,0),0); var state=boosted.state.value();
+		var visible=new HashMap<>(state.visibleLevels); visible.put("STRENGTH",99);
+		var unboosted=new Loadout("spec",f(new CombatState(state.slots,state.realLevels,visible,state.prayers,state.style,1000,false)),f(0),f(Retrieval.NONE));
+		var stock=stock(List.of(boosted,unboosted),Map.of(),0,10); var c=conditions(5,List.of(attack(0),attack(4)));
+		var actions=Map.of(0,action("first",Attack.VOIDWAKER),1,action("second",Attack.VOIDWAKER));
+		var before=evaluate(c,scenario(Kind.ACTUAL,Map.of("first",boosted,"second",unboosted),actions,stock)); runnable(before);
+		var renamedActions=Map.of(0,action("second",Attack.VOIDWAKER),1,action("first",Attack.VOIDWAKER));
+		var renamed=evaluate(c,scenario(Kind.OWNED,Map.of("first",unboosted,"second",boosted),renamedActions,stock)); runnable(renamed);
+		assertEquals(0,bridge.compare(before,renamed).expectedDamage,0);
+		var swapped=evaluate(c,scenario(Kind.OWNED,before.scenario.loadouts,renamedActions,stock)); runnable(swapped);
+		assertThrows(IllegalArgumentException.class,()->bridge.compare(before,swapped));
+	}
+	@Test public void quiverSelectionCannotOverrideCompatibleWornBoltsOrArrows()
+	{
+		for(int[] ids:new int[][]{{26374,21944,21946},{20997,21326,11212}})
+		{
+			var loadout=loadout("ranged",slots(ids[0],28955,ids[1]),ids[2]);
+			var stock=stock(List.of(loadout),Map.of(ids[1],1,ids[2],1),0,10);
+			var result=evaluate(conditions(1,List.of(attack(0))),scenario(Kind.ACTUAL,Map.of("r",loadout),Map.of(0,action("r",Attack.ORDINARY)),stock));
+			assertNull(result.plan); assertTrue(result.resourceGaps.toString().contains("Compatible worn ammunition takes priority"));
+		}
+	}
+	@Test public void quiverSelectionStillAllowsIncompatibleWornAmmoAndTheSameExactProjectile()
+	{
+		for(int worn:new int[]{21326,21946})
+		{
+			var loadout=loadout("spec",slots(26374,28955,worn),21946);
+			Map<Integer,Integer> ammunition=new HashMap<>(); ammunition.put(worn,1); ammunition.put(21946,1);
+			var stock=stock(List.of(loadout),ammunition,0,10);
+			var result=evaluate(conditions(1,List.of(attack(0))),scenario(Kind.ACTUAL,Map.of("s",loadout),Map.of(0,action("s",Attack.ZARYTE_CROSSBOW)),stock));
+			runnable(result); assertEquals(21946,result.packages.get("s").ammo);
+			assertEquals(Map.of(21946,1),result.plan.spentAmmo); assertNotNull(result.plan.expectedDamage);
+			assertEquals(Integer.valueOf(worn),result.scenario.loadouts.get("s").state.value().slots.get("ammo"));
+		}
+	}
 	@Test public void resourceEventsRemainExplicitAndOrderedAndDoNotInferDeathChargeFromGear()
 	{
 		var l=loadout("spec",slots(27690,0,0),0); var stock=stock(List.of(l),Map.of(),0,10);
