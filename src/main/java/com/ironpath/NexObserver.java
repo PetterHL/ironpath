@@ -23,7 +23,7 @@ final class NexObserver
 	private final List<String> signals=new ArrayList<>();
 	private NPC boss;
 	private int barrier=-1, boundary=-100, smoke=-100, bossGone=-1, bossForm=-1, view=Integer.MIN_VALUE;
-	private boolean attempted;
+	private boolean attempted, arenaObserved;
 	private long spawnSerial, hitSerial;
 	private NexMethod method=NexMethod.PILOT;
 	private boolean enabled=true;
@@ -73,8 +73,10 @@ final class NexObserver
 		}
 	}
 	synchronized boolean inArena() { return boss!=null && (barrier==2 || barrier==3); }
+	/** A barrier exit may precede LOADING. Preserve this source only until that scene transition. */
+	synchronized boolean bankTravelSource() { return arenaObserved || inArena(); }
 	synchronized void clearActive()
-	{ capture.clear(); targets.clear(); hits.clear(); signals.clear(); boss=null; attempted=false; bossGone=bossForm=-1; barrier=-1; boundary=smoke=-100; view=Integer.MIN_VALUE; rosterTick=Integer.MIN_VALUE; cachedRoster=null; }
+	{ capture.clear(); targets.clear(); hits.clear(); signals.clear(); boss=null; attempted=arenaObserved=false; bossGone=bossForm=-1; barrier=-1; boundary=smoke=-100; view=Integer.MIN_VALUE; rosterTick=Integer.MIN_VALUE; cachedRoster=null; }
 	private void signal(String value)
 	{
 		String entry="tick "+client.getTickCount()+" · "+value;
@@ -104,6 +106,7 @@ final class NexObserver
 			if(boss!=actor) { attempted=false; }
 			bossForm=actor.getId();
 			boss=actor; bossGone=-1; view=actor.getWorldView().getId();
+			if(inArena()) { arenaObserved=true; }
 		}
 		if (!targets.containsKey(actor))
 		{
@@ -141,6 +144,7 @@ final class NexObserver
 			capture.flush(tick); capture.abort(tick,Outcome.CENSORED,"Arena left before correlated completion");
 		}
 		barrier=next;
+		if(inArena()) { arenaObserved=true; }
 		startIfReady(false);
 		if(changed) { sample(-1); }
 	}

@@ -36,7 +36,9 @@ excluded from fight metrics/comparisons. No game-timer calibration is claimed.
 For one-kill trips, N1 must preserve completed summaries across recognized ordinary
 banking transitions. End/censor active traces, keep clearing live account/reference
 data, suspend access and require same-account/profile/world revalidation. Old-generation
-callbacks cannot affect a new trace. Logout, disconnect/ambiguous identity, account
+callbacks cannot affect a new trace. Waiting to open the bank or a long recognized
+return leg does not expire bounded completed history. Outbound arena-like evidence
+remains suspended until bank verification. Logout, disconnect/ambiguous identity, account
 or profile change, unsupported worlds, disable and Reset clear the session.
 Changed method/setup/team evidence separates comparable cohorts; unknown teammate
 composition must remain explicit rather than assumed identical across kills.

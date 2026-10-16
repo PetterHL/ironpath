@@ -31,6 +31,14 @@ anchoring with an observed smoke start and distinguishes dying from later arena
 completion. It preserves pre-smoke states and conservative late-arrival rejection.
 Bank recognition, explicit active status and bounded diagnostics remain. Earlier
 reports retain their original evidence and checks.
+**16 October client follow-up:** one displayed complete kill had 574/574 ticks,
+344.4 seconds and zero unclassified hits, then the bank-open view showed 0/0
+attempts. **Bank retention failed this round.** Build 0.19.1 removes the bank-opening
+expiry and premature nearby-Nex reset, and retains the arena departure source
+across an exit-barrier callback. [Finding and regression evidence](docs/validation/nex-bank-retention.md).
+Retest the corrected build before accepting retention; prior screenshots/reports
+keep their original scopes.
+
 Finish the real-client and usefulness checks before
 claiming the adapter's live mappings, capture fractions or game-timer agreement.
 

@@ -14,7 +14,14 @@
 
 ## Delivery
 
-- Current: development build 0.19.0 adds N3c complete-package conditional
+- Current: development build 0.19.1 fixes completed-history loss during bank
+  travel on top of 0.19.0 N3c. Completed summaries have no bank-opening deadline;
+  outbound nearby-Nex evidence keeps them paused until a visible bank verifies
+  the same account/profile/world. A verified arena source survives an exit-barrier
+  callback only until the next scene transition. Live snapshots, active traces
+  and stale callbacks still clear; hard identity/logout/world/reset guards remain.
+  See docs/validation/nex-bank-retention.md; client retesting remains open.
+- Development build 0.19.0 adds N3c complete-package conditional
   comparisons to N3b 0.18.0. Reuse NexPackageFactory and NexPackageComparison;
   do not infer launch opportunities, HP or initial resources from captured states.
   See docs/research/nex-packages.md and docs/research/nex-spec-damage.md.

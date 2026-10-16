@@ -74,9 +74,15 @@ On leaving an observed arena, first finalize a corroborated end or censor the
 active attempt. Clear live account/reference state and invalidate queued actions.
 Hide summaries during transit. Resume only for the same profile/character and world
 at a visible bank. After that recognized bank visit, return travel may resume at
-an observed Nex scene. Each pending leg has a 100-tick limit; repeated loading
-events do not extend it. Ambiguous transit, expiry, logout/disconnect, profile or
-account change, unsupported worlds, disable and Reset clear summaries.
+an observed Nex scene. Build 0.19.1 removes the former 100-tick expiry: elapsed
+travel/waiting time does not erase bounded completed evidence. A nearby Nex or
+arena-like barrier reading on the outbound leg keeps history suspended until the
+bank is opened, rather than clearing it. The adapter remembers a verified arena
+source across an exit-barrier update until its next transition/clear, preventing
+LOADING from misclassifying that departure. Unrecognized transit, logout/disconnect,
+profile or account change, world change, unknown identity, disable and Reset still
+clear summaries. Returning capture cannot resume until revalidation. See the
+[client finding and regression report](../validation/nex-bank-retention.md).
 
 Statistics use complete captures in the latest complete kill's cohort: the saved
 method/locks, exact set of observed worn-role packages/levels/prayers and observed arena roster.
@@ -104,4 +110,5 @@ requires the reviewed active/idle arena barrier state as well as a matching NPC.
 An active capture message replaces the ambiguous waiting text at the next tick.
 Frozen details expose start, matched smoke, death and arena-end ticks, phase
 coverage and continuity. Specific missing reasons replace the former generic
-completion-failure message. Hard identity/world/reset/expiry boundaries remain.
+completion-failure message. Hard identity/world/reset boundaries remain. The old
+travel-expiry policy is superseded by the 0.19.1 correction above.

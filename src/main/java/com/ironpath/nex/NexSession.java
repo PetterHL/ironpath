@@ -6,7 +6,7 @@ import java.util.*;
 /** Separate lifetime from live account observations. Suspended evidence is inaccessible until banking revalidation. */
 public final class NexSession
 {
-	public static final int MAX_RECENT=50, BANKING_GRACE=100;
+	public static final int MAX_RECENT=50;
 	private final Deque<NexSummary> recent=new ArrayDeque<>();
 	private String identity;
 	private int world, suspendedAt;
@@ -42,7 +42,8 @@ public final class NexSession
 			if(atBank!=nextBank) { atBank=nextBank; ++revision; }
 			return true;
 		}
-		if (tick-suspendedAt>BANKING_GRACE || arena && !returning && !bankVisible) { clear(); return false; }
+		// Completed history is bounded by count and account lifetime, not how quickly a bank is opened.
+		// A nearby Nex can remain loaded during outbound travel; keep waiting until a bank is verified.
 		if (!bankVisible && !(arena && returning)) { return false; }
 		suspended=false; atBank=bankVisible; returning=false; ++revision; return true;
 	}

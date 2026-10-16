@@ -85,7 +85,10 @@ consumer, preserving its semantics and tests.
   method choices/manual facts only, using existing guarded local preference IO.
 - N1 must retain completed summaries across recognized ordinary banking, while
   ending active traces and revalidating the same character/profile. Ambiguous
-  identity and logout clear data. N1 suspends summaries during recognized bank travel; live account state still resets on loading.
+  identity and logout clear data. N1 suspends summaries during recognized bank
+  travel without an opening deadline; live account state still resets on loading.
+  A nearby Nex does not end outbound suspension before bank verification.
+  See [0.19.1 bank retention](validation/nex-bank-retention.md).
 - Damage, contribution, phase offence, expected team time and acquisition pace
   are separate. [Kill impact](KILL_IMPACT.md) defines their evidence requirements.
 - Fewer eats, survival, longer trips and supplied resources cannot be inferred

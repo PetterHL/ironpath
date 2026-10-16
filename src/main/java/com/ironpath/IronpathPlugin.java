@@ -145,7 +145,7 @@ public class IronpathPlugin extends Plugin
 		{
 			if (state==GameState.LOADING)
 			{
-				boolean fromArena=nex.inArena() || nexSession.suspended();
+				boolean fromArena=nex.bankTravelSource() || nexSession.suspended();
 				nex.transition();
 				nexSession.suspend(identity(),client.getWorld(),client.getTickCount(),fromArena);
 			}

@@ -164,3 +164,13 @@ spec plans without changing runtime navigation or adding a setup wizard. Capture
 readings still do not establish legal launches, HP or initial conditions. No
 personal spec upgrade, contribution or seconds-saved card is shown.
 [Contract and verification](validation/nex-packages.md).
+
+## 0.19.1 bank waiting and retention
+
+Completed history remains paused and hidden until the same-account bank trip is
+verified, without a deadline for opening the bank or returning. A nearby loaded
+Nex does not falsely end the outbound wait. Opening the bank restores the last
+complete result, session statistics and details; logout/account/profile/world
+changes and Reset still clear them. The reported empty bank-open session failed
+validation and requires retesting on the corrected build.
+[Finding, regression cases and next client check](validation/nex-bank-retention.md).

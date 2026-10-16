@@ -7,6 +7,32 @@ import static org.junit.Assert.*;
 
 public class NexSessionTest
 {
+	@Test public void delayedBankAndReturnKeepHiddenHistoryWithoutAOneMinuteDeadline()
+	{
+		NexSession session=new NexSession(); session.select("a",301);
+		NexSummary first=NexCaptureTest.replay(0,20,60); session.add(first);
+		assertTrue(session.suspend("a",301,40,true));
+		for(int tick:List.of(141,1000,2000))
+		{
+			assertFalse(session.revalidate("a",301,tick,false,false));
+			assertTrue("Waiting for a bank must not discard completed history",session.suspended());
+			assertTrue(session.recent().isEmpty());
+		}
+		assertTrue(session.revalidate("a",301,2001,true,false));
+		assertSame(first,session.stats().last); assertEquals(1,session.stats().n);
+		assertTrue(session.suspend("a",301,2010,false));
+		assertFalse(session.revalidate("a",301,4000,false,false)); assertTrue(session.suspended());
+		assertTrue(session.revalidate("a",301,4001,false,true)); assertSame(first,session.stats().last);
+	}
+	@Test public void nearbyNexBeforeOpeningTheBankDoesNotEraseTheOutboundHistory()
+	{
+		NexSession session=new NexSession(); session.select("a",301); var first=NexCaptureTest.replay(0,20,60); session.add(first);
+		assertTrue(session.suspend("a",301,40,true));
+		assertFalse(session.revalidate("a",301,41,false,true));
+		assertTrue("Nearby arena evidence must keep the outbound leg paused until bank verification",session.suspended());
+		assertTrue(session.recent().isEmpty());
+		assertTrue(session.revalidate("a",301,2000,true,true)); assertSame(first,session.stats().last);
+	}
 	@Test public void severalOneKillTripsKeepOnlySameAccountRevalidatedSummaries()
 	{
 		NexSession session=new NexSession(); session.select("synthetic-a",301);
@@ -35,9 +61,9 @@ public class NexSessionTest
 		assertEquals((100.0*27/87+100.0)/2,stats.meanShare,1e-12);
 		assertEquals(100.0*(27+47)/(87+47),stats.aggregateShare,1e-12); assertNotEquals(stats.meanShare,stats.aggregateShare,0.01);
 	}
-	@Test public void ambiguousLoadingExpiryWorldAndProfileChangesClearAndBoundedSessionsEvictOldest()
+	@Test public void ambiguousLoadingWorldProfileAndClockChangesClearAndBoundedSessionsEvictOldest()
 	{
-		for(String boundary:List.of("not-arena","timeout","world","profile","arena-before-bank"))
+		for(String boundary:List.of("not-arena","world","profile","unknown-identity","clock-rewind"))
 		{
 			NexSession session=new NexSession(); session.select("a",301); session.add(NexCaptureTest.replay(0,20,60));
 			if(boundary.equals("not-arena")) { assertFalse(session.suspend("a",301,40,false)); }
@@ -45,7 +71,7 @@ public class NexSessionTest
 			{
 				session.suspend("a",301,40,true);
 				if(boundary.equals("profile")) { session.select("b",301); }
-				else { session.revalidate("a",boundary.equals("world")?302:301,boundary.equals("timeout")?200:41,!boundary.equals("arena-before-bank"),boundary.equals("arena-before-bank")); }
+				else { session.revalidate(boundary.equals("unknown-identity")?null:"a",boundary.equals("world")?302:301,boundary.equals("clock-rewind")?39:2000,true,false); }
 			}
 			assertTrue(boundary,session.recent().isEmpty());
 		}

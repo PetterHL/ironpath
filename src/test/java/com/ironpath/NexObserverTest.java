@@ -44,6 +44,16 @@ public class NexObserverTest
 	}
 	NPC npc(int id,int index)
 	{ NPC actor=mock(NPC.class); when(actor.getId()).thenReturn(id); when(actor.getIndex()).thenReturn(index); when(actor.getWorldView()).thenReturn(world); return actor; }
+	@Test public void bankingSourceSurvivesExitBarrierOnlyUntilTheSceneTransition()
+	{
+		barrier.set(1); observer.tick(); assertFalse(observer.bankTravelSource());
+		barrier.set(2); observer.barrier(); assertTrue(observer.bankTravelSource());
+		barrier.set(1); observer.barrier(); assertFalse(observer.inArena()); assertTrue(observer.bankTravelSource());
+		observer.transition(); assertFalse(observer.bankTravelSource());
+		observer.tick(); assertFalse("A nearby Nex outside the arena is not a new source",observer.bankTravelSource());
+		barrier.set(2); observer.barrier(); assertTrue(observer.bankTravelSource());
+		observer.clearActive(); assertFalse(observer.bankTravelSource());
+	}
 	void start()
 	{
 		observer.tick(); observer.overhead(boss,"Fill my soul with smoke!");
