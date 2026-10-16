@@ -70,11 +70,13 @@ public final class PoweredMagic
 	}
 	public static final class Metrics
 	{
-		public final int maxHit, visibleMagic, effectiveMagic, attackBonus, attackTicks;
+		public final int minHit, maxHit, visibleMagic, effectiveMagic, attackBonus, attackTicks;
 		public final double damagePercent, hitChance, dps;
 		public final long attackRoll, defenceRoll;
 		Metrics(int maxHit, double chance, double dps, int visible, int effective, int attack, double damage, long roll, long defence, int ticks)
-		{ this.maxHit = maxHit; hitChance = chance; this.dps = dps; visibleMagic = visible; effectiveMagic = effective;
+		{ this(0,maxHit,chance,dps,visible,effective,attack,damage,roll,defence,ticks); }
+		Metrics(int minHit,int maxHit, double chance, double dps, int visible, int effective, int attack, double damage, long roll, long defence, int ticks)
+		{ this.minHit=minHit; this.maxHit = maxHit; hitChance = chance; this.dps = dps; visibleMagic = visible; effectiveMagic = effective;
 			attackBonus = attack; damagePercent = damage; attackRoll = roll; defenceRoll = defence; attackTicks = ticks; }
 	}
 	public static final class Result

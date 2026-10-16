@@ -14,9 +14,10 @@
 
 ## Delivery
 
-- Current: development build 0.18.0 adds N3b conditional spec/bolt damage and
-  finite ammo/splinter branches to combined N1/N2/N3a 0.17.1. N3b is a scenario
-  API, not automatic advice from captured kills. See docs/research/nex-spec-damage.md.
+- Current: development build 0.19.0 adds N3c complete-package conditional
+  comparisons to N3b 0.18.0. Reuse NexPackageFactory and NexPackageComparison;
+  do not infer launch opportunities, HP or initial resources from captured states.
+  See docs/research/nex-packages.md and docs/research/nex-spec-damage.md.
   Combined client testing remains open.
   Live-client/player acceptance remains open in docs/validation/nex-session.md
   and docs/validation/nex-owned.md. Nex Trio MP2, one kill per trip. Lightbearer throughout,
@@ -62,9 +63,15 @@
   charge branches join the existing finite energy timeline; rejected attacks do
   not spend ammo or energy. Never turn conditional launch expectations into a
   simulated HP trajectory, survival estimate, captured spec count or best-weapon
-  recommendation. Soft caps, phase transforms, opportunity attribution, package
-  proposals, acquisition presentation and supply effects remain separate work.
-- Knowledge `n2-owned-2` adds only exact locked Dragon defender (24143) and
+  recommendation. Soft caps, phase transforms, automatic opportunity attribution
+  and package proposals, acquisition presentation and supply effects remain separate work.
+- N3c compares explicit complete actual/owned/upgrade scenarios under one shared
+  immutable conditions declaration. Exact usable joint stock/packing is separate
+  from bank presence; assumptions are not observations. Preserve scoped damage/
+  resource gaps, conditional branch labels, source/model versions and negative gains.
+  No automatic capture caller, best-spec ranking or N4 time claim is supplied.
+- Knowledge `n3-package-1` adds bounded Voidwaker and ruby/diamond bolt facts
+  to the same catalogue. Existing `n2-owned-2` added exact locked Dragon defender (24143) and
   Infernal cape (24224) melee forms. Preserve exact captured IDs and ownership;
   do not generalize normal/locked/broken/mangled variants. Comparison filters
   retain all immutable scenarios and grouped gaps; counts are not fight coverage.

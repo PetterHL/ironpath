@@ -7,13 +7,15 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**16 October 2026: development build 0.18.0 (N1/N2/N3a/N3b).**
-N3b adds independent Voidwaker/ruby/diamond damage and finite ammo/splinter
-scenario APIs, joined to shared energy and displaced ordinary attacks. Inputs
-include complete-package stats, legal opportunities, HP and explicit resource
-outcomes. These conditional calculations are not automatically inferred from
-your kills or displayed as a best spec-weapon recommendation.
-[N3b contract and verification](docs/validation/nex-spec-damage.md).
+**16 October 2026: development build 0.19.0 (N1/N2/N3a/N3b/N3c).**
+N3c connects complete actual, supported owned and hypothetical upgrade packages
+through the existing ordinary/spec damage and finite energy/ammo kernels.
+Conditional comparisons recompute whole packages, retain negative and zero deltas,
+and expose resource/damage gaps and provenance. These are explicit scenario APIs;
+captured kills do not automatically become launch plans or personal recommendations.
+[N3c contract and verification](docs/validation/nex-packages.md).
+N3b supplies the underlying independent Voidwaker/ruby/diamond damage and exact
+ammo/splinter branches. [N3b evidence](docs/validation/nex-spec-damage.md).
 
 N3a adds **Owned setup comparisons → Special-attack resources**, with frozen
 energy, Death Charge and ring readings after a kill. Its separate finite energy/

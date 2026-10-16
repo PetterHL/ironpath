@@ -73,7 +73,7 @@ public final class MeleeModel
 		double chance=weapon.family==Weapon.FANG && setup.meleeStyle.type==Type.STAB
 			? FangModel.hitChance(roll,defence,target.variant.equals("TOA")) : PoweredMagic.hitChance(roll,defence);
 		int swings=weapon.family==Weapon.SOULREAPER && setup.souls==Souls.RAMP ? 5 : 1;
-		int effectiveStrength=0,max=0; double mean=0;
+		int effectiveStrength=0,max=0,min=0; double mean=0;
 		for (int swing=0;swing<swings;swing++)
 		{
 			int stacks=weapon.family!=Weapon.SOULREAPER ? 0 : swings==5 ? swing : setup.souls.stacks;
@@ -81,6 +81,7 @@ public final class MeleeModel
 			int base=(int)(((long)effectiveStrength*Math.max(0,strength+64)+320)/640);
 			base=MeleeEffects.maxHit(base,setup,target,weapon,items);
 			int upper=weapon.family==Weapon.FANG ? base-base*3/20 : base;
+			min=weapon.family==Weapon.FANG ? base*3/20 : 0;
 			if (weapon.family==Weapon.SCYTHE)
 			{
 				max=Math.max(max,ScytheModel.maxHit(base,target.size));
@@ -88,7 +89,7 @@ public final class MeleeModel
 			}
 			else { max=Math.max(max,upper); mean+=(weapon.family==Weapon.FANG ? FangModel.mean(base) : ordinaryMean(base))/swings; }
 		}
-		return new PoweredMagic.Metrics(max,chance,chance*mean/(weapon.ticks*0.6),visibleStrength,effectiveStrength,attack,strength,roll,defence,weapon.ticks);
+		return new PoweredMagic.Metrics(min,max,chance,chance*mean/(weapon.ticks*0.6),visibleStrength,effectiveStrength,attack,strength,roll,defence,weapon.ticks);
 	}
 	static double ordinaryMean(int max) { return max==0 ? 0 : max/2.0+1.0/(max+1.0); }
 }

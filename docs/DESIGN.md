@@ -66,6 +66,14 @@ ammo/splinter branches joined to `SpecTimeline`. Exact stocks gate spending;
 resource outcomes and legal opportunities are explicit scenario inputs. Complete
 charged/uncharged package damage is supplied separately. No capture/worker advice
 path invokes these kernels yet. See [N3b contract](research/nex-spec-damage.md).
+N3c's `NexPackageComparison` is the complete-package caller of those kernels.
+It shares `NexPackageFactory` with N2, derives bounds/rolls/delays from exact
+catalogue-backed packages, and keeps actual-to-owned and owned-to-upgrade deltas
+separate. One immutable conditions declaration, explicit usable joint stock and
+source/assumption facts are required. Damage gaps preserve supported resources;
+missing resource inputs preserve independent launch/package details. There is
+still no automatic capture-to-plan caller or new runtime advice path. See
+[complete-package contract](research/nex-packages.md).
 Do not prebuild a generic rules engine. Extract shared code when it has a concrete
 consumer, preserving its semantics and tests.
 

@@ -79,6 +79,13 @@ retrieval/charge rolls only, not encounter uncertainty or upgrade confidence.
 Compare complete alternative plans under the same declared conditions; do not
 add a spec's damage to every ordinary baseline attack it displaces.
 
+N3c now derives those inputs from complete actual/owned/hypothetical packages
+under one explicit conditions declaration. Its supported/negative/zero deltas
+remain conditional launch-plan expectations. No worn-duration/energy-delta attack
+inference or automatic client recommendation is introduced. Unknown unused pools
+are not empty stock; selected shared stock and packing must be explicit.
+[N3c numerical contract](research/nex-packages.md).
+
 Do not scale the last kill by a DPS ratio, use PB as the average or turn combat
 duration into acquisition throughput. Handle finite HP, rounding, overkill, attack
 timing, phase changes, mandatory windows and teammate damage where material.

@@ -6,7 +6,7 @@ import java.util.*;
 /** Original single-launch arithmetic. Exact package stats and legal target conditions are caller inputs. */
 public final class SpecAttackModel
 {
-	public static final String VERSION="nex-spec-damage-1";
+	public static final String VERSION="nex-spec-damage-2";
 	public enum Bolt { RUBY, DIAMOND }
 	public static final class Outcome
 	{
@@ -76,13 +76,13 @@ public final class SpecAttackModel
 		uniform(out,lower,upper,1,false,limit);
 		return new Damage(SpecTimeline.Attack.VOIDWAKER,false,out,basis);
 	}
-	/** PvM ruby/diamond bolts only. Defence roll is heavy ranged; max/attack include the whole compatible package. */
+	/** PvM ruby/diamond only. Heavy ranged defence and complete package stats. Player HP is required only for ruby. */
 	public static Damage crossbow(int maxHit,long attackRoll,long defenceRoll,Bolt bolt,boolean zaryte,boolean special,
-		boolean hardKandarin,int playerHp,boolean rubyAllowed,Limit limit,String basis)
+		boolean hardKandarin,Integer playerHp,boolean rubyAllowed,Limit limit,String basis)
 	{
 		max(maxHit); Objects.requireNonNull(bolt); Objects.requireNonNull(limit);
 		if(attackRoll<0 || attackRoll>1000000000L || defenceRoll<0 || defenceRoll>1000000000L
-			|| playerHp<1 || playerHp>255 || special && !zaryte)
+			|| playerHp!=null && (playerHp<1 || playerHp>255) || bolt==Bolt.RUBY && playerHp==null || special && !zaryte)
 		{ throw new IllegalArgumentException("Known PvM rolls/HP and supported crossbow special required"); }
 		double chance=PoweredMagic.hitChance(attackRoll*(special?2:1),defenceRoll);
 		double natural=(bolt==Bolt.RUBY?0.06:0.10)*(hardKandarin?1.1:1);
