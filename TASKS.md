@@ -110,10 +110,10 @@ damage/upgrade recommendation. [Contract](docs/research/nex-spec-resources.md) a
 - [x] Record reviewed sources, numerical boundaries and build/regression evidence
   in the [N3b report](docs/validation/nex-spec-damage.md).
 
-**N3 remains in progress.** Next connect actual eligible opportunities and reviewed
-complete-package construction to these conditional kernels; compare whole
-owned-plus-upgrade packages with acquisition and recurring costs.
-Supply effects and live/player acceptance remain open. N1/N2 acceptance above is
+**N3 remains in progress.** Next is **N3c below**: connect reviewed complete-package
+construction to N3b through bounded conditional comparisons. Automatic capture-to-
+plan attribution, additional phase mechanics, acquisition/recurring-cost presentation
+and supply effects remain separate follow-up work. N1/N2 acceptance above is
 unchanged; combined client checks remain open after the integration.
 
 Prioritize actual Nex coverage: ammo/quiver, relevant melee packages, Voidwaker
@@ -128,6 +128,77 @@ correct spec costs, no fixed Lightbearer uplift, resource competition, blocked
 metrics scoped to dependencies, and whole-package rather than summed-item gains.
 Capture food/potion effects; only compare altered supply plans with a supported
 consumption/delay/boost model. Unsupported healing/survival claims remain explicit.
+
+### N3c — Connect complete packages to N3b (next)
+
+Deliver a tested bridge from complete equipment packages to the existing N3b
+damage/resource kernels for Nex Trio MP2, one kill per trip. Reuse N2 package
+construction, the reviewed catalogue and ordinary combat models; do not build a
+second catalogue or simulator. N3b 0.18.0 is the implementation dependency.
+
+Development and automated acceptance can proceed without Petter performing a
+client test now. Completing N3c does not accept N1/N2 live mappings or establish
+personal upgrade recommendations.
+
+Scope:
+
+- Construct complete melee/ranged/spec inputs for the actually-used setup, a
+  relevant supported owned alternative, and that owned baseline with a hypothetical
+  upgrade. Keep observed history immutable and separate actual-to-owned from
+  owned-to-upgrade gains. A supported alternative is not a global-best claim.
+- Respect exact item forms, requirements, locks, fixed Lightbearer, hands, sets,
+  selected ammunition, quiver activation and shared inventory/resources across
+  roles. Keep carried availability distinct from conditional bank preparation;
+  bank presence alone cannot establish usable stock or a valid joint packing plan.
+- Derive damage bounds, attack rolls and delays from each complete package.
+  Voidwaker uses its own melee package; ZCB uses its compatible ranged/bolt
+  package. Recompute charged and uncharged quiver packages independently.
+- Define an explicit input contract: observed, explicitly assumed (including
+  synthetic fixtures), or unknown, with source/scope and model versions. Cover
+  target/phase, legal launch windows, target/player HP, starting energy and spell
+  state, restore timing/order, eligible Death Charge events, exact ammo/splinter
+  stock and active recovery. Unknown is never zero, absent or a default.
+- Produce a bounded conditional comparison with package changes, supported
+  damage/resource deltas, assumptions and named gaps. Use a small representative
+  set of complete scenarios first. Do not infer launches or eligible windows
+  from worn duration, impact equipment or sampled energy deltas.
+
+Acceptance:
+
+- [ ] End-to-end automated cases exercise package facts -> derived ordinary/spec
+  inputs -> finite plans -> comparison results. Include Voidwaker, ZCB ruby/diamond
+  and charged/blessed quiver cases; verify against independent hand calculations,
+  not only direct kernel calls with hand-entered damage values.
+- [ ] Identical packages/plans give zero; supported worse alternatives retain
+  negative deltas. Comparisons use the same declared encounter conditions and
+  horizon. Whole-package gains are recomputed, never summed from item cards.
+- [ ] Compatible hands/ammo/sets, exact variants, locks and shared inventory are
+  checked. A two-handed ranged switch does not erase the melee defender. Proposed
+  items do not overwrite observations or manufacture owned/carried stock.
+- [ ] Specs displace ordinary attacks with the correct package delays and share
+  finite energy/ammo/splinters. Rejected attacks spend nothing; last-ammo and
+  last-splinter cases retain N3b behavior. Charged/blessed offence agrees while
+  charge remains, with their different recurring resource use preserved.
+- [ ] Missing HP, eligible opportunities, initial/resource state or reviewed
+  target/phase mechanics blocks only dependent results with a specific reason.
+  Unsupported Zaros soft caps, minion effects or other special windows cannot
+  silently use ordinary Nex arithmetic. An unrelated unsupported alternative
+  does not suppress a supported explicit pair.
+- [ ] Results retain package/input provenance and distinguish conditional
+  expectations from observed outcomes. No expected damage is fed back as actual
+  HP; no single resource branch is presented as an unconditional kill forecast.
+- [ ] Run affected automated tests and the normal test/build; preserve arithmetic,
+  unknown-state, compatibility and lifecycle regressions. Record actual results,
+  supported scenarios and remaining client checks. Keep fixtures anonymous and
+  label synthetic levels, HP, timings and quantities explicitly.
+
+Outside N3c: automatic capture-to-plan attribution, full Nex phase/HP simulation,
+automatic best-spec ranking, personal contribution or seconds saved (N4),
+food/potion/healing/survival models, acquisition paths and recurring-cost
+presentation. Scope acquisition/presentation as a separate later task, reusing
+the retained route data and N3b consumption accounting. No new setup wizard or
+live combat coaching. Client validation of capture, switches and resource readings
+remains required before conditional results become personal recommendations.
 
 ## N4 — Validate personal contribution and team-time estimates
 
