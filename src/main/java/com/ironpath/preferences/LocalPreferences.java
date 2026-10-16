@@ -64,7 +64,7 @@ public final class LocalPreferences implements PreferenceStorage
 		try (Reader reader = file.openReader())
 		{
 			Document doc = gson.fromJson(reader, Document.class);
-			if (doc == null || (doc.schemaVersion != 1 && doc.schemaVersion != 2) || doc.skipped == null || doc.confirmations == null
+			if (doc == null || doc.schemaVersion < 1 || doc.schemaVersion > 3 || doc.skipped == null || doc.confirmations == null
 				|| doc.skipped.size() > 80 || doc.confirmations.size() > 128)
 			{ throw new IllegalArgumentException("Unsupported preferences"); }
 			// Schema 1 retains its action skips, goals and exact fact keys. Schema 2 additionally supports activity/set IDs.
@@ -79,7 +79,14 @@ public final class LocalPreferences implements PreferenceStorage
 				if (fact == null || fact.value == null || fact.time == null) { throw new IllegalArgumentException("Invalid confirmation"); }
 				confirmations.put(entry.getKey(), new Preferences.Confirmation(fact.value, Instant.parse(fact.time)));
 			}
-			return new Preferences(goal, skipped, confirmations);
+			NexMethod method = NexMethod.PILOT;
+			if (doc.schemaVersion == 3)
+			{
+				if (!NexMethod.ID.equals(doc.method) || doc.upgradedDeathCharge == null || doc.locks == null)
+				{ throw new IllegalArgumentException("Invalid Nex preferences"); }
+				method = new NexMethod(doc.upgradedDeathCharge, doc.locks);
+			}
+			return new Preferences(goal, skipped, confirmations, method);
 		}
 		catch (JsonParseException | IllegalArgumentException | java.time.DateTimeException ex) { throw new IOException("Invalid preference file", ex); }
 	}
@@ -89,7 +96,8 @@ public final class LocalPreferences implements PreferenceStorage
 		if ((preferences.goal != null && !goals.contains(preferences.goal)) || !decisions.containsAll(preferences.skipped)
 			|| !facts.containsAll(preferences.confirmations.keySet())) { throw new IllegalArgumentException("Unsupported preferences"); }
 		Document doc = new Document();
-		doc.schemaVersion = 2; doc.goal = preferences.goal; doc.skipped = preferences.skipped;
+		doc.schemaVersion = 3; doc.goal = preferences.goal; doc.skipped = preferences.skipped;
+		doc.method = NexMethod.ID; doc.upgradedDeathCharge = preferences.nex.upgradedDeathCharge; doc.locks = preferences.nex.locks;
 		doc.confirmations = new HashMap<>();
 		preferences.confirmations.forEach((id, confirmation) ->
 		{
@@ -114,6 +122,9 @@ public final class LocalPreferences implements PreferenceStorage
 		String goal;
 		Set<String> skipped;
 		Map<String, Fact> confirmations;
+		String method;
+		Boolean upgradedDeathCharge;
+		Map<String, Integer> locks;
 	}
 	private static final class Fact { Boolean value; String time; }
 }

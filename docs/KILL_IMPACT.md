@@ -74,4 +74,6 @@ More observations reduce sampling noise, not model bias or missing mechanics.
 A good baseline prediction alone does not validate a small upgrade effect.
 
 Record real-client event mappings, capture coverage and player usefulness separately
-from synthetic tests. Current T0 adds none of these Nex capabilities or validations.
+from synthetic tests. N1 development build implements bounded public-event capture and session summaries;
+[its report](validation/nex-session.md) separates synthetic verification from pending
+real-client/player validation. Counterfactual offence/contribution/time remain N2–N4.

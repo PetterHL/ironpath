@@ -17,7 +17,14 @@ results and unperformed checks are preserved in the [archive](docs/archive/pre-n
 This change does not implement Nex capture, new ranking/UI, banking-safe session
 retention, Death Charge recognition or impact estimates. Those are N1–N4 below.
 
-## N1 — Understand the real Nex session (next)
+## N1 — Understand the real Nex session (in progress)
+
+Implementation is available for review in development build 0.15.0. The Nex adapter,
+native session view, method/locks, immutable state/resource capture and banking
+round trips have synthetic replay/lifecycle coverage. [Evidence and pending live
+checks](docs/validation/nex-session.md). **N1 is not accepted yet:** no real-client
+kills or Petter usefulness checks have been performed. Finish those checks before
+claiming the adapter's live mappings, capture fractions or game-timer agreement.
 
 Deliver one useful native flow for **Nex / Trio MP2 / one kill per trip**.
 The confirmed pilot uses Lightbearer without ring switches and upgraded Death

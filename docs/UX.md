@@ -47,8 +47,21 @@ and scroll; fresh kills must not replace the historical baseline being inspected
 
 ## Current build
 
-T0 retains the working Upgrades/Account and Impact/Acquisition UI and opt-in Zilyana
-experiment. N1 replaces the homepage as it delivers the new session view; N2
-replaces the old primary ranking. Old captures are [historical evidence](archive/pre-nex-20261015/UX.md),
-not desired visual references or proof of Nex usability. [TASKS](../TASKS.md) owns
-the native-client and player acceptance work.
+N1 development build 0.15.0 opens `Nex · Trio MP2 · One kill per trip`. Encounter,
+Setup and Account are the native navigation. The homepage shows last complete
+observed timing/share, same-cohort means, sample counts, min–max spread and excluded
+attempt counts. Partial attempts have separate inspectable evidence. Kill details
+freeze the selected summary across new results and expose timing/damage scope,
+phase/target, state/resource samples and uncertainty. No in-combat recommendations
+or forced navigation are added.
+
+Setup lists observed worn roles and keeps manual planning locks separate from
+history. Item selection uses reviewed/observed names; no per-kill setup form is
+required. The upgrade toggle is labeled an assumption, while raw detected Death
+Charge state is in details. Account corrections remain accessible. Method/locks
+and correction writes retain profile/generation/revision guards and serial local IO.
+
+The old general homepage is no longer reachable from the toolbar. N2–N4 have not
+supplied owned-package or new-upgrade cards, counterfactual contribution or team
+seconds. [Synthetic checks and pending native-client/player acceptance](validation/nex-session.md)
+are recorded separately; historical screenshots are not acceptance of this view.

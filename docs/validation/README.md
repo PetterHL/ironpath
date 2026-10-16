@@ -1,7 +1,8 @@
 # Validation records
 
-[Nex transition](nex-transition.md) records the current cleanup. Subsequent Nex
-work uses [TASKS N1–N4](../../TASKS.md); no Nex functionality has passed client or
+[Nex N1 session](nex-session.md) records the capture/session implementation and
+pending live checks. [Nex transition](nex-transition.md) records the earlier cleanup.
+Current Nex work uses [TASKS N1–N4](../../TASKS.md); no Nex functionality has passed client or
 player acceptance in this transition.
 
 Other reports in this directory describe their named delivery/version. Preserve

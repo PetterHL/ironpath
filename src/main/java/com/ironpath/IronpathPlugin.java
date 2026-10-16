@@ -1,7 +1,6 @@
 package com.ironpath;
 
 import com.google.gson.Gson;
-import com.ironpath.advisor.Advisor;
 import com.ironpath.advisor.KnowledgeCatalog;
 import com.ironpath.model.AccountSnapshot;
 import com.ironpath.model.Observation;
@@ -45,7 +44,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 
-@PluginDescriptor(name = "Ironpath", internalName = "ironpath-advisor", description = "Local PvM progression advisor for standard Ironmen", tags = {"ironman", "cox", "progression"})
+@PluginDescriptor(name = "Ironpath", internalName = "ironpath-advisor", description = "Local Nex session evidence for standard Ironmen", tags = {"ironman", "nex", "encounter"})
 public class IronpathPlugin extends Plugin
 {
 	@Inject Client client;
@@ -61,8 +60,10 @@ public class IronpathPlugin extends Plugin
 
 	final ObservationSession session = new ObservationSession();
 	private KnowledgeCatalog catalog;
-	private Advisor advisor;
-	private IronpathPanel panel;
+	private NexPanel panel;
+	final com.ironpath.nex.NexSession nexSession=new com.ironpath.nex.NexSession();
+	NexObserver nex;
+	private long lastNexRevision;
 	private NavigationButton navigation;
 	private volatile boolean running;
 	private volatile long lifecycle;
@@ -92,7 +93,7 @@ public class IronpathPlugin extends Plugin
 		try
 		{
 			catalog = KnowledgeCatalog.load(gson);
-			advisor = new Advisor(catalog);
+			nexSession.clear(); nex=new NexObserver(client,catalog,nexSession); lastNexRevision=nexSession.revision();
 			if (preferenceIO == null)
 			{
 				if (preferenceStorage == null) { preferenceStorage = new LocalPreferences(this::getPluginDirectory, gson, catalog); }
@@ -103,15 +104,14 @@ public class IronpathPlugin extends Plugin
 		catch (Exception ex)
 		{
 			catalog = null;
-			advisor = null;
 			status = "Bundled catalogue unavailable or invalid. Advice is disabled.";
 		}
 		String initialStatus = status;
 		SwingUtilities.invokeLater(() ->
 		{
 			if (!running || lifecycle != startup) { return; }
-			panel = new IronpathPanel(itemManager);
-			panel.render(initialStatus, null, List.of(), catalog, null, Preferences.EMPTY, null, "", List.of());
+			panel = new NexPanel(itemManager);
+			panel.render(initialStatus,null,Preferences.EMPTY,catalog,nexSession.stats(),true,null,"");
 			if (!running || lifecycle != startup) { panel = null; return; }
 			navigation = NavigationButton.builder().tooltip("Ironpath").icon(icon()).priority(6).panel(panel).build();
 			toolbar.addNavigation(navigation);
@@ -123,13 +123,14 @@ public class IronpathPlugin extends Plugin
 	{
 		running = false;
 		++lifecycle;
+		nexSession.clear(); if(nex!=null) { nex.clearActive(); }
 		session.clear();
 		clearRecentBoss();
 		SwingUtilities.invokeLater(() ->
 		{
 			// UI ownership stays on the EDT, including cleanup of an in-flight startup.
 			if (navigation != null) { toolbar.removeNavigation(navigation); }
-			if (panel != null) { panel.render("Plugin disabled; observations cleared.", null, List.of(), null, null, Preferences.EMPTY, null, "", List.of()); }
+			if (panel != null) { panel.render("Plugin disabled; observations cleared.",null,Preferences.EMPTY,catalog,nexSession.stats(),false,null,""); }
 			navigation = null;
 			panel = null;
 		});
@@ -138,7 +139,18 @@ public class IronpathPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		// LOADING also clears on region changes: deliberately conservative for T1.
+		GameState state=event.getGameState();
+		if (nex!=null && (state==GameState.LOADING || state==GameState.LOGGED_IN && nexSession.suspended()))
+		{
+			if (state==GameState.LOADING)
+			{
+				boolean fromArena=nex.inArena() || nexSession.suspended();
+				nex.transition();
+				nexSession.suspend(identity(),client.getWorld(),client.getTickCount(),fromArena);
+			}
+			clearLive("Scene changed. Completed Nex evidence is suspended until the same account opens a bank.");
+			return;
+		}
 		invalidate("Account transition: observations cleared. Reopen your bank after login.");
 	}
 
@@ -147,6 +159,7 @@ public class IronpathPlugin extends Plugin
 	@Subscribe public void onStatChanged(StatChanged event)
 	{
 		if(recentReady()) { recentBoss.sample(); }
+		if(nexReady()) { nex.sample(-1); }
 		AccountSnapshot previous = session.snapshot();
 		if (previous == null || !Integer.valueOf(client.getRealSkillLevel(event.getSkill())).equals(previous.level(event.getSkill().name())))
 		{
@@ -156,6 +169,11 @@ public class IronpathPlugin extends Plugin
 	@Subscribe public void onVarbitChanged(VarbitChanged event)
 	{
 		if(recentReady()) { recentBoss.sample(); }
+		if(nexReady())
+		{
+			if(event.getVarbitId()==VarbitID.NEX_BARRIER) { nex.barrier(); }
+			if(NexObserver.resourceChanged(event.getVarbitId(),event.getVarpId())) { nex.sample(-1); }
+		}
 		AccountSnapshot previous = session.snapshot();
 		// Only selected quest progress invalidates quest facts. Script evaluation stays in the coalesced read.
 		boolean questChanged = Set.of(VarbitID.SOTE, VarbitID.BCS, VarbitID.PMOON_QUEST, VarbitID.MM2_PROGRESS, VarbitID.VIKINGEXILE, VarbitID.WGS).contains(event.getVarbitId())
@@ -177,6 +195,7 @@ public class IronpathPlugin extends Plugin
 	@Subscribe public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		int id = event.getContainerId();
+		if(nexReady() && (id==InventoryID.WORN || id==InventoryID.INV)) { nex.sample(-1); }
 		if(recentReady()) {
 			if(id==InventoryID.WORN) { recentBoss.sample(); }
 			if(id==InventoryID.INV) { recentBoss.inventoryChanged(); }
@@ -186,6 +205,12 @@ public class IronpathPlugin extends Plugin
 	}
 
 	private void invalidate(String reason)
+	{
+		nexSession.clear(); if(nex!=null) { nex.clearActive(); }
+		clearLive(reason);
+	}
+
+	private void clearLive(String reason)
 	{
 		session.clear(); // Immediate token invalidation even if a profile event arrives off-thread.
 		clearRecentBoss();
@@ -204,23 +229,38 @@ public class IronpathPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!running || advisor == null || client.getGameState() != GameState.LOGGED_IN) { return; }
+		if (!running || catalog == null || client.getGameState() != GameState.LOGGED_IN) { return; }
 		// Wait for complete server ticks after login rather than interpreting default varbits as false.
 		if (++loginTicks < 2) { return; }
 		String identity = identity();
 		if (identity == null) { clearUnavailable("Character identity unknown; waiting for RuneLite profile."); return; }
 		if (!supported()) { clearUnavailable("Outside coverage: standard Ironman on permanent members worlds only."); return; }
+		Widget banking=client.getWidget(InterfaceID.Bankmain.ITEMS);
+		if (nexSession.suspended())
+		{
+			var world=client.getTopLevelWorldView();
+			boolean arena=world!=null && world.npcs()!=null && world.npcs().stream().anyMatch(n->NexObserver.bossId(n.getId()));
+			nexSession.revalidate(identity,client.getWorld(),client.getTickCount(),banking!=null && !banking.isHidden(),arena);
+		}
+		if (!nexSession.suspended() && nexSession.select(identity,client.getWorld())) { nex.clearActive(); }
 		long before = session.generation();
 		session.select(identity);
 		if (before != session.generation())
 		{
 			dirty = true;
 			clearRecentBoss();
+			if(nex!=null) { nex.clearActive(); }
 			bankDirty = bankDirty && identity.equals(bankIdentity);
 			loadPreferences(session.generation(), identity);
 		}
 		recentBoss.tick();
 		publishRecentBoss();
+		if (nexReady()) { nex.method(session.preferences().nex); nex.tick(); }
+		if (lastNexRevision!=nexSession.revision())
+		{
+			lastNexRevision=nexSession.revision();
+			if (!nex.capture.active()) { render("Nex session updated locally.",session.snapshot()); }
+		}
 		if (!dirty) { return; }
 		long token = session.generation();
 		AccountSnapshot previous = session.snapshot();
@@ -236,11 +276,12 @@ public class IronpathPlugin extends Plugin
 		AccountSnapshot snapshot = reader.read(bank, bankQuantities);
 		if (!session.publish(token, identity(), snapshot)) { return; }
 		dirty = false;
-		render("Observed locally. Open a suggestion to inspect its evidence.", snapshot);
+		if(nex==null || !nex.capture.active()) { render("Observed locally.", snapshot); }
 	}
 
 	private void clearUnavailable(String message)
 	{
+		nexSession.clear(); if(nex!=null) { nex.clearActive(); }
 		if (session.identity() != null) { session.clear(); clearRecentBoss(); }
 		bankDirty = false;
 		bankIdentity = null;
@@ -248,6 +289,8 @@ public class IronpathPlugin extends Plugin
 		render(message, null);
 	}
 
+	private boolean nexReady()
+	{ return nex!=null && running && session.snapshot()!=null && session.preferencesLoaded() && !nexSession.suspended() && current(session.generation(),session.identity()); }
 	private boolean recentReady()
 	{ return recentBoss!=null && running && session.snapshot()!=null && current(session.generation(),session.identity()); }
 	private void clearRecentBoss()
@@ -256,17 +299,24 @@ public class IronpathPlugin extends Plugin
 		if(recentBoss!=null) { recentBoss.reset(session.generation()); }
 	}
 	@Subscribe public void onNpcSpawned(net.runelite.api.events.NpcSpawned event)
-	{ if(recentReady()) { recentBoss.spawn(event.getNpc()); } }
+	{ if(recentReady()) { recentBoss.spawn(event.getNpc()); } if(nexReady()) { nex.spawn(event.getNpc()); } }
 	@Subscribe public void onNpcDespawned(net.runelite.api.events.NpcDespawned event)
-	{ if(recentReady()) { recentBoss.despawn(event.getNpc()); } }
+	{ if(recentReady()) { recentBoss.despawn(event.getNpc()); } if(nexReady()) { nex.despawn(event.getNpc()); } }
 	@Subscribe public void onNpcChanged(net.runelite.api.events.NpcChanged event)
-	{ if(recentReady()) { recentBoss.changed(event.getNpc()); } }
+	{ if(recentReady()) { recentBoss.changed(event.getNpc()); } if(nexReady()) { nex.changed(event.getNpc()); } }
 	@Subscribe public void onActorDeath(net.runelite.api.events.ActorDeath event)
-	{ if(recentReady()) { recentBoss.death(event.getActor()); } }
+	{ if(recentReady()) { recentBoss.death(event.getActor()); } if(nexReady()) { nex.death(event.getActor()); } }
 	@Subscribe public void onHitsplatApplied(net.runelite.api.events.HitsplatApplied event)
-	{ if(recentReady()) { recentBoss.hit(event); } }
+	{ if(recentReady()) { recentBoss.hit(event); } if(nexReady()) { nex.hit(event); } }
 	@Subscribe public void onServerNpcLoot(net.runelite.client.events.ServerNpcLoot event)
 	{ if(recentReady()) { recentBoss.loot(event); } }
+	@Subscribe public void onOverheadTextChanged(net.runelite.api.events.OverheadTextChanged event)
+	{ if(nexReady()) { nex.overhead(event.getActor(),event.getOverheadText()); } }
+	@Subscribe public void onAnimationChanged(net.runelite.api.events.AnimationChanged event)
+	{ if(nexReady() && event.getActor()==client.getLocalPlayer()) { nex.sample(event.getActor().getAnimation()); } }
+	@Subscribe public void onChatMessage(net.runelite.api.events.ChatMessage event)
+	{ if(nexReady()) { nex.chat(event.getType(),event.getMessage()); } }
+
 	private void publishRecentBoss()
 	{
 		if(!session.preferencesLoaded() || session.snapshot()==null) { return; }
@@ -327,13 +377,14 @@ public class IronpathPlugin extends Plugin
 		}));
 	}
 
-	private void changePreferences(long token, String expectedIdentity, UnaryOperator<Preferences> change)
+	private void changePreferences(long token, long revision, long nexRevision, String expectedIdentity, UnaryOperator<Preferences> change)
 	{
 		clientThread.invokeLater(() ->
 		{
-			if (!current(token, expectedIdentity) || !session.writable()) { return; }
+			if (!current(token, expectedIdentity) || !session.currentView(token,revision) || nexSession.revision()!=nexRevision || !session.writable()) { return; }
 			Preferences next = change.apply(session.preferences());
 			if (!session.editPreferences(token, expectedIdentity, next)) { return; }
+			if(nex!=null) { nex.method(next.nex); }
 			render("Your planning choices were updated.", session.snapshot());
 			preferenceIO.save(LocalPreferences.key(expectedIdentity), next).whenComplete((ignored, error) -> clientThread.invokeLater(() ->
 			{
@@ -346,97 +397,35 @@ public class IronpathPlugin extends Plugin
 
 	private void render(String status, AccountSnapshot snapshot)
 	{
-		long token = session.generation();
-		long revision = session.revision();
-		String expectedIdentity = session.identity();
-		Preferences preferences = session.preferences();
-		boolean loaded = session.preferencesLoaded();
-		String storageStatus = session.storageStatus();
-		List<Advisor.Recommendation> recommendations = snapshot == null || !loaded ? List.of() : advisor.evaluate(snapshot, preferences);
-		com.ironpath.advisor.PoweredMagic.Setup reference = catalog == null ? null : session.reference(catalog);
-		List<Advisor.UpgradeView> upgrades = snapshot == null || !loaded ? List.of() : advisor.upgrades(snapshot, preferences, reference, session.rangedReference(catalog), session.meleeReference(catalog), session.pace());
-		com.ironpath.advisor.PursuitOverview overview = new com.ironpath.advisor.PursuitOverview(upgrades,
-			snapshot == null || !loaded ? List.of() : advisor.activityOpportunities(snapshot, preferences, upgrades),
-			snapshot == null || !loaded ? List.of() : advisor.quickActions(snapshot, preferences),
-			snapshot == null || !loaded ? List.of() : advisor.availableActivities(snapshot, preferences),
-			snapshot == null || !loaded ? List.of() : advisor.ownedUpgrades(snapshot, preferences));
-		Advisor.GoalView goal = snapshot == null || !loaded ? null : advisor.goal(snapshot, preferences);
-		List<String> reasons = snapshot == null || !loaded || !recommendations.isEmpty() ? List.of()
-			: advisor.explainNoAdvice(snapshot, preferences);
-		IronpathPanel.Actions actions = snapshot == null || !loaded ? null : new IronpathPanel.Actions()
+		if(nexSession.suspended()) { status="Nex session paused. Open a bank to revalidate this account, or return from a recognized bank trip."; }
+		long token=session.generation(), revision=session.revision(), nexRevision=nexSession.revision();
+		String expectedIdentity=session.identity(); Preferences preferences=session.preferences();
+		String storage=session.storageStatus(); var stats=nexSession.stats();
+		boolean enabled=nex!=null && nex.enabled();
+		NexPanel.Actions actions=snapshot==null || !session.preferencesLoaded()?null:new NexPanel.Actions()
 		{
-			public void goal(String id)
-			{
-				if (id == null || Advisor.goalChoices(catalog).containsKey(id)) { changePreferences(token, expectedIdentity, p -> p.goal(id)); }
-			}
-			public void skip(String id, boolean skipped)
-			{
-				if (catalog.activities.containsKey(id) || catalog.decisions.stream().anyMatch(d -> d.id.equals(id))) { changePreferences(token, expectedIdentity, p -> p.skip(id, skipped)); }
-			}
-			public void confirm(String key, Boolean value)
-			{
-				if (catalog.factChoices().containsKey(key)) { changePreferences(token, expectedIdentity, p -> p.confirm(key, value, Instant.now())); }
-			}
-			public void clear() { changePreferences(token, expectedIdentity, p -> Preferences.EMPTY); }
-			public void recentBoss(boolean enabled)
-			{
-				clientThread.invokeLater(()->{
-					if(!IronpathPlugin.this.current(token,expectedIdentity)) { return; }
-					IronpathPlugin.this.clearRecentBoss(); recentBoss.enable(enabled,session.generation());
-					render(enabled ? "Experimental recent boss enabled for this session." : "Recent boss disabled and cleared.",session.snapshot());
-				});
-			}
-			public void clearRecentBoss()
-			{
-				clientThread.invokeLater(()->{
-					if(!IronpathPlugin.this.current(token,expectedIdentity)) { return; }
-					IronpathPlugin.this.clearRecentBoss();
-					render("Recent kills cleared from memory.",session.snapshot());
-				});
-			}
-			public boolean current() { return running && session.currentView(token, revision) && session.snapshot() == snapshot; }
+			public boolean current() { return running && session.currentView(token,revision) && session.snapshot()==snapshot && nexSession.revision()==nexRevision; }
 			public boolean canEdit() { return session.writable(); }
-			public void reference(String key, String value)
+			public void method(com.ironpath.preferences.NexMethod method)
+			{ if(current()) { changePreferences(token,revision,nexRevision,expectedIdentity,p->p.nex(method)); } }
+			public void confirm(String key, Boolean value)
+			{ if(current() && catalog.factChoices().containsKey(key)) { changePreferences(token,revision,nexRevision,expectedIdentity,p->p.confirm(key,value,Instant.now())); } }
+			public void reset() { clear(nex.enabled()); }
+			public void enable(boolean value) { clear(value); }
+			private void clear(boolean enable)
 			{
-				clientThread.invokeLater(() -> {
-					if (!running || !session.accepts(token, identity()) || !expectedIdentity.equals(identity())
-						|| !session.editReference(token, revision, expectedIdentity, snapshot, key, value, catalog)) { return; }
-					render("Reference updated in memory for this character/profile.", snapshot);
-				});
-			}
-			public void pace(String value) { pace("demonic-gorillas","ordinary",value); }
-			public void pace(String activity, String mode, String value) { pace(activity,mode,null,value); }
-			public void pace(String activity, String mode, String methodKey, String value)
-			{
-				clientThread.invokeLater(() -> {
-					if (!IronpathPlugin.this.current(token, expectedIdentity) || !session.currentView(token, revision) || session.snapshot() != snapshot) { return; }
-					com.ironpath.advisor.PaceScenario next = null;
-					try
-					{
-						if (!value.isBlank())
-						{
-							String[] bounds=value.trim().split("-", -1);
-							if (bounds.length > 2) { throw new IllegalArgumentException(); }
-							double minimum=Double.parseDouble(bounds[0]), maximum=bounds.length == 1 ? minimum : Double.parseDouble(bounds[1]);
-							next=new com.ironpath.advisor.PaceScenario(activity, mode, minimum, maximum,
-								"Eligible completed trials per active hour, including travel/banking/failures in the scenario", Instant.now(),methodKey);
-						}
-					}
-					catch (IllegalArgumentException invalid)
-					{ render("Pace needs a positive completed-trials/hour value or range, for example 40 or 30-50; current scenario retained.", snapshot); return; }
-					if (session.editPace(token, revision, expectedIdentity, snapshot, next))
-					{ render("Pace scenario updated in memory; it is not measured performance.", snapshot); }
+				if (!current()) { return; }
+				clientThread.invokeLater(()->{
+					if(!IronpathPlugin.this.current(token,expectedIdentity) || !session.currentView(token,revision) || nexSession.revision()!=nexRevision) { return; }
+					nex.clearActive(); nexSession.clear(); nexSession.select(expectedIdentity,client.getWorld()); nex.enable(enable);
+					render("Nex session cleared from memory.",session.snapshot());
 				});
 			}
 		};
-		var recentResult=recentImpact;
-		boolean recentIsEnabled=recentBoss!=null && recentBoss.enabled();
-		var recentEvidence=recentBoss==null ? List.<com.ironpath.encounter.EncounterSummary>of() : recentBoss.capture.recent();
-		SwingUtilities.invokeLater(() ->
-		{
-			if (!running || panel == null || !session.currentView(token, revision) || session.snapshot() != snapshot) { return; }
-			panel.recentBoss(recentResult,recentIsEnabled,recentEvidence);
-			panel.render(status, snapshot, recommendations, catalog, goal, preferences, actions, storageStatus, reasons, overview, reference);
+		String message=status;
+		SwingUtilities.invokeLater(()->{
+			if(!running || panel==null || !session.currentView(token,revision) || session.snapshot()!=snapshot || nexSession.revision()!=nexRevision) { return; }
+			panel.render(message,snapshot,preferences,catalog,stats,enabled,actions,storage);
 		});
 	}
 

@@ -14,7 +14,9 @@
 
 ## Delivery
 
-- Next: N1 in TASKS, Nex Trio MP2, one kill per trip. Lightbearer throughout,
+- Current: N1 implementation in development build 0.15.0; live-client/player
+  acceptance remains open in docs/validation/nex-session.md. Nex Trio MP2, one kill
+  per trip. Lightbearer throughout,
   upgraded Death Charge, observed melee/ranged/spec switches. Do not guess the
   rest of the account or require a screenshot/manual setup form before observation.
 - Keep one Java/Gradle RuneLite plugin. Reuse independently authored combat
@@ -22,7 +24,8 @@
   No wholesale restart, universal simulator, backend or second catalogue.
 - Remove verified dead code. Replace active old UI/ranking in the delivery that
   supplies its new purpose; do not maintain two permanent products. The transition
-  retains the current UI and explicitly named Zilyana experiment until then.
+  retained the former UI through T0. N1 replaces its runtime homepage; old
+  presenters/ranking remain for N2 replacement/removal, without a second homepage.
 - Use short-lived branches from current main and focused PRs. Do not merge or
   publish to Plugin Hub without authorization. Do not alter unrelated work.
 - Test the affected behavior and run the normal build. Preserve arithmetic,

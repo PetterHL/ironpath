@@ -47,7 +47,7 @@ public class LocalPreferencesTest
 		assertNull(restarted.read(LocalPreferences.key("synthetic-config-11:rs-a:character-1")).goal);
 		String text = Files.readString(temporary.getRoot().toPath().resolve(a + ".json"));
 		JsonObject json = new JsonParser().parse(text).getAsJsonObject();
-		assertEquals(Set.of("schemaVersion", "goal", "skipped", "confirmations"), json.keySet());
+		assertEquals(Set.of("schemaVersion", "goal", "skipped", "confirmations", "method", "upgradedDeathCharge", "locks"), json.keySet());
 		assertEquals(Set.of("value", "time"), json.getAsJsonObject("confirmations").getAsJsonObject("item-12932").keySet());
 		assertFalse(text.contains("synthetic-config")); assertFalse(text.contains("bank")); assertFalse(text.contains("levels"));
 		store.write(a, Preferences.EMPTY);
@@ -69,6 +69,18 @@ public class LocalPreferencesTest
 		assertEquals(preferences.goal, read.goal);
 		assertTrue(read.confirmations.get("rigour").value);
 		assertEquals(TIME, read.confirmations.get("rigour").time);
+	}
+
+	@Test public void schemaThreeRetainsOnlyExplicitMethodAndLocks() throws Exception
+	{
+		NexMethod method=new NexMethod(false,Map.of("melee/shield",22322,"ranged/shield",0));
+		store.write(a,Preferences.EMPTY.nex(method)); Preferences read=store.read(a);
+		assertFalse(read.nex.upgradedDeathCharge); assertEquals(method.locks,read.nex.locks);
+		assertTrue(store.read(LocalPreferences.key("other-profile")).nex.locks.isEmpty());
+		assertThrows(IllegalArgumentException.class,()->new NexMethod(true,Map.of("inventory/weapon",1)));
+		assertThrows(IllegalArgumentException.class,()->method.lock("melee/weapon",-1));
+		String text=Files.readString(temporary.getRoot().toPath().resolve(a+".json"));
+		assertFalse(text.contains("timeline")); assertFalse(text.contains("damage")); assertFalse(text.contains("roster"));
 	}
 
 	private void raw(String text) throws Exception { try (Writer writer = directory.joinSegment(a + ".json").openWriter()) { writer.write(text); } }
@@ -120,8 +132,8 @@ public class LocalPreferencesTest
 		assertEquals("ranged-options", reloaded.goal);
 		assertFalse(reloaded.confirmations.get("owns-bowfaOrBetter").value);
 		JsonObject doc = new JsonParser().parse(Files.readString(temporary.getRoot().toPath().resolve(a + ".json"))).getAsJsonObject();
-		assertEquals(2, doc.get("schemaVersion").getAsInt());
-		assertEquals(Set.of("schemaVersion", "goal", "skipped", "confirmations"), doc.keySet());
+		assertEquals(3, doc.get("schemaVersion").getAsInt());
+		assertEquals(Set.of("schemaVersion", "goal", "skipped", "confirmations", "method", "upgradedDeathCharge", "locks"), doc.keySet());
 		assertTrue(restarted.read(LocalPreferences.key("synthetic-config-11:rs-a:character-1")).skipped.isEmpty());
 		assertTrue(restarted.read(LocalPreferences.key("synthetic-config-10:rs-b:character-2")).confirmations.isEmpty());
 	}
