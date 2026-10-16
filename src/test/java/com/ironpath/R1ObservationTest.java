@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 public class R1ObservationTest
 {
-	@Test public void clientSlotsAndBankVariantsReachTheRangedAdvisorWithoutFalseRepeatGrinds() throws Exception
+	@Test public void clientSlotsAndBankVariantsReachTheRangedComparison() throws Exception
 	{
 		net.runelite.api.Client client=mock(net.runelite.api.Client.class);
 		when(client.isClientThread()).thenReturn(true);
@@ -36,10 +36,8 @@ public class R1ObservationTest
 		KnowledgeCatalog catalog=KnowledgeCatalog.load(new Gson());
 		com.ironpath.advisor.RangedComparisonService ranged=new com.ironpath.advisor.RangedComparisonService(catalog);
 		assertNull(ranged.validate(a,Preferences.EMPTY,ranged.propose(a)));
-		var views=new com.ironpath.advisor.Advisor(catalog).upgrades(a,Preferences.EMPTY);
-		assertTrue(views.stream().noneMatch(v->v.upgrade.id.startsWith("crystal-")||v.upgrade.id.equals("toxic-blowpipe")||v.upgrade.id.equals("avernic-treads")));
-		assertTrue(views.stream().filter(v->v.upgrade.id.equals("zaryte-vambraces")).findFirst().orElseThrow()
-			.comparison.available(com.ironpath.advisor.ComparisonResult.Metric.THEORETICAL_DPS));
+		assertTrue(ranged.compare(a,Preferences.EMPTY,ranged.propose(a),26235)
+            .available(com.ironpath.advisor.ComparisonResult.Metric.THEORETICAL_DPS));
 	}
 	@Test public void supportedSlotsAndStackCountsAreIndependentImmutableObservations()
 	{

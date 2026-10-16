@@ -41,7 +41,7 @@ public final class MeleeComparisonService
 	{ return items.values().stream().filter(i->i.slot.equals(slot) && a.observedItem(i.id)==Truth.TRUE && equipError(a,i)==null)
 		.sorted(Comparator.comparingInt(i->i.id)).collect(Collectors.toList()); }
 	private List<MeleeItem> eligibleOwned(String slot, AccountSnapshot a, Preferences p)
-	{ return owned(slot,a).stream().filter(i->i.equipFact==null || new Advisor(catalog).truthForPlanningFact(a,p,i.equipFact)==Truth.TRUE).collect(Collectors.toList()); }
+	{ return owned(slot,a).stream().filter(i->i.equipFact==null || AccountFacts.planning(a,p,i.equipFact)==Truth.TRUE).collect(Collectors.toList()); }
 	public Map<String,Map<String,String>> referenceChoices(AccountSnapshot a)
 	{
 		Map<String,Map<String,String>> result=new LinkedHashMap<>();
@@ -182,7 +182,7 @@ public final class MeleeComparisonService
 			if (item==null || !slot.equals(item.slot)) { return "Unreviewed melee contribution in "+slot+": item "+id+". Correct the reference or explicitly exclude that slot."; }
 			if (id!=candidateId && a.observedItem(id)!=Truth.TRUE) { return item.label+" is not observed; manual ownership cannot create a usable baseline."; }
 			String error=equipError(a,item); if (error!=null) { return error; }
-			if (item.equipFact!=null && new Advisor(catalog).truthForPlanningFact(a,p,item.equipFact)!=Truth.TRUE)
+			if (item.equipFact!=null && AccountFacts.planning(a,p,item.equipFact)!=Truth.TRUE)
 			{ return item.label+" requires confirmed "+item.equipFact+" completion; ownership alone is not an equip unlock."; }
 		}
 		MeleeItem weapon=items.get(s.slots.get("weapon"));
@@ -197,7 +197,7 @@ public final class MeleeComparisonService
 		{
 			boolean piety=s.meleePrayer==MeleeModel.Prayer.PIETY;
 			if (a.atLeast("PRAYER",piety ? 70 : 60)!=Truth.TRUE || a.atLeast("DEFENCE",piety ? 70 : 65)!=Truth.TRUE
-				|| new Advisor(catalog).truthForPlanningFact(a,p,"knight-waves")!=Truth.TRUE)
+				|| AccountFacts.planning(a,p,"knight-waves")!=Truth.TRUE)
 			{ return "King's Ransom/Knight Waves unlock and Prayer/Defence requirements are unconfirmed for "+s.meleePrayer+"."; }
 		}
 		return null;
@@ -213,7 +213,7 @@ public final class MeleeComparisonService
 		if (!(t.scalingSupported || t.meleeScenario) || t.meleeStab==null) { return unavailable(before,"Target melee defence/phase/scaling unsupported; no raid scaling is invented.",weapon); }
 		// A target/task/stack/debuff change can change the strongest owned package. Keep focused slot/style corrections.
 		before=reconsider(a,p,before);
-		if (candidate.equipFact!=null && new Advisor(catalog).truthForPlanningFact(a,p,candidate.equipFact)!=Truth.TRUE)
+		if (candidate.equipFact!=null && AccountFacts.planning(a,p,candidate.equipFact)!=Truth.TRUE)
 		{ return unavailable(before,candidate.label+" requires confirmed "+candidate.equipFact+" completion.",weapon); }
 		error=equipError(a,candidate); if (error!=null) { return unavailable(before,error+" Retain the plan-ahead route.",weapon); }
 		CombatSetup after=strongest(a,p,before,candidate);

@@ -80,7 +80,8 @@ public final class KnowledgeCatalog
 			boolean official = source.url.matches("https://secure\\.runescape\\.com/m=news/[a-z0-9-]+\\?oldschool=1");
 			boolean paceEvidence=source.url.matches("https://osrsmethods\\.com/methods/(completing-the-corrupted-gauntlet|killing-zulrah|killing-demonic-gorillas|killing-tormented-demons|killing-phantom-muspah-twisted-bow)");
 			boolean api = source.url.matches("https://github\\.com/runelite/runelite/blob/[a-f0-9]{40}/runelite-api/src/main/java/net/runelite/api/gameval/ItemID\\.java");
-			if (!wiki && !api && !official && !paceEvidence)
+			boolean equipmentFacts=source.url.matches("https://github\\.com/weirdgloop/osrs-dps-calc/blob/[a-f0-9]{40}/cdn/json/equipment\\.json");
+			if (!wiki && !api && !official && !paceEvidence && !equipmentFacts)
 			{
 				throw new IllegalArgumentException("Unapproved source URL");
 			}
@@ -626,7 +627,7 @@ public final class KnowledgeCatalog
 
 	}
 
-	private static void validateEffort(PursuitAssessment.Mode mode, PursuitAssessment.Burden burden, PursuitAssessment.Tail tail,
+	private static void validateEffort(AcquisitionScope.Mode mode, AcquisitionScope.Burden burden, AcquisitionScope.Tail tail,
 		String modeId, String reason, String missingMechanics, List<String> allocations)
 	{
 		if (mode == null || burden == null || tail == null || allocations == null) { throw new IllegalArgumentException("Invalid effort support"); }
@@ -961,9 +962,9 @@ public final class KnowledgeCatalog
 
 	public static final class EffortSpec
 	{
-		public PursuitAssessment.Mode mode;
-		public PursuitAssessment.Burden burden;
-		public PursuitAssessment.Tail tail;
+		public AcquisitionScope.Mode mode;
+		public AcquisitionScope.Burden burden;
+		public AcquisitionScope.Tail tail;
 		public String modeId, reason, missingMechanics, profile;
 		public RemainingEffort.Band band;
 		public List<String> sources, allocations;
@@ -972,9 +973,9 @@ public final class KnowledgeCatalog
 	public static final class EffortVariant
 	{
 		public Condition when;
-		public PursuitAssessment.Mode mode;
-		public PursuitAssessment.Burden burden;
-		public PursuitAssessment.Tail tail;
+		public AcquisitionScope.Mode mode;
+		public AcquisitionScope.Burden burden;
+		public AcquisitionScope.Tail tail;
 		public String reason;
 		public List<String> allocations;
 		public boolean bypassesAcquisition;
@@ -996,7 +997,7 @@ public final class KnowledgeCatalog
 		public RemainingEffort.Band band;
 		public int itemId;
 		public Benefit benefit;
-		public PursuitAssessment.Tail tail;
+		public AcquisitionScope.Tail tail;
 		public Integer requiredQuantity;
 		public Condition resourceWhen;
 		public Condition when, ownedWhen, accessWhen, prepWhen;

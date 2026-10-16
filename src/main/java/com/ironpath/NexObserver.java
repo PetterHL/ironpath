@@ -20,8 +20,9 @@ final class NexObserver
 	private final Set<Integer> melee=new HashSet<>(), ranged=new HashSet<>();
 	private final Map<NPC,String> targets=new IdentityHashMap<>();
 	private final Set<Hitsplat> hits=Collections.newSetFromMap(new IdentityHashMap<>());
+	private final List<String> signals=new ArrayList<>();
 	private NPC boss;
-	private int barrier=-1, boundary=-100, smoke=-100, bossGone=-1, view=Integer.MIN_VALUE;
+	private int barrier=-1, boundary=-100, smoke=-100, bossGone=-1, bossForm=-1, view=Integer.MIN_VALUE;
 	private boolean attempted;
 	private long spawnSerial, hitSerial;
 	private NexMethod method=NexMethod.PILOT;
@@ -73,9 +74,17 @@ final class NexObserver
 	}
 	synchronized boolean inArena() { return boss!=null && (barrier==2 || barrier==3); }
 	synchronized void clearActive()
-	{ capture.clear(); targets.clear(); hits.clear(); boss=null; attempted=false; bossGone=-1; barrier=-1; boundary=smoke=-100; view=Integer.MIN_VALUE; rosterTick=Integer.MIN_VALUE; cachedRoster=null; }
+	{ capture.clear(); targets.clear(); hits.clear(); signals.clear(); boss=null; attempted=false; bossGone=bossForm=-1; barrier=-1; boundary=smoke=-100; view=Integer.MIN_VALUE; rosterTick=Integer.MIN_VALUE; cachedRoster=null; }
+	private void signal(String value)
+	{
+		String entry="tick "+client.getTickCount()+" · "+value;
+		if(capture.active()) { capture.signal(entry); return; }
+		if(signals.size()>=NexCapture.MAX_SIGNALS) { signals.remove(NexCapture.MAX_SIGNALS/2); }
+		signals.add(entry);
+	}
 	synchronized void transition()
 	{
+		signal("scene transition; barrier "+barrier);
 		capture.flush(client.getTickCount());
 		capture.abort(client.getTickCount(),Outcome.CENSORED,"Left arena or scene loading during active capture");
 		clearActive();
@@ -91,7 +100,9 @@ final class NexObserver
 		{
 			if (boss!=null && boss!=actor)
 			{ capture.abort(client.getTickCount(),Outcome.CENSORED,"Nex spawn identity replaced"); targets.clear(); boundary=smoke=-100; }
+			if(boss!=actor || bossForm!=actor.getId()) { signal("Nex form "+actor.getId()+(boss!=actor?" (new actor)":" (same actor)")); }
 			if(boss!=actor) { attempted=false; }
+			bossForm=actor.getId();
 			boss=actor; bossGone=-1; view=actor.getWorldView().getId();
 		}
 		if (!targets.containsKey(actor))
@@ -110,13 +121,20 @@ final class NexObserver
 	synchronized void despawn(NPC actor)
 	{
 		// Keep boss identity until the end grace window; despawn alone never completes a kill.
-		if (actor!=boss) { targets.remove(actor); } else { bossGone=client.getTickCount(); }
+		if (actor!=boss) { targets.remove(actor); } else { signal("Nex despawn"); bossGone=client.getTickCount(); }
 	}
 	synchronized void barrier()
+	{ barrier(client.getVarbitValue(VarbitID.NEX_BARRIER),"poll"); }
+	synchronized void barrier(int next)
+	{ barrier(next,"event"); }
+	private void barrier(int next,String source)
 	{
 		if (!enabled) { return; }
-		int next=client.getVarbitValue(VarbitID.NEX_BARRIER), tick=client.getTickCount();
-		if (barrier==2 && next==3) { boundary=tick; attempted=false; }
+		int tick=client.getTickCount();
+		boolean changed=next!=barrier;
+		if(changed) { signal("barrier "+(barrier<0?"initial":barrier)+"→"+next+" ("+source+")"); }
+		if (barrier==2 && next==3)
+		{ boundary=tick; if(!capture.active()) { attempted=false; } capture.barrierStart(tick); }
 		if (barrier==3 && next==2) { capture.barrierEnd(tick); }
 		if (barrier==3 && (next==0 || next==1))
 		{
@@ -124,6 +142,7 @@ final class NexObserver
 		}
 		barrier=next;
 		startIfReady(false);
+		if(changed) { sample(-1); }
 	}
 	synchronized void chat(ChatMessageType type, String message)
 	{
@@ -155,8 +174,12 @@ final class NexObserver
 			case "glacies, don't fail me!": window="MINION_GLACIES"; break;
 			default: return;
 		}
+		if("SMOKE".equals(phase)) { signal("smoke line observed"); }
 		startIfReady(false);
-		if (capture.active()) { capture.phase(tick,phase,window); sample(-1); }
+		if (capture.active())
+		{
+			capture.phase(tick,phase,window); sample(-1);
+		}
 	}
 	synchronized void tick()
 	{
@@ -167,7 +190,7 @@ final class NexObserver
 		Player local=client.getLocalPlayer(); int tick=client.getTickCount();
 		if (capture.active() && (local==null || local.isDead()))
 		{ capture.abort(tick,local==null?Outcome.CENSORED:Outcome.FAILED,"Local player died/unavailable"); return; }
-		if(capture.active() && bossGone>=0 && tick-bossGone>NexCapture.END_GRACE)
+		if(capture.active() && bossGone>=0 && tick-bossGone>NexCapture.END_WAIT)
 		{ capture.flush(tick); capture.abort(tick,Outcome.CENSORED,"Nex despawned without correlated completion"); }
 		if (capture.active() && (!sameView(local) || !sameView(boss)))
 		{ capture.abort(tick,Outcome.CENSORED,"World-view identity changed"); clearActive(); return; }
@@ -177,13 +200,22 @@ final class NexObserver
 	}
 	private void startIfReady(boolean allowPartial)
 	{
-		if(capture.active() || attempted || boss==null || barrier!=3 || boss.getId()==NpcID.NEX_DYING || !sameView(client.getLocalPlayer())) { return; }
 		int tick=client.getTickCount();
-		boolean full=boundary==tick && smoke>=boundary-10 && smoke<=tick;
-		if(!full && !allowPartial) { return; }
+		boolean smokeStart=smoke==tick;
+		if(capture.active())
+		{
+			if(smokeStart) { capture.anchorSmoke(tick,roster()); }
+			return;
+		}
+		if(attempted || boss==null || (barrier!=3 && !(smokeStart && barrier==2))
+			|| boss.getId()==NpcID.NEX_DYING || !sameView(client.getLocalPlayer())) { return; }
+		if(!smokeStart && !allowPartial && boundary!=tick) { return; }
 		hits.clear(); attempted=true;
-		capture.start(tick,full,method,roster());
-		// Capture the state in the boundary callback, before the following GameTick advances the clock.
+		capture.start(tick,smokeStart,method,roster());
+		if(boundary>=0 && boundary<=tick) { capture.barrierStart(boundary); }
+		signals.forEach(capture::signal);
+		signals.clear();
+		// Sample the actual start callback, without reconstructing earlier equipment or phase.
 		sample(-1);
 	}
 	private String roster()
@@ -225,6 +257,6 @@ final class NexObserver
 	synchronized void death(Actor actor)
 	{
 		if (actor==client.getLocalPlayer()) { capture.abort(client.getTickCount(),Outcome.FAILED,"Player death"); }
-		else if (actor==boss && sameView(actor)) { capture.death(client.getTickCount()); }
+		else if (actor==boss && sameView(actor)) { signal("Nex ActorDeath"); capture.death(client.getTickCount()); }
 	}
 }

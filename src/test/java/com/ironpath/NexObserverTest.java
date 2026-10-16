@@ -73,21 +73,102 @@ public class NexObserverTest
 			observer.tick();
 		}
 	}
-	@Test public void barrierCallbackCapturesInitialStateBeforeFollowingGameTick()
+	@Test public void initiallyActiveArenaWithLaterSmokeAndDyingBeforeBarrierCompletes()
+	{
+		barrier.set(3);
+		for(int t=0;t<=103;t++)
+		{
+			tick.set(t);
+			if(t==21) { observer.overhead(boss,"Fill my soul with smoke!"); }
+			if(t==30) { observer.overhead(boss,"Darken my shadow!"); }
+			if(t==45) { observer.overhead(boss,"Flood my lungs with blood!"); }
+			if(t==60) { observer.overhead(boss,"Infuse me with the power of ice!"); }
+			if(t==75) { observer.overhead(boss,"NOW, THE POWER OF ZAROS!"); }
+			if(t==90) { when(boss.getId()).thenReturn(NpcID.NEX_DYING); observer.changed(boss); }
+			if(t==98) { barrier.set(2); observer.barrier(2); }
+			observer.tick();
+		}
+		assertEquals(1,session.recent().size()); var summary=session.recent().get(0);
+		assertEquals(Outcome.COMPLETE,summary.outcome);
+		assertEquals(21,summary.startTick); assertEquals(90,summary.endTick);
+		assertEquals(69,summary.sampledTicks); assertEquals(69,summary.expectedTicks);
+		assertEquals(21,summary.timeline.get(0).tick); assertEquals("SMOKE",summary.timeline.get(0).phase);
+		assertEquals(0,summary.beforeStart.get(0).tick); assertEquals("UNKNOWN",summary.beforeStart.get(0).phase);
+		assertThrows(UnsupportedOperationException.class,()->summary.beforeStart.clear());
+		assertNull(summary.signals.boundaryTick);
+		assertEquals(Integer.valueOf(21),summary.signals.smokeTick);
+		assertEquals(Integer.valueOf(98),summary.signals.barrierEndTick);
+	}
+	@Test public void smokeCallbackCapturesInitialStateBeforeFollowingGameTick()
 	{
 		observer.tick(); observer.overhead(boss,"Fill my soul with smoke!");
 		tick.set(1); barrier.set(3); observer.barrier(); assertTrue(observer.capture.active());
 		// The next game tick has already advanced. The origin remains the callback tick.
 		phasesAndEnd(); assertEquals(Outcome.COMPLETE,session.recent().get(0).outcome);
-		assertEquals(1,session.recent().get(0).startTick);
-		assertEquals(1,session.recent().get(0).timeline.get(0).tick);
+		assertEquals(0,session.recent().get(0).startTick);
+		assertEquals(0,session.recent().get(0).timeline.get(0).tick);
+		assertEquals(Integer.valueOf(1),session.recent().get(0).signals.boundaryTick);
+	}
+	@Test public void observedBoundaryBeforeSmokeDoesNotBecomeAMidKillEnable()
+	{
+		observer.tick();
+		tick.set(1); barrier.set(3); observer.tick();
+		assertTrue(observer.capture.active());
+		tick.set(2); observer.overhead(boss,"Fill my soul with smoke!");
+		phasesAndEnd();
+		var summary=session.recent().get(0);
+		assertEquals(Outcome.COMPLETE,summary.outcome);
+		assertEquals(2,summary.startTick);
+		assertEquals("UNKNOWN",summary.beforeStart.get(0).phase);
+		assertEquals("SMOKE",summary.timeline.get(0).phase);
+		assertTrue(summary.timeline.stream().anyMatch(s->s.tick==2 && s.phase.equals("SMOKE")));
+		assertEquals(Integer.valueOf(1),summary.signals.boundaryTick);
+		assertEquals(Integer.valueOf(2),summary.signals.smokeTick);
+	}
+	@Test public void boundaryCallbackSamplesBeforeSmokeInTheSameTick()
+	{
+		observer.tick(); tick.set(1); barrier.set(3); observer.barrier();
+		assertTrue(observer.capture.active()); observer.overhead(boss,"Fill my soul with smoke!");
+		phasesAndEnd(); var summary=session.recent().get(0);
+		assertEquals(Outcome.COMPLETE,summary.outcome); assertEquals(1,summary.startTick);
+		assertEquals("UNKNOWN",summary.beforeStart.get(0).phase);
+		assertEquals("SMOKE",summary.timeline.get(0).phase);
+		assertEquals(Integer.valueOf(1),summary.signals.smokeTick);
+	}
+	@Test public void smokeAnchorsAnInitiallyActiveArenaWithoutInventingAnArenaTransition()
+	{
+		barrier.set(3); observer.tick(); tick.set(1); observer.overhead(boss,"Fill my soul with smoke!");
+		phasesAndEnd(); var summary=session.recent().get(0);
+		assertEquals(Outcome.COMPLETE,summary.outcome);
+		assertNull(summary.signals.boundaryTick); assertEquals(Integer.valueOf(1),summary.signals.smokeTick);
+		assertEquals(Integer.valueOf(1),summary.signals.observedSmokeTick);
+		assertTrue(summary.signals.trace.stream().anyMatch(s->s.contains("barrier initial→3 (poll)")));
+		assertTrue(summary.signals.trace.stream().anyMatch(s->s.contains("smoke line observed")));
+		assertEquals(1,summary.startTick); assertEquals("UNKNOWN",summary.beforeStart.get(0).phase);
+		assertTrue(summary.signals.phases.containsAll(List.of("SMOKE","SHADOW","BLOOD","ICE","ZAROS")));
+	}
+	@Test public void eventPayloadEndIsRetainedEvenWhenNoPollSeesTheEndValue()
+	{
+		start(); tick.set(5); observer.death(boss);
+		tick.set(6); observer.barrier(2); // The independent client getter still reads 3.
+		observer.capture.flush(6);
+		var summary=session.recent().get(0);
+		assertEquals(Integer.valueOf(6),summary.signals.barrierEndTick);
+		assertTrue(summary.signals.trace.stream().anyMatch(s->s.contains("barrier 3→2 (event)")));
+		assertTrue(summary.signals.trace.stream().anyMatch(s->s.contains("Nex ActorDeath")));
+		assertEquals(Outcome.CENSORED,summary.outcome); // Missing phases are still required.
+		observer.clearActive(); tick.set(100); observer.tick(); observer.capture.flush(100);
+		observer.transition();
+		var next=session.recent().get(1);
+		assertTrue(next.signals.trace.stream().noneMatch(s->s.contains("tick 6 ") || s.contains("tick 5 ")));
+		assertTrue(summary.signals.trace.stream().anyMatch(s->s.contains("tick 6 ")));
 	}
 
 	@Test public void reviewedTargetsTransformsAndDuplicateCallbacksProduceOneCompleteSummary()
 	{
 		start(); hit(npc(NpcID.NEX_PRISON_BLOOD_REAVER_BOSS,4),true,false,HitsplatID.DAMAGE_ME,500);
 		phasesAndEnd(); assertEquals(1,session.recent().size()); var s=session.recent().get(0);
-		assertEquals(Outcome.COMPLETE,s.outcome); assertEquals(17.4,s.seconds(),1e-10);
+		assertEquals(Outcome.COMPLETE,s.outcome); assertEquals(18,s.seconds(),1e-10);
 		assertEquals(20,s.localDamage()); assertEquals(80,s.totalDamage());
 		assertTrue(s.damage.keySet().stream().anyMatch(k->k.contains("SHADOW / EMBRACE_DARKNESS / UMBRA@")));
 		assertTrue(s.timeline.stream().anyMatch(x->x.window.equals("FEAR_THE_SHADOW")));
@@ -112,8 +193,42 @@ public class NexObserverTest
 	@Test public void missingDeathBarrierOrTickAndStaleDeathAfterResetCannotComplete()
 	{
 		start(); tick.set(5); observer.death(boss); observer.tick();
-		tick.set(11); observer.tick(); assertEquals(Outcome.CENSORED,session.recent().get(0).outcome);
+		tick.set(26); observer.tick(); assertEquals(Outcome.CENSORED,session.recent().get(0).outcome);
 		observer.clearActive(); observer.death(boss); observer.barrier(); assertFalse(observer.capture.active());
 		assertEquals(1,session.recent().size());
+	}
+	@Test public void aLateSmokeLineAfterObservedDamageCannotEraseAMidKillArrival()
+	{
+		barrier.set(3); observer.tick(); hit(boss,true,false,HitsplatID.DAMAGE_ME,7);
+		tick.set(1); observer.overhead(boss,"Fill my soul with smoke!");
+		phasesAndEnd(); var summary=session.recent().get(0);
+		assertEquals(Outcome.CENSORED,summary.outcome); assertNull(summary.signals.smokeTick);
+		assertEquals(Integer.valueOf(1),summary.signals.observedSmokeTick);
+		assertEquals(0,summary.startTick); assertTrue(summary.beforeStart.isEmpty());
+		assertEquals(27,summary.localDamage());
+	}
+	@Test public void aLateSmokeLineAfterALaterPhaseCannotRebaseTheCapture()
+	{
+		barrier.set(3); observer.tick(); observer.overhead(boss,"Darken my shadow!");
+		tick.set(1); observer.overhead(boss,"Fill my soul with smoke!");
+		phasesAndEnd(); var summary=session.recent().get(0);
+		assertEquals(Outcome.CENSORED,summary.outcome); assertNull(summary.signals.smokeTick);
+		assertTrue(summary.beforeStart.isEmpty()); assertEquals(0,summary.startTick);
+	}
+	@Test public void wrongActorSmokeAndDuplicateSmokeDoNotManufactureOrMoveTheStart()
+	{
+		barrier.set(3); observer.tick(); observer.overhead(minion,"Fill my soul with smoke!");
+		tick.set(1); observer.overhead(boss,"Fill my soul with smoke!");
+		tick.set(2); observer.overhead(boss,"Fill my soul with smoke!");
+		phasesAndEnd(); var summary=session.recent().get(0);
+		assertEquals(Outcome.COMPLETE,summary.outcome); assertEquals(1,summary.startTick);
+		assertEquals(Integer.valueOf(1),summary.signals.smokeTick);
+	}
+	@Test public void smokeBeforeBarrierThenLocalDeathDoesNotRestartTheSameAttempt()
+	{
+		start(); tick.set(2); observer.death(player);
+		for(int t=2;t<10;t++) { tick.set(t); observer.tick(); }
+		assertFalse(observer.capture.active()); assertEquals(1,session.recent().size());
+		assertEquals(Outcome.FAILED,session.recent().get(0).outcome);
 	}
 }

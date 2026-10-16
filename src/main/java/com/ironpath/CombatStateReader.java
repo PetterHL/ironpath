@@ -57,6 +57,13 @@ final class CombatStateReader
 		}
 		var inventory = AccountSnapshotReader.quantities(client.getItemContainer(InventoryID.INV), Instant.now(), "inventory");
 		Map<String,Integer> resources = new HashMap<>();
+		var carried=client.getItemContainer(InventoryID.INV);
+		if(carried!=null)
+		{
+			int occupied=0;
+			for(var item:carried.getItems()) { if(item!=null && item.getId()>0 && item.getQuantity()>0) { occupied++; } }
+			resources.put("inventory-slots-used",occupied);
+		}
 		resources.put("death-charge-active", client.getVarbitValue(VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE));
 		resources.put("death-charge-cooldown", client.getVarbitValue(VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN));
 		var equipment = client.getItemContainer(InventoryID.WORN);

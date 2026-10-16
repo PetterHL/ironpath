@@ -51,12 +51,7 @@ public class NeutralReferenceTest
 		assertTrue(r.summary().indexOf("theoretical DPS")<r.summary().indexOf("Max hit"));
 		AccountSnapshot owned=account(Set.of(12899,27275),99,99);
 		assertEquals(Integer.valueOf(12899),service.propose(owned).slots.get("weapon"));
-		// Neutral marginal loss does not remove the specialist/long-term item from discovery.
-		Advisor.UpgradeView view=new Advisor(catalog).upgrades(a,R15Fixtures.absent(catalog)).stream()
-			.filter(v->v.upgrade.id.equals("tumekens-shadow")).findFirst().orElseThrow();
-		assertEquals(PursuitAssessment.Category.CHECK,view.pursuit.category);
-		assertTrue(view.comparison.dpsGain()<0);
-		assertTrue(view.contextComparisons.stream().anyMatch(c->c.available(THEORETICAL_DPS)&&c.dpsGain()>0));
+
 	}
 	@Test public void equalMaxHitsStillHaveDifferentDpsAtDifferentIntervals()
 	{
@@ -86,36 +81,7 @@ public class NeutralReferenceTest
 		ComparisonResult unknown=service.compare(a,Preferences.EMPTY,s.edit("head","-1"),27275);
 		assertTrue(unknown.headline().startsWith("DPS unavailable"));assertNull(unknown.before);
 	}
-	@Test public void sixNeutralProfilesKeepDeterministicAdviceAndHonestContextualValue() throws Exception
-	{
-		Advisor advisor=new Advisor(catalog);
-		AccountSnapshot base=R15Fixtures.developed(false);
-		Map<String,AccountSnapshot> profiles=new java.util.LinkedHashMap<>();
-		profiles.put("Post-Bowfa, weak magic damage kit",base);
-		profiles.put("Tbow owned, same magic kit",R15Fixtures.items(base,20997));
-		profiles.put("Shadow owned, same magic kit",R15Fixtures.developed(true));
-		profiles.put("Multiple megarares and supported damage gear",R15Fixtures.items(R15Fixtures.developed(true),20997,22325,12002,19544));
-		profiles.put("Only long-tail supported gap",R15Fixtures.items(base,21018,21021,21024,12002,19544,28313,26374,31097,21034,21079));
-		profiles.put("Nearly complete supported magic",R15Fixtures.items(R15Fixtures.developed(true),21018,21021,21024,12002,19544,28313,26374,31097));
-		StringBuilder report=new StringBuilder("# Neutral reference synthetic account results\n\n13 October 2026. Original synthetic inputs, no goal or player-usefulness evidence. Knowledge reference-1, combat powered-magic-2, ranking pursuit-1. Exact fixture inputs are in NeutralReferenceTest and R15Fixtures.\n\n");
-		for(Map.Entry<String,AccountSnapshot> profile:profiles.entrySet())
-		{
-			AccountSnapshot a=profile.getValue(); Preferences p=R15Fixtures.absent(catalog);
-			var first=advisor.upgrades(a,p); var repeat=advisor.upgrades(a,p);
-			assertEquals(first.stream().map(v->v.upgrade.id+v.pursuit.category).collect(java.util.stream.Collectors.toList()),
-				repeat.stream().map(v->v.upgrade.id+v.pursuit.category).collect(java.util.stream.Collectors.toList()));
-			assertTrue(first.stream().filter(v->v.comparison.before!=null).allMatch(v->v.comparison.target.analytical));
-			if(a.observedItem(27275)==com.ironpath.model.Truth.TRUE)assertFalse(first.stream().anyMatch(v->v.upgrade.id.equals("swamp-trident")));
-			if(profile.getKey().startsWith("Nearly complete"))assertTrue(first.stream().noneMatch(v -> v.upgrade.comparison.equals("POWERED_MAGIC")));
-			report.append("## ").append(profile.getKey()).append("\n\n");
-			if(first.isEmpty())report.append("No remaining supported outcome; wider combat-family coverage remains pending.\n\n");
-			for(var view:first)report.append("- **").append(view.upgrade.title).append("** — ").append(view.pursuit.category.label)
-				.append(". ").append(view.comparison.summary()).append("\n  ").append(view.pursuit.reasons.get(0)).append("\n");
-			report.append("\n");
-		}
-		java.nio.file.Path path=java.nio.file.Path.of("build/reports/neutral/scenarios.md");
-		java.nio.file.Files.createDirectories(path.getParent());java.nio.file.Files.writeString(path,report);
-	}
+
 	@Test public void neutralFullLoadoutsMatchPinnedIndependentReference() throws Exception
 	{
 		int count=0;

@@ -45,7 +45,7 @@ and scroll; fresh kills must not replace the historical baseline being inspected
   logout/account change clears them. Persistent method choice is not persistent
   performance history.
 
-## Current build
+## N1 capture foundation
 
 N1 development build 0.15.0 opens `Nex · Trio MP2 · One kill per trip`. Encounter,
 Setup and Account are the native navigation. The homepage shows last complete
@@ -61,7 +61,78 @@ required. The upgrade toggle is labeled an assumption, while raw detected Death
 Charge state is in details. Account corrections remain accessible. Method/locks
 and correction writes retain profile/generation/revision guards and serial local IO.
 
-The old general homepage is no longer reachable from the toolbar. N2–N4 have not
-supplied owned-package or new-upgrade cards, counterfactual contribution or team
-seconds. [Synthetic checks and pending native-client/player acceptance](validation/nex-session.md)
+N1 retired the old general homepage navigation. N2 adds the owned flow below;
+new-upgrade cards, counterfactual contribution and team seconds remain N3–N4. [Synthetic checks and pending native-client/player acceptance](validation/nex-session.md)
 are recorded separately; historical screenshots are not acceptance of this view.
+
+## N2 owned equipment
+
+Build 0.16.0 adds **Improve with owned equipment** after the last complete result.
+Each displayed role names its captured tick and conditional theoretical result;
+it does not summarize whole-kill improvement. **Owned setup comparisons** opens a
+frozen result with state/phase and carried/bank-preparation selection. Unsupported
+states remain inspectable with their actual evidence and a concise affected gap.
+
+A complete-package proposal is separate from explicit pairwise alternatives.
+Negative and unchanged results remain visible; blood-fury offence cannot establish
+healing or overall value. The physical ammo slot and selected quiver projectile
+are shown separately. Full slots and numerical/source assumptions expand under
+**Full setups and calculation basis**. Back restores the encounter position;
+new kills do not replace the inspected summary or selected pair. Identity resets
+clear it. Native sprites remain ItemManager images; synthetic captures use empty
+sprite wells. Ordinary/enlarged-font narrow captures are verification, not client
+or player acceptance.
+
+## 0.16.1 live-test follow-up
+
+The main view explicitly says **Observing the current Nex attempt** during capture,
+then returns to the last completed/partial result. Travel status is refreshed when
+capture starts; a waiting message must not imply capture is inactive. This adds no
+live combat advice. Kill details now list observed start boundary, matched smoke,
+Nex death/dying and arena-end ticks, observed phases and sample continuity. Missing
+signals have specific reasons; an excluded attempt is never silently promoted.
+See [first-client findings and retest](validation/nex-live-start.md).
+
+## 0.16.2 signal investigation
+
+The second client attempt still lacks arena boundaries. Kill details identify the
+adapter, show observed smoke separately from matched smoke, and list raw barrier
+transitions with callback/poll origin. A **Capture signal trace** button reveals
+the bounded nonpersistent sequence without requiring the equipment/inventory
+section to be shared. An unmatched end waits at most 20 ticks for diagnostic
+evidence; travel still flushes immediately. Acceptance criteria are unchanged.
+See [second-client findings](validation/nex-live-signals.md).
+
+## 0.16.5 observed smoke start
+
+The measured interval is labeled **Observed smoke announcement → Nex death/dying**.
+Details show the measured smoke start and the optional arena start transition as
+distinct fields. A visible arena-entry transition is not an eligibility condition.
+Before-smoke states remain in the history selector with an explicit prefix and
+exclusion explanation; the default selection is the first fight state. They are
+excluded from combat statistics and owned-equipment scenarios. The start is never
+backdated, and a later smoke line cannot erase observed combat/later phases.
+End matching distinguishes dying from subsequent arena completion. Missing
+evidence remains excluded. [Contract and verification](validation/nex-smoke-anchor.md).
+
+## 0.16.6 comparison coverage and selection
+
+The main view counts supported carried scenarios, bank preparation and unavailable
+states separately. These counts do not represent fight/damage coverage. A missing
+ordinary role has an explicit unavailable message. **Owned setup comparisons**
+starts with supported scenarios when any exist, with role and support filters.
+**All states** and **Unavailable comparisons** retain the gaps; **Why comparisons
+are unavailable** expands grouped reason counts. An empty filter has a clear
+message and disabled state selector. Filtering does not recompute or alter history.
+Bank preparation remains labeled conditional, and identity changes clear the view.
+
+While a bank/travel session is paused, every navigation page shows the revalidation
+message. Setup must not describe temporarily hidden history as an empty session.
+The ordinary Setup content returns after revalidation without changing stored
+summaries or preferences.
+
+The main result/comparison follows the latest complete kill. An already inspected
+comparison stays frozen while the view remains valid; there is currently no
+selector for opening any earlier kill's comparison from the main view. A new
+partial attempt does not enter complete averages or replace the last complete
+baseline. Setup/history across further travel still needs live checks.

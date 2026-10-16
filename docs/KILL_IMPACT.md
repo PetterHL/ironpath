@@ -28,6 +28,10 @@ Keep bounded summaries only in memory. Show a mean over comparable complete kill
 sample count and spread; distinguish the mean of per-kill percentages from aggregate
 damage share. Failed, abandoned and censored attempts are counted separately, never
 silently inserted as fast completions or zero damage. Keep timer origins consistent.
+For `nex-public-4`, the observed interval is the smoke announcement to tracked
+Nex death/dying. Arena entry is diagnostic; arena completion corroborates the
+end after a bounded dying delay. Pre-smoke states are retained separately and
+excluded from fight metrics/comparisons. No game-timer calibration is claimed.
 
 For one-kill trips, N1 must preserve completed summaries across recognized ordinary
 banking transitions. End/censor active traces, keep clearing live account/reference
@@ -76,4 +80,7 @@ A good baseline prediction alone does not validate a small upgrade effect.
 Record real-client event mappings, capture coverage and player usefulness separately
 from synthetic tests. N1 development build implements bounded public-event capture and session summaries;
 [its report](validation/nex-session.md) separates synthetic verification from pending
-real-client/player validation. Counterfactual offence/contribution/time remain N2–N4.
+real-client/player validation. N2 now supplies conditional per-state ordinary offence against the documented
+Nex base-stat scenario. It does not weight by worn time, attribute attacks or
+produce contribution/time. Those dependent encounter outputs remain N3–N4.
+[N2 evidence and exact limits](validation/nex-owned.md).

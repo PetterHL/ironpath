@@ -152,8 +152,8 @@ public final class CombatComparisonService
 			for (Map.Entry<String, Integer> requirement : item.requirements.entrySet())
 			{ if (a.atLeast(requirement.getKey(), requirement.getValue()) != Truth.TRUE) { return gear.label + " requires " + requirement.getValue() + " " + requirement.getKey() + "."; } }
 		}
-		if (id == 28313 && new Advisor(catalog).truthForPlanningFact(a, p, "duke-defeated") != Truth.TRUE
-			&& new Advisor(catalog).truthForPlanningFact(a, p, "desert-treasure-ii") != Truth.TRUE)
+		if (id == 28313 && AccountFacts.planning(a,p,"duke-defeated") != Truth.TRUE
+			&& AccountFacts.planning(a,p,"desert-treasure-ii") != Truth.TRUE)
 		{ return "Magus requires a Duke kill; confirm that fact or completed Desert Treasure II."; }
 		return null;
 	}

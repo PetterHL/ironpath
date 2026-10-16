@@ -2,7 +2,6 @@ package com.ironpath.preferences;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.ironpath.advisor.Advisor;
 import com.ironpath.advisor.KnowledgeCatalog;
 import java.io.IOException;
 import java.io.Reader;
@@ -33,7 +32,7 @@ public final class LocalPreferences implements PreferenceStorage
 		this.gson = gson;
 		decisions = catalog.decisions.stream().map(d -> d.id).collect(Collectors.toSet());
 		decisions.addAll(catalog.activities.keySet());
-		goals = Advisor.goalChoices(catalog).keySet();
+		goals = catalog.goals.keySet();
 		facts = catalog.factChoices().keySet();
 	}
 

@@ -106,4 +106,124 @@ public class NexCaptureTest
 		NexSummary s=summaries.get(0); assertEquals(2,s.timeline.size());
 		assertEquals("EMBRACE_DARKNESS",s.timeline.get(1).window);
 	}
+	@Test public void unmatchedStartSmokeAndEndSignalsHaveSpecificReasonsAndFrozenEvidence()
+	{
+		List<NexSummary> summaries=new ArrayList<>(); NexCapture c=new NexCapture(summaries::add);
+		c.start(0,false,NexMethod.PILOT,"a"); c.sample(0,state(26219,22322,1000,0),null,"melee",-1,"a");
+		for(int t=1;t<=36;t++)
+		{
+			if(t==11) { c.observeSmoke(t); c.phase(t,"SMOKE",null); }
+			if(t==15) { c.phase(t,"SHADOW",null); }
+			if(t==20) { c.phase(t,"BLOOD",null); }
+			if(t==23) { c.phase(t,"ICE",null); }
+			if(t==25) { c.phase(t,"ZAROS",null); }
+			if(t==30) { c.death(t); }
+			if(t==31) { c.barrierEnd(t); }
+			c.sample(t,state(26219,22322,1000,0),null,"melee",-1,"a");
+		}
+		var s=summaries.get(0); assertEquals(Outcome.CENSORED,s.outcome);
+		assertTrue(s.reason.contains("smoke start not observed before combat")); assertNull(s.signals.smokeTick);
+		assertEquals(Integer.valueOf(11),s.signals.observedSmokeTick);
+		assertNull(s.signals.boundaryTick); assertEquals(Integer.valueOf(30),s.signals.deathTick);
+		assertEquals(Integer.valueOf(31),s.signals.barrierEndTick); assertTrue(s.signals.continuous);
+		assertEquals(5,s.signals.phases.size()); assertThrows(UnsupportedOperationException.class,()->s.signals.phases.clear());
+		c.start(100,true,NexMethod.PILOT,"a"); c.death(110); c.flush(116);
+		assertTrue(summaries.get(1).reason.contains("arena end boundary not observed"));
+		assertEquals(5,s.signals.phases.size());
+	}
+	@Test public void dyingBeforeArenaEndCanCompleteWithoutIncludingTheDeathAnimationInTime()
+	{
+		List<NexSummary> summaries=new ArrayList<>(); NexCapture c=new NexCapture(summaries::add);
+		c.start(0,true,NexMethod.PILOT,"a");
+		for(int t=0;t<=43;t++)
+		{
+			if(t==5) { c.phase(t,"SHADOW",null); }
+			if(t==10) { c.phase(t,"BLOOD",null); }
+			if(t==15) { c.phase(t,"ICE",null); }
+			if(t==20) { c.phase(t,"ZAROS",null); }
+			if(t==30) { c.death(t); }
+			if(t==36) { assertTrue(c.active()); assertTrue(summaries.isEmpty()); }
+			if(t==38) { c.barrierEnd(t); }
+			c.sample(t,state(26219,22322,1000,0),null,"melee",-1,"a");
+		}
+		var summary=summaries.get(0);
+		assertEquals(Outcome.COMPLETE,summary.outcome);
+		assertEquals(Integer.valueOf(38),summary.signals.barrierEndTick);
+		assertFalse(summary.reason.contains("end signals outside matching window"));
+		assertFalse(summary.reason.contains("arena end boundary not observed"));
+		assertEquals(30,summary.endTick); assertEquals(30,summary.sampledTicks);
+	}
+	@Test public void diagnosticSignalsAreBoundedImmutableAndClearedBetweenAttempts()
+	{
+		List<NexSummary> summaries=new ArrayList<>(); NexCapture c=new NexCapture(summaries::add);
+		c.start(0,false,NexMethod.PILOT,"a");
+		for(int i=0;i<200;i++) { c.signal("signal "+i); }
+		c.abort(1,Outcome.CENSORED,"test end");
+		var trace=summaries.get(0).signals.trace;
+		assertEquals(NexCapture.MAX_SIGNALS,trace.size());
+		assertEquals("signal 0",trace.get(0)); assertEquals("signal 199",trace.get(trace.size()-1));
+		assertThrows(UnsupportedOperationException.class,()->trace.clear());
+		c.start(2,false,NexMethod.PILOT,"a"); c.abort(3,Outcome.CENSORED,"next end");
+		assertTrue(summaries.get(1).signals.trace.isEmpty()); assertEquals(NexCapture.MAX_SIGNALS,trace.size());
+	}
+	@Test public void missingEndEvidenceHasABoundedDiagnosticWait()
+	{
+		List<NexSummary> summaries=new ArrayList<>(); NexCapture c=new NexCapture(summaries::add);
+		c.start(0,true,NexMethod.PILOT,"a"); c.death(10);
+		c.sample(10+NexCapture.END_WAIT-1,state(26219,22322,1000,0),null,"melee",-1,"a");
+		assertTrue(c.active());
+		c.sample(10+NexCapture.END_WAIT,state(26219,22322,1000,0),null,"melee",-1,"a");
+		assertFalse(c.active()); assertEquals(1,summaries.size());
+		assertTrue(summaries.get(0).reason.contains("arena end boundary not observed"));
+	}
+	@Test public void endCorrelationHasDirectionalBoundsAndCannotRecoverAfterTimeout()
+	{
+		for(int lag:new int[]{-6,-5,0,20,21})
+		{
+			List<NexSummary> summaries=new ArrayList<>(); NexCapture c=new NexCapture(summaries::add);
+			c.start(0,true,NexMethod.PILOT,"a");
+			for(int t=0;t<=56;t++)
+			{
+				if(t==5) { c.phase(t,"SHADOW",null); }
+				if(t==10) { c.phase(t,"BLOOD",null); }
+				if(t==15) { c.phase(t,"ICE",null); }
+				if(t==20) { c.phase(t,"ZAROS",null); }
+				if(t==30) { c.death(t); }
+				if(t==30+lag) { c.barrierEnd(t); }
+				c.sample(t,state(26219,22322,1000,0),null,"melee",-1,"a");
+			}
+			assertEquals(1,summaries.size());
+			assertEquals("lag "+lag,lag>=-5 && lag<=20?Outcome.COMPLETE:Outcome.CENSORED,summaries.get(0).outcome);
+			assertEquals(30,summaries.get(0).endTick);
+		}
+	}
+	@Test public void smokeAnchorSeparatesEarlierStatesAndDoesNotResetTotalCaptureLimits()
+	{
+		List<NexSummary> summaries=new ArrayList<>(); NexCapture c=new NexCapture(summaries::add);
+		c.start(0,false,NexMethod.PILOT,"waiting-roster");
+		c.sample(0,state(1,0,1000,0),null,"unclassified",-1,"waiting-roster");
+		assertTrue(c.anchorSmoke(21,"fight-roster"));
+		c.sample(21,state(26219,22322,1000,0),null,"melee",-1,"fight-roster");
+		assertFalse(c.anchorSmoke(22,"fight-roster"));
+		c.sample(NexCapture.MAX_TICKS+1,state(26219,22322,1000,0),null,"melee",-1,"fight-roster");
+		var summary=summaries.get(0); assertEquals(21,summary.startTick);
+		assertTrue(summary.reason.contains("time limit"));
+		assertEquals("UNKNOWN",summary.beforeStart.get(0).phase); assertEquals(0,summary.beforeStart.get(0).tick);
+		assertEquals("SMOKE",summary.timeline.get(0).phase); assertEquals(21,summary.timeline.get(0).tick);
+		assertThrows(UnsupportedOperationException.class,()->summary.beforeStart.clear());
+		assertTrue(summary.gaps.stream().noneMatch(g->g.startsWith("Smoke start not observed")));
+	}
+	@Test public void preSmokeAndFightStatesShareTheSameBufferLimitAndClearIndependentlyOfFrozenHistory()
+	{
+		List<NexSummary> summaries=new ArrayList<>(); NexCapture c=new NexCapture(summaries::add);
+		c.start(0,false,NexMethod.PILOT,"a");
+		for(int t=0;t<512;t++) { c.sample(t,state(26219,22322,1000,0),null,"melee",1,"a"); }
+		assertTrue(c.anchorSmoke(512,"a"));
+		for(int t=512;t<=NexCapture.MAX_SAMPLES;t++) { c.sample(t,state(26219,22322,1000,0),null,"melee",1,"a"); }
+		var summary=summaries.get(0); assertTrue(summary.reason.contains("buffer limit"));
+		assertEquals(NexCapture.MAX_SAMPLES,summary.beforeStart.size()+summary.timeline.size());
+		assertEquals(512,summary.beforeStart.size());
+		c.start(2000,false,NexMethod.PILOT,"a"); c.abort(2001,Outcome.CENSORED,"next attempt");
+		assertTrue(summaries.get(1).beforeStart.isEmpty()); assertEquals(512,summary.beforeStart.size());
+	}
 }

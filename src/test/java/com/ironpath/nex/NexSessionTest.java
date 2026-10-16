@@ -45,7 +45,7 @@ public class NexSessionTest
 			{
 				session.suspend("a",301,40,true);
 				if(boundary.equals("profile")) { session.select("b",301); }
-				else { session.revalidate("a",boundary.equals("world")?302:301,boundary.equals("timeout")?200:41,true,boundary.equals("arena-before-bank")); }
+				else { session.revalidate("a",boundary.equals("world")?302:301,boundary.equals("timeout")?200:41,!boundary.equals("arena-before-bank"),boundary.equals("arena-before-bank")); }
 			}
 			assertTrue(boundary,session.recent().isEmpty());
 		}
@@ -58,5 +58,22 @@ public class NexSessionTest
 		NexSession session=new NexSession(); session.select("a",301); NexSummary s=NexCaptureTest.replay(0,20,60);
 		session.add(s); session.add(new NexSummary(2,100,140,40,40,0,s.outcome,s.reason,"different-setup-or-roster",s.method,s.timeline,s.damage,s.gaps));
 		assertEquals(2,session.stats().complete); assertEquals(1,session.stats().n);
+	}
+	@Test public void firstVerifiedBankVisitRecognizesReturnTravelWithoutPriorArenaHistory()
+	{
+		NexSession session=new NexSession(); session.select("a",301);
+		assertTrue(session.revalidate("a",301,10,true,false));
+		assertTrue(session.suspend("a",301,15,false)); assertTrue(session.suspended());
+		assertTrue(session.revalidate("a",301,20,false,true)); assertFalse(session.suspended());
+		// Once back in the arena a new unbanked scene is not a second return leg.
+		assertFalse(session.suspend("a",301,25,false));
+	}
+	@Test public void visibleBankRevalidatesEvenIfNexRemainsLoadedNearby()
+	{
+		NexSession session=new NexSession(); session.select("a",301); session.add(NexCaptureTest.replay(0,20,60));
+		session.suspend("a",301,40,true);
+		assertTrue(session.revalidate("a",301,45,true,true)); assertEquals(1,session.stats().complete);
+		assertTrue(session.suspend("a",301,50,false));
+		assertTrue(session.revalidate("a",301,55,false,true)); assertEquals(1,session.stats().complete);
 	}
 }

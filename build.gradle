@@ -26,7 +26,7 @@ dependencies {
 }
 
 group = 'com.ironpath'
-version = '0.15.0'
+version = '0.16.6'
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
@@ -37,7 +37,8 @@ tasks.register('run', JavaExec) {
 	classpath = sourceSets.test.runtimeClasspath
 	mainClass = pluginMainClass
 
-	jvmArgs "-ea"
+	// RuneLite requires assertions for development plugins; exclude the GPU workaround only.
+	jvmArgs "-ea", "-da:net.runelite.client.plugins.gpu..."
 	args "--developer-mode", "--debug"
 }
 

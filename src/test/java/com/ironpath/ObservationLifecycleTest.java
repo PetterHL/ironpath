@@ -292,30 +292,44 @@ public class ObservationLifecycleTest
 		assertThrows(IllegalStateException.class, () -> plugin.reader.read(com.ironpath.model.Observation.unknown()));
 	}
 
-	@Test public void queuedRecentBossResultCannotSurviveProfileLoadingDisableOrAccountSwitch()
-	{
-		for(String boundary:java.util.List.of("profile","loading","account"))
-		{
-			observeBank();
-			plugin.recentBoss.enable(true,plugin.session.generation());
-			var capture=plugin.recentBoss.capture;
-			var state=com.ironpath.advisor.ZilyanaWornStateComparisonTest.state(25867,0,99);
-			var context=new com.ironpath.encounter.EncounterContext(null,null,"zilyana","ordinary","normal",1,"solo",java.util.Map.of());
-			capture.start(99,plugin.session.generation(),context,"synthetic",10,state);
-			capture.localDamage(11,20);
-			for(int i=11;i<20;i++) { capture.sample(i,state); }
-			capture.death(20); capture.loot(20); capture.sample(25,state);
-			plugin.onGameTick(new GameTick());
-			assertFalse("Comparison publication should be queued",delayed.isEmpty());
-			if(boundary.equals("profile")) { plugin.onProfileChanged(new ProfileChanged()); }
-			else if(boundary.equals("loading")) { plugin.onGameStateChanged(new GameStateChanged()); }
-			else { when(client.getAccountHash()).thenReturn(2L); plugin.onGameTick(new GameTick()); }
-			while(!delayed.isEmpty()) { delayed.remove().run(); }
-			assertNull("Stale publication at "+boundary,plugin.recentImpact);
-			assertTrue(plugin.recentBoss.capture.recent().isEmpty());
-		}
-	}
 
+	@Test public void pendingOwnedWorkerCannotPublishAfterProfileOrSceneBoundary()
+	{
+		observeBank(); Queue<Runnable> workers=new ArrayDeque<>();
+		doAnswer(call->{ workers.add(call.getArgument(0)); return null; }).when(plugin.executor).execute(any(Runnable.class));
+		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(0,20,60)); tick();
+		assertFalse(workers.isEmpty()); workers.remove().run();
+		plugin.onProfileChanged(new ProfileChanged());
+		while(!delayed.isEmpty()) { delayed.remove().run(); }
+		assertNull(plugin.ownedResult);
+		assertTrue(plugin.nexSession.stats().complete==0);
+	}
+	@Test public void newerAccountSnapshotRejectsPendingOwnedPublicationAndRecomputes()
+	{
+		observeBank(); Queue<Runnable> workers=new ArrayDeque<>();
+		doAnswer(call->{ workers.add(call.getArgument(0)); return null; }).when(plugin.executor).execute(any(Runnable.class));
+		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(0,20,60)); tick();
+		assertFalse(workers.isEmpty()); Runnable stale=workers.remove();
+		plugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV,items(new Item(11212,200)))); tick();
+		stale.run(); while(!delayed.isEmpty()) { delayed.remove().run(); }
+		assertNull(plugin.ownedResult);
+		assertFalse(workers.isEmpty()); workers.remove().run();
+		while(!delayed.isEmpty()) { delayed.remove().run(); }
+		assertNotNull(plugin.ownedResult);
+	}
+	@Test public void aNewPartialAttemptReschedulesPendingComparisonOfTheLastCompleteKill()
+	{
+		observeBank(); Queue<Runnable> workers=new ArrayDeque<>();
+		doAnswer(call->{ workers.add(call.getArgument(0)); return null; }).when(plugin.executor).execute(any(Runnable.class));
+		var complete=com.ironpath.nex.NexCaptureTest.replay(0,20,60); plugin.nexSession.add(complete); tick();
+		Runnable stale=workers.remove();
+		plugin.nexSession.add(new com.ironpath.nex.NexSummary(complete.key+1,100,105,5,5,0,
+			com.ironpath.encounter.EncounterSummary.Outcome.CENSORED,"synthetic abandoned",complete.cohort,complete.method,
+			java.util.List.of(),java.util.Map.of(),java.util.Set.of())); tick();
+		stale.run(); while(!delayed.isEmpty()) { delayed.remove().run(); } assertNull(plugin.ownedResult);
+		assertFalse(workers.isEmpty()); workers.remove().run(); while(!delayed.isEmpty()) { delayed.remove().run(); }
+		assertNotNull(plugin.ownedResult); assertSame(complete,plugin.ownedResult.summary);
+	}
 	@Test public void nexSummarySurvivesArenaBankArenaAndAccountSwitchDuringPendingBankingClearsIt()
 	{
 		observeBank();
@@ -347,6 +361,39 @@ public class ObservationLifecycleTest
 		when(actors.stream()).thenAnswer(i->java.util.stream.Stream.empty());
 		tick(); tick(); assertTrue(plugin.nexSession.recent().isEmpty());
 		assertFalse(plugin.nex.capture.active());
+	}
+	@Test public void firstBankVisitAndNearbyNexRecognizeReturnAndResumeCapture()
+	{
+		observeBank();
+		var player=mock(net.runelite.api.Player.class); var world=mock(net.runelite.api.WorldView.class);
+		var boss=mock(net.runelite.api.NPC.class); var actors=mock(net.runelite.api.IndexedObjectSet.class);
+		when(client.getLocalPlayer()).thenReturn(player); when(player.getWorldView()).thenReturn(world);
+		when(client.getTopLevelWorldView()).thenReturn(world); when(world.npcs()).thenReturn(actors);
+		when(actors.stream()).thenAnswer(i->java.util.stream.Stream.of(boss));
+		when(boss.getWorldView()).thenReturn(world); when(boss.getId()).thenReturn(net.runelite.api.gameval.NpcID.NEX);
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(1); tick();
+		GameStateChanged loading=new GameStateChanged(); loading.setGameState(GameState.LOADING);
+		plugin.onGameStateChanged(loading); assertTrue(plugin.nexSession.suspended());
+		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(null);
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2);
+		tick(); tick(); tick(); assertFalse(plugin.nexSession.suspended());
+		assertNotNull(plugin.session.snapshot()); assertTrue(plugin.session.preferencesLoaded());
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(3);
+		VarbitChanged start=new VarbitChanged(); start.setVarbitId(VarbitID.NEX_BARRIER); start.setValue(3); plugin.onVarbitChanged(start);
+		assertTrue(plugin.nex.capture.active());
+	}
+	@Test public void nexBarrierCallbackConsumesTheEventValueRatherThanRereadingTheGetter()
+	{
+		observeBank();
+		var player=mock(net.runelite.api.Player.class); var world=mock(net.runelite.api.WorldView.class);
+		var boss=mock(net.runelite.api.NPC.class);
+		when(client.getLocalPlayer()).thenReturn(player); when(player.getWorldView()).thenReturn(world);
+		when(boss.getWorldView()).thenReturn(world); when(boss.getId()).thenReturn(net.runelite.api.gameval.NpcID.NEX);
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2);
+		plugin.nex.spawn(boss); plugin.nex.barrier();
+		VarbitChanged start=new VarbitChanged(); start.setVarbitId(VarbitID.NEX_BARRIER); start.setValue(3);
+		plugin.onVarbitChanged(start);
+		assertTrue("The callback's new value is authoritative even if a separate read lags",plugin.nex.capture.active());
 	}
 	@Test public void nexHistoryClearsOnEveryHardBoundaryAndDisable()
 	{

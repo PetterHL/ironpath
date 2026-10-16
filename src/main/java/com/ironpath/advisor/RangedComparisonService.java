@@ -204,7 +204,7 @@ public final class RangedComparisonService
 			&& Integer.valueOf(ammoId).equals(catalog.ranged.candidateAmmo.get(candidate.weapon.name()));
 	}
 	private boolean unlocked(AccountSnapshot a, Preferences p, String key)
-	{ return new Advisor(catalog).truthForPlanningFact(a,p,key) == Truth.TRUE; }
+	{ return AccountFacts.planning(a,p,key) == Truth.TRUE; }
 	private String equipError(AccountSnapshot a, RangedItem item)
 	{
 		for (Map.Entry<String,Integer> requirement : item.requirements.entrySet())

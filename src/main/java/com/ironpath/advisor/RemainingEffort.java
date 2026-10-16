@@ -66,11 +66,4 @@ public final class RemainingEffort
 		if (condition.test==KnowledgeCatalog.Test.LEVEL) { return "Check " + condition.key.toLowerCase(java.util.Locale.ROOT) + " " + condition.minimum + "."; }
 		return "Check " + (condition.key==null?"the method inputs":condition.key.replace('-',' ')) + "; observe usable gear and recheck supplies.";
 	}
-	/** Compatibility only for old synthetic ranker fixtures; runtime routes must supply a reviewed profile. */
-	static RemainingEffort synthetic(PursuitAssessment.Burden burden, boolean unknown, boolean blocked)
-	{
-		return new RemainingEffort(burden==PursuitAssessment.Burden.LOW?Band.SHORT:burden==PursuitAssessment.Burden.MODERATE?Band.MEDIUM
-			:burden==PursuitAssessment.Burden.HIGH?Band.VERY_LONG:Band.UNKNOWN,blocked?Suitability.PREPARE:unknown?Suitability.UNKNOWN:Suitability.SUITABLE,
-			"synthetic","synthetic","Synthetic method","Explicit synthetic evidence","Synthetic scope","No runtime profile",List.of(),false);
-	}
 }

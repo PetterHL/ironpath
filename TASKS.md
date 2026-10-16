@@ -22,8 +22,16 @@ retention, Death Charge recognition or impact estimates. Those are N1–N4 below
 Implementation is available for review in development build 0.15.0. The Nex adapter,
 native session view, method/locks, immutable state/resource capture and banking
 round trips have synthetic replay/lifecycle coverage. [Evidence and pending live
-checks](docs/validation/nex-session.md). **N1 is not accepted yet:** no real-client
-kills or Petter usefulness checks have been performed. Finish those checks before
+checks](docs/validation/nex-session.md). **N1 is not accepted yet:** initial client screenshots show censored attempts,
+historical failures rather than acceptance. Complete-result display and one
+bank-retention check have since been confirmed in-session; matched multi-trip
+means, broader lifecycle and usefulness checks remain open. The
+[0.16.5 correction](docs/validation/nex-smoke-anchor.md) replaces arena-entry
+anchoring with an observed smoke start and distinguishes dying from later arena
+completion. It preserves pre-smoke states and conservative late-arrival rejection.
+Bank recognition, explicit active status and bounded diagnostics remain. Earlier
+reports retain their original evidence and checks.
+Finish the real-client and usefulness checks before
 claiming the adapter's live mappings, capture fractions or game-timer agreement.
 
 Deliver one useful native flow for **Nex / Trio MP2 / one kill per trip**.
@@ -54,7 +62,22 @@ death/teleport/mid-kill enable; several one-kill bank trips; account switch duri
 pending work; matching timer origins; no false completed kills or leaked sessions.
 Record captured/eligible fractions and real-client/player findings separately.
 
-## N2 — Better use of owned equipment
+## N2 — Better use of owned equipment (implementation for review)
+
+Development build 0.16.0 supplies immutable per-state carried-package comparisons,
+conditional bank preparation, explicit pairs, locks and coverage gaps in the Nex
+view. The old homepage/global progression policy and obsolete consumers/tests are
+removed together; shared formula/oracle, source/schema, observation and preference
+regressions remain. [Implementation and verification](docs/validation/nex-owned.md).
+
+Petter supplied the ranged and melee equipment on 15 October; an anonymous fixture
+uses those items with explicitly synthetic levels/prayers/quantities. **Acceptance
+remains open:** live capture now produces N2 results, while exact stock/charges,
+combined bank packing and player usefulness still need validation. Build 0.16.6
+adds locked melee variants plus role/support filters and grouped gaps; see
+[the correction report](docs/validation/nex-owned-variants.md). Spec-role
+history is retained; its finite energy/effects remain N3. Supported ordinary
+pairwise offence is not global best owned or encounter throughput.
 
 Evaluate complete method-compatible owned packages across melee/ranged/spec roles.
 Compare them to the immutable actually-used timeline, respecting locks, available
