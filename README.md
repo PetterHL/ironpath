@@ -7,7 +7,13 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**15 October 2026: development build 0.16.5.** Nex capture now measures from the
+**16 October 2026: development build 0.17.0, based on the N2 0.16.5 test build.**
+N3a adds **Owned setup comparisons → Special-attack resources**, with frozen
+energy, Death Charge and ring readings after a kill. Its separate finite energy/
+delay scenario API requires explicit inputs and does not infer spec usage or
+recommend a spec upgrade. [Scope and verification](docs/validation/nex-spec-resources.md).
+
+Nex capture measures from the
 observed smoke announcement to death/dying, with corroborating arena completion.
 Arena entry is diagnostic; pre-smoke equipment remains separately inspectable.
 The bounded end matching accounts for dying preceding arena completion. The
@@ -42,7 +48,7 @@ reported Tbow/amethyst-quiver and Fang/defender equipment has an anonymous regre
 fixture; levels, prayers, stock and phase inputs in that fixture are synthetic.
 Ancient blessing remains a physical worn item while quiver arrows are a separate
 projectile input. Conditional ordinary charged/blessed quiver offence is supported;
-finite ammo/splinter use, special attacks, healing and contribution/time remain
+finite ammo/splinter use, special-attack damage, healing and contribution/time remain
 N3–N4. Scorching and other unsupported alternatives leave explicit coverage gaps
 without blocking a supported pair.
 

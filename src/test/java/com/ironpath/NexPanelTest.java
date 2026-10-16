@@ -41,7 +41,7 @@ public class NexPanelTest
 		for(int pass=0;pass<3;pass++) { panel.invalidate(); layout(panel); panel.setSize(225,panel.getPreferredSize().height); }
 		layout(panel); int height=panel.getHeight();
 		BufferedImage image=new BufferedImage(225,height,BufferedImage.TYPE_INT_RGB); Graphics2D graphics=image.createGraphics(); panel.printAll(graphics); graphics.dispose();
-		Path directory=Path.of(name.startsWith("owned")?"build/validation/n2":"build/validation/n1"); Files.createDirectories(directory); ImageIO.write(image,"png",directory.resolve(name+".png").toFile());
+		Path directory=Path.of(name.startsWith("resources")?"build/validation/n3":name.startsWith("owned")?"build/validation/n2":"build/validation/n1"); Files.createDirectories(directory); ImageIO.write(image,"png",directory.resolve(name+".png").toFile());
 		for(Component c:children(panel))
 		{
 			if(c instanceof JTextArea && visible(c) && c.getWidth()>0)
@@ -129,6 +129,42 @@ public class NexPanelTest
 			public void method(NexMethod method) {} public void confirm(String key,Boolean value) {}
 			public void reset() {} public void enable(boolean enabled) {}
 		};
+	}
+	@Test public void resourceReviewIsFrozenReadableAndClearedWithTheAccount() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{try {
+			var catalog=KnowledgeCatalog.load(new Gson()); var summary=NexCaptureTest.replay(0,20,60);
+			var result=new com.ironpath.advisor.NexOwnedResult(summary,List.of());
+			var session=new NexSession(); session.select("a",301); session.add(summary);
+			var account=P4aFixtures.account(Set.of(11907),99,90);
+			for(float font:List.of(12f,20f))
+			{
+				var panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
+				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
+				button(panel,"Owned setup comparisons").doClick();
+				assertFalse(shown(panel).contains("Sampled energy changes"));
+				button(panel,"Special-attack resources").doClick();
+				assertTrue(shown(panel).contains("Special-attack resources · kill #1"));
+				assertTrue(shown(panel).contains("not total restoration or spending"));
+				assertTrue(shown(panel).contains("Two active Death Charge charges were observed"));
+				capture(panel,"resources-"+(int)font);
+				button(panel,"Resource readings and rules").doClick(); capture(panel,"resources-trace-"+(int)font);
+				var readings=(JComboBox<?>)children(panel).stream().filter(c->"nex-resource-reading".equals(c.getName())).findFirst().orElseThrow();
+				assertEquals(result.resources.points.size(),readings.getItemCount()); readings.setSelectedIndex(1);
+				assertTrue(shown(panel).contains("energy 100.0%"));
+				assertTrue(shown(panel).contains("Voidwaker 50.0%; Zaryte crossbow 75.0%"));
+				assertFalse(shown(panel).contains("seconds saved"));
+				var base=NexCaptureTest.replay(100,40,0);
+				var next=new com.ironpath.nex.NexSummary(2,base.startTick,base.endTick,base.sampledTicks,base.expectedTicks,
+					base.unclassifiedHits,base.outcome,base.reason,base.cohort,base.method,base.timeline,base.damage,base.gaps,base.signals,base.beforeStart);
+				session.add(next);
+				panel.render("New result",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",new com.ironpath.advisor.NexOwnedResult(next,List.of()));
+				assertTrue(shown(panel).contains("Owned equipment · kill #1"));
+				button(panel,"Special-attack resources").doClick(); assertTrue(shown(panel).contains("Special-attack resources · kill #1"));
+				panel.render("Profile changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"local",null);
+				assertFalse(shown(panel).contains("Death Charge")); assertFalse(shown(panel).contains("energy"));
+			}
+		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
 	@Test public void ownedPackagesWrapKeepFrozenHistoryAndExposeBloodFuryLossWithoutHealingClaims() throws Exception
 	{

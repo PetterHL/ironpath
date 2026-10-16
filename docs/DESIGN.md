@@ -55,6 +55,11 @@ an item silently to manufacture a weaker baseline.
 | CompactRowLayout | Removed in T0: no production or test references |
 
 Keep observation, encounter summaries, comparisons and presentation separate.
+N3a's `NexResourceReview` summarizes immutable captured resources on the post-kill
+worker. `SpecTimeline` independently checks explicitly supplied resource/delay
+scenarios; it does not attribute captured deltas or provide damage/upgrade advice.
+The native resource details consume frozen evidence, with the existing identity
+and historical-view guards. See [N3a contract](research/nex-spec-resources.md).
 Boss identifiers and event correlations belong in adapters, not reusable formulas.
 Do not prebuild a generic rules engine. Extract shared code when it has a concrete
 consumer, preserving its semantics and tests.

@@ -69,3 +69,13 @@ pinned development reference. This is not a fresh full live-game verification.
 [N2 validation](validation/nex-owned.md) distinguishes reported equipment from
 synthetic levels, prayers, ammo/splinter quantities and phase windows. No private
 account dump, live kill or new distribution authorization is claimed.
+
+## N3a resource review
+
+[Finite special-attack resources](research/nex-spec-resources.md) records the
+versioned energy/delay rules, source retrieval limits, pinned reference hashes,
+scenario assumptions and observed-review boundary. The direct Wiki/mirror pages
+were unavailable; indexed facts, the existing source register, pinned RuneLite
+files and Jagex's Steam announcement are distinguished explicitly.
+[Validation](validation/nex-spec-resources.md) records synthetic results and
+remaining live checks. N3's damage/ammo/supply models and upgrade decisions remain open.

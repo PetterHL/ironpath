@@ -1,5 +1,8 @@
 # Validation records
 
+N3a implementation: [finite spec resources and post-kill evidence](nex-spec-resources.md),
+based on the N2 0.16.5 test build. N3 damage/upgrade decisions remain open.
+
 Current client-test follow-up: [0.16.1 start, bank and status fixes](nex-live-start.md).
 
 N2 implementation: [owned Nex packages](nex-owned.md), based on

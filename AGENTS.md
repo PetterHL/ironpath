@@ -14,7 +14,8 @@
 
 ## Delivery
 
-- Current: N2 implementation in development build 0.16.5, based on N1.
+- Current: N3a resource foundation in development build 0.17.0, based on
+  N2 build 0.16.5. N1/N2 capture testing continues independently.
   Live-client/player acceptance remains open in docs/validation/nex-session.md
   and docs/validation/nex-owned.md. Nex Trio MP2, one kill per trip. Lightbearer throughout,
   upgraded Death Charge, observed melee/ranged/spec switches. Do not guess the
@@ -48,6 +49,12 @@
   availability or a validated joint packing plan. No global-best claim. Keep
   explicit supported pairs when another alternative has no model. See
   docs/research/nex-owned.md for the exact offence/support contract.
+- N3a adds frozen post-kill resource readings and a bounded finite energy/delay
+  scenario API. It does not infer specs/casts/procs from deltas or rank spec
+  upgrades. Fixed-ring scenarios require explicit initial spell state, restore
+  phase/order, eligible deaths and attack opportunities. Preserve the distinction
+  between sampled net changes and modeled spending/restoration. See
+  docs/research/nex-spec-resources.md; N3 damage/ammo/supply acceptance stays open.
 - Use short-lived branches from current main and focused PRs. Do not merge or
   publish to Plugin Hub without authorization. Do not alter unrelated work.
 - Test the affected behavior and run the normal build. Preserve arithmetic,

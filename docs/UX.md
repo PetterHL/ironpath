@@ -103,6 +103,18 @@ section to be shared. An unmatched end waits at most 20 ticks for diagnostic
 evidence; travel still flushes immediately. Acceptance criteria are unchanged.
 See [second-client findings](validation/nex-live-signals.md).
 
+## N3a post-kill resources
+
+Build 0.17.0 adds **Special-attack resources** inside the frozen **Owned setup
+comparisons** view. It shows first/last recorded energy, sampled net increases/
+decreases and observed Lightbearer/Death Charge evidence. **Resource readings and
+rules** expands equal-tick-ordered readings and reference costs. Unknown readings
+remain explicit. No spec/attack/proc count is inferred from energy changes, and
+at-cap readings are not labeled wasted energy. New results do not replace the
+inspected kill; identity reset clears it. No live coaching or capture change.
+The conditional resource scenario API has no player setup wizard or automatic
+spec recommendation. [Scope and validation](validation/nex-spec-resources.md).
+
 ## 0.16.5 observed smoke start
 
 The measured interval is labeled **Observed smoke announcement → Nex death/dying**.
