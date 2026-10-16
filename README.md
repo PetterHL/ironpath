@@ -7,7 +7,14 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**16 October 2026: combined development build 0.17.1 (N1/N2/N3a).**
+**16 October 2026: development build 0.18.0 (N1/N2/N3a/N3b).**
+N3b adds independent Voidwaker/ruby/diamond damage and finite ammo/splinter
+scenario APIs, joined to shared energy and displaced ordinary attacks. Inputs
+include complete-package stats, legal opportunities, HP and explicit resource
+outcomes. These conditional calculations are not automatically inferred from
+your kills or displayed as a best spec-weapon recommendation.
+[N3b contract and verification](docs/validation/nex-spec-damage.md).
+
 N3a adds **Owned setup comparisons → Special-attack resources**, with frozen
 energy, Death Charge and ring readings after a kill. Its separate finite energy/
 delay scenario API requires explicit inputs and does not infer spec usage or
@@ -55,8 +62,9 @@ reported Tbow/amethyst-quiver and Fang/defender equipment has an anonymous regre
 fixture; levels, prayers, stock and phase inputs in that fixture are synthetic.
 Ancient blessing remains a physical worn item while quiver arrows are a separate
 projectile input. Conditional ordinary charged/blessed quiver offence is supported;
-finite ammo/splinter use, special-attack damage, healing and contribution/time remain
-N3–N4. Scorching and other unsupported alternatives leave explicit coverage gaps
+N3b adds conditional finite ammo/splinter and special-attack arithmetic. Automatic
+spec comparisons, healing and contribution/time remain N3–N4.
+Scorching and other unsupported alternatives leave explicit coverage gaps
 without blocking a supported pair.
 
 ## Project map

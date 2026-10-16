@@ -70,6 +70,15 @@ finite scenario kernel requires explicit initial conditions and opportunities;
 shared energy/cap/delay consistency does not establish spec damage, an executable
 encounter or team-time value. [Resource contract](research/nex-spec-resources.md).
 
+N3b adds [conditional attack/stock arithmetic](research/nex-spec-damage.md).
+Expected damage is a sum of supplied single-launch expectations under explicit
+HP/window/package and saving/charge conditions. Never feed expected damage back
+as actual remaining HP. Ruby self-damage is conditional cost, not a survival or
+healing model. Resource branch probabilities describe specified independent
+retrieval/charge rolls only, not encounter uncertainty or upgrade confidence.
+Compare complete alternative plans under the same declared conditions; do not
+add a spec's damage to every ordinary baseline attack it displaces.
+
 Do not scale the last kill by a DPS ratio, use PB as the average or turn combat
 duration into acquisition throughput. Handle finite HP, rounding, overkill, attack
 timing, phase changes, mandatory windows and teammate damage where material.

@@ -61,6 +61,11 @@ scenarios; it does not attribute captured deltas or provide damage/upgrade advic
 The native resource details consume frozen evidence, with the existing identity
 and historical-view guards. See [N3a contract](research/nex-spec-resources.md).
 Boss identifiers and event correlations belong in adapters, not reusable formulas.
+N3b adds `SpecAttackModel` single-launch distributions and `SpecAttackPlan` finite
+ammo/splinter branches joined to `SpecTimeline`. Exact stocks gate spending;
+resource outcomes and legal opportunities are explicit scenario inputs. Complete
+charged/uncharged package damage is supplied separately. No capture/worker advice
+path invokes these kernels yet. See [N3b contract](research/nex-spec-damage.md).
 Do not prebuild a generic rules engine. Extract shared code when it has a concrete
 consumer, preserving its semantics and tests.
 

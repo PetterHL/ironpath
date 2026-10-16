@@ -79,3 +79,10 @@ were unavailable; indexed facts, the existing source register, pinned RuneLite
 files and Jagex's Steam announcement are distinguished explicitly.
 [Validation](validation/nex-spec-resources.md) records synthetic results and
 remaining live checks. N3's damage/ammo/supply models and upgrade decisions remain open.
+
+## N3b damage and ammunition review
+
+The [N3b spec/bolt and ammunition review](research/nex-spec-damage.md) records
+current indexed Wiki facts, pinned development-reference hashes, independently
+authored conditional models and exact boundaries. [N3b verification](validation/nex-spec-damage.md)
+separates hand-calculated mechanics tests from unperformed live/client acceptance.

@@ -30,9 +30,9 @@ the retained implementation; it does not claim Nex recommendations are ready.
 | Relevant owned whole-package evaluation | Supported carried and bank-preparation searches; explicit pairs and coverage gaps. No global-best or combined packing claim | N2 |
 | Locked melee forms | Exact Dragon defender (l) 24143 and Infernal cape (l) 24224 reviewed; no generic variant normalization or damaged-form support | N2 |
 | Reported account | Anonymous reported-gear fixture; Ancient blessing melee and separate quiver projectile supported. Actual levels/stock still unknown; Scorching remains unmodelled | N2–N3 |
-| Voidwaker/ZCB, enchanted bolts, Lightbearer, upgraded Death Charge | No validated complete pilot energy/attack model | N3 |
+| Voidwaker/ZCB and ruby/diamond bolts | Conditional single-launch damage and explicit finite resource plans; no automatic captured-opportunity or phase-throughput model | N3b implemented for review |
 | Finite spec resources (N3a) | Frozen observed review + conditional bounded energy/delay kernel; no inferred casts/procs, spec damage or upgrade ranking | N3 in progress |
-| Charged/blessed quiver and actual ammunition | Conditional ordinary offence equivalence and separate selected-projectile input tested; live counters and finite resource use remain open | N1–N3 |
+| Charged/blessed quiver and actual ammunition | Conditional offence equivalence, exact finite ammo/splinter branches and exhaustion tested; live counters and automatic opportunity use remain open | N1–N3 |
 | Food/pots/spells | Capture actual state first; alternative-plan effects need own model | N1/N3 |
 | Personal share / team seconds | No validated counterfactual | N4 |
 

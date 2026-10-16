@@ -118,6 +118,11 @@ Combined build 0.17.1 retains the resource review alongside the 0.16.6 role/supp
 filters and paused-travel presentation; changing an ordinary scenario filter does
 not change which kill the resource review describes.
 
+Build 0.18.0 adds independent N3b damage/ammo scenario kernels without a new runtime
+calculation view. Resource details explain that sampled readings cannot establish
+launches, HP or initial conditions. No automatic spec-weapon ranking or upgrade
+card is shown until those inputs and package/phase handling are supported.
+
 ## 0.16.5 observed smoke start
 
 The measured interval is labeled **Observed smoke announcement → Nex death/dying**.
