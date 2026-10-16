@@ -31,6 +31,7 @@ the retained implementation; it does not claim Nex recommendations are ready.
 | Locked melee forms | Exact Dragon defender (l) 24143 and Infernal cape (l) 24224 reviewed; no generic variant normalization or damaged-form support | N2 |
 | Reported account | Anonymous reported-gear fixture; Ancient blessing melee and separate quiver projectile supported. Actual levels/stock still unknown; Scorching remains unmodelled | N2–N3 |
 | Voidwaker/ZCB, enchanted bolts, Lightbearer, upgraded Death Charge | No validated complete pilot energy/attack model | N3 |
+| Finite spec resources (N3a) | Frozen observed review + conditional bounded energy/delay kernel; no inferred casts/procs, spec damage or upgrade ranking | N3 in progress |
 | Charged/blessed quiver and actual ammunition | Conditional ordinary offence equivalence and separate selected-projectile input tested; live counters and finite resource use remain open | N1–N3 |
 | Food/pots/spells | Capture actual state first; alternative-plan effects need own model | N1/N3 |
 | Personal share / team seconds | No validated counterfactual | N4 |

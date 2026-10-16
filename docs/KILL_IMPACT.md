@@ -64,6 +64,12 @@ Food, brews/restores and alternative supply plans need delay/boost/resource supp
 
 ## Time and validation
 
+N3a distinguishes sampled resource changes from attributed events: net energy
+deltas do not identify spending, regeneration, specs or Death Charge procs. Its
+finite scenario kernel requires explicit initial conditions and opportunities;
+shared energy/cap/delay consistency does not establish spec damage, an executable
+encounter or team-time value. [Resource contract](research/nex-spec-resources.md).
+
 Do not scale the last kill by a DPS ratio, use PB as the average or turn combat
 duration into acquisition throughput. Handle finite HP, rounding, overkill, attack
 timing, phase changes, mandatory windows and teammate damage where material.

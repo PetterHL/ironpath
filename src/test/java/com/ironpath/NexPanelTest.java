@@ -41,7 +41,7 @@ public class NexPanelTest
 		for(int pass=0;pass<3;pass++) { panel.invalidate(); layout(panel); panel.setSize(225,panel.getPreferredSize().height); }
 		layout(panel); int height=panel.getHeight();
 		BufferedImage image=new BufferedImage(225,height,BufferedImage.TYPE_INT_RGB); Graphics2D graphics=image.createGraphics(); panel.printAll(graphics); graphics.dispose();
-		Path directory=Path.of(name.startsWith("owned")?"build/validation/n2":"build/validation/n1"); Files.createDirectories(directory); ImageIO.write(image,"png",directory.resolve(name+".png").toFile());
+		Path directory=Path.of(name.startsWith("resources")?"build/validation/n3":name.startsWith("owned")?"build/validation/n2":"build/validation/n1"); Files.createDirectories(directory); ImageIO.write(image,"png",directory.resolve(name+".png").toFile());
 		for(Component c:children(panel))
 		{
 			if(c instanceof JTextArea && visible(c) && c.getWidth()>0)
@@ -145,6 +145,42 @@ public class NexPanelTest
 			public void reset() {} public void enable(boolean enabled) {}
 		};
 	}
+	@Test public void resourceReviewIsFrozenReadableAndClearedWithTheAccount() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{try {
+			var catalog=KnowledgeCatalog.load(new Gson()); var summary=NexCaptureTest.replay(0,20,60);
+			var result=new com.ironpath.advisor.NexOwnedResult(summary,List.of());
+			var session=new NexSession(); session.select("a",301); session.add(summary);
+			var account=P4aFixtures.account(Set.of(11907),99,90);
+			for(float font:List.of(12f,20f))
+			{
+				var panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
+				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
+				button(panel,"Owned setup comparisons").doClick();
+				assertFalse(shown(panel).contains("Sampled energy changes"));
+				button(panel,"Special-attack resources").doClick();
+				assertTrue(shown(panel).contains("Special-attack resources · kill #1"));
+				assertTrue(shown(panel).contains("not total restoration or spending"));
+				assertTrue(shown(panel).contains("Two active Death Charge charges were observed"));
+				capture(panel,"resources-"+(int)font);
+				button(panel,"Resource readings and rules").doClick(); capture(panel,"resources-trace-"+(int)font);
+				var readings=(JComboBox<?>)children(panel).stream().filter(c->"nex-resource-reading".equals(c.getName())).findFirst().orElseThrow();
+				assertEquals(result.resources.points.size(),readings.getItemCount()); readings.setSelectedIndex(1);
+				assertTrue(shown(panel).contains("energy 100.0%"));
+				assertTrue(shown(panel).contains("Voidwaker 50.0%; Zaryte crossbow 75.0%"));
+				assertFalse(shown(panel).contains("seconds saved"));
+				var base=NexCaptureTest.replay(100,40,0);
+				var next=new com.ironpath.nex.NexSummary(2,base.startTick,base.endTick,base.sampledTicks,base.expectedTicks,
+					base.unclassifiedHits,base.outcome,base.reason,base.cohort,base.method,base.timeline,base.damage,base.gaps,base.signals,base.beforeStart);
+				session.add(next);
+				panel.render("New result",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",new com.ironpath.advisor.NexOwnedResult(next,List.of()));
+				assertTrue(shown(panel).contains("Owned equipment · kill #1"));
+				button(panel,"Special-attack resources").doClick(); assertTrue(shown(panel).contains("Special-attack resources · kill #1"));
+				panel.render("Profile changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"local",null);
+				assertFalse(shown(panel).contains("Death Charge")); assertFalse(shown(panel).contains("energy"));
+			}
+		} catch(Exception ex) { throw new RuntimeException(ex); } });
+	}
 	@Test public void ownedPackagesWrapKeepFrozenHistoryAndExposeBloodFuryLossWithoutHealingClaims() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{try {
@@ -179,6 +215,51 @@ public class NexPanelTest
 				panel.render("Profile changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"",null);
 				assertFalse(shown(panel).contains("Ancient blessing")); assertFalse(shown(panel).contains("Blood fury"));
 			}
+		} catch(Exception ex) { throw new RuntimeException(ex); } });
+	}
+	@Test public void lockedMeleeFiltersAndResourceReviewKeepTheSameKillAcrossTravelAndNewResults() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{try {
+			var catalog=KnowledgeCatalog.load(new Gson());
+			var slots=new LinkedHashMap<>(com.ironpath.advisor.NexOwnedFixtures.melee());
+			slots.put("cape",24224); slots.put("shield",24143);
+			var state=com.ironpath.advisor.NexOwnedFixtures.state(slots,Map.of());
+			var first=com.ironpath.advisor.NexOwnedFixtures.sample("melee",state);
+			var spent=new com.ironpath.encounter.CombatState(state.slots,state.realLevels,state.visibleLevels,state.prayers,
+				state.style,500,true,state.inventory,state.resources);
+			var second=new com.ironpath.nex.NexSummary.Sample(21,first.phase,first.window,first.target,"melee",-1,spent);
+			var missing=new com.ironpath.nex.NexSummary.Sample(22,first.phase,first.window,null,"melee",-1,spent);
+			var summary=com.ironpath.advisor.NexOwnedFixtures.summary(List.of(first,second,missing));
+			var account=com.ironpath.advisor.NexOwnedFixtures.account(null);
+			var result=new com.ironpath.advisor.NexOwnedEvaluator(catalog).evaluate(summary,account,Preferences.EMPTY);
+			assertEquals(2,result.choices.stream().filter(c->c.supported()).count());
+			var session=new NexSession(); session.select("a",301); session.add(summary);
+			var panel=new NexPanel(null);
+			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
+			button(panel,"Owned setup comparisons").doClick();
+			button(panel,"Full setups and calculation basis").doClick();
+			assertTrue(shown(panel).contains("Infernal cape (l)")); assertTrue(shown(panel).contains("Dragon defender (l)"));
+			button(panel,"Special-attack resources").doClick(); button(panel,"Resource readings and rules").doClick();
+			var support=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-support-filter".equals(c.getName())).findFirst().orElseThrow();
+			support.setSelectedItem("Unavailable comparisons");
+			assertTrue(shown(panel).contains("Target unknown or minion"));
+			assertTrue(shown(panel).contains("First recorded energy 100.0% · last recorded 50.0%"));
+			var readings=(JComboBox<?>)children(panel).stream().filter(c->"nex-resource-reading".equals(c.getName())).findFirst().orElseThrow();
+			readings.setSelectedIndex(1); assertTrue(shown(panel).contains("Tick 21 · energy 50.0%"));
+			panel.render("Nex session paused. Open a bank to revalidate this account.",account,Preferences.EMPTY,catalog,
+				new NexSession().stats(),true,actions(),"local",null);
+			assertFalse(shown(panel).contains("No complete kill yet")); assertFalse(shown(panel).contains("First recorded energy"));
+			readings.setSelectedIndex(0); assertFalse(shown(panel).contains("energy 100.0%"));
+			var base=NexCaptureTest.replay(100,40,0);
+			var next=new com.ironpath.nex.NexSummary(2,base.startTick,base.endTick,base.sampledTicks,base.expectedTicks,
+				base.unclassifiedHits,base.outcome,base.reason,base.cohort,base.method,base.timeline,base.damage,base.gaps,base.signals,base.beforeStart);
+			session.add(next);
+			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",
+				new com.ironpath.advisor.NexOwnedResult(next,List.of()));
+			assertTrue(shown(panel).contains("Owned equipment · kill #1"));
+			assertTrue(shown(panel).contains("Target unknown or minion"));
+			button(panel,"Special-attack resources").doClick();
+			assertTrue(shown(panel).contains("First recorded energy 100.0% · last recorded 50.0%"));
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
 	@Test public void ownedFiltersPreserveBankScopeExposeGapsAndClearOnIdentityChange() throws Exception

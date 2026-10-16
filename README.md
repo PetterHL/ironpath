@@ -7,7 +7,13 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**16 October 2026: development build 0.16.6.** Exact locked melee cape/defender
+**16 October 2026: combined development build 0.17.1 (N1/N2/N3a).**
+N3a adds **Owned setup comparisons → Special-attack resources**, with frozen
+energy, Death Charge and ring readings after a kill. Its separate finite energy/
+delay scenario API requires explicit inputs and does not infer spec usage or
+recommend a spec upgrade. [Scope and verification](docs/validation/nex-spec-resources.md).
+
+N2's exact locked melee cape/defender
 forms now have reviewed support. Owned comparisons open with supported scenarios,
 role/support filters and grouped explanations for unavailable states. Counts
 distinguish carried and bank preparation scenarios; they are not fight coverage.
@@ -49,7 +55,7 @@ reported Tbow/amethyst-quiver and Fang/defender equipment has an anonymous regre
 fixture; levels, prayers, stock and phase inputs in that fixture are synthetic.
 Ancient blessing remains a physical worn item while quiver arrows are a separate
 projectile input. Conditional ordinary charged/blessed quiver offence is supported;
-finite ammo/splinter use, special attacks, healing and contribution/time remain
+finite ammo/splinter use, special-attack damage, healing and contribution/time remain
 N3–N4. Scorching and other unsupported alternatives leave explicit coverage gaps
 without blocking a supported pair.
 

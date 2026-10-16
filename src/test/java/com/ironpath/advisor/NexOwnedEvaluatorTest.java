@@ -54,11 +54,12 @@ public class NexOwnedEvaluatorTest
 	{
 		var actual=sample("ranged",state(ranged(),Map.of()));
 		List<NexSummary.Sample> samples=new ArrayList<>(); samples.add(actual);
+		int tick=actual.tick+1;
 		for(int energy:new int[]{0,500,1000})
 		{
 			var s=actual.state;
 			var spec=new CombatState(s.slots,s.realLevels,s.visibleLevels,s.prayers,s.style,energy,true,s.inventory,s.resources);
-			samples.add(new NexSummary.Sample(energy+1,actual.phase,actual.window,actual.target,"spec candidate",-1,spec));
+			samples.add(new NexSummary.Sample(tick++,actual.phase,actual.window,actual.target,"spec candidate",-1,spec));
 		}
 		var result=evaluator.evaluate(summary(samples),account(null),Preferences.EMPTY);
 		assertEquals(4,result.choices.size()); assertEquals(1,result.choices.stream().filter(c->c.supported()).count());

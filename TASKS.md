@@ -1,6 +1,6 @@
 # IronPath active work
 
-Updated 15 October 2026. **This is the only active backlog.** The encounter-and-
+Updated 16 October 2026. **This is the only active backlog.** The encounter-and-
 method direction replaces the former AD1/R/KI delivery order. Historical work,
 results and unperformed checks are preserved in the [archive](docs/archive/pre-nex-20261015/README.md).
 
@@ -91,6 +91,20 @@ model coverage does not become absence or a false global-best claim. An unrelate
 unsupported item must not suppress a supported explicit pairwise comparison.
 
 ## N3 — Relevant upgrades and the pilot spec system
+
+**N3a resource foundation is integrated with N2 0.16.6 in build 0.17.1.**
+Post-kill details expose frozen
+resource readings; an independent bounded scenario API checks shared energy,
+regen phase/order, cap waste, Death Charge casts/eligible procs and spec versus
+ordinary attack delays. It does not infer attacks/casts/procs or supply a spec
+damage/upgrade recommendation. [Contract](docs/research/nex-spec-resources.md) and
+[verification](docs/validation/nex-spec-resources.md).
+
+**N3 remains in progress.** Next join reviewed spec/HP-dependent bolt damage,
+ammo/splinter use, actual eligible opportunities and displaced ordinary attacks;
+compare whole owned-plus-upgrade packages with acquisition and recurring costs.
+Supply effects and live/player acceptance remain open. N1/N2 acceptance above is
+unchanged; combined client checks remain open after the integration.
 
 Prioritize actual Nex coverage: ammo/quiver, relevant melee packages, Voidwaker
 versus Zaryte crossbow, Lightbearer and upgraded Death Charge. Validate finite

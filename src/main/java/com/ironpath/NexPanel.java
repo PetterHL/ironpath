@@ -153,6 +153,11 @@ final class NexPanel extends PluginPanel
 	{
 		text("Owned equipment · kill #"+result.summary.key);
 		text("Ordinary offence scenarios. Independent alternatives cannot be added together. Bank preparation requires packing and stock checks before the next trip.");
+		JPanel resources=ownedBody(); resources.setVisible(false);
+		button(this,"Special-attack resources",()->{
+			if(valid.getAsBoolean()) { resources.setVisible(!resources.isVisible()); revalidate(); repaint(); }
+		});
+		NexResourcesPanel.populate(resources,result.resources,valid,()->{ revalidate(); repaint(); }); add(resources);
 		if(result.choices.isEmpty()) { text("No complete captured setup to compare."); return; }
 		text("Filter by role and support. Hidden rows remain in the captured history and are not recalculated.");
 		List<String> roles=new ArrayList<>(); roles.add("All roles");
