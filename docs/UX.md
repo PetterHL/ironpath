@@ -156,3 +156,11 @@ comparison stays frozen while the view remains valid; there is currently no
 selector for opening any earlier kill's comparison from the main view. A new
 partial attempt does not enter complete averages or replace the last complete
 baseline. Setup/history across further travel still needs live checks.
+
+## 0.19.0 complete-package scenarios
+
+N3c's explicit conditional scenario API connects complete packages to finite
+spec plans without changing runtime navigation or adding a setup wizard. Captured
+readings still do not establish legal launches, HP or initial conditions. No
+personal spec upgrade, contribution or seconds-saved card is shown.
+[Contract and verification](validation/nex-packages.md).

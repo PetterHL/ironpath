@@ -16,12 +16,13 @@ public final class NexOwnedEvaluator
 	// Computational guard, not a gear quota. A truncated search is explicitly not an optimum.
 	private static final int MAX_SEARCH_NODES=100000;
 	private final KnowledgeCatalog catalog;
+	private final NexPackageFactory packages;
 	private final Map<Integer,MeleeItem> melee;
 	private final Map<Integer,RangedItem> ranged;
 	private final TargetProfile target;
 	public NexOwnedEvaluator(KnowledgeCatalog catalog)
 	{
-		this.catalog=catalog;
+		this.catalog=catalog; packages=new NexPackageFactory(catalog);
 		melee=catalog.melee.items.stream().collect(Collectors.toUnmodifiableMap(i->i.id,i->i));
 		ranged=catalog.ranged.items.stream().collect(Collectors.toUnmodifiableMap(i->i.id,i->i));
 		target=catalog.comparison.targets.stream().filter(t->t.id.equals("nex-base")).findFirst().orElseThrow();
@@ -154,24 +155,10 @@ public final class NexOwnedEvaluator
 	{
 		Map<String,String> origins=new TreeMap<>(); slots.forEach((slot,id)->origins.put(slot,
 			Objects.equals(s.state.slots.get(slot),id)?"Actually worn at tick "+s.tick:"Proposed owned alternative; observed history unchanged"));
-		if(s.state.style==null || s.state.style<0 || s.state.style>3) { throw new IllegalArgumentException("Attack style button unread or unsupported"); }
 		if(s.role.equals("melee"))
-		{
-			MeleeItem weapon=melee.get(slots.get("weapon"));
-			if(weapon==null || weapon.styles.size()!=4) { throw new IllegalArgumentException("Weapon style-button mapping not reviewed for this melee weapon"); }
-			MeleeModel.Prayer prayer=s.state.prayers.contains("PIETY")?MeleeModel.Prayer.PIETY
-				:s.state.prayers.contains("CHIVALRY")?MeleeModel.Prayer.CHIVALRY
-				:s.state.prayers.containsAll(Set.of("INCREDIBLE_REFLEXES","ULTIMATE_STRENGTH"))?MeleeModel.Prayer.INCREDIBLE_ULTIMATE:MeleeModel.Prayer.NONE;
-			Set<String> lower=Set.of("CLARITY_OF_THOUGHT","IMPROVED_REFLEXES","BURST_OF_STRENGTH","SUPERHUMAN_STRENGTH","INCREDIBLE_REFLEXES","ULTIMATE_STRENGTH");
-			if(prayer==MeleeModel.Prayer.NONE && s.state.prayers.stream().anyMatch(lower::contains)) { throw new IllegalArgumentException("Observed melee prayer combination not modelled"); }
-			return CombatSetup.melee(slots,target.id,origins).meleeCopy(slots,origins,weapon.styles.get(s.state.style)).edit("prayer",prayer.name());
-		}
+		{ return packages.build(true,slots,origins,s.state.style,s.state.prayers,0); }
 		if(!s.role.equals("ranged")) { throw new IllegalArgumentException("Special attack effects and finite energy belong to N3"); }
-		if(s.state.style>2) { throw new IllegalArgumentException("Ranged style-button mapping unreviewed"); }
-		if(s.state.prayers.contains("SHARP_EYE") || s.state.prayers.contains("HAWK_EYE")) { throw new IllegalArgumentException("Observed lower-tier ranged prayer not modelled"); }
-		RangedModel.Prayer prayer=s.state.prayers.contains("RIGOUR")?RangedModel.Prayer.RIGOUR
-			:s.state.prayers.contains("DEADEYE")?RangedModel.Prayer.DEADEYE:s.state.prayers.contains("EAGLE_EYE")?RangedModel.Prayer.EAGLE_EYE:RangedModel.Prayer.NONE;
-		CombatSetup setup=CombatSetup.ranged(slots,target.id,origins).edit("prayer",prayer.name()).edit("style",RangedModel.Style.values()[s.state.style].name());
+		int loadedAmmo=0;
 		RangedItem weapon=ranged.get(slots.get("weapon")), ammo=ranged.get(slots.get("ammo"));
 		if(weapon!=null && weapon.weapon!=null && RangedModel.ammoKind(weapon)!=RangedItem.Ammo.NONE
 			&& RangedModel.ammoKind(weapon)!=RangedItem.Ammo.DART && !RangedModel.compatible(weapon,ammo))
@@ -180,9 +167,9 @@ public final class NexOwnedEvaluator
 			int id=s.state.resources.getOrDefault("quiver-ammo-id-raw",-1);
 			if(cape==null || !cape.label.toLowerCase(Locale.ROOT).contains("quiver") || !RangedModel.compatible(weapon,ranged.get(id))
 				|| s.state.resources.getOrDefault("quiver-ammo-quantity-raw",-1)<1) { throw new IllegalArgumentException("Compatible quiver ammunition and quantity unread"); }
-			setup=setup.rangedCopy(slots,origins,target.id,id);
+			loadedAmmo=id;
 		}
-		return setup;
+		return packages.build(false,slots,origins,s.state.style,s.state.prayers,loadedAmmo);
 	}
 	private String contextGap(NexSummary.Sample s)
 	{
@@ -277,6 +264,7 @@ public final class NexOwnedEvaluator
 			{
 				RangedItem ammo=ranged.get(setup.loadedAmmo>0?setup.loadedAmmo:setup.slots.get("ammo"));
 				if(!RangedModel.compatible(weapon,ammo)) { return "Incompatible or unknown ammunition"; }
+				if(ammo.boltEffect) { return "Enchanted bolt HP/proc effects require the N3 package plan, including selected quiver ammunition"; }
 				if(Objects.equals(s.state.slots.get("ammo"),ammo.id) && s.state.resources.getOrDefault("worn-ammo-quantity",-1)<1) { return "Worn ammunition quantity unread or empty"; }
 				if(setup.loadedAmmo>0 && (setup.loadedAmmo!=s.state.resources.getOrDefault("quiver-ammo-id-raw",-1)
 					|| s.state.resources.getOrDefault("quiver-ammo-quantity-raw",-1)<1)) { return "Selected quiver projectile is not observed"; }

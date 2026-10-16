@@ -16,6 +16,17 @@ public class NexOwnedEvaluatorTest
 {
 	private KnowledgeCatalog catalog; private NexOwnedEvaluator evaluator;
 	@Before public void load() throws Exception { catalog=KnowledgeCatalog.load(new Gson()); evaluator=new NexOwnedEvaluator(catalog); }
+	@Test public void newlyReviewedEnchantedQuiverBoltsCannotBecomeOrdinaryOnlyN2Damage()
+	{
+		var slots=new HashMap<>(ranged()); slots.put("weapon",26374);
+		var original=state(slots,Map.of()); var resources=new HashMap<>(original.resources);
+		resources.put("quiver-ammo-id-raw",21944);
+		var captured=new CombatState(original.slots,original.realLevels,original.visibleLevels,original.prayers,
+			original.style,1000,false,original.inventory,resources);
+		var result=evaluator.evaluate(summary(List.of(sample("ranged",captured))),account(null),Preferences.EMPTY);
+		assertNull(result.choices.get(0).comparison);
+		assertTrue(result.choices.get(0).gap.contains("Enchanted bolt"));
+	}
 	@Test public void exactLockedMeleeFormsSupportAnOrdinaryComparisonWithoutChangingCapturedIds()
 	{
 		Map<String,Integer> slots=new LinkedHashMap<>(melee()); slots.put("cape",24224); slots.put("shield",24143);

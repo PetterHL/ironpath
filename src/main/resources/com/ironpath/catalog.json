@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "knowledgeVersion": "n2-owned-2",
+  "knowledgeVersion": "n3-package-1",
   "reviewed": "2026-10-16",
   "sources": [
     {
@@ -19519,6 +19519,28 @@
       "models": [],
       "routes": [],
       "contexts": []
+    },
+    {
+      "id": "n3-package-equipment",
+      "url": "https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/equipment.json",
+      "author": "OSRS Wiki contributors; Weird Gloop development reference",
+      "type": "pinned equipment facts cross-check",
+      "revision": "89c3e25b344aea90d0189746e4b5f73dde0f0383",
+      "accessed": "2026-10-16",
+      "reviewed": "2026-10-16",
+      "reuseBasis": "Independently recorded limited Voidwaker and ruby/diamond bolt stats and exact identifiers. No source code, guide prose, images or equipment dataset copied or redistributed. Requirements/style evidence and retrieval limits are recorded in docs/research/nex-packages.md.",
+      "licence": "Reference code is GPL-3.0; equipment facts derive from OSRS Wiki. Factual cross-check only; no licensed implementation or dataset redistribution.",
+      "decisions": [],
+      "items": [
+        27690,
+        9242,
+        9243,
+        21944,
+        21946
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
     }
   ],
   "decisions": [
@@ -28593,6 +28615,17 @@
           "whip",
           "item-ids"
         ]
+      },
+      {
+        "id": 27690,
+        "label": "Voidwaker",
+        "skill": "ATTACK",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "n3-package-equipment",
+          "item-ids"
+        ]
       }
     ],
     "ranged": [
@@ -33303,6 +33336,52 @@
         "crystal": false,
         "sources": [
           "r3b2-earth-rune"
+        ]
+      }
+    ],
+    "nexBolts": [
+      {
+        "id": 9242,
+        "label": "Ruby bolts (e)",
+        "skill": "RANGED",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "n3-package-equipment",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 9243,
+        "label": "Diamond bolts (e)",
+        "skill": "RANGED",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "n3-package-equipment",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 21944,
+        "label": "Ruby dragon bolts (e)",
+        "skill": "RANGED",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "n3-package-equipment",
+          "item-ids"
+        ]
+      },
+      {
+        "id": 21946,
+        "label": "Diamond dragon bolts (e)",
+        "skill": "RANGED",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "n3-package-equipment",
+          "item-ids"
         ]
       }
     ]
@@ -50775,6 +50854,70 @@
           "item-ids",
           "r1-lightbearer"
         ]
+      },
+      {
+        "id": 9242,
+        "label": "Ruby bolts (e)",
+        "slot": "ammo",
+        "attack": 0,
+        "strength": 103,
+        "requirements": {},
+        "sources": [
+          "n3-package-equipment",
+          "item-ids"
+        ],
+        "ammo": "BOLT",
+        "ammoTier": 6,
+        "seeking": false,
+        "boltEffect": true
+      },
+      {
+        "id": 9243,
+        "label": "Diamond bolts (e)",
+        "slot": "ammo",
+        "attack": 0,
+        "strength": 105,
+        "requirements": {},
+        "sources": [
+          "n3-package-equipment",
+          "item-ids"
+        ],
+        "ammo": "BOLT",
+        "ammoTier": 6,
+        "seeking": false,
+        "boltEffect": true
+      },
+      {
+        "id": 21944,
+        "label": "Ruby dragon bolts (e)",
+        "slot": "ammo",
+        "attack": 0,
+        "strength": 122,
+        "requirements": {},
+        "sources": [
+          "n3-package-equipment",
+          "item-ids"
+        ],
+        "ammo": "BOLT",
+        "ammoTier": 8,
+        "seeking": false,
+        "boltEffect": true
+      },
+      {
+        "id": 21946,
+        "label": "Diamond dragon bolts (e)",
+        "slot": "ammo",
+        "attack": 0,
+        "strength": 122,
+        "requirements": {},
+        "sources": [
+          "n3-package-equipment",
+          "item-ids"
+        ],
+        "ammo": "BOLT",
+        "ammoTier": 8,
+        "seeking": false,
+        "boltEffect": true
       }
     ],
     "candidateAmmo": {
@@ -56951,6 +57094,33 @@
         "ticks": 0,
         "twoHanded": false,
         "styles": [],
+        "family": "ORDINARY",
+        "effect": "NONE"
+      },
+      {
+        "id": 27690,
+        "label": "Voidwaker",
+        "slot": "weapon",
+        "stab": 70,
+        "slash": 80,
+        "crush": -2,
+        "strength": 80,
+        "ticks": 4,
+        "twoHanded": false,
+        "styles": [
+          "SLASH_ACCURATE",
+          "SLASH_AGGRESSIVE",
+          "STAB_CONTROLLED",
+          "SLASH_DEFENSIVE"
+        ],
+        "requirements": {
+          "ATTACK": 75
+        },
+        "sources": [
+          "n3-package-equipment",
+          "item-ids",
+          "r3b-combat-styles"
+        ],
         "family": "ORDINARY",
         "effect": "NONE"
       }

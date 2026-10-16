@@ -110,9 +110,10 @@ damage/upgrade recommendation. [Contract](docs/research/nex-spec-resources.md) a
 - [x] Record reviewed sources, numerical boundaries and build/regression evidence
   in the [N3b report](docs/validation/nex-spec-damage.md).
 
-**N3 remains in progress.** Next is **N3c below**: connect reviewed complete-package
-construction to N3b through bounded conditional comparisons. Automatic capture-to-
-plan attribution, additional phase mechanics, acquisition/recurring-cost presentation
+**N3c is implemented for review in build 0.19.0**: reviewed complete-package
+construction now feeds N3b through bounded conditional comparisons. **N3 remains
+in progress.** See [the N3c report](docs/validation/nex-packages.md). Automatic
+capture-to-plan attribution, additional phase mechanics, acquisition/recurring-cost presentation
 and supply effects remain separate follow-up work. N1/N2 acceptance above is
 unchanged; combined client checks remain open after the integration.
 
@@ -129,12 +130,15 @@ metrics scoped to dependencies, and whole-package rather than summed-item gains.
 Capture food/potion effects; only compare altered supply plans with a supported
 consumption/delay/boost model. Unsupported healing/survival claims remain explicit.
 
-### N3c — Connect complete packages to N3b (next)
+### N3c — Connect complete packages to N3b (automated acceptance complete)
 
 Deliver a tested bridge from complete equipment packages to the existing N3b
 damage/resource kernels for Nex Trio MP2, one kill per trip. Reuse N2 package
 construction, the reviewed catalogue and ordinary combat models; do not build a
 second catalogue or simulator. N3b 0.18.0 is the implementation dependency.
+Implementation, supported scenarios, source limits and actual automated results are recorded in the
+[N3c report](docs/validation/nex-packages.md) and
+[input contract](docs/research/nex-packages.md).
 
 Development and automated acceptance can proceed without Petter performing a
 client test now. Completing N3c does not accept N1/N2 live mappings or establish
@@ -165,29 +169,29 @@ Scope:
 
 Acceptance:
 
-- [ ] End-to-end automated cases exercise package facts -> derived ordinary/spec
+- [x] End-to-end automated cases exercise package facts -> derived ordinary/spec
   inputs -> finite plans -> comparison results. Include Voidwaker, ZCB ruby/diamond
   and charged/blessed quiver cases; verify against independent hand calculations,
   not only direct kernel calls with hand-entered damage values.
-- [ ] Identical packages/plans give zero; supported worse alternatives retain
+- [x] Identical packages/plans give zero; supported worse alternatives retain
   negative deltas. Comparisons use the same declared encounter conditions and
   horizon. Whole-package gains are recomputed, never summed from item cards.
-- [ ] Compatible hands/ammo/sets, exact variants, locks and shared inventory are
+- [x] Compatible hands/ammo/sets, exact variants, locks and shared inventory are
   checked. A two-handed ranged switch does not erase the melee defender. Proposed
   items do not overwrite observations or manufacture owned/carried stock.
-- [ ] Specs displace ordinary attacks with the correct package delays and share
+- [x] Specs displace ordinary attacks with the correct package delays and share
   finite energy/ammo/splinters. Rejected attacks spend nothing; last-ammo and
   last-splinter cases retain N3b behavior. Charged/blessed offence agrees while
   charge remains, with their different recurring resource use preserved.
-- [ ] Missing HP, eligible opportunities, initial/resource state or reviewed
+- [x] Missing HP, eligible opportunities, initial/resource state or reviewed
   target/phase mechanics blocks only dependent results with a specific reason.
   Unsupported Zaros soft caps, minion effects or other special windows cannot
   silently use ordinary Nex arithmetic. An unrelated unsupported alternative
   does not suppress a supported explicit pair.
-- [ ] Results retain package/input provenance and distinguish conditional
+- [x] Results retain package/input provenance and distinguish conditional
   expectations from observed outcomes. No expected damage is fed back as actual
   HP; no single resource branch is presented as an unconditional kill forecast.
-- [ ] Run affected automated tests and the normal test/build; preserve arithmetic,
+- [x] Run affected automated tests and the normal test/build; preserve arithmetic,
   unknown-state, compatibility and lifecycle regressions. Record actual results,
   supported scenarios and remaining client checks. Keep fixtures anonymous and
   label synthetic levels, HP, timings and quantities explicitly.
