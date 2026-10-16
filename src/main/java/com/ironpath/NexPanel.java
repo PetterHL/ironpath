@@ -58,7 +58,7 @@ final class NexPanel extends PluginPanel
 		displayNames=Map.copyOf(names);
 		if (account==null) { page="encounter"; inspected=null; inspectedOwned=null; ownedIndex=0; returnPosition=null; factKey="rigour"; roleKey="melee"; slotKey="weapon"; lockItem=null; ownedRoleFilter="All roles"; ownedSupportFilter="Supported comparisons"; }
 		removeAll(); setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
-		text("IronPath"); text("Nex · Trio MP2 · One kill per trip");
+		text("IronPath · build "+BuildInfo.VERSION); text("Nex · Trio MP2 · One kill per trip");
 		if (account==null || actions==null) { text(status); revalidate(); repaint(); return; }
 		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active);
 		java.util.function.BooleanSupplier valid=()->view==currentView && actions.current();
@@ -70,7 +70,12 @@ final class NexPanel extends PluginPanel
 			});
 		}
 		add(nav);
-		if(status.startsWith("Nex session paused")) { text(status); revalidate(); repaint(); return; }
+		if(status.startsWith("Nex session paused"))
+		{
+			text(status);
+			button(this,"Reset session",()->{if(valid.getAsBoolean()) { actions.reset(); }}).setName("nex-reset");
+			revalidate(); repaint(); return;
+		}
 		if (page.equals("account")) { account(account,prefs,catalog,actions,valid,storage); }
 		else if (page.equals("setup")) { setup(prefs,stats.last,catalog,actions,valid,storage); }
 		else if(inspectedOwned!=null)
@@ -96,6 +101,7 @@ final class NexPanel extends PluginPanel
 			if (!enabled) { text("Capture disabled. Session cleared."); }
 			else if (active) { text("Observing the current Nex attempt. Results appear after completion."); }
 			else if (stats.last==null) { text("Ready to observe the next full Nex kill. Equipment and spell use are detected automatically."); }
+			if(!active && stats.attempts==0 && stats.resetReason!=null) { text("Previous session cleared: "+stats.resetReason); }
 			if(stats.last!=null)
 			{
 				text(String.format(Locale.ROOT,"Last complete kill · %.1f s",stats.last.seconds()));

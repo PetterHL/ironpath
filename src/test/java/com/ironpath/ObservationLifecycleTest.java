@@ -382,6 +382,99 @@ public class ObservationLifecycleTest
 		VarbitChanged start=new VarbitChanged(); start.setVarbitId(VarbitID.NEX_BARRIER); start.setValue(3); plugin.onVarbitChanged(start);
 		assertTrue(plugin.nex.capture.active());
 	}
+	@Test public void sceneReloadInsideArenaAllowsTheNextSmokeStartWithoutABank()
+	{
+		tick(); tick(); tick(); // Load account/preferences without opening a bank.
+		var player=mock(net.runelite.api.Player.class); var world=mock(net.runelite.api.WorldView.class);
+		var boss=mock(net.runelite.api.NPC.class); var actors=mock(net.runelite.api.IndexedObjectSet.class);
+		when(client.getLocalPlayer()).thenReturn(player); when(player.getWorldView()).thenReturn(world);
+		when(client.getTopLevelWorldView()).thenReturn(world); when(world.npcs()).thenReturn(actors);
+		when(actors.stream()).thenAnswer(i->java.util.stream.Stream.of(boss));
+		when(boss.getWorldView()).thenReturn(world); when(boss.getId()).thenReturn(net.runelite.api.gameval.NpcID.NEX);
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2); tick();
+		// GPU expanded-map-loading changes can rebuild the scene without leaving the arena.
+		when(actors.stream()).thenAnswer(i->java.util.stream.Stream.empty());
+		GameStateChanged loading=new GameStateChanged(); loading.setGameState(GameState.LOADING);
+		plugin.onGameStateChanged(loading); assertNull(plugin.session.snapshot());
+		plugin.onGameStateChanged(loading); // A second loading event has no live adapter state left.
+		GameStateChanged loggedIn=new GameStateChanged(); loggedIn.setGameState(GameState.LOGGED_IN);
+		plugin.onGameStateChanged(loggedIn); tick(); tick(); tick();
+		when(actors.stream()).thenAnswer(i->java.util.stream.Stream.of(boss)); tick();
+		assertFalse("A scene reload inside the arena must not require a bank visit",plugin.nexSession.suspended());
+		assertNotNull(plugin.session.snapshot()); assertTrue(plugin.session.preferencesLoaded());
+		assertFalse(plugin.nex.capture.active());
+		plugin.onOverheadTextChanged(new net.runelite.api.events.OverheadTextChanged(boss,"Fill my soul with smoke!"));
+		assertTrue("The next real smoke callback must reach the capture",plugin.nex.capture.active());
+	}
+	@Test public void lateBankAfterLeavingTheBarrierPreservesTheKillEvenWithNearbyNex() throws Exception
+	{
+		observeBank(); when(client.getWorld()).thenReturn(301);
+		plugin.nexSession.select("10:synthetic-character-a:1",301);
+		var complete=com.ironpath.nex.NexCaptureTest.replay(0,20,60); plugin.nexSession.add(complete);
+		var player=mock(net.runelite.api.Player.class); var world=mock(net.runelite.api.WorldView.class);
+		var boss=mock(net.runelite.api.NPC.class); var actors=mock(net.runelite.api.IndexedObjectSet.class);
+		when(client.getLocalPlayer()).thenReturn(player); when(player.getWorldView()).thenReturn(world);
+		when(client.getTopLevelWorldView()).thenReturn(world); when(world.npcs()).thenReturn(actors);
+		when(actors.stream()).thenAnswer(i->java.util.stream.Stream.of(boss));
+		when(boss.getWorldView()).thenReturn(world); when(boss.getId()).thenReturn(net.runelite.api.gameval.NpcID.NEX);
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2);
+		plugin.nex.spawn(boss); plugin.nex.barrier();
+		// Crossing the exit can update the public barrier before LOADING arrives.
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(1); plugin.nex.barrier();
+		// A lagging getter at LOADING must not override the already observed exit callback.
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2);
+		when(client.getTickCount()).thenReturn(40); when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(null);
+		GameStateChanged loading=new GameStateChanged(); loading.setGameState(GameState.LOADING);
+		plugin.onGameStateChanged(loading); assertTrue(plugin.nexSession.suspended()); assertNull(plugin.session.snapshot());
+		GameStateChanged loggedIn=new GameStateChanged(); loggedIn.setGameState(GameState.LOGGED_IN); plugin.onGameStateChanged(loggedIn);
+		// A nearby Nex and arena-like barrier value are not proof that banking has finished.
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2); when(client.getTickCount()).thenReturn(2000);
+		tick(); tick(); tick(); assertTrue(plugin.nexSession.suspended()); assertTrue(plugin.nexSession.recent().isEmpty());
+		assertFalse(plugin.nex.capture.active());
+		observeBank(); tick(); assertFalse(plugin.nexSession.suspended()); assertSame(complete,plugin.nexSession.stats().last);
+		assertEquals(1,plugin.nexSession.stats().n);
+		SwingUtilities.invokeAndWait(()->{});
+		var navigation=org.mockito.ArgumentCaptor.forClass(net.runelite.client.ui.NavigationButton.class);
+		verify(plugin.toolbar).addNavigation(navigation.capture());
+		assertTrue(panelText(navigation.getValue().getPanel()).contains("Last complete kill"));
+		when(client.getTickCount()).thenReturn(2010); plugin.onGameStateChanged(loading);
+		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(null); plugin.onGameStateChanged(loggedIn);
+		when(client.getTickCount()).thenReturn(4000); tick(); tick();
+		assertFalse(plugin.nexSession.suspended()); assertSame(complete,plugin.nexSession.stats().last);
+	}
+	private static String panelText(java.awt.Component component)
+	{
+		StringBuilder result=new StringBuilder();
+		if(component instanceof javax.swing.JLabel) { result.append(((javax.swing.JLabel)component).getText()); }
+		if(component instanceof javax.swing.text.JTextComponent) { result.append(((javax.swing.text.JTextComponent)component).getText()); }
+		if(component instanceof java.awt.Container) for(var child:((java.awt.Container)component).getComponents()) { result.append(panelText(child)); }
+		return result.toString();
+	}
+	@Test public void verifiedArenaReturnRemainsATravelSourceWhilePreferencesAreStillLoading()
+	{
+		observeBank();
+		var complete=com.ironpath.nex.NexCaptureTest.replay(0,20,60); plugin.nexSession.add(complete);
+		Queue<Runnable> workers=new ArrayDeque<>();
+		doAnswer(call->{workers.add(call.getArgument(0)); return null;}).when(plugin.executor).execute(any(Runnable.class));
+		var world=mock(net.runelite.api.WorldView.class); var actors=mock(net.runelite.api.IndexedObjectSet.class);
+		var boss=mock(net.runelite.api.NPC.class);
+		when(client.getTopLevelWorldView()).thenReturn(world); when(world.npcs()).thenReturn(actors);
+		when(actors.stream()).thenAnswer(i->java.util.stream.Stream.of(boss));
+		when(boss.getId()).thenReturn(net.runelite.api.gameval.NpcID.NEX);
+		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2);
+		GameStateChanged loading=new GameStateChanged(); loading.setGameState(GameState.LOADING);
+		GameStateChanged loggedIn=new GameStateChanged(); loggedIn.setGameState(GameState.LOGGED_IN);
+		plugin.onGameStateChanged(loading); when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(null);
+		plugin.onGameStateChanged(loggedIn); tick(); tick();
+		assertFalse(plugin.nexSession.suspended()); assertSame(complete,plugin.nexSession.stats().last);
+		assertFalse(plugin.session.preferencesLoaded()); assertFalse(workers.isEmpty());
+		// The return was verified from public arena state; a slow settings read must not lose that source.
+		plugin.onGameStateChanged(loading); assertTrue(plugin.nexSession.suspended()); assertTrue(plugin.nexSession.recent().isEmpty());
+		workers.remove().run(); while(!delayed.isEmpty()) { delayed.remove().run(); }
+		assertFalse("The old IO completion cannot publish into the new live generation",plugin.session.preferencesLoaded());
+		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(bankWidget); plugin.onGameStateChanged(loggedIn);
+		tick(); tick(); assertSame(complete,plugin.nexSession.stats().last);
+	}
 	@Test public void nexBarrierCallbackConsumesTheEventValueRatherThanRereadingTheGetter()
 	{
 		observeBank();

@@ -164,3 +164,37 @@ spec plans without changing runtime navigation or adding a setup wizard. Capture
 readings still do not establish legal launches, HP or initial conditions. No
 personal spec upgrade, contribution or seconds-saved card is shown.
 [Contract and verification](validation/nex-packages.md).
+
+## 0.19.1 bank waiting and retention
+
+Completed history remains paused and hidden until the same-account bank trip is
+verified, without a deadline for opening the bank or returning. A nearby loaded
+Nex does not falsely end the outbound wait. Opening the bank restores the last
+complete result, session statistics and details; logout/account/profile/world
+changes and Reset still clear them. The reported empty bank-open session failed
+validation and requires retesting on the corrected build.
+[Finding, regression cases and next client check](validation/nex-bank-retention.md).
+
+## 0.19.2 test visibility
+
+The header shows the actual bundled build version on the development classpath
+and in the assembled plugin. When completed history is cleared, the empty
+Encounter page retains a short constant explanation (for example world change,
+unverified travel or Reset). Fresh account reads do not overwrite that cause;
+a new captured attempt replaces it. Explanations contain no account identifiers
+or old performance data and are neither saved nor logged. Normal travel pauses
+remain separate from reset messages.
+
+A verified bank-return scene now supplies the next departure source while settings
+IO is pending. An additional scene transition must not require a completed
+preference read to preserve history. [Verification](validation/nex-bank-retention.md).
+
+## 0.19.3 arena scene reloads
+
+A scene rebuild while still in the verified Nex arena can resume observation
+without a bank visit. Completed summaries remain available after revalidation;
+active traces still end at the scene boundary. An observed departure continues
+to require bank verification, with no waiting deadline. After account/settings
+revalidation, the paused view offers Reset session with the existing view and
+identity guards. Client testing is deferred;
+[automated regression evidence](validation/nex-bank-retention.md) is recorded separately.

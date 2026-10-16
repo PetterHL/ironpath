@@ -125,7 +125,7 @@ public class IronpathPlugin extends Plugin
 		clearOwned();
 		running = false;
 		++lifecycle;
-		nexSession.clear(); if(nex!=null) { nex.clearActive(); }
+		nexSession.clear("Plugin disabled."); if(nex!=null) { nex.clearActive(); }
 		session.clear();
 		SwingUtilities.invokeLater(() ->
 		{
@@ -145,9 +145,12 @@ public class IronpathPlugin extends Plugin
 		{
 			if (state==GameState.LOADING)
 			{
-				boolean fromArena=nex.inArena() || nexSession.suspended();
+				boolean fromArena=nex.bankTravelSource() || nexSession.suspended();
+				int barrier=client.getVarbitValue(VarbitID.NEX_BARRIER);
+				boolean arenaScene=(barrier==2 || barrier==3) && !nex.arenaExitObserved()
+					&& (nex.inArena() || nexArenaScene(barrier));
 				nex.transition();
-				nexSession.suspend(identity(),client.getWorld(),client.getTickCount(),fromArena);
+				nexSession.suspend(identity(),client.getWorld(),client.getTickCount(),fromArena,arenaScene);
 			}
 			clearLive(nexSession.suspended()?"Nex session paused. Checking this account after travel.":"Scene changed. Revalidating account observations.");
 			return;
@@ -201,7 +204,7 @@ public class IronpathPlugin extends Plugin
 
 	private void invalidate(String reason)
 	{
-		nexSession.clear(); if(nex!=null) { nex.clearActive(); }
+		nexSession.clear(reason); if(nex!=null) { nex.clearActive(); }
 		clearLive(reason);
 	}
 
@@ -232,16 +235,15 @@ public class IronpathPlugin extends Plugin
 		if (!supported()) { clearUnavailable("Outside coverage: standard Ironman on permanent members worlds only."); return; }
 		Widget banking=client.getWidget(InterfaceID.Bankmain.ITEMS);
 		boolean bankVisible=banking!=null && !banking.isHidden();
-		var world=client.getTopLevelWorldView(); int barrier=client.getVarbitValue(VarbitID.NEX_BARRIER);
-		boolean arena=(barrier==2 || barrier==3) && world!=null && world.npcs()!=null
-			&& world.npcs().stream().anyMatch(n->NexObserver.bossId(n.getId()));
+		int barrier=client.getVarbitValue(VarbitID.NEX_BARRIER);
+		boolean arena=nexArenaScene(barrier), arenaExit=barrier==0 || barrier==1;
 		if (nexSession.suspended())
 		{
-			nexSession.revalidate(identity,client.getWorld(),client.getTickCount(),bankVisible,arena);
+			nexSession.revalidate(identity,client.getWorld(),client.getTickCount(),bankVisible,arena,arenaExit);
 		}
 		if (!nexSession.suspended() && nexSession.select(identity,client.getWorld())) { nex.clearActive(); }
 		// A first bank visit must count too, rather than only a bank reached from suspended history.
-		if(!nexSession.suspended()) { nexSession.revalidate(identity,client.getWorld(),client.getTickCount(),bankVisible,arena); }
+		if(!nexSession.suspended()) { nexSession.revalidate(identity,client.getWorld(),client.getTickCount(),bankVisible,arena,arenaExit); }
 		long before = session.generation();
 		session.select(identity);
 		if (before != session.generation())
@@ -251,6 +253,8 @@ public class IronpathPlugin extends Plugin
 			bankDirty = bankDirty && identity.equals(bankIdentity);
 			loadPreferences(session.generation(), identity);
 		}
+		// Revalidation can precede a slow settings read. Keep its verified departure source in either case.
+		if(arena && !nexSession.suspended()) { nex.confirmArenaSource(); }
 		if (nexReady()) { nex.method(session.preferences().nex); nex.tick(); }
 		boolean activeChanged=lastCaptureActive!=nex.capture.active();
 		if (lastNexRevision!=nexSession.revision() || activeChanged)
@@ -280,12 +284,19 @@ public class IronpathPlugin extends Plugin
 	private void clearUnavailable(String message)
 	{
 		clearOwned();
-		nexSession.clear(); if(nex!=null) { nex.clearActive(); }
+		nexSession.clear(message); if(nex!=null) { nex.clearActive(); }
 		if (session.identity() != null) { session.clear(); }
 		bankDirty = false;
 		bankIdentity = null;
 		dirty = true;
 		render(message, null);
+	}
+
+	private boolean nexArenaScene(int barrier)
+	{
+		var world=client.getTopLevelWorldView();
+		return (barrier==2 || barrier==3) && world!=null && world.npcs()!=null
+			&& world.npcs().stream().anyMatch(n->NexObserver.bossId(n.getId()));
 	}
 
 	private boolean nexReady()
@@ -377,14 +388,14 @@ public class IronpathPlugin extends Plugin
 			{ if(current()) { changePreferences(token,revision,nexRevision,expectedIdentity,p->p.nex(method)); } }
 			public void confirm(String key, Boolean value)
 			{ if(current() && catalog.factChoices().containsKey(key)) { changePreferences(token,revision,nexRevision,expectedIdentity,p->p.confirm(key,value,Instant.now())); } }
-			public void reset() { clear(nex.enabled()); }
-			public void enable(boolean value) { clear(value); }
-			private void clear(boolean enable)
+			public void reset() { clear(nex.enabled(),"Reset session selected."); }
+			public void enable(boolean value) { clear(value,"Capture setting changed."); }
+			private void clear(boolean enable,String reason)
 			{
 				if (!current()) { return; }
 				clientThread.invokeLater(()->{
 					if(!IronpathPlugin.this.current(token,expectedIdentity) || !session.currentView(token,revision) || nexSession.revision()!=nexRevision) { return; }
-					nex.clearActive(); nexSession.clear(); nexSession.select(expectedIdentity,client.getWorld()); nex.enable(enable);
+					nex.clearActive(); nexSession.clear(reason); nexSession.select(expectedIdentity,client.getWorld()); nex.enable(enable);
 					clearOwned();
 					render("Nex session cleared from memory.",session.snapshot());
 				});

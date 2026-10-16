@@ -7,7 +7,17 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**16 October 2026: development build 0.19.0 (N1/N2/N3a/N3b/N3c).**
+**16 October 2026: development build 0.19.3 (N1/N2/N3a/N3b/N3c).**
+Bank-travel correction: completed history no longer expires while waiting to
+open the bank. It stays hidden until same-account/profile/world revalidation;
+logout, identity changes and Reset still clear it. The panel shows the build
+version and a non-private reset explanation when history is cleared. Verified
+return travel remains recognized while preferences are still loading.
+Scene reloads inside a verified arena now resume capture without requiring a
+bank visit; Reset remains available while a revalidated account is paused.
+Client retesting remains open.
+[Finding and verification](docs/validation/nex-bank-retention.md).
+
 N3c connects complete actual, supported owned and hypothetical upgrade packages
 through the existing ordinary/spec damage and finite energy/ammo kernels.
 Conditional comparisons recompute whole packages, retain negative and zero deltas,
@@ -33,8 +43,9 @@ observed smoke announcement to death/dying, with corroborating arena completion.
 Arena entry is diagnostic; pre-smoke equipment remains separately inspectable.
 The bounded end matching accounts for dying preceding arena completion. The
 reproduced failure pattern passes synthetic replay. Complete-result display and
-retention across a bank visit now have in-session evidence; broader session and
-player checks remain open. [Capture contract](docs/validation/nex-smoke-anchor.md).
+one earlier retained bank visit have in-session evidence. A later bank test lost
+history; the 0.19.1 correction awaits client retesting. Broader session and player
+checks remain open. [Capture contract](docs/validation/nex-smoke-anchor.md).
 The development launcher retains RuneLite's required assertions with a temporary
 GPU-package exception, correcting the 0.16.3 startup failure; see
 [development](docs/DEVELOPMENT.md#gpu-assertion-during-development).
