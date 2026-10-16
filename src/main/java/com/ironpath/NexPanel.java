@@ -33,6 +33,7 @@ final class NexPanel extends PluginPanel
 	private NexOwnedResult inspectedOwned;
 	private int ownedIndex;
 	private int ownedPairIndex;
+	private String ownedRoleFilter="All roles", ownedSupportFilter="Supported comparisons";
 	private String factKey="rigour", roleKey="melee", slotKey="weapon";
 	private Integer lockItem;
 	private Map<Integer,String> displayNames=Map.of();
@@ -55,7 +56,7 @@ final class NexPanel extends PluginPanel
 		if(account!=null && stats.last!=null) { stats.last.timeline.forEach(s->names.putAll(s.state.itemNames)); stats.last.beforeStart.forEach(s->names.putAll(s.state.itemNames)); }
 		if(account!=null && inspected!=null) { inspected.timeline.forEach(s->names.putAll(s.state.itemNames)); inspected.beforeStart.forEach(s->names.putAll(s.state.itemNames)); }
 		displayNames=Map.copyOf(names);
-		if (account==null) { page="encounter"; inspected=null; inspectedOwned=null; ownedIndex=0; returnPosition=null; factKey="rigour"; roleKey="melee"; slotKey="weapon"; lockItem=null; }
+		if (account==null) { page="encounter"; inspected=null; inspectedOwned=null; ownedIndex=0; returnPosition=null; factKey="rigour"; roleKey="melee"; slotKey="weapon"; lockItem=null; ownedRoleFilter="All roles"; ownedSupportFilter="Supported comparisons"; }
 		removeAll(); setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
 		text("IronPath"); text("Nex · Trio MP2 · One kill per trip");
 		if (account==null || actions==null) { text(status); revalidate(); repaint(); return; }
@@ -69,6 +70,7 @@ final class NexPanel extends PluginPanel
 			});
 		}
 		add(nav);
+		if(status.startsWith("Nex session paused")) { text(status); revalidate(); repaint(); return; }
 		if (page.equals("account")) { account(account,prefs,catalog,actions,valid,storage); }
 		else if (page.equals("setup")) { setup(prefs,stats.last,catalog,actions,valid,storage); }
 		else if(inspectedOwned!=null)
@@ -91,8 +93,7 @@ final class NexPanel extends PluginPanel
 		}
 		else
 		{
-			if (status.startsWith("Nex session paused")) { text(status); }
-			else if (!enabled) { text("Capture disabled. Session cleared."); }
+			if (!enabled) { text("Capture disabled. Session cleared."); }
 			else if (active) { text("Observing the current Nex attempt. Results appear after completion."); }
 			else if (stats.last==null) { text("Ready to observe the next full Nex kill. Equipment and spell use are detected automatically."); }
 			if(stats.last!=null)
@@ -121,18 +122,22 @@ final class NexPanel extends PluginPanel
 				if(owned==null) { text("Comparing the captured setups…"); }
 				else
 				{
-					long supported=owned.choices.stream().filter(c->c.comparison!=null && c.comparison.before!=null).count();
-					text(supported+" / "+owned.choices.size()+" state and inventory scenarios supported. Each uses its own observed setup.");
+					long carried=owned.choices.stream().filter(c->c.supported() && !c.bankPreparation).count();
+					long bank=owned.choices.stream().filter(c->c.supported() && c.bankPreparation).count();
+				text("Supported scenarios: carried "+carried+", bank preparation "+bank+". Unavailable: "+(owned.choices.size()-carried-bank)+". Counts describe state/inventory scenarios, not fight or damage coverage.");
 					Set<String> roles=new HashSet<>();
 					for(var c:owned.choices)
 					{
-						if(c.bankPreparation || c.comparison==null || !roles.add(c.actual.role)) { continue; }
+						if(c.bankPreparation || !c.supported() || !roles.add(c.actual.role)) { continue; }
 						text(c.actual.role+" · tick "+c.actual.tick+" · "+c.headline()); item(c.proposed.slots.get("weapon"),catalog,valid);
 					}
+					for(String role:List.of("melee","ranged"))
+					{ if(!roles.contains(role) && owned.choices.stream().anyMatch(c->c.actual.role.equals(role))) { text(role+" · No supported carried scenario. Inspect the coverage gaps in comparisons."); } }
 					button(this,"Owned setup comparisons",()->{
 						if(!valid.getAsBoolean()) { return; }
 						var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
-						returnPosition=viewport==null?null:viewport.getViewPosition(); inspectedOwned=owned; ownedIndex=0; ownedPairIndex=0; redraw.run();
+						returnPosition=viewport==null?null:viewport.getViewPosition(); inspectedOwned=owned; ownedIndex=0; ownedPairIndex=0;
+						ownedRoleFilter="All roles"; ownedSupportFilter=owned.choices.stream().anyMatch(c->c.supported())?"Supported comparisons":"All states"; redraw.run();
 					}).setName("nex-owned");
 				}
 			}
@@ -149,17 +154,31 @@ final class NexPanel extends PluginPanel
 		text("Owned equipment · kill #"+result.summary.key);
 		text("Ordinary offence scenarios. Independent alternatives cannot be added together. Bank preparation requires packing and stock checks before the next trip.");
 		if(result.choices.isEmpty()) { text("No complete captured setup to compare."); return; }
+		text("Filter by role and support. Hidden rows remain in the captured history and are not recalculated.");
+		List<String> roles=new ArrayList<>(); roles.add("All roles");
+		result.choices.stream().map(c->c.actual.role).distinct().sorted().forEach(roles::add);
+		JComboBox<String> role=new JComboBox<>(roles.toArray(new String[0])); role.setName("nex-owned-role-filter");
+		role.setSelectedItem(ownedRoleFilter); addControl(role);
+		JComboBox<String> support=new JComboBox<>(new String[]{"Supported comparisons","All states","Unavailable comparisons"});
+		support.setName("nex-owned-support-filter"); support.setSelectedItem(ownedSupportFilter); addControl(support);
+		if(!result.gaps.isEmpty())
+		{
+			JPanel gaps=ownedBody(); gaps.setVisible(false);
+			button(this,"Why comparisons are unavailable",()->{ if(valid.getAsBoolean()) { gaps.setVisible(!gaps.isVisible()); revalidate(); repaint(); } });
+			result.gaps.entrySet().stream().sorted(Map.Entry.<String,Integer>comparingByValue().reversed().thenComparing(Map.Entry.comparingByKey()))
+				.forEach(e->PanelWidgets.text(gaps,e.getValue()+(e.getValue()==1?" scenario · ":" scenarios · ")+e.getKey())); add(gaps);
+		}
 		JComboBox<String> states=new JComboBox<>(); states.setName("nex-owned-state");
-		for(var c:result.choices) { states.addItem(c.actual.role+" · tick "+c.actual.tick+" · "+c.actual.phase+(c.bankPreparation?" · bank preparation":" · carried")); }
-		states.setSelectedIndex(Math.min(ownedIndex,result.choices.size()-1)); addControl(states);
+		List<Integer> indices=new ArrayList<>(); boolean[] filling={false}; addControl(states);
 		JPanel detail=ownedBody(); add(detail);
 		Runnable show=()->{
-			if(!valid.getAsBoolean()) { return; }
-			if(ownedIndex!=states.getSelectedIndex()) { ownedPairIndex=0; }
-			ownedIndex=states.getSelectedIndex(); detail.removeAll();
+			if(!valid.getAsBoolean() || filling[0] || states.getSelectedIndex()<0) { return; }
+			int selected=indices.get(states.getSelectedIndex());
+			if(ownedIndex!=selected) { ownedPairIndex=0; }
+			ownedIndex=selected; detail.removeAll();
 			var c=result.choices.get(ownedIndex);
 			PanelWidgets.text(detail,c.bankPreparation?"Bank preparation scenario · not carried in this kill":"Carried alternatives at the captured state");
-			if(c.comparison==null) { PanelWidgets.text(detail,c.gap); }
+			if(!c.supported()) { PanelWidgets.text(detail,c.gapReason()); }
 			else
 			{
 				List<ComparisonResult> pairs=new ArrayList<>(); pairs.add(c.comparison); pairs.addAll(c.alternatives);
@@ -190,7 +209,27 @@ final class NexPanel extends PluginPanel
 				}; options.addActionListener(e->compare.run()); compare.run();
 			}
 			c.coverage.forEach(g->PanelWidgets.text(detail,g)); detail.revalidate(); revalidate(); repaint();
-		}; states.addActionListener(e->show.run()); show.run();
+		};
+		Runnable filter=()->{
+			if(!valid.getAsBoolean()) { return; }
+			ownedRoleFilter=(String)role.getSelectedItem(); ownedSupportFilter=(String)support.getSelectedItem();
+			filling[0]=true; indices.clear(); states.removeAllItems();
+			for(int i=0;i<result.choices.size();i++)
+			{
+				var c=result.choices.get(i);
+				if(!ownedRoleFilter.equals("All roles") && !ownedRoleFilter.equals(c.actual.role)) { continue; }
+				if(ownedSupportFilter.equals("Supported comparisons") && !c.supported()
+					|| ownedSupportFilter.equals("Unavailable comparisons") && c.supported()) { continue; }
+				indices.add(i); states.addItem(c.actual.role+" · tick "+c.actual.tick+" · "+c.actual.phase+(c.bankPreparation?" · bank preparation":" · carried"));
+			}
+			if(!indices.isEmpty()) { states.setSelectedIndex(Math.max(0,indices.indexOf(ownedIndex))); }
+			filling[0]=false; states.setEnabled(!indices.isEmpty());
+			if(indices.isEmpty())
+			{ detail.removeAll(); PanelWidgets.text(detail,"No scenarios match these filters. Choose All states to inspect this role's coverage gaps."); }
+			else { show.run(); }
+			detail.revalidate(); revalidate(); repaint();
+		};
+		states.addActionListener(e->show.run()); role.addActionListener(e->filter.run()); support.addActionListener(e->filter.run()); filter.run();
 	}
 	private JPanel ownedBody()
 	{

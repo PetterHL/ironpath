@@ -23,7 +23,9 @@ Implementation is available for review in development build 0.15.0. The Nex adap
 native session view, method/locks, immutable state/resource capture and banking
 round trips have synthetic replay/lifecycle coverage. [Evidence and pending live
 checks](docs/validation/nex-session.md). **N1 is not accepted yet:** initial client screenshots show censored attempts,
-not a validated complete capture on the current build. The
+historical failures rather than acceptance. Complete-result display and one
+bank-retention check have since been confirmed in-session; matched multi-trip
+means, broader lifecycle and usefulness checks remain open. The
 [0.16.5 correction](docs/validation/nex-smoke-anchor.md) replaces arena-entry
 anchoring with an observed smoke start and distinguishes dying from later arena
 completion. It preserves pre-smoke states and conservative late-arrival rejection.
@@ -70,8 +72,10 @@ regressions remain. [Implementation and verification](docs/validation/nex-owned.
 
 Petter supplied the ranged and melee equipment on 15 October; an anonymous fixture
 uses those items with explicitly synthetic levels/prayers/quantities. **Acceptance
-remains open:** no real captured account with complete levels/inventory/charges,
-no validated combined bank packing plan and no player/client checks. Spec-role
+remains open:** live capture now produces N2 results, while exact stock/charges,
+combined bank packing and player usefulness still need validation. Build 0.16.6
+adds locked melee variants plus role/support filters and grouped gaps; see
+[the correction report](docs/validation/nex-owned-variants.md). Spec-role
 history is retained; its finite energy/effects remain N3. Supported ordinary
 pairwise offence is not global best owned or encounter throughput.
 

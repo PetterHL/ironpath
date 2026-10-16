@@ -1,6 +1,6 @@
 # Nex owned equipment: ordinary offence contract
 
-15 October 2026. Development build 0.16.0, knowledge `n2-owned-1`, catalogue
+16 October 2026. Development build 0.16.6, knowledge `n2-owned-2`, catalogue
 schema 14, preferences schema 3. Models `nex-owned-1`, `ranged-2`, `melee-2`.
 This is N2's bounded ordinary comparison, not a Nex encounter simulator.
 
@@ -28,11 +28,26 @@ distinguishes the physical worn ammo slot from a selected quiver projectile.
 Blessing/quiver zero melee offence uses the existing exact-form factual evidence.
 This does not value blessing prayer, charge duration, upkeep or supply competition.
 
+Exact locked forms were rechecked against official item identifiers at
+[the pinned ItemID source](https://github.com/runelite/runelite/blob/42a6f17a6a2e8e478aa763890ecd0181a59dad38/runelite-api/src/main/java/net/runelite/api/gameval/ItemID.java)
+and the bounded factual bonuses in the
+[pinned equipment reference](https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/equipment.json).
+Dragon defender (l), 24143, retains stab/slash/crush 25/24/23 and strength 6;
+Infernal cape (l), 24224, retains 4/4/4 and strength 8. They have separate exact
+entries and do not imply ownership of another form. Broken/mangled forms remain
+unreviewed. Only these limited game facts were independently recorded; no
+reference code, generated dataset, prose or images are copied. The source URL
+validator permits only this repository's revision-pinned equipment JSON path.
+
 ## Input and support boundary
 
 - Every distinct captured input state/role/phase/window remains separate. The
   comparison never chooses a longest-worn baseline or weights by worn duration.
   The full immutable N1 timeline remains the observation record.
+- Role/support filters are presentation only. Supported carried comparisons,
+  bank-preparation scenarios and unavailable states are counted separately.
+  Grouped reasons do not discard distinct states; their counts are not coverage
+  of combat time, attacks, damage or the account's relevant alternatives.
 - Current visible Attack/Strength/Ranged levels, including drains/decay, are
   passed directly into independent family arithmetic. A boost is not inferred
   from those levels. Known supported active prayers are retained. Lower/unreviewed

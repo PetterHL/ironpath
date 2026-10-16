@@ -7,12 +7,19 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**15 October 2026: development build 0.16.5.** Nex capture now measures from the
+**16 October 2026: development build 0.16.6.** Exact locked melee cape/defender
+forms now have reviewed support. Owned comparisons open with supported scenarios,
+role/support filters and grouped explanations for unavailable states. Counts
+distinguish carried and bank preparation scenarios; they are not fight coverage.
+[Variant support and checks](docs/validation/nex-owned-variants.md).
+
+Nex capture measures from the
 observed smoke announcement to death/dying, with corroborating arena completion.
 Arena entry is diagnostic; pre-smoke equipment remains separately inspectable.
 The bounded end matching accounts for dying preceding arena completion. The
-reproduced failure pattern passes synthetic replay; a complete capture on the
-updated client still needs validation. [Current capture contract and checks](docs/validation/nex-smoke-anchor.md).
+reproduced failure pattern passes synthetic replay. Complete-result display and
+retention across a bank visit now have in-session evidence; broader session and
+player checks remain open. [Capture contract](docs/validation/nex-smoke-anchor.md).
 The development launcher retains RuneLite's required assertions with a temporary
 GPU-package exception, correcting the 0.16.3 startup failure; see
 [development](docs/DEVELOPMENT.md#gpu-assertion-during-development).

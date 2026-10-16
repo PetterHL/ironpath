@@ -14,7 +14,7 @@
 
 ## Delivery
 
-- Current: N2 implementation in development build 0.16.5, based on N1.
+- Current: N2 implementation in development build 0.16.6, based on N1.
   Live-client/player acceptance remains open in docs/validation/nex-session.md
   and docs/validation/nex-owned.md. Nex Trio MP2, one kill per trip. Lightbearer throughout,
   upgraded Death Charge, observed melee/ranged/spec switches. Do not guess the
@@ -48,6 +48,12 @@
   availability or a validated joint packing plan. No global-best claim. Keep
   explicit supported pairs when another alternative has no model. See
   docs/research/nex-owned.md for the exact offence/support contract.
+- Knowledge `n2-owned-2` adds only exact locked Dragon defender (24143) and
+  Infernal cape (24224) melee forms. Preserve exact captured IDs and ownership;
+  do not generalize normal/locked/broken/mangled variants. Comparison filters
+  retain all immutable scenarios and grouped gaps; counts are not fight coverage.
+  See docs/validation/nex-owned-variants.md. Complete-result display and one bank
+  retention round trip have in-session evidence; broader acceptance stays open.
 - Use short-lived branches from current main and focused PRs. Do not merge or
   publish to Plugin Hub without authorization. Do not alter unrelated work.
 - Test the affected behavior and run the normal build. Preserve arithmetic,

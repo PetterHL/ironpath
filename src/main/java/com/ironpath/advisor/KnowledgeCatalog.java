@@ -80,7 +80,8 @@ public final class KnowledgeCatalog
 			boolean official = source.url.matches("https://secure\\.runescape\\.com/m=news/[a-z0-9-]+\\?oldschool=1");
 			boolean paceEvidence=source.url.matches("https://osrsmethods\\.com/methods/(completing-the-corrupted-gauntlet|killing-zulrah|killing-demonic-gorillas|killing-tormented-demons|killing-phantom-muspah-twisted-bow)");
 			boolean api = source.url.matches("https://github\\.com/runelite/runelite/blob/[a-f0-9]{40}/runelite-api/src/main/java/net/runelite/api/gameval/ItemID\\.java");
-			if (!wiki && !api && !official && !paceEvidence)
+			boolean equipmentFacts=source.url.matches("https://github\\.com/weirdgloop/osrs-dps-calc/blob/[a-f0-9]{40}/cdn/json/equipment\\.json");
+			if (!wiki && !api && !official && !paceEvidence && !equipmentFacts)
 			{
 				throw new IllegalArgumentException("Unapproved source URL");
 			}
