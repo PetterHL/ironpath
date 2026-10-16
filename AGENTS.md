@@ -14,8 +14,10 @@
 
 ## Delivery
 
-- Current: combined N1/N2/N3a development build 0.17.1, integrating N2 0.16.6
-  with the N3a resource foundation. Combined client testing remains open.
+- Current: development build 0.18.0 adds N3b conditional spec/bolt damage and
+  finite ammo/splinter branches to combined N1/N2/N3a 0.17.1. N3b is a scenario
+  API, not automatic advice from captured kills. See docs/research/nex-spec-damage.md.
+  Combined client testing remains open.
   Live-client/player acceptance remains open in docs/validation/nex-session.md
   and docs/validation/nex-owned.md. Nex Trio MP2, one kill per trip. Lightbearer throughout,
   upgraded Death Charge, observed melee/ranged/spec switches. Do not guess the
@@ -55,6 +57,13 @@
   phase/order, eligible deaths and attack opportunities. Preserve the distinction
   between sampled net changes and modeled spending/restoration. See
   docs/research/nex-spec-resources.md; N3 damage/ammo/supply acceptance stays open.
+- N3b uses independently supplied complete-package stats, legal launch windows,
+  current target/player HP and hard caps. Exact ammo stock and explicit saving/
+  charge branches join the existing finite energy timeline; rejected attacks do
+  not spend ammo or energy. Never turn conditional launch expectations into a
+  simulated HP trajectory, survival estimate, captured spec count or best-weapon
+  recommendation. Soft caps, phase transforms, opportunity attribution, package
+  proposals, acquisition presentation and supply effects remain separate work.
 - Knowledge `n2-owned-2` adds only exact locked Dragon defender (24143) and
   Infernal cape (24224) melee forms. Preserve exact captured IDs and ownership;
   do not generalize normal/locked/broken/mangled variants. Comparison filters

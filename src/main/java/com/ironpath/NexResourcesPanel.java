@@ -41,7 +41,7 @@ final class NexResourcesPanel
 			+"; Zaryte crossbow "+energy(SpecTimeline.Attack.ZARYTE_CROSSBOW.cost)+". These are not measured uses in this kill.");
 		PanelWidgets.text(trace,"Fixed-ring natural restoration is 10% per "+SpecTimeline.Ring.STANDARD.interval+" ticks, or "
 			+SpecTimeline.Ring.LIGHTBEARER.interval+" with Lightbearer. Death Charge can restore 15% per eligible proc, bounded by its active charges and the 100% energy cap. No fixed damage or time uplift follows.");
-		PanelWidgets.text(trace,"Rules "+SpecTimeline.VERSION+". Finite spec scenarios still require explicit starting conditions, restoration phase/order, eligible deaths and legal attack opportunities. Damage, bolt effects, supply costs and team time remain unavailable.");
+		PanelWidgets.text(trace,"Rules "+SpecTimeline.VERSION+". These readings do not establish starting conditions, restoration phase/order, eligible deaths, launched attacks or target HP. Automatic spec-upgrade comparisons, supply costs and team time remain unavailable.");
 		panel.add(trace);
 	}
 	private static String reading(NexResourceReview.Point point)

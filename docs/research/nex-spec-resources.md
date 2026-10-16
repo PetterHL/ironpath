@@ -90,3 +90,9 @@ fed from captured deltas or used to rank upgrades**. The runtime UI exposes
 observed evidence and reference costs only. N3b must join reviewed spec damage,
 HP-dependent bolts, ammo/charges, supplied opportunities and ordinary attacks
 before recommending Voidwaker versus ZCB.
+
+N3b build 0.18.0 now joins conditional single-launch damage and exact ammo/splinter
+branches through the [separate N3b contract](nex-spec-damage.md). It preserves the
+energy/delay rules above and adds indexed events plus resource admission before
+spending. The original N3a scope/results remain historical evidence. Automatic
+capture attribution and upgrade recommendations are still unavailable.

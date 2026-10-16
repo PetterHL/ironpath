@@ -100,9 +100,19 @@ ordinary attack delays. It does not infer attacks/casts/procs or supply a spec
 damage/upgrade recommendation. [Contract](docs/research/nex-spec-resources.md) and
 [verification](docs/validation/nex-spec-resources.md).
 
-**N3 remains in progress.** Next join reviewed spec/HP-dependent bolt damage,
-ammo/splinter use, actual eligible opportunities and displaced ordinary attacks;
-compare whole owned-plus-upgrade packages with acquisition and recurring costs.
+**N3b mechanics implementation is complete for review in build 0.18.0.**
+
+- [x] Independently implement Voidwaker damage and PvM ruby/diamond bolt outcomes,
+  including ZCB accuracy, natural procs after misses, HP/caps and ruby self-damage.
+- [x] Join accepted launches to finite exact ammo/splinter stock, charged/blessed
+  quiver branches, shared energy and displaced ordinary attacks. Keep unsupported
+  damage scoped and test against hand calculations and complete resource branches.
+- [x] Record reviewed sources, numerical boundaries and build/regression evidence
+  in the [N3b report](docs/validation/nex-spec-damage.md).
+
+**N3 remains in progress.** Next connect actual eligible opportunities and reviewed
+complete-package construction to these conditional kernels; compare whole
+owned-plus-upgrade packages with acquisition and recurring costs.
 Supply effects and live/player acceptance remain open. N1/N2 acceptance above is
 unchanged; combined client checks remain open after the integration.
 

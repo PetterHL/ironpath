@@ -1,8 +1,9 @@
 # Validation records
 
-Current combined build 0.17.1: N1 capture/session, N2 exact variants and comparison
-filters, and N3a [finite spec resources and post-kill evidence](nex-spec-resources.md#0171-combined-integration).
-N3 damage/upgrade decisions and combined client acceptance remain open.
+Current build 0.18.0 adds [N3b conditional spec/bolt damage and finite ammo](nex-spec-damage.md)
+to combined 0.17.1: N1 capture/session, N2 exact variants/comparison filters and
+N3a [finite spec resources](nex-spec-resources.md#0171-combined-integration).
+Automatic upgrade decisions and combined client acceptance remain open.
 
 Current client-test follow-up: [0.16.1 start, bank and status fixes](nex-live-start.md).
 
