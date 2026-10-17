@@ -1,5 +1,9 @@
 # Validation records
 
+[DEV1 offline review workflow](dev1-offline-review.md) records the
+synthetic public-event scenarios, checked calculations, controlled publication/
+banking/history regressions, native previews and remaining live boundaries.
+
 Current build 0.19.0 adds [N3c complete-package conditional comparisons](nex-packages.md)
 to [N3b conditional spec/bolt damage and finite ammo](nex-spec-damage.md)
 and combined 0.17.1: N1 capture/session, N2 exact variants/comparison filters and
