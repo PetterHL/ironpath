@@ -4,7 +4,7 @@ Updated 17 October 2026. **This is the only active backlog.** The encounter-and-
 method direction replaces the former AD1/R/KI delivery order. Historical work,
 results and unperformed checks are preserved in the [archive](docs/archive/pre-nex-20261015/README.md).
 
-## DEV1 — Offline scenarios and native UI previews (first checkpoint for review)
+## DEV1 — Offline scenarios and native UI previews (implemented for review)
 
 Approved for implementation planning on 17 October 2026. Goal: Codex Cloud can
 exercise IronPath and review calculations and the actual panel without requiring
@@ -37,25 +37,32 @@ First delivery: `offlineReview --args='nex-complete'`, with an explicit developm
 RuneLite pin, checks and twelve 225px native previews. See the
 [workflow instructions](docs/DEVELOPMENT.md#offline-review-dev1) and
 [checkpoint evidence](docs/validation/dev1-offline-review.md). The checkpoint is
-ready for review; the scenario expansion below remains pending that review.
+reviewed on 17 October 2026: all twelve revised CI images were inspected and a
+local pinned run passed 220 tests and 65 checks. Petter then authorized continuing
+the same DEV1 task. The full suite below extends that reviewed checkpoint.
 
 **Review checkpoint:** Petter/reviewer assesses whether the outputs are useful and
 whether a small calculation or UI change can be evaluated without gameplay.
 Demonstrate this with an isolated temporary change or existing meaningful
 regression; do not leave intentional faults or unrelated product changes committed.
 Do not automatically replace expected results with current implementation output.
-Wait for this review before expanding the scenario set below. Codex should perform
+This review gate was met before the scenario expansion below. Codex should perform
 its own test/fix iterations before presenting the first delivery; manual gameplay
 is not required for this checkpoint.
 
 ### Complete the same workflow after review
 
-- [ ] Add a compact scenario set for unknown bank/ammo/resources, an incomplete
+Implemented as six additional scenarios in the same PR: unknown inputs, incomplete
+attempt, recognized bank trip, identity/pending publication, Reset/pending worker
+and frozen history. The default `offlineReview` command runs all seven scenarios.
+[Current verification](docs/validation/dev1-offline-review.md#dev1-scenario-completion).
+
+- [x] Add a compact scenario set for unknown bank/ammo/resources, an incomplete
   attempt, completed kill → recognized bank trip → next kill, identity reset while
   evaluation is pending, and a new result arriving during inspection of an earlier
   kill. Reuse existing lifecycle/regression coverage rather than duplicating it.
   Exercise controlled pending work so stale publication guards are actually tested.
-- [ ] Finish documentation in [Development](docs/DEVELOPMENT.md): Cloud setup,
+- [x] Finish documentation in [Development](docs/DEVELOPMENT.md): Cloud setup,
   scenario commands, output locations, adding a scenario/encounter, input provenance,
   comparison/review procedure and remaining live checks. Record actual validation
   evidence and update this task's checkboxes; do not report blocked runs as passes.

@@ -48,4 +48,21 @@ public class OfflineReviewTest
 		assertEquals(List.of(0, 3), actual); assertEquals(7, clock[0]);
 		assertThrows(IllegalArgumentException.class, () -> replay.at(6, "backwards", () -> { }));
 	}
+
+	@Test public void unknownInputsBlockOnlyDependentClaims() throws Exception { lifecycle("nex-unknown", 6); }
+	@Test public void incompleteAttemptsRemainExcluded() throws Exception { lifecycle("nex-incomplete", 4); }
+	@Test public void bankTripRetainsHistoryAndAcceptsNextKill() throws Exception { lifecycle("nex-bank-trip", 6); }
+	@Test public void pendingIdentityPublicationCannotOverwriteFreshWork() throws Exception { lifecycle("nex-identity-pending", 4); }
+	@Test public void resetCancelsPendingWorkWithoutPreventingFreshPublication() throws Exception { lifecycle("nex-reset-pending", 4); }
+	@Test public void newResultsPreserveInspectedHistory() throws Exception { lifecycle("nex-frozen-history", 8); }
+
+	private void lifecycle(String id, int images) throws Exception
+	{
+		var output = temporary.newFolder().toPath();
+		Files.writeString(output.resolve("stale.png"), "old preview");
+		var report = OfflineReview.run(id, output);
+		assertTrue(Files.readString(output.resolve("report.md")), report.passed());
+		assertFalse(Files.exists(output.resolve("stale.png")));
+		try (var files = Files.list(output)) { assertEquals(images, files.filter(p -> p.toString().endsWith(".png")).count()); }
+	}
 }

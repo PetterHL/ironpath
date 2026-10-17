@@ -1,9 +1,11 @@
-# DEV1 first review checkpoint
+# DEV1 offline review workflow
 
 17 October 2026. Implementation starts from main `dc8c5f4`, with the approved DEV1
 task definition from planning PR #39 (`0847fe8`). No unmerged N3b/N3c/banking
 implementation is included. Plugin runtime remains 0.17.1; this delivery is
-development-only. **First checkpoint is ready for review, not accepted.**
+development-only. **The first checkpoint was reviewed on 17 October; Petter authorized completing
+the same DEV1 task.** See [current suite evidence](#dev1-scenario-completion); the
+sections below retain the original checkpoint and follow-up evidence.
 
 ## Working command and outputs
 
@@ -108,7 +110,10 @@ display equivalent data in different iteration order across JVMs. Semantics and
 independent numbers are asserted. Cloud fontconfig emitted cache-directory
 warnings; DejaVu Sans was available and rendering completed.
 
-## Review boundary
+## Original checkpoint review boundary
+
+This boundary describes the first delivery. The scenario expansion is now included
+in [DEV1 completion](#dev1-scenario-completion) after the authorized review.
 
 Assess whether the report and PNGs make a calculation/UI iteration reviewable
 without gameplay. The rest of DEV1's scenarios remains unimplemented pending
@@ -158,10 +163,92 @@ the full execution evidence instead:
 - [Regenerated report and twelve PNGs](https://github.com/PetterHL/ironpath/actions/runs/39022466379/artifacts/12096869224)
   are available as `dev1-nex-complete`; CI reported PASS. These are current outputs,
   not the baseline artifact linked earlier in the PR.
-- Revised-image inspection is still pending: the workspace also blocks the
-  connector's artifact-download host. Access to repo.runelite.net has been
-  requested so the same full run can regenerate inspectable images locally.
-  The original visual inspection above applies to the previous checkpoint only.
+- At this follow-up, revised-image inspection was blocked by the workspace
+  artifact-download host and RuneLite dependency access. This was resolved during
+  the subsequent review: the latest-head CI artifact from run 39022628712 matched
+  SHA-256 `2f5e3e4ce80d26062735e22e87829b5ed8d692a4cad50038b09a1b4da0271804`;
+  all twelve revised images were inspected and a local pinned full build/review
+  passed 220 tests and 65 scenario checks. No new clipping issue was found.
 
 `git diff --check` passes. This follow-up does not accept N1–N4 live behavior,
 expand DEV1's scenario set, merge the PR or publish the plugin.
+
+## DEV1 scenario completion
+
+17 October 2026. After the first checkpoint review, Petter authorized continuing
+DEV1. PR #40 now includes the remaining scenarios in the same workflow. Runtime
+plugin version and production code remain 0.17.1; no N3b/N3c or draft banking/reload
+implementation is imported. [Commands, outputs and adding a scenario](../DEVELOPMENT.md#offline-review-dev1).
+
+The default `offlineReview` runs all seven scenarios and writes a linked
+`build/review/index.md`. A single scenario or `list` can be selected with `--args`.
+GitHub Actions now uploads the whole review directory as `dev1-offline-review`,
+including available failure evidence and retaining it for 30 days.
+
+| Scenario | Checks across 12/20px | PNGs | Verified behavior |
+|---|---:|---:|---|
+| nex-complete | 65 | 12 | Original complete public-event replay, independent calculations, scoped gaps |
+| nex-unknown | 32 | 6 | Unread bank/inventory/ammunition/resources remain explicit; dependent ranged claims unavailable; supported worn melee comparison still available |
+| nex-incomplete | 20 | 4 | Exit without corroboration is CENSORED; no complete mean or owned result; excluded details remain inspectable |
+| nex-bank-trip | 38 | 6 | History hidden during travel, revalidated at bank and arena return; two complete kills and fresh comparison |
+| nex-identity-pending | 26 | 4 | Evaluation finishes before character change; held publication released after fresh result cannot overwrite it or schedule stale-account work |
+| nex-reset-pending | 26 | 4 | Actual Reset action invalidates an unexecuted worker; late callback cannot replace a fresh result |
+| nex-frozen-history | 24 | 8 | Selected negative alternative/resources and kill details remain frozen across new results; Back/reopen selects latest kill |
+| Total | **231** | **44** | Seven reports, zero failed checks |
+
+The first/second bank-trip kills last 20/30 ticks: **12/18 seconds**, with a
+**15-second** comparable mean. Scoped damage is 20/80 and 60/120: mean per-kill
+share is **37.5%**, while aggregate share is **40%**. These independent expectations
+deliberately differ so conflating the two statistics fails a check. Completion is
+detected from fresh public NPC/event sequences; no completed summary is injected.
+The trip stays within current main's 100-tick banking grace and does not accept
+draft PR #38's longer-travel or scene-reload behavior.
+
+The original scenario still runs the direct adapter pipeline with supplied
+account/preferences. The six new scenarios run actual plugin lifecycle/event
+handlers, AccountSnapshotReader, in-memory PreferenceIO, the production evaluator
+on a real worker, guarded client callbacks and the plugin-owned Swing panel.
+RuneLite dependencies are mocked; event-bus dispatch itself is outside scope.
+Each scenario/font has a fresh account/session/queue. Quest scripts and bank
+containers stay unread, while synthetic account support/unlock facts are explicit.
+The shared public-state fixture is extracted from the original scenario and
+reuses NexOwnedFixtures. Scheduling controls, reports and previews remain test-only
+and independent of Nex summary/phase types in the shared `dev` helpers.
+
+### Verification and fault detection
+
+Temurin **11.0.32.1+1**, Gradle **8.10**, RuneLite client/API **1.13.2**, DejaVu Sans
+12/20 and RuneLiteLAF. Adapter/evaluator/knowledge/model versions remain those
+recorded above. Both commands passed:
+
+```sh
+./gradlew -PruneLiteVersion=1.13.2 test build offlineReview --args='all' --offline --no-daemon
+./gradlew test build offlineReview --args='all' --no-daemon
+git diff --check
+```
+
+**226 tests across 31 suites**, zero failures/errors/skips; the standalone review
+passed all **231 checks** and generated seven reports plus **44 native 225px PNGs**.
+The normal `latest.release` run resolved the same RuneLite 1.13.2 and executed the
+tests/review again after fixture cleanup. No newer-release compatibility is claimed.
+All 44 images were visually inspected at both font sizes. Text/gap explanations,
+cleared/paused views, different share statistics and correct frozen/latest kill
+identities were checked. No new clipping issue was found. Tall detail views,
+elided native combo selections, explicit placeholder sprites and fontconfig cache
+warnings remain as described above.
+
+A temporary isolated mutation removed the final `evaluateOwned` client-publication
+guard in IronpathPlugin. `nex-identity-pending` then exited 1 and failed both fonts:
+the old callback overwrote the fresh result and scheduled one evaluation with
+stale account inputs. This checks the actual guard rather than a fake publication
+implementation. Production source was restored in `finally`; final builds and all
+scenarios passed afterward. Local failure evidence is under
+`build/mutation-proof/publication-guard/`; it is not committed or presented as a
+passing artifact. The original timer mutation and layout-fault regressions remain
+separate recorded evidence. Expectations were not auto-updated from observed output.
+
+DEV1's offline workflow is implemented and ready for review. N1–N4 real-client
+event mappings, resources/stock, real sprites/DPI/focus/scroll/GPU behavior and
+player usefulness remain open. No real encounter recording/export, persistent
+combat traces, spec-damage recommendation, survival, contribution or team-time
+claim is introduced. No merge or Plugin Hub publication was performed.

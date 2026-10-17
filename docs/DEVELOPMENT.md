@@ -85,104 +85,127 @@ No client or Plugin Hub acceptance is implied by a successful build.
 
 ## Offline review (DEV1)
 
-The first checkpoint supplies one scenario, `nex-complete`. It runs without OSRS
-credentials, a display server or gameplay. This is a synthetic integration check,
-not real-client validation. [Checkpoint results](validation/dev1-offline-review.md).
+DEV1 supplies seven synthetic scenarios without OSRS credentials, a display
+server or gameplay. The first calculation/UI checkpoint was reviewed on
+17 October 2026; Petter authorized the remaining scenarios in the same task.
+[Validation and limits](validation/dev1-offline-review.md).
 
 Prepare JDK 11, the Gradle 8.10 wrapper and **DejaVu Sans** (`fonts-dejavu-core`
 on Debian/Ubuntu). Set `JAVA_HOME` to that JDK and use a writable Gradle user home.
-Keep the session's configured HTTPS proxy and CA trust. In Cloud, Java/Gradle need
-the corresponding proxy host/port and supplied CA truststore as well as the shell
-proxy; do not disable TLS verification. The prepared IronPath Cloud environment
-currently provides `/workspace/ironpath-environment/activate.sh` for these settings;
-source it when present. It is environment setup, not a repository dependency.
+Keep the configured HTTPS proxy and CA trust. Java/Gradle need the corresponding
+proxy host/port and supplied CA truststore as well as the shell proxy; do not
+disable TLS verification. The prepared IronPath Cloud environment provides
+`/workspace/ironpath-environment/activate.sh`; source it when present. It refreshes
+proxy/trust settings for the current machine and is environment setup, not a
+repository dependency. RuneLite dependencies come from `repo.runelite.net` and
+Maven Central; the wrapper needs its configured Gradle distribution host. A new
+checkout/cache needs online preparation before the offline commands can work.
+Do not count dependency-resolution failures as executed tests.
 
 From the repository root:
 
 ```sh
-# First run downloads Maven/RuneLite dependencies if not already cached.
-./gradlew -PruneLiteVersion=1.13.2 offlineReview --args='nex-complete' --no-daemon
+# First run resolves dependencies and reviews every scenario (the default).
+./gradlew -PruneLiteVersion=1.13.2 offlineReview --no-daemon
 
-# Once prepared, the same review works without network access.
-./gradlew -PruneLiteVersion=1.13.2 offlineReview --args='nex-complete' --offline --no-daemon
+# Discover scenario IDs, or regenerate just one report and its previews.
+./gradlew -PruneLiteVersion=1.13.2 offlineReview --args='list' --offline --no-daemon
+./gradlew -PruneLiteVersion=1.13.2 offlineReview --args='nex-bank-trip' --offline --no-daemon
 
-# Affected integration plus retained adapter, calculation, UI and lifecycle checks.
-./gradlew -PruneLiteVersion=1.13.2 test build --offline --no-daemon
+# Full pinned validation, including standalone generation of all reports/previews.
+./gradlew -PruneLiteVersion=1.13.2 test build offlineReview --args='all' --offline --no-daemon
 
-# Separate compatibility check against the normal latest.release dependency.
+# Separate compatibility check with the normal latest.release dependency.
 ./gradlew test build --no-daemon
 ```
 
-Use `gradlew.bat` in PowerShell. The explicit Gradle property pins both RuneLite
-client and jshell for the review; ordinary builds still default to `latest.release`.
-Keep the pin in the command when sharing results. The report records the actual
-client/API JARs, JDK, Gradle, adapter, evaluator, catalogue and comparison model
-versions. Do not replace the review pin merely because a newer dependency resolves;
-check compatibility separately and review a deliberate pin update.
+Use `gradlew.bat` in PowerShell. The property pins both RuneLite client and jshell;
+normal builds still default to `latest.release`. Keep the pin when sharing results.
+Reports record actual client/API JARs, JDK, Gradle, adapter, evaluator, catalogue and
+model/source versions. A successful normal build resolving the same version is
+not evidence for compatibility with a newer RuneLite release.
 
-Outputs are always regenerated under `build/review/nex-complete/`:
+| Scenario | Behavior | Previews at each font size |
+|---|---|---|
+| `nex-complete` | Public-event complete encounter; independent ordinary DPS/max-hit cases; zero/loss and spec/Zaros gaps | Main, comparison, calculation basis, gap, resources, kill details |
+| `nex-unknown` | Unread bank/inventory, ammunition and energy/Death Charge; dependent ranged claims blocked while supported melee remains | Main, unknown ammo, unknown resources |
+| `nex-incomplete` | Arena exit without corroborated completion; attempt remains excluded from complete statistics | Excluded main and attempt details |
+| `nex-bank-trip` | Complete kill → suspended travel → recognized bank → recognized return → next complete kill | Paused travel, bank, next-kill main |
+| `nex-identity-pending` | Finished evaluation held before publication; character changes; old callback released after fresh work publishes | Cleared view, fresh result after rejection |
+| `nex-reset-pending` | Worker held before evaluation; actual Reset action; old callback released after fresh work publishes | Cleared view, fresh result after rejection |
+| `nex-frozen-history` | New results while a selected negative owned alternative/resources or kill details are inspected; Back opens the latest result | Initial selection, frozen comparison, frozen details, latest comparison |
 
-- `report.md`: outcome, timer/damage scope, ordered callbacks, comparison inputs,
-  sources/results, named gaps, independent expected/actual checks and limits.
-- `main`, `comparison`, `basis`, `gap`, `resources`, `kill-details`, each with
-  `-12.png` and `-20.png`: actual native Swing at 225px and two font sizes.
+Outputs are regenerated in `build/review/<scenario>/`: `report.md` plus the named
+PNG states with `-12.png` / `-20.png`, all at the native **225px** width. Running
+`all` also writes `build/review/index.md`, linking every report and PASS/FAIL result.
+The complete suite generates seven reports and 44 PNGs. Each scenario and font
+starts with fresh client/account/session state. Reports contain input provenance,
+ordered callbacks, encounter outcomes, timer/damage scopes, gaps and expected versus
+actual checks. Published lifecycle comparisons include actual/proposed inputs,
+results and source assumptions; the complete scenario retains the detailed
+independent hand calculations.
 
-The runner exits nonzero on failed checks and still writes a failure report. It
-removes previous PNGs before replay, so failed execution cannot leave old images
-masquerading as current results. `offlineReview` deliberately has no Gradle output
-cache; deleting a PNG does not require `clean` or `--rerun-tasks`. Unknown scenario
-IDs fail before replay. Tests also generate independent temporary previews; these
-do not substitute for running the review command.
+A failed check makes the command exit nonzero but leaves a current report and
+available images. `all` continues through other scenarios after a recorded failure.
+Each selected scenario removes its previous PNGs before replay. `offlineReview`
+has no Gradle output cache, so a deleted PNG cannot be hidden by an up-to-date
+result. Unknown IDs fail before replay. Unit tests use temporary directories;
+they do not substitute for running the standalone review command.
 
-Open the report and PNGs together. Compare the fixed checks first, then inspect
-the narrow layout and explanation of gaps. The real RuneLite look and feel is
-loaded; DejaVu Sans 12/20 gives consistent Cloud text metrics. Empty item sprite
-wells are explicit placeholders; no cache/ItemManager sprites are loaded. The
-images show full scrollable component contents, not a screenshot of an OS window.
-Long native combo-box selections may elide; the selected setup and claims remain
-in wrapping text below them. Do not treat these as real DPI/focus/scroll checks.
+Open the report and PNGs together. Check the independent expected/actual table,
+then inspect both fonts for wrapping, meaningful result/gap text and the correct
+selected kill. RuneLiteLAF and DejaVu Sans 12/20 give consistent Cloud metrics.
+Empty item sprite wells are explicitly labeled placeholders; no ItemManager/cache
+sprites are loaded. Images paint full component contents and may be tall. Native
+combo selections may elide, with full selected claims in wrapping text below.
+These are not screenshots of an OS window or real DPI/focus/scroll/GPU tests.
 
-The text-layout check rejects visible non-empty text areas outside the PNG or
-any ancestor's bounds inside the captured root, including zero-sized areas.
-It also checks usable space after insets, glyph width and wrapping at the actual
-allocated width, independently of an overridden preferred size. Explicitly hidden
-sections and empty text areas are ignored. A failed check still writes its image
-and reports the affected text and clipping reason.
+The layout checker rejects visible nonempty text areas outside the PNG or any
+ancestor inside the capture root, zero-sized/compressed areas, and wrapping that
+exceeds the actual allocated content width/height. Hidden/empty areas are ignored.
+Failures still write the PNG and the affected text/reason. Visual inspection
+remains necessary; layout checks do not establish usefulness or interaction quality.
 
-The **Offline review** GitHub Actions job runs the pinned test/build/review for PRs
-and uploads `dev1-nex-complete` (report plus twelve PNGs, 30-day retention), including
-available failure evidence. Link the workflow run/artifact from the PR. Routine
-generated outputs stay outside Git history. Regenerate after source changes; do
-not relabel stale output as evidence for a new revision.
+The **Offline review** GitHub Actions job runs the pinned test/build and all seven
+scenarios. It uploads `dev1-offline-review`, containing the index, reports and PNGs
+with 30-day retention, including available failure evidence. Link the exact run
+and artifact from the PR. Routine generated output stays outside Git history.
+Regenerate after source changes; never relabel stale evidence for a new revision.
 
-### Scenario boundaries and subsequent changes
+### Scenario boundaries and adding a scenario or encounter
 
-`OfflineReview` selects a development-only scenario from its registry. The Nex
-fixture supplies mocked public client state at every callback consumed by the
-adapter, including barrier event payloads ahead of polled state. It runs the
-production `NexObserver`/`CombatStateReader`, `NexCapture`, `NexSession`, and
-`NexOwnedEvaluator`, then renders the actual `NexPanel` on the EDT. Completion is
-detected from public-event signals, never by inserting a completed summary.
-The evaluator runs on a separate worker. Account/unlock facts and preferences
-are explicit synthetic fixture inputs rather than a mock login/account read.
-The first checkpoint does not exercise the plugin's queued-publication guards.
+`OfflineReview.scenarios()` registers callbacks accepting only an output directory
+and `ReviewReport`. `dev/OrderedReplay`, `ReplayQueue`, `ReviewReport` and
+`PanelPreview` contain no Nex phases or summary types. A future encounter supplies
+its own public-state fixture, adapter and callback; it need not adopt NexSummary.
+The retained `ZilyanaObserver`/`EncounterCapture` provide a second architectural
+reference, not newly enabled boss support. Keep phase names, expected completion
+signals and encounter fixtures outside the shared infrastructure.
 
-Shared `dev/OrderedReplay`, `ReviewReport` and `PanelPreview` contain no Nex phases
-or summary types. A future encounter supplies its own fixture/adapter and registers
-a scenario callback. Retained `ZilyanaObserver`/`EncounterCapture` are a second
-architectural reference, not newly enabled boss support. Keep client values and
-event ordering in the encounter fixture, not the shared runner. Everything is in
-test sources; no fixture loader or replay control ships in the plugin JAR.
+`OfflineNexClient` shares the anonymous reported gear and explicit synthetic public
+state between the original direct-adapter scenario and the lifecycle scenarios.
+It supplies callback payloads before getter updates, fresh NPC identity per kill,
+and polled state at every tick. `nex-complete` supplies synthetic account/preferences
+directly and exercises the production adapter/capture/session, evaluator and panel.
+It does not exercise account reading or plugin publication. `OfflinePluginReplay`
+runs the actual plugin lifecycle and public event handlers, AccountSnapshotReader,
+in-memory PreferenceIO, worker evaluator, guarded client publication and plugin-owned
+panel. RuneLite Client/ConfigManager/toolbar/thread/executor are mocked at the
+boundary; event-bus dispatch itself is not run. No summary is injected in any scenario.
+All painting/navigation happens on the EDT, reads on the synthetic client thread,
+and selected worker tasks on a real separate worker, with bounded waits and explicit
+callback release. Preferences use memory only; attempts to write fail.
 
-For a calculation change, add/revise a reviewed hand case or independent oracle
-with its justification, run the same command and inspect the expected/actual table.
-For a UI change, use the existing semantic button/combo names and regenerate both
-font sizes. Do not auto-bless current output or copy a new value into expectations
-without an independent reason. `OfflineReviewTest` runs the entire first scenario
-and checks fresh PNG generation; existing lifecycle/arithmetic tests stay in place.
+To add a scenario, reuse an existing encounter fixture, register a fresh callback,
+and add an end-to-end `OfflineReviewTest` case. Specify unknown versus observed
+inputs and the ordered callback/state script. Derive expectations from reviewed
+hand cases, existing independent oracles or lifecycle invariants. Add semantic
+checks and meaningful preview states at both font sizes. Test a fault to show the
+relevant guard/check can fail; do not auto-bless current output. Keep fixture
+loading and execution in test sources so they never enter the plugin JAR.
 
-Wait for the first checkpoint review before adding the rest of DEV1's scenarios
-(unknown inputs, incomplete attempt, bank/next kill, controlled pending identity
-reset and fresh results during historical inspection). Synthetic verification
-does not close any N1–N4 live mappings, resource capture, client presentation or
-player-usefulness checks. No real encounter recorder/export is implemented.
+The bank scenario exercises current main's recognized trip within its existing
+100-tick grace. Draft PR #38's longer-travel/reload changes are separate work;
+N3b/N3c changes are also absent here. Real-client event mappings, stock/charges,
+real sprites, focus/scroll/GPU behavior and player usefulness still require the
+N1–N4 checks. DEV1 adds no real encounter recorder/export or relaxed trace policy.

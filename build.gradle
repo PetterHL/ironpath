@@ -54,7 +54,7 @@ tasks.register('offlineReview', JavaExec) {
 	systemProperty 'ironpath.gradleVersion', gradle.gradleVersion
 	systemProperty 'logback.configurationFile', file('src/test/resources/offline-logback.xml').absolutePath
 	systemProperty 'ironpath.reviewOutput', layout.buildDirectory.dir('review').get().asFile.absolutePath
-	args 'nex-complete'
+	args 'all'
 	// JavaExec deliberately has no up-to-date output cache: regenerate/check every invocation,
 	// even when a reviewer deletes individual PNGs or invokes the same scenario again.
 }

@@ -1,8 +1,6 @@
 package com.ironpath;
 
-import com.google.gson.Gson;
 import com.ironpath.advisor.ComparisonResult;
-import com.ironpath.advisor.KnowledgeCatalog;
 import com.ironpath.advisor.NexOwnedEvaluator;
 import com.ironpath.advisor.NexOwnedFixtures;
 import com.ironpath.advisor.NexOwnedResult;
@@ -10,7 +8,6 @@ import com.ironpath.dev.OrderedReplay;
 import com.ironpath.dev.PanelPreview;
 import com.ironpath.dev.ReviewReport;
 import com.ironpath.encounter.EncounterSummary.Outcome;
-import com.ironpath.nex.NexCapture;
 import com.ironpath.nex.NexSession;
 import com.ironpath.nex.NexSummary;
 import com.ironpath.preferences.NexMethod;
@@ -28,121 +25,25 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
 import net.runelite.api.*;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.VarbitID;
-import net.runelite.api.gameval.VarPlayerID;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /** The first DEV1 scenario. All runtime boundary values are explicitly synthetic. */
-final class OfflineNexScenario
+final class OfflineNexScenario extends OfflineNexClient
 {
-	private int tick, barrier = 2, energy = 1000, charge = 2;
-	private boolean special;
-	private Map<String, Integer> worn = NexOwnedFixtures.ranged();
-	private final Map<Integer, Long> carried = new TreeMap<>();
-	private final Client client = mock(Client.class);
-	private final Player local = mock(Player.class);
-	private final WorldView world = mock(WorldView.class);
-	private final NPC boss = mock(NPC.class), minion = mock(NPC.class);
 	private final NexSession session = new NexSession();
-	private final KnowledgeCatalog catalog;
 	private final NexObserver observer;
 	private final Preferences prefs = Preferences.EMPTY.nex(NexMethod.PILOT.lock("melee/shield", 12954));
 	private final List<String> trace = new ArrayList<>();
 
 	OfflineNexScenario() throws Exception
 	{
-		catalog = KnowledgeCatalog.load(new Gson());
-		Thread clientThread = Thread.currentThread();
-		when(client.isClientThread()).thenAnswer(i -> Thread.currentThread() == clientThread);
-		when(client.getTickCount()).thenAnswer(i -> tick);
-		when(client.getVarbitValue(anyInt())).thenAnswer(i -> {
-			int id = i.getArgument(0);
-			if (id == VarbitID.NEX_BARRIER) { return barrier; }
-			if (id == VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE) { return charge; }
-			if (id == VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN) { return 0; }
-			if (id == VarbitID.WORN_ITEMS_DIZANAS_QUIVER_CHARGED) { return 1; }
-			if (id == VarbitID.CHARGES_DIZANAS_QUIVER_QUANTITY) { return 200; }
-			throw new IllegalArgumentException("Unspecified synthetic varbit " + id);
-		});
-		when(client.getVarpValue(anyInt())).thenAnswer(i -> {
-			int id = i.getArgument(0);
-			if (id == VarPlayerID.COM_MODE) { return 1; }
-			if (id == VarPlayerID.SA_ENERGY) { return energy; }
-			if (id == VarPlayerID.SA_ATTACK) { return special ? 1 : 0; }
-			if (id == VarPlayerID.DIZANAS_QUIVER_TEMP_AMMO) { return 21326; }
-			if (id == VarPlayerID.DIZANAS_QUIVER_TEMP_AMMO_AMOUNT) { return 500; }
-			throw new IllegalArgumentException("Unspecified synthetic varp " + id);
-		});
-		when(client.getRealSkillLevel(any(Skill.class))).thenReturn(99);
-		when(client.getBoostedSkillLevel(any(Skill.class))).thenAnswer(i -> {
-			Skill skill = i.getArgument(0);
-			return skill == Skill.ATTACK || skill == Skill.STRENGTH ? 118 : skill == Skill.RANGED ? 112 : 99;
-		});
-		when(client.isPrayerActive(any(Prayer.class))).thenAnswer(i -> {
-			Prayer prayer = i.getArgument(0);
-			return worn.get("weapon") == 20997 ? prayer == Prayer.RIGOUR : prayer == Prayer.PIETY;
-		});
-		when(client.getLocalPlayer()).thenReturn(local);
-		when(client.getTopLevelWorldView()).thenReturn(world);
-		when(world.getId()).thenReturn(-1);
-		when(local.getWorldView()).thenReturn(world);
-		when(local.getName()).thenReturn("synthetic member one");
-		when(local.getInteracting()).thenReturn(boss);
-		when(local.isDead()).thenReturn(false);
-		when(boss.getWorldView()).thenReturn(world); when(boss.getIndex()).thenReturn(1);
-		when(boss.getId()).thenReturn(NpcID.NEX);
-		when(minion.getWorldView()).thenReturn(world); when(minion.getIndex()).thenReturn(2);
-		when(minion.getId()).thenReturn(NpcID.NEX_SHADOWMAGE);
-		IndexedObjectSet<NPC> npcs = mock(IndexedObjectSet.class);
-		when(world.npcs()).thenAnswer(i -> npcs); when(npcs.stream()).thenAnswer(i -> List.of(boss, minion).stream());
-		List<Player> roster = new ArrayList<>(); roster.add(local);
-		for (String name : List.of("synthetic member two", "synthetic member three"))
-		{
-			Player member = mock(Player.class); when(member.getName()).thenReturn(name);
-			when(member.getWorldView()).thenReturn(world); roster.add(member);
-		}
-		IndexedObjectSet<Player> players = mock(IndexedObjectSet.class);
-		when(world.players()).thenAnswer(i -> players); when(players.iterator()).thenAnswer(i -> roster.iterator());
-		ItemContainer equipment = mock(ItemContainer.class), inventory = mock(ItemContainer.class);
-		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
-		when(client.getItemContainer(InventoryID.INV)).thenReturn(inventory);
-		when(equipment.getItem(anyInt())).thenAnswer(i -> equipment(i.getArgument(0)));
-		when(inventory.getItems()).thenAnswer(i -> inventory());
-		Map<Integer, String> names = catalog.itemNames();
-		when(client.getItemDefinition(anyInt())).thenAnswer(i -> {
-			int id = i.getArgument(0); ItemComposition item = mock(ItemComposition.class);
-			when(item.getName()).thenReturn(names.getOrDefault(id, id == 27690 ? "Voidwaker" : "Synthetic item " + id));
-			return item;
-		});
-		NexOwnedFixtures.ranged().values().stream().filter(id -> id > 0).forEach(id -> carried.put(id, 1L));
-		NexOwnedFixtures.melee().values().stream().filter(id -> id > 0).forEach(id -> carried.put(id, 1L));
-		carried.put(27690, 1L); carried.put(11212, 200L); carried.put(24780, 1L);
 		session.select("offline-synthetic-profile", 301);
 		observer = new NexObserver(client, catalog, session);
 		observer.method(prefs.nex);
 	}
 
-	private Item equipment(int index)
-	{
-		for (EquipmentInventorySlot slot : EquipmentInventorySlot.values())
-		{
-			if (slot.getSlotIdx() != index) { continue; }
-			String key = slot == EquipmentInventorySlot.AMULET ? "neck" : slot == EquipmentInventorySlot.GLOVES ? "hands"
-				: slot == EquipmentInventorySlot.BOOTS ? "feet" : slot.name().toLowerCase(java.util.Locale.ROOT);
-			int id = worn.getOrDefault(key, 0); return id > 0 ? new Item(id, 1) : null;
-		}
-		return null;
-	}
-	private Item[] inventory()
-	{
-		return carried.entrySet().stream().filter(e -> !worn.containsValue(e.getKey()))
-			.map(e -> new Item(e.getKey(), Math.toIntExact(e.getValue()))).toArray(Item[]::new);
-	}
 	private void hit(NPC actor, boolean mine, int amount)
 	{
 		Hitsplat hit = mock(Hitsplat.class);
@@ -155,6 +56,10 @@ final class OfflineNexScenario
 
 	void run(Path output, ReviewReport report) throws Exception
 	{
+		report.section("Pipeline", "Ordered mocked public API callbacks → production NexObserver/CombatStateReader → NexCapture → NexSession "
+			+ "→ production NexOwnedEvaluator on a worker → actual NexPanel on Swing EDT. No pre-completed summary injection. "
+			+ "Synthetic account facts/preferences are supplied directly; plugin event-bus wiring, account reader, preference IO "
+			+ "and asynchronous plugin publication guards are outside this direct-adapter scenario. Use the lifecycle scenarios for those guards.");
 		report.section("Scenario and provenance", "`nex-complete` · Nex / Trio MP2 / one kill per trip.\n\n"
 			+ "Reported ranged/melee equipment comes from NexOwnedFixtures; no private account dump. "
 			+ "All levels (real 99; visible attack/strength 118, ranged 112), prayers (Rigour/Piety), style button 1, "
@@ -240,12 +145,7 @@ final class OfflineNexScenario
 			return evaluated;
 		}).get(30, TimeUnit.SECONDS); }
 		finally { worker.shutdownNow(); }
-		report.section("Versions", "Plugin " + System.getProperty("ironpath.version", "test runtime") + "; JDK " + System.getProperty("java.version")
-			+ "; RuneLite API JAR " + Path.of(Client.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getFileName()
-			+ "; RuneLite client JAR " + Path.of(net.runelite.client.ui.PluginPanel.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getFileName()
-			+ "; adapter " + NexCapture.VERSION + "; evaluator " + NexOwnedEvaluator.VERSION + "; knowledge " + catalog.version
-			+ "; Gradle " + System.getProperty("ironpath.gradleVersion", "test runtime")
-			+ "; catalogue schema 14; preferences schema 3. Model versions are recorded with comparison inputs. Font: DejaVu Sans 12/20 px, RuneLiteLAF, headless Java2D.");
+		OfflineReview.versions(report, catalog);
 		SwingUtilities.invokeAndWait(() -> {
 			try { previews(output, result, report); } catch (Exception ex) { throw new RuntimeException(ex); }
 		});
