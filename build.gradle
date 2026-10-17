@@ -13,7 +13,8 @@ repositories {
 	mavenCentral()
 }
 
-def runeLiteVersion = 'latest.release'
+// Pin development/review runs explicitly; keep the normal compatibility build unchanged.
+def runeLiteVersion = providers.gradleProperty('runeLiteVersion').getOrElse('latest.release')
 def pluginMainClass = 'com.ironpath.IronpathPluginTest'
 
 dependencies {
@@ -40,6 +41,22 @@ tasks.register('run', JavaExec) {
 	// RuneLite requires assertions for development plugins; exclude the GPU workaround only.
 	jvmArgs "-ea", "-da:net.runelite.client.plugins.gpu..."
 	args "--developer-mode", "--debug"
+}
+
+tasks.register('offlineReview', JavaExec) {
+	group = 'verification'
+	description = 'Replay a synthetic encounter, check calculations and regenerate native Swing PNGs.'
+	dependsOn testClasses
+	classpath = sourceSets.test.runtimeClasspath
+	mainClass = 'com.ironpath.OfflineReview'
+	jvmArgs '-ea', '-Djava.awt.headless=true', '-Duser.language=en', '-Duser.country=US'
+	systemProperty 'ironpath.version', project.version
+	systemProperty 'ironpath.gradleVersion', gradle.gradleVersion
+	systemProperty 'logback.configurationFile', file('src/test/resources/offline-logback.xml').absolutePath
+	systemProperty 'ironpath.reviewOutput', layout.buildDirectory.dir('review').get().asFile.absolutePath
+	args 'all'
+	// JavaExec deliberately has no up-to-date output cache: regenerate/check every invocation,
+	// even when a reviewer deletes individual PNGs or invokes the same scenario again.
 }
 
 tasks.register('shadowJar', Jar) {
