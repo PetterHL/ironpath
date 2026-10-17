@@ -1,8 +1,116 @@
 # IronPath active work
 
-Updated 16 October 2026. **This is the only active backlog.** The encounter-and-
+Updated 17 October 2026. **This is the only active backlog.** The encounter-and-
 method direction replaces the former AD1/R/KI delivery order. Historical work,
 results and unperformed checks are preserved in the [archive](docs/archive/pre-nex-20261015/README.md).
+
+## DEV1 — Offline scenarios and native UI previews (first checkpoint for review)
+
+Approved for implementation planning on 17 October 2026. Goal: Codex Cloud can
+exercise IronPath and review calculations and the actual panel without requiring
+Petter to log in and complete a Nex kill after every change. This supports N1–N4;
+it does not change their product scope or close their outstanding live acceptance.
+
+Treat this as one cohesive task with one review checkpoint, not a series of tiny
+infrastructure deliveries. Start from current main, read AGENTS.md and the active
+documents, and implement on a focused branch. Open a PR; do not merge automatically.
+
+### First working delivery and review checkpoint
+
+- [x] Reuse the current tests/fixtures to run one complete synthetic Nex encounter
+  through the actual public-event adapter/capture, session, production evaluator
+  and native Swing panel. Supply representative ranged/melee/spec-candidate
+  switches, complete compatible inputs for at least one supported ordinary
+  comparison, and explicit synthetic account/preferences state. Do not bypass
+  completion detection by injecting a pre-completed summary for this scenario.
+- [x] Provide a simple documented command to select/run the scenario and generate
+  a concise calculation/check report plus PNG previews. Include encounter outcome,
+  timer scope, damage totals/share, exclusion/gap reasons, comparison inputs/results
+  and expected-versus-actual checks. Capture the main view and relevant comparison/
+  detail states at native width (currently 225px), normal and enlarged fonts.
+- [x] Run affected regressions and the normal build; inspect the generated images
+  and fix problems introduced by this work. Present the report, screenshots, exact
+  commands, versions and verification limits in the PR. Deliver a usable workflow,
+  not only interfaces, scaffolding or a plan.
+
+First delivery: `offlineReview --args='nex-complete'`, with an explicit development
+RuneLite pin, checks and twelve 225px native previews. See the
+[workflow instructions](docs/DEVELOPMENT.md#offline-review-dev1) and
+[checkpoint evidence](docs/validation/dev1-offline-review.md). The checkpoint is
+ready for review; the scenario expansion below remains pending that review.
+
+**Review checkpoint:** Petter/reviewer assesses whether the outputs are useful and
+whether a small calculation or UI change can be evaluated without gameplay.
+Demonstrate this with an isolated temporary change or existing meaningful
+regression; do not leave intentional faults or unrelated product changes committed.
+Do not automatically replace expected results with current implementation output.
+Wait for this review before expanding the scenario set below. Codex should perform
+its own test/fix iterations before presenting the first delivery; manual gameplay
+is not required for this checkpoint.
+
+### Complete the same workflow after review
+
+- [ ] Add a compact scenario set for unknown bank/ammo/resources, an incomplete
+  attempt, completed kill → recognized bank trip → next kill, identity reset while
+  evaluation is pending, and a new result arriving during inspection of an earlier
+  kill. Reuse existing lifecycle/regression coverage rather than duplicating it.
+  Exercise controlled pending work so stale publication guards are actually tested.
+- [ ] Finish documentation in [Development](docs/DEVELOPMENT.md): Cloud setup,
+  scenario commands, output locations, adding a scenario/encounter, input provenance,
+  comparison/review procedure and remaining live checks. Record actual validation
+  evidence and update this task's checkboxes; do not report blocked runs as passes.
+
+### Implementation boundaries and reuse
+
+Reuse NexCaptureTest, NexObserverTest, ObservationLifecycleTest, NexOwnedFixtures,
+NexOwnedEvaluator, NexPanelTest and relevant resource/arithmetic tests after
+checking current main. Summary-only fixtures remain useful for fast calculation/
+UI checks, but label which layers they bypass. Use production models/components;
+do not duplicate calculations or recreate the UI in a web app.
+
+Keep scenario loading/execution, tick and same-tick event ordering, reports and
+screenshot infrastructure reusable across encounters. Keep Nex signals, phase
+names, completion rules and fixtures in the Nex-specific part. Future encounters
+must not have to adopt NexSummary or Nex phase concepts. Inspect retained Zilyana
+code as a second architectural reference; adding live boss support is not part
+of DEV1. Extract only boundaries needed now, without a generic combat rules engine
+or broad production rewrite.
+
+Mock RuneLite dependencies at the boundary and provide the client state consumed
+at each relevant callback, including event payloads that differ from polled state.
+Keep deterministic control of queued work, reset state between scenarios and
+render Swing on the EDT. Preserve production thread, identity, unknown-state and
+publication guarantees. Keep fixture loading and runner controls development-only.
+
+Label synthetic evidence and user-reported equipment separately from real observed
+levels, quantities, charges and performance. Use independent existing oracles,
+reviewed hand calculations and behavioral invariants for expectations. Unsupported
+metrics must remain unsupported; DEV1 adds no spec-damage, survival, contribution
+or team-time claims. Placeholder sprites must be identified explicitly.
+
+Document JDK 11, Gradle/dependency preparation and consistent fonts for Cloud.
+Record the actual RuneLite/model/catalogue versions and make regression runs
+reproducible despite the current latest.release dependency. Prefer a narrow
+development version control/locking approach, with newer-version compatibility
+checked separately. Ensure preview outputs are correctly declared or explicitly
+regenerated so Gradle up-to-date checks cannot silently omit required artifacts.
+Reports/previews must be accessible for review, without committing routine generated
+output or private data. If setup/network restrictions block execution, state the
+exact blocker and what was not verified.
+
+**Acceptance:** A prepared checkout can generate reviewable calculations and actual
+panel images without OSRS credentials or gameplay. Relevant incorrect outputs fail
+checks; incomplete kills stay excluded, valid bank trips retain history, stale
+results cannot republish, and inspected results remain frozen as intended.
+The same commands can support subsequent Codex changes. Actual RuneLite event
+mappings, real sprites/DPI/focus/GPU behavior and player usefulness remain separate
+live checks; existing N1–N4 acceptance is not waived.
+
+**Later follow-up, outside DEV1:** Consider bounded, opt-in encounter recording
+after the runner is useful. Current summaries are not lossless event recordings.
+A future recorder needs ordered events and accompanying state, versioned anonymous
+identities and an explicit development-export exception to the current memory-only
+trace policy. Do not implement recording/export or relax that policy in DEV1.
 
 ## T0 — Transition (this change)
 
