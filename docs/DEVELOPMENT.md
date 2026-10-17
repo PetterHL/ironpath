@@ -142,6 +142,13 @@ images show full scrollable component contents, not a screenshot of an OS window
 Long native combo-box selections may elide; the selected setup and claims remain
 in wrapping text below them. Do not treat these as real DPI/focus/scroll checks.
 
+The text-layout check rejects visible non-empty text areas outside the PNG or
+any ancestor's bounds inside the captured root, including zero-sized areas.
+It also checks usable space after insets, glyph width and wrapping at the actual
+allocated width, independently of an overridden preferred size. Hidden/collapsed
+sections and empty text areas are ignored. A failed check still writes its image
+and reports the affected text and clipping reason.
+
 The **Offline review** GitHub Actions job runs the pinned test/build/review for PRs
 and uploads `dev1-nex-complete` (report plus twelve PNGs, 30-day retention), including
 available failure evidence. Link the workflow run/artifact from the PR. Routine
