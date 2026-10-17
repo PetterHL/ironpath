@@ -87,6 +87,12 @@ items are not automatic prerequisites for the Nex pilot.
 
 ## Build
 
+For calculation/UI review without gameplay, see
+[the DEV1 offline command](docs/DEVELOPMENT.md#offline-review-dev1). It runs seven
+synthetic scenarios through the production Nex adapter/session/evaluator and native
+Swing panel, including controlled plugin publication, banking and frozen-history
+checks, and generates reports plus native-width PNGs at normal/enlarged fonts.
+
 Use JDK 11 and the included Gradle wrapper. In Windows PowerShell:
 
 ```powershell
