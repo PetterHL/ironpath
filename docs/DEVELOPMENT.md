@@ -145,7 +145,7 @@ in wrapping text below them. Do not treat these as real DPI/focus/scroll checks.
 The text-layout check rejects visible non-empty text areas outside the PNG or
 any ancestor's bounds inside the captured root, including zero-sized areas.
 It also checks usable space after insets, glyph width and wrapping at the actual
-allocated width, independently of an overridden preferred size. Hidden/collapsed
+allocated width, independently of an overridden preferred size. Explicitly hidden
 sections and empty text areas are ignored. A failed check still writes its image
 and reports the affected text and clipping reason.
 
