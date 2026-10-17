@@ -101,7 +101,7 @@ items are not automatic prerequisites for the Nex pilot.
 ## Build
 
 For calculation/UI review without gameplay, see
-[the DEV1 offline command](docs/DEVELOPMENT.md#offline-review-dev1). It runs seven
+[the DEV1 offline command](docs/DEVELOPMENT.md#offline-review-dev1). It runs nine
 synthetic scenarios through the production Nex adapter/session/evaluator and native
 Swing panel, including controlled plugin publication, banking and frozen-history
 checks, and generates reports plus native-width PNGs at normal/enlarged fonts.

@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
 final class OfflineLifecycleScenarios
 {
 	static final List<String> IDS = List.of("nex-unknown", "nex-incomplete", "nex-bank-trip",
-		"nex-identity-pending", "nex-reset-pending", "nex-frozen-history");
+		"nex-identity-pending", "nex-reset-pending", "nex-frozen-history", "nex-bank-long-trip", "nex-arena-reload");
 
 	private OfflineLifecycleScenarios() { }
 	static void run(String id, Path output, ReviewReport report) throws Exception
@@ -43,6 +43,8 @@ final class OfflineLifecycleScenarios
 						case "nex-identity-pending": pending(replay, output, font, report, true); break;
 						case "nex-reset-pending": pending(replay, output, font, report, false); break;
 						case "nex-frozen-history": frozen(replay, output, font, report); break;
+						case "nex-bank-long-trip": longBanking(replay, output, font, report); break;
+						case "nex-arena-reload": arenaReload(replay, output, font, report); break;
 						default: throw new IllegalArgumentException("Unknown lifecycle scenario: " + id);
 					}
 				}
@@ -131,8 +133,62 @@ final class OfflineLifecycleScenarios
 		report.near("Mean share: (25 + 50) / 2", 37.5, r.plugin.nexSession.stats().meanShare, 1e-10);
 		report.near("Aggregate share: 100 × (20 + 60) / (80 + 120)", 40, r.plugin.nexSession.stats().aggregateShare, 1e-10);
 		report.check("Fresh comparison is for the next kill (kill #" + second.key + ")", true, second == r.plugin.ownedResult.summary);
-		report.section("Banking scope · " + font + "px", "Recognized same-account bank trip on current main, within the existing 100-tick banking grace. "
-			+ "This scenario does not import or validate the longer-travel/arena-reload changes in draft PR #38.");
+		report.section("Banking scope · " + font + "px", "Recognized short same-account bank trip. "
+			+ "The separate nex-bank-long-trip and nex-arena-reload scenarios exercise PR #38's extended retention and reload paths.");
+		capture(r, output, "next-kill", font, report);
+	}
+
+	private static void longBanking(OfflinePluginReplay r, Path output, int font, ReviewReport report) throws Exception
+	{
+		var first = r.fight(20, 20, 60, true); r.settle();
+		report.check("First long-trip kill is complete", Outcome.COMPLETE, first.outcome);
+		r.barrier(1); r.barrier = 2; // The observed exit must win over this lagging getter at LOADING.
+		r.loading(); r.loading(); r.arrive(false);
+		r.waitTicks(150); // Visible nearby Nex is not proof of returning from a bank.
+		report.check("Outbound leg stays paused beyond the old 100-tick deadline", true, r.plugin.nexSession.suspended());
+		report.check("Nearby Nex cannot expose unvalidated history", 0, r.plugin.nexSession.recent().size());
+		report.check("Outbound scene cannot restart capture", false, r.plugin.nex.capture.active());
+		report.check("Outbound old comparison remains hidden", null, r.plugin.ownedResult);
+		onEdt(() -> {
+			report.check("Paused view explains bank revalidation", true, PanelPreview.text(r.panel).contains("Nex session paused"));
+			report.check("Reset is available after live account revalidation", true, PanelPreview.children(r.panel).stream()
+				.anyMatch(c -> c instanceof javax.swing.JButton && "nex-reset".equals(c.getName()) && PanelPreview.visible(c)));
+		});
+		capture(r, output, "late-outbound", font, report);
+		r.arrive(true);
+		report.check("Late verified bank restores the exact first summary", true, first == r.plugin.nexSession.stats().last);
+		report.check("Late bank restores one comparable result", 1, r.plugin.nexSession.stats().n);
+		capture(r, output, "late-bank", font, report);
+		r.loading(); r.waitTicks(150); r.arrive(false);
+		report.check("Long bank-origin return retains the exact first summary", true, first == r.plugin.nexSession.stats().last);
+		var second = r.fight(30, 60, 60, true); r.settle();
+		report.check("Next post-bank kill completes", Outcome.COMPLETE, second.outcome);
+		report.check("Post-bank comparison uses a new capture key", true, second.key != first.key && r.plugin.ownedResult.summary == second);
+		report.check("Long-trip history contains both matched complete kills", 2, r.plugin.nexSession.stats().n);
+		report.near("Long-trip mean timing remains 15 seconds", 15, r.plugin.nexSession.stats().meanSeconds, 1e-10);
+		report.near("Long-trip aggregate share remains 40%", 40, r.plugin.nexSession.stats().aggregateShare, 1e-10);
+		capture(r, output, "next-kill", font, report);
+		r.changeIdentity(); r.callbacks.drain(); r.edt();
+		report.check("Removing the deadline does not weaken identity clearing", 0, r.plugin.nexSession.stats().attempts);
+		report.check("Changed identity clears the comparison", null, r.plugin.ownedResult);
+		capture(r, output, "identity-cleared", font, report);
+	}
+
+	private static void arenaReload(OfflinePluginReplay r, Path output, int font, ReviewReport report) throws Exception
+	{
+		var first = r.fight(20, 20, 60, true); r.settle();
+		r.loading(); r.bossPresent = false; r.loading(); r.arrive(false, false);
+		report.check("Missing NPCs during rebuild keep history suspended", true, r.plugin.nexSession.suspended());
+		report.check("Rebuilding scene keeps old results inaccessible", 0, r.plugin.nexSession.recent().size());
+		capture(r, output, "rebuilding", font, report);
+		r.bossPresent = true; r.tick(); r.settle();
+		report.check("Same-arena evidence resumes without a bank visit", false, r.plugin.nexSession.suspended());
+		report.check("Arena reload retains the exact complete summary", true, first == r.plugin.nexSession.stats().last);
+		var second = r.fight(30, 60, 60, true); r.settle();
+		report.check("Next real smoke callback reaches capture after reload", true, second.key != first.key);
+		report.check("Next post-reload kill completes", Outcome.COMPLETE, second.outcome);
+		report.check("Arena reload retains two matched complete kills", 2, r.plugin.nexSession.stats().n);
+		report.check("Current comparison is for the post-reload kill", true, r.plugin.ownedResult.summary == second);
 		capture(r, output, "next-kill", font, report);
 	}
 

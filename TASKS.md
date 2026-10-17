@@ -192,6 +192,11 @@ death/teleport/mid-kill enable; several one-kill bank trips; account switch duri
 pending work; matching timer origins; no false completed kills or leaked sessions.
 Record captured/eligible fractions and real-client/player findings separately.
 
+Offline review now also includes `nex-bank-long-trip` and `nex-arena-reload`:
+long delayed banking/return, observed exit versus nearby Nex, missing/rebuilt arena
+NPCs, next complete kills and retained hard identity clearing. These complement
+the seven DEV1 baseline scenarios; live retesting remains open.
+
 ## N2 — Better use of owned equipment (implementation for review)
 
 Development build 0.16.0 supplies immutable per-state carried-package comparisons,

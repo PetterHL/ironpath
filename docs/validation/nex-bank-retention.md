@@ -159,6 +159,52 @@ Automated verification for 0.19.3 (JDK 11.0.32.1+1, Gradle 8.10, RuneLite 1.13.2
 - `build/libs/ironpath-0.19.3.jar` contains bundled `version=0.19.3` metadata.
 - `git diff --check` and changed-document relative file links pass.
 
+## DEV1 integration review — 17 October 2026
+
+Merged the reviewed DEV1 workflow through the existing N3b/N3c stack after
+PR #40. Reviewed the bank/reload distinction, exit evidence overriding a lagging
+getter, repeated LOADING, delayed preferences, hidden suspended history and hard
+identity/reset boundaries. This integration changes test replay and documentation;
+the reviewed 0.19.3 production correction remains unchanged.
+
+Two additional scenarios drive the real plugin's public event callbacks and
+capture/comparison pipeline, using the same synthetic client and native panel:
+
+- `nex-bank-long-trip`: wait 150 logged-in ticks outbound with nearby Nex after
+  an observed exit, verify paused/hidden history and Reset, restore the exact
+  first summary at the bank, wait another 150 ticks returning, and complete the
+  next kill. The two matched kills retain n=2, mean 15 seconds and aggregate
+  damage share 40%. A subsequent character change still clears the history.
+- `nex-arena-reload`: repeated LOADING with initially missing NPCs keeps history
+  suspended; restored arena evidence resumes it without a bank. The next real
+  smoke callback starts a fresh complete kill and publishes its own comparison.
+
+The long-trip replay was also run with the former 100-tick deadline temporarily
+restored: it exited unsuccessfully with 16 failed checks across both font sizes,
+including lost history, wrong counts and wrong combined means. The mutation was
+removed before the final build. This demonstrates that the new replay detects
+the old regression rather than merely rendering a passing fixture.
+
+Final normal compatibility command:
+
+```sh
+source /workspace/ironpath-environment/activate.sh
+./gradlew test build offlineReview --no-daemon
+```
+
+Temurin 11.0.32.1+1 / Gradle 8.10 / RuneLite 1.13.2: **288 tests across
+34 suites**, zero failures/errors/skips. All nine scenarios passed **293 checks**
+and regenerated nine reports plus **56 PNGs**. The two added scenarios contribute
+62 checks and 12 PNGs. Inspected all 12 new native 225px panel images at 12/20px:
+paused Reset, restored first result, next-kill counts/means and identity clearing
+remain readable without new clipping. The JAR contains bundled `version=0.19.3`
+and excludes the offline replay/development harness.
+
+These are synthetic regression and UI results. The N3b/N3c numerical API remains
+covered by its independent unit/integration cases; it is not automatically
+inferred from these captures. No corrected live-client acceptance is claimed.
+This PR remains draft pending the deferred client retest below.
+
 ## Client retest (deferred)
 
 Use branch `fix/nex-banking-session`, build 0.19.3. Restarting the development

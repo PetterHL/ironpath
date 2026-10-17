@@ -55,6 +55,8 @@ public class OfflineReviewTest
 	@Test public void pendingIdentityPublicationCannotOverwriteFreshWork() throws Exception { lifecycle("nex-identity-pending", 4); }
 	@Test public void resetCancelsPendingWorkWithoutPreventingFreshPublication() throws Exception { lifecycle("nex-reset-pending", 4); }
 	@Test public void newResultsPreserveInspectedHistory() throws Exception { lifecycle("nex-frozen-history", 8); }
+	@Test public void longBankTripAndNearbyNexPreserveHistoryWithoutWeakeningIdentityGuards() throws Exception { lifecycle("nex-bank-long-trip", 8); }
+	@Test public void arenaReloadResumesCaptureWithoutABankVisit() throws Exception { lifecycle("nex-arena-reload", 4); }
 
 	private void lifecycle(String id, int images) throws Exception
 	{
