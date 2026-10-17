@@ -109,3 +109,29 @@ acquisition/recurring-cost presentation and supply models. N4 personal contribut
 and team time remain separate. PR #36 is the implementation dependency; N3c is
 delivered as a focused stacked draft for review, without merging either change or
 publishing to Plugin Hub.
+
+## DEV1 integration review — 17 October 2026
+
+Merged the reviewed DEV1 workflow from main after PR #40. The validation-index
+conflict retains both DEV1 evidence and this delivery's version/scope. No numerical
+mechanics or calculation expectations were changed by this integration.
+
+Reviewed complete-package construction and shared N2 factory, exact slots/variants, requirements and packing, quiver priority, per-opportunity state matching, finite plans, actual-to-owned versus owned-to-upgrade deltas, and preservation of unknown inputs and named gaps. Existing independent package hand cases and four prior review regressions remain in the full suite.
+
+Normal compatibility command:
+
+```sh
+source /workspace/ironpath-environment/activate.sh
+./gradlew test build offlineReview --no-daemon
+```
+
+Temurin 11.0.32.1+1 / Gradle 8.10 / RuneLite 1.13.2: **274 tests across
+34 suites**, zero failures/errors/skips. All seven DEV1 scenarios passed
+**231 checks** and regenerated seven reports plus **44 PNGs**. The retained DEV1
+scenarios exercise capture, ordinary comparisons, lifecycle/publication and UI;
+this delivery's new numerical kernels are verified by their separate unit/
+integration hand cases, not automatically attributed to a captured kill.
+
+No new blocking issue was identified within this conditional API scope. Existing
+source-retrieval limitations and live/client/player acceptance remain open. No
+automatic recommendations, additional phase simulation or N4 time claim is made.
