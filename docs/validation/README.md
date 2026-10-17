@@ -1,5 +1,9 @@
 # Validation records
 
+[DEV1 offline review workflow](dev1-offline-review.md) records the
+synthetic public-event scenarios, checked calculations, controlled publication/
+banking/history regressions, native previews and remaining live boundaries.
+
 Current build 0.19.2 supplies the [bank-retention correction](nex-bank-retention.md)
 after a failed live bank test, plus delayed-settings transition coverage and
 visible build/reset diagnostics. Corrected client retesting remains open.
