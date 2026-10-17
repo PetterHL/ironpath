@@ -1,5 +1,9 @@
 # Validation records
 
+[DEV1 first offline review checkpoint](dev1-offline-review.md) records the
+synthetic public-event replay, checked calculations, native previews and the
+remaining review/live boundaries.
+
 Current combined build 0.17.1: N1 capture/session, N2 exact variants and comparison
 filters, and N3a [finite spec resources and post-kill evidence](nex-spec-resources.md#0171-combined-integration).
 N3 damage/upgrade decisions and combined client acceptance remain open.
