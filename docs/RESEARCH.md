@@ -95,3 +95,13 @@ pinned source hashes, indexed-evidence limits, independent hand cases and scoped
 unknowns. [N3c verification](validation/nex-packages.md) records automated
 acceptance. Live capture/player acceptance and automatic personal recommendations
 remain open; no reference implementation or dataset is imported.
+
+## CTX1 context contract
+
+CTX1 (0.21.0) changes metadata, lifecycle and descriptive comparability. It adds no
+combat formula or new target/method mechanics. MP2/RP2/Other/Unknown and group/count
+are user declarations; nearby public players do not establish a party. Inherited
+defaults are not kill confirmations. Conditional ordinary state arithmetic retains
+its existing N2 evidence/limitations outside the pilot; this does not generalize
+method recommendations or N4. [Synthetic verification](validation/ctx1-kill-context.md)
+distinguishes automated data/worker/Swing checks from unperformed live acceptance.

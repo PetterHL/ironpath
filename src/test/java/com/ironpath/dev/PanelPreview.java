@@ -106,15 +106,18 @@ public final class PanelPreview
 		for(Component c:children(panel))
 		{
 			// RuneLiteLAF deliberately gives native scrollbar arrow buttons zero size.
-			if(!visible(c) || !(c instanceof JButton || c instanceof JLabel)
+			if(!visible(c) || !(c instanceof javax.swing.AbstractButton || c instanceof JLabel || c instanceof javax.swing.JTextField || c instanceof JComboBox)
 				|| SwingUtilities.getAncestorOfClass(javax.swing.JScrollBar.class,c)!=null) { continue; }
 			Rectangle bounds=SwingUtilities.convertRectangle(c,new Rectangle(0,0,c.getWidth(),c.getHeight()),panel);
 			if(c.getWidth()<=0 || c.getHeight()<=0 || !imageBounds.contains(bounds)) { controls.add("Control outside image: "+c.getName()); continue; }
-			if(c instanceof JButton)
+			if(c instanceof javax.swing.AbstractButton)
 			{
-				JButton button=(JButton)c; Insets insets=button.getInsets();
+				javax.swing.AbstractButton button=(javax.swing.AbstractButton)c; Insets insets=button.getInsets();
+				javax.swing.Icon icon=button.getIcon();
+				if(icon==null && c instanceof javax.swing.JCheckBox) { icon=UIManager.getIcon("CheckBox.icon"); }
+				int iconWidth=icon==null?0:icon.getIconWidth()+button.getIconTextGap();
 				View html=(View)button.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
-				if(html==null && button.getFontMetrics(button.getFont()).stringWidth(button.getText())>button.getWidth()-insets.left-insets.right)
+				if(html==null && button.getFontMetrics(button.getFont()).stringWidth(button.getText())>button.getWidth()-insets.left-insets.right-iconWidth)
 				{ controls.add("Truncated button: "+button.getToolTipText()); }
 				if(html!=null && (html.getPreferredSpan(View.X_AXIS)>button.getWidth()-insets.left-insets.right
 					|| html.getPreferredSpan(View.Y_AXIS)>button.getHeight()-insets.top-insets.bottom))

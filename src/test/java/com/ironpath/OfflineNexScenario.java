@@ -126,7 +126,7 @@ final class OfflineNexScenario extends OfflineNexClient
 		report.check("Local damage, duplicates excluded", 20L, summary.localDamage());
 		report.check("Total Nex + named minion damage", 80L, summary.totalDamage());
 		report.near("Share: 100 × 20 / (20 + 60)", 25, summary.share() == null ? Double.NaN : summary.share(), 1e-10);
-		report.check("Complete statistics sample count", 1, session.stats().n);
+		report.check("Complete statistics sample count remains unconfirmed", 0, session.stats().n);
 		report.check("Excluded attempts", 0, session.stats().failed + session.stats().censored);
 		report.check("Captured role switches", true, summary.timeline.stream().map(s -> s.role).collect(java.util.stream.Collectors.toSet()).containsAll(Set.of("ranged", "melee", "spec candidate")));
 		report.check("Spec candidate remains evidence, not confirmed attack", true, summary.timeline.stream().anyMatch(s -> s.role.equals("spec candidate") && s.state.slots.get("weapon") == 27690));

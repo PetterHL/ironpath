@@ -1,7 +1,7 @@
 # Encounter-first UX
 
 Encounter direction selected 15 October; UI review incorporated 18 October 2026.
-UI1 is implemented for review in 0.20.0; CTX1 remains planned. TASKS.md owns
+UI1 is merged in 0.20.0; CTX1 is implemented for review in 0.21.0. TASKS.md owns
 delivery. Later versioned sections retain the implemented behavior/history.
 
 ## UI1 implementation (0.20.0, for review)
@@ -60,20 +60,42 @@ report clears the previous text and starts collapsed.
 See [UI1 validation](validation/ui1-encounter-diagnostics.md) for viewport evidence,
 clipboard fallback and the separate client checks.
 
-## Reviewed CTX1 target (after UI1 review)
+## Editable kill context (CTX1, 0.21.0)
 
-Show optional kill context beside the selected kill, with a compact editor and
-explicit Apply. Keep MP2/RP2/Other/Unknown, organized/mass/unknown and exact team
-count/unknown as separate dimensions. Count includes the player. A saved future
-default is separate from the selected kill's annotation; inherited is not confirmed.
-Selecting unsupported contexts preserves observations but cannot enable pilot
-recommendations. No compulsory pre-fight form. TASKS.md specifies frozen inputs,
-cohort reconciliation, migration and stale-work checks before implementation.
+**Future kill context** is optional before play. **Edit kill context** sits beside
+the latest completed or already-inspected kill, including its Diagnostics and
+comparison/details views. The editor retains an unfinished draft across unrelated
+refreshes. Strategy (MP2/RP2/Other/Unknown), organized/mass/unknown group and
+exact/variable/unknown participation are separate controls. Exact counts must be
+positive whole numbers and include the player. Mass never changes strategy.
 
-## One remembered context (existing pilot)
+**Apply context** changes only that kill. Confirm strategy, group and count
+separately when known; unconfirmed manual entries and inherited defaults stay
+unconfirmed. **Use for future** separately saves future defaults. It never confirms
+future kills or alters an already-active attempt. **Context sources** exposes
+per-field provenance. There is no mandatory pre-fight form or new history browser.
 
-The main view starts with `Nex · Trio MP2 · One kill per trip`. The method is a
-saved preference; detect equipment/spell use and ask only focused corrections.
+The selected record shows its observed duration/damage and context revision.
+During recomputation, previous calculation outputs are withheld. Diagnostics and
+Copy report use the same corrected revision and frozen calculation inputs;
+newer bank observations/preferences cannot enter an edit. Completed comparisons
+retain their frozen planning inputs; Setup changes apply to future comparisons.
+A historical annotation can complete while another attempt continues.
+
+Unconfirmed/unknown/variable or incompatible context has no matched average.
+Confirmed organized MP2/RP2 records need compatible observed setup/timer/roster
+evidence; count alone is insufficient and does not establish equal team damage.
+Mass and unspecified Other remain unmatched. Conditional ordinary state comparisons
+can remain inspectable outside the pilot; they are not method recommendations.
+No automatic spec recommendation, contribution model or team-time estimate is added.
+
+[CTX1 validation](validation/ctx1-kill-context.md) includes 225px editor/report PNGs
+at 12pt/20pt, real JViewport screenfuls and the separate unperformed client checks.
+
+## Pilot planning choices
+
+The main view identifies `Nex · Trio MP2 pilot model`, independently of annotated
+kill context. Detect equipment/spell use and permit focused corrections.
 Lightbearer throughout and upgraded Death Charge are the confirmed pilot choices.
 A compact Setup action exposes melee, ranged and spec packages plus locked choices.
 Detected, manually assumed and unknown state must remain distinguishable.

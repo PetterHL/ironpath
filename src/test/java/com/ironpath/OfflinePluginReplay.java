@@ -48,8 +48,11 @@ final class OfflinePluginReplay extends OfflineNexClient implements AutoCloseabl
 	private final Widget bank = mock(Widget.class);
 	private boolean bankVisible;
 	NexPanel panel;
+	final List<Preferences> preferenceWrites=new ArrayList<>();
 
 	OfflinePluginReplay(int font) throws Exception
+	{ this(font,false); }
+	OfflinePluginReplay(int font,boolean contextWrites) throws Exception
 	{
 		try
 		{
@@ -82,7 +85,11 @@ final class OfflinePluginReplay extends OfflineNexClient implements AutoCloseabl
 				.when(plugin.toolbar).addNavigation(any(NavigationButton.class));
 			plugin.preferenceStorage = new PreferenceStorage() {
 				public Preferences read(String key) { return Preferences.EMPTY.nex(NexMethod.PILOT.lock("melee/shield", 12954)); }
-				public void write(String key, Preferences value) { throw new AssertionError("Replay must not persist preferences"); }
+				public void write(String key, Preferences value)
+				{
+					if(!contextWrites) { throw new AssertionError("Replay must not persist preferences"); }
+					preferenceWrites.add(value); // Explicit CTX1 storage boundary; memory only, never a file.
+				}
 			};
 			SwingUtilities.invokeAndWait(() -> PanelPreview.fonts(font));
 			plugin.startUp(); edt();
@@ -138,6 +145,8 @@ final class OfflinePluginReplay extends OfflineNexClient implements AutoCloseabl
 
 	/** Fresh callbacks produce every summary; no pre-completed summary is injected. */
 	NexSummary fight(int duration, int mine, int other, boolean complete) throws Exception
+	{ return fight(duration,mine,other,complete,offset->{}); }
+	NexSummary fight(int duration,int mine,int other,boolean complete,java.util.function.IntConsumer hook) throws Exception
 	{
 		int start = tick + 1;
 		boss = mock(NPC.class);
@@ -169,6 +178,7 @@ final class OfflinePluginReplay extends OfflineNexClient implements AutoCloseabl
 				else { replay.at(t, "Exit without death/end corroboration", () -> barrier(1)); }
 			}
 			if (offset == duration + 1 && complete) { replay.at(t, "Arena completion payload", () -> barrier(2)); }
+			replay.at(t,"Optional context action during public replay",()->hook.accept(offset));
 			replay.at(t, "GameTick (client callbacks held)", () -> plugin.onGameTick(new GameTick()));
 		}
 		replay.run(value -> tick = value, trace::add);

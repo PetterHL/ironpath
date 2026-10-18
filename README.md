@@ -7,16 +7,26 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**18 October 2026: development build 0.20.0 — UI1 review corrections complete.**
-The native panel now has **Encounter / Diagnostics**, compact kill/session results,
-changed-item/package cards and a sanitized **Copy report now** action. Reports stay
-bound to the inspected kill and selected calculation; unavailable/busy clipboard
-leaves selectable text. [UI1 evidence and remaining client checks](docs/validation/ui1-encounter-diagnostics.md).
+**18 October 2026: development build 0.21.0 — CTX1 implemented for review.**
+Optionally save usual Nex context before play or **Edit kill context** on the
+latest completed or already-inspected kill. Strategy (MP2/RP2/Other/Unknown),
+group mode and participation are separate fields. Apply affects the selected
+kill; **Use for future** separately saves defaults for later attempts. Inherited
+values remain unconfirmed. [CTX1 evidence and remaining client checks](docs/validation/ctx1-kill-context.md).
 
-CTX1 (editable kill context) follows the authorized UI1 merge. [TASKS](TASKS.md) owns the
-order and acceptance checks. N3b/N3c remain conditional APIs; UI1 adds no automatic
-spec recommendations or team-time prediction. The earlier [main consolidation](docs/validation/main-consolidation-20261018.md)
-retains its historical evidence; live-client acceptance stays open.
+Observations stay immutable. Corrections use the kill's frozen calculation inputs,
+leave another active attempt running, reconcile descriptive matched averages and
+keep reports on the same context/input revision. Completed comparisons retain
+frozen ownership/planning inputs; later Setup choices apply to future comparisons.
+Unknown, variable or unconfirmed context has no matched average. Other methods
+retain independently supported conditional ordinary arithmetic, with no automatic
+pilot recommendations or team-time estimate.
+
+[UI1 Encounter/Diagnostics and sanitized reports](docs/validation/ui1-encounter-diagnostics.md)
+are merged. [TASKS](TASKS.md) owns the order and acceptance checks. N3b/N3c remain
+conditional APIs, and live-client/player acceptance stays open. The earlier
+[main consolidation](docs/validation/main-consolidation-20261018.md) retains its
+historical evidence.
 
 Bank-travel correction: completed history no longer expires while waiting to
 open the bank. It stays hidden until same-account/profile/world revalidation;

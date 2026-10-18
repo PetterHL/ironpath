@@ -28,6 +28,8 @@ public final class OfflineReview
 		scenarios.put("nex-complete", (directory, report) -> new OfflineNexScenario().run(directory, report));
 		for (String id : OfflineLifecycleScenarios.IDS)
 		{ scenarios.put(id, (directory, report) -> OfflineLifecycleScenarios.run(id, directory, report)); }
+		for(String id:OfflineContextScenarios.IDS)
+		{ scenarios.put(id,(directory,report)->OfflineContextScenarios.run(id,directory,report)); }
 		return scenarios;
 	}
 	static ReviewReport run(String id, Path output) throws Exception
@@ -83,7 +85,7 @@ public final class OfflineReview
 			+ "; RuneLite client JAR " + Path.of(net.runelite.client.ui.PluginPanel.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getFileName()
 			+ "; adapter " + NexCapture.VERSION + "; evaluator " + NexOwnedEvaluator.VERSION + "; knowledge " + catalog.version
 			+ "; Gradle " + System.getProperty("ironpath.gradleVersion", "test runtime")
-			+ "; catalogue schema 14; preferences schema 3. Model versions are recorded with comparison inputs. Font: DejaVu Sans 12/20 px, RuneLiteLAF, headless Java2D.");
+			+ "; catalogue schema 14; preferences schema 4. Model versions are recorded with comparison inputs. Font: DejaVu Sans 12/20 px, RuneLiteLAF, headless Java2D.");
 	}
 	public static void main(String[] args) throws Exception
 	{

@@ -57,6 +57,15 @@ public class OfflineReviewTest
 	@Test public void newResultsPreserveInspectedHistory() throws Exception { lifecycle("nex-frozen-history", 8); }
 	@Test public void longBankTripAndNearbyNexPreserveHistoryWithoutWeakeningIdentityGuards() throws Exception { lifecycle("nex-bank-long-trip", 8); }
 	@Test public void arenaReloadResumesCaptureWithoutABankVisit() throws Exception { lifecycle("nex-arena-reload", 4); }
+	@Test public void contextCorrectionsReconcileConfirmedCohorts() throws Exception { context("nex-context"); }
+	@Test public void historicalContextEditsPreserveAnotherActiveAttemptAndFrozenInputs() throws Exception { context("nex-context-active"); }
+	@Test public void repeatedContextEditsRejectStalePublicationAfterResetAndLogout() throws Exception { context("nex-context-pending"); }
+	private void context(String id) throws Exception
+	{
+		var output=temporary.newFolder().toPath(); var report=OfflineReview.run(id,output);
+		assertTrue(Files.readString(output.resolve("report.md")),report.passed());
+		assertEquals(225,javax.imageio.ImageIO.read(output.resolve("corrected-diagnostics-20.png").toFile()).getWidth());
+	}
 
 	private void lifecycle(String id, int images) throws Exception
 	{

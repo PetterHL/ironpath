@@ -26,6 +26,7 @@ final class NexObserver
 	private boolean attempted, arenaObserved;
 	private long spawnSerial, hitSerial;
 	private NexMethod method=NexMethod.PILOT;
+	private com.ironpath.nex.NexContext defaults=com.ironpath.nex.NexContext.PILOT;
 	private boolean enabled=true;
 	private int rosterTick=Integer.MIN_VALUE;
 	private String cachedRoster;
@@ -58,6 +59,8 @@ final class NexObserver
 		{ capture.abort(client.getTickCount(),Outcome.CENSORED,"Method or planning locks changed during capture"); }
 		this.method=method;
 	}
+	/** Future defaults only. Never mutate or censor an active attempt. */
+	synchronized void defaults(com.ironpath.nex.NexContext context) { defaults=context.inherited(); }
 	static boolean bossId(int id)
 	{ return id==NpcID.NEX || id==NpcID.NEX_SPAWNING || id==NpcID.NEX_SOULSPLIT || id==NpcID.NEX_DEFLECT || id==NpcID.NEX_DYING; }
 	static String targetName(int id)
@@ -218,7 +221,7 @@ final class NexObserver
 			|| boss.getId()==NpcID.NEX_DYING || !sameView(client.getLocalPlayer())) { return; }
 		if(!smokeStart && !allowPartial && boundary!=tick) { return; }
 		hits.clear(); attempted=true;
-		capture.start(tick,smokeStart,method,roster());
+		capture.start(tick,smokeStart,method,roster(),defaults);
 		if(boundary>=0 && boundary<=tick) { capture.barrierStart(boundary); }
 		signals.forEach(capture::signal);
 		signals.clear();

@@ -1,7 +1,7 @@
 # Development and verification
 
 Use JDK 11, Git and the included Gradle wrapper (8.10). The retained build resolves
-RuneLite through `latest.release`; UI1 normal and pinned validation both resolved
+RuneLite through `latest.release`; CTX1 normal and pinned validation both resolved
 1.13.2. Record the actual resolved version when verifying a change. The first build
 needs dependency downloads. Runtime evaluation is local.
 
@@ -14,8 +14,8 @@ before updating or rebuilding it.
 
 The 18 October consolidation makes main the common base for N3b/N3c, banking/
 arena-reload fixes and all nine DEV1 scenarios. Do not start from the retired
-stacked PR branches. TASKS.md owns the order: UI1, then CTX1, with live acceptance
-tracked separately. After merging future authorized work, delete only heads whose
+stacked PR branches. UI1 is merged; CTX1 (0.21.0) is implemented for review.
+TASKS.md owns the order, with live acceptance tracked separately. After merging future authorized work, delete only heads whose
 commits are preserved in main (or an explicit archive); never discard unique work.
 
 Windows PowerShell:
@@ -91,9 +91,9 @@ No client or Plugin Hub acceptance is implied by a successful build.
 
 ## Offline review (DEV1)
 
-The offline workflow supplies nine synthetic scenarios without OSRS credentials,
-a display server or gameplay: the seven DEV1 baseline cases plus two bank/reload
-regressions from PR #38. The first calculation/UI checkpoint was reviewed on
+The offline workflow supplies twelve synthetic scenarios without OSRS credentials,
+a display server or gameplay: the nine DEV1/bank/reload baseline cases and three
+CTX1 context-editing regressions. The first calculation/UI checkpoint was reviewed on
 17 October 2026; Petter authorized the remaining scenarios in the same task.
 [Validation and limits](validation/dev1-offline-review.md).
 
@@ -143,13 +143,18 @@ not evidence for compatibility with a newer RuneLite release.
 | `nex-frozen-history` | New results while a selected negative owned alternative/resources or kill details are inspected; Back opens the latest result | Initial selection, frozen comparison, frozen details, latest comparison |
 | `nex-bank-long-trip` | Exit callback before a lagging getter, repeated loading, nearby Nex, 150-tick outbound wait, late bank and 150-tick return; identity change still clears | Late outbound, late bank, next kill, identity cleared |
 | `nex-arena-reload` | Arena scene rebuilt without banking, missing NPCs and repeated loading, then fresh public arena evidence and next smoke/kill | Rebuilding scene, next kill |
+| `nex-context` | Unknown/inherited/manual-unconfirmed context, corrections, independently checked matched means, invalid count and variable RP2 mass | Editor, fields/Apply viewports, source details, corrected Diagnostics |
+| `nex-context-active` | Older inspected kill edited while another public attempt continues; newer bank/lock inputs stay excluded; remembered defaults apply only to subsequent attempts | Active historical edit, frozen corrected report, later inherited context |
+| `nex-context-pending` | Repeated edits with held workers, corrected report consistency, Reset, 50 further public kills evicting the inspected annotation, then logout | Pending edit/report, corrected Diagnostics, eviction and logout |
 
 Outputs are regenerated in `build/review/<scenario>/`: `report.md` plus the named
 PNG states with `-12.png` / `-20.png`, all at the native **225px** width. Running
 `all` also writes `build/review/index.md`, linking every report and PASS/FAIL result.
-The UI1 suite generates nine scenario reports, 116 PNGs and a sanitized
+The UI1 suite originally generated nine scenario reports, 116 PNGs and a sanitized
 `diagnostic-report-12.txt` / `diagnostic-report-20.txt` for each scenario. Each scenario and font
-starts with fresh client/account/session state. Reports contain input provenance,
+starts with fresh client/account/session state. CTX1 adds three reports and editor/
+context/report previews to the same registry; current counts are in its validation
+record. Reports contain input provenance,
 ordered callbacks, encounter outcomes, timer/damage scopes, gaps and expected versus
 actual checks. Published lifecycle comparisons include actual/proposed inputs,
 results and source assumptions; the complete scenario retains the detailed
@@ -175,13 +180,14 @@ of an OS window or real DPI/focus/scroll/GPU tests.
 The layout checker rejects visible nonempty text areas outside the PNG or any
 ancestor inside the capture root, zero-sized/compressed areas, and wrapping that
 exceeds the actual allocated content width/height. UI1 additionally checks
-button/label geometry and plain/HTML button text. Scrollable report contents are
+button/label geometry and plain/HTML button text. CTX1 extends control checks to
+checkboxes (including their icons), editable fields and combo geometry. Scrollable report contents are
 intentionally clipped by their nested viewport; RuneLiteLAF scrollbar arrows are
 intentionally zero-sized. Hidden/empty areas are ignored.
 Failures still write the PNG and the affected text/reason. Visual inspection
 remains necessary; layout checks do not establish usefulness or interaction quality.
 
-The **Offline review** GitHub Actions job runs the pinned test/build and all nine
+The **Offline review** GitHub Actions job runs the pinned test/build and all twelve
 scenarios. It uploads `dev1-offline-review`, containing the index, reports and PNGs
 with 30-day retention, including available failure evidence. Link the exact run
 and artifact from the PR. Routine generated output stays outside Git history.
@@ -207,6 +213,26 @@ leaves focusable, selectable text for manual Ctrl+A/Ctrl+C. No upload occurs.
 
 [UI1 validation](validation/ui1-encounter-diagnostics.md) records exact commands,
 counts, comparison evidence and unperformed client checks.
+
+### Reviewing CTX1 context edits
+
+Open `nex-context`'s `corrected-context-12.png` / `-20.png`,
+`context-fields-viewport-*`, `context-apply-viewport-*`, `invalid-count-*`,
+`variable-mass-*`, `context-source-details-*` and `corrected-diagnostics-*`.
+The editor is optional and scrolls at enlarged fonts. Inspect its native controls,
+positive-count error, per-field confirmations and separate **Use for future** option.
+`corrected-report-*.txt` uses production schema 2 and must agree with the selected
+annotation/input revisions. Unknown and unconfirmed context has no matched mean.
+
+`nex-context-active` changes public bank knowledge and a real Setup lock before
+correcting the older kill during the next attempt. Its old calculation keeps its
+input revision and arithmetic; saved context defaults are inherited only by a later
+attempt. `nex-context-pending` holds old workers/publications, edits repeatedly,
+then tests Reset, 50 public completion replays/eviction and logout. Context writes
+are collected by an explicit in-memory preference boundary; no file is saved.
+
+[CTX1 validation](validation/ctx1-kill-context.md) records current results and
+unperformed live controls, real sprites, focus/scroll/DPI/clipboard and player checks.
 
 ### Scenario boundaries and adding a scenario or encounter
 

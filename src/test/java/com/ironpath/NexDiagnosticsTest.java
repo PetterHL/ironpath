@@ -51,7 +51,7 @@ public class NexDiagnosticsTest
 		var summary=summary(1,true); var result=evaluate(summary); var snapshot=report(summary,result,0,0,NexReport.State.READY);
 		String text=snapshot.format();
 		assertFalse(text,text.contains(PRIVATE)); assertFalse(text.contains("999999")); assertFalse(text.contains("12345"));
-		assertTrue(text.contains("schema 1")); assertTrue(text.contains("SYNTHETIC_OFFLINE"));
+		assertTrue(text.contains("schema 2")); assertTrue(text.contains("SYNTHETIC_OFFLINE"));
 		assertTrue(text.contains("Report-local kill: K1")); assertFalse(text.contains("kill #1"));
 		assertTrue(text.contains("immutable calculation revision: "+result.revision));
 		assertTrue(text.contains("20 / 80; share percent: 25.0"));
@@ -110,7 +110,7 @@ public class NexDiagnosticsTest
 			var panel=new NexPanel(null,text->{ copied.set(text); throw new IllegalStateException("busy"); },NexReport.Provenance.SYNTHETIC_OFFLINE);
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",original);
 			assertTrue(PanelPreview.text(panel).contains("Dragon arrow")); assertFalse(PanelPreview.text(panel).contains("Twisted bow"));
-			assertTrue(PanelPreview.text(panel).contains("1 matching kill")); assertFalse(PanelPreview.text(panel).contains("Session mean"));
+			assertTrue(PanelPreview.text(panel).contains("No matched average")); assertFalse(PanelPreview.text(panel).contains("Session mean"));
 			PanelPreview.click(panel,"Compare package"); PanelPreview.click(panel,"Diagnostics");
 			PanelPreview.click(panel,"Copy report now");
 			assertTrue(PanelPreview.text(panel).contains("Clipboard unavailable or busy"));

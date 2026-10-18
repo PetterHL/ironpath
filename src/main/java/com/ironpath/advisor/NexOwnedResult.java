@@ -48,14 +48,21 @@ public final class NexOwnedResult
 	public final long revision;
 	private static final java.util.concurrent.atomic.AtomicLong REVISIONS=new java.util.concurrent.atomic.AtomicLong();
 	public final com.ironpath.preferences.NexMethod planning;
+	public final com.ironpath.nex.NexContext context;
+	public final long contextRevision,inputRevision;
+	public final String modelRevision;
 	public final List<Choice> choices;
 	public final com.ironpath.nex.NexResourceReview resources;
 	public final Map<String,Integer> gaps;
 	public NexOwnedResult(NexSummary summary, List<Choice> choices)
 	{ this(summary,choices,null); }
 	public NexOwnedResult(NexSummary summary, List<Choice> choices, com.ironpath.preferences.NexMethod planning)
+	{ this(summary,choices,planning,summary==null?com.ironpath.nex.NexContext.UNKNOWN:summary.context,0,0,NexOwnedEvaluator.VERSION); }
+	public NexOwnedResult(NexSummary summary,List<Choice> choices,com.ironpath.preferences.NexMethod planning,
+		com.ironpath.nex.NexContext context,long contextRevision,long inputRevision,String modelRevision)
 	{
 		revision=REVISIONS.incrementAndGet(); this.planning=planning;
+		this.context=context; this.contextRevision=contextRevision; this.inputRevision=inputRevision; this.modelRevision=modelRevision;
 		this.summary=summary; this.choices=List.copyOf(choices);
 		// Constructed with the frozen post-kill result on the existing guarded worker.
 		resources=summary==null?null:com.ironpath.nex.NexResourceReview.from(summary);

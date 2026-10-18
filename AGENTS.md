@@ -14,23 +14,35 @@
 
 ## Next delivery
 
-- UI1 and its two PR #42 review corrections are complete in development build
-  **0.20.0**; the user authorized its merge on 18 October. Read the evidence in
-  docs/validation/ui1-encounter-diagnostics.md; TASKS.md CTX1 follows the UI1 merge.
-  Do not repeat delivered DEV1/N3b/N3c work or resume their retired stacked
-  branches. TASKS.md is the roadmap as well
-  as the backlog; the UI discussion brief is preserved historical input.
-- UI1 uses supported per-state comparisons, identifies changed items/packages,
-  and adds an allowlisted, user-triggered report. It does not add editable context,
-  automatic spec recommendations or team-time estimates. Preserve 0.19.3 banking,
-  arena-reload, reset reasons and all nine baseline replay scenarios.
+- UI1 is merged in main at 96d91e8. CTX1 is implemented for review in
+  **0.21.0**; read docs/validation/ctx1-kill-context.md. Its feature PR still needs
+  review/merge authorization; live acceptance is open. TASKS.md is the sole roadmap.
+- CTX1 separates optional future defaults, immutable attempt-start context and
+  observed facts, planning locks, and per-kill annotation revisions. Inheritance
+  never confirms a kill. Historical edits use the dedicated context action, not
+  NexObserver.method(), and cannot censor another active attempt. Completed
+  calculations retain their evaluation inputs; later account/Setup reads apply to
+  future comparisons. Preserve kill/context/input/model and identity/world guards.
+- Typed descriptive matching excludes unconfirmed/variable/incompatible context,
+  incomplete observations and unstable/unknown roster evidence. Planning locks are
+  excluded. Matching count/visible roster is not proof of party membership or
+  equal teammate damage. Unsupported context preserves observations and conditional
+  ordinary arithmetic, without enabling method recommendations or team-time.
+- Preserve UI1's frozen inspection, allowlisted explicit export and selectable
+  clipboard fallback, plus banking, arena reload, reset reasons and all nine
+  baseline DEV1 replays. CTX1 adds three scenarios through the same harness.
 - The 18 October main consolidation integrates reviewed development work with
   live acceptance still open. It is not Plugin Hub approval or standing permission
   to merge subsequent feature PRs. See docs/validation/main-consolidation-20261018.md.
 
 ## Delivery
 
-- Current: **0.20.0** adds compact Encounter / Diagnostics and an allowlisted
+- CTX1 **0.21.0** adds editable kill context and preferences schema 4; schemas
+  1–3 migrate without kill confirmation. Annotations, frozen evaluation inputs and
+  calculations share the bounded 50-record in-memory lifetime. Live snapshots and
+  active traces still clear at scene transitions; retained records stay hidden until
+  same-account/profile/world revalidation. No performance history is persisted.
+- UI1 **0.20.0** adds compact Encounter / Diagnostics and an allowlisted
   user-triggered report; retained calculations/selection are immutable across new
   results. Clipboard failure leaves selectable text. See the UI1 validation record.
 - Retained 0.19.3 behavior fixes arena-only scene reloads being mistaken

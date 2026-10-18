@@ -4,8 +4,8 @@ Updated **18 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized consolidating existing work and updating this plan on
 18 October. That consolidation introduced no UI/context feature or live-client
-acceptance. UI1 and its two P2 review corrections are complete in the separate
-0.20.0 delivery below; the user authorized PR #42's merge on 18 October.
+acceptance. UI1 and its two P2 review corrections are merged in the
+0.20.0 delivery below. CTX1 is implemented for review in 0.21.0.
 
 ## Current baseline and order
 
@@ -17,8 +17,8 @@ captured kill into a spec recommendation or validated team-time prediction.
 
 | Order | Work | State / boundary |
 |---|---|---|
-| Complete | **UI1 — Encounter and Diagnostics** | 0.20.0; both P2 review findings fixed, merge authorized; client acceptance open |
-| Next | **CTX1 — Editable Nex kill context** | After UI1 merge; separate lifecycle/data task |
+| Complete | **UI1 — Encounter and Diagnostics** | 0.20.0 merged; both P2 review findings fixed, client acceptance open |
+| In review | **CTX1 — Editable Nex kill context** | 0.21.0 implemented for review; feature merge not authorized |
 | Alongside, when gameplay is available | **N1/N2 live acceptance** | Open; does not block offline UI development |
 | After context/evidence contracts | **N3 recommendation integration** | Kernels exist; attribution, remaining mechanics and product integration remain |
 | After N1–N3 support and validation | **N4 contribution/team-time estimates** | Not implemented/validated |
@@ -28,11 +28,11 @@ Deliver one task at a time with a reviewable PR and evidence. Do not merge or
 publish future work without user authorization. The cleanup approval does not
 authorize future feature merges or Plugin Hub publication.
 
-## UI1 — Encounter and Diagnostics (review corrections complete)
+## UI1 — Encounter and Diagnostics (merged)
 
 Implementation: **0.20.0**. Both PR #42 P2 findings have focused regressions and
 passing full validation. [Commands, screenshots and limits](docs/validation/ui1-encounter-diagnostics.md).
-Merge is authorized; real-client/player acceptance remains open.
+Merged in main at 96d91e8; real-client/player acceptance remains open.
 
 **Goal:** make the existing native panel compact and useful, and let Petter copy
 a reliable report into ChatGPT/Codex after playing. Use existing supported
@@ -107,48 +107,54 @@ N3b/N3c advice, time/trip claims, full history browser, recording and in-client
 Save screenshot. Add native screenshot saving later if manual screenshots and
 DEV1 artifacts prove insufficient.
 
-## CTX1 — Editable Nex kill context (after UI1 review)
+## CTX1 — Editable Nex kill context (implemented for review)
+
+Implementation: **0.21.0**. [Contracts, automated evidence and remaining client
+checks](docs/validation/ctx1-kill-context.md). UI1 is merged at 96d91e8; this feature
+requires its own PR review and merge authorization.
 
 **Goal:** optionally set usual context before play or correct a selected completed
 kill afterwards, preserving evidence and any other active attempt.
 
-- [ ] Separate phase-2 strategy (MP2/RP2/Other/Unknown), group mode
+- [x] Separate phase-2 strategy (MP2/RP2/Other/Unknown), group mode
   (organized/mass/unknown), and validated positive participant count including
   the player (or unknown). Mass never overwrites strategy. Variable/unconfirmed
   participation cannot become a falsely exact constant count.
-- [ ] Separate saved defaults, immutable captured facts, planning locks and
+- [x] Separate saved defaults, immutable captured facts, planning locks and
   bounded in-memory per-kill annotations. Snapshot defaults at attempt start;
   inherited values are not automatically confirmed. Migrate the fixed pilot
   without inventing confirmation. Keep per-field provenance and edit revisions.
-- [ ] Put a compact context editor beside the selected kill with explicit Apply
+- [x] Put a compact context editor beside the selected kill with explicit Apply
   and a separate remember-for-future option. No mandatory pre-fight form.
   Initially cover the latest completed and already-inspected record; an arbitrary
   history comparison selector does not already exist and needs explicit scope.
-- [ ] Use a dedicated annotation action, not NexObserver.method(), which currently
+- [x] Use a dedicated annotation action, not NexObserver.method(), which currently
   censors capture on method changes. Future defaults changed during combat apply
   to the next attempt; historical edits cannot interrupt the current attempt.
-- [ ] Recompute only supported dependent outputs from preserved evaluation inputs.
+- [x] Recompute only supported dependent outputs from preserved evaluation inputs.
   Do not silently add new bank observations/preferences to a context-only edit.
   Guard session generation, kill key, annotation revision and calculation-input/
   model revisions alongside existing checks. Pending/old results cannot be
   relabeled as newly corrected results.
-- [ ] Replace opaque string-only grouping where necessary with explicit
+- [x] Replace opaque string-only grouping where necessary with explicit
   comparability evidence. Planning locks are not observed performance. Preserve
   timer/adapter scope, observed setup and team uncertainty; equal team count is
   not equal teammate damage/composition. Reconcile aggregates after edits, keeping
   incomplete/incompatible/unconfirmed kills out of matched averages.
-- [ ] Define support per output. Other methods/team counts cannot reuse Trio MP2
+- [x] Define support per output. Other methods/team counts cannot reuse Trio MP2
   recommendations by changing a label. Retain observations and independently
   justified arithmetic; withhold dependent recommendations/team-time. Nearby
   players do not establish party membership.
-- [ ] Extend DEV1 for unknown/inherited context, post-kill correction, an older
+- [x] Extend DEV1 for unknown/inherited context, post-kill correction, an older
   kill edited during a new attempt, repeated edits/pending publication, unsupported
   modes, preference migration, cohort reconciliation, reset/logout/eviction and
   frozen inspection/report consistency. Persist no performance history.
 
-Acceptance: edits affect only their intended kill/default; observed timing,
+Automated acceptance: edits affect only their intended kill/default; observed timing,
 damage and timeline stay unchanged; supported results/report revisions agree;
-a historical annotation never censors another active attempt.
+a historical annotation never censors another active attempt. Real-client editor,
+focus/scroll/clipboard and player acceptance remain open. Completed comparison
+inputs freeze once; later ownership/preferences apply to future comparisons.
 
 ## N1/N2 — Remaining live acceptance
 
