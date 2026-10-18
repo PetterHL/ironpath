@@ -7,7 +7,8 @@ banking/history regressions, native previews and remaining live boundaries.
 The [18 October consolidation](main-consolidation-20261018.md) records the common
 main baseline, preserved history, validation and updated UI1/CTX1 task order.
 
-Current build 0.19.3 supplies the [bank-retention and arena-reload corrections](nex-bank-retention.md)
+Current build 0.20.0 supplies [UI1 Encounter/Diagnostics and sanitized reports](ui1-encounter-diagnostics.md), implemented for review.
+The retained 0.19.3 baseline supplies the [bank-retention and arena-reload corrections](nex-bank-retention.md)
 after a failed live bank test, plus delayed-settings transition coverage and
 visible build/reset diagnostics. Corrected client retesting remains open.
 

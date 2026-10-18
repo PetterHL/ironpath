@@ -47,6 +47,7 @@ final class OfflineLifecycleScenarios
 						case "nex-arena-reload": arenaReload(replay, output, font, report); break;
 						default: throw new IllegalArgumentException("Unknown lifecycle scenario: " + id);
 					}
+					diagnostics(replay,output,font,report);
 				}
 				finally
 				{
@@ -199,6 +200,10 @@ final class OfflineLifecycleScenarios
 		var second = r.fight(30, 40, 40, true);
 		report.check("Replacement worker is actually queued", 1, r.workers.size());
 		report.check("Replacement remains unpublished while held", null, r.plugin.ownedResult);
+		r.edt();
+		onEdt(()->{ PanelPreview.click(r.panel,"Diagnostics"); report.check("Pending Diagnostics has no substituted calculation",true,PanelPreview.text(r.panel).contains("Calculation pending")); });
+		capture(r,output,"pending-diagnostics",font,report);
+		onEdt(()->PanelPreview.click(r.panel,"Encounter"));
 		Runnable stale = r.workers.take();
 		Runnable publication;
 		if (identity)
@@ -248,9 +253,13 @@ final class OfflineLifecycleScenarios
 			pairs.setSelectedIndex(bloodFury);
 		});
 		capture(r, output, "inspecting-first", font, report);
+		final String[] frozenReport={null};
+		onEdt(()->{ PanelPreview.click(r.panel,"Diagnostics"); frozenReport[0]=exportText(r); });
 		var second = r.fight(30, 40, 40, true); r.settle();
 		report.check("Fresh result publishes while earlier comparison is open (kill #" + second.key + ")", true, second == r.plugin.ownedResult.summary);
 		onEdt(() -> {
+			report.check("Export also stays bound to earlier selected negative pair",frozenReport[0],exportText(r));
+			PanelPreview.click(r.panel,"Back to comparison");
 			report.check("Earlier comparison stays frozen", true, PanelPreview.text(r.panel).contains("Owned equipment · kill #" + first.key));
 			report.check("Selected negative alternative stays selected", true, PanelPreview.text(r.panel).contains("Blood fury healing and survival are not estimated"));
 			PanelPreview.click(r.panel, "Special-attack resources");
@@ -269,6 +278,26 @@ final class OfflineLifecycleScenarios
 			report.check("Reopening comparisons selects the latest kill", true, PanelPreview.text(r.panel).contains("Owned equipment · kill #" + third.key));
 		});
 		capture(r, output, "latest-comparison", font, report);
+	}
+
+	private static String exportText(OfflinePluginReplay r)
+	{ return ((javax.swing.JTextArea)PanelPreview.children(r.panel).stream().filter(c->"nex-report-text".equals(c.getName())).findFirst().orElseThrow()).getText(); }
+	private static void diagnostics(OfflinePluginReplay r,Path output,int font,ReviewReport report) throws Exception
+	{
+		onEdt(()->PanelPreview.click(r.panel,"Diagnostics"));
+		capture(r,output,"diagnostics",font,report);
+		onEdt(()->{
+			try { PanelPreview.viewport(r.panel,output.resolve("diagnostics-viewport-"+font+".png"),225,600,null,List.of("nex-copy-report"),report); }
+			catch(Exception ex) { throw new RuntimeException(ex); }
+			PanelPreview.click(r.panel,"Copy report now");
+			report.check("Clipboard failure keeps selectable report "+font,true,PanelPreview.text(r.panel).contains("Clipboard unavailable or busy"));
+			String text=exportText(r);
+			report.check("Synthetic provenance in production report "+font,true,text.contains("SYNTHETIC_OFFLINE"));
+			report.check("Report has no profile/roster identity "+font,false,text.contains("offline-synthetic-a") || text.contains("offline-synthetic-b") || text.contains("NEX@"));
+			try { java.nio.file.Files.writeString(output.resolve("diagnostic-report-"+font+".txt"),text); }
+			catch(Exception ex) { throw new RuntimeException(ex); }
+		});
+		capture(r,output,"selectable-report",font,report);
 	}
 
 	private static void evidence(OfflinePluginReplay r, int font, ReviewReport report)

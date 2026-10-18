@@ -61,6 +61,7 @@ public class IronpathPlugin extends Plugin
 	final ObservationSession session = new ObservationSession();
 	private KnowledgeCatalog catalog;
 	private NexPanel panel;
+	java.util.function.Function<ItemManager,NexPanel> panelFactory=NexPanel::new;
 	final com.ironpath.nex.NexSession nexSession=new com.ironpath.nex.NexSession();
 	NexObserver nex;
 	private long lastNexRevision;
@@ -111,7 +112,7 @@ public class IronpathPlugin extends Plugin
 		SwingUtilities.invokeLater(() ->
 		{
 			if (!running || lifecycle != startup) { return; }
-			panel = new NexPanel(itemManager);
+			panel = panelFactory.apply(itemManager);
 			panel.render(initialStatus,null,Preferences.EMPTY,catalog,nexSession.stats(),true,null,"");
 			if (!running || lifecycle != startup) { panel = null; return; }
 			navigation = NavigationButton.builder().tooltip("Ironpath").icon(icon()).priority(6).panel(panel).build();

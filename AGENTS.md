@@ -14,8 +14,9 @@
 
 ## Next delivery
 
-- Start from current main and TASKS.md **UI1: Encounter and Diagnostics**.
-  Follow with CTX1 only after the UI1 review. Do not repeat delivered DEV1/N3b/N3c
+- UI1 is implemented for review in development build **0.20.0**.
+  Review its PR/evidence in docs/validation/ui1-encounter-diagnostics.md;
+  follow with TASKS.md CTX1 only after the UI1 review. Do not repeat delivered DEV1/N3b/N3c
   work or resume their retired stacked branches. TASKS.md is the roadmap as well
   as the backlog; the UI discussion brief is preserved historical input.
 - UI1 uses supported per-state comparisons, identifies changed items/packages,
@@ -28,7 +29,10 @@
 
 ## Delivery
 
-- Current: development build 0.19.3 fixes arena-only scene reloads being mistaken
+- Current: **0.20.0** adds compact Encounter / Diagnostics and an allowlisted
+  user-triggered report; retained calculations/selection are immutable across new
+  results. Clipboard failure leaves selectable text. See the UI1 validation record.
+- Retained 0.19.3 behavior fixes arena-only scene reloads being mistaken
   for outbound bank travel. Current arena evidence at LOADING permits arena
   revalidation; an observed exit revokes that permission. Missing NPCs alone do
   not establish an exit. Reset remains available while paused after live account

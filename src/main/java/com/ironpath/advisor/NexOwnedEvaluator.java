@@ -32,11 +32,11 @@ public final class NexOwnedEvaluator
 	{ return evaluate(summary,account,prefs,()->true); }
 	public NexOwnedResult evaluate(NexSummary summary, AccountSnapshot account, Preferences prefs,java.util.function.BooleanSupplier current)
 	{
-		if(summary==null || summary.outcome!=Outcome.COMPLETE) { return new NexOwnedResult(summary,List.of()); }
+		if(summary==null || summary.outcome!=Outcome.COMPLETE) { return new NexOwnedResult(summary,List.of(),prefs.nex); }
 		List<NexOwnedResult.Choice> choices=new ArrayList<>(); Set<List<Object>> seen=new HashSet<>();
 		for(NexSummary.Sample s:summary.timeline)
 		{
-			if(!current.getAsBoolean()) { return new NexOwnedResult(summary,List.of()); }
+			if(!current.getAsBoolean()) { return new NexOwnedResult(summary,List.of(),prefs.nex); }
 			// Preserve all distinct input states/windows. Never choose the longest worn setup.
 			List<Object> key=Arrays.asList(s.role,s.phase,s.window,targetName(s.target),s.state);
 			if(!seen.add(key)) { continue; }
@@ -69,7 +69,7 @@ public final class NexOwnedEvaluator
 				choices.add(search(s,account,prefs,before,owned,nextCoverage,true,current));
 			}
 		}
-		return new NexOwnedResult(summary,choices);
+		return new NexOwnedResult(summary,choices,prefs.nex);
 	}
 	private NexOwnedResult.Choice search(NexSummary.Sample s,AccountSnapshot account,Preferences prefs,CombatSetup before,
 		Set<Integer> pool,List<String> coverage,boolean nextTrip,java.util.function.BooleanSupplier current)

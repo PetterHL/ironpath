@@ -3,8 +3,8 @@
 Updated **18 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized consolidating existing work and updating this plan on
-18 October. This integration/planning delivery implements no new UI or context
-feature and does not claim live-client acceptance.
+18 October. That consolidation introduced no UI/context feature or live-client
+acceptance. UI1 is now implemented for review in the separate 0.20.0 delivery below.
 
 ## Current baseline and order
 
@@ -16,7 +16,7 @@ captured kill into a spec recommendation or validated team-time prediction.
 
 | Order | Work | State / boundary |
 |---|---|---|
-| Next | **UI1 — Encounter and Diagnostics** | Ready for Codex Cloud; one focused PR |
+| Review | **UI1 — Encounter and Diagnostics** | Implemented in 0.20.0; review PR/evidence before CTX1 |
 | Then | **CTX1 — Editable Nex kill context** | Planned after UI1 review; separate lifecycle/data task |
 | Alongside, when gameplay is available | **N1/N2 live acceptance** | Open; does not block offline UI development |
 | After context/evidence contracts | **N3 recommendation integration** | Kernels exist; attribution, remaining mechanics and product integration remain |
@@ -27,7 +27,9 @@ Deliver one task at a time with a reviewable PR and evidence. Do not merge or
 publish future work without user authorization. The cleanup approval does not
 authorize future feature merges or Plugin Hub publication.
 
-## UI1 — Encounter and Diagnostics (next)
+## UI1 — Encounter and Diagnostics (implemented for review)
+
+Implementation: **0.20.0**. [Validation, commands, screenshots and limits](docs/validation/ui1-encounter-diagnostics.md). User/client review remains open.
 
 **Goal:** make the existing native panel compact and useful, and let Petter copy
 a reliable report into ChatGPT/Codex after playing. Use existing supported
@@ -41,59 +43,59 @@ and in active design docs supersede the brief's open questions.
 
 ### Product and implementation scope
 
-- [ ] Use **Encounter / Diagnostics** as primary views. Keep Setup, Account,
+- [x] Use **Encounter / Diagnostics** as primary views. Keep Setup, Account,
   comparison/kill details and Reset discoverable through secondary actions.
   Preserve Back, scroll, keyboard access and frozen inspection.
-- [ ] Lead with the last complete duration and clearly scoped observed hitsplat
+- [x] Lead with the last complete duration and clearly scoped observed hitsplat
   share. Show comparable mean/count compactly; one matching kill needs no
   redundant mean/min/max. Keep incomplete attempts separate. Label the fixed
   pilot as model/planning scope, not detected or confirmed per-kill team context.
-- [ ] Use single-column item/package cards under **Improve your setup**. Identify
+- [x] Use single-column item/package cards under **Improve your setup**. Identify
   the changed item (arrows, not the unchanged Tbow) or a multi-item package. Show
   one supported metric, phase/role scope, short reason and accessible details.
   Use live ItemManager sprites and explicitly labeled offline placeholders.
-- [ ] Define deterministic selection/deduplication of useful supported choices.
+- [x] Define deterministic selection/deduplication of useful supported choices.
   Do not rank unrelated captured states/roles by their largest percentage as
   whole-kill value. Preserve whole packages, partial-search scope, material
   uncertainty and carried versus conditional bank-preparation availability.
   Show zero/no useful improvement once; retain negative alternatives in details.
   No filler quota or repeated unavailable time-saving cards.
-- [ ] Add bounded Diagnostics: status, bundled build/model versions, captured
+- [x] Add bounded Diagnostics: status, bundled build/model versions, captured
   versus assumed inputs, coverage/gaps and calculations. Make safe status
   reachable with no account/kill, pending work, reset and paused travel. Never
   expose suspended/cleared history through Diagnostics. Preserve 0.19.3 reset
   reasons and paused Reset guards.
-- [ ] Add **Copy report**, bound to the selected immutable kill/comparison
+- [x] Add **Copy report**, bound to the selected immutable kill/comparison
   revision. Use a versioned allowlisted report model/formatter, not wholesale
   summary serialization. Include relevant exact before/after inputs, scoped
   outputs, versions and omissions. Omit names, account/profile identifiers,
   roster hashes/cohort strings, raw inventory/bank dumps and unrestricted traces.
   Use a report-local reference and live/synthetic provenance; export time is
   not an invented kill timestamp. Bound output and disclose truncation.
-- [ ] Preserve the displayed calculation's input snapshot during export; do not
+- [x] Preserve the displayed calculation's input snapshot during export; do not
   read today's account/preferences for an inspected result. Handle unavailable,
   busy or headless clipboard with selectable report text and a clear outcome.
   No automatic upload, backend or API key.
-- [ ] Extract only needed presentation/report boundaries. Calculations remain
+- [x] Extract only needed presentation/report boundaries. Calculations remain
   off client thread/EDT; retain generation, identity and stale image/action/
   publication guards. Share the production formatter with DEV1 where useful;
   runner, fixtures and assertion machinery remain test-only.
 
 ### Acceptance and handoff
 
-- [ ] Extend the existing **nine-scenario DEV1 suite**, not a second harness.
+- [x] Extend the existing **nine-scenario DEV1 suite**, not a second harness.
   Render actual Swing Encounter/Diagnostics and relevant expanded/empty/pending
   states at 225px with normal/enlarged fonts. Inspect images and representative
   viewports, including buttons/labels, long names and first-screen hierarchy;
   JTextArea clipping checks alone do not prove control or viewport usability.
-- [ ] Test changed-item identity, scoped supported/unknown/zero/negative states,
+- [x] Test changed-item identity, scoped supported/unknown/zero/negative states,
   coherent export, redaction and clipboard failure. New kills cannot change an
   inspected result/report. Identity/reset/stale work cannot expose old accounts
   or resurrect cleared data.
-- [ ] Preserve independent arithmetic and all lifecycle cases, including long
+- [x] Preserve independent arithmetic and all lifecycle cases, including long
   bank trips and same-arena reloads. Run pinned full validation and normal build;
   record actual versions, outcomes, limitations and current CI artifact links.
-- [ ] Update active docs/status and open one PR with before/after evidence.
+- [x] Update active docs/status and open one PR with before/after evidence.
   Explicitly leave unperformed real sprites/DPI/focus/clipboard/scroll and player
   checks open. Iterate on UI1 review before beginning CTX1.
 

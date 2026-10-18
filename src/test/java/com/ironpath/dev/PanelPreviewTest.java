@@ -108,6 +108,15 @@ public class PanelPreviewTest
 		}).passed());
 	}
 
+	@Test public void rejectsCollapsedLabelsAndTruncatedActionText() throws Exception
+	{
+		assertFalse(review(panel->{
+			var label=new javax.swing.JLabel("Visible status"); label.setBounds(10,10,0,20); panel.add(label);
+		}).passed());
+		assertFalse(review(panel->{
+			var button=new javax.swing.JButton("Copy the diagnostic report"); button.setBounds(10,10,40,30); panel.add(button);
+		}).passed());
+	}
 	private ReviewReport review(Consumer<JPanel> arrange) throws Exception
 	{
 		ReviewReport report = new ReviewReport();

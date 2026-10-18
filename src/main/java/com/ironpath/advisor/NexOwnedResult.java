@@ -44,11 +44,18 @@ public final class NexOwnedResult
 		return Math.abs(percent)<0.05?(percent<0?"−":"+")+"<0.1% theoretical DPS":String.format(java.util.Locale.ROOT,"%+.1f%% theoretical DPS",percent);
 	}
 	public final NexSummary summary;
+	/** Memory-only calculation revision, independent of account/roster identifiers. */
+	public final long revision;
+	private static final java.util.concurrent.atomic.AtomicLong REVISIONS=new java.util.concurrent.atomic.AtomicLong();
+	public final com.ironpath.preferences.NexMethod planning;
 	public final List<Choice> choices;
 	public final com.ironpath.nex.NexResourceReview resources;
 	public final Map<String,Integer> gaps;
 	public NexOwnedResult(NexSummary summary, List<Choice> choices)
+	{ this(summary,choices,null); }
+	public NexOwnedResult(NexSummary summary, List<Choice> choices, com.ironpath.preferences.NexMethod planning)
 	{
+		revision=REVISIONS.incrementAndGet(); this.planning=planning;
 		this.summary=summary; this.choices=List.copyOf(choices);
 		// Constructed with the frozen post-kill result on the existing guarded worker.
 		resources=summary==null?null:com.ironpath.nex.NexResourceReview.from(summary);

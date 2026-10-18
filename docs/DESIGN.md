@@ -40,9 +40,11 @@ an item silently to manufacture a weaker baseline.
 
 ## Code boundaries and transition disposition
 
-### Planned UI1 / CTX1 boundaries (18 October review)
+### UI1 implementation / planned CTX1 boundaries (18 October review)
 
-UI1 consumes existing immutable results through a small presentation/report model.
+UI1 (0.20.0) consumes existing immutable results through NexPresentation and
+the immutable allowlisted NexReport model. NexOwnedResult retains the evaluation
+revision and immutable planning inputs that produced it.
 Do not add calculations or account reads to Swing/export actions. The production
 allowlisted report formatter may be reused by DEV1; its runner/assertions remain
 test-only. Reuse current arithmetic, native widgets, images and lifecycle guards.
@@ -61,7 +63,7 @@ locks are not observed performance; matching team count alone is not matching
 teammates or damage. Keep unknown/incompatible evidence explicit. Support is
 per output; changing a label cannot generalize the Trio MP2 model.
 
-These are planned boundaries. The implementations below describe existing code.
+CTX1 remains planned; UI1 adds no annotations, cohort redesign or combat formulas.
 
 | Existing area | Disposition and concrete next use |
 |---|---|
