@@ -14,7 +14,7 @@
 
 ## Next delivery
 
-- Development build **0.22.0** implements the optional post-kill N3A/N3B/N3C
+- Development build **0.22.1** implements the optional post-kill N3A/N3B/N3C
   runtime plan integration for review. Read docs/research/nex-runtime-plans.md and
   docs/validation/nex-runtime-plans.md. It branches from reviewed main `96d91e8`;
   CTX1 remains a separate open PR. Do not merge either without authorization.
@@ -23,6 +23,9 @@
   attacks. Preserve exact stock, shared conditions/delays, per-output unknowns,
   observed reserve usability, proposal locks, frozen inputs and request/view guards.
   No automatic spec recommendation, live coaching, target-HP trajectory or N4 claim.
+- Diagnostics resolves its default selected comparison only after a matching frozen
+  calculation arrives. Preserve explicit inspected selections, including no selection.
+  Observed equipment/target class remain allowlisted in unavailable-row reports.
 - Keep UI1 frozen inspection/reports, 0.19.3 banking/reload/reset behavior and all
   nine original DEV1 scenarios. `nex-n3-plan` extends that same harness.
 - The 18 October main consolidation integrates reviewed development work with

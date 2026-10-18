@@ -25,6 +25,15 @@ Windows PowerShell:
 .\gradlew.bat run
 ```
 
+For the pinned development client in PowerShell, quote the entire property:
+
+```powershell
+.\gradlew.bat "-PruneLiteVersion=1.13.2" run
+```
+
+An unquoted dotted version can be split by PowerShell into a spurious task such
+as `.13.2`.
+
 macOS/Linux use `./gradlew` instead. An offline build is valid when dependencies
 are already cached; document that condition rather than claiming a fresh download.
 

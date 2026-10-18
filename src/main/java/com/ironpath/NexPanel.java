@@ -35,6 +35,7 @@ final class NexPanel extends PluginPanel
 	private NexSummary diagnosticSummary;
 	private NexOwnedResult diagnosticOwned, inspectedCalculation;
 	private int diagnosticChoice, diagnosticPair;
+	private boolean diagnosticDefaultPending;
 	private JTextArea reportArea;
 	private JScrollPane reportScroll;
 	private String reportFeedback="";
@@ -77,6 +78,7 @@ final class NexPanel extends PluginPanel
 		if(account==null || (!paused && stats.attempts==0))
 		{
 			inspected=null; inspectedOwned=null; inspectedCalculation=null; diagnosticSummary=null; diagnosticOwned=null;
+			diagnosticDefaultPending=true;
 			ownedIndex=0; returnPosition=null;
 			scenarioPanel=null;
 		}
@@ -109,8 +111,8 @@ final class NexPanel extends PluginPanel
 						diagnosticSummary=inspectedOwned!=null?inspectedOwned.summary:inspected!=null?inspected:stats.last!=null?stats.last:stats.lastAttempt;
 						diagnosticOwned=inspectedOwned!=null?inspectedOwned:inspected!=null?inspectedCalculation:owned;
 						diagnosticChoice=inspectedOwned!=null?ownedIndex:0; diagnosticPair=inspectedOwned!=null?ownedPairIndex:0;
-						if(inspectedOwned==null && diagnosticOwned!=null && !NexPresentation.cards(diagnosticOwned).isEmpty())
-						{ var card=NexPresentation.cards(diagnosticOwned).get(0); diagnosticChoice=card.choiceIndex; diagnosticPair=card.pairIndex; }
+						diagnosticDefaultPending=inspectedOwned==null;
+						if(diagnosticOwned!=null && diagnosticOwned.summary!=diagnosticSummary) { diagnosticOwned=null; }
 					}
 				}
 				else { inspected=null; inspectedOwned=null; inspectedCalculation=null; diagnosticSummary=null; diagnosticOwned=null; }
@@ -123,6 +125,7 @@ final class NexPanel extends PluginPanel
 		{
 			if(diagnosticSummary==null && available && !paused) { diagnosticSummary=stats.last!=null?stats.last:stats.lastAttempt; }
 			if(diagnosticSummary!=null && diagnosticOwned==null && owned!=null && owned.summary==diagnosticSummary && available && !paused) { diagnosticOwned=owned; }
+			if(available && !paused) { selectDiagnosticDefault(); }
 			NexReport.State state=paused?NexReport.State.PAUSED:account==null?NexReport.State.NO_ACCOUNT:!available?NexReport.State.NOT_READY
 				:stats.attempts==0 && stats.resetReason!=null?NexReport.State.RESET:diagnosticSummary==null?NexReport.State.NO_KILL:diagnosticOwned==null && diagnosticSummary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE?NexReport.State.PENDING:NexReport.State.READY;
 			diagnostics(status,stats,catalog,state,valid);
@@ -227,6 +230,20 @@ final class NexPanel extends PluginPanel
 			var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
 			if(viewport!=null && returnPosition!=null) { viewport.setViewPosition(returnPosition); }
 		});
+	}
+	/** Resolve a default once the frozen calculation arrives, without replacing an explicit inspected selection. */
+	private void selectDiagnosticDefault()
+	{
+		if(!diagnosticDefaultPending || diagnosticOwned==null || diagnosticOwned.summary!=diagnosticSummary) { return; }
+		var cards=NexPresentation.cards(diagnosticOwned);
+		if(!cards.isEmpty()) { var card=cards.get(0); diagnosticChoice=card.choiceIndex; diagnosticPair=card.pairIndex; }
+		else
+		{
+			diagnosticChoice=diagnosticOwned.choices.isEmpty()?-1:0; diagnosticPair=0;
+			for(int i=0;i<diagnosticOwned.choices.size();i++)
+			{ if(diagnosticOwned.choices.get(i).supported()) { diagnosticChoice=i; break; } }
+		}
+		diagnosticDefaultPending=false;
 	}
 	private void diagnostics(String status,NexSession.Stats stats,KnowledgeCatalog catalog,NexReport.State state,java.util.function.BooleanSupplier valid)
 	{

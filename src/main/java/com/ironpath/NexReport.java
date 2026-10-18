@@ -79,6 +79,11 @@ final class NexReport
 		out.add("Availability: "+(choice.bankPreparation?"conditional bank preparation; stock/packing unverified":"carried at captured state")
 			+"; search: "+(choice.exhaustive?"complete within supported scope":"partial; optimum unestablished"));
 		out.add("Observed base levels: "+levels(captured.realLevels)+"; visible levels: "+levels(captured.visibleLevels));
+		Map<String,Integer> observedSlots=new LinkedHashMap<>();
+		for(String slot:PoweredMagic.SLOTS) { observedSlots.put(slot,captured.slots.getOrDefault(slot,-1)); }
+		out.add("Observed slots (exact item IDs, 0 empty, -1 unknown): "+observedSlots);
+		String observedTarget=sample.target==null?null:sample.target.split("@",2)[0];
+		out.add("Observed target class: "+vocabulary(observedTarget,"NEX","FUMUS","UMBRA","CRUOR","GLACIES"));
 		out.add("Observed offensive prayer flags (allowlisted): "+captured.prayers.stream().filter(p->Set.of("PIETY","RIGOUR","DEADEYE","EAGLE_EYE","CHIVALRY","INCREDIBLE_REFLEXES","ULTIMATE_STRENGTH","STEEL_SKIN","THICK_SKIN","ROCK_SKIN","AUGURY","MYSTIC_MIGHT","SHARP_EYE","HAWK_EYE","BURST_OF_STRENGTH","SUPERHUMAN_STRENGTH","CLARITY_OF_THOUGHT","IMPROVED_REFLEXES").contains(p)).sorted().collect(java.util.stream.Collectors.toList())
 			+"; style button: "+captured.style+"; energy tenths percent: "+captured.specialEnergy+"; selected spec: "+captured.specialSelected);
 		for(String key:List.of("quiver-ammo-id-raw","quiver-ammo-quantity-raw","quiver-splinters-raw","quiver-charged-raw","worn-ammo-quantity","inventory-slots-used","death-charge-active"))

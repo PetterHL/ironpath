@@ -175,7 +175,7 @@ Integration does not convert unperformed checks into passes.
 
 ## N3A/N3B/N3C — Post-kill runtime plans (implemented for review)
 
-Build 0.22.0 joins the existing kernels without claiming automatic attack attribution.
+Build 0.22.0 (report-selection follow-up 0.22.1) joins the existing kernels without claiming automatic attack attribution.
 User authorization on 18 October expands N3A to the combined N3A/B/C delivery.
 [Contract](docs/research/nex-runtime-plans.md) · [verification](docs/validation/nex-runtime-plans.md).
 
@@ -190,6 +190,9 @@ User authorization on 18 October expands N3A to the combined N3A/B/C delivery.
   disclosed; no observed spec/proc count or global-best/time recommendation.
 - [x] Guard worker requests and frozen inspection, add allowlisted selectable
   scenario export, and extend DEV1 with public-event-to-plan and stale Reset checks.
+- [x] Resolve the default Diagnostics selection when a matching calculation arrives
+  after opening the page; preserve explicit filters/selection and export observed
+  slots/target class even when the selected output is unavailable.
 - [ ] Review/merge the feature PR when authorized; validate native client/player use
   together with the existing open live checks. CTX1 remains a separate open PR.
 

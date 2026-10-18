@@ -209,6 +209,55 @@ public class NexDiagnosticsTest
 			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("RESET")); assertFalse(copied.get().contains("Report-local kill:"));
 		});
 	}
+	@Test public void diagnosticsOpenedBeforeCalculationChoosesTheVisibleImprovementWhenItArrives() throws Exception
+	{
+		var original=summary(1,true); var visible=original.timeline.get(0);
+		var noTarget=new NexSummary.Sample(0,visible.phase,visible.window,null,visible.role,-1,visible.state);
+		var summary=new NexSummary(1,0,100,100,100,0,Outcome.COMPLETE,"synthetic","synthetic","synthetic",List.of(noTarget,visible),
+			original.damage,Set.of(),original.signals);
+		var result=evaluate(summary); assertFalse(result.choices.get(0).supported()); assertFalse(NexPresentation.cards(result).isEmpty());
+		var card=NexPresentation.cards(result).get(0); assertTrue(card.choiceIndex>0);
+		SwingUtilities.invokeAndWait(()->{
+			for(boolean bankReturn:List.of(false,true))
+			{
+				var session=new NexSession(); session.select("test",301); session.add(summary);
+				var account=NexOwnedFixtures.account(null); var copied=new AtomicReference<String>();
+				var panel=new NexPanel(null,copied::set,NexReport.Provenance.SYNTHETIC_OFFLINE);
+				if(bankReturn)
+				{
+					assertTrue(session.suspend("test",301,100,true));
+					panel.render("Nex session paused. Open a bank to revalidate.",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",null);
+					PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+					assertTrue(copied.get().contains("PAUSED")); assertFalse(copied.get().contains("Observed slots"));
+					assertTrue(session.revalidate("test",301,101,true,false));
+				}
+				panel.render("Pending",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",null);
+				if(!bankReturn) { PanelPreview.click(panel,"Diagnostics"); }
+				PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("PENDING"));
+				panel.render("Ready",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+				PanelPreview.click(panel,"Copy report now");
+				assertTrue(copied.get(),copied.get().contains("Selected scenario: "+(card.choiceIndex+1)+"; pair: "+card.pairIndex));
+				assertTrue(copied.get().contains("Before metrics:"));
+			}
+		});
+	}
+
+	@Test public void unavailableRowsRetainAllowlistedObservedEquipmentAndTargetWithoutRawIdentifiers()
+	{
+		var original=summary(1,true); var before=original.timeline.get(0); var captured=before.state;
+		var slots=new HashMap<>(captured.slots); slots.put(PRIVATE,12345);
+		var state=new CombatState(slots,captured.realLevels,captured.visibleLevels,captured.prayers,captured.style,
+			captured.specialEnergy,captured.specialSelected,captured.inventory,captured.resources,captured.itemNames);
+		var sample=new NexSummary.Sample(10,before.phase,before.window,null,before.role,-1,state);
+		var summary=new NexSummary(1,0,100,100,100,0,Outcome.COMPLETE,PRIVATE,PRIVATE,PRIVATE,List.of(sample),Map.of(),Set.of(),original.signals);
+		var result=evaluate(summary); String text=report(summary,result,0,0,NexReport.State.READY).format();
+		assertTrue(text.contains("Observed slots (exact item IDs")); assertTrue(text.contains("weapon=20997"));
+		assertTrue(text.contains("Observed target class: UNKNOWN")); assertTrue(text.contains("Selected comparison unavailable: TARGET_UNSUPPORTED"));
+		assertFalse(text.contains("Before metrics:")); assertFalse(text.contains(PRIVATE)); assertFalse(text.contains("12345")); assertFalse(text.contains("999999"));
+		for(var hidden:List.of(NexReport.State.PAUSED,NexReport.State.NO_ACCOUNT,NexReport.State.RESET,NexReport.State.NOT_READY))
+		{ assertFalse(report(summary,result,0,0,hidden).format().contains("Observed slots")); }
+	}
+
 	private static JTextArea area(NexPanel panel)
 	{ return (JTextArea)PanelPreview.children(panel).stream().filter(c->"nex-report-text".equals(c.getName())).findFirst().orElseThrow(); }
 	private static JButton copyButton(NexPanel panel)

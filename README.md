@@ -7,7 +7,7 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**18 October 2026: development build 0.22.0 — N3A/N3B/N3C runtime integration for review.**
+**18 October 2026: development build 0.22.1 — N3A/N3B/N3C runtime integration and report-selection correction for review.**
 **Spec and package plans** opens captured states and an optional **Conditional N3
 package plan**. Compare captured equipment → selected owned package → hypothetical
 complete upgrade using shared finite energy, Death Charge, damage, ammunition,
@@ -15,6 +15,9 @@ quiver charges and attack delays. Declare legal opportunities/HP/start assumptio
 unknown inputs keep dependent results unavailable. Reports retain frozen inputs
 and are selectable when copying fails. [Contract](docs/research/nex-runtime-plans.md)
 and [verification](docs/validation/nex-runtime-plans.md).
+Diagnostics now resolves its default comparison when the frozen calculation arrives,
+including when opened while pending. Explicit inspected selections stay frozen;
+unavailable comparisons also export allowlisted observed equipment and target class.
 
 **Special-attack resources → Natural-restoration examples** also shows explicitly
 conditional fixed-Lightbearer phase/order sensitivity. These examples exclude DC

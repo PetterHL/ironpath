@@ -90,9 +90,48 @@ the remaining client/gameplay acceptance below is unchanged.
 
 ## Remaining acceptance
 
-No real client/gameplay test is performed. Existing N1/N2/UI1 client checks,
+The initial implementation validation did not launch a real client. A later guided
+client exercise is recorded below. Existing N1/N2/UI1 client checks,
 real ItemManager sprites, native DPI/focus/scroll/clipboard behavior and player
 usefulness remain open. CTX1 is still in its own PR; this branch does not merge it.
 No Plugin Hub or merge authorization is implied. The optional plan does not
 establish automatic capture-to-recommendation evidence, Zaros transformations,
 real cast/proc attribution, target HP trajectories or a full encounter simulation.
+
+## 0.22.1 guided-client follow-up
+
+A guided live exercise on 0.22.0 displayed complete kill results and resource
+readings. A paused-travel report correctly hid account/kill data; a later READY
+report selected an unavailable initial target row rather than the displayed
+improvement. This does not establish the Fang card's exact before/after inputs.
+The player subsequently confirmed that the same completed result remained visible
+after opening the bank, establishing one live bank return in this exercise. The
+resource panel's first/last energy readings and the natural-restoration examples'
+admitted-use ranges were also confirmed to match the exported report. This is
+display agreement, not evidence of actual spec counts. No raw report, performance
+record, account identifiers or private container contents are committed.
+
+A synthetic regression reproduces Diagnostics opened before the post-kill worker
+finishes: index zero remains selected after a positive later-state card arrives.
+0.22.1 resolves that default once a matching frozen calculation arrives, choosing
+the same first visible improvement (or a supported row when no positive card
+exists). Explicit inspected selections, including an empty filtered selection,
+remain unchanged. The default is not reselected on later refresh/new kills.
+
+Unavailable-row exports also retain allowlisted exact observed slots and a fixed
+vocabulary target class. Raw target/spawn keys, unknown slot names, item-name maps
+and unrelated inventory contents remain excluded. Hidden states still export no
+observed slots.
+
+Combined validation, including the PR review corrections above, passed with the
+pinned RuneLite 1.13.2 command: **319 JUnit tests across 38 suites**, with no
+failures/errors/skips, plus **10 DEV1 scenarios, 569 checks and 130 PNGs**.
+The normal `./gradlew test build --no-daemon` also passed with tasks up to date.
+The pending-selection regression covers a paused session revalidated at a bank,
+including reports opened while paused, while pending and after the matching
+calculation arrives. Inspected the regenerated Diagnostics and N3 report viewports
+at 12pt/20pt. Published CI evidence is linked in the PR.
+
+The exact Fang comparison and N3 declared-plan player checks remain open. One
+same-kill bank return is now reported as passing; broader identity/world/reload
+and client checks remain open. This does not label the whole client test accepted.
