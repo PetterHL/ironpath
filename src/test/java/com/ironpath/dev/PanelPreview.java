@@ -19,6 +19,9 @@ import javax.swing.JComponent;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.View;
 
@@ -90,7 +93,8 @@ public final class PanelPreview
 		Rectangle imageBounds = new Rectangle(0, 0, width, panel.getHeight());
 		for (Component c : children(panel))
 		{
-			if (c instanceof JTextArea && visible(c) && !((JTextArea) c).getText().isEmpty())
+			if (c instanceof JTextArea && visible(c) && !((JTextArea) c).getText().isEmpty()
+				&& SwingUtilities.getAncestorOfClass(JScrollPane.class,c)==null)
 			{
 				JTextArea text = (JTextArea) c;
 				String reason = clippingReason(text, panel, imageBounds);
@@ -98,6 +102,26 @@ public final class PanelPreview
 			}
 		}
 		report.check(file.getFileName() + " wrapped text clipping", List.of(), clipped);
+		List<String> controls=new ArrayList<>();
+		for(Component c:children(panel))
+		{
+			// RuneLiteLAF deliberately gives native scrollbar arrow buttons zero size.
+			if(!visible(c) || !(c instanceof JButton || c instanceof JLabel)
+				|| SwingUtilities.getAncestorOfClass(javax.swing.JScrollBar.class,c)!=null) { continue; }
+			Rectangle bounds=SwingUtilities.convertRectangle(c,new Rectangle(0,0,c.getWidth(),c.getHeight()),panel);
+			if(c.getWidth()<=0 || c.getHeight()<=0 || !imageBounds.contains(bounds)) { controls.add("Control outside image: "+c.getName()); continue; }
+			if(c instanceof JButton)
+			{
+				JButton button=(JButton)c; Insets insets=button.getInsets();
+				View html=(View)button.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
+				if(html==null && button.getFontMetrics(button.getFont()).stringWidth(button.getText())>button.getWidth()-insets.left-insets.right)
+				{ controls.add("Truncated button: "+button.getToolTipText()); }
+				if(html!=null && (html.getPreferredSpan(View.X_AXIS)>button.getWidth()-insets.left-insets.right
+					|| html.getPreferredSpan(View.Y_AXIS)>button.getHeight()-insets.top-insets.bottom))
+				{ controls.add("Truncated wrapped button: "+button.getToolTipText()); }
+			}
+		}
+		report.check(file.getFileName()+" button/label geometry",List.of(),controls);
 		BufferedImage image = new BufferedImage(width, panel.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics = image.createGraphics();
 		try { panel.printAll(graphics); } finally { graphics.dispose(); }
@@ -105,6 +129,32 @@ public final class PanelPreview
 		if (!ImageIO.write(image, "png", file.toFile())) { throw new IllegalStateException("PNG writer unavailable"); }
 		report.section(file.getFileName().toString(), "![Synthetic native Swing preview](" + file.getFileName() + ")\n\n"
 			+ width + " × " + image.getHeight() + " px. Empty item sprite wells: no ItemManager/cache sprites loaded.");
+	}
+
+	/** Paint an actual scroll viewport. Required controls must fit completely in the
+	 * chosen screenful; full-height PNGs alone cannot establish first-screen access. */
+	public static void viewport(JComponent panel,Path file,int width,int height,String focusName,List<String> required,ReviewReport report) throws Exception
+	{
+		requireEdt();
+		Container previous=panel.getParent();
+		JViewport viewport=new JViewport(); viewport.setView(panel); viewport.setSize(width,height);
+		panel.setSize(width,Math.max(height,panel.getPreferredSize().height)); layout(panel);
+		if(focusName!=null)
+		{
+			Component target=children(panel).stream().filter(c->focusName.equals(c.getName())).findFirst().orElseThrow();
+			var at=SwingUtilities.convertPoint(target,0,0,panel); viewport.setViewPosition(new java.awt.Point(0,Math.max(0,at.y-20)));
+		}
+		Rectangle visible=new Rectangle(viewport.getViewPosition(),viewport.getExtentSize());
+		for(String name:required)
+		{
+			Component target=children(panel).stream().filter(c->name.equals(c.getName())).findFirst().orElseThrow();
+			Rectangle bounds=SwingUtilities.convertRectangle(target,new Rectangle(0,0,target.getWidth(),target.getHeight()),panel);
+			report.check(file.getFileName()+" visible control "+name,true,visible.contains(bounds));
+		}
+		BufferedImage image=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB); Graphics2D graphics=image.createGraphics();
+		try { viewport.printAll(graphics); } finally { graphics.dispose(); viewport.remove(panel); if(previous!=null) { previous.add(panel); } }
+		ImageIO.write(image,"png",file.toFile());
+		report.section(file.getFileName().toString(),"![Synthetic 600px scroll viewport]("+file.getFileName()+")\n\nActual JViewport; focus/OS scrolling still requires a client check.");
 	}
 
 	private static String clippingReason(JTextArea text, JComponent panel, Rectangle imageBounds)

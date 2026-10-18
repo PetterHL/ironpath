@@ -215,7 +215,7 @@ final class OfflineNexScenario extends OfflineNexClient
 		for (int font : List.of(12, 20))
 		{
 			PanelPreview.fonts(font);
-			NexPanel panel = new NexPanel(null); panel.setFont(new Font("DejaVu Sans", Font.PLAIN, font));
+			NexPanel panel = new NexPanel(null,text->{ throw new java.awt.HeadlessException(); },NexReport.Provenance.SYNTHETIC_OFFLINE); panel.setFont(new Font("DejaVu Sans", Font.PLAIN, font));
 			NexPanel.Actions actions = new NexPanel.Actions() {
 				public boolean current() { return true; } public boolean canEdit() { return false; }
 				public void method(NexMethod method) { throw new UnsupportedOperationException("Read-only preview"); }
@@ -226,6 +226,17 @@ final class OfflineNexScenario extends OfflineNexClient
 			panel.render("Synthetic offline scenario", NexOwnedFixtures.account(null), prefs, catalog, session.stats(), true, actions, "Synthetic; no preference IO", result);
 			report.check("Main view " + font + "px shows measured kill", true, PanelPreview.text(panel).contains("Last complete kill · 18.0 s"));
 			capture(panel, output, "main", font, report);
+			PanelPreview.viewport(panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics"),report);
+			PanelPreview.click(panel,"Diagnostics"); capture(panel,output,"diagnostics",font,report);
+			PanelPreview.viewport(panel,output.resolve("diagnostics-viewport-"+font+".png"),225,600,null,List.of("nex-copy-report"),report);
+			PanelPreview.click(panel,"Copy report now");
+			report.check("Headless copy has selectable fallback "+font,true,PanelPreview.text(panel).contains("Clipboard unavailable or busy"));
+			String exported=((javax.swing.JTextArea)PanelPreview.children(panel).stream().filter(c->"nex-report-text".equals(c.getName())).findFirst().orElseThrow()).getText();
+			report.check("Production report labels synthetic provenance "+font,true,exported.contains("SYNTHETIC_OFFLINE"));
+			report.check("Production report retains scoped exact inputs "+font,true,exported.contains("ammo=11212") && exported.contains("RANGED=112"));
+			java.nio.file.Files.writeString(output.resolve("diagnostic-report-"+font+".txt"),exported);
+			capture(panel,output,"selectable-report",font,report);
+			PanelPreview.click(panel,"Encounter");
 			PanelPreview.click(panel, "Owned setup comparisons");
 			PanelPreview.combo(panel, "nex-owned-role-filter").setSelectedItem("ranged");
 			report.check("Comparison view " + font + "px preserves projectile", true, PanelPreview.text(panel).contains("Selected quiver projectile: Amethyst arrow"));

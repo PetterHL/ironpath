@@ -1,8 +1,8 @@
 # Development and verification
 
 Use JDK 11, Git and the included Gradle wrapper (8.10). The retained build resolves
-RuneLite through `latest.release`; the last integrated verified dependency was
-1.13.1. Record the actual resolved version when verifying a change. The first build
+RuneLite through `latest.release`; UI1 normal and pinned validation both resolved
+1.13.2. Record the actual resolved version when verifying a change. The first build
 needs dependency downloads. Runtime evaluation is local.
 
 ## Checkout and run
@@ -147,7 +147,8 @@ not evidence for compatibility with a newer RuneLite release.
 Outputs are regenerated in `build/review/<scenario>/`: `report.md` plus the named
 PNG states with `-12.png` / `-20.png`, all at the native **225px** width. Running
 `all` also writes `build/review/index.md`, linking every report and PASS/FAIL result.
-The complete suite generates nine reports and 56 PNGs. Each scenario and font
+The UI1 suite generates nine scenario reports, 116 PNGs and a sanitized
+`diagnostic-report-12.txt` / `diagnostic-report-20.txt` for each scenario. Each scenario and font
 starts with fresh client/account/session state. Reports contain input provenance,
 ordered callbacks, encounter outcomes, timer/damage scopes, gaps and expected versus
 actual checks. Published lifecycle comparisons include actual/proposed inputs,
@@ -167,11 +168,16 @@ selected kill. RuneLiteLAF and DejaVu Sans 12/20 give consistent Cloud metrics.
 Empty item sprite wells are explicitly labeled placeholders; no ItemManager/cache
 sprites are loaded. Images paint full component contents and may be tall. Native
 combo selections may elide, with full selected claims in wrapping text below.
-These are not screenshots of an OS window or real DPI/focus/scroll/GPU tests.
+UI1 also paints actual 225 × 600 JViewport screenfuls, checking primary
+navigation and Copy report visibility at both fonts. These are not screenshots
+of an OS window or real DPI/focus/scroll/GPU tests.
 
 The layout checker rejects visible nonempty text areas outside the PNG or any
 ancestor inside the capture root, zero-sized/compressed areas, and wrapping that
-exceeds the actual allocated content width/height. Hidden/empty areas are ignored.
+exceeds the actual allocated content width/height. UI1 additionally checks
+button/label geometry and plain/HTML button text. Scrollable report contents are
+intentionally clipped by their nested viewport; RuneLiteLAF scrollbar arrows are
+intentionally zero-sized. Hidden/empty areas are ignored.
 Failures still write the PNG and the affected text/reason. Visual inspection
 remains necessary; layout checks do not establish usefulness or interaction quality.
 
@@ -180,6 +186,27 @@ scenarios. It uploads `dev1-offline-review`, containing the index, reports and P
 with 30-day retention, including available failure evidence. Link the exact run
 and artifact from the PR. Routine generated output stays outside Git history.
 Regenerate after source changes; never relabel stale evidence for a new revision.
+
+### Reviewing UI1 diagnostics
+
+In `nex-complete`, compare `main-12.png` / `main-20.png` and
+`encounter-viewport-*.png` with `diagnostics-*.png`,
+`diagnostics-viewport-*.png` and `selectable-report-*.png`. The item card should
+name **Dragon arrow**, with +2.8% theoretical DPS scoped to its captured ranged
+state, rather than Twisted bow. Open comparison/basis/gap/resource/kill-detail
+PNGs for the exact qualifications. The two pending-publication scenarios also
+render held-worker Diagnostics. Frozen history checks the exported negative
+alternative while a newer result publishes.
+
+The TXT reports use the **production** allowlisted formatter with explicit
+`SYNTHETIC_OFFLINE` provenance. The plugin's offline panel factory only replaces
+sprite/clipboard boundaries; the scenario runner/assertions stay in test sources.
+No live report is saved automatically. On a real client, Diagnostics → Copy report
+now copies the selected frozen report; a busy, headless or restricted clipboard
+leaves focusable, selectable text for manual Ctrl+A/Ctrl+C. No upload occurs.
+
+[UI1 validation](validation/ui1-encounter-diagnostics.md) records exact commands,
+counts, comparison evidence and unperformed client checks.
 
 ### Scenario boundaries and adding a scenario or encounter
 

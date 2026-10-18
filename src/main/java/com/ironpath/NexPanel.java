@@ -27,7 +27,17 @@ final class NexPanel extends PluginPanel
 		void reset();
 		void enable(boolean enabled);
 	}
+	@FunctionalInterface interface ClipboardWriter { void copy(String text); }
 	private final ItemManager items;
+	private final ClipboardWriter clipboard;
+	private final NexReport.Provenance provenance;
+	private NexSummary diagnosticSummary;
+	private NexOwnedResult diagnosticOwned, inspectedCalculation;
+	private int diagnosticChoice, diagnosticPair;
+	private JTextArea reportArea;
+	private JScrollPane reportScroll;
+	private String reportFeedback="";
+
 	private String page="encounter";
 	private NexSummary inspected;
 	private NexOwnedResult inspectedOwned;
@@ -39,7 +49,10 @@ final class NexPanel extends PluginPanel
 	private Map<Integer,String> displayNames=Map.of();
 	private long view;
 	private java.awt.Point returnPosition;
-	NexPanel(ItemManager items) { this.items=items; }
+	NexPanel(ItemManager items)
+	{ this(items,text->java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new java.awt.datatransfer.StringSelection(text),null),NexReport.Provenance.LIVE_PUBLIC_CLIENT); }
+	NexPanel(ItemManager items,ClipboardWriter clipboard,NexReport.Provenance provenance)
+	{ this.items=items; this.clipboard=clipboard; this.provenance=provenance; }
 
 	void render(String status, AccountSnapshot account, Preferences prefs, KnowledgeCatalog catalog,
 		NexSession.Stats stats, boolean enabled, Actions actions, String storage)
@@ -52,109 +65,227 @@ final class NexPanel extends PluginPanel
 	{
 		if (!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
 		long currentView=++view;
-		Map<Integer,String> names=new HashMap<>(catalog==null?Map.of():catalog.itemNames());
-		if(account!=null && stats.last!=null) { stats.last.timeline.forEach(s->names.putAll(s.state.itemNames)); stats.last.beforeStart.forEach(s->names.putAll(s.state.itemNames)); }
-		if(account!=null && inspected!=null) { inspected.timeline.forEach(s->names.putAll(s.state.itemNames)); inspected.beforeStart.forEach(s->names.putAll(s.state.itemNames)); }
-		displayNames=Map.copyOf(names);
-		if (account==null) { page="encounter"; inspected=null; inspectedOwned=null; ownedIndex=0; returnPosition=null; factKey="rigour"; roleKey="melee"; slotKey="weapon"; lockItem=null; ownedRoleFilter="All roles"; ownedSupportFilter="Supported comparisons"; }
-		removeAll(); setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
-		text("IronPath · build "+BuildInfo.VERSION); text("Nex · Trio MP2 · One kill per trip");
-		if (account==null || actions==null) { text(status); revalidate(); repaint(); return; }
-		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active);
-		java.util.function.BooleanSupplier valid=()->view==currentView && actions.current();
-		JPanel nav=new ActionLinks(); nav.setFont(getFont());
-		for (String destination:List.of("encounter","setup","account"))
+		boolean paused=status.startsWith("Nex session paused");
+		boolean available=account!=null && actions!=null;
+		if(!page.equals("diagnostics") || !available || paused || stats.attempts==0) { clearReport(); }
+		if(account==null || (!paused && stats.attempts==0))
 		{
-			button(nav,destination.equals("encounter")?"Encounter":destination.equals("setup")?"Setup":"Account",()->{
-				if (!valid.getAsBoolean()) { return; } page=destination; inspected=null; inspectedOwned=null; redraw.run();
+			inspected=null; inspectedOwned=null; inspectedCalculation=null; diagnosticSummary=null; diagnosticOwned=null;
+			ownedIndex=0; returnPosition=null;
+		}
+		if(account==null)
+		{
+			if(!page.equals("diagnostics")) { page="encounter"; }
+			factKey="rigour"; roleKey="melee"; slotKey="weapon"; lockItem=null;
+			ownedRoleFilter="All roles"; ownedSupportFilter="Supported comparisons";
+		}
+		Map<Integer,String> names=new HashMap<>(catalog==null?Map.of():catalog.itemNames());
+		if(available && !paused && stats.last!=null) { stats.last.timeline.forEach(sample->names.putAll(sample.state.itemNames)); }
+		if(available && !paused && inspected!=null) { inspected.timeline.forEach(sample->names.putAll(sample.state.itemNames)); }
+		displayNames=Map.copyOf(names);
+		// Keep the selectable report attached during a valid refresh. Removing its
+		// subtree would discard native focus even if caret/scroll were restored later.
+		for(var component:getComponents()) { if(component!=reportScroll) { remove(component); } }
+		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
+		text("IronPath · build "+BuildInfo.VERSION); text("Nex · Trio MP2 pilot model");
+		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active);
+		java.util.function.BooleanSupplier valid=()->view==currentView && (actions==null || actions.current());
+		JPanel nav=new ActionLinks(); nav.setFont(getFont());
+		for(String destination:List.of("encounter","diagnostics"))
+		{
+			JButton tab=button(nav,destination.equals("encounter")?"Encounter":"Diagnostics",()->{
+				if(!valid.getAsBoolean()) { return; }
+				if(destination.equals("diagnostics"))
+				{
+					if(!page.equals("diagnostics"))
+					{
+						diagnosticSummary=inspectedOwned!=null?inspectedOwned.summary:inspected!=null?inspected:stats.last!=null?stats.last:stats.lastAttempt;
+						diagnosticOwned=inspectedOwned!=null?inspectedOwned:inspected!=null?inspectedCalculation:owned;
+						diagnosticChoice=inspectedOwned!=null?ownedIndex:0; diagnosticPair=inspectedOwned!=null?ownedPairIndex:0;
+						if(inspectedOwned==null && diagnosticOwned!=null && !NexPresentation.cards(diagnosticOwned).isEmpty())
+						{ var card=NexPresentation.cards(diagnosticOwned).get(0); diagnosticChoice=card.choiceIndex; diagnosticPair=card.pairIndex; }
+					}
+				}
+				else { inspected=null; inspectedOwned=null; inspectedCalculation=null; diagnosticSummary=null; diagnosticOwned=null; }
+				page=destination; redraw.run();
 			});
+			tab.setName("nex-nav-"+destination); tab.getAccessibleContext().setAccessibleDescription(destination+" view");
 		}
 		add(nav);
-		if(status.startsWith("Nex session paused"))
+		if(page.equals("diagnostics"))
 		{
-			text(status);
-			button(this,"Reset session",()->{if(valid.getAsBoolean()) { actions.reset(); }}).setName("nex-reset");
-			revalidate(); repaint(); return;
+			if(diagnosticSummary==null && available && !paused) { diagnosticSummary=stats.last!=null?stats.last:stats.lastAttempt; }
+			if(diagnosticSummary!=null && diagnosticOwned==null && owned!=null && owned.summary==diagnosticSummary && available && !paused) { diagnosticOwned=owned; }
+			NexReport.State state=paused?NexReport.State.PAUSED:account==null?NexReport.State.NO_ACCOUNT:!available?NexReport.State.NOT_READY
+				:stats.attempts==0 && stats.resetReason!=null?NexReport.State.RESET:diagnosticSummary==null?NexReport.State.NO_KILL:diagnosticOwned==null && diagnosticSummary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE?NexReport.State.PENDING:NexReport.State.READY;
+			diagnostics(status,stats,catalog,state,valid);
+			if(!paused && available && (inspectedOwned!=null || inspected!=null))
+			{ button(this,inspectedOwned!=null?"Back to comparison":"Back to kill details",()->{ if(valid.getAsBoolean()) { page="encounter"; redraw.run(); } }); }
 		}
-		if (page.equals("account")) { account(account,prefs,catalog,actions,valid,storage); }
-		else if (page.equals("setup")) { setup(prefs,stats.last,catalog,actions,valid,storage); }
-		else if(inspectedOwned!=null)
-		{
-			button(this,"Back to encounter",()->{
-				if(!valid.getAsBoolean()) { return; } inspectedOwned=null; redraw.run();
-				var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
-				if(viewport!=null && returnPosition!=null) { viewport.setViewPosition(returnPosition); }
-			});
-			ownedDetails(inspectedOwned,catalog,valid);
-		}
-		else if (inspected!=null)
-		{
-			button(this,"Back to encounter",()->{
-				if (!valid.getAsBoolean()) { return; } inspected=null; redraw.run();
-				var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
-				if (viewport!=null && returnPosition!=null) { viewport.setViewPosition(returnPosition); }
-			});
-			details(inspected,catalog,valid);
-		}
+		else if(!available) { text(status); }
+		else if(paused) { text(status); }
+		else if(page.equals("account")) { back(redraw,valid); account(account,prefs,catalog,actions,valid,storage); }
+		else if(page.equals("setup")) { back(redraw,valid); setup(prefs,stats.last,catalog,actions,valid,storage); }
+		else if(inspectedOwned!=null) { back(redraw,valid); ownedDetails(inspectedOwned,catalog,valid); }
+		else if(inspected!=null) { back(redraw,valid); details(inspected,catalog,valid); }
 		else
 		{
-			if (!enabled) { text("Capture disabled. Session cleared."); }
-			else if (active) { text("Observing the current Nex attempt. Results appear after completion."); }
-			else if (stats.last==null) { text("Ready to observe the next full Nex kill. Equipment and spell use are detected automatically."); }
+			if(!enabled) { text("Capture disabled. Session cleared."); }
+			else if(active) { text("Observing the current Nex attempt. Results appear after completion."); }
+			else if(stats.last==null) { text("Ready to observe the next full Nex kill. Equipment and spell use are detected automatically."); }
 			if(!active && stats.attempts==0 && stats.resetReason!=null) { text("Previous session cleared: "+stats.resetReason); }
 			if(stats.last!=null)
 			{
-				text(String.format(Locale.ROOT,"Last complete kill · %.1f s",stats.last.seconds()));
-				text("Observed smoke announcement → Nex death/dying.");
-				text(stats.last.share()==null?"Damage share unavailable":String.format(Locale.ROOT,"Observed Nex + minion hitsplat share · %.1f%%",stats.last.share()));
-				text(String.format(Locale.ROOT,"Session mean · %.1f s · n = %d\nRange %.1f–%.1f s",stats.meanSeconds,stats.n,stats.minSeconds,stats.maxSeconds));
-				if (stats.shareN>0)
-				{ text(String.format(Locale.ROOT,"Mean per-kill share %.1f%% · n = %d\nRange %.1f–%.1f%%\nAggregate damage share %.1f%%",stats.meanShare,stats.shareN,stats.minShare,stats.maxShare,stats.aggregateShare)); }
-				text("Matched method, worn packages, sampled levels/prayers and arena roster. Visible people do not establish party membership.");
-				button(this,"Kill and calculation details",()->{
-					if (!valid.getAsBoolean()) { return; }
-					var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
-					returnPosition=viewport==null?null:viewport.getViewPosition(); inspected=stats.last; redraw.run();
-				}).setName("nex-details");
+				heading(String.format(Locale.ROOT,"Last complete kill · %.1f s",stats.last.seconds()));
+				text("Smoke → death/dying");
+				text(stats.last.share()==null?"Observed hitsplat share unavailable":String.format(Locale.ROOT,"Observed hitsplat share · %.1f%%",stats.last.share()));
+				text("Nex + named minions · not loot credit");
+				text(stats.n==1?"1 matching kill":String.format(Locale.ROOT,"Comparable mean %.1f s · %d kills",stats.meanSeconds,stats.n));
 			}
 			if(stats.lastAttempt!=null && stats.lastAttempt!=stats.last)
 			{
 				text("Last attempt · "+stats.lastAttempt.outcome+" · "+stats.lastAttempt.reason);
-				button(this,"Last attempt details",()->{if(valid.getAsBoolean()) { inspected=stats.lastAttempt; redraw.run(); }});
+				button(this,"Last attempt details",()->{ if(valid.getAsBoolean()) { inspected=stats.lastAttempt; inspectedCalculation=null; rememberPosition(); redraw.run(); } });
 			}
 			if(stats.last!=null)
 			{
-				text("Improve with owned equipment");
-				if(owned==null) { text("Comparing the captured setups…"); }
+				heading("Improve your setup");
+				if(owned==null || owned.summary!=stats.last) { text("Comparing the captured setups…"); }
 				else
 				{
-					long carried=owned.choices.stream().filter(c->c.supported() && !c.bankPreparation).count();
-					long bank=owned.choices.stream().filter(c->c.supported() && c.bankPreparation).count();
-				text("Supported scenarios: carried "+carried+", bank preparation "+bank+". Unavailable: "+(owned.choices.size()-carried-bank)+". Counts describe state/inventory scenarios, not fight or damage coverage.");
-					Set<String> roles=new HashSet<>();
-					for(var c:owned.choices)
+					List<NexPresentation.Card> cards=NexPresentation.cards(owned);
+					if(cards.isEmpty()) { text(owned.choices.stream().anyMatch(c->c.supported())?"No positive supported improvement. Zero and negative alternatives are in comparisons.":"No supported comparison yet. Inspect the coverage gaps in comparisons."); }
+					for(var card:cards)
 					{
-						if(c.bankPreparation || !c.supported() || !roles.add(c.actual.role)) { continue; }
-						text(c.actual.role+" · tick "+c.actual.tick+" · "+c.headline()); item(c.proposed.slots.get("weapon"),catalog,valid);
+						var c=card.choice; var changed=NexPresentation.changedItems(card.pair);
+						String title=changed.size()==1?name(changed.values().iterator().next(),catalog):"Equipment package · "+changed.size()+" changes";
+						item(changed.values().stream().filter(id->id>0).findFirst().orElse(0),title,catalog,valid);
+						text(NexOwnedResult.headline(card.pair));
+						text(c.actual.role+" · "+c.actual.phase+" · tick "+c.actual.tick);
+						text(c.bankPreparation?"Bank preparation · recheck stock and packing":"Carried alternative · ordinary offence if supplied");
+						if(!c.exhaustive) { text("Partial search · optimum unknown"); }
+						if(card.pair.beforeSetup.slots.containsValue(24780) || card.pair.afterSetup.slots.containsValue(24780)) { text("Healing and survival unmodelled"); }
+						button(this,"Compare package",()->{ if(valid.getAsBoolean()) { openOwned(owned,card.choiceIndex,card.pairIndex); redraw.run(); } }).setName("nex-card-"+card.choiceIndex);
 					}
-					for(String role:List.of("melee","ranged"))
-					{ if(!roles.contains(role) && owned.choices.stream().anyMatch(c->c.actual.role.equals(role))) { text(role+" · No supported carried scenario. Inspect the coverage gaps in comparisons."); } }
-					button(this,"Owned setup comparisons",()->{
-						if(!valid.getAsBoolean()) { return; }
-						var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
-						returnPosition=viewport==null?null:viewport.getViewPosition(); inspectedOwned=owned; ownedIndex=0; ownedPairIndex=0;
-						ownedRoleFilter="All roles"; ownedSupportFilter=owned.choices.stream().anyMatch(c->c.supported())?"Supported comparisons":"All states"; redraw.run();
-					}).setName("nex-owned");
+					if(!cards.isEmpty()) { text("Independent state comparisons; no whole-kill ranking."); }
+					button(this,"Owned setup comparisons",()->{ if(valid.getAsBoolean()) { openOwned(owned,0,0); redraw.run(); } }).setName("nex-owned");
 				}
+				button(this,"Kill and calculation details",()->{
+					if(valid.getAsBoolean()) { rememberPosition(); inspected=stats.last; inspectedCalculation=owned!=null && owned.summary==stats.last?owned:null; redraw.run(); }
+				}).setName("nex-details");
 			}
-			text(stats.complete+" / "+stats.attempts+" captured attempts eligible for complete statistics · "+stats.failed+" failed · "+stats.censored+" censored/excluded. Last "+NexSession.MAX_RECENT+" attempts maximum.");
-			text("Completed summaries stay in memory across a recognized bank trip. Logout, account/profile change and Reset clear them.");
-			button(this,enabled?"Disable capture":"Enable capture",()->{if(valid.getAsBoolean()) { actions.enable(!enabled); }});
-			button(this,"Reset session",()->{if(valid.getAsBoolean()) { actions.reset(); }}).setName("nex-reset");
-			text("Spec effects, new upgrades and encounter-time estimates remain under development.");
+			JPanel secondary=new ActionLinks(); secondary.setFont(getFont());
+			for(String destination:List.of("setup","account"))
+			{ button(secondary,destination.equals("setup")?"Setup":"Account",()->{ if(valid.getAsBoolean()) { rememberPosition(); page=destination; redraw.run(); } }); }
+			add(secondary);
+			text("Planning scope: Trio MP2 · one kill per trip. Per-kill team context unconfirmed.");
+			text(stats.complete+" complete · "+stats.failed+" failed · "+stats.censored+" excluded");
+			button(this,enabled?"Disable capture":"Enable capture",()->{ if(valid.getAsBoolean()) { actions.enable(!enabled); } });
+		}
+		if(available && (paused || page.equals("encounter") && inspected==null && inspectedOwned==null))
+		{ button(this,"Reset session",()->{ if(valid.getAsBoolean()) { actions.reset(); } }).setName("nex-reset"); }
+		if(available && !paused && (page.equals("setup") || page.equals("account")))
+		{
+			JPanel secondary=new ActionLinks(); secondary.setFont(getFont());
+			for(String destination:List.of("setup","account"))
+			{ button(secondary,destination.equals("setup")?"Setup":"Account",()->{ if(valid.getAsBoolean()) { page=destination; redraw.run(); } }); }
+			add(secondary);
+		}
+		if(available && paused)
+		{
+			for(String destination:List.of("setup","account"))
+			{ button(this,destination.equals("setup")?"Setup":"Account",()->{ if(valid.getAsBoolean()) { page=destination; redraw.run(); } }); }
 		}
 		revalidate(); repaint();
 	}
+	private void heading(String value)
+	{ text(value); getComponent(getComponentCount()-1).setFont(getFont().deriveFont(java.awt.Font.BOLD)); }
+	private void rememberPosition()
+	{
+		var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
+		returnPosition=viewport==null?null:viewport.getViewPosition();
+	}
+	private void openOwned(NexOwnedResult owned,int index,int pair)
+	{
+		rememberPosition(); inspectedOwned=owned; ownedIndex=index; ownedPairIndex=pair;
+		ownedRoleFilter="All roles"; ownedSupportFilter=owned.choices.stream().anyMatch(c->c.supported())?"Supported comparisons":"All states";
+	}
+	private void back(Runnable redraw,java.util.function.BooleanSupplier valid)
+	{
+		button(this,"Back to encounter",()->{
+			if(!valid.getAsBoolean()) { return; } page="encounter"; inspected=null; inspectedOwned=null; inspectedCalculation=null; redraw.run();
+			var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
+			if(viewport!=null && returnPosition!=null) { viewport.setViewPosition(returnPosition); }
+		});
+	}
+	private void diagnostics(String status,NexSession.Stats stats,KnowledgeCatalog catalog,NexReport.State state,java.util.function.BooleanSupplier valid)
+	{
+		heading("Diagnostics");
+		boolean hidden=state==NexReport.State.PAUSED || state==NexReport.State.NO_ACCOUNT || state==NexReport.State.NOT_READY || state==NexReport.State.RESET;
+		text(status);
+		if(stats.resetReason!=null) { text("Previous session cleared: "+stats.resetReason); }
+		NexSummary summary=hidden?null:diagnosticSummary; NexOwnedResult result=hidden?null:diagnosticOwned;
+		if(summary!=null) { text("Frozen kill #"+summary.key+" · "+summary.outcome); }
+		else { text("No visible kill evidence"); }
+		String report=NexReport.snapshot(summary,result,diagnosticChoice,diagnosticPair,catalog,provenance,state).format();
+		if(reportArea!=null && !report.equals(reportArea.getText())) { clearReport(); }
+		PanelWidgets.text(this,reportFeedback); final JTextArea feedback=(JTextArea)getComponent(getComponentCount()-1);
+		button(this,"Copy report now",()->{
+			if(!valid.getAsBoolean()) { return; }
+			reportArea.setText(report); reportArea.setCaretPosition(0); reportArea.getParent().getParent().setVisible(true);
+			try { clipboard.copy(report); reportFeedback="Report copied. Selectable text is below."; }
+			catch(java.awt.HeadlessException | IllegalStateException | SecurityException ex)
+			{ reportFeedback="Clipboard unavailable or busy. Select the report below and copy it manually."; }
+			feedback.setText(reportFeedback);
+			revalidate(); repaint();
+		}).setName("nex-copy-report");
+		text("Adapter "+com.ironpath.nex.NexCapture.VERSION+" · evaluator "+com.ironpath.advisor.NexOwnedEvaluator.VERSION);
+		text("Knowledge "+(catalog==null?"unavailable":catalog.version));
+		if(summary!=null)
+		{
+			text("State coverage "+Math.min(summary.sampledTicks,summary.expectedTicks)+" / "+summary.expectedTicks+" ticks · "+summary.unclassifiedHits+" unclassified hits");
+			if(summary==stats.last)
+			{
+				text(stats.n==1?"1 matching kill":String.format(Locale.ROOT,"Comparable mean %.1f s · %d kills · range %.1f–%.1f s",stats.meanSeconds,stats.n,stats.minSeconds,stats.maxSeconds));
+				if(stats.shareN>1) { text(String.format(Locale.ROOT,"Mean per-kill share %.1f%% · %d kills; aggregate %.1f%%",stats.meanShare,stats.shareN,stats.aggregateShare)); }
+				text("Matches method, worn packages, sampled levels/prayers and arena roster; visible people do not prove party membership.");
+			}
+			if(result==null) { text("Calculation pending or unavailable for this kill."); }
+			else
+			{
+				long carried=result.choices.stream().filter(c->c.supported() && !c.bankPreparation).count();
+				long bank=result.choices.stream().filter(c->c.supported() && c.bankPreparation).count();
+				text("Supported scenarios: carried "+carried+", bank preparation "+bank+". Unavailable: "+(result.choices.size()-carried-bank)+". Counts are not fight coverage.");
+				result.gaps.entrySet().stream().sorted(Map.Entry.comparingByKey()).limit(8).forEach(e->text(e.getValue()+" · "+NexReport.gapLabel(e.getKey())));
+				if(result.gaps.size()>8) { text("More gaps remain in comparison details."); }
+				if(diagnosticChoice>=0 && diagnosticChoice<result.choices.size())
+				{
+					var c=result.choices.get(diagnosticChoice);
+					text("Selected "+c.actual.role+" · "+c.actual.phase+" · tick "+c.actual.tick+" · pair "+diagnosticPair);
+				}
+				text("Captured gear, levels and prayer readings are separate from the assumed base-stat target and frozen planning locks. No launch attribution or team-time estimate.");
+			}
+		}
+		button(this,"Show selectable report",()->{ if(valid.getAsBoolean()) { reportArea.getParent().getParent().setVisible(!reportArea.getParent().getParent().isVisible()); revalidate(); repaint(); } });
+		if(reportArea==null)
+		{
+			reportArea=new JTextArea(report) {
+				@Override public void scrollRectToVisible(java.awt.Rectangle bounds) { if(isFocusOwner()) { super.scrollRectToVisible(bounds); } }
+			}; reportArea.setName("nex-report-text"); reportArea.setEditable(false); reportArea.setLineWrap(true); reportArea.setWrapStyleWord(true); reportArea.setFont(getFont());
+			reportArea.getAccessibleContext().setAccessibleName("Sanitized diagnostic report"); reportArea.setCaretPosition(0);
+			reportScroll=new JScrollPane(reportArea); reportScroll.setAlignmentX(LEFT_ALIGNMENT);
+			reportScroll.setPreferredSize(new Dimension(PANEL_WIDTH-12,180)); reportScroll.setMaximumSize(new Dimension(PANEL_WIDTH-12,180)); reportScroll.setVisible(false); add(reportScroll);
+		}
+		else { setComponentZOrder(reportScroll,getComponentCount()-1); }
+		text("Names, account IDs, roster hashes, raw traces and inventory/bank dumps are omitted. Nothing is uploaded. This report is not a replay.");
+	}
+	private void clearReport()
+	{
+		if(reportArea!=null) { reportArea.setText(""); }
+		if(reportScroll!=null) { remove(reportScroll); }
+		reportArea=null; reportScroll=null; reportFeedback="";
+	}
+
 	private void ownedDetails(NexOwnedResult result,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid)
 	{
 		text("Owned equipment · kill #"+result.summary.key);
@@ -236,7 +367,7 @@ final class NexPanel extends PluginPanel
 			if(!indices.isEmpty()) { states.setSelectedIndex(Math.max(0,indices.indexOf(ownedIndex))); }
 			filling[0]=false; states.setEnabled(!indices.isEmpty());
 			if(indices.isEmpty())
-			{ detail.removeAll(); PanelWidgets.text(detail,"No scenarios match these filters. Choose All states to inspect this role's coverage gaps."); }
+			{ ownedIndex=-1; ownedPairIndex=0; detail.removeAll(); PanelWidgets.text(detail,"No scenarios match these filters. Choose All states to inspect this role's coverage gaps."); }
 			else { show.run(); }
 			detail.revalidate(); revalidate(); repaint();
 		};
@@ -252,6 +383,9 @@ final class NexPanel extends PluginPanel
 		List<String> changes=new ArrayList<>();
 		for(String slot:com.ironpath.advisor.PoweredMagic.SLOTS)
 		{ if(!Objects.equals(pair.beforeSetup.slots.get(slot),pair.afterSetup.slots.get(slot))) { changes.add(slot+": "+name(pair.beforeSetup.slots.get(slot),catalog)+" → "+name(pair.afterSetup.slots.get(slot),catalog)); } }
+		if(pair.beforeSetup.loadedAmmo!=pair.afterSetup.loadedAmmo)
+		{ changes.add("selected projectile: "+name(pair.beforeSetup.loadedAmmo>0?pair.beforeSetup.loadedAmmo:pair.beforeSetup.slots.getOrDefault("ammo",-1),catalog)
+			+" → "+name(pair.afterSetup.loadedAmmo>0?pair.afterSetup.loadedAmmo:pair.afterSetup.slots.getOrDefault("ammo",-1),catalog)); }
 		return changes.isEmpty()?"Same package · zero change":String.join("; ",changes);
 	}
 	private void setup(Preferences prefs, NexSummary last, KnowledgeCatalog catalog, Actions actions,
@@ -368,12 +502,15 @@ final class NexPanel extends PluginPanel
 		text("Bank ownership: "+(account.bank.known()?"observed this session":"unknown; open bank to observe")); text(storage);
 	}
 	private void item(int id, KnowledgeCatalog catalog, java.util.function.BooleanSupplier valid)
+	{ item(id,name(id,catalog),catalog,valid); }
+	private void item(int id,String title,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid)
 	{
-		JLabel image=new JLabel("◇") {
+		JLabel image=new JLabel(items==null?"◇":"") {
 			@Override public void setIcon(Icon icon) { if(valid.getAsBoolean()) { super.setIcon(icon); } }
 		}; image.setPreferredSize(new Dimension(32,32));
 		JPanel row=new JPanel(new CardHeaderLayout()); row.setFont(getFont()); row.setOpaque(false);
-		row.add(image); PanelWidgets.text(row,name(id,catalog)); row.getComponent(1).setName("card-title"); add(row);
+		row.add(image); PanelWidgets.text(row,title); row.getComponent(1).setName("card-title"); add(row);
+		if(items==null) { image.setToolTipText("Offline sprite placeholder"); image.getAccessibleContext().setAccessibleName("Offline sprite placeholder"); }
 		if (id>0 && items!=null) { items.getImage(id).addTo(image); }
 	}
 	private String name(int id, KnowledgeCatalog catalog) { return id<0?"unknown":id==0?"empty":displayNames.getOrDefault(id,"Item "+id); }

@@ -197,6 +197,7 @@ public class NexPanelTest
 			var account=P4aFixtures.account(Set.of(11907),99,90);
 			for(float font:List.of(12f,20f))
 			{
+				session.clear(); session.select("a",301); session.add(summary);
 				var panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
 				button(panel,"Owned setup comparisons").doClick();
@@ -236,6 +237,7 @@ public class NexPanelTest
 			NexSession session=new NexSession(); session.select("a",301); session.add(summary);
 			for(float font:List.of(12f,20f))
 			{
+				session.clear(); session.select("a",301); session.add(summary);
 				NexPanel panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
 				assertTrue(shown(panel).contains("theoretical DPS")); capture(panel,"owned-main-"+(int)font);
@@ -321,7 +323,9 @@ public class NexPanelTest
 			{
 				var panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
+				button(panel,"Diagnostics").doClick();
 				assertTrue(shown(panel).contains("Supported scenarios: carried 2, bank preparation 1. Unavailable: 1"));
+				button(panel,"Encounter").doClick();
 				button(panel,"Owned setup comparisons").doClick();
 				JComboBox<?> role=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-role-filter".equals(c.getName())).findFirst().orElseThrow();
 				JComboBox<?> support=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-support-filter".equals(c.getName())).findFirst().orElseThrow();

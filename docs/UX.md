@@ -1,10 +1,10 @@
 # Encounter-first UX
 
 Encounter direction selected 15 October; UI review incorporated 18 October 2026.
-The UI1/CTX1 sections describe planned changes, not existing screens. TASKS.md
-owns delivery. Later versioned sections retain the implemented behavior/history.
+UI1 is implemented for review in 0.20.0; CTX1 remains planned. TASKS.md owns
+delivery. Later versioned sections retain the implemented behavior/history.
 
-## Reviewed UI1 target (next implementation)
+## UI1 implementation (0.20.0, for review)
 
 One native 225px panel with **Encounter / Diagnostics** primary navigation.
 Setup and Account remain explicit secondary actions, together with comparisons,
@@ -34,6 +34,31 @@ failure leaves selectable text. No automatic sending or account connection.
 In-client Save screenshot, editable context and new numerical claims are outside
 UI1. Use DEV1 native PNGs and manual client screenshots for this first cycle.
 Check actual viewport hierarchy and controls as well as full-height text wrapping.
+
+Card selection visits carried scenarios before conditional bank preparation, then
+uses original capture order. It selects the first positive supported whole-package
+comparison in each state (proposed package first, then explicit alternatives), and
+deduplicates identical before/after equipment/projectiles within each role. A
+carried change wins over the identical bank scenario. There is no fixed quota and
+no cross-state percentage ranking; zero/negative/unavailable rows remain in details.
+A quiver-to-worn-ammo change identifies the new projectile rather than the unchanged
+weapon or a fictitious second empty-projectile upgrade.
+
+Diagnostics freezes the selected scenario and pair. Returning with **Back to
+comparison** preserves the selected pair; **Encounter** explicitly opens the latest
+result. With no initial kill, Diagnostics can show the next published result. An
+already selected kill never silently changes when a newer kill arrives. Suspended
+history remains hidden, and identity/reset clears report text and invalidates old
+actions. The export uses a report-local K1/C1 plus a memory-only calculation
+revision and frozen planning locks, never current preferences.
+
+An expanded selectable report retains its text selection, caret, scroll and
+clipboard feedback across refreshes while the same accessible report is selected.
+Its text/scroll subtree stays attached to preserve focus. A changed or hidden
+report clears the previous text and starts collapsed.
+
+See [UI1 validation](validation/ui1-encounter-diagnostics.md) for viewport evidence,
+clipboard fallback and the separate client checks.
 
 ## Reviewed CTX1 target (after UI1 review)
 

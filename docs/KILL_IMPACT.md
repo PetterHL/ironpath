@@ -53,7 +53,7 @@ across unrelated states is not the largest whole-kill improvement. Cards identif
 the actual changed item/package and retain scope. N3b/N3c conditional APIs do not
 become automatically attributable personal recommendations through a UI change.
 
-### Planned explicit diagnostic export (UI1)
+### Explicit diagnostic export (UI1, 0.20.0)
 
 Raw account observations/traces remain memory-only. UI1 is narrowly scoped to a
 user-triggered, bounded clipboard report of allowlisted diagnostic/calculation
@@ -69,6 +69,16 @@ hashes are not anonymous export IDs. Preserve unknown versus observed/assumed/
 synthetic provenance. Export time is not the kill timestamp. Clear/hidden session
 state cannot be recovered through export. Formatting can be shared with DEV1,
 but a diagnostic report cannot reproduce a lossless ordered event replay.
+
+The version-1 production report explicitly projects numeric setup/state inputs,
+per-metric support and outputs, relevant candidate quantities and source/model
+revisions. Adapter exclusions and comparison gaps are mapped to fixed allowlisted
+reasons/categories; arbitrary reason strings and embedded target identities never
+leave the application. A formatted report is limited to 24,000 characters, with
+whole fields omitted and a visible omission count. Only the selected comparison
+is exported; unrelated scenarios and ownership/unlock provenance are explicitly
+omitted. This is sufficient for scoped diagnosis, not a complete calculation or
+event replay. DEV1 alone writes synthetic reports to its build artifacts.
 
 ### Planned corrected context (CTX1)
 
