@@ -52,6 +52,12 @@ final class OfflineN3Scenario
 					report.check("Separate marginal damage available "+font,true,c.actualToOwned.expectedDamage!=null && c.ownedToUpgrade.expectedDamage!=null);
 					PanelPreview.click(r.panel,"Copy plan report");
 					report.check("Clipboard fallback is visible "+font,true,PanelPreview.text(r.panel).contains("Clipboard unavailable"));
+					String text=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
+					report.check("Plan report preserves synthetic provenance "+font,true,text.startsWith("Evidence: SYNTHETIC_OFFLINE"));
+					report.check("Plan report exports captured and modeled context "+font,true,text.contains("Captured context: target=NEX; phase=SHADOW; window=FEAR_THE_SHADOW") && text.contains("Modeled context: target=NEX; phase=SHADOW; window=FEAR_THE_SHADOW"));
+					report.check("Plan report exports frozen levels/prayers/style "+font,true,text.contains("real levels=") && text.contains("visible levels=") && text.contains("active prayer flags=[PIETY]; style button=1") && text.contains("family/prayer/style=MELEE / PIETY /"));
+					try { java.nio.file.Files.writeString(output.resolve("plan-report-"+font+".txt"),text); }
+					catch(java.io.IOException ex) { throw new IllegalStateException(ex); }
 				});
 				capture(r,output,"conditional-results",font,report);
 				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("report-viewport-"+font+".png"),225,600,"n3-copy-report",List.of("n3-copy-report","n3-report-scroll"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });

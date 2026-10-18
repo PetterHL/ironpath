@@ -26,14 +26,18 @@ public class NexPlanComparisonTest
 		for(String key:List.of("ATTACK","STRENGTH","DEFENCE","RANGED","MAGIC","HITPOINTS","PRAYER","AGILITY")) { levels.put(key,99); }
 		Map<String,Integer> visible=new TreeMap<>(levels); visible.put("ATTACK",118); visible.put("STRENGTH",118); visible.put("RANGED",112);
 		CombatState state=new CombatState(slots,levels,visible,Set.of(weapon==27690?"PIETY":"RIGOUR"),1,1000,false,inventory,counters,Map.of(weapon,"PRIVATE_SENTINEL"));
+		var edited=new TreeMap<>(slots); edited.put("neck",29801);
+		return fixture(catalog,state,ownedNeck?edited:null);
+	}
+	private static NexOwnedResult fixture(KnowledgeCatalog catalog,CombatState state,Map<String,Integer> ownedSlots)
+	{
 		var sample=new NexSummary.Sample(0,"SMOKE","NONE","NEX@PRIVATE_SENTINEL","spec candidate",-1,state);
 		var summary=new NexSummary(1,0,125,125,125,0,Outcome.COMPLETE,"PRIVATE_SENTINEL","PRIVATE_SENTINEL","PRIVATE_SENTINEL",List.of(sample),Map.of(),Set.of(),
 			new NexSummary.Signals(0,0,125,126,true,Set.of("SMOKE")));
 		ComparisonResult pair=null; CombatSetup after=null;
-		if(ownedNeck)
+		if(ownedSlots!=null)
 		{
-			var edited=new TreeMap<>(slots); edited.put("neck",29801);
-			var factory=new NexPackageFactory(catalog); var before=factory.build(true,slots,Map.of(),1,state.prayers,0); after=factory.build(true,edited,Map.of(),1,state.prayers,0);
+			var factory=new NexPackageFactory(catalog); var before=factory.build(true,state.slots,Map.of(),1,state.prayers,0); after=factory.build(true,ownedSlots,Map.of(),1,state.prayers,0);
 			var items=catalog.melee.items.stream().collect(Collectors.toMap(i->i.id,i->i)); var target=catalog.comparison.targets.stream().filter(t->t.id.equals("nex-base")).findFirst().orElseThrow();
 			pair=new ComparisonResult(before,after,MeleeModel.calculateVisible(118,118,before,target,items),MeleeModel.calculateVisible(118,118,after,target,items),
 				target,Map.of(),"Synthetic N2 pair",MeleeModel.VERSION,catalog.version,List.of(),false,Map.of());
@@ -70,6 +74,67 @@ public class NexPlanComparisonTest
 		assertNotNull(r.comparison.actualToOwned.before.plan); assertNull(r.comparison.actualToOwned.before.plan.expectedDamage);
 		assertEquals(500,r.comparison.actualToOwned.before.plan.resources.spent); assertNull(r.comparison.actualToOwned.expectedDamage);
 		assertFalse(r.comparison.actualToOwned.before.plan.gaps.isEmpty());
+	}
+	@Test public void hypotheticalEditsCannotReleaseTheOwnedBaselinesReservedInventory()
+	{
+		for(int used:List.of(27,28))
+		{
+			var original=fixture(catalog,27690,0,Map.of(7158,1L,21295,1L,385,(long)used-2),Map.of("inventory-slots-used",used),false);
+			var s=original.choices.get(0).actual.state; var captured=new TreeMap<>(s.slots); captured.put("shield",12954);
+			var state=new CombatState(captured,s.realLevels,s.visibleLevels,s.prayers,s.style,s.specialEnergy,false,s.inventory,s.resources);
+			var owned=new TreeMap<>(captured); owned.put("weapon",7158); owned.put("shield",0);
+			var source=fixture(catalog,state,owned);
+			var before=evaluate(source,declaration(500,Map.of(),Map.of())).comparison.actualToOwned;
+			var after=evaluate(source,declaration(500,Map.of("cape",21295),Map.of(21295,1))).comparison.actualToOwned;
+			assertNotNull(before.before.resourceGaps.toString(),before.before.plan);
+			assertNotNull(after.before.resourceGaps.toString(),after.before.plan);
+			assertEquals(before.before.plan.expectedDamage,after.before.plan.expectedDamage);
+			assertEquals(before.after.resourceGaps,after.after.resourceGaps);
+			assertEquals(before.expectedDamage,after.expectedDamage);
+			if(used==28)
+			{
+				assertNull(before.after.plan); assertNull(after.after.plan);
+				assertTrue(after.after.resourceGaps.toString().contains("reserved inventory space"));
+			}
+			else
+			{
+				assertNotNull(before.after.resourceGaps.toString(),before.after.plan);
+				assertNotNull(after.after.resourceGaps.toString(),after.after.plan);
+				assertEquals(before.after.plan.expectedDamage,after.after.plan.expectedDamage);
+				assertEquals(before.after.plan.resources.spent,after.after.plan.resources.spent);
+			}
+		}
+	}
+	@Test public void quiverRangedToMeleeNeedsOnlyAWeaponEdit()
+	{
+		var original=fixture(catalog,26374,0,Map.of(),Map.of("inventory-slots-used",0,"quiver-ammo-id-raw",21944,"quiver-ammo-quantity-raw",10),false);
+		var s=original.choices.get(0).actual.state; var slots=new TreeMap<>(s.slots); slots.put("cape",28955);
+		var state=new CombatState(slots,s.realLevels,s.visibleLevels,s.prayers,s.style,s.specialEnergy,false,s.inventory,s.resources);
+		var source=fixture(catalog,state,null);
+		var result=evaluate(source,declaration(500,Map.of("weapon",27690),Map.of(27690,1)));
+		var upgrade=result.comparison.ownedToUpgrade.after;
+		assertNotNull(result.comparison.actualToOwned.before.resourceGaps.toString(),result.comparison.actualToOwned.before.plan);
+		assertEquals(Integer.valueOf(21944),result.comparison.actualToOwned.before.scenario.loadouts.get("selected").projectile.value());
+		assertNotNull(upgrade.resourceGaps.toString(),upgrade.plan);
+		assertEquals(Integer.valueOf(0),upgrade.scenario.loadouts.get("selected").projectile.value());
+		assertEquals(Integer.valueOf(0),upgrade.scenario.loadouts.get("selected").state.value().slots.get("ammo"));
+		assertEquals(1,upgrade.plan.resources.voidwakerSpecs); assertEquals(Integer.valueOf(0),upgrade.plan.spentAmmo.get(21944));
+		var redundant=evaluate(source,declaration(500,Map.of("weapon",27690,"ammo",0),Map.of(27690,1)));
+		assertEquals(redundant.comparison.ownedToUpgrade.after.plan.expectedDamage,upgrade.plan.expectedDamage);
+	}
+	@Test public void reportProjectsFrozenCalculationInputsWithSanitizedContext()
+	{
+		var source=fixture(catalog,27690,0,Map.of(),Map.of("inventory-slots-used",0),false);
+		String report=evaluate(source,declaration(500,Map.of("cape",21295),Map.of(21295,1))).report();
+		assertTrue(report.contains("schema 2"));
+		assertTrue(report.contains("real levels={AGILITY=99, ATTACK=99, DEFENCE=99, HITPOINTS=99, MAGIC=99, PRAYER=99, RANGED=99, STRENGTH=99}"));
+		assertTrue(report.contains("visible levels={AGILITY=99, ATTACK=118, DEFENCE=99, HITPOINTS=99, MAGIC=99, PRAYER=99, RANGED=112, STRENGTH=118}"));
+		assertTrue(report.contains("active prayer flags=[PIETY]; style button=1"));
+		assertTrue(report.contains("family/prayer/style=MELEE / PIETY / SLASH_AGGRESSIVE"));
+		assertTrue(report.contains("Captured context: target=NEX; phase=SMOKE; window=NONE"));
+		assertTrue(report.contains("Modeled context: target=NEX; phase=SMOKE; window=BASE"));
+		assertTrue(report.contains("Frozen public-state evidence; owned/hypothetical packages retain these levels, prayer flags and style button"));
+		assertFalse(report.contains("PRIVATE_SENTINEL")); assertFalse(report.contains("NEX@"));
 	}
 	@Test public void unknownStartAndRestoreAreNotSilentlyFilledFromResourceDeltas()
 	{
@@ -149,8 +214,10 @@ public class NexPlanComparisonTest
 	{
 		var original=fixture(catalog,27690,0,Map.of(999999,12345L),Map.of("inventory-slots-used",1),false);
 		var c=original.choices.get(0); var before=c.actual.state; var slots=new HashMap<>(before.slots); slots.put("PRIVATE_SENTINEL",12345);
-		var malformed=new CombatState(slots,before.realLevels,before.visibleLevels,before.prayers,before.style,before.specialEnergy,false,before.inventory,before.resources);
-		var sample=new NexSummary.Sample(0,"SMOKE","NONE","NEX@PRIVATE_SENTINEL","spec candidate",-1,malformed);
+		var levels=new TreeMap<>(before.realLevels); levels.put("PRIVATE_SENTINEL",12345);
+		var prayers=new HashSet<>(before.prayers); prayers.add("PRIVATE_SENTINEL");
+		var malformed=new CombatState(slots,levels,levels,prayers,before.style,before.specialEnergy,false,before.inventory,before.resources);
+		var sample=new NexSummary.Sample(0,"PRIVATE_SENTINEL","PRIVATE_SENTINEL","PRIVATE_SENTINEL","spec candidate",-1,malformed);
 		var choice=new NexOwnedResult.Choice(sample,null,null,"synthetic malformed slots",true,List.of());
 		var source=new NexOwnedResult(original.summary,List.of(choice),original.planning,Map.of());
 		var result=evaluate(source,declaration(500,Map.of(),Map.of()));

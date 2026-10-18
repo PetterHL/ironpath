@@ -12,7 +12,7 @@ import static com.ironpath.nex.SpecAttackPlan.*;
 /** Runtime N3A/B/C join. Captured packages are evaluated under a separately declared hypothetical plan. */
 public final class NexPlanComparison
 {
-	public static final String VERSION="nex-declared-plan-1";
+	public static final String VERSION="nex-declared-plan-2";
 	public static final int MAX_OPPORTUNITIES=128;
 	public enum Policy { ORDINARY, FIRST_SPECIAL, FUNDED_SPECIAL_WITH_ORDINARY_FALLBACK }
 	public static final class Declaration
@@ -70,9 +70,14 @@ public final class NexPlanComparison
 		public String report()
 		{
 			List<String> lines=new ArrayList<>(); Declaration d=declaration;
-			lines.add("IronPath conditional N3 scenario · schema 1 · "+VERSION);
+			lines.add("IronPath conditional N3 scenario · schema 2 · "+VERSION);
 			lines.add("Report-local kill K1; frozen calculation revision "+source.revision+"; captured state "+choiceIndex+"; pair "+pairIndex);
 			lines.add("Captured equipment and visible levels are inputs to hypothetical attacks, not attributed attack evidence.");
+			var sample=source.choices.get(choiceIndex).actual; Context context=context(sample);
+			lines.add("Captured context: target="+context.target+"; phase="+context.phase+"; window="+vocabulary(sample.window,"UNKNOWN","NONE","FEAR_THE_SHADOW","EMBRACE_DARKNESS",
+				"BLOOD_SIPHON","BLOOD_SACRIFICE","ICE_CONTAIN","ICE_PRISON","MINION_FUMUS","MINION_UMBRA","MINION_CRUOR","MINION_GLACIES"));
+			lines.add("Modeled context: target="+context.target+"; phase="+context.phase+"; window="+context.window+"; captured context reused as a fixed declared launch condition.");
+			lines.add("Frozen public-state evidence; owned/hypothetical packages retain these levels, prayer flags and style button. Equip/attack access and resource/HP conditions remain separate assumptions.");
 			lines.add("Declared horizon="+d.endTick+"; energy="+d.initialEnergy+"; first restore="+d.firstRestore+"; restore order="+d.order);
 			lines.add("Declared target HP="+d.targetHp+"; player HP="+d.playerHp+"; hard cap="+d.hardCap+"; Kandarin="+d.kandarin+"; ruby allowed="+d.rubyAllowed);
 			lines.add("Declared legal opportunities / attack-ready / no initial active charge / cast-ready="+d.legalAndReady+"; policy="+d.policy);
@@ -96,7 +101,19 @@ public final class NexPlanComparison
 		{
 			lines.add(label+": resource gaps="+e.resourceGaps);
 			for(var entry:new TreeMap<>(e.scenario.loadouts).entrySet())
-			{ lines.add(label+" "+entry.getKey()+" exact slots="+allowedSlots(entry.getValue().state.value())+"; projectile="+entry.getValue().projectile.value()); }
+			{
+				var loadout=entry.getValue(); var state=loadout.state.value(); String prefix=label+" "+entry.getKey();
+				lines.add(prefix+" exact slots="+allowedSlots(state)+"; projectile="+loadout.projectile.value()+"; package origin="+loadout.state.origin+"; role="+loadout.role);
+				lines.add(prefix+" real levels="+allowedLevels(state.realLevels)+"; visible levels="+allowedLevels(state.visibleLevels));
+				lines.add(prefix+" active prayer flags="+state.prayers.stream().filter(p->Set.of("PIETY","RIGOUR","DEADEYE","EAGLE_EYE","CHIVALRY","INCREDIBLE_REFLEXES","ULTIMATE_STRENGTH",
+					"STEEL_SKIN","THICK_SKIN","ROCK_SKIN","AUGURY","MYSTIC_MIGHT","SHARP_EYE","HAWK_EYE","BURST_OF_STRENGTH","SUPERHUMAN_STRENGTH","CLARITY_OF_THOUGHT","IMPROVED_REFLEXES").contains(p)).sorted().collect(java.util.stream.Collectors.toList())+"; style button="+state.style);
+				var inputs=e.packages.get(entry.getKey());
+				if(inputs!=null)
+				{
+					var setup=inputs.charged;
+					lines.add(prefix+" family/prayer/style="+setup.family+" / "+(inputs.melee?setup.meleePrayer:setup.rangedPrayer)+" / "+(inputs.melee?setup.meleeStyle:setup.rangedStyle));
+				}
+			}
 			if(e.plan==null) { return; }
 			var p=e.plan; var r=p.resources;
 			lines.add(label+": expected launch damage="+p.expectedDamage+"; expected self damage="+p.expectedSelfDamage+"; damage gaps="+p.gaps);
@@ -108,6 +125,13 @@ public final class NexPlanComparison
 			Map<String,Integer> slots=new TreeMap<>();
 			for(String slot:PoweredMagic.SLOTS) { slots.put(slot,state.slots.getOrDefault(slot,-1)); }
 			return slots;
+		}
+		private static Map<String,Integer> allowedLevels(Map<String,Integer> levels)
+		{
+			Map<String,Integer> out=new TreeMap<>();
+			for(String skill:List.of("ATTACK","STRENGTH","DEFENCE","RANGED","MAGIC","HITPOINTS","PRAYER","AGILITY"))
+			{ if(levels.containsKey(skill)) { out.put(skill,levels.get(skill)); } }
+			return out;
 		}
 		private static void delta(List<String> lines,String label,Delta delta)
 		{ lines.add(label+": expected damage change="+(delta.expectedDamage==null?"unavailable":String.format(Locale.ROOT,"%.6f",delta.expectedDamage))+"; energy change="+delta.spentEnergy+"; ammo change="+new TreeMap<>(delta.spentAmmo)+"; splinter change="+delta.spentSplinters+"; package changes="+new TreeMap<>(delta.packageChanges)); }
@@ -128,22 +152,18 @@ public final class NexPlanComparison
 			pair=pairs.get(pairIndex);
 		}
 		else if(pairIndex!=0) { throw new IllegalArgumentException("Selected owned pair is unavailable."); }
-		boolean melee=catalog.melee.items.stream().anyMatch(item->item.id==captured.slots.getOrDefault("weapon",-1));
-		int projectile=projectile(captured,melee);
+		int projectile=projectile(captured);
 		CombatState owned=pair==null?captured:state(captured,pair.afterSetup.slots);
 		int ownedProjectile=pair==null?projectile:pair.afterSetup.loadedAmmo;
 		Map<String,Integer> upgraded=new TreeMap<>(owned.slots); upgraded.putAll(d.upgrades);
 		CombatState upgrade=state(captured,upgraded);
-		int upgradeProjectile=d.upgrades.containsKey("ammo")?0:ownedProjectile;
+		int upgradeProjectile=projectile(upgrade);
 		String role=sample.role.equals("melee") || sample.role.equals("ranged")?sample.role:"spec";
 		Loadout actualLoad=new Loadout(role,ScenarioFact.observed(captured,"Frozen captured state; extraction time, not a kill timestamp","captured package",d.declaredAt),d.f(projectile,"projectile selection"),d.f(Retrieval.NONE,"no-retrieval branch"));
 		Loadout ownedLoad=new Loadout(role,d.f(owned,"owned package under declared conditions"),d.f(ownedProjectile,"projectile selection"),d.f(Retrieval.NONE,"no-retrieval branch"));
 		Loadout upgradeLoad=new Loadout(role,d.f(upgrade,"hypothetical complete package"),d.f(upgradeProjectile,"projectile selection"),d.f(Retrieval.NONE,"no-retrieval branch"));
 		List<Step> steps=new ArrayList<>(); Map<Integer,Integer> attackOrdinals=new HashMap<>();
-		String target=sample.target!=null && sample.target.split("@",2)[0].equals("NEX")?"NEX":"UNKNOWN";
-		String phase=sample.phase!=null && Set.of("SMOKE","SHADOW","BLOOD","ICE","ZAROS").contains(sample.phase)?sample.phase:"UNKNOWN";
-		Window window="FEAR_THE_SHADOW".equals(sample.window)?Window.FEAR_THE_SHADOW:"EMBRACE_DARKNESS".equals(sample.window)?Window.EMBRACE_DARKNESS
-			:sample.window!=null && Set.of("UNKNOWN","NONE").contains(sample.window)?Window.BASE:Window.SPECIAL;
+		Context context=context(sample);
 		for(int tick=0;tick<d.endTick;tick++)
 		{
 			if(d.casts.contains(tick)) { steps.add(Step.cast(tick,d.f(source.planning.upgradedDeathCharge,"declared cast upgrade state"))); }
@@ -154,7 +174,7 @@ public final class NexPlanComparison
 				for(int fallback=0;fallback<2;fallback++)
 				{
 					attackOrdinals.put(steps.size(),ordinal*2+fallback);
-					steps.add(Step.attack(tick,d.f(new Context(target,phase,window),"fixed target/phase window"),d.f(d.legalAndReady?Boolean.TRUE:null,"legal opportunity"),
+					steps.add(Step.attack(tick,d.f(context,"fixed target/phase window"),d.f(d.legalAndReady?Boolean.TRUE:null,"legal opportunity"),
 						d.f(d.targetHp,"fixed target HP per launch"),d.f(d.playerHp,"fixed player HP per launch"),d.f(d.hardCap,"hard cap"),d.f(d.rubyAllowed,"ruby effect allowed")));
 				}
 			}
@@ -162,20 +182,30 @@ public final class NexPlanComparison
 		Conditions conditions=new Conditions("Declared post-kill package scenario",d.f(d.endTick,"exclusive horizon"),d.f(d.initialEnergy,"starting energy"),
 			d.f(d.firstRestore,"restoration phase"),d.f(d.order,"same-tick natural restore order"),
 			d.f(d.legalAndReady?Start.ATTACK_READY_NO_CHARGE_CAST_READY:null,"initial attack/spell state"),d.f(d.kandarin,"hard Kandarin"),steps);
-		Stock base=stock(source,captured,List.of(actualLoad,ownedLoad,upgradeLoad),Map.of(),Map.of(),d);
-		Stock extra=stock(source,captured,List.of(actualLoad,ownedLoad,upgradeLoad),d.upgrades,d.upgradeQuantities,d);
+		Stock base=stock(source,captured,Map.of(),Map.of(),d);
+		Stock extra=stock(source,captured,d.upgrades,d.upgradeQuantities,d);
 		Stock ownedStock=choice.bankPreparation?new Stock(Availability.BANK_PREPARATION,base.equipment,base.ammunition,base.splinters,base.inventorySpace,base.unlocks,
-			ScenarioFact.unknown("Bank presence is not usable joint stock or a verified packing plan","bank packing"),Set.of()):base;
-		if(choice.bankPreparation) { extra=new Stock(Availability.BANK_PREPARATION,extra.equipment,extra.ammunition,extra.splinters,extra.inventorySpace,extra.unlocks,ownedStock.bankPacking,extra.hypothetical); }
+			ScenarioFact.unknown("Bank presence is not usable joint stock or a verified packing plan","bank packing"),Set.of(),base.inventoryItems):base;
+		if(choice.bankPreparation) { extra=new Stock(Availability.BANK_PREPARATION,extra.equipment,extra.ammunition,extra.splinters,extra.inventorySpace,extra.unlocks,ownedStock.bankPacking,extra.hypothetical,extra.inventoryItems); }
 		Scenario actual=new Scenario("Captured package under declared attacks",Kind.ACTUAL,Map.of("selected",actualLoad),actions(actualLoad,attackOrdinals,d),base);
 		Scenario proposed=new Scenario("Selected supported owned package",Kind.OWNED,Map.of("captured",actualLoad,"selected",ownedLoad),actions(ownedLoad,attackOrdinals,d),ownedStock);
 		Scenario hypothetical=new Scenario("Owned plus declared hypothetical edits",Kind.UPGRADE,Map.of("captured",actualLoad,"owned",ownedLoad,"selected",upgradeLoad),actions(upgradeLoad,attackOrdinals,d),extra);
 		var comparison=new NexPackageComparison(catalog).compare(conditions,actual,proposed,hypothetical,source.planning);
 		return new Result(source,choiceIndex,pairIndex,d,comparison);
 	}
-	private int projectile(CombatState state,boolean melee)
+	private static String vocabulary(String value,String... allowed)
+	{ return Arrays.asList(allowed).contains(value)?value:"UNKNOWN"; }
+	private static Context context(NexSummary.Sample sample)
 	{
-		if(melee) { return 0; }
+		String target=sample.target!=null && sample.target.split("@",2)[0].equals("NEX")?"NEX":"UNKNOWN";
+		String phase=vocabulary(sample.phase,"SMOKE","SHADOW","BLOOD","ICE","ZAROS");
+		Window window="FEAR_THE_SHADOW".equals(sample.window)?Window.FEAR_THE_SHADOW:"EMBRACE_DARKNESS".equals(sample.window)?Window.EMBRACE_DARKNESS
+			:sample.window!=null && Set.of("UNKNOWN","NONE").contains(sample.window)?Window.BASE:Window.SPECIAL;
+		return new Context(target,phase,window);
+	}
+	private int projectile(CombatState state)
+	{
+		if(catalog.melee.items.stream().anyMatch(item->item.id==state.slots.getOrDefault("weapon",-1))) { return 0; }
 		RangedItem weapon=catalog.ranged.items.stream().filter(i->i.id==state.slots.getOrDefault("weapon",-1)).findFirst().orElse(null);
 		RangedItem ammo=catalog.ranged.items.stream().filter(i->i.id==state.slots.getOrDefault("ammo",-1)).findFirst().orElse(null);
 		return weapon!=null && weapon.weapon!=null && !RangedModel.compatible(weapon,ammo)?state.resources.getOrDefault("quiver-ammo-id-raw",0):0;
@@ -196,7 +226,7 @@ public final class NexPlanComparison
 		}
 		return actions;
 	}
-	private Stock stock(NexOwnedResult source,CombatState captured,List<Loadout> loadouts,Map<String,Integer> edits,Map<Integer,Integer> quantities,Declaration d)
+	private Stock stock(NexOwnedResult source,CombatState captured,Map<String,Integer> edits,Map<Integer,Integer> quantities,Declaration d)
 	{
 		Map<Integer,Integer> gear=new TreeMap<>(),ammo=new TreeMap<>();
 		if(captured.inventory!=null) captured.inventory.forEach((id,n)->{ if(id>0 && n>0 && n<=20000) { gear.put(id,n.intValue()); } });
@@ -214,15 +244,13 @@ public final class NexPlanComparison
 			if(n==null) { throw new IllegalArgumentException("Declare the usable quantity for every hypothetical item."); }
 			hypothetical.add(id); if(projectiles.contains(id)) { ammo.merge(id,n,Integer::sum); } else { gear.merge(id,n,Integer::sum); }
 		}
-		Set<Integer> relevant=new HashSet<>();
-		for(Loadout l:loadouts) { relevant.addAll(l.state.value().slots.values()); if(l.projectile.known()) { relevant.add(l.projectile.value()); } }
+		Set<Integer> inventoryItems=new HashSet<>();
+		if(captured.inventory!=null) { captured.inventory.forEach((id,n)->{ if(id>0 && n>0) { inventoryItems.add(id); } }); }
 		int used=captured.resources.getOrDefault("inventory-slots-used",-1);
 		Integer space=used<0 || used>28?null:28-used;
-		if(space!=null && captured.inventory!=null)
-		{ for(int id:relevant) if(captured.inventory.getOrDefault(id,0L)>0) { space++; } }
 		Integer splinters=captured.resources.get("quiver-splinters-raw"); if(splinters!=null && (splinters<0 || splinters>20000)) { splinters=null; }
 		return new Stock(Availability.CARRIED,captured.inventory==null?ScenarioFact.unknown("Captured inventory unread","usable carried equipment"):d.f(gear,"frozen worn and carried stock"),
-			d.f(ammo,"exact selected projectile counters; no bank stock"),d.f(splinters,"sampled quiver stock"),d.f(space,"space after reserving captured supplies"),
-			d.f(source.scenarioUnlocks,"frozen account/manual equip facts; unknown values preserved"),d.f(false,"no bank packing established"),hypothetical);
+			d.f(ammo,"exact selected projectile counters; no bank stock"),d.f(splinters,"sampled quiver stock"),d.f(space,"unoccupied captured inventory slots; scenario equipment stacks reclaimed during packing"),
+			d.f(source.scenarioUnlocks,"frozen account/manual equip facts; unknown values preserved"),d.f(false,"no bank packing established"),hypothetical,inventoryItems);
 	}
 }

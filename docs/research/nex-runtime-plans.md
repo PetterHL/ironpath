@@ -1,7 +1,7 @@
 # Post-kill N3A/N3B/N3C integration
 
 18 October 2026. Development build 0.22.0. Runtime join
-`nex-declared-plan-1`; package bridge `nex-package-3`. Based on main `96d91e8`;
+`nex-declared-plan-2`; package bridge `nex-package-4`. Based on main `96d91e8`;
 CTX1 remains a separate PR. Existing mechanics and source/licence reviews are
 retained in [resources](nex-spec-resources.md), [damage/ammo](nex-spec-damage.md)
 and [packages](nex-packages.md). No new game formula or external dataset is added.
@@ -56,8 +56,11 @@ pools appear in the result report.
 Hypothetical edits can change multiple slots (for example weapon + compatible
 bolts + empty offhand), with explicit exact item forms and added usable quantities.
 Original stock is preserved; hypothetical additions never enter the owned baseline.
-All plans reserve the same inventory space after captured supplies, retaining
-worn reserve packages so displaced gear cannot disappear. An observed reserve
+All plans share the same captured free space and occupied-stack facts. Each
+scenario reclaims a captured stack's reserved slot only when its own loadouts use
+that item/projectile; unrelated carried gear and supplies remain reserved.
+Hypothetical edits cannot change captured-to-owned packing or results. Worn reserve
+packages retain displaced gear. An observed reserve
 package is exempt from proposal locks; actions using a proposed package still
 obey them. An unchanged exact worn item retains observed equip usability at the
 same real levels; this does not turn bank presence into an equip unlock or persist
@@ -88,8 +91,14 @@ world/profile changes, suspended travel and detached views cannot publish or cop
 old data. A new kill does not rewrite an already-inspected plan. No plan edits or
 performance data are persisted.
 
-**Copy plan report** exports fixed allowed fields: declared numeric conditions,
-exact relevant package slots, scoped totals/deltas/gaps and model/source versions.
+**Copy plan report** schema 2 exports fixed allowed fields: declared numeric conditions,
+exact relevant package slots/projectiles, frozen real/visible levels, active prayer
+flags, style button and derived family/prayer/style, sanitized captured and modeled
+target/phase/window, scoped totals/deltas/gaps and model/source versions.
+Captured public-state inputs, inherited inputs in assumed packages and declared
+launch/HP/resource assumptions remain separately labeled. Projectile selection is
+derived from each resulting hypothetical package; a melee weapon clears quiver
+selection without changing the physical ammo slot.
 It omits names, account/profile IDs, roster/cohort strings, raw traces and unrelated
 containers; it is bounded to 24,000 characters with a truncation notice. A selectable
 report and explicit feedback handle clipboard failure. Main Diagnostics schema 2
