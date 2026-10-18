@@ -76,7 +76,7 @@ final class NexPanel extends PluginPanel
 		if(!page.equals("diagnostics") || !available || paused || stats.attempts==0) { clearReport(); }
 		if(account==null || (!paused && stats.attempts==0))
 		{
-			inspected=null; inspectedOwned=null; inspectedCalculation=null; diagnosticSummary=null; diagnosticOwned=null;
+			inspected=null; inspectedOwned=null; inspectedCalculation=null; diagnosticSummary=null; diagnosticOwned=null; diagnosticRecord=null;
 			ownedIndex=0; returnPosition=null;
 			if(account==null) { contextTarget=null; contextEditor=null; diagnosticRecord=null; }
 		}

@@ -2,10 +2,11 @@
 
 18 October 2026. Development build **0.21.0**, based on UI1's merged main
 `96d91e8912d56548b72c4587e03ee683e43892e5`. Implemented for review; feature merge
-and live/player acceptance remain separate. Implementation commit:
+and live/player acceptance remain separate. Initial implementation commit:
 [`789f69e70991e63a77bcdf334f75fd6fe3c53591`](https://github.com/PetterHL/ironpath/commit/789f69e70991e63a77bcdf334f75fd6fe3c53591).
-Subsequent evidence edits are documentation only. The delivery PR links its current
-head's CI run/artifact.
+The delivery also clears the panel's frozen diagnostic-record reference on Reset,
+alongside the existing result/report references. The delivery PR records its current
+head and links that head's CI run/artifact.
 
 ## Result and boundaries
 
@@ -103,7 +104,7 @@ Performed from the delivery worktree:
 git diff --check
 ```
 
-Pinned validation passed in **44 s**: **309 tests, 0 failures**; all **12 DEV1
+Pinned validation passed: **309 tests, 0 failures**; all **12 DEV1
 scenarios, 701 checks, 0 failures**; **150 PNGs**, nine baseline diagnostic reports
 at both fonts and three corrected reports at both fonts. Normal build passed in
 **5 s**, reusing identical test/build outputs. Dependency inspection resolved
