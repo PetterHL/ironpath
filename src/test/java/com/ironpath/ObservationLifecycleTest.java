@@ -436,7 +436,7 @@ public class ObservationLifecycleTest
 		SwingUtilities.invokeAndWait(()->{});
 		var navigation=org.mockito.ArgumentCaptor.forClass(net.runelite.client.ui.NavigationButton.class);
 		verify(plugin.toolbar).addNavigation(navigation.capture());
-		assertTrue(panelText(navigation.getValue().getPanel()).contains("Last complete kill"));
+		assertTrue(panelText(navigation.getValue().getPanel()).contains("Last kill"));
 		when(client.getTickCount()).thenReturn(2010); plugin.onGameStateChanged(loading);
 		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(null); plugin.onGameStateChanged(loggedIn);
 		when(client.getTickCount()).thenReturn(4000); tick(); tick();

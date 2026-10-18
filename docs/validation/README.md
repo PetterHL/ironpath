@@ -7,7 +7,11 @@ banking/history regressions, native previews and remaining live boundaries.
 The [18 October consolidation](main-consolidation-20261018.md) records the common
 main baseline, preserved history, validation and updated UI1/CTX1 task order.
 
-Current build **0.21.0** supplies [CTX1 editable kill context](ctx1-kill-context.md),
+Current build **0.21.1** supplies [UI1 native visual refinement](ui1-native-refinement.md),
+with before/after native screenshots for issue #44. It follows corrected CTX1
+in a separate dependent PR; screenshot review and live acceptance stay open.
+
+Build **0.21.0** supplies [CTX1 editable kill context](ctx1-kill-context.md),
 implemented for review with three added DEV1 scenarios. Live acceptance stays open.
 
 Build 0.20.0 supplies [UI1 Encounter/Diagnostics and sanitized reports](ui1-encounter-diagnostics.md), merged into main.

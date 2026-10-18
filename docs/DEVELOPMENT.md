@@ -279,3 +279,14 @@ new complete public-event kill. These exercise the combined N3b/N3c/banking
 main baseline; original DEV1 results retain their own delivery scope. Real-client event mappings, stock/charges,
 real sprites, focus/scroll/GPU behavior and player usefulness still require the
 N1–N4 checks. DEV1 adds no real encounter recorder/export or relaxed trace policy.
+
+### Reviewing issue #44's native refinement
+
+The corrected CTX1 baseline is `2fe53429526a2e43a6489e48af3cfba596925b03`.
+[Selected before/after screenshots and reference comparison](validation/ui1-native-refinement.md)
+record the same synthetic fixture at 225 × 600 and fonts 12/20. The complete
+scenario additionally renders `pending-main-*`, `no-improvement-main-*` and
+`comparison-viewport-*`; the context scenario adds `context-editor-viewport-*`.
+Inspect full-height images as well as the viewport. First-screen checks include
+observed duration, context Edit and the first comparison's benefit and phase.
+Real ItemManager sprites remain a client check; offline diamonds are placeholders.

@@ -7,7 +7,13 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**18 October 2026: development build 0.21.0 — CTX1 implemented for review.**
+**18 October 2026: development build 0.21.1 — native UI refinement for review.**
+The 225px Encounter panel groups the last kill, optional context and supported
+setup comparisons in distinct cards. Diagnostics keeps calculation status,
+limitations and explicit report copying together. [Before/after screenshots,
+verification and open client checks](docs/validation/ui1-native-refinement.md).
+This follows corrected CTX1 in a separate PR; its dependency remains explicit.
+
 Optionally save usual Nex context before play or **Edit kill context** on the
 latest completed or already-inspected kill. Strategy (MP2/RP2/Other/Unknown),
 group mode and participation are separate fields. Apply affects the selected

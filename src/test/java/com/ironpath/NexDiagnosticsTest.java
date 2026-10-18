@@ -64,6 +64,42 @@ public class NexDiagnosticsTest
 		result.choices.get(0).comparison.target.defenceLevel=1;
 		assertEquals(text,snapshot.format());
 	}
+	@Test public void compactCardsExpandWithoutDroppingAlternativesAndKeepSelectionWhenReturningFromDiagnostics() throws Exception
+	{
+		List<NexSummary.Sample> samples=new ArrayList<>();
+		for(String missing:List.of("none","head","neck"))
+		{
+			var slots=new LinkedHashMap<>(NexOwnedFixtures.ranged()); if(!missing.equals("none")) { slots.put(missing,0); }
+			samples.add(NexOwnedFixtures.sample("ranged",NexOwnedFixtures.state(slots,Map.of(11212,200L))));
+		}
+		var summary=NexOwnedFixtures.summary(samples); var result=evaluate(summary); var cards=NexPresentation.cards(result);
+		assertTrue("Three distinct complete-package changes",cards.size()>=3);
+		SwingUtilities.invokeAndWait(()->{
+			var session=new NexSession(); session.select("test",301); session.add(summary);
+			var panel=new NexPanel(null); var account=NexOwnedFixtures.account(null);
+			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			assertTrue(selectedTab(panel,"nex-nav-encounter")); assertFalse(selectedTab(panel,"nex-nav-diagnostics"));
+			assertEquals(2,visibleCards(panel));
+			PanelPreview.click(panel,"More comparisons ("+(cards.size()-2)+")"); assertEquals(cards.size(),visibleCards(panel));
+			panel.render("Account refresh",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			assertEquals("Expansion survives refresh",cards.size(),visibleCards(panel));
+			var third=cards.get(2);
+			((JButton)PanelPreview.children(panel).stream().filter(c->("nex-card-"+third.choiceIndex).equals(c.getName())).findFirst().orElseThrow()).doClick();
+			assertEquals(third.pairIndex,PanelPreview.combo(panel,"nex-owned-pair").getSelectedIndex());
+			PanelPreview.click(panel,"Diagnostics"); assertTrue(selectedTab(panel,"nex-nav-diagnostics"));
+			PanelPreview.click(panel,"Back to comparison");
+			assertEquals(third.pairIndex,PanelPreview.combo(panel,"nex-owned-pair").getSelectedIndex());
+			PanelPreview.click(panel,"Back to encounter"); assertEquals(cards.size(),visibleCards(panel));
+			PanelPreview.click(panel,"Fewer comparisons"); assertEquals(2,visibleCards(panel));
+			PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Calculation details");
+			assertTrue(PanelPreview.text(panel).contains("build "+BuildInfo.VERSION));
+			assertTrue(PanelPreview.text(panel).contains("Independent state comparisons"));
+		});
+	}
+	private static long visibleCards(NexPanel panel)
+	{ return PanelPreview.children(panel).stream().filter(c->c.getName()!=null && c.getName().startsWith("nex-equipment-card-") && PanelPreview.visible(c)).count(); }
+	private static boolean selectedTab(NexPanel panel,String name)
+	{ return ((JButton)PanelPreview.children(panel).stream().filter(c->name.equals(c.getName())).findFirst().orElseThrow()).isSelected(); }
 	@Test public void hiddenOrMismatchedResultsCannotBeExported()
 	{
 		var summary=summary(1,true); var result=evaluate(summary);
@@ -110,7 +146,7 @@ public class NexDiagnosticsTest
 			var panel=new NexPanel(null,text->{ copied.set(text); throw new IllegalStateException("busy"); },NexReport.Provenance.SYNTHETIC_OFFLINE);
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",original);
 			assertTrue(PanelPreview.text(panel).contains("Dragon arrow")); assertFalse(PanelPreview.text(panel).contains("Twisted bow"));
-			assertTrue(PanelPreview.text(panel).contains("No matched average")); assertFalse(PanelPreview.text(panel).contains("Session mean"));
+			assertFalse(PanelPreview.text(panel).contains("No matched average")); assertFalse(PanelPreview.text(panel).contains("Session mean"));
 			PanelPreview.click(panel,"Compare package"); PanelPreview.click(panel,"Diagnostics");
 			PanelPreview.click(panel,"Copy report now");
 			assertTrue(PanelPreview.text(panel).contains("Clipboard unavailable or busy"));

@@ -24,6 +24,17 @@ final class NexContextEditor extends JPanel
 	{
 		this.key=key; this.revision=revision; this.initial=initial;
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setOpaque(false); setAlignmentX(LEFT_ALIGNMENT); setFont(font);
+		for(JComboBox<?> field:java.util.List.of(strategy,group,participation))
+		{
+			field.setRenderer(new DefaultListCellRenderer() {
+				@Override public java.awt.Component getListCellRendererComponent(JList<?> list,Object value,int index,boolean selected,boolean focus)
+				{
+					String label=value==null?"":value.toString();
+					if(!label.equals("MP2") && !label.equals("RP2") && !label.isEmpty()) { label=label.charAt(0)+label.substring(1).toLowerCase(java.util.Locale.ROOT); }
+					return super.getListCellRendererComponent(list,label,index,selected,focus);
+				}
+			});
+		}
 		strategy.setName("nex-context-strategy"); group.setName("nex-context-group"); participation.setName("nex-context-participation"); count.setName("nex-context-count");
 		strategy.setSelectedItem(initial.strategy); group.setSelectedItem(initial.group); participation.setSelectedItem(initial.participation);
 		count.setText(initial.participants==null?"":initial.participants.toString());
@@ -35,7 +46,7 @@ final class NexContextEditor extends JPanel
 		Runnable eligibility=()->{ count.setEnabled(participation.getSelectedItem()==Participation.EXACT); };
 		participation.addActionListener(e->eligibility.run()); eligibility.run();
 		if(key>=0) { control(remember); }
-		label(key<0?"Defaults apply to the next attempt and remain unconfirmed for each kill.":"Confirm only facts you know for this kill. Variable participation has no exact count. Future defaults are separate.");
+		PanelWidgets.label(this,key<0?"For future attempts; each kill stays unconfirmed.":"Confirm what you know for this kill. Future defaults are separate.",false,0,PanelWidgets.MUTED);
 		PanelWidgets.text(this,""); error=(JTextArea)getComponent(getComponentCount()-1); error.setName("nex-context-error");
 		applyButton=PanelWidgets.button(this,key<0?"Save defaults":"Apply context",()->{}); applyButton.setName("nex-context-apply");
 		applyButton.addActionListener(e->{
@@ -66,10 +77,15 @@ final class NexContextEditor extends JPanel
 	}
 	private Source source(JCheckBox confirmed,boolean unchanged,Source previous)
 	{ return key<0?Source.INHERITED:confirmed.isSelected()?Source.ANNOTATED:unchanged && previous==Source.INHERITED?Source.INHERITED:Source.UNCONFIRMED; }
-	private void label(String text) { PanelWidgets.text(this,text); }
+	private void label(String text)
+	{
+		JTextArea label=PanelWidgets.label(this,text,true,0,net.runelite.client.ui.ColorScheme.TEXT_COLOR);
+		label.setBorder(BorderFactory.createEmptyBorder(8,0,3,0));
+	}
 	private void control(JComponent component)
 	{
 		component.setFont(getFont()); component.setAlignmentX(LEFT_ALIGNMENT);
+		if(component instanceof JCheckBox) { component.setOpaque(false); }
 		component.setMaximumSize(new Dimension(net.runelite.client.ui.PluginPanel.PANEL_WIDTH-12,Math.max(28,component.getPreferredSize().height)));
 		component.getAccessibleContext().setAccessibleName(component.getName()==null?"Context field":component.getName()); add(component);
 	}

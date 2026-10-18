@@ -1,8 +1,45 @@
 # Encounter-first UX
 
 Encounter direction selected 15 October; UI review incorporated 18 October 2026.
-UI1 is merged in 0.20.0; CTX1 is implemented for review in 0.21.0. TASKS.md owns
+UI1 is visually refined for review in 0.21.1, on CTX1 0.21.0. TASKS.md owns
 delivery. Later versioned sections retain the implemented behavior/history.
+
+## Native refinement (0.21.1, issue #44)
+
+Use the existing Encounter / Diagnostics reference as a visual guide, adapted to
+one 225px native sidebar. It does not replace the product contract or roadmap.
+Show a clear selected tab, quiet dark surfaces, separated sections and native
+ItemManager sprites. Enlarged fonts stay enlarged; tabs can stack to avoid elision.
+
+Encounter order: Nex; a last-complete-kill card with prominent observed duration
+and damage share labeled as Nex/minion hitsplats; one compact context summary
+with Edit; **Compare setups**. An unconfirmed/unknown context remains explicit.
+Show a matched mean only when more than one compatible kill makes it useful.
+Timer boundaries, exclusions and damage interpretation remain inspectable.
+
+Each equipment card names the actual changed item or complete package, gives
+supported modelled DPS, role/phase, one short reason, material carried/bank and
+partial-search qualifiers, and Details. Begin with two deterministic cards at
+most; **More comparisons** exposes the rest without sorting independent state
+percentages. All zero/negative/unavailable alternatives remain accessible through
+**Owned setup comparisons**. This display limit is not a product/catalogue ceiling.
+
+Setup, Account, future context, kill/comparison details and Reset remain explicit
+secondary controls; capture settings and counts sit in Session tools. No raw tick
+IDs, repeated pilot disclaimers or empty matched statistics crowd the main view.
+Diagnostics groups Inputs, Calculation status and Missing / limited; expandable
+Calculation details retain versions, exact scope, support counts and matching rules.
+The actual build remains directly visible. Copy report and selectable fallback
+keep the same immutable selection, account guards and privacy contract.
+
+The optional context editor retains independent strategy/group/participation,
+per-field confirmation/provenance, explicit Apply and separate future defaults.
+Historical edits/report navigation cannot interrupt another active attempt.
+Actual-to-owned and owned-to-new-upgrade value, relevant acquisition/recurring
+costs and validated N4 contribution/team-time remain governed by TASKS and DESIGN.
+This refinement adds no unsupported metric or new combat formula.
+
+[Native before/after screenshots, visual comparison and open client checks](validation/ui1-native-refinement.md).
 
 ## UI1 implementation (0.20.0, for review)
 
@@ -10,7 +47,7 @@ One native 225px panel with **Encounter / Diagnostics** primary navigation.
 Setup and Account remain explicit secondary actions, together with comparisons,
 kill/attempt details and Reset. Keep frozen inspection and Back/scroll behavior.
 
-Encounter order: boss and pilot model scope; last complete duration and scoped
+Original 0.20.0 order (refined above): boss and pilot model scope; last complete duration and scoped
 observed hitsplat share; compact comparable mean/count; **Improve your setup**
 cards; secondary actions. Keep failed/censored attempts separate. At n=1, show
 one matching kill rather than repeating its mean/range. Details retain spread,

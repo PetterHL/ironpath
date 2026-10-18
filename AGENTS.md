@@ -14,6 +14,15 @@
 
 ## Next delivery
 
+- Issue #44's UI1 visual follow-up is implemented for review in **0.21.1**.
+  Read docs/validation/ui1-native-refinement.md. It is a separate follow-up based
+  on corrected CTX1 `2fe5342` and targets PR #43's branch while that PR is open;
+  it authorizes neither dependency merge nor publication. Current main also has
+  the separate N3 declared-plan delivery; reconcile it when the dependency lands.
+- Preserve the compact last-kill/context/setup-card hierarchy, selected tabs,
+  all deterministic alternatives and optional per-field context confirmation.
+  Keep technical explanations in Details/Diagnostics, with material scope beside
+  each claim. More comparisons is a disclosure, never a ranking or result filter.
 - UI1 is merged in main at 96d91e8. CTX1 is implemented for review in
   **0.21.0**; read docs/validation/ctx1-kill-context.md. Its feature PR still needs
   review/merge authorization; live acceptance is open. TASKS.md is the sole roadmap.

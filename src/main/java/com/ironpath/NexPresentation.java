@@ -53,4 +53,24 @@ final class NexPresentation
 		{ changed.put("quiver projectile",pair.afterSetup.loadedAmmo>0?pair.afterSetup.loadedAmmo:pair.afterSetup.slots.getOrDefault("ammo",-1)); }
 		return Collections.unmodifiableMap(changed);
 	}
+	static String scope(NexOwnedResult.Choice choice)
+	{
+		String phase=choice.actual.phase.toLowerCase(Locale.ROOT).replace('_',' ');
+		return Character.toUpperCase(choice.actual.role.charAt(0))+choice.actual.role.substring(1)+" · "+phase;
+	}
+	static String reason(ComparisonResult pair)
+	{
+		boolean hit=pair.after.maxHit>pair.before.maxHit, accuracy=pair.available(ComparisonResult.Metric.HIT_CHANCE) && pair.after.hitChance>pair.before.hitChance;
+		if(hit && accuracy) { return "Higher max hit and accuracy."; }
+		if(hit) { return "Higher max hit."; }
+		if(accuracy) { return "Higher accuracy."; }
+		return "More damage in this setup.";
+	}
+	static String context(com.ironpath.nex.NexContext context)
+	{
+		String strategy=context.strategy==com.ironpath.nex.NexContext.Strategy.UNKNOWN?"Unknown strategy":context.strategy==com.ironpath.nex.NexContext.Strategy.OTHER?"Other strategy":context.strategy.name();
+		String group=context.group==com.ironpath.nex.NexContext.Group.ORGANIZED?"":context.group==com.ironpath.nex.NexContext.Group.MASS?" · mass":" · unknown group";
+		String count=context.participants!=null?context.participants+" players":context.participation==com.ironpath.nex.NexContext.Participation.VARIABLE?"variable group":"unknown count";
+		return strategy+group+" · "+count+" · "+(context.confirmed()?"confirmed":"unconfirmed");
+	}
 }

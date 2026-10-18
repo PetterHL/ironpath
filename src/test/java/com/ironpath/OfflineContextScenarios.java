@@ -59,6 +59,7 @@ final class OfflineContextScenarios
 		report.check("Single confirmed kill is eligible",1,r.plugin.nexSession.stats().n);
 		capture(r,output,"corrected-context",font,report);
 		edt(()->{
+			PanelPreview.viewport(r.panel,output.resolve("context-editor-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics","nex-context-strategy"),report);
 			PanelPreview.viewport(r.panel,output.resolve("context-fields-viewport-"+font+".png"),225,600,"nex-context-strategy",List.of("nex-context-strategy","nex-context-group","nex-context-participation","nex-context-count"),report);
 			PanelPreview.viewport(r.panel,output.resolve("context-apply-viewport-"+font+".png"),225,600,"nex-context-participation",List.of("nex-context-participation","nex-context-count","nex-context-apply"),report);
 			PanelPreview.click(r.panel,"Context sources");
@@ -227,7 +228,7 @@ final class OfflineContextScenarios
 		edt(()->staleApply[0].doClick(0)); r.callbacks.drain();
 		report.check("Public replays evict the annotated inspected record and its inputs",null,r.plugin.nexSession.record(next.key));
 		report.check("Completed evidence and annotations share the 50-record bound",NexSession.MAX_RECENT,r.plugin.nexSession.stats().records.size());
-		edt(()->report.check("Evicted editor cannot remain visible",false,PanelPreview.text(r.panel).contains("Kill #"+next.key+" context")));
+		edt(()->report.check("Evicted editor cannot remain visible",false,PanelPreview.children(r.panel).stream().anyMatch(c->"nex-context-strategy".equals(c.getName()) && PanelPreview.visible(c))));
 		capture(r,output,"context-evicted",font,report);
 		open(r); fillAndApply(r,Strategy.MP2,Group.ORGANIZED,Participation.EXACT,3,true,false); r.callbacks.drain();
 		r.runWorker(r.workers.take()); Runnable logoutStale=r.callbacks.take();

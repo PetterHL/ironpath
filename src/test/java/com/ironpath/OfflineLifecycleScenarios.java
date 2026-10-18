@@ -103,7 +103,7 @@ final class OfflineLifecycleScenarios
 		report.check("No last complete summary", null, r.plugin.nexSession.stats().last);
 		report.check("No complete timing mean", true, Double.isNaN(r.plugin.nexSession.stats().meanSeconds));
 		report.check("No post-kill comparison manufactured", null, r.plugin.ownedResult);
-		onEdt(() -> report.check("Incomplete result is visible", true, PanelPreview.text(r.panel).contains("Last attempt · CENSORED")));
+		onEdt(() -> report.check("Incomplete result is visible", true, PanelPreview.text(r.panel).contains("Latest attempt incomplete.")));
 		capture(r, output, "excluded", font, report);
 		onEdt(() -> PanelPreview.click(r.panel, "Last attempt details"));
 		capture(r, output, "excluded-details", font, report);
@@ -273,7 +273,7 @@ final class OfflineLifecycleScenarios
 		capture(r, output, "frozen-details", font, report);
 		onEdt(() -> {
 			PanelPreview.click(r.panel, "Back to encounter");
-			report.check("Returning shows the latest complete timing", true, PanelPreview.text(r.panel).contains("Last complete kill · 24.0 s"));
+			report.check("Returning shows the latest complete timing", true, PanelPreview.text(r.panel).contains("Last kill") && PanelPreview.text(r.panel).contains("24.0 s"));
 			PanelPreview.click(r.panel, "Owned setup comparisons");
 			report.check("Reopening comparisons selects the latest kill", true, PanelPreview.text(r.panel).contains("Owned equipment · kill #" + third.key));
 		});

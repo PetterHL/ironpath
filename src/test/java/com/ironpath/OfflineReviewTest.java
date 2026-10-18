@@ -21,7 +21,7 @@ public class OfflineReviewTest
 		var result = OfflineReview.run("nex-complete", output);
 		assertTrue(Files.readString(output.resolve("report.md")), result.passed());
 		assertFalse(Files.exists(output.resolve("stale.png")));
-		try (var files = Files.list(output)) { assertEquals(20, files.filter(p -> p.toString().endsWith(".png")).count()); }
+		try (var files = Files.list(output)) { assertEquals(26, files.filter(p -> p.toString().endsWith(".png")).count()); }
 		assertEquals(225, javax.imageio.ImageIO.read(output.resolve("main-20.png").toFile()).getWidth());
 	}
 

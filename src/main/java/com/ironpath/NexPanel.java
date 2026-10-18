@@ -43,6 +43,7 @@ final class NexPanel extends PluginPanel
 	private JTextArea reportArea;
 	private JScrollPane reportScroll;
 	private String reportFeedback="";
+	private boolean moreComparisons, sessionTools;
 
 	private String page="encounter";
 	private NexSummary inspected;
@@ -112,7 +113,7 @@ final class NexPanel extends PluginPanel
 		for(var component:getComponents()) { if(component!=reportScroll && component!=contextEditor) { remove(component); } }
 		if(contextEditor!=null && (!page.equals("context") || !available || paused)) { remove(contextEditor); }
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
-		text("IronPath · build "+BuildInfo.VERSION); text("Nex · Trio MP2 pilot model");
+		PanelWidgets.label(this,"IronPath",true,3,ColorScheme.TEXT_COLOR);
 		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active);
 		java.util.function.BooleanSupplier valid=()->view==currentView && (actions==null || actions.current());
 		// Frozen kill views depend on session/result revisions, not unrelated live account reads.
@@ -139,6 +140,11 @@ final class NexPanel extends PluginPanel
 				page=destination; redraw.run();
 			});
 			tab.setName("nex-nav-"+destination); tab.getAccessibleContext().setAccessibleDescription(destination+" view");
+			boolean selected=page.equals(destination) || destination.equals("encounter") && !page.equals("diagnostics");
+			tab.putClientProperty("selected",selected);
+			tab.setSelected(selected); tab.getAccessibleContext().setAccessibleDescription((selected?"Selected ":"")+destination+" view");
+			tab.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0,0,3,0,selected?new java.awt.Color(191,198,208):PanelWidgets.LINE),BorderFactory.createEmptyBorder(5,3,5,3)));
+			tab.setFont(getFont().deriveFont(selected?java.awt.Font.BOLD:java.awt.Font.PLAIN));
 		}
 		add(nav);
 		if(page.equals("diagnostics"))
@@ -163,9 +169,9 @@ final class NexPanel extends PluginPanel
 			if(contextTarget!=null && record==null) { text("This kill is no longer retained."); }
 			else
 			{
-				heading(record==null?"Future kill context":"Kill #"+contextTarget.key+" context · revision "+record.revision);
+				heading(record==null?"Future kill context":"Kill context");
 				if(record!=null)
-				{ text(String.format(Locale.ROOT,"Observed %.1f s · %d / %d damage",contextTarget.seconds(),contextTarget.localDamage(),contextTarget.totalDamage()));
+				{ text(String.format(Locale.ROOT,"Selected kill · %.1f s",contextTarget.seconds()));
 					text(record.calculation==null?"Updating calculation…":"Context applied"); }
 				long key=record==null?-1:record.summary.key, annotationRevision=record==null?-1:record.revision;
 				if(contextEditor==null || contextEditor.key!=key || contextEditor.revision!=annotationRevision
@@ -190,45 +196,57 @@ final class NexPanel extends PluginPanel
 		else if(inspected!=null) { back(redraw,contextValid); context(stats.record(inspected),redraw,contextValid); details(inspected,catalog,contextValid); }
 		else
 		{
+			PanelWidgets.label(this,"Nex",true,3,ColorScheme.TEXT_COLOR);
 			if(!enabled) { text("Capture disabled. Session cleared."); }
 			else if(active) { text("Observing the current Nex attempt. Results appear after completion."); }
 			else if(stats.last==null) { text("Ready to observe the next full Nex kill. Equipment and spell use are detected automatically."); }
 			if(!active && stats.attempts==0 && stats.resetReason!=null) { text("Previous session cleared: "+stats.resetReason); }
 			if(stats.last!=null)
 			{
-				heading(String.format(Locale.ROOT,"Last complete kill · %.1f s",stats.last.seconds()));
-				text("Smoke → death/dying");
-				text(stats.last.share()==null?"Observed hitsplat share unavailable":String.format(Locale.ROOT,"Observed hitsplat share · %.1f%%",stats.last.share()));
-				text("Nex + named minions · not loot credit");
-				text(aggregateLabel(stats));
+				JPanel kill=PanelWidgets.card(this,"nex-kill-card");
+				PanelWidgets.label(kill,"Last kill",true,0,PanelWidgets.MUTED).getAccessibleContext().setAccessibleName("Last complete kill");
+				PanelWidgets.label(kill,String.format(Locale.ROOT,"%.1f s",stats.last.seconds()),true,9,ColorScheme.TEXT_COLOR).setName("nex-duration");
+				PanelWidgets.label(kill,stats.last.share()==null?"Observed hitsplat share unknown":String.format(Locale.ROOT,"%.1f%% observed hitsplat share",stats.last.share()),false,0,ColorScheme.TEXT_COLOR);
+				PanelWidgets.label(kill,"Nex + minions",false,0,PanelWidgets.MUTED);
+				if(stats.n>1) { PanelWidgets.text(kill,aggregateLabel(stats)); }
 				context(stats.record(stats.last),redraw,contextValid);
 			}
 			if(stats.lastAttempt!=null && stats.lastAttempt!=stats.last)
 			{
-				text("Last attempt · "+stats.lastAttempt.outcome+" · "+stats.lastAttempt.reason);
+				text("Latest attempt incomplete.");
 				button(this,"Last attempt details",()->{ if(contextValid.getAsBoolean()) { inspected=stats.lastAttempt; inspectedCalculation=null; rememberPosition(); redraw.run(); } });
 			}
 			if(stats.last!=null)
 			{
-				heading(stats.record(stats.last).context.pilot()?"Improve your setup":"Conditional ordinary offence");
+				heading("Compare setups");
 				if(!coherent(stats.record(stats.last),owned)) { text("Comparing the captured setups…"); }
 				else
 				{
 					List<NexPresentation.Card> cards=NexPresentation.cards(owned);
-					if(cards.isEmpty()) { text(owned.choices.stream().anyMatch(c->c.supported())?"No positive supported improvement. Zero and negative alternatives are in comparisons.":"No supported comparison yet. Inspect the coverage gaps in comparisons."); }
-					for(var card:cards)
+					if(cards.isEmpty()) { text(owned.choices.stream().anyMatch(c->c.supported())?"No improvement found in supported setups.":"No supported setup comparison yet."); }
+					JPanel further=ownedBody(); further.setVisible(moreComparisons);
+					for(int cardIndex=0;cardIndex<cards.size();cardIndex++)
 					{
+						var card=cards.get(cardIndex);
 						var c=card.choice; var changed=NexPresentation.changedItems(card.pair);
 						String title=changed.size()==1?name(changed.values().iterator().next(),catalog):"Equipment package · "+changed.size()+" changes";
-						item(changed.values().stream().filter(id->id>0).findFirst().orElse(0),title,catalog,contextValid);
-						text(NexOwnedResult.headline(card.pair));
-						text(c.actual.role+" · "+c.actual.phase+" · tick "+c.actual.tick);
-						text(c.bankPreparation?"Bank preparation · recheck stock and packing":"Carried alternative · ordinary offence if supplied");
-						if(!c.exhaustive) { text("Partial search · optimum unknown"); }
-						if(card.pair.beforeSetup.slots.containsValue(24780) || card.pair.afterSetup.slots.containsValue(24780)) { text("Healing and survival unmodelled"); }
-						button(this,"Compare package",()->{ if(contextValid.getAsBoolean()) { openOwned(owned,card.choiceIndex,card.pairIndex); redraw.run(); } }).setName("nex-card-"+card.choiceIndex);
+						JPanel surface=PanelWidgets.card(cardIndex<2?this:further,"nex-equipment-card-"+card.choiceIndex);
+						item(surface,changed.values().stream().filter(id->id>0).findFirst().orElse(0),title,contextValid);
+						PanelWidgets.label(surface,NexOwnedResult.headline(card.pair).replace("theoretical","modelled"),true,2,PanelWidgets.BENEFIT).setName("nex-card-metric-"+card.choiceIndex);
+						PanelWidgets.label(surface,NexPresentation.scope(c),false,0,PanelWidgets.MUTED).setName("nex-card-scope-"+card.choiceIndex);
+						PanelWidgets.text(surface,NexPresentation.reason(card.pair));
+						PanelWidgets.label(surface,c.bankPreparation?"Bank prep · check stock & packing":"Carried · conditional on supplies",false,0,PanelWidgets.MUTED);
+						if(!c.exhaustive) { PanelWidgets.text(surface,"Partial search"); }
+						if(card.pair.beforeSetup.slots.containsValue(24780) || card.pair.afterSetup.slots.containsValue(24780)) { PanelWidgets.text(surface,"Healing and survival unmodelled"); }
+						JButton detail=button(surface,"Details →",()->{ if(contextValid.getAsBoolean()) { openOwned(owned,card.choiceIndex,card.pairIndex); redraw.run(); } });
+						detail.setToolTipText("Compare package"); detail.setName("nex-card-"+card.choiceIndex);
+						detail.getAccessibleContext().setAccessibleName("Compare "+title);
 					}
-					if(!cards.isEmpty()) { text("Independent state comparisons; no whole-kill ranking."); }
+					if(cards.size()>2)
+					{
+						button(this,moreComparisons?"Fewer comparisons":"More comparisons ("+(cards.size()-2)+")",()->{ if(contextValid.getAsBoolean()) { moreComparisons=!moreComparisons; redraw.run(); } }).setName("nex-more-comparisons");
+						add(further);
+					}
 					button(this,"Owned setup comparisons",()->{ if(contextValid.getAsBoolean()) { openOwned(owned,0,0); redraw.run(); } }).setName("nex-owned");
 				}
 				button(this,"Kill and calculation details",()->{
@@ -240,9 +258,12 @@ final class NexPanel extends PluginPanel
 			{ button(secondary,destination.equals("setup")?"Setup":"Account",()->{ if(valid.getAsBoolean()) { rememberPosition(); page=destination; redraw.run(); } }); }
 			add(secondary);
 			button(this,"Future kill context",()->{ if(contextValid.getAsBoolean()) { contextTarget=null; contextEditor=null; contextReturnPage="encounter"; page="context"; redraw.run(); } });
-			text("Pilot planning scope: Trio MP2 · one kill per trip. Ordinary scenarios do not predict team time.");
-			text(stats.complete+" complete · "+stats.failed+" failed · "+stats.censored+" excluded");
-			button(this,enabled?"Disable capture":"Enable capture",()->{ if(valid.getAsBoolean()) { actions.enable(!enabled); } });
+			button(this,sessionTools?"Hide session tools":"Session tools",()->{ if(contextValid.getAsBoolean()) { sessionTools=!sessionTools; redraw.run(); } });
+			if(sessionTools)
+			{
+				text(stats.complete+" complete · "+stats.failed+" failed · "+stats.censored+" excluded");
+				button(this,enabled?"Disable capture":"Enable capture",()->{ if(valid.getAsBoolean()) { actions.enable(!enabled); } });
+			}
 		}
 		if(available && (paused || page.equals("encounter") && inspected==null && inspectedOwned==null))
 		{ button(this,"Reset session",()->{ if(valid.getAsBoolean()) { actions.reset(); } }).setName("nex-reset"); }
@@ -277,14 +298,13 @@ final class NexPanel extends PluginPanel
 	private void context(com.ironpath.nex.NexRecord record,Runnable redraw,java.util.function.BooleanSupplier valid)
 	{
 		if(record==null) { return; }
-		var c=record.context;
-		text("Context: "+c.strategy+" / "+c.group.name().toLowerCase(Locale.ROOT)+" / "+(c.participants==null?c.participation.name().toLowerCase(Locale.ROOT):c.participants)
-			+(c.confirmed()?" · confirmed":" · unconfirmed"));
+		JPanel surface=PanelWidgets.card(this,"nex-context-summary");
+		PanelWidgets.text(surface,NexPresentation.context(record.context));
 		if(record.summary.outcome!=com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE) { return; }
-		button(this,"Edit kill context",()->{
+		JButton edit=button(surface,"Edit context",()->{
 			if(!valid.getAsBoolean()) { return; }
 			contextTarget=record.summary; contextEditor=null; contextReturnPage=page; page="context"; redraw.run();
-		}).setName("nex-edit-context");
+		}); edit.setName("nex-edit-context"); edit.setToolTipText("Edit kill context");
 		if(!record.context.pilot() && (page.equals("diagnostics") || inspected!=null || inspectedOwned!=null))
 		{ text("Pilot recommendations unavailable for this context. Independent ordinary offence remains conditional."); }
 	}
@@ -309,6 +329,7 @@ final class NexPanel extends PluginPanel
 	private void diagnostics(String status,NexSession.Stats stats,KnowledgeCatalog catalog,NexReport.State state,java.util.function.BooleanSupplier valid)
 	{
 		heading("Diagnostics");
+		PanelWidgets.label(this,"Build "+BuildInfo.VERSION,false,0,PanelWidgets.MUTED);
 		boolean hidden=state==NexReport.State.PAUSED || state==NexReport.State.NO_ACCOUNT || state==NexReport.State.NOT_READY || state==NexReport.State.RESET;
 		text(status);
 		if(stats.resetReason!=null) { text("Previous session cleared: "+stats.resetReason); }
@@ -327,35 +348,64 @@ final class NexPanel extends PluginPanel
 			feedback.setText(reportFeedback);
 			revalidate(); repaint();
 		}).setName("nex-copy-report");
-		text("Adapter "+com.ironpath.nex.NexCapture.VERSION+" · evaluator "+com.ironpath.advisor.NexOwnedEvaluator.VERSION);
-		text("Knowledge "+(catalog==null?"unavailable":catalog.version));
+		JPanel inputs=PanelWidgets.card(this,"nex-diagnostic-inputs");
+		PanelWidgets.label(inputs,"Inputs",true,0,ColorScheme.TEXT_COLOR);
+		PanelWidgets.text(inputs,"Nex · "+(provenance==NexReport.Provenance.SYNTHETIC_OFFLINE?"synthetic fixture":"public client observations"));
+		PanelWidgets.text(inputs,summary==null?"No visible kill evidence":"Captured gear, levels & prayers");
+		PanelWidgets.label(inputs,"Base target stats and planning locks are assumptions.",false,0,PanelWidgets.MUTED);
+		JPanel calculations=PanelWidgets.card(this,"nex-diagnostic-calculations");
+		PanelWidgets.label(calculations,"Calculation status",true,0,ColorScheme.TEXT_COLOR);
+		if(summary==null) { PanelWidgets.text(calculations,"Waiting for a completed kill."); }
+		else
+		{
+			PanelWidgets.text(calculations,summary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE?"Observed duration recorded":"Incomplete attempt · excluded");
+			if(result==null) { PanelWidgets.text(calculations,"Calculation pending or unavailable for this kill."); }
+			else
+			{
+				long supported=result.choices.stream().filter(c->c.supported()).count();
+				PanelWidgets.text(calculations,supported==0?"No supported setup comparison":supported+" supported setup scenarios");
+			}
+		}
+		JPanel missing=PanelWidgets.card(this,"nex-diagnostic-gaps");
+		PanelWidgets.label(missing,"Missing / limited",true,0,ColorScheme.TEXT_COLOR);
+		if(result!=null)
+		{
+			result.gaps.entrySet().stream().sorted(Map.Entry.comparingByKey()).limit(8).forEach(e->PanelWidgets.text(missing,e.getValue()+" · "+NexReport.gapLabel(e.getKey())));
+			if(result.gaps.size()>8) { PanelWidgets.text(missing,"More gaps remain in comparison details."); }
+		}
+		PanelWidgets.text(missing,"Team-time estimates unavailable.");
+		JPanel basis=ownedBody(); basis.setVisible(false);
+		button(this,"Calculation details",()->{ if(valid.getAsBoolean()) { basis.setVisible(!basis.isVisible()); revalidate(); repaint(); } });
+		PanelWidgets.text(basis,"IronPath · build "+BuildInfo.VERSION);
+		PanelWidgets.text(basis,"Adapter "+com.ironpath.nex.NexCapture.VERSION+" · evaluator "+com.ironpath.advisor.NexOwnedEvaluator.VERSION);
+		PanelWidgets.text(basis,"Knowledge "+(catalog==null?"unavailable":catalog.version));
+		PanelWidgets.text(basis,"Pilot planning scope: Trio MP2 · one kill per trip.");
+		PanelWidgets.text(basis,"Timing: smoke → death/dying. Observed hitsplat share: Nex + named minions, not server loot credit.");
 		if(summary!=null)
 		{
-			text("State coverage "+Math.min(summary.sampledTicks,summary.expectedTicks)+" / "+summary.expectedTicks+" ticks · "+summary.unclassifiedHits+" unclassified hits");
+			PanelWidgets.text(basis,"State coverage "+Math.min(summary.sampledTicks,summary.expectedTicks)+" / "+summary.expectedTicks+" ticks · "+summary.unclassifiedHits+" unclassified hits");
 			if(summary==stats.last)
 			{
-				text(aggregateLabel(stats));
-				if(stats.n==0) { text(stats.record(summary).exclusion()); }
-				if(stats.n>1) { text(String.format(Locale.ROOT,"Range %.1f–%.1f s",stats.minSeconds,stats.maxSeconds)); }
-				if(stats.shareN>1) { text(String.format(Locale.ROOT,"Mean per-kill share %.1f%% · %d kills; aggregate %.1f%%",stats.meanShare,stats.shareN,stats.aggregateShare)); }
-				text("Matched averages require confirmed strategy/group/count, compatible timer/adapter, worn packages, sampled levels/prayers and a stable observed arena roster. Planning locks are excluded. Equal count is not equal teammate damage; visible people do not prove party membership.");
+				PanelWidgets.text(basis,aggregateLabel(stats));
+				if(stats.n==0) { PanelWidgets.text(basis,stats.record(summary).exclusion()); }
+				if(stats.n>1) { PanelWidgets.text(basis,String.format(Locale.ROOT,"Range %.1f–%.1f s",stats.minSeconds,stats.maxSeconds)); }
+				if(stats.shareN>1) { PanelWidgets.text(basis,String.format(Locale.ROOT,"Mean per-kill share %.1f%% · %d kills; aggregate %.1f%%",stats.meanShare,stats.shareN,stats.aggregateShare)); }
+				PanelWidgets.text(basis,"Matched averages require confirmed strategy/group/count, compatible timer/adapter, worn packages, sampled levels/prayers and a stable observed arena roster. Planning locks are excluded. Equal count is not equal teammate damage; visible people do not prove party membership.");
 			}
-			if(result==null) { text("Calculation pending or unavailable for this kill."); }
-			else
+			if(result!=null)
 			{
 				long carried=result.choices.stream().filter(c->c.supported() && !c.bankPreparation).count();
 				long bank=result.choices.stream().filter(c->c.supported() && c.bankPreparation).count();
-				text("Supported scenarios: carried "+carried+", bank preparation "+bank+". Unavailable: "+(result.choices.size()-carried-bank)+". Counts are not fight coverage.");
-				result.gaps.entrySet().stream().sorted(Map.Entry.comparingByKey()).limit(8).forEach(e->text(e.getValue()+" · "+NexReport.gapLabel(e.getKey())));
-				if(result.gaps.size()>8) { text("More gaps remain in comparison details."); }
+				PanelWidgets.text(basis,"Supported scenarios: carried "+carried+", bank preparation "+bank+". Unavailable: "+(result.choices.size()-carried-bank)+". Counts are not fight coverage.");
 				if(diagnosticChoice>=0 && diagnosticChoice<result.choices.size())
 				{
 					var c=result.choices.get(diagnosticChoice);
-					text("Selected "+c.actual.role+" · "+c.actual.phase+" · tick "+c.actual.tick+" · pair "+diagnosticPair);
+					PanelWidgets.text(basis,"Selected "+c.actual.role+" · "+c.actual.phase+" · tick "+c.actual.tick+" · pair "+diagnosticPair);
 				}
-				text("Captured gear, levels and prayer readings are separate from the assumed base-stat target and frozen planning locks. No launch attribution or team-time estimate.");
+				PanelWidgets.text(basis,"Independent state comparisons; no whole-kill ranking. Captured gear, levels and prayer readings are separate from the assumed base-stat target and frozen planning locks. No launch attribution or team-time estimate.");
 			}
 		}
+		add(basis);
 		button(this,"Show selectable report",()->{ if(valid.getAsBoolean()) { reportArea.getParent().getParent().setVisible(!reportArea.getParent().getParent().isVisible()); revalidate(); repaint(); } });
 		if(reportArea==null)
 		{
@@ -592,14 +642,14 @@ final class NexPanel extends PluginPanel
 		text("Bank ownership: "+(account.bank.known()?"observed this session":"unknown; open bank to observe")); text(storage);
 	}
 	private void item(int id, KnowledgeCatalog catalog, java.util.function.BooleanSupplier valid)
-	{ item(id,name(id,catalog),catalog,valid); }
-	private void item(int id,String title,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid)
+	{ item(this,id,name(id,catalog),valid); }
+	private void item(JPanel parent,int id,String title,java.util.function.BooleanSupplier valid)
 	{
 		JLabel image=new JLabel(items==null?"◇":"") {
 			@Override public void setIcon(Icon icon) { if(valid.getAsBoolean()) { super.setIcon(icon); } }
 		}; image.setPreferredSize(new Dimension(32,32));
 		JPanel row=new JPanel(new CardHeaderLayout()); row.setFont(getFont()); row.setOpaque(false);
-		row.add(image); PanelWidgets.text(row,title); row.getComponent(1).setName("card-title"); add(row);
+		row.setAlignmentX(LEFT_ALIGNMENT); row.add(image); PanelWidgets.label(row,title,true,0,ColorScheme.TEXT_COLOR); row.getComponent(1).setName("card-title"); parent.add(row);
 		if(items==null) { image.setToolTipText("Offline sprite placeholder"); image.getAccessibleContext().setAccessibleName("Offline sprite placeholder"); }
 		if (id>0 && items!=null) { items.getImage(id).addTo(image); }
 	}

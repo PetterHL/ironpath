@@ -5,7 +5,8 @@ Start new work from current main; do not continue retired stacked branches.
 The user authorized consolidating existing work and updating this plan on
 18 October. That consolidation introduced no UI/context feature or live-client
 acceptance. UI1 and its two P2 review corrections are merged in the
-0.20.0 delivery below. CTX1 is implemented for review in 0.21.0.
+0.20.0 delivery below. CTX1 is implemented for review in 0.21.0; issue #44
+completes UI1 visual simplification in 0.21.1 before further N3 UI expansion.
 
 ## Current baseline and order
 
@@ -18,7 +19,8 @@ captured kill into a spec recommendation or validated team-time prediction.
 | Order | Work | State / boundary |
 |---|---|---|
 | Complete | **UI1 — Encounter and Diagnostics** | 0.20.0 merged; both P2 review findings fixed, client acceptance open |
-| In review | **CTX1 — Editable Nex kill context** | 0.21.0 implemented for review; feature merge not authorized |
+| Before further N3 UI expansion | **UI1 follow-up — issue #44** | 0.21.1 native refinement; screenshot review and merge authorization open |
+| Dependency in review | **CTX1 — Editable Nex kill context** | 0.21.0 implemented for review; feature merge not authorized |
 | Alongside, when gameplay is available | **N1/N2 live acceptance** | Open; does not block offline UI development |
 | After context/evidence contracts | **N3 recommendation integration** | Kernels exist; attribution, remaining mechanics and product integration remain |
 | After N1–N3 support and validation | **N4 contribution/team-time estimates** | Not implemented/validated |
@@ -27,6 +29,37 @@ captured kill into a spec recommendation or validated team-time prediction.
 Deliver one task at a time with a reviewable PR and evidence. Do not merge or
 publish future work without user authorization. The cleanup approval does not
 authorize future feature merges or Plugin Hub publication.
+
+## UI1 follow-up — native visual refinement (issue #44)
+
+Implemented for review in **0.21.1**. [Before/after evidence and limits](docs/validation/ui1-native-refinement.md).
+The 0.20.0 structural work below did not finish the agreed visual simplification.
+This completes that goal without changing the encounter-and-method product or
+reducing the owned/new-upgrade, acquisition, resource or N4 roadmap.
+
+- [x] Native selected Encounter/Diagnostics tabs, dark result/context/item cards,
+  prominent observed duration/share and one concise optional context summary.
+- [x] Setup comparison cards identify changed items or whole packages, supported
+  modelled DPS, role/phase, a short reason and material carried/bank/search scope.
+  First two deterministic cards are initially visible; further positive cards
+  expand explicitly. All zero/negative/unavailable alternatives remain in details.
+- [x] Technical ticks, models, pilot explanations and matched-average exclusions
+  stay in Details/Diagnostics. Inputs, calculation status and material gaps are
+  grouped. Preserve explicit frozen report copying and selectable fallback.
+- [x] Optional context editor retains independent fields, per-field provenance,
+  confirmation, explicit Apply and separate future defaults. Historical report
+  and navigation actions remain usable during another active encounter.
+- [x] Extend DEV1 with pending/no-positive Encounter renders, editor/comparison
+  viewports and focused disclosure/selection regressions; inspect native 225 × 600
+  output and full-height captures at fonts 12/20 against the existing references.
+- [ ] Review the finished screenshots and authorize the feature/dependency merges.
+- [ ] Real-client sprites, scrolling/focus/DPI/clipboard and player acceptance.
+
+Dependency: corrected CTX1 #43 at `2fe5342`, still open when this work started.
+This separate PR targets its branch; it does not merge CTX1 implicitly. Remote
+main's later #45 / 0.22.1 optional N3 declared-plan integration is separate and
+must be reconciled after CTX1; this follow-up adds no N3 result sections. Further
+N3 presentation follows this visual review. Gameplay remains deferred and open.
 
 ## UI1 — Encounter and Diagnostics (merged)
 
