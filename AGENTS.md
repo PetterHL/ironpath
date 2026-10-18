@@ -12,10 +12,42 @@
   validation reports retain their original scope/results and pending client checks.
 - Code, UI, documents and commits are English; discussion with Petter may be Norwegian.
 
+## Next delivery
+
+- Start from current main and TASKS.md **UI1: Encounter and Diagnostics**.
+  Follow with CTX1 only after the UI1 review. Do not repeat delivered DEV1/N3b/N3c
+  work or resume their retired stacked branches. TASKS.md is the roadmap as well
+  as the backlog; the UI discussion brief is preserved historical input.
+- UI1 uses supported per-state comparisons, identifies changed items/packages,
+  and adds an allowlisted, user-triggered report. It does not add editable context,
+  automatic spec recommendations or team-time estimates. Preserve 0.19.3 banking,
+  arena-reload, reset reasons and all nine baseline replay scenarios.
+- The 18 October main consolidation integrates reviewed development work with
+  live acceptance still open. It is not Plugin Hub approval or standing permission
+  to merge subsequent feature PRs. See docs/validation/main-consolidation-20261018.md.
+
 ## Delivery
 
-- Current: combined N1/N2/N3a development build 0.17.1, integrating N2 0.16.6
-  with the N3a resource foundation. Combined client testing remains open.
+- Current: development build 0.19.3 fixes arena-only scene reloads being mistaken
+  for outbound bank travel. Current arena evidence at LOADING permits arena
+  revalidation; an observed exit revokes that permission. Missing NPCs alone do
+  not establish an exit. Reset remains available while paused after live account
+  revalidation. Build 0.19.2 extends the 0.19.1 completed-history fix during bank
+  travel on top of 0.19.0 N3c. Completed summaries have no bank-opening deadline;
+  outbound nearby-Nex evidence keeps them paused until a visible bank verifies
+  the same account/profile/world. A verified arena source survives an exit-barrier
+  callback only until the next scene transition. A bank return verified from
+  public arena evidence establishes the next departure source even while
+  preferences load. The panel shows bundled build metadata and a constant reset
+  explanation; reasons contain no identifiers and are never persisted/logged.
+  Live snapshots, active traces
+  and stale callbacks still clear; hard identity/logout/world/reset guards remain.
+  See docs/validation/nex-bank-retention.md; client retesting remains open.
+- Development build 0.19.0 adds N3c complete-package conditional
+  comparisons to N3b 0.18.0. Reuse NexPackageFactory and NexPackageComparison;
+  do not infer launch opportunities, HP or initial resources from captured states.
+  See docs/research/nex-packages.md and docs/research/nex-spec-damage.md.
+  Combined client testing remains open.
   Live-client/player acceptance remains open in docs/validation/nex-session.md
   and docs/validation/nex-owned.md. Nex Trio MP2, one kill per trip. Lightbearer throughout,
   upgraded Death Charge, observed melee/ranged/spec switches. Do not guess the
@@ -55,7 +87,20 @@
   phase/order, eligible deaths and attack opportunities. Preserve the distinction
   between sampled net changes and modeled spending/restoration. See
   docs/research/nex-spec-resources.md; N3 damage/ammo/supply acceptance stays open.
-- Knowledge `n2-owned-2` adds only exact locked Dragon defender (24143) and
+- N3b uses independently supplied complete-package stats, legal launch windows,
+  current target/player HP and hard caps. Exact ammo stock and explicit saving/
+  charge branches join the existing finite energy timeline; rejected attacks do
+  not spend ammo or energy. Never turn conditional launch expectations into a
+  simulated HP trajectory, survival estimate, captured spec count or best-weapon
+  recommendation. Soft caps, phase transforms, automatic opportunity attribution
+  and package proposals, acquisition presentation and supply effects remain separate work.
+- N3c compares explicit complete actual/owned/upgrade scenarios under one shared
+  immutable conditions declaration. Exact usable joint stock/packing is separate
+  from bank presence; assumptions are not observations. Preserve scoped damage/
+  resource gaps, conditional branch labels, source/model versions and negative gains.
+  No automatic capture caller, best-spec ranking or N4 time claim is supplied.
+- Knowledge `n3-package-1` adds bounded Voidwaker and ruby/diamond bolt facts
+  to the same catalogue. Existing `n2-owned-2` added exact locked Dragon defender (24143) and
   Infernal cape (24224) melee forms. Preserve exact captured IDs and ownership;
   do not generalize normal/locked/broken/mangled variants. Comparison filters
   retain all immutable scenarios and grouped gaps; counts are not fight coverage.

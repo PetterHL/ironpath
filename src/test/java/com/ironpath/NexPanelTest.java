@@ -63,6 +63,27 @@ public class NexPanelTest
 			assertFalse(shown(panel).contains("local /")); assertFalse(shown(panel).contains("Kill #"));
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
+	@Test public void anEmptyResetSessionExplainsItsLossWithoutDisplayingOldHistory() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{try {
+			var catalog=KnowledgeCatalog.load(new Gson()); var session=new NexSession(); session.select("synthetic-a",301);
+			session.add(NexCaptureTest.replay(0,20,60));
+			assertFalse(session.suspend("synthetic-a",301,40,false));
+			var account=P4aFixtures.account(Set.of(11907),99,90); var panel=new NexPanel(null);
+			session.select("synthetic-a",301); session.revalidate("synthetic-a",301,2000,true,false);
+			for(float font:List.of(12f,20f))
+			{
+				panel.setFont(panel.getFont().deriveFont(font));
+				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
+				assertTrue(shown(panel).contains("Previous session cleared: Travel did not start"));
+				assertFalse(shown(panel).contains("synthetic-a")); assertFalse(shown(panel).contains("Last complete kill"));
+				capture(panel,"bank-reset-"+(int)font);
+			}
+			session.add(NexCaptureTest.replay(100,20,60));
+			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
+			assertTrue(shown(panel).contains("Last complete kill")); assertFalse(shown(panel).contains("Previous session cleared"));
+		} catch(Exception ex) { throw new RuntimeException(ex); } });
+	}
 	@Test public void resumedCaptureReplacesThePausedBannerAndShowsConcreteEligibilitySignals() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{try {
@@ -84,6 +105,28 @@ public class NexPanelTest
 			assertTrue(shown(panel).contains("Barrier readings:"));
 			button(panel,"Capture signal trace").doClick();
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
+	}
+	@Test public void pausedSessionOffersResetAndRejectsAStaleResetButton() throws Exception
+	{
+		var catalog=KnowledgeCatalog.load(new Gson());
+		SwingUtilities.invokeAndWait(()->{
+			var session=new NexSession(); session.select("a",301);
+			var complete=NexCaptureTest.replay(0,20,60); session.add(complete); session.suspend("a",301,40,true);
+			var account=P4aFixtures.account(Set.of(11907),99,90); var panel=new NexPanel(null);
+			var resets=new java.util.concurrent.atomic.AtomicInteger();
+			NexPanel.Actions actions=new NexPanel.Actions()
+			{
+				public boolean current() { return true; } public boolean canEdit() { return true; }
+				public void method(NexMethod method) {} public void confirm(String key,Boolean value) {}
+				public void reset() { resets.incrementAndGet(); session.clear(); } public void enable(boolean enabled) {}
+			};
+			panel.render("Nex session paused. Open a bank to revalidate.",account,Preferences.EMPTY,catalog,session.stats(),true,actions,"local");
+			assertFalse(shown(panel).contains("Last complete kill"));
+			JButton reset=button(panel,"Reset session"); reset.doClick();
+			assertEquals(1,resets.get()); assertFalse(session.suspended()); assertTrue(session.recent().isEmpty());
+			panel.render("Account changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"local");
+			reset.doClick(); assertEquals("An old view cannot reset a new session",1,resets.get());
+		});
 	}
 	@Test public void setupDoesNotClaimAnEmptySessionWhileBankRevalidationHidesHistory() throws Exception
 	{

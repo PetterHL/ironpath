@@ -27,7 +27,14 @@ dependencies {
 }
 
 group = 'com.ironpath'
-version = '0.17.1'
+version = '0.19.3'
+
+tasks.named('processResources') {
+	inputs.property('pluginVersion', project.version.toString())
+	filesMatching('com/ironpath/build.properties') {
+		expand(pluginVersion: project.version.toString())
+	}
+}
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'

@@ -3,6 +3,11 @@
 15 October 2026. Development build 0.15.0, based on merged transition `3fbaae6`.
 **Implementation for review; N1 real-client/player acceptance remains open.**
 
+Later finding: the [0.19.1 bank-retention correction](nex-bank-retention.md)
+records a complete-result screenshot followed by empty history with the bank
+open. It supersedes the 100-tick travel-expiry policy described in this original
+report; its corrected client round trip remains unverified.
+
 ## Delivered behavior
 
 - The toolbar opens Nex / Trio MP2 / one kill per trip with Encounter, Setup and

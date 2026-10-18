@@ -186,12 +186,20 @@ final class OfflinePluginReplay extends OfflineNexClient implements AutoCloseabl
 		plugin.onGameStateChanged(changed);
 	}
 	void arrive(boolean atBank) throws Exception
+	{ arrive(atBank, !atBank); }
+	void arrive(boolean atBank, boolean npcsAvailable) throws Exception
 	{
-		bankVisible = atBank; bossPresent = !atBank; barrier = atBank ? 0 : 2;
+		bankVisible = atBank; bossPresent = npcsAvailable; barrier = atBank ? 0 : 2;
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		GameStateChanged changed = new GameStateChanged(); changed.setGameState(GameState.LOGGED_IN);
 		plugin.onGameStateChanged(changed); ready();
 		trace.add("tick " + tick + " · Revalidated " + (atBank ? "bank" : "arena return"));
+	}
+	void waitTicks(int count) throws Exception
+	{
+		trace.add("tick " + tick + " · Wait " + count + " ticks in current public scene");
+		for (int i = 0; i < count; i++) { tick(); }
+		settle();
 	}
 	void changeIdentity()
 	{

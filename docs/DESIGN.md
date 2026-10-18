@@ -40,6 +40,29 @@ an item silently to manufacture a weaker baseline.
 
 ## Code boundaries and transition disposition
 
+### Planned UI1 / CTX1 boundaries (18 October review)
+
+UI1 consumes existing immutable results through a small presentation/report model.
+Do not add calculations or account reads to Swing/export actions. The production
+allowlisted report formatter may be reused by DEV1; its runner/assertions remain
+test-only. Reuse current arithmetic, native widgets, images and lifecycle guards.
+
+CTX1 separates future defaults, frozen observations, planning locks and per-kill
+annotations. Do not use NexObserver.method() for historical edits: its current
+capture-censoring behavior is inappropriate. Preserve the evaluation inputs that
+produced the inspected result; annotate/recompute under explicit revisions instead
+of silently reading a newer bank/account/preferences snapshot. Retain session,
+identity, generation and stale-publication checks alongside kill/context versions.
+
+Current cohorts are opaque strings combining method/planning locks, observed
+gear/levels/prayers and roster fingerprints. CTX1 must define typed comparability
+rules and reconcile means on edits without modifying NexSummary evidence. Planning
+locks are not observed performance; matching team count alone is not matching
+teammates or damage. Keep unknown/incompatible evidence explicit. Support is
+per output; changing a label cannot generalize the Trio MP2 model.
+
+These are planned boundaries. The implementations below describe existing code.
+
 | Existing area | Disposition and concrete next use |
 |---|---|
 | AccountSnapshotReader, AccountSnapshot, Observation | Retain scoped ownership, slots/quantities and public unlock evidence |
@@ -61,6 +84,19 @@ scenarios; it does not attribute captured deltas or provide damage/upgrade advic
 The native resource details consume frozen evidence, with the existing identity
 and historical-view guards. See [N3a contract](research/nex-spec-resources.md).
 Boss identifiers and event correlations belong in adapters, not reusable formulas.
+N3b adds `SpecAttackModel` single-launch distributions and `SpecAttackPlan` finite
+ammo/splinter branches joined to `SpecTimeline`. Exact stocks gate spending;
+resource outcomes and legal opportunities are explicit scenario inputs. Complete
+charged/uncharged package damage is supplied separately. No capture/worker advice
+path invokes these kernels yet. See [N3b contract](research/nex-spec-damage.md).
+N3c's `NexPackageComparison` is the complete-package caller of those kernels.
+It shares `NexPackageFactory` with N2, derives bounds/rolls/delays from exact
+catalogue-backed packages, and keeps actual-to-owned and owned-to-upgrade deltas
+separate. One immutable conditions declaration, explicit usable joint stock and
+source/assumption facts are required. Damage gaps preserve supported resources;
+missing resource inputs preserve independent launch/package details. There is
+still no automatic capture-to-plan caller or new runtime advice path. See
+[complete-package contract](research/nex-packages.md).
 Do not prebuild a generic rules engine. Extract shared code when it has a concrete
 consumer, preserving its semantics and tests.
 
@@ -72,7 +108,10 @@ consumer, preserving its semantics and tests.
   method choices/manual facts only, using existing guarded local preference IO.
 - N1 must retain completed summaries across recognized ordinary banking, while
   ending active traces and revalidating the same character/profile. Ambiguous
-  identity and logout clear data. N1 suspends summaries during recognized bank travel; live account state still resets on loading.
+  identity and logout clear data. N1 suspends summaries during recognized bank
+  travel without an opening deadline; live account state still resets on loading.
+  A nearby Nex does not end outbound suspension before bank verification.
+  See [0.19.1 bank retention](validation/nex-bank-retention.md).
 - Damage, contribution, phase offence, expected team time and acquisition pace
   are separate. [Kill impact](KILL_IMPACT.md) defines their evidence requirements.
 - Fewer eats, survival, longer trips and supplied resources cannot be inferred

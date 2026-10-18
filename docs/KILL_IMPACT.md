@@ -1,7 +1,7 @@
 # Observation and kill-impact contract
 
 Current direction: Nex Trio MP2 pilot, 15 October 2026. Delivery lives only in
-[TASKS N1–N4](../TASKS.md). The [previous research](archive/pre-nex-20261015/KILL_IMPACT.md)
+[TASKS](../TASKS.md). The [previous research](archive/pre-nex-20261015/KILL_IMPACT.md)
 retains its source work; the former optional-boss product placement is superseded.
 
 ## Observation
@@ -36,12 +36,51 @@ excluded from fight metrics/comparisons. No game-timer calibration is claimed.
 For one-kill trips, N1 must preserve completed summaries across recognized ordinary
 banking transitions. End/censor active traces, keep clearing live account/reference
 data, suspend access and require same-account/profile/world revalidation. Old-generation
-callbacks cannot affect a new trace. Logout, disconnect/ambiguous identity, account
-or profile change, unsupported worlds, disable and Reset clear the session.
+callbacks cannot affect a new trace. Waiting to open the bank or a long recognized
+return leg does not expire bounded completed history. Outbound arena-like evidence
+remains suspended until bank verification. A scene reload with arena evidence at
+its origin may resume in the same arena without banking; an observed exit revokes
+that permission, while temporarily missing NPCs do not establish an exit. Logout,
+disconnect/ambiguous identity, account or profile change, unsupported worlds,
+disable and Reset clear the session.
 Changed method/setup/team evidence separates comparable cohorts; unknown teammate
 composition must remain explicit rather than assumed identical across kills.
 
 ## Outputs
+
+UI1 reports only supported state/package metrics; a largest relative DPS change
+across unrelated states is not the largest whole-kill improvement. Cards identify
+the actual changed item/package and retain scope. N3b/N3c conditional APIs do not
+become automatically attributable personal recommendations through a UI change.
+
+### Planned explicit diagnostic export (UI1)
+
+Raw account observations/traces remain memory-only. UI1 is narrowly scoped to a
+user-triggered, bounded clipboard report of allowlisted diagnostic/calculation
+facts, not persistent session logging, telemetry, raw trace export or a recording.
+No automatic upload or file saving. Version the report schema and record relevant
+plugin/build, adapter/model/catalogue versions, outcome/timer/damage scope, manual
+assumptions, coverage/omissions and the displayed comparison's exact relevant
+inputs/results. Bind export to its immutable kill/result/input revision.
+
+Use report-local references; omit names, account/profile IDs, roster fingerprints,
+cohort strings, unrestricted signal logs and inventory/bank dumps. Existing roster
+hashes are not anonymous export IDs. Preserve unknown versus observed/assumed/
+synthetic provenance. Export time is not the kill timestamp. Clear/hidden session
+state cannot be recovered through export. Formatting can be shared with DEV1,
+but a diagnostic report cannot reproduce a lossless ordered event replay.
+
+### Planned corrected context (CTX1)
+
+Immutable evidence never changes when a user annotates strategy/team size.
+Snapshot future defaults at start; apply later edits as versioned per-kill
+metadata. Re-evaluate only dependent supported metrics from preserved inputs;
+do not silently substitute newly observed ownership/preferences. Keep pending
+results separate from the previous revision. Reconcile comparable aggregates
+without treating team count as proof of participant identity or stable damage.
+Unsupported methods preserve observations and explicitly justified arithmetic,
+not pilot-specific recommendations. Per-kill metadata has the session's bounded
+memory/identity/reset/eviction lifetime. See TASKS CTX1 for acceptance.
 
 | Output | Required meaning |
 |---|---|
@@ -69,6 +108,22 @@ deltas do not identify spending, regeneration, specs or Death Charge procs. Its
 finite scenario kernel requires explicit initial conditions and opportunities;
 shared energy/cap/delay consistency does not establish spec damage, an executable
 encounter or team-time value. [Resource contract](research/nex-spec-resources.md).
+
+N3b adds [conditional attack/stock arithmetic](research/nex-spec-damage.md).
+Expected damage is a sum of supplied single-launch expectations under explicit
+HP/window/package and saving/charge conditions. Never feed expected damage back
+as actual remaining HP. Ruby self-damage is conditional cost, not a survival or
+healing model. Resource branch probabilities describe specified independent
+retrieval/charge rolls only, not encounter uncertainty or upgrade confidence.
+Compare complete alternative plans under the same declared conditions; do not
+add a spec's damage to every ordinary baseline attack it displaces.
+
+N3c now derives those inputs from complete actual/owned/hypothetical packages
+under one explicit conditions declaration. Its supported/negative/zero deltas
+remain conditional launch-plan expectations. No worn-duration/energy-delta attack
+inference or automatic client recommendation is introduced. Unknown unused pools
+are not empty stock; selected shared stock and packing must be explicit.
+[N3c numerical contract](research/nex-packages.md).
 
 Do not scale the last kill by a DPS ratio, use PB as the average or turn combat
 duration into acquisition throughput. Handle finite HP, rounding, overkill, attack

@@ -1,7 +1,7 @@
 # Capability and evidence inventory
 
 16 October 2026. This file records support and gaps; [TASKS](../TASKS.md) owns work.
-N2 knowledge is `n2-owned-2`; catalogue schema 14 and preferences schema 3 (explicit Nex method/locks; schemas 1/2 migrate).
+Current knowledge is `n3-package-1` (N3c); catalogue schema 14 and preferences schema 3 (explicit Nex method/locks; schemas 1/2 migrate).
 
 ## Reusable current coverage
 
@@ -30,9 +30,10 @@ the retained implementation; it does not claim Nex recommendations are ready.
 | Relevant owned whole-package evaluation | Supported carried and bank-preparation searches; explicit pairs and coverage gaps. No global-best or combined packing claim | N2 |
 | Locked melee forms | Exact Dragon defender (l) 24143 and Infernal cape (l) 24224 reviewed; no generic variant normalization or damaged-form support | N2 |
 | Reported account | Anonymous reported-gear fixture; Ancient blessing melee and separate quiver projectile supported. Actual levels/stock still unknown; Scorching remains unmodelled | N2–N3 |
-| Voidwaker/ZCB, enchanted bolts, Lightbearer, upgraded Death Charge | No validated complete pilot energy/attack model | N3 |
+| Voidwaker/ZCB and ruby/diamond bolts | Exact catalogue-backed complete packages feed conditional damage and finite resource plans; no automatic captured-opportunity or phase-throughput model | N3b/N3c implemented for review |
+| Complete actual/owned/upgrade comparisons | Explicit shared conditions, joint usable stock/packing, locks, provenance and scoped damage/resource deltas. No automatic best-spec or personal recommendation | N3c automated acceptance complete |
 | Finite spec resources (N3a) | Frozen observed review + conditional bounded energy/delay kernel; no inferred casts/procs, spec damage or upgrade ranking | N3 in progress |
-| Charged/blessed quiver and actual ammunition | Conditional ordinary offence equivalence and separate selected-projectile input tested; live counters and finite resource use remain open | N1–N3 |
+| Charged/blessed quiver and actual ammunition | Conditional offence equivalence, exact finite ammo/splinter branches and exhaustion tested; live counters and automatic opportunity use remain open | N1–N3 |
 | Food/pots/spells | Capture actual state first; alternative-plan effects need own model | N1/N3 |
 | Personal share / team seconds | No validated counterfactual | N4 |
 
@@ -41,3 +42,9 @@ Publish supported/eligible fractions and specific important omissions. Unreviewe
 entries remain research candidates, not ranked numerical recommendations. New
 bosses/raid encounters extend the same inventory after the pilot; there is no
 fixed item ceiling and no requirement to finish every old roadmap item first.
+
+N3c adds five bounded exact item facts to the same catalogue: Voidwaker 27690,
+ruby/diamond bolts (e) 9242/9243, and dragon variants 21944/21946. N2's ordinary
+comparison still excludes enchanted-bolt effects; N3c uses the N3b bolt model.
+[Source and support contract](research/nex-packages.md) ·
+[Automated verification and remaining client checks](validation/nex-packages.md).

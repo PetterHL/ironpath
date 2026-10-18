@@ -12,6 +12,12 @@ main` and `git pull --ff-only`, then create a short-lived branch for the change.
 Preserve any local changes and unrelated branches. Close the development client
 before updating or rebuilding it.
 
+The 18 October consolidation makes main the common base for N3b/N3c, banking/
+arena-reload fixes and all nine DEV1 scenarios. Do not start from the retired
+stacked PR branches. TASKS.md owns the order: UI1, then CTX1, with live acceptance
+tracked separately. After merging future authorized work, delete only heads whose
+commits are preserved in main (or an explicit archive); never discard unique work.
+
 Windows PowerShell:
 
 ```powershell
@@ -85,8 +91,9 @@ No client or Plugin Hub acceptance is implied by a successful build.
 
 ## Offline review (DEV1)
 
-DEV1 supplies seven synthetic scenarios without OSRS credentials, a display
-server or gameplay. The first calculation/UI checkpoint was reviewed on
+The offline workflow supplies nine synthetic scenarios without OSRS credentials,
+a display server or gameplay: the seven DEV1 baseline cases plus two bank/reload
+regressions from PR #38. The first calculation/UI checkpoint was reviewed on
 17 October 2026; Petter authorized the remaining scenarios in the same task.
 [Validation and limits](validation/dev1-offline-review.md).
 
@@ -134,11 +141,13 @@ not evidence for compatibility with a newer RuneLite release.
 | `nex-identity-pending` | Finished evaluation held before publication; character changes; old callback released after fresh work publishes | Cleared view, fresh result after rejection |
 | `nex-reset-pending` | Worker held before evaluation; actual Reset action; old callback released after fresh work publishes | Cleared view, fresh result after rejection |
 | `nex-frozen-history` | New results while a selected negative owned alternative/resources or kill details are inspected; Back opens the latest result | Initial selection, frozen comparison, frozen details, latest comparison |
+| `nex-bank-long-trip` | Exit callback before a lagging getter, repeated loading, nearby Nex, 150-tick outbound wait, late bank and 150-tick return; identity change still clears | Late outbound, late bank, next kill, identity cleared |
+| `nex-arena-reload` | Arena scene rebuilt without banking, missing NPCs and repeated loading, then fresh public arena evidence and next smoke/kill | Rebuilding scene, next kill |
 
 Outputs are regenerated in `build/review/<scenario>/`: `report.md` plus the named
 PNG states with `-12.png` / `-20.png`, all at the native **225px** width. Running
 `all` also writes `build/review/index.md`, linking every report and PASS/FAIL result.
-The complete suite generates seven reports and 44 PNGs. Each scenario and font
+The complete suite generates nine reports and 56 PNGs. Each scenario and font
 starts with fresh client/account/session state. Reports contain input provenance,
 ordered callbacks, encounter outcomes, timer/damage scopes, gaps and expected versus
 actual checks. Published lifecycle comparisons include actual/proposed inputs,
@@ -166,7 +175,7 @@ exceeds the actual allocated content width/height. Hidden/empty areas are ignore
 Failures still write the PNG and the affected text/reason. Visual inspection
 remains necessary; layout checks do not establish usefulness or interaction quality.
 
-The **Offline review** GitHub Actions job runs the pinned test/build and all seven
+The **Offline review** GitHub Actions job runs the pinned test/build and all nine
 scenarios. It uploads `dev1-offline-review`, containing the index, reports and PNGs
 with 30-day retention, including available failure evidence. Link the exact run
 and artifact from the PR. Routine generated output stays outside Git history.
@@ -204,8 +213,11 @@ checks and meaningful preview states at both font sizes. Test a fault to show th
 relevant guard/check can fail; do not auto-bless current output. Keep fixture
 loading and execution in test sources so they never enter the plugin JAR.
 
-The bank scenario exercises current main's recognized trip within its existing
-100-tick grace. Draft PR #38's longer-travel/reload changes are separate work;
-N3b/N3c changes are also absent here. Real-client event mappings, stock/charges,
+The original bank scenario exercises a short recognized trip. The long-trip
+scenario adds waits beyond the removed 100-tick deadline on both legs, rejects
+nearby-Nex evidence before bank verification, and checks hard identity clearing.
+The arena-reload scenario verifies same-arena resumption without a bank and a
+new complete public-event kill. These exercise the combined N3b/N3c/banking
+main baseline; original DEV1 results retain their own delivery scope. Real-client event mappings, stock/charges,
 real sprites, focus/scroll/GPU behavior and player usefulness still require the
 N1–N4 checks. DEV1 adds no real encounter recorder/export or relaxed trace policy.

@@ -1,257 +1,242 @@
 # IronPath active work
 
-Updated 17 October 2026. **This is the only active backlog.** The encounter-and-
-method direction replaces the former AD1/R/KI delivery order. Historical work,
-results and unperformed checks are preserved in the [archive](docs/archive/pre-nex-20261015/README.md).
+Updated **18 October 2026**. This is the **only active backlog and roadmap**.
+Start new work from current main; do not continue retired stacked branches.
+The user authorized consolidating existing work and updating this plan on
+18 October. This integration/planning delivery implements no new UI or context
+feature and does not claim live-client acceptance.
 
-## DEV1 — Offline scenarios and native UI previews (implemented for review)
+## Current baseline and order
 
-Approved for implementation planning on 17 October 2026. Goal: Codex Cloud can
-exercise IronPath and review calculations and the actual panel without requiring
-Petter to log in and complete a Nex kill after every change. This supports N1–N4;
-it does not change their product scope or close their outstanding live acceptance.
+Consolidated development baseline: **0.19.3** — N1 capture/session, N2 ordinary
+owned comparisons, N3a resources, N3b conditional damage/ammunition, N3c
+complete-package APIs, banking/arena-reload corrections, and DEV1.
+N3b/N3c require explicit scenario inputs; they do not automatically turn a
+captured kill into a spec recommendation or validated team-time prediction.
 
-Treat this as one cohesive task with one review checkpoint, not a series of tiny
-infrastructure deliveries. Start from current main, read AGENTS.md and the active
-documents, and implement on a focused branch. Open a PR; do not merge automatically.
+| Order | Work | State / boundary |
+|---|---|---|
+| Next | **UI1 — Encounter and Diagnostics** | Ready for Codex Cloud; one focused PR |
+| Then | **CTX1 — Editable Nex kill context** | Planned after UI1 review; separate lifecycle/data task |
+| Alongside, when gameplay is available | **N1/N2 live acceptance** | Open; does not block offline UI development |
+| After context/evidence contracts | **N3 recommendation integration** | Kernels exist; attribution, remaining mechanics and product integration remain |
+| After N1–N3 support and validation | **N4 contribution/team-time estimates** | Not implemented/validated |
+| Later | More methods/bosses, optional recorder and screenshot export | Not prerequisites for UI1 |
 
-### First working delivery and review checkpoint
+Deliver one task at a time with a reviewable PR and evidence. Do not merge or
+publish future work without user authorization. The cleanup approval does not
+authorize future feature merges or Plugin Hub publication.
 
-- [x] Reuse the current tests/fixtures to run one complete synthetic Nex encounter
-  through the actual public-event adapter/capture, session, production evaluator
-  and native Swing panel. Supply representative ranged/melee/spec-candidate
-  switches, complete compatible inputs for at least one supported ordinary
-  comparison, and explicit synthetic account/preferences state. Do not bypass
-  completion detection by injecting a pre-completed summary for this scenario.
-- [x] Provide a simple documented command to select/run the scenario and generate
-  a concise calculation/check report plus PNG previews. Include encounter outcome,
-  timer scope, damage totals/share, exclusion/gap reasons, comparison inputs/results
-  and expected-versus-actual checks. Capture the main view and relevant comparison/
-  detail states at native width (currently 225px), normal and enlarged fonts.
-- [x] Run affected regressions and the normal build; inspect the generated images
-  and fix problems introduced by this work. Present the report, screenshots, exact
-  commands, versions and verification limits in the PR. Deliver a usable workflow,
-  not only interfaces, scaffolding or a plan.
+## UI1 — Encounter and Diagnostics (next)
 
-First delivery: `offlineReview --args='nex-complete'`, with an explicit development
-RuneLite pin, checks and twelve 225px native previews. See the
-[workflow instructions](docs/DEVELOPMENT.md#offline-review-dev1) and
-[checkpoint evidence](docs/validation/dev1-offline-review.md). The checkpoint is
-reviewed on 17 October 2026: all twelve revised CI images were inspected and a
-local pinned run passed 220 tests and 65 checks. Petter then authorized continuing
-the same DEV1 task. The full suite below extends that reviewed checkpoint.
+**Goal:** make the existing native panel compact and useful, and let Petter copy
+a reliable report into ChatGPT/Codex after playing. Use existing supported
+results; N4 is not a prerequisite. One cohesive UI/reporting delivery, not a
+series of cosmetic or infrastructure-only PRs.
 
-**Review checkpoint:** Petter/reviewer assesses whether the outputs are useful and
-whether a small calculation or UI change can be evaluated without gameplay.
-Demonstrate this with an isolated temporary change or existing meaningful
-regression; do not leave intentional faults or unrelated product changes committed.
-Do not automatically replace expected results with current implementation output.
-This review gate was met before the scenario expansion below. Codex should perform
-its own test/fix iterations before presenting the first delivery; manual gameplay
-is not required for this checkpoint.
+Read AGENTS.md, [UX](docs/UX.md), [Design](docs/DESIGN.md),
+[Kill impact](docs/KILL_IMPACT.md), [Development](docs/DEVELOPMENT.md), and the
+[original discussion brief](docs/KILL_IMPACT_UI_ASTRA_REVIEW.md). Decisions here
+and in active design docs supersede the brief's open questions.
 
-### Complete the same workflow after review
+### Product and implementation scope
 
-Implemented as six additional scenarios in the same PR: unknown inputs, incomplete
-attempt, recognized bank trip, identity/pending publication, Reset/pending worker
-and frozen history. The default `offlineReview` command runs all seven scenarios.
-[Current verification](docs/validation/dev1-offline-review.md#dev1-scenario-completion).
+- [ ] Use **Encounter / Diagnostics** as primary views. Keep Setup, Account,
+  comparison/kill details and Reset discoverable through secondary actions.
+  Preserve Back, scroll, keyboard access and frozen inspection.
+- [ ] Lead with the last complete duration and clearly scoped observed hitsplat
+  share. Show comparable mean/count compactly; one matching kill needs no
+  redundant mean/min/max. Keep incomplete attempts separate. Label the fixed
+  pilot as model/planning scope, not detected or confirmed per-kill team context.
+- [ ] Use single-column item/package cards under **Improve your setup**. Identify
+  the changed item (arrows, not the unchanged Tbow) or a multi-item package. Show
+  one supported metric, phase/role scope, short reason and accessible details.
+  Use live ItemManager sprites and explicitly labeled offline placeholders.
+- [ ] Define deterministic selection/deduplication of useful supported choices.
+  Do not rank unrelated captured states/roles by their largest percentage as
+  whole-kill value. Preserve whole packages, partial-search scope, material
+  uncertainty and carried versus conditional bank-preparation availability.
+  Show zero/no useful improvement once; retain negative alternatives in details.
+  No filler quota or repeated unavailable time-saving cards.
+- [ ] Add bounded Diagnostics: status, bundled build/model versions, captured
+  versus assumed inputs, coverage/gaps and calculations. Make safe status
+  reachable with no account/kill, pending work, reset and paused travel. Never
+  expose suspended/cleared history through Diagnostics. Preserve 0.19.3 reset
+  reasons and paused Reset guards.
+- [ ] Add **Copy report**, bound to the selected immutable kill/comparison
+  revision. Use a versioned allowlisted report model/formatter, not wholesale
+  summary serialization. Include relevant exact before/after inputs, scoped
+  outputs, versions and omissions. Omit names, account/profile identifiers,
+  roster hashes/cohort strings, raw inventory/bank dumps and unrestricted traces.
+  Use a report-local reference and live/synthetic provenance; export time is
+  not an invented kill timestamp. Bound output and disclose truncation.
+- [ ] Preserve the displayed calculation's input snapshot during export; do not
+  read today's account/preferences for an inspected result. Handle unavailable,
+  busy or headless clipboard with selectable report text and a clear outcome.
+  No automatic upload, backend or API key.
+- [ ] Extract only needed presentation/report boundaries. Calculations remain
+  off client thread/EDT; retain generation, identity and stale image/action/
+  publication guards. Share the production formatter with DEV1 where useful;
+  runner, fixtures and assertion machinery remain test-only.
 
-- [x] Add a compact scenario set for unknown bank/ammo/resources, an incomplete
-  attempt, completed kill → recognized bank trip → next kill, identity reset while
-  evaluation is pending, and a new result arriving during inspection of an earlier
-  kill. Reuse existing lifecycle/regression coverage rather than duplicating it.
-  Exercise controlled pending work so stale publication guards are actually tested.
-- [x] Finish documentation in [Development](docs/DEVELOPMENT.md): Cloud setup,
-  scenario commands, output locations, adding a scenario/encounter, input provenance,
-  comparison/review procedure and remaining live checks. Record actual validation
-  evidence and update this task's checkboxes; do not report blocked runs as passes.
+### Acceptance and handoff
 
-### Implementation boundaries and reuse
+- [ ] Extend the existing **nine-scenario DEV1 suite**, not a second harness.
+  Render actual Swing Encounter/Diagnostics and relevant expanded/empty/pending
+  states at 225px with normal/enlarged fonts. Inspect images and representative
+  viewports, including buttons/labels, long names and first-screen hierarchy;
+  JTextArea clipping checks alone do not prove control or viewport usability.
+- [ ] Test changed-item identity, scoped supported/unknown/zero/negative states,
+  coherent export, redaction and clipboard failure. New kills cannot change an
+  inspected result/report. Identity/reset/stale work cannot expose old accounts
+  or resurrect cleared data.
+- [ ] Preserve independent arithmetic and all lifecycle cases, including long
+  bank trips and same-arena reloads. Run pinned full validation and normal build;
+  record actual versions, outcomes, limitations and current CI artifact links.
+- [ ] Update active docs/status and open one PR with before/after evidence.
+  Explicitly leave unperformed real sprites/DPI/focus/clipboard/scroll and player
+  checks open. Iterate on UI1 review before beginning CTX1.
 
-Reuse NexCaptureTest, NexObserverTest, ObservationLifecycleTest, NexOwnedFixtures,
-NexOwnedEvaluator, NexPanelTest and relevant resource/arithmetic tests after
-checking current main. Summary-only fixtures remain useful for fast calculation/
-UI checks, but label which layers they bypass. Use production models/components;
-do not duplicate calculations or recreate the UI in a web app.
+**Outside UI1:** context mutation/cohort redesign, new combat formulas, automatic
+N3b/N3c advice, time/trip claims, full history browser, recording and in-client
+Save screenshot. Add native screenshot saving later if manual screenshots and
+DEV1 artifacts prove insufficient.
 
-Keep scenario loading/execution, tick and same-tick event ordering, reports and
-screenshot infrastructure reusable across encounters. Keep Nex signals, phase
-names, completion rules and fixtures in the Nex-specific part. Future encounters
-must not have to adopt NexSummary or Nex phase concepts. Inspect retained Zilyana
-code as a second architectural reference; adding live boss support is not part
-of DEV1. Extract only boundaries needed now, without a generic combat rules engine
-or broad production rewrite.
+## CTX1 — Editable Nex kill context (after UI1 review)
 
-Mock RuneLite dependencies at the boundary and provide the client state consumed
-at each relevant callback, including event payloads that differ from polled state.
-Keep deterministic control of queued work, reset state between scenarios and
-render Swing on the EDT. Preserve production thread, identity, unknown-state and
-publication guarantees. Keep fixture loading and runner controls development-only.
+**Goal:** optionally set usual context before play or correct a selected completed
+kill afterwards, preserving evidence and any other active attempt.
 
-Label synthetic evidence and user-reported equipment separately from real observed
-levels, quantities, charges and performance. Use independent existing oracles,
-reviewed hand calculations and behavioral invariants for expectations. Unsupported
-metrics must remain unsupported; DEV1 adds no spec-damage, survival, contribution
-or team-time claims. Placeholder sprites must be identified explicitly.
+- [ ] Separate phase-2 strategy (MP2/RP2/Other/Unknown), group mode
+  (organized/mass/unknown), and validated positive participant count including
+  the player (or unknown). Mass never overwrites strategy. Variable/unconfirmed
+  participation cannot become a falsely exact constant count.
+- [ ] Separate saved defaults, immutable captured facts, planning locks and
+  bounded in-memory per-kill annotations. Snapshot defaults at attempt start;
+  inherited values are not automatically confirmed. Migrate the fixed pilot
+  without inventing confirmation. Keep per-field provenance and edit revisions.
+- [ ] Put a compact context editor beside the selected kill with explicit Apply
+  and a separate remember-for-future option. No mandatory pre-fight form.
+  Initially cover the latest completed and already-inspected record; an arbitrary
+  history comparison selector does not already exist and needs explicit scope.
+- [ ] Use a dedicated annotation action, not NexObserver.method(), which currently
+  censors capture on method changes. Future defaults changed during combat apply
+  to the next attempt; historical edits cannot interrupt the current attempt.
+- [ ] Recompute only supported dependent outputs from preserved evaluation inputs.
+  Do not silently add new bank observations/preferences to a context-only edit.
+  Guard session generation, kill key, annotation revision and calculation-input/
+  model revisions alongside existing checks. Pending/old results cannot be
+  relabeled as newly corrected results.
+- [ ] Replace opaque string-only grouping where necessary with explicit
+  comparability evidence. Planning locks are not observed performance. Preserve
+  timer/adapter scope, observed setup and team uncertainty; equal team count is
+  not equal teammate damage/composition. Reconcile aggregates after edits, keeping
+  incomplete/incompatible/unconfirmed kills out of matched averages.
+- [ ] Define support per output. Other methods/team counts cannot reuse Trio MP2
+  recommendations by changing a label. Retain observations and independently
+  justified arithmetic; withhold dependent recommendations/team-time. Nearby
+  players do not establish party membership.
+- [ ] Extend DEV1 for unknown/inherited context, post-kill correction, an older
+  kill edited during a new attempt, repeated edits/pending publication, unsupported
+  modes, preference migration, cohort reconciliation, reset/logout/eviction and
+  frozen inspection/report consistency. Persist no performance history.
 
-Document JDK 11, Gradle/dependency preparation and consistent fonts for Cloud.
-Record the actual RuneLite/model/catalogue versions and make regression runs
-reproducible despite the current latest.release dependency. Prefer a narrow
-development version control/locking approach, with newer-version compatibility
-checked separately. Ensure preview outputs are correctly declared or explicitly
-regenerated so Gradle up-to-date checks cannot silently omit required artifacts.
-Reports/previews must be accessible for review, without committing routine generated
-output or private data. If setup/network restrictions block execution, state the
-exact blocker and what was not verified.
+Acceptance: edits affect only their intended kill/default; observed timing,
+damage and timeline stay unchanged; supported results/report revisions agree;
+a historical annotation never censors another active attempt.
 
-**Acceptance:** A prepared checkout can generate reviewable calculations and actual
-panel images without OSRS credentials or gameplay. Relevant incorrect outputs fail
-checks; incomplete kills stay excluded, valid bank trips retain history, stale
-results cannot republish, and inspected results remain frozen as intended.
-The same commands can support subsequent Codex changes. Actual RuneLite event
-mappings, real sprites/DPI/focus/GPU behavior and player usefulness remain separate
-live checks; existing N1–N4 acceptance is not waived.
+## N1/N2 — Remaining live acceptance
 
-**Later follow-up, outside DEV1:** Consider bounded, opt-in encounter recording
-after the runner is useful. Current summaries are not lossless event recordings.
-A future recorder needs ordered events and accompanying state, versioned anonymous
-identities and an explicit development-export exception to the current memory-only
-trace policy. Do not implement recording/export or relax that policy in DEV1.
+Implementation is integrated; live/player acceptance remains open. Preserve
+historical successes and the later lost-history failure in the
+[N1](docs/validation/nex-session.md), [N2](docs/validation/nex-owned.md),
+[variant](docs/validation/nex-owned-variants.md) and
+[bank/reload](docs/validation/nex-bank-retention.md) reports.
 
-## T0 — Transition (this change)
+- [ ] On current main (0.19.3 or successor), complete a kill, delay opening the
+  bank, verify retained history, return and complete another kill.
+- [ ] Check same-arena reload resumes capture without banking; logout,
+  account/profile/world changes, disable and Reset clear history/pending work.
+- [ ] Check live start/end/phase mappings, multi-switch history, timer origin,
+  capture fractions and damage scope. Synthetic tests and hitsplat share do
+  not establish game-timer calibration or server loot contribution.
+- [ ] Check actual ammo/quiver/charge/quantity readings, carried/bank distinction,
+  compatible packages, negative/zero results and useful owned comparisons,
+  without committing private account dumps.
+- [ ] Review actual sprites/scaling/focus/scroll and player usefulness.
 
-- [x] Record the accepted direction and replace conflicting active instructions.
-- [x] Archive previous planning/evidence documents with a recoverable baseline.
-- [x] Map retained foundations, transitional code and retirement points.
-- [x] Remove the unused row layout; isolate boss-independent combat-state reading.
-- [x] Name and scope the retained Zilyana observer/comparison explicitly.
-- [x] Complete build, regression and documentation checks; record actual results
-  in [the transition report](docs/validation/nex-transition.md).
+Gameplay is an acceptance activity, not a requirement after each offline edit.
+Integration does not convert unperformed checks into passes.
 
-This change does not implement Nex capture, new ranking/UI, banking-safe session
-retention, Death Charge recognition or impact estimates. Those are N1–N4 below.
+## N3 — Remaining recommendation integration and mechanics
 
-## N1 — Understand the real Nex session (in progress)
+N3a resources, N3b damage/ammo and N3c package APIs are implemented. Reuse
+[N3b](docs/research/nex-spec-damage.md), [N3c](docs/research/nex-packages.md),
+NexPackageFactory/NexPackageComparison and the existing catalogue.
 
-Implementation is available for review in development build 0.15.0. The Nex adapter,
-native session view, method/locks, immutable state/resource capture and banking
-round trips have synthetic replay/lifecycle coverage. [Evidence and pending live
-checks](docs/validation/nex-session.md). **N1 is not accepted yet:** initial client screenshots show censored attempts,
-historical failures rather than acceptance. Complete-result display and one
-bank-retention check have since been confirmed in-session; matched multi-trip
-means, broader lifecycle and usefulness checks remain open. The
-[0.16.5 correction](docs/validation/nex-smoke-anchor.md) replaces arena-entry
-anchoring with an observed smoke start and distinguishes dying from later arena
-completion. It preserves pre-smoke states and conservative late-arrival rejection.
-Bank recognition, explicit active status and bounded diagnostics remain. Earlier
-reports retain their original evidence and checks.
-Finish the real-client and usefulness checks before
-claiming the adapter's live mappings, capture fractions or game-timer agreement.
+- [ ] Establish a bounded evidence-backed capture-to-scenario contract for useful
+  recommendations. Unknown opportunities, HP, initial resources, restore phase/
+  order and casts/deaths remain unknown. Worn time, impact equipment and net
+  energy deltas are not attack attribution.
+- [ ] Close required pilot target/phase mechanics before enabling dependent
+  personal comparisons. Separate actual-to-owned and owned-to-upgrade, recomputing
+  whole packages with exact variants, locks, hands/ammo, shared energy, displaced
+  attacks, joint usable stock and packing.
+- [ ] Add supported acquisition and recurring-cost presentation using retained
+  route data. Distinguish permanent unlocks from ammunition/quiver charges and
+  consumption. Do not revive the global-grind homepage.
+- [ ] Include food/combofood, brews/restores/potions and spells only with supported
+  consumption/delay/boost/resource evidence; preserve healing/survival gaps.
 
-Deliver one useful native flow for **Nex / Trio MP2 / one kill per trip**.
-The confirmed pilot uses Lightbearer without ring switches and upgraded Death
-Charge. Voidwaker is the reported spec weapon; spec timing, remaining equipment,
-ammo/charges and supplies must be observed rather than invented.
-
-- Save method and explicit locks/corrections; automatic observations are the
-  default. Distinguish detected spell state from an assumed upgrade toggle.
-- Implement a reviewed Nex event adapter with phase/subphase/target identity,
-  start/end correlation, local/team damage scope and completion status. MP2
-  includes ranged windows inside P2; it is not melee for all of P2.
-- Capture actual melee/ranged/spec setups, current levels/prayers, ammo and
-  spec-energy/Death Charge changes. Preserve delayed-hit/same-tick ambiguity.
-  Inventory changes alone are not proof of eating or potion consumption.
-- Show last kill and session mean, sample count and spread, with clearly defined
-  timing/contribution scopes. Do not confuse average per-kill share with aggregate
-  damage share. Failed/censored kills remain separate from complete averages.
-- Retain bounded completed summaries across recognized banking transitions after
-  same-account revalidation. Clear active traces and stale callbacks; clear the
-  session on logout, identity/profile change, unsupported world, disable or Reset.
-- Introduce the encounter-first view and retire the replaced general homepage
-  path. Keep useful account corrections and calculation details accessible.
-
-Acceptance: real and replayed multi-switch kills; Tbow with empty offhand does not
-erase melee defender; stable phase/minion identity; missing/late/duplicate events;
-death/teleport/mid-kill enable; several one-kill bank trips; account switch during
-pending work; matching timer origins; no false completed kills or leaked sessions.
-Record captured/eligible fractions and real-client/player findings separately.
-
-## N2 — Better use of owned equipment (implementation for review)
-
-Development build 0.16.0 supplies immutable per-state carried-package comparisons,
-conditional bank preparation, explicit pairs, locks and coverage gaps in the Nex
-view. The old homepage/global progression policy and obsolete consumers/tests are
-removed together; shared formula/oracle, source/schema, observation and preference
-regressions remain. [Implementation and verification](docs/validation/nex-owned.md).
-
-Petter supplied the ranged and melee equipment on 15 October; an anonymous fixture
-uses those items with explicitly synthetic levels/prayers/quantities. **Acceptance
-remains open:** live capture now produces N2 results, while exact stock/charges,
-combined bank packing and player usefulness still need validation. Build 0.16.6
-adds locked melee variants plus role/support filters and grouped gaps; see
-[the correction report](docs/validation/nex-owned-variants.md). Spec-role
-history is retained; its finite energy/effects remain N3. Supported ordinary
-pairwise offence is not global best owned or encounter throughput.
-
-Evaluate complete method-compatible owned packages across melee/ranged/spec roles.
-Compare them to the immutable actually-used timeline, respecting locks, available
-inventory and shared resources. Preserve useful reviewed model/source machinery.
-Replace the global progression ranking for this flow with explainable contextual
-choices; remove obsolete policy/UI consumers and their superseded tests together.
-
-Acceptance: full actual account fixture with no private dump committed; compatible
-hands/ammo/sets; gains and losses; unchanged package gives zero; unknown stock or
-model coverage does not become absence or a false global-best claim. An unrelated
-unsupported item must not suppress a supported explicit pairwise comparison.
-
-## N3 — Relevant upgrades and the pilot spec system
-
-**N3a resource foundation is integrated with N2 0.16.6 in build 0.17.1.**
-Post-kill details expose frozen
-resource readings; an independent bounded scenario API checks shared energy,
-regen phase/order, cap waste, Death Charge casts/eligible procs and spec versus
-ordinary attack delays. It does not infer attacks/casts/procs or supply a spec
-damage/upgrade recommendation. [Contract](docs/research/nex-spec-resources.md) and
-[verification](docs/validation/nex-spec-resources.md).
-
-**N3 remains in progress.** Next join reviewed spec/HP-dependent bolt damage,
-ammo/splinter use, actual eligible opportunities and displaced ordinary attacks;
-compare whole owned-plus-upgrade packages with acquisition and recurring costs.
-Supply effects and live/player acceptance remain open. N1/N2 acceptance above is
-unchanged; combined client checks remain open after the integration.
-
-Prioritize actual Nex coverage: ammo/quiver, relevant melee packages, Voidwaker
-versus Zaryte crossbow, Lightbearer and upgraded Death Charge. Validate finite
-energy, regeneration timing, cast/proc opportunities, HP-dependent bolts and the
-ordinary attacks displaced by specs. Use verified sources and independent cases.
-Show recurring ammo/splinter use separately from permanent equipment/unlocks;
-retain a concise acquisition path and owned-alternative comparison.
-
-Acceptance includes charged-versus-blessed quiver equivalence where applicable,
-correct spec costs, no fixed Lightbearer uplift, resource competition, blocked
-metrics scoped to dependencies, and whole-package rather than summed-item gains.
-Capture food/potion effects; only compare altered supply plans with a supported
-consumption/delay/boost model. Unsupported healing/survival claims remain explicit.
+Scope one concrete slice after CTX1/evidence review. Do not rebuild delivered
+kernels or advertise conditional APIs as automatic live recommendations.
 
 ## N4 — Validate personal contribution and team-time estimates
 
-Implement only the bounded Nex method model supported by N1–N3 evidence. Preserve
-phase/target damage, mandatory windows, teammates and finite attack opportunities.
-Keep observed share, modeled personal damage and expected team time separate.
-Expose assumptions and the type of uncertainty; never promise a reconstruction
-of the exact last kill with unseen gear. See [numerical contract](docs/KILL_IMPACT.md).
+Use only a bounded method model supported by N1–N3 evidence. Account for phase/
+target damage, finite HP, rounding/overkill, mandatory windows, team damage and
+attack/resource opportunities. No last-kill/DPS-ratio shortcut, additive savings
+or assumed zero effect for unknown mechanics.
 
-Acceptance: freeze the model before held-out checks; alternate genuinely owned
-setups in matched session blocks; report sample sizes, exclusions, errors and
-upgrade-delta uncertainty. Ordinary prediction accuracy alone does not establish
-a small upgrade saving. Do not headline positive seconds when unresolved effects
-or uncertainty can reverse the result. Validate usefulness with Petter in-game.
+- [ ] Freeze the model before held-out evaluation. Alternate genuinely owned
+  setups in matched blocks; report counts, exclusions, bias and uncertainty type.
+- [ ] Validate upgrade deltas as well as baseline predictions. Withhold positive
+  seconds headlines when unresolved effects/uncertainty can reverse the result.
+- [ ] Separate observed share, modeled personal damage and expected team time;
+  validate usefulness with Petter. One-kill trips do not imply a longer-trip goal.
 
-## After the Nex pilot
+## Delivered foundations and later options
 
-Extend to other methods and bosses/raid encounters through shared models and
-small adapters, selected by usefulness and reusable mechanics. Broader acquisition
-estimation and old coverage gaps remain recorded evidence, not parallel delivery
-mandates. Reassess the scoped feature and current policy before public distribution;
-Plugin Hub submission is a separate authorized action.
+- T0, N1/N2 implementation and N3a/N3b/N3c APIs are integrated; retain evidence and
+  open boundaries in [validation records](docs/validation/README.md).
+- DEV1 is implemented: reviewed baseline **nine scenarios, 293 checks, 56 PNGs**
+  at 225px/12pt/20pt. Numerical APIs also have separate unit/integration tests.
+  These are baseline counts, not fixed quotas for future work.
+- Extend methods/bosses through shared arithmetic and small adapters when useful,
+  without a universal simulator or revived global ranking.
+- An opt-in recorder needs ordered events with accompanying state, anonymous
+  identities and a separately reviewed memory-only trace-policy exception.
+  UI1 diagnostic reports are not replay recordings.
+- Screenshot saving and wider history navigation are optional scoped follow-ups.
+  Public distribution/current Plugin Hub policy review remain separate work.
+
+## Codex Cloud delivery loop
+
+Read this file and AGENTS.md, branch from current main, implement the selected
+task, run affected regressions and these commands, inspect artifacts and fix
+findings before handing over a reviewable PR:
+
+```sh
+./gradlew -PruneLiteVersion=1.13.2 test build offlineReview --no-daemon
+./gradlew test build --no-daemon
+```
+
+Use JDK 11 and the [prepared environment instructions](docs/DEVELOPMENT.md).
+Preserve independent expectations. Record exact commit/versions, performed checks
+and blockers; attach the current CI report/PNG artifact. No routine generated
+output or private captures in Git. No automatic merge.
+
+Previous task detail remains at
+[the pre-cleanup revision](https://github.com/PetterHL/ironpath/blob/762f46f21cd2a7f20ac9558724522d0e4d5a4c95/TASKS.md).
+The [consolidation record](docs/validation/main-consolidation-20261018.md) records
+branch disposition and evidence. Historical plans are not parallel backlogs.

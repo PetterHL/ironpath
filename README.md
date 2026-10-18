@@ -7,7 +7,32 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**16 October 2026: combined development build 0.17.1 (N1/N2/N3a).**
+**18 October 2026: consolidated main, development build 0.19.3 (N1/N2/N3a/N3b/N3c).**
+The next Codex Cloud task is **UI1: Encounter and Diagnostics**, followed by
+**CTX1: editable Nex kill context**. [TASKS](TASKS.md) contains the current order,
+scope and acceptance checks. These features are planned, not implemented.
+The existing code and review history are consolidated on main; live-client
+acceptance stays open. [Integration record](docs/validation/main-consolidation-20261018.md).
+
+Bank-travel correction: completed history no longer expires while waiting to
+open the bank. It stays hidden until same-account/profile/world revalidation;
+logout, identity changes and Reset still clear it. The panel shows the build
+version and a non-private reset explanation when history is cleared. Verified
+return travel remains recognized while preferences are still loading.
+Scene reloads inside a verified arena now resume capture without requiring a
+bank visit; Reset remains available while a revalidated account is paused.
+Client retesting remains open.
+[Finding and verification](docs/validation/nex-bank-retention.md).
+
+N3c connects complete actual, supported owned and hypothetical upgrade packages
+through the existing ordinary/spec damage and finite energy/ammo kernels.
+Conditional comparisons recompute whole packages, retain negative and zero deltas,
+and expose resource/damage gaps and provenance. These are explicit scenario APIs;
+captured kills do not automatically become launch plans or personal recommendations.
+[N3c contract and verification](docs/validation/nex-packages.md).
+N3b supplies the underlying independent Voidwaker/ruby/diamond damage and exact
+ammo/splinter branches. [N3b evidence](docs/validation/nex-spec-damage.md).
+
 N3a adds **Owned setup comparisons → Special-attack resources**, with frozen
 energy, Death Charge and ring readings after a kill. Its separate finite energy/
 delay scenario API requires explicit inputs and does not infer spec usage or
@@ -24,8 +49,9 @@ observed smoke announcement to death/dying, with corroborating arena completion.
 Arena entry is diagnostic; pre-smoke equipment remains separately inspectable.
 The bounded end matching accounts for dying preceding arena completion. The
 reproduced failure pattern passes synthetic replay. Complete-result display and
-retention across a bank visit now have in-session evidence; broader session and
-player checks remain open. [Capture contract](docs/validation/nex-smoke-anchor.md).
+one earlier retained bank visit have in-session evidence. A later bank test lost
+history; the 0.19.1 correction awaits client retesting. Broader session and player
+checks remain open. [Capture contract](docs/validation/nex-smoke-anchor.md).
 The development launcher retains RuneLite's required assertions with a temporary
 GPU-package exception, correcting the 0.16.3 startup failure; see
 [development](docs/DEVELOPMENT.md#gpu-assertion-during-development).
@@ -55,8 +81,9 @@ reported Tbow/amethyst-quiver and Fang/defender equipment has an anonymous regre
 fixture; levels, prayers, stock and phase inputs in that fixture are synthetic.
 Ancient blessing remains a physical worn item while quiver arrows are a separate
 projectile input. Conditional ordinary charged/blessed quiver offence is supported;
-finite ammo/splinter use, special-attack damage, healing and contribution/time remain
-N3–N4. Scorching and other unsupported alternatives leave explicit coverage gaps
+N3b adds conditional finite ammo/splinter and special-attack arithmetic. Automatic
+spec comparisons, healing and contribution/time remain N3–N4.
+Scorching and other unsupported alternatives leave explicit coverage gaps
 without blocking a supported pair.
 
 ## Project map
@@ -80,7 +107,7 @@ items are not automatic prerequisites for the Nex pilot.
 ## Build
 
 For calculation/UI review without gameplay, see
-[the DEV1 offline command](docs/DEVELOPMENT.md#offline-review-dev1). It runs seven
+[the DEV1 offline command](docs/DEVELOPMENT.md#offline-review-dev1). It runs nine
 synthetic scenarios through the production Nex adapter/session/evaluator and native
 Swing panel, including controlled plugin publication, banking and frozen-history
 checks, and generates reports plus native-width PNGs at normal/enlarged fonts.

@@ -1,9 +1,51 @@
 # Encounter-first UX
 
-Selected direction, 15 October 2026. This is the target for the Nex pilot, not a
-claim that the transition build already contains these screens.
+Encounter direction selected 15 October; UI review incorporated 18 October 2026.
+The UI1/CTX1 sections describe planned changes, not existing screens. TASKS.md
+owns delivery. Later versioned sections retain the implemented behavior/history.
 
-## One remembered context
+## Reviewed UI1 target (next implementation)
+
+One native 225px panel with **Encounter / Diagnostics** primary navigation.
+Setup and Account remain explicit secondary actions, together with comparisons,
+kill/attempt details and Reset. Keep frozen inspection and Back/scroll behavior.
+
+Encounter order: boss and pilot model scope; last complete duration and scoped
+observed hitsplat share; compact comparable mean/count; **Improve your setup**
+cards; secondary actions. Keep failed/censored attempts separate. At n=1, show
+one matching kill rather than repeating its mean/range. Details retain spread,
+mean-per-kill versus aggregate share, capture scope and exclusions.
+
+Cards are single-column, with a changed-item sprite/name (or multi-item package),
+one supported primary metric, phase/role scope, one short reason and details.
+Do not name an unchanged weapon when the gain comes from arrows or armour.
+Group/deduplicate deterministically; do not rank unrelated state percentages as
+whole-kill impact. Keep conditional/bank/partial-search qualifiers beside affected
+claims. Preserve zero/negative comparisons without filler cards. Use ItemManager
+live; label offline sprite placeholders. Stack metrics when enlarged fonts require it.
+
+Diagnostics is directly available, including safe empty/reset/paused/pending
+states, without exposing hidden history or bypassing account guards. It contains
+status/build, observed-versus-assumed inputs, coverage and detailed results, plus
+one-click Copy report. The selected immutable calculation and exported report
+must agree. Use the allowlisted export contract in KILL_IMPACT.md; clipboard
+failure leaves selectable text. No automatic sending or account connection.
+
+In-client Save screenshot, editable context and new numerical claims are outside
+UI1. Use DEV1 native PNGs and manual client screenshots for this first cycle.
+Check actual viewport hierarchy and controls as well as full-height text wrapping.
+
+## Reviewed CTX1 target (after UI1 review)
+
+Show optional kill context beside the selected kill, with a compact editor and
+explicit Apply. Keep MP2/RP2/Other/Unknown, organized/mass/unknown and exact team
+count/unknown as separate dimensions. Count includes the player. A saved future
+default is separate from the selected kill's annotation; inherited is not confirmed.
+Selecting unsupported contexts preserves observations but cannot enable pilot
+recommendations. No compulsory pre-fight form. TASKS.md specifies frozen inputs,
+cohort reconciliation, migration and stale-work checks before implementation.
+
+## One remembered context (existing pilot)
 
 The main view starts with `Nex · Trio MP2 · One kill per trip`. The method is a
 saved preference; detect equipment/spell use and ask only focused corrections.
@@ -118,6 +160,11 @@ Combined build 0.17.1 retains the resource review alongside the 0.16.6 role/supp
 filters and paused-travel presentation; changing an ordinary scenario filter does
 not change which kill the resource review describes.
 
+Build 0.18.0 adds independent N3b damage/ammo scenario kernels without a new runtime
+calculation view. Resource details explain that sampled readings cannot establish
+launches, HP or initial conditions. No automatic spec-weapon ranking or upgrade
+card is shown until those inputs and package/phase handling are supported.
+
 ## 0.16.5 observed smoke start
 
 The measured interval is labeled **Observed smoke announcement → Nex death/dying**.
@@ -151,3 +198,45 @@ comparison stays frozen while the view remains valid; there is currently no
 selector for opening any earlier kill's comparison from the main view. A new
 partial attempt does not enter complete averages or replace the last complete
 baseline. Setup/history across further travel still needs live checks.
+
+## 0.19.0 complete-package scenarios
+
+N3c's explicit conditional scenario API connects complete packages to finite
+spec plans without changing runtime navigation or adding a setup wizard. Captured
+readings still do not establish legal launches, HP or initial conditions. No
+personal spec upgrade, contribution or seconds-saved card is shown.
+[Contract and verification](validation/nex-packages.md).
+
+## 0.19.1 bank waiting and retention
+
+Completed history remains paused and hidden until the same-account bank trip is
+verified, without a deadline for opening the bank or returning. A nearby loaded
+Nex does not falsely end the outbound wait. Opening the bank restores the last
+complete result, session statistics and details; logout/account/profile/world
+changes and Reset still clear them. The reported empty bank-open session failed
+validation and requires retesting on the corrected build.
+[Finding, regression cases and next client check](validation/nex-bank-retention.md).
+
+## 0.19.2 test visibility
+
+The header shows the actual bundled build version on the development classpath
+and in the assembled plugin. When completed history is cleared, the empty
+Encounter page retains a short constant explanation (for example world change,
+unverified travel or Reset). Fresh account reads do not overwrite that cause;
+a new captured attempt replaces it. Explanations contain no account identifiers
+or old performance data and are neither saved nor logged. Normal travel pauses
+remain separate from reset messages.
+
+A verified bank-return scene now supplies the next departure source while settings
+IO is pending. An additional scene transition must not require a completed
+preference read to preserve history. [Verification](validation/nex-bank-retention.md).
+
+## 0.19.3 arena scene reloads
+
+A scene rebuild while still in the verified Nex arena can resume observation
+without a bank visit. Completed summaries remain available after revalidation;
+active traces still end at the scene boundary. An observed departure continues
+to require bank verification, with no waiting deadline. After account/settings
+revalidation, the paused view offers Reset session with the existing view and
+identity guards. Client testing is deferred;
+[automated regression evidence](validation/nex-bank-retention.md) is recorded separately.
