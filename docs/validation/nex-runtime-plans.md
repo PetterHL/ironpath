@@ -1,7 +1,7 @@
 # N3 runtime plan integration validation
 
 18 October 2026. Development build **0.22.0**, based on main `96d91e8`.
-Implementation/tested code commit: `225f7dd08abe4862614b14460e001e22b3b813ae`.
+Original implementation/tested code commit: `225f7dd08abe4862614b14460e001e22b3b813ae`.
 [Contract and limitations](../research/nex-runtime-plans.md).
 
 ## Delivered
@@ -48,6 +48,45 @@ capture through the real plugin/N2 worker/native editor/N3 worker, checks finite
 plans and separate deltas, missing HP, frozen older inputs after a new kill, and
 Reset while a plan worker is pending, at 225px/12pt/20pt. All scenario inputs,
 legal attack windows, resource use and HP are explicitly synthetic assumptions.
+
+## PR #45 review corrections
+
+Tested correction commit: `87b6acd749798ba0d94028e641d9277329eed093`.
+Runtime join `nex-declared-plan-2`, package bridge `nex-package-4`, standalone
+plan report schema 2. The three P2 findings are corrected:
+
+- Packing starts from immutable captured free space and occupied stacks. Each
+  scenario releases only its own modeled equipment/projectile stack slots, keeping
+  other carried gear/supplies reserved. The full 28-slot Dragon 2h / Infernal cape /
+  26-shark reproduction leaves the owned plan unavailable before and after a
+  hypothetical cape edit. A 27-slot counterpart remains available with identical
+  captured-to-owned damage/resource results across the same edit.
+- Hypothetical projectile selection follows the resulting weapon and physical
+  ammo compatibility. ZCB / blessed quiver / ten ruby dragon bolts can change to
+  Voidwaker with only the weapon edit; the physical ammo slot stays unchanged,
+  the plan performs its declared melee special and spends no bolts.
+- The standalone allowlist exports frozen real/visible levels, prayer flags,
+  style button and derived family/prayer/style plus sanitized captured/model
+  target/phase/window and provenance. Assertions check Piety, Strength 118 and
+  Smoke/base context, with public-event DEV1 checks for Shadow/Fear the shadow.
+  Unexpected skill/prayer/context strings and unrelated inventory remain excluded.
+
+All three new unit regressions failed against the previous code. After correction,
+the focused runtime/package suites pass **41 tests**. Full pinned
+`./gradlew -PruneLiteVersion=1.13.2 test build offlineReview --no-daemon` passes
+**317 tests / 38 suites, zero failures/errors/skips; 10 scenarios / 569 checks,
+zero failures; 130 PNGs**. All nine baseline scenarios remain green.
+`./gradlew test build --no-daemon` also passes with tasks up to date; dependency
+inspection resolves normal `latest.release` client/jshell to **1.13.2**. JDK and
+Gradle remain 11.0.32.1 / 8.10. Missing RuneLite dependencies were resolved online
+through the configured proxy before verification; subsequent runs reused that cache.
+
+Inspected both native 225 × 600 report viewports at 12pt/20pt and the generated
+standalone TXT contents. The existing selectable-report/clipboard fallback remains
+usable. DEV1 now publishes `nex-n3-plan/plan-report-{12,20}.txt` alongside its PNGs
+and six new report checks. Markdown links and `git diff --check` pass. Current-head
+CI/run/artifact evidence is linked from PR #45. No generated output is committed;
+the remaining client/gameplay acceptance below is unchanged.
 
 ## Remaining acceptance
 
