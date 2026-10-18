@@ -2,8 +2,10 @@
 
 18 October 2026. Development build **0.21.0**, based on UI1's merged main
 `96d91e8912d56548b72c4587e03ee683e43892e5`. Implemented for review; feature merge
-and live/player acceptance remain separate. Implementation commit and current CI
-run/artifact are recorded in the delivery PR.
+and live/player acceptance remain separate. Implementation commit:
+[`789f69e70991e63a77bcdf334f75fd6fe3c53591`](https://github.com/PetterHL/ironpath/commit/789f69e70991e63a77bcdf334f75fd6fe3c53591).
+Subsequent evidence edits are documentation only. The delivery PR links its current
+head's CI run/artifact.
 
 ## Result and boundaries
 
