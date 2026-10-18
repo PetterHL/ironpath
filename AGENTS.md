@@ -14,23 +14,27 @@
 
 ## Next delivery
 
-- UI1 and its two PR #42 review corrections are complete in development build
-  **0.20.0**; the user authorized its merge on 18 October. Read the evidence in
-  docs/validation/ui1-encounter-diagnostics.md; TASKS.md CTX1 follows the UI1 merge.
-  Do not repeat delivered DEV1/N3b/N3c work or resume their retired stacked
-  branches. TASKS.md is the roadmap as well
-  as the backlog; the UI discussion brief is preserved historical input.
-- UI1 uses supported per-state comparisons, identifies changed items/packages,
-  and adds an allowlisted, user-triggered report. It does not add editable context,
-  automatic spec recommendations or team-time estimates. Preserve 0.19.3 banking,
-  arena-reload, reset reasons and all nine baseline replay scenarios.
+- Development build **0.22.1** implements the optional post-kill N3A/N3B/N3C
+  runtime plan integration for review. Read docs/research/nex-runtime-plans.md and
+  docs/validation/nex-runtime-plans.md. It branches from reviewed main `96d91e8`;
+  CTX1 remains a separate open PR. Do not merge either without authorization.
+- Reuse NexPlanComparison, NexPackageComparison and existing resource/damage kernels.
+  Captured packages are inputs to declared hypothetical attacks, never attributed
+  attacks. Preserve exact stock, shared conditions/delays, per-output unknowns,
+  observed reserve usability, proposal locks, frozen inputs and request/view guards.
+  No automatic spec recommendation, live coaching, target-HP trajectory or N4 claim.
+- Diagnostics resolves its default selected comparison only after a matching frozen
+  calculation arrives. Preserve explicit inspected selections, including no selection.
+  Observed equipment/target class remain allowlisted in unavailable-row reports.
+- Keep UI1 frozen inspection/reports, 0.19.3 banking/reload/reset behavior and all
+  nine original DEV1 scenarios. `nex-n3-plan` extends that same harness.
 - The 18 October main consolidation integrates reviewed development work with
   live acceptance still open. It is not Plugin Hub approval or standing permission
   to merge subsequent feature PRs. See docs/validation/main-consolidation-20261018.md.
 
 ## Delivery
 
-- Current: **0.20.0** adds compact Encounter / Diagnostics and an allowlisted
+- Retained UI1 **0.20.0** adds compact Encounter / Diagnostics and an allowlisted
   user-triggered report; retained calculations/selection are immutable across new
   results. Clipboard failure leaves selectable text. See the UI1 validation record.
 - Retained 0.19.3 behavior fixes arena-only scene reloads being mistaken
@@ -103,7 +107,8 @@
   immutable conditions declaration. Exact usable joint stock/packing is separate
   from bank presence; assumptions are not observations. Preserve scoped damage/
   resource gaps, conditional branch labels, source/model versions and negative gains.
-  No automatic capture caller, best-spec ranking or N4 time claim is supplied.
+  NexPlanComparison now supplies an optional declared post-kill caller; automatic
+  capture attribution, best-spec ranking and N4 time claims remain unavailable.
 - Knowledge `n3-package-1` adds bounded Voidwaker and ruby/diamond bolt facts
   to the same catalogue. Existing `n2-owned-2` added exact locked Dragon defender (24143) and
   Infernal cape (24224) melee forms. Preserve exact captured IDs and ownership;

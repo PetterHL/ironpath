@@ -12,7 +12,7 @@ import static com.ironpath.nex.SpecAttackPlan.*;
 /** Complete-package bridge, not a capture-to-attack inference or encounter/HP simulator. */
 public final class NexPackageComparison
 {
-	public static final String VERSION="nex-package-2";
+	public static final String VERSION="nex-package-4";
 	public enum Kind { ACTUAL, OWNED, UPGRADE }
 	public enum Availability { CARRIED, BANK_PREPARATION }
 	public enum Start { ATTACK_READY_NO_CHARGE_CAST_READY, OTHER }
@@ -88,7 +88,7 @@ public final class NexPackageComparison
 			this.retrieval=Objects.requireNonNull(retrieval);
 		}
 	}
-	/** Known usable quantities and gear space remaining after reserved supplies. Bank presence alone is insufficient. */
+	/** Known usable quantities and gear space after reservations. Optional captured stacks are reclaimed per scenario. Bank presence alone is insufficient. */
 	public static final class Stock
 	{
 		public final Availability availability;
@@ -97,15 +97,23 @@ public final class NexPackageComparison
 		public final ScenarioFact<Map<String,Truth>> unlocks;
 		public final ScenarioFact<Boolean> bankPacking;
 		public final Set<Integer> hypothetical;
+		/** Occupied captured inventory stacks. Only stacks used by this scenario can release a reserved slot. */
+		public final Set<Integer> inventoryItems;
 		public Stock(Availability availability,ScenarioFact<Map<Integer,Integer>> equipment,ScenarioFact<Map<Integer,Integer>> ammunition,
 			ScenarioFact<Integer> splinters,ScenarioFact<Integer> inventorySpace,ScenarioFact<Map<String,Truth>> unlocks,
 			ScenarioFact<Boolean> bankPacking,Set<Integer> hypothetical)
+		{ this(availability,equipment,ammunition,splinters,inventorySpace,unlocks,bankPacking,hypothetical,Set.of()); }
+		/** inventorySpace is unoccupied space when inventoryItems supplies the original occupied stacks. */
+		public Stock(Availability availability,ScenarioFact<Map<Integer,Integer>> equipment,ScenarioFact<Map<Integer,Integer>> ammunition,
+			ScenarioFact<Integer> splinters,ScenarioFact<Integer> inventorySpace,ScenarioFact<Map<String,Truth>> unlocks,
+			ScenarioFact<Boolean> bankPacking,Set<Integer> hypothetical,Set<Integer> inventoryItems)
 		{
 			this.availability=Objects.requireNonNull(availability); this.equipment=ScenarioFact.freezeMap(Objects.requireNonNull(equipment));
 			this.ammunition=ScenarioFact.freezeMap(Objects.requireNonNull(ammunition)); this.splinters=Objects.requireNonNull(splinters);
 			this.inventorySpace=Objects.requireNonNull(inventorySpace); this.unlocks=ScenarioFact.freezeMap(Objects.requireNonNull(unlocks));
-			this.bankPacking=Objects.requireNonNull(bankPacking); this.hypothetical=Set.copyOf(hypothetical);
+			this.bankPacking=Objects.requireNonNull(bankPacking); this.hypothetical=Set.copyOf(hypothetical); this.inventoryItems=Set.copyOf(inventoryItems);
 			if(hypothetical.stream().anyMatch(id->id<1)) { throw new IllegalArgumentException("Exact hypothetical item forms required"); }
+			if(inventoryItems.size()>28 || inventoryItems.stream().anyMatch(id->id<1)) { throw new IllegalArgumentException("Bounded exact inventory stacks required"); }
 		}
 	}
 	public static final class Action
@@ -265,10 +273,16 @@ public final class NexPackageComparison
 	}
 	private static int unchargedCape(int cape)
 	{ return cape==28953 || cape==28957?28951:28947; }
-	private void requirements(Loadout loadout,Scenario scenario,Map<String,Integer> requirements,String equipFact,Integer minimumCombat)
+	/** Retained worn reserve packages constrain joint packing, not proposed action choices. */
+	private static boolean observedReserve(Loadout loadout,Scenario scenario)
+	{ return loadout.state.origin==ScenarioFact.Origin.OBSERVED && scenario.actions.values().stream()
+		.noneMatch(action->scenario.loadouts.get(action.loadout)==loadout); }
+	private void requirements(Loadout loadout,Scenario scenario,Map<String,Integer> requirements,String equipFact,Integer minimumCombat,int itemId)
 	{
 		// Actually worn items establish equip usability, but never charges or carried ownership.
-		if(scenario.kind==Kind.ACTUAL && loadout.state.origin==ScenarioFact.Origin.OBSERVED) { return; }
+		if(scenario.loadouts.values().stream().anyMatch(observed->observed.state.origin==ScenarioFact.Origin.OBSERVED
+			&& observed.state.value().slots.containsValue(itemId)
+			&& observed.state.value().realLevels.equals(loadout.state.value().realLevels))) { return; }
 		Map<String,Integer> levels=need(loadout.state).realLevels;
 		for(var req:requirements.entrySet())
 		{ if(levels.getOrDefault(req.getKey(),-1)<req.getValue()) { throw new IllegalArgumentException("Equip requirement unconfirmed: "+req.getKey()); } }
@@ -298,19 +312,19 @@ public final class NexPackageComparison
 		{
 			int id=slots.get(slot);
 			Integer lock=method.locks.get(loadout.role+"/"+slot);
-			if(scenario.kind!=Kind.ACTUAL && lock!=null && id!=lock) { throw new IllegalArgumentException("Planning lock conflicts: "+loadout.role+"/"+slot); }
+			if(scenario.kind!=Kind.ACTUAL && !observedReserve(loadout,scenario) && lock!=null && id!=lock) { throw new IllegalArgumentException("Planning lock conflicts: "+loadout.role+"/"+slot); }
 			if(id==0) { continue; }
 			if(isMelee)
 			{
 				MeleeItem item=melee.get(id);
 				if(item==null || !slot.equals(item.slot)) { throw new IllegalArgumentException("Unreviewed exact melee item: "+slot+" "+id); }
-				requirements(loadout,scenario,item.requirements,item.equipFact,item.minimumCombat);
+				requirements(loadout,scenario,item.requirements,item.equipFact,item.minimumCombat,id);
 			}
 			else
 			{
 				RangedItem item=ranged.get(id);
 				if(item==null || !slot.equals(item.slot)) { throw new IllegalArgumentException("Unreviewed exact ranged item: "+slot+" "+id); }
-				requirements(loadout,scenario,item.requirements,null,null);
+				requirements(loadout,scenario,item.requirements,null,null,id);
 			}
 		}
 		Map<String,String> origins=new TreeMap<>(); slots.forEach((slot,id)->origins.put(slot,loadout.state.evidence()));
@@ -338,7 +352,7 @@ public final class NexPackageComparison
 			{ throw new IllegalArgumentException("Compatible worn ammunition takes priority over selected quiver ammunition"); }
 			ammo=selected>0?selected:slots.get("ammo");
 			if(!RangedModel.compatible(weapon,ranged.get(ammo))) { throw new IllegalArgumentException("Incompatible exact selected ammunition"); }
-			requirements(loadout,scenario,ranged.get(ammo).requirements,null,null);
+			requirements(loadout,scenario,ranged.get(ammo).requirements,null,null,ammo);
 			delay=weapon.ticks-(setup.rangedStyle==RangedModel.Style.RAPID?1:0);
 		}
 		CombatSetup uncharged=setup;
@@ -425,6 +439,10 @@ public final class NexPackageComparison
 			}
 			if(input.ammo>0 && !ammo.containsKey(input.ammo)) { throw new IllegalArgumentException("Exact ammunition stock unknown: "+input.ammo); }
 		}
+		Set<Integer> modeled=new HashSet<>(union); modeled.addAll(ammo.keySet());
+		// Unselected carried gear/supplies remain reserved. Hypothetical loadouts cannot free another scenario's slots.
+		for(int id:stock.inventoryItems) { if(modeled.contains(id)) { space++; } }
+		if(space>28) { throw new IllegalArgumentException("Modeled inventory stacks exceed captured occupied slots"); }
 		for(PackageInputs input:packages.values())
 		{
 			Set<Integer> stowed=new HashSet<>(union); stowed.removeAll(input.charged.slots.values());
@@ -571,7 +589,8 @@ public final class NexPackageComparison
 			if(bs.equipment.known() && as.equipment.known()) { sameStock(bs.equipment.value(),as.equipment.value(),as.hypothetical); }
 			if(bs.ammunition.known() && as.ammunition.known()) { sameStock(bs.ammunition.value(),as.ammunition.value(),as.hypothetical); }
 			if(bs.splinters.known() && as.splinters.known() && !bs.splinters.value().equals(as.splinters.value())
-				|| bs.inventorySpace.known() && as.inventorySpace.known() && !bs.inventorySpace.value().equals(as.inventorySpace.value()))
+				|| bs.inventorySpace.known() && as.inventorySpace.known() && !bs.inventorySpace.value().equals(as.inventorySpace.value())
+				|| !bs.inventoryItems.equals(as.inventoryItems))
 			{ throw new IllegalArgumentException("Compared plans must retain declared starting splinters and reserved inventory space"); }
 		}
 		return new Delta(before,after);

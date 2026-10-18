@@ -18,7 +18,7 @@ final class NexReport
 		KnowledgeCatalog catalog,Provenance provenance,State state)
 	{
 		List<String> out=new ArrayList<>();
-		out.add("IronPath diagnostic report · schema 1");
+		out.add("IronPath diagnostic report · schema 2");
 		out.add("Evidence: "+provenance+"; status: "+state);
 		out.add("Build: "+BuildInfo.VERSION+"; adapter: "+NexCapture.VERSION+"; evaluator: "+NexOwnedEvaluator.VERSION);
 		out.add("Models: "+MeleeModel.VERSION+" / "+RangedModel.VERSION+"; knowledge: "+(catalog==null?"unavailable":catalog.version));
@@ -43,6 +43,19 @@ final class NexReport
 		if(result==null || result.summary!=summary)
 		{ out.add("Calculation unavailable/pending for K1. No other kill's result exported."); return new NexReport(out); }
 		out.add("Report-local calculation: C1; immutable calculation revision: "+result.revision);
+		var resources=result.resources; var scenarios=resources.scenarios;
+		out.add("Resource evidence (tenths percent): first="+resources.firstEnergy+"; last="+resources.lastEnergy
+			+"; sampled net increases="+resources.sampledIncreases+"; sampled net decreases="+resources.sampledDecreases
+			+"; all recorded rings Lightbearer="+resources.fixedLightbearerObserved+"; two active charges observed="+resources.improvedActiveObserved);
+		out.add("Conditional resource examples: "+NexResourceScenarios.VERSION+" / "+SpecTimeline.VERSION
+			+"; start energy="+scenarios.initialEnergy+"; duration ticks="+scenarios.duration+"; blocked="+scenarios.gaps);
+		out.add(NexResourceScenarios.ASSUMPTIONS); out.add(NexResourceScenarios.LIMITS);
+		for(var example:scenarios.examples)
+		{
+			out.add("Separate example "+example.schedule+"; cost="+example.schedule.cost+"; delay="+example.schedule.delay
+				+"; admitted uses="+example.minUses+".."+example.maxUses+"; final energy="+example.minFinalEnergy+".."+example.maxFinalEnergy
+				+"; lost at cap="+example.minWasted+".."+example.maxWasted+"; cases="+example.cases);
+		}
 		out.add("Scenario counts (not fight coverage): supported="+result.choices.stream().filter(c->c.supported()).count()
 			+"; unavailable="+result.choices.stream().filter(c->!c.supported()).count());
 		Map<String,Integer> gaps=new TreeMap<>();
@@ -66,6 +79,11 @@ final class NexReport
 		out.add("Availability: "+(choice.bankPreparation?"conditional bank preparation; stock/packing unverified":"carried at captured state")
 			+"; search: "+(choice.exhaustive?"complete within supported scope":"partial; optimum unestablished"));
 		out.add("Observed base levels: "+levels(captured.realLevels)+"; visible levels: "+levels(captured.visibleLevels));
+		Map<String,Integer> observedSlots=new LinkedHashMap<>();
+		for(String slot:PoweredMagic.SLOTS) { observedSlots.put(slot,captured.slots.getOrDefault(slot,-1)); }
+		out.add("Observed slots (exact item IDs, 0 empty, -1 unknown): "+observedSlots);
+		String observedTarget=sample.target==null?null:sample.target.split("@",2)[0];
+		out.add("Observed target class: "+vocabulary(observedTarget,"NEX","FUMUS","UMBRA","CRUOR","GLACIES"));
 		out.add("Observed offensive prayer flags (allowlisted): "+captured.prayers.stream().filter(p->Set.of("PIETY","RIGOUR","DEADEYE","EAGLE_EYE","CHIVALRY","INCREDIBLE_REFLEXES","ULTIMATE_STRENGTH","STEEL_SKIN","THICK_SKIN","ROCK_SKIN","AUGURY","MYSTIC_MIGHT","SHARP_EYE","HAWK_EYE","BURST_OF_STRENGTH","SUPERHUMAN_STRENGTH","CLARITY_OF_THOUGHT","IMPROVED_REFLEXES").contains(p)).sorted().collect(java.util.stream.Collectors.toList())
 			+"; style button: "+captured.style+"; energy tenths percent: "+captured.specialEnergy+"; selected spec: "+captured.specialSelected);
 		for(String key:List.of("quiver-ammo-id-raw","quiver-ammo-quantity-raw","quiver-splinters-raw","quiver-charged-raw","worn-ammo-quantity","inventory-slots-used","death-charge-active"))

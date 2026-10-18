@@ -173,9 +173,33 @@ historical successes and the later lost-history failure in the
 Gameplay is an acceptance activity, not a requirement after each offline edit.
 Integration does not convert unperformed checks into passes.
 
+## N3A/N3B/N3C — Post-kill runtime plans (implemented for review)
+
+Build 0.22.0 (report-selection follow-up 0.22.1) joins the existing kernels without claiming automatic attack attribution.
+User authorization on 18 October expands N3A to the combined N3A/B/C delivery.
+[Contract](docs/research/nex-runtime-plans.md) · [verification](docs/validation/nex-runtime-plans.md).
+
+- [x] Freeze captured packages/owned alternatives, equip facts and planning inputs.
+- [x] Provide optional post-kill shared declarations for opportunities, HP/caps,
+  restore/start state, legal cast/death events and exact hypothetical package edits.
+- [x] Connect complete packages to finite N3A energy/DC/delay and N3B damage/ammo/
+  quiver branches through N3C; separate captured-to-owned and marginal upgrade gains.
+- [x] Preserve unknowns, exact forms, hands/ammo, observed reserves, locks, usable
+  carried stock and shared supply/space checks; bank-only packing stays unavailable.
+- [x] Add natural-only fixed-Lightbearer sensitivity examples, with every assumption
+  disclosed; no observed spec/proc count or global-best/time recommendation.
+- [x] Guard worker requests and frozen inspection, add allowlisted selectable
+  scenario export, and extend DEV1 with public-event-to-plan and stale Reset checks.
+- [x] Resolve the default Diagnostics selection when a matching calculation arrives
+  after opening the page; preserve explicit filters/selection and export observed
+  slots/target class even when the selected output is unavailable.
+- [ ] Review/merge the feature PR when authorized; validate native client/player use
+  together with the existing open live checks. CTX1 remains a separate open PR.
+
 ## N3 — Remaining recommendation integration and mechanics
 
-N3a resources, N3b damage/ammo and N3c package APIs are implemented. Reuse
+N3a resources, N3b damage/ammo and N3c package APIs plus the optional declared
+runtime plan caller are implemented. Reuse
 [N3b](docs/research/nex-spec-damage.md), [N3c](docs/research/nex-packages.md),
 NexPackageFactory/NexPackageComparison and the existing catalogue.
 
@@ -193,8 +217,10 @@ NexPackageFactory/NexPackageComparison and the existing catalogue.
 - [ ] Include food/combofood, brews/restores/potions and spells only with supported
   consumption/delay/boost/resource evidence; preserve healing/survival gaps.
 
-Scope one concrete slice after CTX1/evidence review. Do not rebuild delivered
-kernels or advertise conditional APIs as automatic live recommendations.
+The user requested the combined declared-plan slice above while CTX1 is still
+in review. Do not rebuild delivered kernels or advertise conditional plans as
+automatic live recommendations. Remaining automatic evidence/phase mechanics,
+acquisition and food/potion work stay open.
 
 ## N4 — Validate personal contribution and team-time estimates
 

@@ -28,6 +28,7 @@ public final class OfflineReview
 		scenarios.put("nex-complete", (directory, report) -> new OfflineNexScenario().run(directory, report));
 		for (String id : OfflineLifecycleScenarios.IDS)
 		{ scenarios.put(id, (directory, report) -> OfflineLifecycleScenarios.run(id, directory, report)); }
+		scenarios.put("nex-n3-plan", OfflineN3Scenario::run);
 		return scenarios;
 	}
 	static ReviewReport run(String id, Path output) throws Exception

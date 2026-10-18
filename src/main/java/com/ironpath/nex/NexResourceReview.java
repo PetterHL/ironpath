@@ -26,6 +26,7 @@ public final class NexResourceReview
 	public final int sampledIncreases, sampledDecreases;
 	public final boolean improvedActiveObserved, fixedLightbearerObserved;
 	public final Set<String> gaps;
+	public final NexResourceScenarios scenarios;
 	private NexResourceReview(NexSummary summary)
 	{
 		summaryKey=summary.key;
@@ -60,6 +61,7 @@ public final class NexResourceReview
 		points=List.copyOf(changes); gaps=Collections.unmodifiableSet(missing);
 		sampledIncreases=increases; sampledDecreases=decreases;
 		improvedActiveObserved=improved; fixedLightbearerObserved=first!=null && lightbearer;
+		scenarios=NexResourceScenarios.from(summary,this);
 	}
 	public static NexResourceReview from(NexSummary summary) { return new NexResourceReview(Objects.requireNonNull(summary)); }
 	private static Integer bounded(Integer value,int max) { return value==null || value<0 || value>max?null:value; }

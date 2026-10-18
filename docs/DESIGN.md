@@ -96,8 +96,10 @@ It shares `NexPackageFactory` with N2, derives bounds/rolls/delays from exact
 catalogue-backed packages, and keeps actual-to-owned and owned-to-upgrade deltas
 separate. One immutable conditions declaration, explicit usable joint stock and
 source/assumption facts are required. Damage gaps preserve supported resources;
-missing resource inputs preserve independent launch/package details. There is
-still no automatic capture-to-plan caller or new runtime advice path. See
+missing resource inputs preserve independent launch/package details. The optional NexPlanComparison runtime caller now freezes captured/N2 packages
+and joins them under a separately declared post-kill plan. There is still no
+automatic attack attribution or runtime weapon recommendation. See
+[the runtime contract](research/nex-runtime-plans.md). See
 [complete-package contract](research/nex-packages.md).
 Do not prebuild a generic rules engine. Extract shared code when it has a concrete
 consumer, preserving its semantics and tests.
