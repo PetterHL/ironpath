@@ -35,6 +35,8 @@ final class NexPanel extends PluginPanel
 	private NexOwnedResult diagnosticOwned, inspectedCalculation;
 	private int diagnosticChoice, diagnosticPair;
 	private JTextArea reportArea;
+	private JScrollPane reportScroll;
+	private String reportFeedback="";
 
 	private String page="encounter";
 	private NexSummary inspected;
@@ -65,7 +67,7 @@ final class NexPanel extends PluginPanel
 		long currentView=++view;
 		boolean paused=status.startsWith("Nex session paused");
 		boolean available=account!=null && actions!=null;
-		if(reportArea!=null) { reportArea.setText(""); reportArea=null; }
+		if(!page.equals("diagnostics") || !available || paused || stats.attempts==0) { clearReport(); }
 		if(account==null || (!paused && stats.attempts==0))
 		{
 			inspected=null; inspectedOwned=null; inspectedCalculation=null; diagnosticSummary=null; diagnosticOwned=null;
@@ -81,7 +83,10 @@ final class NexPanel extends PluginPanel
 		if(available && !paused && stats.last!=null) { stats.last.timeline.forEach(sample->names.putAll(sample.state.itemNames)); }
 		if(available && !paused && inspected!=null) { inspected.timeline.forEach(sample->names.putAll(sample.state.itemNames)); }
 		displayNames=Map.copyOf(names);
-		removeAll(); setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
+		// Keep the selectable report attached during a valid refresh. Removing its
+		// subtree would discard native focus even if caret/scroll were restored later.
+		for(var component:getComponents()) { if(component!=reportScroll) { remove(component); } }
+		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setBackground(ColorScheme.DARK_GRAY_COLOR);
 		text("IronPath · build "+BuildInfo.VERSION); text("Nex · Trio MP2 pilot model");
 		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active);
 		java.util.function.BooleanSupplier valid=()->view==currentView && (actions==null || actions.current());
@@ -223,13 +228,15 @@ final class NexPanel extends PluginPanel
 		if(summary!=null) { text("Frozen kill #"+summary.key+" · "+summary.outcome); }
 		else { text("No visible kill evidence"); }
 		String report=NexReport.snapshot(summary,result,diagnosticChoice,diagnosticPair,catalog,provenance,state).format();
-		PanelWidgets.text(this,""); final JTextArea feedback=(JTextArea)getComponent(getComponentCount()-1);
+		if(reportArea!=null && !report.equals(reportArea.getText())) { clearReport(); }
+		PanelWidgets.text(this,reportFeedback); final JTextArea feedback=(JTextArea)getComponent(getComponentCount()-1);
 		button(this,"Copy report now",()->{
 			if(!valid.getAsBoolean()) { return; }
 			reportArea.setText(report); reportArea.setCaretPosition(0); reportArea.getParent().getParent().setVisible(true);
-			try { clipboard.copy(report); feedback.setText("Report copied. Selectable text is below."); }
+			try { clipboard.copy(report); reportFeedback="Report copied. Selectable text is below."; }
 			catch(java.awt.HeadlessException | IllegalStateException | SecurityException ex)
-			{ feedback.setText("Clipboard unavailable or busy. Select the report below and copy it manually."); }
+			{ reportFeedback="Clipboard unavailable or busy. Select the report below and copy it manually."; }
+			feedback.setText(reportFeedback);
 			revalidate(); repaint();
 		}).setName("nex-copy-report");
 		text("Adapter "+com.ironpath.nex.NexCapture.VERSION+" · evaluator "+com.ironpath.advisor.NexOwnedEvaluator.VERSION);
@@ -260,13 +267,23 @@ final class NexPanel extends PluginPanel
 			}
 		}
 		button(this,"Show selectable report",()->{ if(valid.getAsBoolean()) { reportArea.getParent().getParent().setVisible(!reportArea.getParent().getParent().isVisible()); revalidate(); repaint(); } });
-		reportArea=new JTextArea(report) {
-			@Override public void scrollRectToVisible(java.awt.Rectangle bounds) { if(isFocusOwner()) { super.scrollRectToVisible(bounds); } }
-		}; reportArea.setName("nex-report-text"); reportArea.setEditable(false); reportArea.setLineWrap(true); reportArea.setWrapStyleWord(true); reportArea.setFont(getFont());
-		reportArea.getAccessibleContext().setAccessibleName("Sanitized diagnostic report"); reportArea.setCaretPosition(0);
-		JScrollPane scroll=new JScrollPane(reportArea); scroll.setAlignmentX(LEFT_ALIGNMENT);
-		scroll.setPreferredSize(new Dimension(PANEL_WIDTH-12,180)); scroll.setMaximumSize(new Dimension(PANEL_WIDTH-12,180)); scroll.setVisible(false); add(scroll);
+		if(reportArea==null)
+		{
+			reportArea=new JTextArea(report) {
+				@Override public void scrollRectToVisible(java.awt.Rectangle bounds) { if(isFocusOwner()) { super.scrollRectToVisible(bounds); } }
+			}; reportArea.setName("nex-report-text"); reportArea.setEditable(false); reportArea.setLineWrap(true); reportArea.setWrapStyleWord(true); reportArea.setFont(getFont());
+			reportArea.getAccessibleContext().setAccessibleName("Sanitized diagnostic report"); reportArea.setCaretPosition(0);
+			reportScroll=new JScrollPane(reportArea); reportScroll.setAlignmentX(LEFT_ALIGNMENT);
+			reportScroll.setPreferredSize(new Dimension(PANEL_WIDTH-12,180)); reportScroll.setMaximumSize(new Dimension(PANEL_WIDTH-12,180)); reportScroll.setVisible(false); add(reportScroll);
+		}
+		else { setComponentZOrder(reportScroll,getComponentCount()-1); }
 		text("Names, account IDs, roster hashes, raw traces and inventory/bank dumps are omitted. Nothing is uploaded. This report is not a replay.");
+	}
+	private void clearReport()
+	{
+		if(reportArea!=null) { reportArea.setText(""); }
+		if(reportScroll!=null) { remove(reportScroll); }
+		reportArea=null; reportScroll=null; reportFeedback="";
 	}
 
 	private void ownedDetails(NexOwnedResult result,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid)

@@ -4,7 +4,8 @@ Updated **18 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized consolidating existing work and updating this plan on
 18 October. That consolidation introduced no UI/context feature or live-client
-acceptance. UI1 is now implemented for review in the separate 0.20.0 delivery below.
+acceptance. UI1 and its two P2 review corrections are complete in the separate
+0.20.0 delivery below; the user authorized PR #42's merge on 18 October.
 
 ## Current baseline and order
 
@@ -16,8 +17,8 @@ captured kill into a spec recommendation or validated team-time prediction.
 
 | Order | Work | State / boundary |
 |---|---|---|
-| Review | **UI1 — Encounter and Diagnostics** | Implemented in 0.20.0; review PR/evidence before CTX1 |
-| Then | **CTX1 — Editable Nex kill context** | Planned after UI1 review; separate lifecycle/data task |
+| Complete | **UI1 — Encounter and Diagnostics** | 0.20.0; both P2 review findings fixed, merge authorized; client acceptance open |
+| Next | **CTX1 — Editable Nex kill context** | After UI1 merge; separate lifecycle/data task |
 | Alongside, when gameplay is available | **N1/N2 live acceptance** | Open; does not block offline UI development |
 | After context/evidence contracts | **N3 recommendation integration** | Kernels exist; attribution, remaining mechanics and product integration remain |
 | After N1–N3 support and validation | **N4 contribution/team-time estimates** | Not implemented/validated |
@@ -27,9 +28,11 @@ Deliver one task at a time with a reviewable PR and evidence. Do not merge or
 publish future work without user authorization. The cleanup approval does not
 authorize future feature merges or Plugin Hub publication.
 
-## UI1 — Encounter and Diagnostics (implemented for review)
+## UI1 — Encounter and Diagnostics (review corrections complete)
 
-Implementation: **0.20.0**. [Validation, commands, screenshots and limits](docs/validation/ui1-encounter-diagnostics.md). User/client review remains open.
+Implementation: **0.20.0**. Both PR #42 P2 findings have focused regressions and
+passing full validation. [Commands, screenshots and limits](docs/validation/ui1-encounter-diagnostics.md).
+Merge is authorized; real-client/player acceptance remains open.
 
 **Goal:** make the existing native panel compact and useful, and let Petter copy
 a reliable report into ChatGPT/Codex after playing. Use existing supported

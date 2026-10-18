@@ -14,10 +14,11 @@
 
 ## Next delivery
 
-- UI1 is implemented for review in development build **0.20.0**.
-  Review its PR/evidence in docs/validation/ui1-encounter-diagnostics.md;
-  follow with TASKS.md CTX1 only after the UI1 review. Do not repeat delivered DEV1/N3b/N3c
-  work or resume their retired stacked branches. TASKS.md is the roadmap as well
+- UI1 and its two PR #42 review corrections are complete in development build
+  **0.20.0**; the user authorized its merge on 18 October. Read the evidence in
+  docs/validation/ui1-encounter-diagnostics.md; TASKS.md CTX1 follows the UI1 merge.
+  Do not repeat delivered DEV1/N3b/N3c work or resume their retired stacked
+  branches. TASKS.md is the roadmap as well
   as the backlog; the UI discussion brief is preserved historical input.
 - UI1 uses supported per-state comparisons, identifies changed items/packages,
   and adds an allowlisted, user-triggered report. It does not add editable context,

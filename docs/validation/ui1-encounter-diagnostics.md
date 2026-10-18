@@ -1,8 +1,9 @@
 # UI1 — Encounter, Diagnostics and sanitized report
 
 18 October 2026. Development build **0.20.0**, implemented for review from main
-`53abe3b`. This delivers UI1 only. CTX1, live acceptance and N3/N4 recommendation/
-contribution work remain open; no feature merge or Plugin Hub publication.
+`53abe3b`. This delivers UI1 only. The user authorized the PR #42 review fixes
+and merge on 18 October. CTX1, live acceptance and N3/N4 recommendation/
+contribution work remain open; no Plugin Hub publication.
 
 ## Result and implementation
 
@@ -117,6 +118,43 @@ review `main-*.png`, `encounter-viewport-*.png`, `diagnostics-*.png`,
 `dev1-offline-review` artifact after publication. Routine generated outputs and
 private data are not committed.
 
+## PR #42 review corrections
+
+The [UI1 review](https://github.com/PetterHL/ironpath/pull/42#pullrequestreview-5562837246)
+identified two P2 defects. Focused regressions reproduced both before the fixes:
+an inventory refresh collapsed the selectable fallback, and `BLOOD_SIPHON` was
+exported as `UNKNOWN`.
+
+While the same accessible report remains selected, NexPanel keeps its existing
+text area and scroll pane attached. Expanded state, selection direction/caret,
+scroll and clipboard feedback survive account-snapshot refreshes and newer results;
+the selected calculation remains frozen. Keeping the subtree attached avoids
+discarding native focus during the refresh. A changed report or navigation away
+clears the removed text. Reset, logout, identity/profile change, unavailable
+preferences and suspended travel still clear report text and reject stale actions.
+
+The regression inspects the visible report, exact frozen contents, selection,
+caret and scroll immediately after both refreshes, **before clicking Copy again**.
+It also checks that the report subtree is never detached, and that changed/hidden
+reports clear their old widgets and cannot be copied through stale buttons.
+This is headless Swing evidence; real-client focus/clipboard/scroll checks remain open.
+
+The fixed export vocabulary now includes `BLOOD_SIPHON`, `BLOOD_SACRIFICE`,
+`ICE_CONTAIN`, `ICE_PRISON` and all four `MINION_*` windows emitted by NexObserver.
+Export tests cover these alongside ordinary/unknown windows and a private sentinel.
+Unrecognized text still becomes `UNKNOWN`; recognized unsupported windows still
+have unavailable comparisons and no combat metrics.
+
+Review-fix validation: JDK **11.0.32.1**, Gradle **8.10**, pinned RuneLite
+**1.13.2** `test build offlineReview --no-daemon` passed: **297 tests, 0 failures;
+nine scenarios, 511 checks, 0 failures; 116 PNGs and 18 synthetic reports**.
+Normal `test build dependencyInsight --dependency net.runelite:client
+--configuration compileClasspath --no-daemon` passed and resolved `latest.release`
+to the same **1.13.2**; its test/build tasks reused the pinned run's identical
+outputs. The normal/enlarged selectable-report PNGs were inspected. The PR
+description links the CI run and artifact for the corrected revision. The original
+295-test result above remains the pre-review baseline.
+
 ## Separate client/player checks
 
 Real sprites/cache, OS clipboard, focus/keyboard navigation, Back/scroll in the
@@ -125,4 +163,4 @@ usefulness have not been verified here. Existing bank/reload and broader N1/N2
 live checks remain open. In the client, confirm build 0.20.0; inspect Encounter
 and a selected comparison; open Diagnostics and copy a report; verify selected
 inputs match the screen and Back restores the comparison. Continue ordinary
-bank/reload testing separately. Review UI1 before starting CTX1.
+bank/reload testing separately. CTX1 follows the authorized UI1 merge.

@@ -20,12 +20,14 @@ public class NexDiagnosticsTest
 	private final KnowledgeCatalog catalog=KnowledgeCatalog.load(new Gson());
 	public NexDiagnosticsTest() throws Exception { }
 	private NexSummary summary(long key,boolean arrows)
+	{ return summary(key,arrows,"EMBRACE_DARKNESS"); }
+	private NexSummary summary(long key,boolean arrows,String window)
 	{
 		CombatState base=NexOwnedFixtures.state(NexOwnedFixtures.ranged(),arrows?Map.of(11212,200L,999999,12345L):Map.of(999999,12345L));
 		Map<String,Integer> levels=new HashMap<>(base.visibleLevels); levels.put(PRIVATE,999);
 		var state=new CombatState(base.slots,base.realLevels,levels,base.prayers,base.style,base.specialEnergy,base.specialSelected,
 			base.inventory,base.resources,Map.of(20997,PRIVATE));
-		var sample=new NexSummary.Sample(10,"SHADOW","EMBRACE_DARKNESS","NEX@"+PRIVATE,"ranged",-1,state);
+		var sample=new NexSummary.Sample(10,"SHADOW",window,"NEX@"+PRIVATE,"ranged",-1,state);
 		return new NexSummary(key,0,100,100,100,0,Outcome.COMPLETE,PRIVATE,PRIVATE,PRIVATE,List.of(sample),
 			Map.of(PRIVATE,new NexSummary.Damage(20,80)),Set.of(PRIVATE),
 			new NexSummary.Signals(1,0,100,101,true,Set.of("SHADOW"),0,List.of(PRIVATE)));
@@ -73,6 +75,24 @@ public class NexDiagnosticsTest
 		String text=report(summary,evaluate(summary(2,true)),0,0,NexReport.State.PENDING).format();
 		assertTrue(text.contains("No other kill's result exported")); assertFalse(text.contains("Candidate slots"));
 	}
+	@Test public void reportPreservesRecognizedWindowsWithoutEnablingUnsupportedComparisons()
+	{
+		for(String window:List.of("UNKNOWN","NONE","FEAR_THE_SHADOW","EMBRACE_DARKNESS",
+			"BLOOD_SIPHON","BLOOD_SACRIFICE","ICE_CONTAIN","ICE_PRISON",
+			"MINION_FUMUS","MINION_UMBRA","MINION_CRUOR","MINION_GLACIES",PRIVATE))
+		{
+			var summary=summary(1,true,window); var result=evaluate(summary);
+			String text=report(summary,result,0,0,NexReport.State.READY).format();
+			assertTrue(window,text.contains("; window: "+(window.equals(PRIVATE)?"UNKNOWN":window)+"\n"));
+			assertFalse(text,text.contains(PRIVATE));
+			if(!Set.of("UNKNOWN","NONE","FEAR_THE_SHADOW","EMBRACE_DARKNESS").contains(window))
+			{
+				assertFalse(window,result.choices.get(0).supported());
+				assertTrue(text.contains("Selected comparison unavailable:"));
+				assertFalse(text.contains("Before metrics:"));
+			}
+		}
+	}
 	@Test public void outputIsBoundedAndDisclosesOmittedFields()
 	{
 		var summary=summary(1,true); var result=evaluate(summary);
@@ -97,11 +117,26 @@ public class NexDiagnosticsTest
 			var area=area(panel); assertTrue(area.isFocusable()); assertFalse(area.isEditable());
 			assertEquals(copied.get(),area.getText()); assertTrue(PanelPreview.visible(area));
 			String frozen=area.getText(); JButton stale=copyButton(panel);
+			var scroll=(JScrollPane)SwingUtilities.getAncestorOfClass(JScrollPane.class,area);
+			// Keep the focused subtree attached; removing it would lose native focus even
+			// if a replacement later restored the same selection in a headless test.
+			var detachments=new java.util.concurrent.atomic.AtomicInteger();
+			scroll.addHierarchyListener(e->{ if((e.getChangeFlags()&java.awt.event.HierarchyEvent.PARENT_CHANGED)!=0) { detachments.incrementAndGet(); } });
+			scroll.setSize(201,180); scroll.doLayout(); scroll.getViewport().doLayout();
+			area.setCaretPosition(150); area.moveCaretPosition(50);
+			scroll.getViewport().setViewPosition(new java.awt.Point(0,120));
+			var position=scroll.getViewport().getViewPosition(); assertEquals(120,position.y);
+			panel.render("Inventory refreshed",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",original);
+			assertReportInteraction(panel,area,frozen,position,detachments.get());
+			assertTrue(PanelPreview.text(panel).contains("Clipboard unavailable or busy"));
 			session.add(second);
 			panel.render("New kill",account,Preferences.EMPTY.nex(NexMethod.PILOT.lock("ranged/ammo",0)),catalog,session.stats(),true,actions(),"local",next);
-			assertEquals("Removed text widget cannot retain an old report", "",area.getText());
+			assertReportInteraction(panel,area,frozen,position,detachments.get());
+			copied.set("unchanged"); stale.doClick(); assertEquals("unchanged",copied.get());
 			PanelPreview.click(panel,"Copy report now"); assertEquals(frozen,copied.get());
-			PanelPreview.click(panel,"Encounter"); PanelPreview.click(panel,"Owned setup comparisons");
+			PanelPreview.click(panel,"Encounter");
+			assertEquals("Removed text widget cannot retain an old report", "",area.getText());
+			PanelPreview.click(panel,"Owned setup comparisons");
 			PanelPreview.combo(panel,"nex-owned-support-filter").setSelectedItem("Unavailable comparisons");
 			PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
 			assertTrue(copied.get().contains("No selected comparison")); assertFalse(copied.get().contains("Actual slots"));
@@ -109,6 +144,45 @@ public class NexDiagnosticsTest
 			copied.set("unchanged"); stale.doClick(); assertEquals("unchanged",copied.get());
 			PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
 			assertFalse(copied.get().contains("Actual slots")); assertFalse(copied.get().contains("25.0"));
+		});
+	}
+	private static void assertReportInteraction(NexPanel panel,JTextArea original,String frozen,java.awt.Point position,int detachments)
+	{
+		// Inspect before another Copy action: reopening would conceal the refresh bug.
+		assertTrue("Fallback stays expanded",PanelPreview.visible(area(panel)));
+		assertSame("Keep the focused report component",original,area(panel));
+		assertEquals(frozen,original.getText());
+		assertEquals(frozen.substring(50,150),original.getSelectedText());
+		assertEquals(50,original.getCaret().getDot()); assertEquals(150,original.getCaret().getMark());
+		var scroll=(JScrollPane)SwingUtilities.getAncestorOfClass(JScrollPane.class,original);
+		scroll.doLayout(); scroll.getViewport().doLayout();
+		assertEquals(position,scroll.getViewport().getViewPosition());
+		assertEquals("Do not detach the focused subtree",0,detachments);
+	}
+	@Test public void inaccessibleReportIsClearedAndStaleCopyCannotRestoreIt() throws Exception
+	{
+		var summary=summary(1,true); var result=evaluate(summary);
+		SwingUtilities.invokeAndWait(()->{
+			for(String transition:List.of("Nex session paused. Revalidate at a bank.","Logged out","Account/profile changed","Preferences unavailable","Reset"))
+			{
+				var session=new NexSession(); session.select("test",301); session.add(summary);
+				var account=NexOwnedFixtures.account(null); var copied=new AtomicReference<String>();
+				var panel=new NexPanel(null,copied::set,NexReport.Provenance.SYNTHETIC_OFFLINE);
+				panel.render("Ready",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+				PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+				var previous=area(panel); var stale=copyButton(panel);
+				previous.select(10,100); assertTrue(PanelPreview.visible(previous));
+				if(transition.equals("Reset")) { session.clear("Reset session selected."); session.select("test",301); }
+				boolean noAccount=transition.equals("Logged out") || transition.equals("Account/profile changed");
+				panel.render(transition,noAccount?null:account,Preferences.EMPTY,catalog,session.stats(),true,
+					noAccount || transition.equals("Preferences unavailable")?null:actions(),"",result);
+				assertEquals(transition,"",previous.getText());
+				assertFalse(transition,PanelPreview.visible(area(panel)));
+				copied.set("unchanged"); stale.doClick(); assertEquals(transition,"unchanged",copied.get());
+				PanelPreview.click(panel,"Copy report now");
+				assertFalse(transition,copied.get().contains("Report-local kill:"));
+				assertFalse(transition,copied.get().contains("Actual slots"));
+			}
 		});
 	}
 	@Test public void diagnosticsIsReachableForEmptyPendingResetAndPausedStates() throws Exception
@@ -123,7 +197,10 @@ public class NexDiagnosticsTest
 			var summary=summary(1,true); session.add(summary);
 			panel.render("Pending",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",null);
 			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("PENDING"));
+			var pending=area(panel); pending.select(10,100);
 			panel.render("Ready",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",evaluate(summary));
+			assertEquals("A different report clears the old widget","",pending.getText());
+			assertFalse("A different report starts collapsed",PanelPreview.visible(area(panel)));
 			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("READY"));
 			panel.render("Nex session paused. Open a bank to revalidate.",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",evaluate(summary));
 			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("PAUSED")); assertFalse(copied.get().contains("Actual slots"));

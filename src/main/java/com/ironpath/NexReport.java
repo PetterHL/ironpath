@@ -60,7 +60,9 @@ final class NexReport
 		out.add("Selected scenario: "+(choiceIndex+1)+"; pair: "+pairIndex+"; tick offset: "+(sample.tick-summary.startTick)
 			+"; role: "+vocabulary(sample.role,"melee","ranged","spec candidate","unclassified")
 			+"; phase: "+vocabulary(sample.phase,"SMOKE","SHADOW","BLOOD","ICE","ZAROS")
-			+"; window: "+vocabulary(sample.window,"NONE","FEAR_THE_SHADOW","EMBRACE_DARKNESS","MINION"));
+			+"; window: "+vocabulary(sample.window,"UNKNOWN","NONE","FEAR_THE_SHADOW","EMBRACE_DARKNESS",
+				"BLOOD_SIPHON","BLOOD_SACRIFICE","ICE_CONTAIN","ICE_PRISON",
+				"MINION_FUMUS","MINION_UMBRA","MINION_CRUOR","MINION_GLACIES"));
 		out.add("Availability: "+(choice.bankPreparation?"conditional bank preparation; stock/packing unverified":"carried at captured state")
 			+"; search: "+(choice.exhaustive?"complete within supported scope":"partial; optimum unestablished"));
 		out.add("Observed base levels: "+levels(captured.realLevels)+"; visible levels: "+levels(captured.visibleLevels));

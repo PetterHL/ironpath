@@ -52,6 +52,11 @@ history remains hidden, and identity/reset clears report text and invalidates ol
 actions. The export uses a report-local K1/C1 plus a memory-only calculation
 revision and frozen planning locks, never current preferences.
 
+An expanded selectable report retains its text selection, caret, scroll and
+clipboard feedback across refreshes while the same accessible report is selected.
+Its text/scroll subtree stays attached to preserve focus. A changed or hidden
+report clears the previous text and starts collapsed.
+
 See [UI1 validation](validation/ui1-encounter-diagnostics.md) for viewport evidence,
 clipboard fallback and the separate client checks.
 

@@ -7,13 +7,13 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**18 October 2026: development build 0.20.0 — UI1 implemented for review.**
+**18 October 2026: development build 0.20.0 — UI1 review corrections complete.**
 The native panel now has **Encounter / Diagnostics**, compact kill/session results,
 changed-item/package cards and a sanitized **Copy report now** action. Reports stay
 bound to the inspected kill and selected calculation; unavailable/busy clipboard
 leaves selectable text. [UI1 evidence and remaining client checks](docs/validation/ui1-encounter-diagnostics.md).
 
-CTX1 (editable kill context) follows the UI1 review. [TASKS](TASKS.md) owns the
+CTX1 (editable kill context) follows the authorized UI1 merge. [TASKS](TASKS.md) owns the
 order and acceptance checks. N3b/N3c remain conditional APIs; UI1 adds no automatic
 spec recommendations or team-time prediction. The earlier [main consolidation](docs/validation/main-consolidation-20261018.md)
 retains its historical evidence; live-client acceptance stays open.
