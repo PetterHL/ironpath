@@ -1,6 +1,7 @@
 # N3 runtime plan integration validation
 
 18 October 2026. Development build **0.22.0**, based on main `96d91e8`.
+Implementation/tested code commit: `225f7dd08abe4862614b14460e001e22b3b813ae`.
 [Contract and limitations](../research/nex-runtime-plans.md).
 
 ## Delivered
@@ -33,7 +34,8 @@ Inspected native 225px images include the N3A examples, declared plan, full resu
 unknown-HP output and 600px viewports containing Evaluate/Copy/report controls at
 12pt/20pt. Early clipping and layout-cache findings were corrected before the
 passing run. Changed-document links and `git diff --check` pass. No routine generated
-output or private captures are committed. CI report/PNG links follow below.
+output or private captures are committed. Current-head CI and report/PNG artifact links are recorded in
+[PR #45](https://github.com/PetterHL/ironpath/pull/45).
 Independent hand expectations cover full-package VW damage 34.5 → 38 → 40,
 separate +3.5 / +2 marginal gains, ZCB ruby proc/accuracy, a one-bolt exhaustion,
 rejected spending, explicit improved DC charges and ordinary fallbacks. Unknown
