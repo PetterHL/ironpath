@@ -6,6 +6,11 @@ when implementation started; this PR targets its branch and does not merge it.
 Main's later PR #45 / 0.22.1 N3 declared-plan work is separate. Reconcile the
 branches after CTX1 lands; no new N3 result sections are added here.
 
+The subsequent [PR #46 visual review](ui1-46-visual-review.md) supersedes this
+iteration's appearance and diamond placeholders, with genuine item sprites,
+compact grouping and the Diagnostics disclosure correction. The images/results
+below retain their original `997f923` delivery scope.
+
 ## Implemented behavior
 
 The native 225px Encounter now leads with Nex, a dark last-complete-kill card,

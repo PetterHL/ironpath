@@ -50,6 +50,12 @@ public class OfflineReviewTest
 	}
 
 	@Test public void unknownInputsBlockOnlyDependentClaims() throws Exception { lifecycle("nex-unknown", 6); }
+	@Test public void genuineSpritesAndExpandedPackagesRenderThroughPublicReplay() throws Exception
+	{
+		var output=temporary.newFolder().toPath(); var report=OfflineReview.run("nex-visual",output);
+		assertTrue(Files.readString(output.resolve("report.md")),report.passed());
+		assertEquals(225,javax.imageio.ImageIO.read(output.resolve("expanded-20.png").toFile()).getWidth());
+	}
 	@Test public void incompleteAttemptsRemainExcluded() throws Exception { lifecycle("nex-incomplete", 4); }
 	@Test public void bankTripRetainsHistoryAndAcceptsNextKill() throws Exception { lifecycle("nex-bank-trip", 6); }
 	@Test public void pendingIdentityPublicationCannotOverwriteFreshWork() throws Exception { lifecycle("nex-identity-pending", 6); }

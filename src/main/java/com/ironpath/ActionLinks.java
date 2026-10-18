@@ -6,7 +6,11 @@ import javax.swing.JPanel;
 /** Wraps full action labels instead of letting a narrow GridLayout ellipsize them. */
 final class ActionLinks extends JPanel implements LayoutManager
 {
-	ActionLinks() { setOpaque(false); setLayout(this); setAlignmentX(LEFT_ALIGNMENT); }
+	private final boolean right;
+	private final int gap;
+	ActionLinks() { this(false,4); }
+	ActionLinks(boolean right) { this(right,4); }
+	ActionLinks(boolean right,int gap) { this.right=right; this.gap=gap; setOpaque(false); setLayout(this); setAlignmentX(LEFT_ALIGNMENT); }
 	private Dimension arrange(boolean apply)
 	{
 		int width=getWidth()>0 ? getWidth() : 213, x=0, y=0, row=0;
@@ -14,8 +18,8 @@ final class ActionLinks extends JPanel implements LayoutManager
 		{
 			Dimension size=action.getPreferredSize(); int w=Math.min(width,size.width);
 			if (x>0 && x+w>width) { y+=row+4; x=0; row=0; }
-			if (apply) { action.setBounds(x,y,w,size.height); }
-			x+=w+4; row=Math.max(row,size.height);
+			if (apply) { action.setBounds(right && getComponentCount()==1?width-w:x,y,w,size.height); }
+			x+=w+gap; row=Math.max(row,size.height);
 		}
 		return new Dimension(width,y+row);
 	}

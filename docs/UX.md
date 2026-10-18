@@ -4,12 +4,30 @@ Encounter direction selected 15 October; UI review incorporated 18 October 2026.
 UI1 is visually refined for review in 0.21.1, on CTX1 0.21.0. TASKS.md owns
 delivery. Later versioned sections retain the implemented behavior/history.
 
+## PR #46 visual review
+
+The current review keeps one IronPath / Nex heading, a compact selected-tab row,
+last-kill results, a context strip with Edit alongside it, then useful equipment.
+Body fonts stay 12/20, with enlarged navigation at 18 to fit readable full labels.
+Result values use columns at the normal font and value/label rows when enlarged.
+Genuine item sprites, changed-item/package identity and supported DPS dominate
+cards; modelled role/phase, reasons, availability/packing and search limits remain
+secondary readable text. Multi-item packages show several changed-item sprites.
+Details has one consistent position at the bottom right.
+
+Inspect groups comparisons and kill details. Setup & session groups Setup,
+Account, future context, capture, Reset and counts. All actions keep their guards,
+frozen selection, Back and remembered scrolling. Calculation details in Diagnostics
+retains expansion across unrelated account reads for the same selected kill.
+
+[Before/after screenshots, sprite provenance and open client checks](validation/ui1-46-visual-review.md).
+
 ## Native refinement (0.21.1, issue #44)
 
 Use the existing Encounter / Diagnostics reference as a visual guide, adapted to
 one 225px native sidebar. It does not replace the product contract or roadmap.
 Show a clear selected tab, quiet dark surfaces, separated sections and native
-ItemManager sprites. Enlarged fonts stay enlarged; tabs can stack to avoid elision.
+ItemManager sprites. The current review uses the readable compact navigation above.
 
 Encounter order: Nex; a last-complete-kill card with prominent observed duration
 and damage share labeled as Nex/minion hitsplats; one compact context summary

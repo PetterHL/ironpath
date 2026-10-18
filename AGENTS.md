@@ -15,10 +15,16 @@
 ## Next delivery
 
 - Issue #44's UI1 visual follow-up is implemented for review in **0.21.1**.
-  Read docs/validation/ui1-native-refinement.md. It is a separate follow-up based
+  Read docs/validation/ui1-46-visual-review.md (current) and
+  docs/validation/ui1-native-refinement.md (earlier iteration). It is a separate follow-up based
   on corrected CTX1 `2fe5342` and targets PR #43's branch while that PR is open;
   it authorizes neither dependency merge nor publication. Current main also has
   the separate N3 declared-plan delivery; reconcile it when the dependency lands.
+- DEV1 uses pinned genuine game-art fixtures through a test-only ItemManager
+  boundary. Keep asset provenance/Jagex notices; never add runtime web downloads
+  or approximations. Multi-item cards show several changed-item sprites. Preserve
+  calculation-details disclosure across unrelated refreshes of the same selected
+  kill and clear it with selected-record/identity/visibility guards.
 - Preserve the compact last-kill/context/setup-card hierarchy, selected tabs,
   all deterministic alternatives and optional per-field context confirmation.
   Keep technical explanations in Details/Diagnostics, with material scope beside

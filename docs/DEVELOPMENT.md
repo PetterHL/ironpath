@@ -170,8 +170,9 @@ they do not substitute for running the standalone review command.
 Open the report and PNGs together. Check the independent expected/actual table,
 then inspect both fonts for wrapping, meaningful result/gap text and the correct
 selected kill. RuneLiteLAF and DejaVu Sans 12/20 give consistent Cloud metrics.
-Empty item sprite wells are explicitly labeled placeholders; no ItemManager/cache
-sprites are loaded. Images paint full component contents and may be tall. Native
+DEV1 now injects pinned genuine item sprites through the test ItemManager boundary;
+see the source/terms and current preview workflow below. Older delivery captures
+retain their explicitly labeled placeholder wells. Live cache integration stays open. Images paint full component contents and may be tall. Native
 combo selections may elide, with full selected claims in wrapping text below.
 UI1 also paints actual 225 × 600 JViewport screenfuls, checking primary
 navigation and Copy report visibility at both fonts. These are not screenshots
@@ -289,4 +290,24 @@ scenario additionally renders `pending-main-*`, `no-improvement-main-*` and
 `comparison-viewport-*`; the context scenario adds `context-editor-viewport-*`.
 Inspect full-height images as well as the viewport. First-screen checks include
 observed duration, context Edit and the first comparison's benefit and phase.
-Real ItemManager sprites remain a client check; offline diamonds are placeholders.
+That earlier iteration used offline diamond placeholders. The current review below
+uses genuine pinned game art; live cache integration remains a client check.
+
+### Genuine preview sprites and the PR #46 visual review
+
+Current [before/after evidence](validation/ui1-46-visual-review.md) uses local,
+unaltered game-art fixtures through the actual ItemManager/addTo presentation
+path. See [ownership and separate terms](../THIRD_PARTY_NOTICES.md#preview-game-artwork)
+and `src/test/resources/com/ironpath/sprites/manifest.json`. Missing IDs fail;
+add a genuine PNG, its exact source and checksum when a fixture needs another
+item. Keep these assets in test resources. The production plugin JAR contains
+none of them and makes no new runtime requests.
+
+`nex-visual` extends the same DEV1 harness with genuine multi-item packages,
+expanded further comparisons and expanded Diagnostics after a real synthetic
+inventory event. Inspect `main-*`, `expanded-*`, `expanded-viewport-*`,
+`diagnostics-refreshed-*` and `diagnostics-details-viewport-*` at both fonts.
+The original 12 scenarios remain, including CTX1's historical active-encounter
+report/clipboard/navigation cases. Baseline production `997f923` plus the same
+test sprite boundary/fixture produces the before views; its focused Diagnostics
+expansion test must fail. Real client cache/OS behavior remains open.

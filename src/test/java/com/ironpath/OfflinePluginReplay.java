@@ -73,6 +73,7 @@ final class OfflinePluginReplay extends OfflineNexClient implements AutoCloseabl
 			when(config.getRSProfileKey()).thenReturn("offline-synthetic-a");
 			ConfigProfile profile = mock(ConfigProfile.class); when(profile.getId()).thenReturn(10L);
 			when(config.getProfile()).thenReturn(profile);
+			plugin.itemManager=OfflineSprites.manager();
 			plugin.client = client; plugin.configManager = config; plugin.gson = new Gson();
 			plugin.panelFactory=items->new NexPanel(items,text->{
 				clipboardWrites.add(text);

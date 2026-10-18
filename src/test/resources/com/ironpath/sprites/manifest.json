@@ -1,0 +1,92 @@
+{
+  "retrieved": "2026-10-18",
+  "owner": "Jagex Limited",
+  "policy": "https://legal.jagex.com/docs/policies/fan-content-policy",
+  "policy_version": "1.4 (29 September 2026)",
+  "assets": [
+    {
+      "id": 11212,
+      "source": "https://static.runelite.net/cache/item/icon/11212.png",
+      "sha256": "be08bba0cad0d34455be5ac6310da39a48e9898ebbaefd3377d5cb042b07f5d7",
+      "width": 36,
+      "height": 32
+    },
+    {
+      "id": 20997,
+      "source": "https://static.runelite.net/cache/item/icon/20997.png",
+      "sha256": "9766816999a5945eca520c6a2c2e6ae0c390a62777ac35caf490142dfeabf0e6",
+      "width": 36,
+      "height": 32
+    },
+    {
+      "id": 26219,
+      "source": "https://static.runelite.net/cache/item/icon/26219.png",
+      "sha256": "19fcfa0b0ca46e388bfa513b3979012b8111bc2909318d5fce486ed8c4456f27",
+      "width": 36,
+      "height": 32
+    },
+    {
+      "id": 27690,
+      "source": "https://static.runelite.net/cache/item/icon/27690.png",
+      "sha256": "6e1d8b58959a3f38fa1c587352fd4415d80d8333ddfe245363d2fff7189e3e48",
+      "width": 36,
+      "height": 32
+    },
+    {
+      "id": 27235,
+      "source": "https://static.runelite.net/cache/item/icon/27235.png",
+      "sha256": "e5278c79831a399008875bf5e7eae99b71e04a8358c86d9adba5b644ed8a2d40",
+      "width": 36,
+      "height": 32
+    },
+    {
+      "id": 19547,
+      "source": "https://static.runelite.net/cache/item/icon/19547.png",
+      "sha256": "b8f1e7ed5e7c7b4223cf6be36e3b84d39950fcf11f005d5fc206c77b4d37bf8a",
+      "width": 36,
+      "height": 32
+    },
+    {
+      "id": 27238,
+      "source": "https://static.runelite.net/cache/item/icon/27238.png",
+      "sha256": "48a7c078266fe40a2e5d424ac32d77b9687df3847f28a7f646ab4cde8ffac5a8",
+      "width": 36,
+      "height": 32
+    },
+    {
+      "id": 29801,
+      "source": "https://static.runelite.net/cache/item/icon/29801.png",
+      "sha256": "d27f923dbffeed54edd9a778efe1f472f92cbec2dd250327db667a3a02292d85",
+      "width": 36,
+      "height": 32
+    },
+    {
+      "id": 24271,
+      "source": "https://static.runelite.net/cache/item/icon/24271.png",
+      "sha256": "bdc8e5acc25d66c85f174dd556b6efce982ca8b912b9f0622490c407abce8f27",
+      "width": 36,
+      "height": 32
+    },
+    {
+      "id": 12954,
+      "source": "https://static.runelite.net/cache/item/icon/12954.png",
+      "sha256": "4532f225b61595fd1d93fbd137f65e93f9623f70c8758b761df445eb7a3bfea0",
+      "width": 36,
+      "height": 32
+    },
+    {
+      "id": 21326,
+      "source": "https://static.runelite.net/cache/item/icon/21326.png",
+      "sha256": "b9c47b3dc8d9ed198ff99ae02fd755ae15131476e72e6099b9065f420249f70e",
+      "width": 36,
+      "height": 32
+    },
+    {
+      "id": 24780,
+      "source": "https://static.runelite.net/cache/item/icon/24780.png",
+      "sha256": "4f3a1db6c1e6b6a5f2ea2f24c1783533ec1af35cf1fb5d085bd51e3aa6d03684",
+      "width": 36,
+      "height": 32
+    }
+  ]
+}

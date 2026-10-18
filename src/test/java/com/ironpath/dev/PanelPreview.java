@@ -131,7 +131,7 @@ public final class PanelPreview
 		Files.createDirectories(file.getParent());
 		if (!ImageIO.write(image, "png", file.toFile())) { throw new IllegalStateException("PNG writer unavailable"); }
 		report.section(file.getFileName().toString(), "![Synthetic native Swing preview](" + file.getFileName() + ")\n\n"
-			+ width + " × " + image.getHeight() + " px. Empty item sprite wells: no ItemManager/cache sprites loaded.");
+			+ width + " × " + image.getHeight() + " px. Sprites use the pinned genuine game-art fixtures through the ItemManager boundary where configured; see the sprite provenance notice.");
 	}
 
 	/** Paint an actual scroll viewport. Required controls must fit completely in the
@@ -141,7 +141,15 @@ public final class PanelPreview
 		requireEdt();
 		Container previous=panel.getParent();
 		JViewport viewport=new JViewport(); viewport.setView(panel); viewport.setSize(width,height);
-		panel.setSize(width,Math.max(height,panel.getPreferredSize().height)); layout(panel);
+		// Reparenting invalidates nested width-dependent BoxLayouts. Settle them as
+		// for a full-height capture before scrolling, so sprite rows are not compressed
+		// by a height cached before the view acquired its final width.
+		for(int pass=0;pass<4;pass++)
+		{
+			panel.invalidate(); layout(panel);
+			panel.setSize(width,Math.max(height,panel.getPreferredSize().height));
+		}
+		layout(panel);
 		if(focusName!=null)
 		{
 			Component target=children(panel).stream().filter(c->focusName.equals(c.getName())).findFirst().orElseThrow();

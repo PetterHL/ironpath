@@ -215,7 +215,7 @@ final class OfflineNexScenario extends OfflineNexClient
 		for (int font : List.of(12, 20))
 		{
 			PanelPreview.fonts(font);
-			NexPanel panel = new NexPanel(null,text->{ throw new java.awt.HeadlessException(); },NexReport.Provenance.SYNTHETIC_OFFLINE); panel.setFont(new Font("DejaVu Sans", Font.PLAIN, font));
+			NexPanel panel = new NexPanel(OfflineSprites.manager(),text->{ throw new java.awt.HeadlessException(); },NexReport.Provenance.SYNTHETIC_OFFLINE); panel.setFont(new Font("DejaVu Sans", Font.PLAIN, font));
 			NexPanel.Actions actions = new NexPanel.Actions() {
 				public boolean current() { return true; } public boolean canEdit() { return false; }
 				public void method(NexMethod method) { throw new UnsupportedOperationException("Read-only preview"); }
@@ -224,12 +224,12 @@ final class OfflineNexScenario extends OfflineNexClient
 				public void enable(boolean value) { throw new UnsupportedOperationException("Read-only preview"); }
 			};
 			panel.render("Synthetic offline scenario", NexOwnedFixtures.account(null), prefs, catalog, session.stats(), true, actions, "Synthetic; no preference IO", null);
-			report.check("Pending main withholds old comparisons "+font,true,PanelPreview.text(panel).contains("Comparing the captured setups") && !PanelPreview.text(panel).contains("modelled DPS"));
+			report.check("Pending main withholds old comparisons "+font,true,PanelPreview.text(panel).contains("Comparing the captured setups") && !PanelPreview.text(panel).contains(" DPS"));
 			capture(panel,output,"pending-main",font,report);
 			var nonPositive=new NexOwnedResult(result.summary,result.choices.stream().filter(c->NexPresentation.cards(new NexOwnedResult(result.summary,List.of(c))).isEmpty()).collect(java.util.stream.Collectors.toList()),result.planning);
 			panel.render("Synthetic offline scenario", NexOwnedFixtures.account(null), prefs, catalog, session.stats(), true, actions, "Synthetic; no preference IO", nonPositive);
 			report.check("No-positive fixture retains supported alternatives "+font,true,nonPositive.choices.stream().anyMatch(c->c.supported()));
-			report.check("No-positive main shows one plain empty state "+font,true,PanelPreview.text(panel).contains("No improvement found") && !PanelPreview.text(panel).contains("modelled DPS"));
+			report.check("No-positive main shows one plain empty state "+font,true,PanelPreview.text(panel).contains("No improvement found") && !PanelPreview.text(panel).contains(" DPS"));
 			capture(panel,output,"no-improvement-main",font,report);
 			panel.render("Synthetic offline scenario", NexOwnedFixtures.account(null), prefs, catalog, session.stats(), true, actions, "Synthetic; no preference IO", result);
 			report.check("Main view " + font + "px shows measured kill", true, PanelPreview.text(panel).contains("Last kill") && PanelPreview.text(panel).contains("18.0 s"));

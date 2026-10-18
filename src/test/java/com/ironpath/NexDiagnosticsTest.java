@@ -100,6 +100,32 @@ public class NexDiagnosticsTest
 	{ return PanelPreview.children(panel).stream().filter(c->c.getName()!=null && c.getName().startsWith("nex-equipment-card-") && PanelPreview.visible(c)).count(); }
 	private static boolean selectedTab(NexPanel panel,String name)
 	{ return ((JButton)PanelPreview.children(panel).stream().filter(c->name.equals(c.getName())).findFirst().orElseThrow()).isSelected(); }
+	@Test public void diagnosticCalculationDetailsSurviveAccountRefreshesUntilTheSelectedKillChanges() throws Exception
+	{
+		var first=summary(1,true); var original=evaluate(first); var second=summary(2,false); var next=evaluate(second);
+		SwingUtilities.invokeAndWait(()->{
+			var session=new NexSession(); session.select("test",301); session.add(first);
+			var panel=new NexPanel(null);
+			panel.render("Observed",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",original);
+			PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Calculation details");
+			for(String status:List.of("Inventory refreshed","Equipment refreshed","Bank refreshed"))
+			{
+				panel.render(status,NexOwnedFixtures.account(Set.of(11212)),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",original);
+				assertTrue("Keep expanded calculation details after "+status,PanelPreview.text(panel).contains("State coverage"));
+			}
+			PanelPreview.click(panel,"Calculation details");
+			panel.render("Another refresh",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",original);
+			assertFalse("An explicitly collapsed section stays collapsed",PanelPreview.text(panel).contains("State coverage"));
+			PanelPreview.click(panel,"Calculation details"); session.add(second);
+			panel.render("New result",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",next);
+			assertTrue("A newer kill does not replace frozen Diagnostics or its disclosure",PanelPreview.text(panel).contains("State coverage"));
+			PanelPreview.click(panel,"Encounter"); PanelPreview.click(panel,"Diagnostics");
+			assertFalse("A different selected kill starts collapsed",PanelPreview.text(panel).contains("State coverage"));
+			PanelPreview.click(panel,"Calculation details");
+			panel.render("Logged out",null,Preferences.EMPTY,catalog,session.stats(),true,null,"");
+			assertFalse("Identity clearing cannot retain expanded history",PanelPreview.text(panel).contains("State coverage"));
+		});
+	}
 	@Test public void hiddenOrMismatchedResultsCannotBeExported()
 	{
 		var summary=summary(1,true); var result=evaluate(summary);

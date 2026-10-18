@@ -66,11 +66,12 @@ final class NexPresentation
 		if(accuracy) { return "Higher accuracy."; }
 		return "More damage in this setup.";
 	}
-	static String context(com.ironpath.nex.NexContext context)
+	static String contextValue(com.ironpath.nex.NexContext context)
 	{
 		String strategy=context.strategy==com.ironpath.nex.NexContext.Strategy.UNKNOWN?"Unknown strategy":context.strategy==com.ironpath.nex.NexContext.Strategy.OTHER?"Other strategy":context.strategy.name();
 		String group=context.group==com.ironpath.nex.NexContext.Group.ORGANIZED?"":context.group==com.ironpath.nex.NexContext.Group.MASS?" · mass":" · unknown group";
 		String count=context.participants!=null?context.participants+" players":context.participation==com.ironpath.nex.NexContext.Participation.VARIABLE?"variable group":"unknown count";
-		return strategy+group+" · "+count+" · "+(context.confirmed()?"confirmed":"unconfirmed");
+		if(context.equals(com.ironpath.nex.NexContext.UNKNOWN)) { return "Context unknown"; }
+		return strategy+group+" · "+count;
 	}
 }

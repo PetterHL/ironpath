@@ -15,18 +15,23 @@ final class PanelWidgets
 	/** A full-width native surface. Outer spacing belongs to the surface, not its text. */
 	static JPanel card(JPanel parent,String name)
 	{
-		JPanel card=new JPanel() {
+		JPanel card=column(parent);
+		card.setBackground(new Color(32,34,36)); card.setOpaque(true);
+		card.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0,0,8,0,parent.getBackground()),
+			BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(LINE),BorderFactory.createEmptyBorder(7,8,7,8))));
+		card.setName(name); parent.add(card); return card;
+	}
+	static JPanel column(JPanel parent)
+	{
+		JPanel column=new JPanel() {
 			@Override public Dimension getPreferredSize()
 			{
 				// Wrapping changes with the allocated sidebar width. BoxLayout otherwise
 				// caches a height measured before this padded surface had its width.
 				((BoxLayout)getLayout()).invalidateLayout(this); return super.getPreferredSize();
 			}
-		}; card.setLayout(new BoxLayout(card,BoxLayout.Y_AXIS));
-		card.setFont(parent.getFont()); card.setBackground(new Color(32,34,36)); card.setAlignmentX(LEFT_ALIGNMENT);
-		card.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0,0,8,0,parent.getBackground()),
-			BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(LINE),BorderFactory.createEmptyBorder(5,8,5,8))));
-		card.setName(name); parent.add(card); return card;
+		}; column.setLayout(new BoxLayout(column,BoxLayout.Y_AXIS));
+		column.setFont(parent.getFont()); column.setOpaque(false); column.setAlignmentX(LEFT_ALIGNMENT); return column;
 	}
 	static JTextArea label(JPanel panel,String message,boolean bold,float extra,Color color)
 	{

@@ -8,10 +8,10 @@ you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
 **18 October 2026: development build 0.21.1 — native UI refinement for review.**
-The 225px Encounter panel groups the last kill, optional context and supported
-setup comparisons in distinct cards. Diagnostics keeps calculation status,
+The 225px Encounter panel leads with the last kill, a compact context strip and
+supported item/package cards with genuine sprites. Secondary actions are grouped. Diagnostics keeps calculation status,
 limitations and explicit report copying together. [Before/after screenshots,
-verification and open client checks](docs/validation/ui1-native-refinement.md).
+verification and open client checks](docs/validation/ui1-46-visual-review.md).
 This follows corrected CTX1 in a separate PR; its dependency remains explicit.
 
 Optionally save usual Nex context before play or **Edit kill context** on the
@@ -147,3 +147,9 @@ Repository: [PetterHL/ironpath](https://github.com/PetterHL/ironpath).
 Original code uses [BSD-2-Clause](LICENSE); preserve [third-party notices](THIRD_PARTY_NOTICES.md).
 The plugin has not been published to Plugin Hub. Its Hub identifier must be
 distinct from the existing Iron Compass identifier before submission.
+
+## Preview artwork
+
+Created using intellectual property belonging to Jagex Limited under the terms of Jagex's Fan Content Policy. This content is not endorsed by or affiliated with Jagex.
+
+[Genuine preview sprites: provenance and separate terms](THIRD_PARTY_NOTICES.md).

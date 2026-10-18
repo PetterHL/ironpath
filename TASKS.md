@@ -32,7 +32,16 @@ authorize future feature merges or Plugin Hub publication.
 
 ## UI1 follow-up — native visual refinement (issue #44)
 
-Implemented for review in **0.21.1**. [Before/after evidence and limits](docs/validation/ui1-native-refinement.md).
+Implemented for review in **0.21.1**. [Current PR #46 visual evidence](docs/validation/ui1-46-visual-review.md)
+and [the earlier iteration](docs/validation/ui1-native-refinement.md).
+
+The visual review adds genuine pinned item sprites to DEV1, multi-sprite package
+identity, compact context/navigation, grouped Inspect / Setup & session controls
+and retained Diagnostics calculation-details expansion. The preview assets are
+separate from production loading with [provenance/terms](THIRD_PARTY_NOTICES.md#preview-game-artwork).
+The focused disclosure regression reproduces the old failure; production image
+painting/stale callbacks, all baseline scenarios and frozen report guards remain
+covered. Real-client/player review stays open.
 The 0.20.0 structural work below did not finish the agreed visual simplification.
 This completes that goal without changing the encounter-and-method product or
 reducing the owned/new-upgrade, acquisition, resource or N4 roadmap.
