@@ -207,7 +207,10 @@ This PR remains draft pending the deferred client retest below.
 
 ## Client retest (deferred)
 
-Use branch `fix/nex-banking-session`, build 0.19.3. Restarting the development
+18 October integration note: the user authorized consolidation onto main after
+the review above. The earlier draft hold records the state before that instruction;
+integration does not claim a successful client retest. Use current main, build
+0.19.3 or its successor. Restarting the development
 client starts a new in-memory session; the already cleared kill cannot be restored.
 
 1. Check the header says build 0.19.3. Capture one complete Nex kill and note

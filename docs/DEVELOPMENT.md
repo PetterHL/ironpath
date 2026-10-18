@@ -12,6 +12,12 @@ main` and `git pull --ff-only`, then create a short-lived branch for the change.
 Preserve any local changes and unrelated branches. Close the development client
 before updating or rebuilding it.
 
+The 18 October consolidation makes main the common base for N3b/N3c, banking/
+arena-reload fixes and all nine DEV1 scenarios. Do not start from the retired
+stacked PR branches. TASKS.md owns the order: UI1, then CTX1, with live acceptance
+tracked separately. After merging future authorized work, delete only heads whose
+commits are preserved in main (or an explicit archive); never discard unique work.
+
 Windows PowerShell:
 
 ```powershell
@@ -212,6 +218,6 @@ scenario adds waits beyond the removed 100-tick deadline on both legs, rejects
 nearby-Nex evidence before bank verification, and checks hard identity clearing.
 The arena-reload scenario verifies same-arena resumption without a bank and a
 new complete public-event kill. These exercise the combined N3b/N3c/banking
-development branch; original DEV1 results retain their own delivery scope. Real-client event mappings, stock/charges,
+main baseline; original DEV1 results retain their own delivery scope. Real-client event mappings, stock/charges,
 real sprites, focus/scroll/GPU behavior and player usefulness still require the
 N1–N4 checks. DEV1 adds no real encounter recorder/export or relaxed trace policy.

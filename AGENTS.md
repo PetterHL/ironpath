@@ -12,6 +12,20 @@
   validation reports retain their original scope/results and pending client checks.
 - Code, UI, documents and commits are English; discussion with Petter may be Norwegian.
 
+## Next delivery
+
+- Start from current main and TASKS.md **UI1: Encounter and Diagnostics**.
+  Follow with CTX1 only after the UI1 review. Do not repeat delivered DEV1/N3b/N3c
+  work or resume their retired stacked branches. TASKS.md is the roadmap as well
+  as the backlog; the UI discussion brief is preserved historical input.
+- UI1 uses supported per-state comparisons, identifies changed items/packages,
+  and adds an allowlisted, user-triggered report. It does not add editable context,
+  automatic spec recommendations or team-time estimates. Preserve 0.19.3 banking,
+  arena-reload, reset reasons and all nine baseline replay scenarios.
+- The 18 October main consolidation integrates reviewed development work with
+  live acceptance still open. It is not Plugin Hub approval or standing permission
+  to merge subsequent feature PRs. See docs/validation/main-consolidation-20261018.md.
+
 ## Delivery
 
 - Current: development build 0.19.3 fixes arena-only scene reloads being mistaken

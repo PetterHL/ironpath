@@ -1,7 +1,7 @@
 # Observation and kill-impact contract
 
 Current direction: Nex Trio MP2 pilot, 15 October 2026. Delivery lives only in
-[TASKS N1–N4](../TASKS.md). The [previous research](archive/pre-nex-20261015/KILL_IMPACT.md)
+[TASKS](../TASKS.md). The [previous research](archive/pre-nex-20261015/KILL_IMPACT.md)
 retains its source work; the former optional-boss product placement is superseded.
 
 ## Observation
@@ -47,6 +47,40 @@ Changed method/setup/team evidence separates comparable cohorts; unknown teammat
 composition must remain explicit rather than assumed identical across kills.
 
 ## Outputs
+
+UI1 reports only supported state/package metrics; a largest relative DPS change
+across unrelated states is not the largest whole-kill improvement. Cards identify
+the actual changed item/package and retain scope. N3b/N3c conditional APIs do not
+become automatically attributable personal recommendations through a UI change.
+
+### Planned explicit diagnostic export (UI1)
+
+Raw account observations/traces remain memory-only. UI1 is narrowly scoped to a
+user-triggered, bounded clipboard report of allowlisted diagnostic/calculation
+facts, not persistent session logging, telemetry, raw trace export or a recording.
+No automatic upload or file saving. Version the report schema and record relevant
+plugin/build, adapter/model/catalogue versions, outcome/timer/damage scope, manual
+assumptions, coverage/omissions and the displayed comparison's exact relevant
+inputs/results. Bind export to its immutable kill/result/input revision.
+
+Use report-local references; omit names, account/profile IDs, roster fingerprints,
+cohort strings, unrestricted signal logs and inventory/bank dumps. Existing roster
+hashes are not anonymous export IDs. Preserve unknown versus observed/assumed/
+synthetic provenance. Export time is not the kill timestamp. Clear/hidden session
+state cannot be recovered through export. Formatting can be shared with DEV1,
+but a diagnostic report cannot reproduce a lossless ordered event replay.
+
+### Planned corrected context (CTX1)
+
+Immutable evidence never changes when a user annotates strategy/team size.
+Snapshot future defaults at start; apply later edits as versioned per-kill
+metadata. Re-evaluate only dependent supported metrics from preserved inputs;
+do not silently substitute newly observed ownership/preferences. Keep pending
+results separate from the previous revision. Reconcile comparable aggregates
+without treating team count as proof of participant identity or stable damage.
+Unsupported methods preserve observations and explicitly justified arithmetic,
+not pilot-specific recommendations. Per-kill metadata has the session's bounded
+memory/identity/reset/eviction lifetime. See TASKS CTX1 for acceptance.
 
 | Output | Required meaning |
 |---|---|

@@ -40,6 +40,29 @@ an item silently to manufacture a weaker baseline.
 
 ## Code boundaries and transition disposition
 
+### Planned UI1 / CTX1 boundaries (18 October review)
+
+UI1 consumes existing immutable results through a small presentation/report model.
+Do not add calculations or account reads to Swing/export actions. The production
+allowlisted report formatter may be reused by DEV1; its runner/assertions remain
+test-only. Reuse current arithmetic, native widgets, images and lifecycle guards.
+
+CTX1 separates future defaults, frozen observations, planning locks and per-kill
+annotations. Do not use NexObserver.method() for historical edits: its current
+capture-censoring behavior is inappropriate. Preserve the evaluation inputs that
+produced the inspected result; annotate/recompute under explicit revisions instead
+of silently reading a newer bank/account/preferences snapshot. Retain session,
+identity, generation and stale-publication checks alongside kill/context versions.
+
+Current cohorts are opaque strings combining method/planning locks, observed
+gear/levels/prayers and roster fingerprints. CTX1 must define typed comparability
+rules and reconcile means on edits without modifying NexSummary evidence. Planning
+locks are not observed performance; matching team count alone is not matching
+teammates or damage. Keep unknown/incompatible evidence explicit. Support is
+per output; changing a label cannot generalize the Trio MP2 model.
+
+These are planned boundaries. The implementations below describe existing code.
+
 | Existing area | Disposition and concrete next use |
 |---|---|
 | AccountSnapshotReader, AccountSnapshot, Observation | Retain scoped ownership, slots/quantities and public unlock evidence |

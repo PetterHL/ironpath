@@ -1,9 +1,51 @@
 # Encounter-first UX
 
-Selected direction, 15 October 2026. This is the target for the Nex pilot, not a
-claim that the transition build already contains these screens.
+Encounter direction selected 15 October; UI review incorporated 18 October 2026.
+The UI1/CTX1 sections describe planned changes, not existing screens. TASKS.md
+owns delivery. Later versioned sections retain the implemented behavior/history.
 
-## One remembered context
+## Reviewed UI1 target (next implementation)
+
+One native 225px panel with **Encounter / Diagnostics** primary navigation.
+Setup and Account remain explicit secondary actions, together with comparisons,
+kill/attempt details and Reset. Keep frozen inspection and Back/scroll behavior.
+
+Encounter order: boss and pilot model scope; last complete duration and scoped
+observed hitsplat share; compact comparable mean/count; **Improve your setup**
+cards; secondary actions. Keep failed/censored attempts separate. At n=1, show
+one matching kill rather than repeating its mean/range. Details retain spread,
+mean-per-kill versus aggregate share, capture scope and exclusions.
+
+Cards are single-column, with a changed-item sprite/name (or multi-item package),
+one supported primary metric, phase/role scope, one short reason and details.
+Do not name an unchanged weapon when the gain comes from arrows or armour.
+Group/deduplicate deterministically; do not rank unrelated state percentages as
+whole-kill impact. Keep conditional/bank/partial-search qualifiers beside affected
+claims. Preserve zero/negative comparisons without filler cards. Use ItemManager
+live; label offline sprite placeholders. Stack metrics when enlarged fonts require it.
+
+Diagnostics is directly available, including safe empty/reset/paused/pending
+states, without exposing hidden history or bypassing account guards. It contains
+status/build, observed-versus-assumed inputs, coverage and detailed results, plus
+one-click Copy report. The selected immutable calculation and exported report
+must agree. Use the allowlisted export contract in KILL_IMPACT.md; clipboard
+failure leaves selectable text. No automatic sending or account connection.
+
+In-client Save screenshot, editable context and new numerical claims are outside
+UI1. Use DEV1 native PNGs and manual client screenshots for this first cycle.
+Check actual viewport hierarchy and controls as well as full-height text wrapping.
+
+## Reviewed CTX1 target (after UI1 review)
+
+Show optional kill context beside the selected kill, with a compact editor and
+explicit Apply. Keep MP2/RP2/Other/Unknown, organized/mass/unknown and exact team
+count/unknown as separate dimensions. Count includes the player. A saved future
+default is separate from the selected kill's annotation; inherited is not confirmed.
+Selecting unsupported contexts preserves observations but cannot enable pilot
+recommendations. No compulsory pre-fight form. TASKS.md specifies frozen inputs,
+cohort reconciliation, migration and stale-work checks before implementation.
+
+## One remembered context (existing pilot)
 
 The main view starts with `Nex · Trio MP2 · One kill per trip`. The method is a
 saved preference; detect equipment/spell use and ask only focused corrections.

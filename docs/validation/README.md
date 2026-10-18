@@ -4,7 +4,10 @@
 synthetic public-event scenarios, checked calculations, controlled publication/
 banking/history regressions, native previews and remaining live boundaries.
 
-Current build 0.19.2 supplies the [bank-retention correction](nex-bank-retention.md)
+The [18 October consolidation](main-consolidation-20261018.md) records the common
+main baseline, preserved history, validation and updated UI1/CTX1 task order.
+
+Current build 0.19.3 supplies the [bank-retention and arena-reload corrections](nex-bank-retention.md)
 after a failed live bank test, plus delayed-settings transition coverage and
 visible build/reset diagnostics. Corrected client retesting remains open.
 
@@ -22,8 +25,8 @@ N2 implementation: [owned Nex packages](nex-owned.md), based on
 
 [Nex N1 session](nex-session.md) records the capture/session implementation and
 pending live checks. [Nex transition](nex-transition.md) records the earlier cleanup.
-Current Nex work uses [TASKS N1–N4](../../TASKS.md); no Nex functionality has passed client or
-player acceptance in this transition.
+Current work uses [TASKS](../../TASKS.md); development integration does not close
+the outstanding client/player acceptance checks.
 
 Other reports in this directory describe their named delivery/version. Preserve
 their arithmetic, screenshots, source limitations and pending client checks as

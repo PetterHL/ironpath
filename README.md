@@ -7,7 +7,13 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**16 October 2026: development build 0.19.3 (N1/N2/N3a/N3b/N3c).**
+**18 October 2026: consolidated main, development build 0.19.3 (N1/N2/N3a/N3b/N3c).**
+The next Codex Cloud task is **UI1: Encounter and Diagnostics**, followed by
+**CTX1: editable Nex kill context**. [TASKS](TASKS.md) contains the current order,
+scope and acceptance checks. These features are planned, not implemented.
+The existing code and review history are consolidated on main; live-client
+acceptance stays open. [Integration record](docs/validation/main-consolidation-20261018.md).
+
 Bank-travel correction: completed history no longer expires while waiting to
 open the bank. It stays hidden until same-account/profile/world revalidation;
 logout, identity changes and Reset still clear it. The panel shows the build
