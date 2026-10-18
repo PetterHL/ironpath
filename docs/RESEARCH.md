@@ -95,3 +95,9 @@ pinned source hashes, indexed-evidence limits, independent hand cases and scoped
 unknowns. [N3c verification](validation/nex-packages.md) records automated
 acceptance. Live capture/player acceptance and automatic personal recommendations
 remain open; no reference implementation or dataset is imported.
+
+## Runtime N3A/N3B/N3C join
+
+[The post-kill contract](research/nex-runtime-plans.md) records captured versus
+declared inputs, finite stock, source reuse and the observed-reserve boundary.
+[Validation](validation/nex-runtime-plans.md) retains synthetic and client limits.

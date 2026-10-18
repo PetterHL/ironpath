@@ -265,3 +265,20 @@ to require bank verification, with no waiting deadline. After account/settings
 revalidation, the paused view offers Reset session with the existing view and
 identity guards. Client testing is deferred;
 [automated regression evidence](validation/nex-bank-retention.md) is recorded separately.
+
+## Combined N3 post-kill plans (0.22.0)
+
+**Spec and package plans** opens all captured states, including spec evidence.
+Each state has an optional **Conditional N3 package plan**. The player can supply
+legal opportunities and resource/HP assumptions, optionally add exact hypothetical
+item/quantity edits, then evaluate three complete packages. Unknown fields remain
+unknown. No pre-fight form is required, no context/observations are changed and
+no work is published during an active attempt. The production worker supplies
+finite resource/damage results and separate captured-to-owned / owned-to-upgrade
+deltas. A selectable **Copy plan report** retains the frozen inputs and gaps.
+[Contract and limits](research/nex-runtime-plans.md).
+
+**Special-attack resources → Natural-restoration examples** separately shows
+fixed-Lightbearer natural-only phase/order sensitivity when start/capture evidence
+supports it. Actual DC casts/procs and launches are not inferred. Neither path
+adds automatic weapon ranking, personal contribution or team-time claims.

@@ -427,4 +427,22 @@ public class NexPackageComparisonTest
 		var known=new Stock(stock.availability,stock.equipment,stock.ammunition,f(20),stock.inventorySpace,stock.unlocks,stock.bankPacking,Set.of());
 		e=evaluate(c,scenario(Kind.ACTUAL,Map.of("s",l),actions,known)); runnable(e); assertEquals(Integer.valueOf(20),e.remainingSplinters);
 	}
+    @Test public void exactObservedReserveRetainsEquipUsabilityWithoutConstrainingProposedLocks()
+    {
+        var slots=slots(27690,0,0); slots.put("head",24271);
+        var capturedState=state(slots);
+        var reserve=new Loadout("spec",ScenarioFact.observed(capturedState,"Synthetic actually worn","same frozen conditions",TIME),f(0),f(Retrieval.NONE));
+        var proposedSlots=new HashMap<>(slots); proposedSlots.put("cape",21295);
+        var selected=loadout("spec",proposedSlots,0);
+        var pool=stock(List.of(reserve,selected),Map.of(),0,10);
+        pool=new Stock(pool.availability,pool.equipment,pool.ammunition,pool.splinters,pool.inventorySpace,f(Map.of()),pool.bankPacking,Set.of());
+        var own=scenario(Kind.OWNED,Map.of("reserve",reserve,"selected",selected),Map.of(0,action("selected",Attack.VOIDWAKER)),pool);
+        var e=bridge.evaluate(conditions(1,List.of(attack(0))),own,NexMethod.PILOT.lock("spec/cape",21295));
+        runnable(e); assertEquals(Integer.valueOf(0),reserve.state.value().slots.get("cape"));
+        // The exact observed helm remains usable without fabricating its permanent unlock fact.
+        assertTrue(pool.unlocks.value().isEmpty());
+        var conflicting=bridge.evaluate(conditions(1,List.of(attack(0))),own,NexMethod.PILOT.lock("spec/cape",0));
+        assertNull(conflicting.plan); assertTrue(conflicting.resourceGaps.toString().contains("lock"));
+    }
+
 }

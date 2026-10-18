@@ -48,13 +48,19 @@ public final class NexOwnedResult
 	public final long revision;
 	private static final java.util.concurrent.atomic.AtomicLong REVISIONS=new java.util.concurrent.atomic.AtomicLong();
 	public final com.ironpath.preferences.NexMethod planning;
+	/** Frozen equip/unlock planning facts; later account reads cannot change an inspected scenario. */
+	public final Map<String,com.ironpath.model.Truth> scenarioUnlocks;
 	public final List<Choice> choices;
 	public final com.ironpath.nex.NexResourceReview resources;
 	public final Map<String,Integer> gaps;
 	public NexOwnedResult(NexSummary summary, List<Choice> choices)
 	{ this(summary,choices,null); }
 	public NexOwnedResult(NexSummary summary, List<Choice> choices, com.ironpath.preferences.NexMethod planning)
+	{ this(summary,choices,planning,Map.of()); }
+	public NexOwnedResult(NexSummary summary, List<Choice> choices, com.ironpath.preferences.NexMethod planning,
+		Map<String,com.ironpath.model.Truth> scenarioUnlocks)
 	{
+		this.scenarioUnlocks=Map.copyOf(scenarioUnlocks);
 		revision=REVISIONS.incrementAndGet(); this.planning=planning;
 		this.summary=summary; this.choices=List.copyOf(choices);
 		// Constructed with the frozen post-kill result on the existing guarded worker.

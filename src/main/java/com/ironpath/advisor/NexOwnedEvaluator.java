@@ -69,7 +69,10 @@ public final class NexOwnedEvaluator
 				choices.add(search(s,account,prefs,before,owned,nextCoverage,true,current));
 			}
 		}
-		return new NexOwnedResult(summary,choices,prefs.nex);
+		Map<String,Truth> unlocks=new TreeMap<>();
+		for(MeleeItem item:catalog.melee.items)
+		{ if(item.equipFact!=null) { unlocks.put(item.equipFact,AccountFacts.planning(account,prefs,item.equipFact)); } }
+		return new NexOwnedResult(summary,choices,prefs.nex,unlocks);
 	}
 	private NexOwnedResult.Choice search(NexSummary.Sample s,AccountSnapshot account,Preferences prefs,CombatSetup before,
 		Set<Integer> pool,List<String> coverage,boolean nextTrip,java.util.function.BooleanSupplier current)

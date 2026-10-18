@@ -91,9 +91,9 @@ No client or Plugin Hub acceptance is implied by a successful build.
 
 ## Offline review (DEV1)
 
-The offline workflow supplies nine synthetic scenarios without OSRS credentials,
+The offline workflow supplies ten synthetic scenarios without OSRS credentials,
 a display server or gameplay: the seven DEV1 baseline cases plus two bank/reload
-regressions from PR #38. The first calculation/UI checkpoint was reviewed on
+regressions from PR #38, plus the N3 declared-plan integration scenario. The first calculation/UI checkpoint was reviewed on
 17 October 2026; Petter authorized the remaining scenarios in the same task.
 [Validation and limits](validation/dev1-offline-review.md).
 
@@ -248,3 +248,13 @@ new complete public-event kill. These exercise the combined N3b/N3c/banking
 main baseline; original DEV1 results retain their own delivery scope. Real-client event mappings, stock/charges,
 real sprites, focus/scroll/GPU behavior and player usefulness still require the
 N1–N4 checks. DEV1 adds no real encounter recorder/export or relaxed trace policy.
+
+## N3 declared-plan review
+
+`nex-n3-plan` extends DEV1 with public-event capture, frozen N2 inputs, the native
+conditional editor and the production N3A/B/C worker. It checks separate package
+marginals, finite stock, missing HP, historical inspection and Reset while work
+is pending. Run the normal full commands in TASKS; an individual replay is
+`./gradlew -PruneLiteVersion=1.13.2 offlineReview --args='nex-n3-plan' --no-daemon`.
+The editor's legal windows/HP/initial state are explicit synthetic assumptions,
+not automatically attributed game data. See [validation](validation/nex-runtime-plans.md).

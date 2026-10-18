@@ -58,6 +58,12 @@ public class OfflineReviewTest
 	@Test public void longBankTripAndNearbyNexPreserveHistoryWithoutWeakeningIdentityGuards() throws Exception { lifecycle("nex-bank-long-trip", 8); }
 	@Test public void arenaReloadResumesCaptureWithoutABankVisit() throws Exception { lifecycle("nex-arena-reload", 4); }
 
+	@Test public void n3PlanJoinsFrozenPackagesResourcesDamageAmmoAndResetGuards() throws Exception
+	{
+		var output=temporary.newFolder().toPath(); var report=OfflineReview.run("nex-n3-plan",output);
+		assertTrue(Files.readString(output.resolve("report.md")),report.passed());
+	}
+
 	private void lifecycle(String id, int images) throws Exception
 	{
 		var output = temporary.newFolder().toPath();

@@ -12,7 +12,7 @@ import static com.ironpath.nex.SpecAttackPlan.*;
 /** Complete-package bridge, not a capture-to-attack inference or encounter/HP simulator. */
 public final class NexPackageComparison
 {
-	public static final String VERSION="nex-package-2";
+	public static final String VERSION="nex-package-3";
 	public enum Kind { ACTUAL, OWNED, UPGRADE }
 	public enum Availability { CARRIED, BANK_PREPARATION }
 	public enum Start { ATTACK_READY_NO_CHARGE_CAST_READY, OTHER }
@@ -265,10 +265,16 @@ public final class NexPackageComparison
 	}
 	private static int unchargedCape(int cape)
 	{ return cape==28953 || cape==28957?28951:28947; }
-	private void requirements(Loadout loadout,Scenario scenario,Map<String,Integer> requirements,String equipFact,Integer minimumCombat)
+	/** Retained worn reserve packages constrain joint packing, not proposed action choices. */
+	private static boolean observedReserve(Loadout loadout,Scenario scenario)
+	{ return loadout.state.origin==ScenarioFact.Origin.OBSERVED && scenario.actions.values().stream()
+		.noneMatch(action->scenario.loadouts.get(action.loadout)==loadout); }
+	private void requirements(Loadout loadout,Scenario scenario,Map<String,Integer> requirements,String equipFact,Integer minimumCombat,int itemId)
 	{
 		// Actually worn items establish equip usability, but never charges or carried ownership.
-		if(scenario.kind==Kind.ACTUAL && loadout.state.origin==ScenarioFact.Origin.OBSERVED) { return; }
+		if(scenario.loadouts.values().stream().anyMatch(observed->observed.state.origin==ScenarioFact.Origin.OBSERVED
+			&& observed.state.value().slots.containsValue(itemId)
+			&& observed.state.value().realLevels.equals(loadout.state.value().realLevels))) { return; }
 		Map<String,Integer> levels=need(loadout.state).realLevels;
 		for(var req:requirements.entrySet())
 		{ if(levels.getOrDefault(req.getKey(),-1)<req.getValue()) { throw new IllegalArgumentException("Equip requirement unconfirmed: "+req.getKey()); } }
@@ -298,19 +304,19 @@ public final class NexPackageComparison
 		{
 			int id=slots.get(slot);
 			Integer lock=method.locks.get(loadout.role+"/"+slot);
-			if(scenario.kind!=Kind.ACTUAL && lock!=null && id!=lock) { throw new IllegalArgumentException("Planning lock conflicts: "+loadout.role+"/"+slot); }
+			if(scenario.kind!=Kind.ACTUAL && !observedReserve(loadout,scenario) && lock!=null && id!=lock) { throw new IllegalArgumentException("Planning lock conflicts: "+loadout.role+"/"+slot); }
 			if(id==0) { continue; }
 			if(isMelee)
 			{
 				MeleeItem item=melee.get(id);
 				if(item==null || !slot.equals(item.slot)) { throw new IllegalArgumentException("Unreviewed exact melee item: "+slot+" "+id); }
-				requirements(loadout,scenario,item.requirements,item.equipFact,item.minimumCombat);
+				requirements(loadout,scenario,item.requirements,item.equipFact,item.minimumCombat,id);
 			}
 			else
 			{
 				RangedItem item=ranged.get(id);
 				if(item==null || !slot.equals(item.slot)) { throw new IllegalArgumentException("Unreviewed exact ranged item: "+slot+" "+id); }
-				requirements(loadout,scenario,item.requirements,null,null);
+				requirements(loadout,scenario,item.requirements,null,null,id);
 			}
 		}
 		Map<String,String> origins=new TreeMap<>(); slots.forEach((slot,id)->origins.put(slot,loadout.state.evidence()));
@@ -338,7 +344,7 @@ public final class NexPackageComparison
 			{ throw new IllegalArgumentException("Compatible worn ammunition takes priority over selected quiver ammunition"); }
 			ammo=selected>0?selected:slots.get("ammo");
 			if(!RangedModel.compatible(weapon,ranged.get(ammo))) { throw new IllegalArgumentException("Incompatible exact selected ammunition"); }
-			requirements(loadout,scenario,ranged.get(ammo).requirements,null,null);
+			requirements(loadout,scenario,ranged.get(ammo).requirements,null,null,ammo);
 			delay=weapon.ticks-(setup.rangedStyle==RangedModel.Style.RAPID?1:0);
 		}
 		CombatSetup uncharged=setup;

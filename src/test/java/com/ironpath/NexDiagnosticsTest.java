@@ -51,7 +51,7 @@ public class NexDiagnosticsTest
 		var summary=summary(1,true); var result=evaluate(summary); var snapshot=report(summary,result,0,0,NexReport.State.READY);
 		String text=snapshot.format();
 		assertFalse(text,text.contains(PRIVATE)); assertFalse(text.contains("999999")); assertFalse(text.contains("12345"));
-		assertTrue(text.contains("schema 1")); assertTrue(text.contains("SYNTHETIC_OFFLINE"));
+		assertTrue(text.contains("schema 2")); assertTrue(text.contains("SYNTHETIC_OFFLINE"));
 		assertTrue(text.contains("Report-local kill: K1")); assertFalse(text.contains("kill #1"));
 		assertTrue(text.contains("immutable calculation revision: "+result.revision));
 		assertTrue(text.contains("20 / 80; share percent: 25.0"));

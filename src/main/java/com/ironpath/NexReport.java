@@ -18,7 +18,7 @@ final class NexReport
 		KnowledgeCatalog catalog,Provenance provenance,State state)
 	{
 		List<String> out=new ArrayList<>();
-		out.add("IronPath diagnostic report · schema 1");
+		out.add("IronPath diagnostic report · schema 2");
 		out.add("Evidence: "+provenance+"; status: "+state);
 		out.add("Build: "+BuildInfo.VERSION+"; adapter: "+NexCapture.VERSION+"; evaluator: "+NexOwnedEvaluator.VERSION);
 		out.add("Models: "+MeleeModel.VERSION+" / "+RangedModel.VERSION+"; knowledge: "+(catalog==null?"unavailable":catalog.version));
@@ -43,6 +43,19 @@ final class NexReport
 		if(result==null || result.summary!=summary)
 		{ out.add("Calculation unavailable/pending for K1. No other kill's result exported."); return new NexReport(out); }
 		out.add("Report-local calculation: C1; immutable calculation revision: "+result.revision);
+		var resources=result.resources; var scenarios=resources.scenarios;
+		out.add("Resource evidence (tenths percent): first="+resources.firstEnergy+"; last="+resources.lastEnergy
+			+"; sampled net increases="+resources.sampledIncreases+"; sampled net decreases="+resources.sampledDecreases
+			+"; all recorded rings Lightbearer="+resources.fixedLightbearerObserved+"; two active charges observed="+resources.improvedActiveObserved);
+		out.add("Conditional resource examples: "+NexResourceScenarios.VERSION+" / "+SpecTimeline.VERSION
+			+"; start energy="+scenarios.initialEnergy+"; duration ticks="+scenarios.duration+"; blocked="+scenarios.gaps);
+		out.add(NexResourceScenarios.ASSUMPTIONS); out.add(NexResourceScenarios.LIMITS);
+		for(var example:scenarios.examples)
+		{
+			out.add("Separate example "+example.schedule+"; cost="+example.schedule.cost+"; delay="+example.schedule.delay
+				+"; admitted uses="+example.minUses+".."+example.maxUses+"; final energy="+example.minFinalEnergy+".."+example.maxFinalEnergy
+				+"; lost at cap="+example.minWasted+".."+example.maxWasted+"; cases="+example.cases);
+		}
 		out.add("Scenario counts (not fight coverage): supported="+result.choices.stream().filter(c->c.supported()).count()
 			+"; unavailable="+result.choices.stream().filter(c->!c.supported()).count());
 		Map<String,Integer> gaps=new TreeMap<>();

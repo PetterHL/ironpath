@@ -34,3 +34,6 @@ their arithmetic, screenshots, source limitations and pending client checks as
 historical evidence. They are not active assignments or proof of the new pilot.
 Links to replaced design/task documents resolve to the [pre-Nex archive](../archive/pre-nex-20261015/README.md).
 The [0.14.0 integration](ad1-r3b-integration.md) remains the previous combined baseline.
+
+- [N3A/N3B/N3C runtime plan integration](nex-runtime-plans.md) — 0.22.0, optional
+  declared post-kill plans, finite stock and lifecycle guards; live acceptance open.

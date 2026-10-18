@@ -31,7 +31,7 @@ the retained implementation; it does not claim Nex recommendations are ready.
 | Locked melee forms | Exact Dragon defender (l) 24143 and Infernal cape (l) 24224 reviewed; no generic variant normalization or damaged-form support | N2 |
 | Reported account | Anonymous reported-gear fixture; Ancient blessing melee and separate quiver projectile supported. Actual levels/stock still unknown; Scorching remains unmodelled | N2–N3 |
 | Voidwaker/ZCB and ruby/diamond bolts | Exact catalogue-backed complete packages feed conditional damage and finite resource plans; no automatic captured-opportunity or phase-throughput model | N3b/N3c implemented for review |
-| Complete actual/owned/upgrade comparisons | Explicit shared conditions, joint usable stock/packing, locks, provenance and scoped damage/resource deltas. No automatic best-spec or personal recommendation | N3c automated acceptance complete |
+| Complete actual/owned/upgrade comparisons | Explicit shared conditions, joint usable stock/packing, locks, provenance and scoped damage/resource deltas. No automatic best-spec or personal recommendation | N3c conditional API + declared runtime plans; live acceptance open |
 | Finite spec resources (N3a) | Frozen observed review + conditional bounded energy/delay kernel; no inferred casts/procs, spec damage or upgrade ranking | N3 in progress |
 | Charged/blessed quiver and actual ammunition | Conditional offence equivalence, exact finite ammo/splinter branches and exhaustion tested; live counters and automatic opportunity use remain open | N1–N3 |
 | Food/pots/spells | Capture actual state first; alternative-plan effects need own model | N1/N3 |
@@ -48,3 +48,7 @@ ruby/diamond bolts (e) 9242/9243, and dragon variants 21944/21946. N2's ordinary
 comparison still excludes enchanted-bolt effects; N3c uses the N3b bolt model.
 [Source and support contract](research/nex-packages.md) ·
 [Automated verification and remaining client checks](validation/nex-packages.md).
+
+Runtime N3A/B/C plans reuse these facts without new catalogue entries; see
+[the runtime plan contract](research/nex-runtime-plans.md). Exact new forms and
+equip requirements are still checked for every proposed/hypothetical package.

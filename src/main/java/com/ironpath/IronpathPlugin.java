@@ -385,6 +385,7 @@ public class IronpathPlugin extends Plugin
 		{
 			public boolean current() { return running && session.currentView(token,revision) && session.snapshot()==snapshot && nexSession.revision()==nexRevision; }
 			public boolean canEdit() { return session.writable(); }
+			public void executeScenario(Runnable task) { if(current()) { executor.execute(task); } }
 			public void method(com.ironpath.preferences.NexMethod method)
 			{ if(current()) { changePreferences(token,revision,nexRevision,expectedIdentity,p->p.nex(method)); } }
 			public void confirm(String key, Boolean value)

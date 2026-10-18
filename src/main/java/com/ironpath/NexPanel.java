@@ -26,6 +26,7 @@ final class NexPanel extends PluginPanel
 		void confirm(String key, Boolean value);
 		void reset();
 		void enable(boolean enabled);
+		default void executeScenario(Runnable task) { java.util.concurrent.ForkJoinPool.commonPool().execute(task); }
 	}
 	@FunctionalInterface interface ClipboardWriter { void copy(String text); }
 	private final ItemManager items;
@@ -37,6 +38,9 @@ final class NexPanel extends PluginPanel
 	private JTextArea reportArea;
 	private JScrollPane reportScroll;
 	private String reportFeedback="";
+	private NexScenarioPanel scenarioPanel;
+	private java.util.function.Consumer<Runnable> scenarioExecutor;
+	private boolean scenarioAllowed;
 
 	private String page="encounter";
 	private NexSummary inspected;
@@ -65,6 +69,8 @@ final class NexPanel extends PluginPanel
 	{
 		if (!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
 		long currentView=++view;
+		if(scenarioPanel!=null) { scenarioPanel.detach(); }
+		scenarioExecutor=actions==null?null:actions::executeScenario; scenarioAllowed=!active;
 		boolean paused=status.startsWith("Nex session paused");
 		boolean available=account!=null && actions!=null;
 		if(!page.equals("diagnostics") || !available || paused || stats.attempts==0) { clearReport(); }
@@ -72,6 +78,7 @@ final class NexPanel extends PluginPanel
 		{
 			inspected=null; inspectedOwned=null; inspectedCalculation=null; diagnosticSummary=null; diagnosticOwned=null;
 			ownedIndex=0; returnPosition=null;
+			scenarioPanel=null;
 		}
 		if(account==null)
 		{
@@ -169,6 +176,9 @@ final class NexPanel extends PluginPanel
 					}
 					if(!cards.isEmpty()) { text("Independent state comparisons; no whole-kill ranking."); }
 					button(this,"Owned setup comparisons",()->{ if(valid.getAsBoolean()) { openOwned(owned,0,0); redraw.run(); } }).setName("nex-owned");
+					button(this,"Spec and package plans",()->{
+						if(valid.getAsBoolean()) { openOwned(owned,0,0); ownedRoleFilter="All roles"; ownedSupportFilter="All states"; redraw.run(); }
+					}).setName("nex-plans");
 				}
 				button(this,"Kill and calculation details",()->{
 					if(valid.getAsBoolean()) { rememberPosition(); inspected=stats.last; inspectedCalculation=owned!=null && owned.summary==stats.last?owned:null; redraw.run(); }
@@ -317,10 +327,10 @@ final class NexPanel extends PluginPanel
 			if(!valid.getAsBoolean() || filling[0] || states.getSelectedIndex()<0) { return; }
 			int selected=indices.get(states.getSelectedIndex());
 			if(ownedIndex!=selected) { ownedPairIndex=0; }
-			ownedIndex=selected; detail.removeAll();
+			ownedIndex=selected; if(scenarioPanel!=null) { scenarioPanel.detach(); } detail.removeAll();
 			var c=result.choices.get(ownedIndex);
 			PanelWidgets.text(detail,c.bankPreparation?"Bank preparation scenario · not carried in this kill":"Carried alternatives at the captured state");
-			if(!c.supported()) { PanelWidgets.text(detail,c.gapReason()); }
+			if(!c.supported()) { PanelWidgets.text(detail,c.gapReason()); scenario(detail,result,catalog,valid); }
 			else
 			{
 				List<ComparisonResult> pairs=new ArrayList<>(); pairs.add(c.comparison); pairs.addAll(c.alternatives);
@@ -347,6 +357,7 @@ final class NexPanel extends PluginPanel
 					for(String slot:com.ironpath.advisor.PoweredMagic.SLOTS) { PanelWidgets.text(basis,slot+": "+name(pair.beforeSetup.slots.get(slot),catalog)+" → "+name(pair.afterSetup.slots.get(slot),catalog)); }
 					for(String assumption:pair.assumptions) { PanelWidgets.text(basis,assumption); }
 					value.add(basis);
+					scenario(value,result,catalog,valid);
 					value.revalidate(); revalidate();
 				}; options.addActionListener(e->compare.run()); compare.run();
 			}
@@ -367,11 +378,22 @@ final class NexPanel extends PluginPanel
 			if(!indices.isEmpty()) { states.setSelectedIndex(Math.max(0,indices.indexOf(ownedIndex))); }
 			filling[0]=false; states.setEnabled(!indices.isEmpty());
 			if(indices.isEmpty())
-			{ ownedIndex=-1; ownedPairIndex=0; detail.removeAll(); PanelWidgets.text(detail,"No scenarios match these filters. Choose All states to inspect this role's coverage gaps."); }
+			{ ownedIndex=-1; ownedPairIndex=0; if(scenarioPanel!=null) { scenarioPanel.detach(); } detail.removeAll(); PanelWidgets.text(detail,"No scenarios match these filters. Choose All states to inspect this role's coverage gaps."); }
 			else { show.run(); }
 			detail.revalidate(); revalidate(); repaint();
 		};
 		states.addActionListener(e->show.run()); role.addActionListener(e->filter.run()); support.addActionListener(e->filter.run()); filter.run();
+	}
+	private void scenario(JPanel parent,NexOwnedResult result,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid)
+	{
+		if(result.planning==null || ownedIndex<0 || scenarioExecutor==null) { return; }
+		if(scenarioPanel==null || scenarioPanel.source!=result || scenarioPanel.choice!=ownedIndex || scenarioPanel.pair!=ownedPairIndex)
+		{
+			if(scenarioPanel!=null) { scenarioPanel.detach(); }
+			scenarioPanel=new NexScenarioPanel(result,ownedIndex,ownedPairIndex,catalog,clipboard,provenance.toString(),getFont());
+		}
+		boolean allowed=scenarioAllowed;
+		scenarioPanel.attach(()->allowed && valid.getAsBoolean(),scenarioExecutor); parent.add(scenarioPanel);
 	}
 	private JPanel ownedBody()
 	{

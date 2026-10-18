@@ -1,6 +1,7 @@
 package com.ironpath;
 
 import com.ironpath.nex.NexResourceReview;
+import com.ironpath.nex.NexResourceScenarios;
 import com.ironpath.nex.SpecTimeline;
 import java.util.Locale;
 import java.util.function.BooleanSupplier;
@@ -21,6 +22,34 @@ final class NexResourcesPanel
 			:"Improved Death Charge use is unestablished by these readings. One or zero charges cannot establish upgrade absence.");
 		PanelWidgets.text(panel,"Energy changes can combine spending and restoration. They do not identify spec weapons, attack counts, casts or procs. Charge decreases may include expiry; a full energy reading does not measure wasted restoration.");
 		for(String gap:review.gaps) { PanelWidgets.text(panel,gap); }
+		JPanel examples=new JPanel(); examples.setFont(panel.getFont()); examples.setOpaque(false);
+		examples.setLayout(new BoxLayout(examples,BoxLayout.Y_AXIS)); examples.setAlignmentX(0); examples.setVisible(false);
+		PanelWidgets.button(panel,"Natural-restoration examples",()->{
+			if(valid.getAsBoolean()) { examples.setVisible(!examples.isVisible()); relayout.run(); }
+		});
+		var scenarios=review.scenarios;
+		PanelWidgets.text(examples,"Conditional energy examples · not a weapon recommendation");
+		if(scenarios.examples.isEmpty())
+		{
+			PanelWidgets.text(examples,"Examples unavailable for this capture:");
+			for(var gap:scenarios.gaps) { PanelWidgets.text(examples,gap.explanation); }
+		}
+		else
+		{
+			PanelWidgets.text(examples,"Starting from the measured-start reading of "+energy(scenarios.initialEnergy)
+				+" over "+scenarios.duration+" ticks (end excluded). Fixed Lightbearer is an assumption supported by the recorded states.");
+		}
+		PanelWidgets.text(examples,NexResourceScenarios.ASSUMPTIONS);
+		for(var example:scenarios.examples)
+		{
+			PanelWidgets.text(examples,example.schedule.label+" · "+energy(example.schedule.cost)+" · attempt every "+example.schedule.delay+" ticks"
+				+"\nEnergy-admitted uses: "+range(example.minUses,example.maxUses)
+				+"\nFinal energy: "+energyRange(example.minFinalEnergy,example.maxFinalEnergy)
+				+" · lost at cap: "+energyRange(example.minWasted,example.maxWasted));
+		}
+		PanelWidgets.text(examples,NexResourceScenarios.LIMITS);
+		PanelWidgets.text(examples,"Actual Death Charge casts, eligible deaths and proc timing remain unknown. Active-charge readings and upgrade availability do not establish them.");
+		panel.add(examples);
 		JPanel trace=new JPanel(); trace.setFont(panel.getFont()); trace.setOpaque(false);
 		trace.setLayout(new BoxLayout(trace,BoxLayout.Y_AXIS)); trace.setAlignmentX(0); trace.setVisible(false);
 		PanelWidgets.button(panel,"Resource readings and rules",()->{
@@ -50,6 +79,8 @@ final class NexResourcesPanel
 			+" · cooldown "+value(point.cooldown)+"\nRing "+(point.ring==null?"unread":point.ring==25975?"Lightbearer":point.ring==0?"empty":"item "+point.ring);
 	}
 	private static String value(Integer value) { return value==null?"unread":value.toString(); }
+	private static String range(int min,int max) { return min==max?Integer.toString(min):min+"–"+max; }
+	private static String energyRange(int min,int max) { return min==max?energy(min):energy(min)+"–"+energy(max); }
 	private static String energy(Integer value)
 	{ return value==null?"unread":String.format(Locale.ROOT,"%.1f%%",value/10.0); }
 }

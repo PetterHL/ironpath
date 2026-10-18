@@ -7,16 +7,24 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**18 October 2026: development build 0.20.0 — UI1 review corrections complete.**
-The native panel now has **Encounter / Diagnostics**, compact kill/session results,
-changed-item/package cards and a sanitized **Copy report now** action. Reports stay
-bound to the inspected kill and selected calculation; unavailable/busy clipboard
-leaves selectable text. [UI1 evidence and remaining client checks](docs/validation/ui1-encounter-diagnostics.md).
+**18 October 2026: development build 0.22.0 — N3A/N3B/N3C runtime integration for review.**
+**Spec and package plans** opens captured states and an optional **Conditional N3
+package plan**. Compare captured equipment → selected owned package → hypothetical
+complete upgrade using shared finite energy, Death Charge, damage, ammunition,
+quiver charges and attack delays. Declare legal opportunities/HP/start assumptions;
+unknown inputs keep dependent results unavailable. Reports retain frozen inputs
+and are selectable when copying fails. [Contract](docs/research/nex-runtime-plans.md)
+and [verification](docs/validation/nex-runtime-plans.md).
 
-CTX1 (editable kill context) follows the authorized UI1 merge. [TASKS](TASKS.md) owns the
-order and acceptance checks. N3b/N3c remain conditional APIs; UI1 adds no automatic
-spec recommendations or team-time prediction. The earlier [main consolidation](docs/validation/main-consolidation-20261018.md)
-retains its historical evidence; live-client acceptance stays open.
+**Special-attack resources → Natural-restoration examples** also shows explicitly
+conditional fixed-Lightbearer phase/order sensitivity. These examples exclude DC
+by assumption; the full plan can declare casts and eligible deaths. Neither view
+attributes actual specs/procs or recommends a globally best weapon or team time.
+
+[UI1](docs/validation/ui1-encounter-diagnostics.md) is merged in main. CTX1 remains
+in [PR #43](https://github.com/PetterHL/ironpath/pull/43); this work does not merge it.
+[TASKS](TASKS.md) owns remaining mechanics and live acceptance. The earlier
+[consolidation](docs/validation/main-consolidation-20261018.md) retains its original evidence.
 
 Bank-travel correction: completed history no longer expires while waiting to
 open the bank. It stays hidden until same-account/profile/world revalidation;
@@ -31,7 +39,7 @@ Client retesting remains open.
 N3c connects complete actual, supported owned and hypothetical upgrade packages
 through the existing ordinary/spec damage and finite energy/ammo kernels.
 Conditional comparisons recompute whole packages, retain negative and zero deltas,
-and expose resource/damage gaps and provenance. These are explicit scenario APIs;
+and expose resource/damage gaps and provenance. These are explicit conditional scenarios;
 captured kills do not automatically become launch plans or personal recommendations.
 [N3c contract and verification](docs/validation/nex-packages.md).
 N3b supplies the underlying independent Voidwaker/ruby/diamond damage and exact
@@ -86,7 +94,7 @@ fixture; levels, prayers, stock and phase inputs in that fixture are synthetic.
 Ancient blessing remains a physical worn item while quiver arrows are a separate
 projectile input. Conditional ordinary charged/blessed quiver offence is supported;
 N3b adds conditional finite ammo/splinter and special-attack arithmetic. Automatic
-spec comparisons, healing and contribution/time remain N3–N4.
+spec recommendations, healing and contribution/time remain N3–N4.
 Scorching and other unsupported alternatives leave explicit coverage gaps
 without blocking a supported pair.
 
@@ -111,7 +119,7 @@ items are not automatic prerequisites for the Nex pilot.
 ## Build
 
 For calculation/UI review without gameplay, see
-[the DEV1 offline command](docs/DEVELOPMENT.md#offline-review-dev1). It runs nine
+[the DEV1 offline command](docs/DEVELOPMENT.md#offline-review-dev1). It runs ten
 synthetic scenarios through the production Nex adapter/session/evaluator and native
 Swing panel, including controlled plugin publication, banking and frozen-history
 checks, and generates reports plus native-width PNGs at normal/enlarged fonts.
