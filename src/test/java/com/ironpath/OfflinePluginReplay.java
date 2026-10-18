@@ -49,6 +49,8 @@ final class OfflinePluginReplay extends OfflineNexClient implements AutoCloseabl
 	private boolean bankVisible;
 	NexPanel panel;
 	final List<Preferences> preferenceWrites=new ArrayList<>();
+	final List<String> clipboardWrites=new ArrayList<>();
+	boolean clipboardAvailable;
 
 	OfflinePluginReplay(int font) throws Exception
 	{ this(font,false); }
@@ -72,7 +74,10 @@ final class OfflinePluginReplay extends OfflineNexClient implements AutoCloseabl
 			ConfigProfile profile = mock(ConfigProfile.class); when(profile.getId()).thenReturn(10L);
 			when(config.getProfile()).thenReturn(profile);
 			plugin.client = client; plugin.configManager = config; plugin.gson = new Gson();
-			plugin.panelFactory=items->new NexPanel(items,text->{ throw new java.awt.HeadlessException(); },NexReport.Provenance.SYNTHETIC_OFFLINE);
+			plugin.panelFactory=items->new NexPanel(items,text->{
+				clipboardWrites.add(text);
+				if(!clipboardAvailable) { throw new java.awt.HeadlessException(); }
+			},NexReport.Provenance.SYNTHETIC_OFFLINE);
 			plugin.reader = new AccountSnapshotReader(client);
 			plugin.clientThread = mock(ClientThread.class); plugin.toolbar = mock(ClientToolbar.class);
 			plugin.executor = mock(ScheduledExecutorService.class);

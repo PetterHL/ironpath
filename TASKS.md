@@ -155,6 +155,9 @@ damage and timeline stay unchanged; supported results/report revisions agree;
 a historical annotation never censors another active attempt. Real-client editor,
 focus/scroll/clipboard and player acceptance remain open. Completed comparison
 inputs freeze once; later ownership/preferences apply to future comparisons.
+PR #43's P2 review correction additionally covers copying/navigating the older
+report after fresh combat account reads, with clipboard success/fallback and
+uninterrupted active capture. See the CTX1 validation record for corrected-head counts.
 
 ## N1/N2 — Remaining live acceptance
 

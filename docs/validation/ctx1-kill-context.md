@@ -87,7 +87,7 @@ mismatched revisions cannot export old combat metrics. Existing allowlisting,
 clipboard fallback remain. Names, account/profile IDs, roster/cohort fingerprints,
 raw traces and container dumps remain excluded.
 
-## Automated verification
+## Initial CTX1 verification (cd3917c)
 
 Environment: JDK **11.0.32.1**, Gradle **8.10**, RuneLite client/API **1.13.2**,
 adapter `nex-public-4`, evaluator `nex-owned-1`, context `nex-context-1`, ordinary
@@ -148,3 +148,44 @@ player usefulness remain open. Existing N1/N2 and N3/N4 limitations remain; synt
 passes establish neither live acceptance nor Plugin Hub approval. Generated reports,
 PNGs and private captures are not committed. The delivery PR links the current CI
 run and `dev1-offline-review` artifact containing these files.
+
+## PR #43 P2 review correction — frozen report actions during combat
+
+The [review finding](https://github.com/PetterHL/ironpath/pull/43#discussion_r4307903410)
+identified a guard mismatch at `cd3917c`: an unrelated inventory/equipment event
+during another active attempt could publish a new account snapshot without a panel
+render. Navigation into the older kill's Diagnostics remained valid, but Copy report,
+selectable-text toggling and Back still required the obsolete live account view.
+
+Read-only frozen report, detail and comparison actions now use the same panel-view
+and session/result-revision guard as context navigation. They still consume the
+selected immutable kill/calculation, including existing context/input/model checks.
+Account/Setup mutations, Reset and capture-setting actions retain their stricter
+live-view guards. Identity/profile/world, suspension, logout, reset, eviction and
+stale-publication protections remain covered by the existing full suite. No client
+reads or calculations move onto the EDT.
+
+The existing `nex-context-active` replay now navigates from the older kill's editor
+to Diagnostics **after** an actual combat inventory event has published fresh account
+data, before Apply. It verifies clipboard invocation, visible selectable fallback,
+toggle/Back navigation, exact frozen calculation/input/context revisions and the
+unchanged active capture key. After Apply, another actual equipment switch and the
+normal replay GameTick publish a new snapshot; the replay copies the corrected
+older report with a successful injected clipboard while the next attempt continues.
+The second kill must still complete. The fixture records clipboard writes only in
+memory; production clipboard behavior is unchanged.
+
+The added replay failed **22 checks** before the production guard correction,
+including clipboard/selectable actions and Back at both fonts. Prescribed pinned
+`test build offlineReview --no-daemon` now passes: **309 tests, 12 scenarios,
+761 checks, zero failures; 156 PNGs**. The active-context scenario supplies **114
+checks and 14 PNGs**. Normal `test build --no-daemon` passes using the same compiled
+outputs; dependency inspection still resolves `latest.release` to **1.13.2**.
+`git diff --check` and edited-document link checks pass.
+
+Inspected the new `active-frozen-report-{12,20}.png`,
+`active-corrected-report-{12,20}.png` and successful-copy 600px viewports, including
+feedback, visible selectable text and Copy report at native 225px width. Matching
+TXT files record both frozen revisions. Earlier results above remain evidence for
+the pre-review head; the corrected head and its current CI run/artifact are linked
+from PR #43. Real-client clipboard/focus/scroll and gameplay acceptance remain open.

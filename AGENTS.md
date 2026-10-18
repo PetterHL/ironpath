@@ -23,6 +23,10 @@
   NexObserver.method(), and cannot censor another active attempt. Completed
   calculations retain their evaluation inputs; later account/Setup reads apply to
   future comparisons. Preserve kill/context/input/model and identity/world guards.
+- PR #43's P2 correction keeps frozen report/detail/comparison read actions usable
+  after unrelated combat account refreshes, using session/result revisions rather
+  than the live account-view guard. Account/preferences mutations retain the strict
+  guard. Preserve the active-context DEV1 clipboard/fallback and Back regressions.
 - Typed descriptive matching excludes unconfirmed/variable/incompatible context,
   incomplete observations and unstable/unknown roster evidence. Planning locks are
   excluded. Matching count/visible roster is not proof of party membership or

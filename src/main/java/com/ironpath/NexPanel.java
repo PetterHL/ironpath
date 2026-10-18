@@ -115,6 +115,7 @@ final class NexPanel extends PluginPanel
 		text("IronPath · build "+BuildInfo.VERSION); text("Nex · Trio MP2 pilot model");
 		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active);
 		java.util.function.BooleanSupplier valid=()->view==currentView && (actions==null || actions.current());
+		// Frozen kill views depend on session/result revisions, not unrelated live account reads.
 		java.util.function.BooleanSupplier contextValid=()->view==currentView && (actions==null || actions.contextCurrent());
 		JPanel nav=new ActionLinks(); nav.setFont(getFont());
 		for(String destination:List.of("encounter","diagnostics"))
@@ -148,10 +149,10 @@ final class NexPanel extends PluginPanel
 			if(diagnosticOwned!=null && !coherent(stats.record(diagnosticSummary),diagnosticOwned)) { diagnosticOwned=null; }
 			NexReport.State state=paused?NexReport.State.PAUSED:account==null?NexReport.State.NO_ACCOUNT:!available?NexReport.State.NOT_READY
 				:stats.attempts==0 && stats.resetReason!=null?NexReport.State.RESET:diagnosticSummary==null?NexReport.State.NO_KILL:diagnosticOwned==null && diagnosticSummary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE?NexReport.State.PENDING:NexReport.State.READY;
-			diagnostics(status,stats,catalog,state,valid);
+			diagnostics(status,stats,catalog,state,contextValid);
 			if(available && !paused && diagnosticRecord!=null) { context(diagnosticRecord,redraw,contextValid); }
 			if(!paused && available && (inspectedOwned!=null || inspected!=null))
-			{ button(this,inspectedOwned!=null?"Back to comparison":"Back to kill details",()->{ if(valid.getAsBoolean()) { page="encounter"; redraw.run(); } }); }
+			{ button(this,inspectedOwned!=null?"Back to comparison":"Back to kill details",()->{ if(contextValid.getAsBoolean()) { page="encounter"; redraw.run(); } }); }
 		}
 		else if(!available) { text(status); }
 		else if(paused) { text(status); }
@@ -178,15 +179,15 @@ final class NexPanel extends PluginPanel
 				text(storage);
 			}
 		}
-		else if(page.equals("account")) { back(redraw,valid); account(account,prefs,catalog,actions,valid,storage); }
-		else if(page.equals("setup")) { back(redraw,valid); setup(prefs,stats.last,catalog,actions,valid,storage); }
+		else if(page.equals("account")) { back(redraw,contextValid); account(account,prefs,catalog,actions,valid,storage); }
+		else if(page.equals("setup")) { back(redraw,contextValid); setup(prefs,stats.last,catalog,actions,valid,storage); }
 		else if(inspectedOwned!=null)
 		{
-			back(redraw,valid); var record=stats.record(inspectedOwned.summary); context(record,redraw,contextValid);
+			back(redraw,contextValid); var record=stats.record(inspectedOwned.summary); context(record,redraw,contextValid);
 			if(record!=null && record.revision!=inspectedOwned.contextRevision) { text("Calculation pending for corrected context. Previous outputs withheld."); }
-			else { ownedDetails(inspectedOwned,catalog,valid); }
+			else { ownedDetails(inspectedOwned,catalog,contextValid); }
 		}
-		else if(inspected!=null) { back(redraw,valid); context(stats.record(inspected),redraw,contextValid); details(inspected,catalog,valid); }
+		else if(inspected!=null) { back(redraw,contextValid); context(stats.record(inspected),redraw,contextValid); details(inspected,catalog,contextValid); }
 		else
 		{
 			if(!enabled) { text("Capture disabled. Session cleared."); }
@@ -205,7 +206,7 @@ final class NexPanel extends PluginPanel
 			if(stats.lastAttempt!=null && stats.lastAttempt!=stats.last)
 			{
 				text("Last attempt · "+stats.lastAttempt.outcome+" · "+stats.lastAttempt.reason);
-				button(this,"Last attempt details",()->{ if(valid.getAsBoolean()) { inspected=stats.lastAttempt; inspectedCalculation=null; rememberPosition(); redraw.run(); } });
+				button(this,"Last attempt details",()->{ if(contextValid.getAsBoolean()) { inspected=stats.lastAttempt; inspectedCalculation=null; rememberPosition(); redraw.run(); } });
 			}
 			if(stats.last!=null)
 			{
@@ -219,19 +220,19 @@ final class NexPanel extends PluginPanel
 					{
 						var c=card.choice; var changed=NexPresentation.changedItems(card.pair);
 						String title=changed.size()==1?name(changed.values().iterator().next(),catalog):"Equipment package · "+changed.size()+" changes";
-						item(changed.values().stream().filter(id->id>0).findFirst().orElse(0),title,catalog,valid);
+						item(changed.values().stream().filter(id->id>0).findFirst().orElse(0),title,catalog,contextValid);
 						text(NexOwnedResult.headline(card.pair));
 						text(c.actual.role+" · "+c.actual.phase+" · tick "+c.actual.tick);
 						text(c.bankPreparation?"Bank preparation · recheck stock and packing":"Carried alternative · ordinary offence if supplied");
 						if(!c.exhaustive) { text("Partial search · optimum unknown"); }
 						if(card.pair.beforeSetup.slots.containsValue(24780) || card.pair.afterSetup.slots.containsValue(24780)) { text("Healing and survival unmodelled"); }
-						button(this,"Compare package",()->{ if(valid.getAsBoolean()) { openOwned(owned,card.choiceIndex,card.pairIndex); redraw.run(); } }).setName("nex-card-"+card.choiceIndex);
+						button(this,"Compare package",()->{ if(contextValid.getAsBoolean()) { openOwned(owned,card.choiceIndex,card.pairIndex); redraw.run(); } }).setName("nex-card-"+card.choiceIndex);
 					}
 					if(!cards.isEmpty()) { text("Independent state comparisons; no whole-kill ranking."); }
-					button(this,"Owned setup comparisons",()->{ if(valid.getAsBoolean()) { openOwned(owned,0,0); redraw.run(); } }).setName("nex-owned");
+					button(this,"Owned setup comparisons",()->{ if(contextValid.getAsBoolean()) { openOwned(owned,0,0); redraw.run(); } }).setName("nex-owned");
 				}
 				button(this,"Kill and calculation details",()->{
-					if(valid.getAsBoolean()) { rememberPosition(); inspected=stats.last; inspectedCalculation=owned!=null && owned.summary==stats.last?owned:null; redraw.run(); }
+					if(contextValid.getAsBoolean()) { rememberPosition(); inspected=stats.last; inspectedCalculation=owned!=null && owned.summary==stats.last?owned:null; redraw.run(); }
 				}).setName("nex-details");
 			}
 			JPanel secondary=new ActionLinks(); secondary.setFont(getFont());

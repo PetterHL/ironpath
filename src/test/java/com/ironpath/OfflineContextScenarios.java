@@ -106,12 +106,40 @@ final class OfflineContextScenarios
 		edt(()->PanelPreview.click(r.panel,"Clear selected lock")); r.callbacks.drain(); r.settle();
 		edt(()->PanelPreview.click(r.panel,"Encounter"));
 		report.check("Future planning lock really changed",false,r.plugin.session.preferences().nex.locks.containsKey("melee/shield"));
+		edt(()->PanelPreview.click(r.panel,"Kill and calculation details"));
 		open(r); // Keep the selected old kill's editor open as the next public attempt starts.
+		var beforeFight=r.plugin.session.snapshot();
+		com.ironpath.model.AccountSnapshot[] beforeSwitch={null}; long[] beforeSwitchRevision={-1};
 		var second=r.fight(30,60,60,true,offset->{
-			if(offset!=5) { return; }
+			if(offset!=5 && offset!=7 && offset!=8) { return; }
 			try
 			{
 				r.edt(); long activeKey=r.plugin.nex.capture.key();
+				if(offset==7)
+				{
+					// A second real switch after Apply recreates the account/view mismatch.
+					beforeSwitch[0]=r.plugin.session.snapshot(); beforeSwitchRevision[0]=r.plugin.nexSession.revision();
+					r.worn=com.ironpath.advisor.NexOwnedFixtures.ranged();
+					r.plugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.WORN,r.client.getItemContainer(InventoryID.WORN)));
+					return; // Let the replay's ordinary GameTick publish the new snapshot.
+				}
+				if(offset==8)
+				{
+					report.check("Post-Apply equipment event publishes fresh account data",true,beforeSwitch[0]!=r.plugin.session.snapshot());
+					report.check("Account refresh leaves frozen context/calculation revisions intact",beforeSwitchRevision[0],r.plugin.nexSession.revision());
+					r.clipboardAvailable=true;
+					activeReport(r,output,font,report,first.key,1,"active-corrected-report");
+					report.check("Successful report copy leaves the same attempt active",true,r.plugin.nex.capture.active() && activeKey==r.plugin.nex.capture.key());
+					return;
+				}
+				report.check("Combat inventory event publishes a new snapshot before navigation",true,beforeFight!=r.plugin.session.snapshot());
+				activeReport(r,output,font,report,first.key,0,"active-frozen-report");
+				report.check("Clipboard fallback leaves the same attempt active",true,r.plugin.nex.capture.active() && activeKey==r.plugin.nex.capture.key());
+				edt(()->{
+					PanelPreview.click(r.panel,"Back to kill details");
+					report.check("Frozen details remain reachable after account refresh",true,PanelPreview.text(r.panel).contains("Capture adapter "));
+				});
+				open(r);
 				fillAndApply(r,Strategy.RP2,Group.MASS,Participation.EXACT,12,true,true); r.settle();
 				report.check("Historical edit does not censor another active attempt",true,r.plugin.nex.capture.active() && activeKey==r.plugin.nex.capture.key());
 				var corrected=r.plugin.nexSession.record(first.key).calculation;
@@ -137,6 +165,30 @@ final class OfflineContextScenarios
 		report.check("Remembered defaults cannot confirm a new kill",false,third.context.confirmed());
 		report.check("Only explicit preferences written in memory",true,!r.preferenceWrites.isEmpty() && r.preferenceWrites.get(r.preferenceWrites.size()-1).nexContext.strategy==Strategy.RP2);
 		capture(r,output,"future-inherited",font,report);
+	}
+	private static void activeReport(OfflinePluginReplay r,Path output,int font,ReviewReport report,long key,long revision,String state) throws Exception
+	{
+		edt(()->{
+			int attempts=r.clipboardWrites.size(); PanelPreview.click(r.panel,"Diagnostics");
+			JTextArea area=(JTextArea)named(r,"nex-report-text");
+			PanelPreview.click(r.panel,"Show selectable report");
+			report.check(state+" selectable report opens during active capture",true,PanelPreview.visible(area));
+			PanelPreview.click(r.panel,"Show selectable report");
+			report.check(state+" selectable report closes during active capture",false,PanelPreview.visible(area));
+			PanelPreview.click(r.panel,"Copy report now");
+			report.check(state+" reaches the clipboard boundary",attempts+1,r.clipboardWrites.size());
+			report.check(state+" copy reveals selectable text",true,PanelPreview.visible(area));
+			String text=area.getText(); var calculation=r.plugin.nexSession.record(key).calculation;
+			report.check(state+" selects the older frozen kill",true,PanelPreview.text(r.panel).contains("Frozen kill #"+key));
+			report.check(state+" preserves context/input/calculation revisions",true,text.contains("Effective context revision: "+revision+";")
+				&& text.contains("Calculation context/input revisions: "+revision+" / "+calculation.inputRevision+";")
+				&& text.contains("immutable calculation revision: "+calculation.revision));
+			report.check(state+" clipboard and selectable contents agree",true,r.clipboardWrites.size()>attempts && text.equals(r.clipboardWrites.get(attempts)));
+			report.check(state+" reports the clipboard outcome",true,PanelPreview.text(r.panel).contains(r.clipboardAvailable?"Report copied.":"Clipboard unavailable or busy"));
+			Files.writeString(output.resolve(state+"-"+font+".txt"),text);
+		});
+		capture(r,output,state,font,report);
+		if(r.clipboardAvailable) { edt(()->PanelPreview.viewport(r.panel,output.resolve(state+"-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics","nex-copy-report"),report)); }
 	}
 	private static void pending(OfflinePluginReplay r,Path output,int font,ReviewReport report) throws Exception
 	{

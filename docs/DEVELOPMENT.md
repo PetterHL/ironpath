@@ -227,7 +227,12 @@ annotation/input revisions. Unknown and unconfirmed context has no matched mean.
 `nex-context-active` changes public bank knowledge and a real Setup lock before
 correcting the older kill during the next attempt. Its old calculation keeps its
 input revision and arithmetic; saved context defaults are inherited only by a later
-attempt. `nex-context-pending` holds old workers/publications, edits repeatedly,
+attempt. It also publishes fresh account data during that attempt before opening
+Diagnostics: `active-frozen-report-*` verifies the unavailable-clipboard/selectable
+path before Apply; `active-corrected-report-*` verifies successful copying after Apply
+and another equipment refresh. Both retain the older kill and active capture. The
+successful-copy `*-viewport-*` files check Copy report in a 600px screenful.
+`nex-context-pending` holds old workers/publications, edits repeatedly,
 then tests Reset, 50 public completion replays/eviction and logout. Context writes
 are collected by an explicit in-memory preference boundary; no file is saved.
 

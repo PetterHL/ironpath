@@ -82,6 +82,11 @@ newer bank observations/preferences cannot enter an edit. Completed comparisons
 retain their frozen planning inputs; Setup changes apply to future comparisons.
 A historical annotation can complete while another attempt continues.
 
+Inventory/equipment refreshes during that attempt also leave the older report's
+Copy, selectable text and frozen detail/comparison navigation usable. These read
+actions follow the selected immutable result and session revisions; Account/Setup
+mutations retain their stricter live-view checks.
+
 Unconfirmed/unknown/variable or incompatible context has no matched average.
 Confirmed organized MP2/RP2 records need compatible observed setup/timer/roster
 evidence; count alone is insufficient and does not establish equal team damage.
