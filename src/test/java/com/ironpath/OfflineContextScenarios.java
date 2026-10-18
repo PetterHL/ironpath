@@ -38,7 +38,11 @@ final class OfflineContextScenarios
 	{
 		// Optional defaults can be saved without a kill; they do not confirm the next kill.
 		edt(()->{ PanelPreview.click(r.panel,"Future kill context"); fill(r,Strategy.UNKNOWN,Group.UNKNOWN,Participation.UNKNOWN,null,false,false); PanelPreview.click(r.panel,"Save defaults"); });
-		r.settle(); edt(()->PanelPreview.click(r.panel,"Back to selected view"));
+		r.settle(); edt(()->{
+			PanelPreview.click(r.panel,"Context sources");
+			report.check("Saved default source details refresh to the applied values",true,PanelPreview.text(r.panel).contains("Strategy: UNKNOWN; group: UNKNOWN; participation: UNKNOWN"));
+			PanelPreview.click(r.panel,"Back to selected view");
+		});
 		var first=r.fight(20,20,60,true); r.settle();
 		report.check("Unknown saved defaults stay unknown",NexContext.UNKNOWN,first.context);
 		report.check("Unconfirmed complete kill is excluded from matched means",0,r.plugin.nexSession.stats().n);

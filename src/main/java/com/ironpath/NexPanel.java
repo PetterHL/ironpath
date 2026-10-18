@@ -167,7 +167,8 @@ final class NexPanel extends PluginPanel
 				{ text(String.format(Locale.ROOT,"Observed %.1f s · %d / %d damage",contextTarget.seconds(),contextTarget.localDamage(),contextTarget.totalDamage()));
 					text(record.calculation==null?"Updating calculation…":"Context applied"); }
 				long key=record==null?-1:record.summary.key, annotationRevision=record==null?-1:record.revision;
-				if(contextEditor==null || contextEditor.key!=key || contextEditor.revision!=annotationRevision)
+				if(contextEditor==null || contextEditor.key!=key || contextEditor.revision!=annotationRevision
+					|| record==null && !contextEditor.initial.equals(prefs.nexContext))
 				{
 					if(contextEditor!=null) { remove(contextEditor); }
 					contextEditor=new NexContextEditor(key,annotationRevision,record==null?prefs.nexContext:record.context,getFont());

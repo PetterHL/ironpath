@@ -11,6 +11,7 @@ import static com.ironpath.nex.NexContext.*;
 final class NexContextEditor extends JPanel
 {
 	final long key, revision;
+	final NexContext initial;
 	private final JComboBox<Strategy> strategy=new JComboBox<>(Strategy.values());
 	private final JComboBox<Group> group=new JComboBox<>(Group.values());
 	private final JComboBox<Participation> participation=new JComboBox<>(Participation.values());
@@ -21,7 +22,7 @@ final class NexContextEditor extends JPanel
 	private final JButton applyButton;
 	NexContextEditor(long key,long revision,NexContext initial,java.awt.Font font)
 	{
-		this.key=key; this.revision=revision;
+		this.key=key; this.revision=revision; this.initial=initial;
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); setOpaque(false); setAlignmentX(LEFT_ALIGNMENT); setFont(font);
 		strategy.setName("nex-context-strategy"); group.setName("nex-context-group"); participation.setName("nex-context-participation"); count.setName("nex-context-count");
 		strategy.setSelectedItem(initial.strategy); group.setSelectedItem(initial.group); participation.setSelectedItem(initial.participation);

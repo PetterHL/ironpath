@@ -4,8 +4,8 @@
 `96d91e8912d56548b72c4587e03ee683e43892e5`. Implemented for review; feature merge
 and live/player acceptance remain separate. Initial implementation commit:
 [`789f69e70991e63a77bcdf334f75fd6fe3c53591`](https://github.com/PetterHL/ironpath/commit/789f69e70991e63a77bcdf334f75fd6fe3c53591).
-The delivery also clears the panel's frozen diagnostic-record reference on Reset,
-alongside the existing result/report references. The delivery PR records its current
+The delivery also clears the panel's frozen diagnostic-record reference on Reset
+and refreshes default-source details after Apply. The delivery PR records its current
 head and links that head's CI run/artifact.
 
 ## Result and boundaries
@@ -105,9 +105,9 @@ git diff --check
 ```
 
 Pinned validation passed: **309 tests, 0 failures**; all **12 DEV1
-scenarios, 701 checks, 0 failures**; **150 PNGs**, nine baseline diagnostic reports
-at both fonts and three corrected reports at both fonts. Normal build passed in
-**5 s**, reusing identical test/build outputs. Dependency inspection resolved
+scenarios, 703 checks, 0 failures**; **150 PNGs**, nine baseline diagnostic reports
+at both fonts and three corrected reports at both fonts. Normal build passed,
+reusing identical test/build outputs. Dependency inspection resolved
 `latest.release` to **1.13.2**; this establishes no newer RuneLite compatibility.
 
 The original nine scenarios retain capture, independent arithmetic, unknown/gap,
@@ -119,7 +119,7 @@ independently checks `(12 + 18) / 2 = 15 s`, mean share `37.5%` and aggregate sh
 
 | Added DEV1 scenario | Checks / PNGs | Evidence |
 |---|---|---|
-| `nex-context` | 88 / 18 | Unknown defaults, manual-unconfirmed values, confirmed corrections, independent means, invalid zero, RP2 mass/variable, field/source/Apply viewports and report agreement |
+| `nex-context` | 90 / 18 | Unknown defaults and refreshed source details, manual-unconfirmed values, confirmed corrections, independent means, invalid zero, RP2 mass/variable, field/source/Apply viewports and report agreement |
 | `nex-context-active` | 56 / 8 | New public bank information and changed Setup lock; older kill edited during a new public attempt; preserved input revision, arithmetic/locks, active completion and subsequent inherited defaults |
 | `nex-context-pending` | 46 / 8 | Repeated pending corrections, delayed initial/correction workers, current report, Reset and fresh publication, 50 further public completions evicting the inspected annotation, stale Apply/callback rejection and logout |
 
