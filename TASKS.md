@@ -46,8 +46,10 @@ and in active design docs supersede the brief's open questions.
 
 ### Product and implementation scope
 
-- [x] Use **Encounter / Diagnostics** as primary views. Keep Setup, Account,
-  comparison/kill details and Reset discoverable through secondary actions.
+- [x] Use **Encounter / Diagnostics** as primary views. Keep comparison/kill
+  details and Reset discoverable through secondary actions. The 19 October sidebar
+  simplification removes Gear & method (Setup) and Gear & unlocks (Account),
+  preserving automatic observations, saved preferences and calculations.
   Preserve Back, scroll, keyboard access and frozen inspection.
 - [x] Lead with the last complete duration and clearly scoped observed hitsplat
   share. Show comparable mean/count compactly; one matching kill needs no

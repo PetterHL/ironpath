@@ -4,11 +4,26 @@ Encounter direction selected 15 October; UI review incorporated 18 October 2026.
 UI1 is implemented for review in 0.20.0; CTX1 remains planned. TASKS.md owns
 delivery. Later versioned sections retain the implemented behavior/history.
 
+## Sidebar simplification (19 October 2026)
+
+Remove **Gear & method** (Setup), including gear locks and manual method controls,
+and **Gear & unlocks** (Account) from the sidebar and navigation. Add no replacement
+controls. Encounter results, equipment improvements, comparisons, kill details,
+Diagnostics, capture enable/disable and Reset keep their existing behavior.
+
+Gear, switches, active spell state and readable unlocks continue to come from
+automatic client observations. Unknowns remain unknown. Existing stored method
+preferences, locks and manual facts retain their precedence and calculation
+effects; the default upgraded Death Charge assumption is unchanged. Removing the
+editors neither deletes preferences nor changes observed history. Detected spell
+evidence and frozen planning assumptions remain inspectable in existing details.
+
 ## UI1 implementation (0.20.0, for review)
 
 One native 225px panel with **Encounter / Diagnostics** primary navigation.
-Setup and Account remain explicit secondary actions, together with comparisons,
-kill/attempt details and Reset. Keep frozen inspection and Back/scroll behavior.
+Comparisons, kill/attempt details and Reset remain secondary actions. Setup and
+Account were removed in the sidebar simplification above. Keep frozen inspection
+and Back/scroll behavior.
 
 Encounter order: boss and pilot model scope; last complete duration and scoped
 observed hitsplat share; compact comparable mean/count; **Improve your setup**
@@ -73,9 +88,9 @@ cohort reconciliation, migration and stale-work checks before implementation.
 ## One remembered context (existing pilot)
 
 The main view starts with `Nex · Trio MP2 · One kill per trip`. The method is a
-saved preference; detect equipment/spell use and ask only focused corrections.
+saved preference; detect equipment/spell use automatically.
 Lightbearer throughout and upgraded Death Charge are the confirmed pilot choices.
-A compact Setup action exposes melee, ranged and spec packages plus locked choices.
+Existing details expose captured melee, ranged and spec states and saved assumptions.
 Detected, manually assumed and unknown state must remain distinguishable.
 
 ## Main view
@@ -114,19 +129,20 @@ and scroll; fresh kills must not replace the historical baseline being inspected
 
 ## N1 capture foundation
 
-N1 development build 0.15.0 opens `Nex · Trio MP2 · One kill per trip`. Encounter,
-Setup and Account are the native navigation. The homepage shows last complete
-observed timing/share, same-cohort means, sample counts, min–max spread and excluded
-attempt counts. Partial attempts have separate inspectable evidence. Kill details
+N1 development build 0.15.0 introduced `Nex · Trio MP2 · One kill per trip`, with
+Encounter, Setup and Account navigation (Setup/Account are now removed above).
+The homepage shows last complete observed timing/share, same-cohort means, sample
+counts, min–max spread and excluded attempt counts. Partial attempts have separate
+inspectable evidence. Kill details
 freeze the selected summary across new results and expose timing/damage scope,
 phase/target, state/resource samples and uncertainty. No in-combat recommendations
 or forced navigation are added.
 
-Setup lists observed worn roles and keeps manual planning locks separate from
-history. Item selection uses reviewed/observed names; no per-kill setup form is
-required. The upgrade toggle is labeled an assumption, while raw detected Death
-Charge state is in details. Account corrections remain accessible. Method/locks
-and correction writes retain profile/generation/revision guards and serial local IO.
+N1's former Setup editor kept planning locks separate from observed history and
+labeled the upgrade toggle as an assumption. The sidebar simplification removes
+that editor and Account corrections. Raw detected Death Charge state remains in
+details. Stored method/locks, manual facts and their guarded serial local IO are
+retained independently of these removed controls.
 
 N1 retired the old general homepage navigation. N2 adds the owned flow below;
 new-upgrade cards, counterfactual contribution and team seconds remain N3–N4. [Synthetic checks and pending native-client/player acceptance](validation/nex-session.md)
@@ -214,15 +230,14 @@ message and disabled state selector. Filtering does not recompute or alter histo
 Bank preparation remains labeled conditional, and identity changes clear the view.
 
 While a bank/travel session is paused, every navigation page shows the revalidation
-message. Setup must not describe temporarily hidden history as an empty session.
-The ordinary Setup content returns after revalidation without changing stored
-summaries or preferences.
+message. Revalidation restores results without changing stored summaries or
+preferences. Setup and Account no longer appear, including while paused.
 
 The main result/comparison follows the latest complete kill. An already inspected
 comparison stays frozen while the view remains valid; there is currently no
 selector for opening any earlier kill's comparison from the main view. A new
 partial attempt does not enter complete averages or replace the last complete
-baseline. Setup/history across further travel still needs live checks.
+baseline. History across further travel still needs live checks.
 
 ## 0.19.0 complete-package scenarios
 

@@ -19,6 +19,12 @@ contribution. Lightbearer stays equipped; upgraded Death Charge is confirmed by
 the user. Longer trips are not this profile's objective. Further methods and boss/
 raid contexts remain possible without turning the pilot into a universal simulator.
 
+The 19 October sidebar simplification removes the Gear & method (Setup) and
+Gear & unlocks (Account) editors and navigation. Automatic gear/unlock observations,
+stored preferences/manual facts, planning locks, upgraded Death Charge assumptions
+and calculations remain intact. There are no replacement controls; existing kill
+details and comparisons retain observed evidence and frozen planning inputs.
+
 ## Three distinct setups
 
 | Setup | Meaning |

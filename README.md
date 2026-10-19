@@ -83,10 +83,13 @@ excluded attempts and immutable timelines. Its real-client mappings and player
 acceptance are still pending. [N1 validation](docs/validation/nex-session.md).
 
 The pilot is **Nex / Trio MP2 / one kill per trip**, with Lightbearer throughout
-and assumed upgraded Death Charge. Equipment, switches and active spell state are
-observed automatically. Setup exposes optional saved planning locks/corrections;
-they never overwrite the actually-worn history. Complete summaries stay in memory
-across recognized same-account bank trips and clear on logout/profile change.
+and assumed upgraded Death Charge. Equipment, switches, active spell state and
+readable unlocks are observed automatically. The sidebar omits **Gear & method**
+(Setup), including gear locks and manual method controls, and **Gear & unlocks**
+(Account). Existing saved preferences, planning locks and manual facts still apply;
+they never overwrite the actually-worn history. No manual setup is required.
+Complete summaries stay in memory across recognized same-account bank trips and
+clear on logout/profile change.
 Observed hitsplat share is scoped to Nex and the four named minions; it is not
 server contribution or loot eligibility. Timing uses the observed smoke
 announcement and death/dying signal, with no game-timer calibration claim.

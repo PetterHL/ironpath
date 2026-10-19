@@ -33,6 +33,22 @@ public class NexPanelTest
 	{ return children(panel).stream().filter(c->c instanceof JTextArea && visible(c)).map(c->((JTextArea)c).getText()).reduce("",(a,b)->a+"\n"+b); }
 	private static boolean visible(Component component)
 	{ for(Component c=component;c!=null;c=c.getParent()) { if(!c.isVisible()) { return false; } } return true; }
+	private static void assertNoManualSetupControls(NexPanel panel)
+	{
+		Set<String> removed=Set.of("Setup","Account","Gear & method","Gear & unlocks","Gear locks","Assume upgrade",
+			"Save method","Save lock / correction","Clear selected lock","Owned / unlocked","Not owned / locked","Clear selected fact");
+		for(Component child:children(panel))
+		{
+			if(child instanceof AbstractButton)
+			{
+				var control=(AbstractButton)child;
+				assertFalse("Removed control: "+control.getText(),removed.stream().anyMatch(s->s.equals(control.getText()) || s.equals(control.getToolTipText())));
+			}
+			assertFalse("Removed lock editor", "nex-lock-slot".equals(child.getName()) || "nex-lock-item".equals(child.getName()));
+		}
+		assertFalse(shown(panel).contains("Account corrections"));
+		assertFalse(shown(panel).contains("Planning locks / corrections"));
+	}
 	private static void layout(Container c) { c.doLayout(); for(Component child:c.getComponents()) { if(child instanceof Container) { layout((Container)child); } } }
 	private static void capture(NexPanel panel,String name) throws Exception
 	{
@@ -128,22 +144,37 @@ public class NexPanelTest
 			reset.doClick(); assertEquals("An old view cannot reset a new session",1,resets.get());
 		});
 	}
-	@Test public void setupDoesNotClaimAnEmptySessionWhileBankRevalidationHidesHistory() throws Exception
+	@Test public void sidebarOmitsManualGearAndUnlockControlsAcrossSessionStates() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{try {
 			var catalog=KnowledgeCatalog.load(new Gson()); var session=new NexSession(); session.select("a",301);
-			var account=P4aFixtures.account(Set.of(11907),99,90); var panel=new NexPanel(null);
+			var account=P4aFixtures.account(Set.of(11907),99,90);
+			var prefs=Preferences.EMPTY.nex(NexMethod.PILOT.lock("melee/shield",22322)).confirm("rigour",true,java.time.Instant.EPOCH);
 			String paused="Nex session paused. Open a bank to revalidate this account.";
-			panel.render(paused,account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
-			button(panel,"Setup").doClick(); assertTrue(shown(panel).contains(paused));
-			assertFalse(shown(panel).contains("No complete kill yet"));
-			session.add(NexCaptureTest.replay(0,20,60));
-			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
-			assertTrue(shown(panel).contains("Automatic observations are the baseline"));
-			assertFalse(shown(panel).contains("Nex session paused")); assertFalse(shown(panel).contains("No complete kill yet"));
+			for(float font:List.of(12f,20f))
+			{
+				var panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
+				panel.render("Waiting for login",null,Preferences.EMPTY,catalog,new NexSession().stats(),true,null,"local");
+				assertNoManualSetupControls(panel);
+				panel.render("Ready",account,prefs,catalog,new NexSession().stats(),true,actions(),"local");
+				assertTrue(shown(panel).contains("detected automatically")); assertNoManualSetupControls(panel);
+				panel.render("Observed",account,prefs,catalog,new NexSession().stats(),true,actions(),"local",null,true);
+				assertTrue(shown(panel).contains("Observing the current Nex attempt")); assertNoManualSetupControls(panel);
+				if(session.stats().last==null) { session.add(NexCaptureTest.replay(0,20,60)); }
+				panel.render(paused,account,prefs,catalog,session.stats(),true,actions(),"local");
+				assertTrue(shown(panel).contains(paused)); assertFalse(shown(panel).contains("Last complete kill"));
+				assertNoManualSetupControls(panel); button(panel,"Diagnostics").doClick(); assertNoManualSetupControls(panel);
+				assertTrue(shown(panel).contains(paused)); button(panel,"Encounter").doClick();
+				panel.render("Observed",account,prefs,catalog,session.stats(),true,actions(),"local");
+				assertTrue(shown(panel).contains("Last complete kill")); assertTrue(shown(panel).contains("Improve your setup"));
+				assertFalse(shown(panel).contains("Nex session paused")); assertNoManualSetupControls(panel);
+				button(panel,"Kill and calculation details").doClick(); assertNoManualSetupControls(panel);
+				assertTrue(shown(panel).contains("Detected one active charge"));
+				button(panel,"Diagnostics").doClick(); assertNoManualSetupControls(panel);
+			}
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
-	@Test public void narrowAndEnlargedFontMainSetupAndDetailsWrap() throws Exception
+	@Test public void narrowAndEnlargedFontMainAndDetailsWrap() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{try {
 			KnowledgeCatalog catalog=KnowledgeCatalog.load(new Gson()); NexSession session=new NexSession(); session.select("a",301); session.add(NexCaptureTest.replay(0,20,60));
@@ -151,8 +182,7 @@ public class NexPanelTest
 			{
 				NexPanel panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",P4aFixtures.account(Set.of(11907),99,90),Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
-				capture(panel,"main-"+(int)font); button(panel,"Setup").doClick(); capture(panel,"setup-"+(int)font);
-				assertTrue(shown(panel).contains("assumed for planning")); button(panel,"Encounter").doClick();
+				capture(panel,"main-"+(int)font); assertNoManualSetupControls(panel);
 				button(panel,"Kill and calculation details").doClick(); capture(panel,"details-"+(int)font);
 				assertTrue(shown(panel).contains("Detected one active charge"));
 			}

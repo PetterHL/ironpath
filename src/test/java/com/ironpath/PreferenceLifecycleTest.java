@@ -2,6 +2,7 @@ package com.ironpath;
 
 import com.google.gson.Gson;
 import com.ironpath.preferences.LocalPreferences;
+import com.ironpath.preferences.NexMethod;
 import com.ironpath.preferences.PreferenceStorage;
 import com.ironpath.preferences.Preferences;
 import java.awt.Component;
@@ -15,7 +16,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -43,7 +43,7 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-/** Real sidebar actions with mocked client events and deliberately delayed worker/client queues. */
+/** Retained preference path and sidebar reset with deliberately delayed worker/client queues. */
 public class PreferenceLifecycleTest
 {
 	private IronpathPlugin plugin;
@@ -100,15 +100,14 @@ public class PreferenceLifecycleTest
 	}
 	private JButton button(String label) { return find(panel, JButton.class, b -> b.getText().equals(label) || label.equals(b.getToolTipText())); }
 	private void setMethod() throws Exception
+	{ change(p -> p.nex(new NexMethod(false,p.nex.locks))); }
+	private void change(java.util.function.UnaryOperator<Preferences> edit) throws Exception
 	{
-		SwingUtilities.invokeAndWait(()->{
-			button("Setup").doClick();
-			find(panel,javax.swing.JCheckBox.class,c->true).setSelected(false);
-			button("Save method").doClick();
-		});
+		SwingUtilities.invokeAndWait(() -> plugin.changePreferences(plugin.session.generation(),plugin.session.revision(),
+			plugin.nexSession.revision(),plugin.session.identity(),edit));
 	}
 
-	@Test public void delayedLoadAndOldUiActionCannotApplyToAnotherCharacter() throws Exception
+	@Test public void delayedLoadAndQueuedPreferenceEditCannotApplyToAnotherCharacter() throws Exception
 	{
 		files.put(LocalPreferences.key(A), Preferences.EMPTY.nex(new com.ironpath.preferences.NexMethod(false,Map.of())).confirm("rigour",true,Instant.EPOCH));
 		tick(); tick(); assertFalse(plugin.session.preferencesLoaded());
@@ -138,7 +137,7 @@ public class PreferenceLifecycleTest
 		plugin.shutDown(); load(); assertFalse(plugin.session.preferencesLoaded()); assertNull(plugin.session.snapshot());
 		assertTrue(files.isEmpty());
 	}
-	@Test public void failedSaveIsVisibleAndUnsupportedWorldClearsPlanningState() throws Exception
+	@Test public void failedSaveRetainsItsStatusAndUnsupportedWorldClearsPlanningState() throws Exception
 	{
 		login(); writeFails=true; setMethod(); callbacks(); load(); assertFalse(plugin.session.preferences().nex.upgradedDeathCharge);
 		assertTrue(plugin.session.storageStatus().contains("save failed")); assertTrue(files.isEmpty());
@@ -149,23 +148,27 @@ public class PreferenceLifecycleTest
 	}
 	@Test public void manualConfirmClearAndLocksUpdateOnlyExplicitChoices() throws Exception
 	{
-		login(); SwingUtilities.invokeAndWait(()->{
-			button("Account").doClick();
-			JComboBox facts=find(panel,JComboBox.class,c->true); facts.setSelectedItem("rigour");
-			button("Owned / unlocked").doClick();
-		}); callbacks(); load(); assertTrue(plugin.session.preferences().confirmations.get("rigour").value);
-		SwingUtilities.invokeAndWait(()->button("Clear selected fact").doClick()); callbacks(); load();
+		login(); change(p -> p.confirm("rigour",true,Instant.EPOCH));
+		callbacks(); load(); assertTrue(plugin.session.preferences().confirmations.get("rigour").value);
+		change(p -> p.confirm("rigour",null,Instant.EPOCH)); callbacks(); load();
 		assertTrue(plugin.session.preferences().confirmations.isEmpty());
-		SwingUtilities.invokeAndWait(()->{
-			button("Setup").doClick();
-			find(panel,JComboBox.class,c->"nex-lock-slot".equals(c.getName())).setSelectedItem("shield");
-			JComboBox<NexPanel.ItemChoice> items=find(panel,JComboBox.class,c->"nex-lock-item".equals(c.getName()));
-			for(int i=0;i<items.getItemCount();i++) { if(items.getItemAt(i).id==22322) { items.setSelectedIndex(i); } }
-			button("Save lock / correction").doClick();
-		}); callbacks(); load(); assertTrue(plugin.session.preferences().nex.locks.containsValue(22322));
+		change(p -> p.nex(p.nex.lock("melee/shield",22322)));
+		callbacks(); load(); assertTrue(plugin.session.preferences().nex.locks.containsValue(22322));
 		assertFalse(files.get(LocalPreferences.key(A)).nex.locks.isEmpty());
-		SwingUtilities.invokeAndWait(()->button("Clear selected lock").doClick()); callbacks(); load();
+		change(p -> p.nex(p.nex.lock("melee/shield",null))); callbacks(); load();
 		assertTrue(plugin.session.preferences().nex.locks.isEmpty());
+	}
+	@Test public void sidebarNavigationAndResetPreserveSavedMethodLocksAndFacts() throws Exception
+	{
+		Preferences saved=Preferences.EMPTY.nex(NexMethod.PILOT.lock("melee/shield",22322)).confirm("rigour",true,Instant.EPOCH);
+		files.put(LocalPreferences.key(A),saved); login();
+		SwingUtilities.invokeAndWait(() -> {
+			assertNull(button("Setup")); assertNull(button("Account"));
+			button("Diagnostics").doClick(); button("Encounter").doClick(); button("Reset session").doClick();
+		}); callbacks(); load();
+		assertSame(saved,plugin.session.preferences()); assertSame(saved,files.get(LocalPreferences.key(A)));
+		assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
+		assertEquals(1,files.size());
 	}
 	@Test public void queuedMethodOrResetCannotCrossProfileOrEncounterRevision() throws Exception
 	{

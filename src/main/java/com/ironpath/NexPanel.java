@@ -49,8 +49,6 @@ final class NexPanel extends PluginPanel
 	private int ownedIndex;
 	private int ownedPairIndex;
 	private String ownedRoleFilter="All roles", ownedSupportFilter="Supported comparisons";
-	private String factKey="rigour", roleKey="melee", slotKey="weapon";
-	private Integer lockItem;
 	private Map<Integer,String> displayNames=Map.of();
 	private long view;
 	private java.awt.Point returnPosition;
@@ -85,7 +83,6 @@ final class NexPanel extends PluginPanel
 		if(account==null)
 		{
 			if(!page.equals("diagnostics")) { page="encounter"; }
-			factKey="rigour"; roleKey="melee"; slotKey="weapon"; lockItem=null;
 			ownedRoleFilter="All roles"; ownedSupportFilter="Supported comparisons";
 		}
 		Map<Integer,String> names=new HashMap<>(catalog==null?Map.of():catalog.itemNames());
@@ -134,8 +131,6 @@ final class NexPanel extends PluginPanel
 		}
 		else if(!available) { text(status); }
 		else if(paused) { text(status); }
-		else if(page.equals("account")) { back(redraw,valid); account(account,prefs,catalog,actions,valid,storage); }
-		else if(page.equals("setup")) { back(redraw,valid); setup(prefs,stats.last,catalog,actions,valid,storage); }
 		else if(inspectedOwned!=null) { back(redraw,valid); ownedDetails(inspectedOwned,catalog,valid); }
 		else if(inspected!=null) { back(redraw,valid); details(inspected,catalog,valid); }
 		else
@@ -187,28 +182,12 @@ final class NexPanel extends PluginPanel
 					if(valid.getAsBoolean()) { rememberPosition(); inspected=stats.last; inspectedCalculation=owned!=null && owned.summary==stats.last?owned:null; redraw.run(); }
 				}).setName("nex-details");
 			}
-			JPanel secondary=new ActionLinks(); secondary.setFont(getFont());
-			for(String destination:List.of("setup","account"))
-			{ button(secondary,destination.equals("setup")?"Setup":"Account",()->{ if(valid.getAsBoolean()) { rememberPosition(); page=destination; redraw.run(); } }); }
-			add(secondary);
 			text("Planning scope: Trio MP2 · one kill per trip. Per-kill team context unconfirmed.");
 			text(stats.complete+" complete · "+stats.failed+" failed · "+stats.censored+" excluded");
 			button(this,enabled?"Disable capture":"Enable capture",()->{ if(valid.getAsBoolean()) { actions.enable(!enabled); } });
 		}
 		if(available && (paused || page.equals("encounter") && inspected==null && inspectedOwned==null))
 		{ button(this,"Reset session",()->{ if(valid.getAsBoolean()) { actions.reset(); } }).setName("nex-reset"); }
-		if(available && !paused && (page.equals("setup") || page.equals("account")))
-		{
-			JPanel secondary=new ActionLinks(); secondary.setFont(getFont());
-			for(String destination:List.of("setup","account"))
-			{ button(secondary,destination.equals("setup")?"Setup":"Account",()->{ if(valid.getAsBoolean()) { page=destination; redraw.run(); } }); }
-			add(secondary);
-		}
-		if(available && paused)
-		{
-			for(String destination:List.of("setup","account"))
-			{ button(this,destination.equals("setup")?"Setup":"Account",()->{ if(valid.getAsBoolean()) { page=destination; redraw.run(); } }); }
-		}
 		revalidate(); repaint();
 	}
 	private void heading(String value)
@@ -427,54 +406,6 @@ final class NexPanel extends PluginPanel
 			+" → "+name(pair.afterSetup.loadedAmmo>0?pair.afterSetup.loadedAmmo:pair.afterSetup.slots.getOrDefault("ammo",-1),catalog)); }
 		return changes.isEmpty()?"Same package · zero change":String.join("; ",changes);
 	}
-	private void setup(Preferences prefs, NexSummary last, KnowledgeCatalog catalog, Actions actions,
-		java.util.function.BooleanSupplier valid, String storage)
-	{
-		text("Automatic observations are the baseline. Lightbearer throughout is the selected pilot choice; equipment still comes from the client.");
-		text("Upgraded Death Charge: "+(prefs.nex.upgradedDeathCharge?"assumed for planning (pilot choice)":"not assumed")+". This does not establish a cast or proc.");
-		JCheckBox upgraded=new JCheckBox("Assume upgrade",prefs.nex.upgradedDeathCharge); upgraded.setFont(getFont());
-		upgraded.setToolTipText("Assume upgraded Death Charge"); upgraded.getAccessibleContext().setAccessibleName("Assume upgraded Death Charge"); add(upgraded);
-		button(this,"Save method",()->{if(valid.getAsBoolean() && actions.canEdit()) { actions.method(new NexMethod(upgraded.isSelected(),prefs.nex.locks)); }});
-		text("Planning locks / corrections apply to proposed packages. Observed history is preserved. Empty is an explicit choice.");
-		JComboBox<String> role=new JComboBox<>(new String[]{"melee","ranged","spec"}); role.setSelectedItem(roleKey); addControl(role);
-		role.addActionListener(e->roleKey=(String)role.getSelectedItem());
-		JComboBox<String> slot=new JComboBox<>(com.ironpath.advisor.PoweredMagic.SLOTS.toArray(new String[0])); slot.setSelectedItem(slotKey); addControl(slot);
-		slot.setName("nex-lock-slot");
-		JComboBox<ItemChoice> item=new JComboBox<>(); item.setName("nex-lock-item"); addControl(item);
-		Runnable choices=()->{
-			Map<Integer,String> names=new HashMap<>(); names.put(0,"Empty");
-			catalog.melee.items.stream().filter(i->slotKey.equals(i.slot)).forEach(i->names.put(i.id,i.label));
-			catalog.ranged.items.stream().filter(i->slotKey.equals(i.slot)).forEach(i->names.put(i.id,i.label));
-			catalog.comparison.items.stream().filter(i->slotKey.equals(i.slot)).forEach(i->names.put(i.id,i.label));
-			if(last!=null) { last.timeline.forEach(s->{ int id=s.state.slots.getOrDefault(slotKey,-1); if(id>=0) { names.put(id,name(id,catalog)); } }); }
-			item.removeAllItems(); names.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEach(e->item.addItem(new ItemChoice(e.getKey(),e.getValue())));
-			for(int i=0;i<item.getItemCount();i++) { if(Objects.equals(item.getItemAt(i).id,lockItem)) { item.setSelectedIndex(i); } }
-		}; choices.run();
-		slot.addActionListener(e->{slotKey=(String)slot.getSelectedItem(); lockItem=null; choices.run();});
-		JLabel error=new JLabel(); error.setFont(getFont()); add(error);
-		button(this,"Save lock / correction",()->{
-			if (!valid.getAsBoolean() || !actions.canEdit()) { return; }
-			try { lockItem=((ItemChoice)item.getSelectedItem()).id; actions.method(prefs.nex.lock(role.getSelectedItem()+"/"+slot.getSelectedItem(),lockItem)); }
-			catch (IllegalArgumentException ex) { error.setText("The pilot keeps Lightbearer equipped."); }
-		});
-		button(this,"Clear selected lock",()->{if(valid.getAsBoolean() && actions.canEdit()) { actions.method(prefs.nex.lock(role.getSelectedItem()+"/"+slot.getSelectedItem(),null)); }});
-		prefs.nex.locks.forEach((key,id)->text(key+": "+name(id,catalog)+" · manual planning lock"));
-		if (last==null) { text("No complete kill yet. Melee, ranged and spec candidates will appear from the observed timeline."); }
-		else
-		{
-			Set<String> shown=new HashSet<>();
-			for (NexSummary.Sample sample:last.timeline)
-			{
-				String key=sample.role+new TreeMap<>(sample.state.slots);
-				if (!shown.add(key)) { continue; }
-				text("Observed "+sample.role+" · tick "+sample.tick);
-				item(sample.state.slots.getOrDefault("weapon",-1),catalog,valid);
-				text("Offhand: "+name(sample.state.slots.getOrDefault("shield",-1),catalog));
-			}
-			text("Worn roles describe evidence, not confirmed attacks. A selected special is a candidate; energy drops and animations remain in details.");
-		}
-		text(storage);
-	}
 	private void details(NexSummary summary, KnowledgeCatalog catalog, java.util.function.BooleanSupplier valid)
 	{
 		text("Kill #"+summary.key+" · "+summary.outcome+" · "+summary.reason);
@@ -523,23 +454,6 @@ final class NexPanel extends PluginPanel
 		summary.gaps.forEach(this::text);
 	}
 	private static String tick(Integer value) { return value==null?"not observed":"tick "+value; }
-	private void account(AccountSnapshot account, Preferences prefs, KnowledgeCatalog catalog, Actions actions,
-		java.util.function.BooleanSupplier valid, String storage)
-	{
-		text("Account corrections"); text("Observed possession and readable unlocks take precedence. Manual facts do not establish charges or current usability.");
-		Map<String,String> facts=catalog.factChoices();
-		JComboBox<String> choices=new JComboBox<>(facts.keySet().stream().sorted().toArray(String[]::new)); addControl(choices);
-		choices.setSelectedItem(factKey);
-		PanelWidgets.text(this,facts.get((String)choices.getSelectedItem()));
-		JTextArea description=(JTextArea)getComponent(getComponentCount()-1);
-		choices.addActionListener(e->{factKey=(String)choices.getSelectedItem(); description.setText(facts.get(factKey));});
-		button(this,"Owned / unlocked",()->{if(valid.getAsBoolean() && actions.canEdit()) { actions.confirm((String)choices.getSelectedItem(),true); }});
-		button(this,"Not owned / locked",()->{if(valid.getAsBoolean() && actions.canEdit()) { actions.confirm((String)choices.getSelectedItem(),false); }});
-		button(this,"Clear selected fact",()->{if(valid.getAsBoolean() && actions.canEdit()) { actions.confirm((String)choices.getSelectedItem(),null); }});
-		prefs.confirmations.forEach((key,value)->text(facts.getOrDefault(key,key)+": "+value.evidence()));
-		text("Equipment slots: "+(account.equipmentSlots.known()?account.equipmentSlots.value():"unknown"));
-		text("Bank ownership: "+(account.bank.known()?"observed this session":"unknown; open bank to observe")); text(storage);
-	}
 	private void item(int id, KnowledgeCatalog catalog, java.util.function.BooleanSupplier valid)
 	{ item(id,name(id,catalog),catalog,valid); }
 	private void item(int id,String title,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid)
@@ -559,10 +473,4 @@ final class NexPanel extends PluginPanel
 	}
 	private void text(String value) { PanelWidgets.text(this,value); }
 	private static JButton button(JPanel parent,String value,Runnable action) { return PanelWidgets.button(parent,value,action); }
-	static final class ItemChoice
-	{
-		final int id; final String label;
-		ItemChoice(int id,String label) { this.id=id; this.label=label; }
-		@Override public String toString() { return label; }
-	}
 }

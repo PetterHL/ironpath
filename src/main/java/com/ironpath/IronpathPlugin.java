@@ -353,7 +353,8 @@ public class IronpathPlugin extends Plugin
 		}));
 	}
 
-	private void changePreferences(long token, long revision, long nexRevision, String expectedIdentity, UnaryOperator<Preferences> change)
+	// Retained independently of sidebar editors; package access supports lifecycle regression tests.
+	void changePreferences(long token, long revision, long nexRevision, String expectedIdentity, UnaryOperator<Preferences> change)
 	{
 		clientThread.invokeLater(() ->
 		{
