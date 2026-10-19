@@ -28,6 +28,43 @@
   Observed equipment/target class remain allowlisted in unavailable-row reports.
 - Keep UI1 frozen inspection/reports, 0.19.3 banking/reload/reset behavior and all
   nine original DEV1 scenarios. `nex-n3-plan` extends that same harness.
+
+- Issue #44's UI1 visual follow-up is implemented for review in **0.21.1**.
+  Read docs/validation/ui1-46-visual-review.md (current) and
+  docs/validation/ui1-native-refinement.md (earlier iteration). It is a separate follow-up based
+  on corrected CTX1 `2fe5342` and targets PR #43's branch while that PR is open;
+  it authorizes neither dependency merge nor publication. Current main also has
+  the separate N3 declared-plan delivery; reconcile it when the dependency lands.
+- DEV1 uses pinned genuine game-art fixtures through a test-only ItemManager
+  boundary. Keep asset provenance/Jagex notices; never add runtime web downloads
+  or approximations. Multi-item cards show several changed-item sprites. Preserve
+  calculation-details disclosure across unrelated refreshes of the same selected
+  kill and clear it with selected-record/identity/visibility guards.
+- Preserve the compact last-kill/context/setup-card hierarchy, selected tabs,
+  all deterministic alternatives and optional per-field context confirmation.
+  Keep technical explanations in Details/Diagnostics, with material scope beside
+  each claim. More comparisons is a disclosure, never a ranking or result filter.
+- UI1 is merged in main at 96d91e8. CTX1 is implemented for review in
+  **0.21.0**; read docs/validation/ctx1-kill-context.md. Its feature PR still needs
+  review/merge authorization; live acceptance is open. TASKS.md is the sole roadmap.
+- CTX1 separates optional future defaults, immutable attempt-start context and
+  observed facts, planning locks, and per-kill annotation revisions. Inheritance
+  never confirms a kill. Historical edits use the dedicated context action, not
+  NexObserver.method(), and cannot censor another active attempt. Completed
+  calculations retain their evaluation inputs; later account/Setup reads apply to
+  future comparisons. Preserve kill/context/input/model and identity/world guards.
+- PR #43's P2 correction keeps frozen report/detail/comparison read actions usable
+  after unrelated combat account refreshes, using session/result revisions rather
+  than the live account-view guard. Account/preferences mutations retain the strict
+  guard. Preserve the active-context DEV1 clipboard/fallback and Back regressions.
+- Typed descriptive matching excludes unconfirmed/variable/incompatible context,
+  incomplete observations and unstable/unknown roster evidence. Planning locks are
+  excluded. Matching count/visible roster is not proof of party membership or
+  equal teammate damage. Unsupported context preserves observations and conditional
+  ordinary arithmetic, without enabling method recommendations or team-time.
+- Preserve UI1's frozen inspection, allowlisted explicit export and selectable
+  clipboard fallback, plus banking, arena reload, reset reasons and all nine
+  baseline DEV1 replays. CTX1 adds three scenarios through the same harness.
 - The 18 October main consolidation integrates reviewed development work with
   live acceptance still open. It is not Plugin Hub approval or standing permission
   to merge subsequent feature PRs. See docs/validation/main-consolidation-20261018.md.
@@ -35,6 +72,13 @@
 ## Delivery
 
 - Retained UI1 **0.20.0** adds compact Encounter / Diagnostics and an allowlisted
+
+- CTX1 **0.21.0** adds editable kill context and preferences schema 4; schemas
+  1–3 migrate without kill confirmation. Annotations, frozen evaluation inputs and
+  calculations share the bounded 50-record in-memory lifetime. Live snapshots and
+  active traces still clear at scene transitions; retained records stay hidden until
+  same-account/profile/world revalidation. No performance history is persisted.
+- UI1 **0.20.0** adds compact Encounter / Diagnostics and an allowlisted
   user-triggered report; retained calculations/selection are immutable across new
   results. Clipboard failure leaves selectable text. See the UI1 validation record.
 - Retained 0.19.3 behavior fixes arena-only scene reloads being mistaken

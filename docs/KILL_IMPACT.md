@@ -70,7 +70,7 @@ synthetic provenance. Export time is not the kill timestamp. Clear/hidden sessio
 state cannot be recovered through export. Formatting can be shared with DEV1,
 but a diagnostic report cannot reproduce a lossless ordered event replay.
 
-The version-1 production report explicitly projects numeric setup/state inputs,
+The version-2 production report explicitly projects numeric setup/state inputs,
 per-metric support and outputs, relevant candidate quantities and source/model
 revisions. Adapter exclusions and comparison gaps are mapped to fixed allowlisted
 reasons/categories; arbitrary reason strings and embedded target identities never
@@ -80,7 +80,7 @@ is exported; unrelated scenarios and ownership/unlock provenance are explicitly
 omitted. This is sufficient for scoped diagnosis, not a complete calculation or
 event replay. DEV1 alone writes synthetic reports to its build artifacts.
 
-### Planned corrected context (CTX1)
+### Corrected context (CTX1, 0.21.0)
 
 Immutable evidence never changes when a user annotates strategy/team size.
 Snapshot future defaults at start; apply later edits as versioned per-kill
@@ -90,7 +90,11 @@ results separate from the previous revision. Reconcile comparable aggregates
 without treating team count as proof of participant identity or stable damage.
 Unsupported methods preserve observations and explicitly justified arithmetic,
 not pilot-specific recommendations. Per-kill metadata has the session's bounded
-memory/identity/reset/eviction lifetime. See TASKS CTX1 for acceptance.
+memory/identity/reset/eviction lifetime. NexEvaluation freezes account/planning
+inputs once per completed kill; later bank/Setup changes apply to future
+comparisons. The schema-2 report includes attempt-start defaults, effective
+per-field provenance and context/input/model revisions; pending or mismatched
+outputs cannot be exported. [Automated acceptance and remaining checks](validation/ctx1-kill-context.md).
 
 | Output | Required meaning |
 |---|---|

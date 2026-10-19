@@ -21,7 +21,7 @@ public class OfflineReviewTest
 		var result = OfflineReview.run("nex-complete", output);
 		assertTrue(Files.readString(output.resolve("report.md")), result.passed());
 		assertFalse(Files.exists(output.resolve("stale.png")));
-		try (var files = Files.list(output)) { assertEquals(20, files.filter(p -> p.toString().endsWith(".png")).count()); }
+		try (var files = Files.list(output)) { assertEquals(26, files.filter(p -> p.toString().endsWith(".png")).count()); }
 		assertEquals(225, javax.imageio.ImageIO.read(output.resolve("main-20.png").toFile()).getWidth());
 	}
 
@@ -50,6 +50,12 @@ public class OfflineReviewTest
 	}
 
 	@Test public void unknownInputsBlockOnlyDependentClaims() throws Exception { lifecycle("nex-unknown", 6); }
+	@Test public void genuineSpritesAndExpandedPackagesRenderThroughPublicReplay() throws Exception
+	{
+		var output=temporary.newFolder().toPath(); var report=OfflineReview.run("nex-visual",output);
+		assertTrue(Files.readString(output.resolve("report.md")),report.passed());
+		assertEquals(225,javax.imageio.ImageIO.read(output.resolve("expanded-20.png").toFile()).getWidth());
+	}
 	@Test public void incompleteAttemptsRemainExcluded() throws Exception { lifecycle("nex-incomplete", 4); }
 	@Test public void bankTripRetainsHistoryAndAcceptsNextKill() throws Exception { lifecycle("nex-bank-trip", 6); }
 	@Test public void pendingIdentityPublicationCannotOverwriteFreshWork() throws Exception { lifecycle("nex-identity-pending", 6); }
@@ -57,6 +63,15 @@ public class OfflineReviewTest
 	@Test public void newResultsPreserveInspectedHistory() throws Exception { lifecycle("nex-frozen-history", 8); }
 	@Test public void longBankTripAndNearbyNexPreserveHistoryWithoutWeakeningIdentityGuards() throws Exception { lifecycle("nex-bank-long-trip", 8); }
 	@Test public void arenaReloadResumesCaptureWithoutABankVisit() throws Exception { lifecycle("nex-arena-reload", 4); }
+	@Test public void contextCorrectionsReconcileConfirmedCohorts() throws Exception { context("nex-context"); }
+	@Test public void historicalContextEditsPreserveAnotherActiveAttemptAndFrozenInputs() throws Exception { context("nex-context-active"); }
+	@Test public void repeatedContextEditsRejectStalePublicationAfterResetAndLogout() throws Exception { context("nex-context-pending"); }
+	private void context(String id) throws Exception
+	{
+		var output=temporary.newFolder().toPath(); var report=OfflineReview.run(id,output);
+		assertTrue(Files.readString(output.resolve("report.md")),report.passed());
+		assertEquals(225,javax.imageio.ImageIO.read(output.resolve("corrected-diagnostics-20.png").toFile()).getWidth());
+	}
 
 	@Test public void n3PlanJoinsFrozenPackagesResourcesDamageAmmoAndResetGuards() throws Exception
 	{

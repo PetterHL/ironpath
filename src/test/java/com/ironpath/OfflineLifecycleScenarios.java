@@ -103,7 +103,7 @@ final class OfflineLifecycleScenarios
 		report.check("No last complete summary", null, r.plugin.nexSession.stats().last);
 		report.check("No complete timing mean", true, Double.isNaN(r.plugin.nexSession.stats().meanSeconds));
 		report.check("No post-kill comparison manufactured", null, r.plugin.ownedResult);
-		onEdt(() -> report.check("Incomplete result is visible", true, PanelPreview.text(r.panel).contains("Last attempt · CENSORED")));
+		onEdt(() -> report.check("Incomplete result is visible", true, PanelPreview.text(r.panel).contains("Latest attempt incomplete.")));
 		capture(r, output, "excluded", font, report);
 		onEdt(() -> PanelPreview.click(r.panel, "Last attempt details"));
 		capture(r, output, "excluded-details", font, report);
@@ -129,10 +129,10 @@ final class OfflineLifecycleScenarios
 		report.check("Two independent completed encounters", 2, r.plugin.nexSession.stats().complete);
 		report.check("Next kill uses a new capture key", true, second.key != first.key);
 		report.check("Matched cohort after bank return", first.cohort, second.cohort);
-		report.check("Both encounters enter comparable means", 2, r.plugin.nexSession.stats().n);
-		report.near("Mean timing: (20 + 30) × 0.6 / 2", 15, r.plugin.nexSession.stats().meanSeconds, 1e-10);
-		report.near("Mean share: (25 + 50) / 2", 37.5, r.plugin.nexSession.stats().meanShare, 1e-10);
-		report.near("Aggregate share: 100 × (20 + 60) / (80 + 120)", 40, r.plugin.nexSession.stats().aggregateShare, 1e-10);
+		report.check("Inherited contexts stay out of matched averages", 0, r.plugin.nexSession.stats().n);
+		report.check("Unconfirmed timing mean stays unavailable", true, Double.isNaN(r.plugin.nexSession.stats().meanSeconds));
+		report.check("Unconfirmed mean share stays unavailable", true, Double.isNaN(r.plugin.nexSession.stats().meanShare));
+		report.check("Unconfirmed aggregate share stays unavailable", true, Double.isNaN(r.plugin.nexSession.stats().aggregateShare));
 		report.check("Fresh comparison is for the next kill (kill #" + second.key + ")", true, second == r.plugin.ownedResult.summary);
 		report.section("Banking scope · " + font + "px", "Recognized short same-account bank trip. "
 			+ "The separate nex-bank-long-trip and nex-arena-reload scenarios exercise PR #38's extended retention and reload paths.");
@@ -158,16 +158,16 @@ final class OfflineLifecycleScenarios
 		capture(r, output, "late-outbound", font, report);
 		r.arrive(true);
 		report.check("Late verified bank restores the exact first summary", true, first == r.plugin.nexSession.stats().last);
-		report.check("Late bank restores one comparable result", 1, r.plugin.nexSession.stats().n);
+		report.check("Late bank restores the completed result", 1, r.plugin.nexSession.stats().complete);
 		capture(r, output, "late-bank", font, report);
 		r.loading(); r.waitTicks(150); r.arrive(false);
 		report.check("Long bank-origin return retains the exact first summary", true, first == r.plugin.nexSession.stats().last);
 		var second = r.fight(30, 60, 60, true); r.settle();
 		report.check("Next post-bank kill completes", Outcome.COMPLETE, second.outcome);
 		report.check("Post-bank comparison uses a new capture key", true, second.key != first.key && r.plugin.ownedResult.summary == second);
-		report.check("Long-trip history contains both matched complete kills", 2, r.plugin.nexSession.stats().n);
-		report.near("Long-trip mean timing remains 15 seconds", 15, r.plugin.nexSession.stats().meanSeconds, 1e-10);
-		report.near("Long-trip aggregate share remains 40%", 40, r.plugin.nexSession.stats().aggregateShare, 1e-10);
+		report.check("Long-trip history contains both complete kills", 2, r.plugin.nexSession.stats().complete);
+		report.check("Unconfirmed long-trip timing stays unmatched", true, Double.isNaN(r.plugin.nexSession.stats().meanSeconds));
+		report.check("Unconfirmed long-trip aggregate stays unmatched", true, Double.isNaN(r.plugin.nexSession.stats().aggregateShare));
 		capture(r, output, "next-kill", font, report);
 		r.changeIdentity(); r.callbacks.drain(); r.edt();
 		report.check("Removing the deadline does not weaken identity clearing", 0, r.plugin.nexSession.stats().attempts);
@@ -188,7 +188,7 @@ final class OfflineLifecycleScenarios
 		var second = r.fight(30, 60, 60, true); r.settle();
 		report.check("Next real smoke callback reaches capture after reload", true, second.key != first.key);
 		report.check("Next post-reload kill completes", Outcome.COMPLETE, second.outcome);
-		report.check("Arena reload retains two matched complete kills", 2, r.plugin.nexSession.stats().n);
+		report.check("Arena reload retains two complete kills", 2, r.plugin.nexSession.stats().complete);
 		report.check("Current comparison is for the post-reload kill", true, r.plugin.ownedResult.summary == second);
 		capture(r, output, "next-kill", font, report);
 	}
@@ -273,7 +273,7 @@ final class OfflineLifecycleScenarios
 		capture(r, output, "frozen-details", font, report);
 		onEdt(() -> {
 			PanelPreview.click(r.panel, "Back to encounter");
-			report.check("Returning shows the latest complete timing", true, PanelPreview.text(r.panel).contains("Last complete kill · 24.0 s"));
+			report.check("Returning shows the latest complete timing", true, PanelPreview.text(r.panel).contains("Last kill") && PanelPreview.text(r.panel).contains("24.0 s"));
 			PanelPreview.click(r.panel, "Owned setup comparisons");
 			report.check("Reopening comparisons selects the latest kill", true, PanelPreview.text(r.panel).contains("Owned equipment · kill #" + third.key));
 		});

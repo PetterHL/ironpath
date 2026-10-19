@@ -29,6 +29,33 @@ in [PR #43](https://github.com/PetterHL/ironpath/pull/43); this work does not me
 [TASKS](TASKS.md) owns remaining mechanics and live acceptance. The earlier
 [consolidation](docs/validation/main-consolidation-20261018.md) retains its original evidence.
 
+**18 October 2026: development build 0.21.1 — native UI refinement for review.**
+The 225px Encounter panel leads with the last kill, a compact context strip and
+supported item/package cards with genuine sprites. Secondary actions are grouped. Diagnostics keeps calculation status,
+limitations and explicit report copying together. [Before/after screenshots,
+verification and open client checks](docs/validation/ui1-46-visual-review.md).
+This follows corrected CTX1 in a separate PR; its dependency remains explicit.
+
+Optionally save usual Nex context before play or **Edit kill context** on the
+latest completed or already-inspected kill. Strategy (MP2/RP2/Other/Unknown),
+group mode and participation are separate fields. Apply affects the selected
+kill; **Use for future** separately saves defaults for later attempts. Inherited
+values remain unconfirmed. [CTX1 evidence and remaining client checks](docs/validation/ctx1-kill-context.md).
+
+Observations stay immutable. Corrections use the kill's frozen calculation inputs,
+leave another active attempt running, reconcile descriptive matched averages and
+keep reports on the same context/input revision. Completed comparisons retain
+frozen ownership/planning inputs; later Setup choices apply to future comparisons.
+Unknown, variable or unconfirmed context has no matched average. Other methods
+retain independently supported conditional ordinary arithmetic, with no automatic
+pilot recommendations or team-time estimate.
+
+[UI1 Encounter/Diagnostics and sanitized reports](docs/validation/ui1-encounter-diagnostics.md)
+are merged. [TASKS](TASKS.md) owns the order and acceptance checks. N3b/N3c remain
+conditional APIs, and live-client/player acceptance stays open. The earlier
+[main consolidation](docs/validation/main-consolidation-20261018.md) retains its
+historical evidence.
+
 Bank-travel correction: completed history no longer expires while waiting to
 open the bank. It stays hidden until same-account/profile/world revalidation;
 logout, identity changes and Reset still clear it. The panel shows the build
@@ -142,3 +169,9 @@ Repository: [PetterHL/ironpath](https://github.com/PetterHL/ironpath).
 Original code uses [BSD-2-Clause](LICENSE); preserve [third-party notices](THIRD_PARTY_NOTICES.md).
 The plugin has not been published to Plugin Hub. Its Hub identifier must be
 distinct from the existing Iron Compass identifier before submission.
+
+## Preview artwork
+
+Created using intellectual property belonging to Jagex Limited under the terms of Jagex's Fan Content Policy. This content is not endorsed by or affiliated with Jagex.
+
+[Genuine preview sprites: provenance and separate terms](THIRD_PARTY_NOTICES.md).

@@ -12,15 +12,21 @@ public class NexCaptureTest
 {
 	public static CombatState state(int weapon, int shield, int energy, int charge)
 	{
-		return new CombatState(Map.of("weapon",weapon,"shield",shield,"ring",25975,"ammo",11212),
-			Map.of("ATTACK",99,"RANGED",99),Map.of("ATTACK",118,"RANGED",112),Set.of("PIETY"),0,energy,false,
+		Map<String,Integer> slots=new HashMap<>(), real=new HashMap<>(), visible=new HashMap<>();
+		com.ironpath.advisor.PoweredMagic.SLOTS.forEach(slot->slots.put(slot,0)); slots.putAll(Map.of("weapon",weapon,"shield",shield,"ring",25975,"ammo",11212));
+		for(String skill:List.of("ATTACK","STRENGTH","DEFENCE","HITPOINTS","PRAYER","RANGED","MAGIC")) { real.put(skill,99); visible.put(skill,99); }
+		visible.putAll(Map.of("ATTACK",118,"STRENGTH",118,"RANGED",112));
+		return new CombatState(slots,real,visible,Set.of("PIETY"),0,energy,false,
 			Map.of(385,5L),Map.of("death-charge-active",charge,"worn-ammo-quantity",100));
 	}
 	public static NexSummary replay(int offset, int mine, int other)
 	{
 		List<NexSummary> summaries=new ArrayList<>(); NexCapture capture=new NexCapture(summaries::add);
 		replay(capture,offset,true,false,mine,other);
-		return summaries.get(0);
+		NexSummary s=summaries.get(0);
+		// Separate fixture captures share one synthetic session; give them distinct kill keys.
+		return new NexSummary(offset+1,s.startTick,s.endTick,s.sampledTicks,s.expectedTicks,s.unclassifiedHits,s.outcome,s.reason,
+			s.cohort,s.method,s.timeline,s.damage,s.gaps,s.signals,s.beforeStart,s.context,s.comparability);
 	}
 	private static void replay(NexCapture c, int offset, boolean full, boolean missing, int mine, int other)
 	{

@@ -55,7 +55,7 @@ public class NexPanelTest
 			session.add(NexCaptureTest.replay(0,20,60)); NexPanel panel=new NexPanel(null);
 			AccountSnapshot account=P4aFixtures.account(Set.of(11907),99,90);
 			NexPanel.Actions actions=actions(); panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions,"local");
-			assertTrue(shown(panel).contains("Last complete kill")); assertFalse(shown(panel).contains("Recommended order"));
+			assertTrue(shown(panel).contains("Last kill")); assertFalse(shown(panel).contains("Recommended order"));
 			button(panel,"Kill and calculation details").doClick(); assertTrue(shown(panel).contains("Tick" ) || shown(panel).contains("NEX@"));
 			session.add(NexCaptureTest.replay(100,40,0)); panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions,"local");
 			assertTrue(shown(panel).contains("20 local") || shown(panel).contains("27 local") || shown(panel).contains("20 observed"));
@@ -76,12 +76,12 @@ public class NexPanelTest
 				panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
 				assertTrue(shown(panel).contains("Previous session cleared: Travel did not start"));
-				assertFalse(shown(panel).contains("synthetic-a")); assertFalse(shown(panel).contains("Last complete kill"));
+				assertFalse(shown(panel).contains("synthetic-a")); assertFalse(shown(panel).contains("Last kill"));
 				capture(panel,"bank-reset-"+(int)font);
 			}
 			session.add(NexCaptureTest.replay(100,20,60));
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
-			assertTrue(shown(panel).contains("Last complete kill")); assertFalse(shown(panel).contains("Previous session cleared"));
+			assertTrue(shown(panel).contains("Last kill")); assertFalse(shown(panel).contains("Previous session cleared"));
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
 	@Test public void resumedCaptureReplacesThePausedBannerAndShowsConcreteEligibilitySignals() throws Exception
@@ -121,7 +121,7 @@ public class NexPanelTest
 				public void reset() { resets.incrementAndGet(); session.clear(); } public void enable(boolean enabled) {}
 			};
 			panel.render("Nex session paused. Open a bank to revalidate.",account,Preferences.EMPTY,catalog,session.stats(),true,actions,"local");
-			assertFalse(shown(panel).contains("Last complete kill"));
+			assertFalse(shown(panel).contains("Last kill"));
 			JButton reset=button(panel,"Reset session"); reset.doClick();
 			assertEquals(1,resets.get()); assertFalse(session.suspended()); assertTrue(session.recent().isEmpty());
 			panel.render("Account changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"local");
@@ -240,7 +240,7 @@ public class NexPanelTest
 				session.clear(); session.select("a",301); session.add(summary);
 				NexPanel panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
-				assertTrue(shown(panel).contains("theoretical DPS")); capture(panel,"owned-main-"+(int)font);
+				assertTrue(shown(panel).contains(" DPS")); capture(panel,"owned-main-"+(int)font);
 				button(panel,"Owned setup comparisons").doClick(); capture(panel,"owned-details-"+(int)font);
 				assertTrue(shown(panel).contains("Selected quiver projectile: Amethyst arrow"));
 				assertTrue(shown(panel).contains("ammo slot: Ancient blessing"));
@@ -323,7 +323,7 @@ public class NexPanelTest
 			{
 				var panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
-				button(panel,"Diagnostics").doClick();
+				button(panel,"Diagnostics").doClick(); button(panel,"Calculation details").doClick();
 				assertTrue(shown(panel).contains("Supported scenarios: carried 2, bank preparation 1. Unavailable: 1"));
 				button(panel,"Encounter").doClick();
 				button(panel,"Owned setup comparisons").doClick();

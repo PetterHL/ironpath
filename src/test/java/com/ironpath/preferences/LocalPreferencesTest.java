@@ -47,7 +47,7 @@ public class LocalPreferencesTest
 		assertNull(restarted.read(LocalPreferences.key("synthetic-config-11:rs-a:character-1")).goal);
 		String text = Files.readString(temporary.getRoot().toPath().resolve(a + ".json"));
 		JsonObject json = new JsonParser().parse(text).getAsJsonObject();
-		assertEquals(Set.of("schemaVersion", "goal", "skipped", "confirmations", "method", "upgradedDeathCharge", "locks"), json.keySet());
+		assertEquals(Set.of("schemaVersion", "goal", "skipped", "confirmations", "method", "upgradedDeathCharge", "locks", "strategy", "group", "participation", "participants"), json.keySet());
 		assertEquals(Set.of("value", "time"), json.getAsJsonObject("confirmations").getAsJsonObject("item-12932").keySet());
 		assertFalse(text.contains("synthetic-config")); assertFalse(text.contains("bank")); assertFalse(text.contains("levels"));
 		store.write(a, Preferences.EMPTY);
@@ -132,10 +132,32 @@ public class LocalPreferencesTest
 		assertEquals("ranged-options", reloaded.goal);
 		assertFalse(reloaded.confirmations.get("owns-bowfaOrBetter").value);
 		JsonObject doc = new JsonParser().parse(Files.readString(temporary.getRoot().toPath().resolve(a + ".json"))).getAsJsonObject();
-		assertEquals(3, doc.get("schemaVersion").getAsInt());
-		assertEquals(Set.of("schemaVersion", "goal", "skipped", "confirmations", "method", "upgradedDeathCharge", "locks"), doc.keySet());
+		assertEquals(4, doc.get("schemaVersion").getAsInt());
+		assertEquals(Set.of("schemaVersion", "goal", "skipped", "confirmations", "method", "upgradedDeathCharge", "locks", "strategy", "group", "participation", "participants"), doc.keySet());
 		assertTrue(restarted.read(LocalPreferences.key("synthetic-config-11:rs-a:character-1")).skipped.isEmpty());
 		assertTrue(restarted.read(LocalPreferences.key("synthetic-config-10:rs-b:character-2")).confirmations.isEmpty());
+	}
+
+	@Test public void contextMigrationNeverInventsKillConfirmationAndPersistsOnlyFutureDefaults() throws Exception
+	{
+		for(int schema:java.util.List.of(1,2,3))
+		{
+			raw("{\"schemaVersion\":"+schema+",\"skipped\":[],\"confirmations\":{},\"method\":\"nex-trio-mp2-one-kill\",\"upgradedDeathCharge\":false,\"locks\":{\"melee/shield\":12954}}");
+			var migrated=store.read(a); assertEquals(com.ironpath.nex.NexContext.PILOT,migrated.nexContext);
+			assertFalse(migrated.nexContext.confirmed());
+			if(schema==3) { assertFalse(migrated.nex.upgradedDeathCharge); assertEquals(Integer.valueOf(12954),migrated.nex.locks.get("melee/shield")); }
+		}
+		var corrected=com.ironpath.nex.NexContextTest.confirmed(com.ironpath.nex.NexContext.Strategy.RP2,com.ironpath.nex.NexContext.Group.MASS,12);
+		store.write(a,Preferences.EMPTY.context(corrected)); var read=store.read(a);
+		assertEquals(corrected.inherited(),read.nexContext); assertFalse(read.nexContext.confirmed());
+		String json=Files.readString(temporary.getRoot().toPath().resolve(a+".json"));
+		for(String forbidden:java.util.List.of("ANNOTATED","revision","timeline","damage","roster","calculation")) { assertFalse(json.contains(forbidden)); }
+		var variable=new com.ironpath.nex.NexContext(corrected.strategy,corrected.group,com.ironpath.nex.NexContext.Participation.VARIABLE,null,
+			com.ironpath.nex.NexContext.Source.ANNOTATED,com.ironpath.nex.NexContext.Source.ANNOTATED,com.ironpath.nex.NexContext.Source.ANNOTATED);
+		store.write(a,read.context(variable)); assertNull(store.read(a).nexContext.participants);
+		String valid=Files.readString(temporary.getRoot().toPath().resolve(a+".json"));
+		for(String invalid:java.util.List.of(valid.replace("VARIABLE","EXACT"),valid.replace("\"RP2\"","\"invalid\""),valid.replace("\"VARIABLE\"","null")))
+		{ raw(invalid); assertThrows(java.io.IOException.class,()->store.read(a)); }
 	}
 
 }

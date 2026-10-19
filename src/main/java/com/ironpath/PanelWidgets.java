@@ -1,6 +1,8 @@
 package com.ironpath;
 
 import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.*;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
@@ -9,6 +11,34 @@ import net.runelite.client.ui.PluginPanel;
 final class PanelWidgets
 {
 	private static final float LEFT_ALIGNMENT=0;
+	static final Color MUTED=new Color(177,180,184), BENEFIT=new Color(134,207,151), LINE=new Color(61,63,66);
+	/** A full-width native surface. Outer spacing belongs to the surface, not its text. */
+	static JPanel card(JPanel parent,String name)
+	{
+		JPanel card=column(parent);
+		card.setBackground(new Color(32,34,36)); card.setOpaque(true);
+		card.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0,0,8,0,parent.getBackground()),
+			BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(LINE),BorderFactory.createEmptyBorder(7,8,7,8))));
+		card.setName(name); parent.add(card); return card;
+	}
+	static JPanel column(JPanel parent)
+	{
+		JPanel column=new JPanel() {
+			@Override public Dimension getPreferredSize()
+			{
+				// Wrapping changes with the allocated sidebar width. BoxLayout otherwise
+				// caches a height measured before this padded surface had its width.
+				((BoxLayout)getLayout()).invalidateLayout(this); return super.getPreferredSize();
+			}
+		}; column.setLayout(new BoxLayout(column,BoxLayout.Y_AXIS));
+		column.setFont(parent.getFont()); column.setOpaque(false); column.setAlignmentX(LEFT_ALIGNMENT); return column;
+	}
+	static JTextArea label(JPanel panel,String message,boolean bold,float extra,Color color)
+	{
+		text(panel,message); JTextArea label=(JTextArea)panel.getComponent(panel.getComponentCount()-1);
+		label.setFont(panel.getFont().deriveFont(bold?Font.BOLD:Font.PLAIN,panel.getFont().getSize2D()+extra));
+		label.setForeground(color); return label;
+	}
 	static JButton button(JPanel panel, String label, Runnable action)
 	{
 		JButton button = new JButton(label);

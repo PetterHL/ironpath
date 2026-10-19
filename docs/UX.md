@@ -1,8 +1,63 @@
 # Encounter-first UX
 
 Encounter direction selected 15 October; UI review incorporated 18 October 2026.
-UI1 is implemented for review in 0.20.0; CTX1 remains planned. TASKS.md owns
+UI1 is visually refined for review in 0.21.1, on CTX1 0.21.0. TASKS.md owns
 delivery. Later versioned sections retain the implemented behavior/history.
+
+## PR #46 visual review
+
+The current review keeps one IronPath / Nex heading, a compact selected-tab row,
+last-kill results, a context strip with Edit alongside it, then useful equipment.
+Body fonts stay 12/20, with enlarged navigation at 18 to fit readable full labels.
+Result values use columns at the normal font and value/label rows when enlarged.
+Genuine item sprites, changed-item/package identity and supported DPS dominate
+cards; modelled role/phase, reasons, availability/packing and search limits remain
+secondary readable text. Multi-item packages show several changed-item sprites.
+Details has one consistent position at the bottom right.
+
+Inspect groups comparisons and kill details. Setup & session groups Setup,
+Account, future context, capture, Reset and counts. All actions keep their guards,
+frozen selection, Back and remembered scrolling. Calculation details in Diagnostics
+retains expansion across unrelated account reads for the same selected kill.
+
+[Before/after screenshots, sprite provenance and open client checks](validation/ui1-46-visual-review.md).
+
+## Native refinement (0.21.1, issue #44)
+
+Use the existing Encounter / Diagnostics reference as a visual guide, adapted to
+one 225px native sidebar. It does not replace the product contract or roadmap.
+Show a clear selected tab, quiet dark surfaces, separated sections and native
+ItemManager sprites. The current review uses the readable compact navigation above.
+
+Encounter order: Nex; a last-complete-kill card with prominent observed duration
+and damage share labeled as Nex/minion hitsplats; one compact context summary
+with Edit; **Compare setups**. An unconfirmed/unknown context remains explicit.
+Show a matched mean only when more than one compatible kill makes it useful.
+Timer boundaries, exclusions and damage interpretation remain inspectable.
+
+Each equipment card names the actual changed item or complete package, gives
+supported modelled DPS, role/phase, one short reason, material carried/bank and
+partial-search qualifiers, and Details. Begin with two deterministic cards at
+most; **More comparisons** exposes the rest without sorting independent state
+percentages. All zero/negative/unavailable alternatives remain accessible through
+**Owned setup comparisons**. This display limit is not a product/catalogue ceiling.
+
+Setup, Account, future context, kill/comparison details and Reset remain explicit
+secondary controls; capture settings and counts sit in Session tools. No raw tick
+IDs, repeated pilot disclaimers or empty matched statistics crowd the main view.
+Diagnostics groups Inputs, Calculation status and Missing / limited; expandable
+Calculation details retain versions, exact scope, support counts and matching rules.
+The actual build remains directly visible. Copy report and selectable fallback
+keep the same immutable selection, account guards and privacy contract.
+
+The optional context editor retains independent strategy/group/participation,
+per-field confirmation/provenance, explicit Apply and separate future defaults.
+Historical edits/report navigation cannot interrupt another active attempt.
+Actual-to-owned and owned-to-new-upgrade value, relevant acquisition/recurring
+costs and validated N4 contribution/team-time remain governed by TASKS and DESIGN.
+This refinement adds no unsupported metric or new combat formula.
+
+[Native before/after screenshots, visual comparison and open client checks](validation/ui1-native-refinement.md).
 
 ## UI1 implementation (0.20.0, for review)
 
@@ -10,7 +65,7 @@ One native 225px panel with **Encounter / Diagnostics** primary navigation.
 Setup and Account remain explicit secondary actions, together with comparisons,
 kill/attempt details and Reset. Keep frozen inspection and Back/scroll behavior.
 
-Encounter order: boss and pilot model scope; last complete duration and scoped
+Original 0.20.0 order (refined above): boss and pilot model scope; last complete duration and scoped
 observed hitsplat share; compact comparable mean/count; **Improve your setup**
 cards; secondary actions. Keep failed/censored attempts separate. At n=1, show
 one matching kill rather than repeating its mean/range. Details retain spread,
@@ -60,20 +115,47 @@ report clears the previous text and starts collapsed.
 See [UI1 validation](validation/ui1-encounter-diagnostics.md) for viewport evidence,
 clipboard fallback and the separate client checks.
 
-## Reviewed CTX1 target (after UI1 review)
+## Editable kill context (CTX1, 0.21.0)
 
-Show optional kill context beside the selected kill, with a compact editor and
-explicit Apply. Keep MP2/RP2/Other/Unknown, organized/mass/unknown and exact team
-count/unknown as separate dimensions. Count includes the player. A saved future
-default is separate from the selected kill's annotation; inherited is not confirmed.
-Selecting unsupported contexts preserves observations but cannot enable pilot
-recommendations. No compulsory pre-fight form. TASKS.md specifies frozen inputs,
-cohort reconciliation, migration and stale-work checks before implementation.
+**Future kill context** is optional before play. **Edit kill context** sits beside
+the latest completed or already-inspected kill, including its Diagnostics and
+comparison/details views. The editor retains an unfinished draft across unrelated
+refreshes. Strategy (MP2/RP2/Other/Unknown), organized/mass/unknown group and
+exact/variable/unknown participation are separate controls. Exact counts must be
+positive whole numbers and include the player. Mass never changes strategy.
 
-## One remembered context (existing pilot)
+**Apply context** changes only that kill. Confirm strategy, group and count
+separately when known; unconfirmed manual entries and inherited defaults stay
+unconfirmed. **Use for future** separately saves future defaults. It never confirms
+future kills or alters an already-active attempt. **Context sources** exposes
+per-field provenance. There is no mandatory pre-fight form or new history browser.
 
-The main view starts with `Nex · Trio MP2 · One kill per trip`. The method is a
-saved preference; detect equipment/spell use and ask only focused corrections.
+The selected record shows its observed duration/damage and context revision.
+During recomputation, previous calculation outputs are withheld. Diagnostics and
+Copy report use the same corrected revision and frozen calculation inputs;
+newer bank observations/preferences cannot enter an edit. Completed comparisons
+retain their frozen planning inputs; Setup changes apply to future comparisons.
+A historical annotation can complete while another attempt continues.
+
+Inventory/equipment refreshes during that attempt also leave the older report's
+Copy, selectable text and frozen detail/comparison navigation usable. These read
+actions follow the selected immutable result and session revisions; Account/Setup
+mutations retain their stricter live-view checks.
+
+Unconfirmed/unknown/variable or incompatible context has no matched average.
+Confirmed organized MP2/RP2 records need compatible observed setup/timer/roster
+evidence; count alone is insufficient and does not establish equal team damage.
+Mass and unspecified Other remain unmatched. Conditional ordinary state comparisons
+can remain inspectable outside the pilot; they are not method recommendations.
+No automatic spec recommendation, contribution model or team-time estimate is added.
+
+[CTX1 validation](validation/ctx1-kill-context.md) includes 225px editor/report PNGs
+at 12pt/20pt, real JViewport screenfuls and the separate unperformed client checks.
+
+## Pilot planning choices
+
+The main view identifies `Nex · Trio MP2 pilot model`, independently of annotated
+kill context. Detect equipment/spell use and permit focused corrections.
 Lightbearer throughout and upgraded Death Charge are the confirmed pilot choices.
 A compact Setup action exposes melee, ranged and spec packages plus locked choices.
 Detected, manually assumed and unknown state must remain distinguishable.
