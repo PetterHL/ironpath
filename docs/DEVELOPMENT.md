@@ -351,3 +351,9 @@ being reviewed. This supersedes earlier tab/first-screen Diagnostics directions.
 viewports. `nex-bank-trip` adds verified Waiting for Nex viewports, and
 `nex-arena-reload` checks Loading encounter… before fresh public arena evidence.
 Run both TASKS commands and inspect [the follow-up evidence](validation/pr48-review-followup.md).
+
+Build 0.23.2 corrects the subsequent review's client-thread, explicit diagnostic
+selection and suspended-scroll findings. Focused regressions dispatch a logged-in
+profile change from a worker, select another kill/incomplete attempt after copying
+a report, and lay out/drain the EDT during suspension before verified return.
+The full pinned gate and normal build remain required.

@@ -128,6 +128,37 @@ public class NexDiagnosticsTest
 			assertFalse("Identity clearing cannot retain expanded history",PanelPreview.text(panel).contains("State coverage"));
 		});
 	}
+	@Test public void explicitKillAndAttemptDetailsRetargetTheFrozenReport() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			var first=summary(1,true); var second=summary(2,false);
+			var firstResult=evaluate(first); var secondResult=evaluate(second);
+			var session=new NexSession(); session.select("synthetic",301); session.add(first);
+			var copied=new AtomicReference<String>(); var panel=new NexPanel(null,copied::set,NexReport.Provenance.SYNTHETIC_OFFLINE);
+			var account=NexOwnedFixtures.account(null);
+			panel.render("First result",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",firstResult);
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			String frozen=copied.get(); JTextArea old=area(panel);
+			PanelPreview.closeSection(panel,"Diagnostics"); session.add(second);
+			panel.render("Second result",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",secondResult);
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			assertEquals("Background results keep the frozen target",frozen,copied.get());
+			PanelPreview.closeSection(panel,"Diagnostics"); PanelPreview.click(panel,"Kill and calculation details");
+			assertEquals("Explicit selection clears the previous export immediately","",old.getText());
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			assertTrue(PanelPreview.text(panel).contains("Frozen kill #2"));
+			assertTrue(copied.get().contains("immutable calculation revision: "+secondResult.revision));
+			assertNotEquals(frozen,copied.get());
+			PanelPreview.click(panel,"Back to encounter"); PanelPreview.closeSection(panel,"Diagnostics"); old=area(panel);
+			var attempt=new NexSummary(3,110,120,10,10,0,Outcome.CENSORED,"synthetic abandoned",second.cohort,second.method,List.of(),Map.of(),Set.of());
+			session.add(attempt);
+			panel.render("Incomplete attempt",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",secondResult);
+			PanelPreview.click(panel,"Last attempt details"); assertEquals("",old.getText());
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			assertTrue(PanelPreview.text(panel).contains("Frozen kill #3")); assertTrue(copied.get().contains("CENSORED"));
+			assertFalse("An attempt cannot export the previous kill's calculation",copied.get().contains("immutable calculation revision:"));
+		});
+	}
 	@Test public void hiddenOrMismatchedResultsCannotBeExported()
 	{
 		var summary=summary(1,true); var result=evaluate(summary);

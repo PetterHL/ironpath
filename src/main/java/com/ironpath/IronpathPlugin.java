@@ -425,6 +425,8 @@ public class IronpathPlugin extends Plugin
 	}
 	private NexPanel.TrackingStatus trackingStatus(AccountSnapshot snapshot)
 	{
+		// ProfileChanged can arrive on the profile executor. Clearing must not read live client state.
+		if(!client.isClientThread()) { return NexPanel.TrackingStatus.ACCOUNT; }
 		if(client.getGameState()==GameState.LOADING) { return NexPanel.TrackingStatus.LOADING; }
 		if(client.getGameState()!=GameState.LOGGED_IN) { return NexPanel.TrackingStatus.LOGIN; }
 		if(identity()==null) { return NexPanel.TrackingStatus.ACCOUNT; }

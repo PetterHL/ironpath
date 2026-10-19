@@ -45,6 +45,7 @@ public class ObservationLifecycleTest
 	private ConfigManager config;
 	private ItemContainer bank;
 	private Widget bankWidget;
+	private NexPanel panel;
 	private final Queue<Runnable> delayed = new ArrayDeque<>();
 
 	@Before public void setup() throws Exception
@@ -84,6 +85,7 @@ public class ObservationLifecycleTest
 		bank = items(new Item(ItemID.RAIDS_PRAYERSCROLL, 1));
 		when(client.getItemContainer(InventoryID.BANK)).thenReturn(bank);
 		bankWidget = mock(Widget.class);
+		plugin.panelFactory=items->panel=new NexPanel(items);
 		plugin.startUp();
 		SwingUtilities.invokeAndWait(() -> {});
 	}
@@ -178,6 +180,37 @@ public class ObservationLifecycleTest
 		assertFalse(plugin.session.snapshot().bank.known());
 		assertFalse(plugin.session.snapshot().rigour.value());
 		assertFalse(plugin.session.publish(token, "synthetic-character-b:2", previous));
+	}
+
+	@Test public void workerProfileChangeClearsHistoryAndPanelBeforeClientRevalidation() throws Exception
+	{
+		observeBank();
+		var summary=com.ironpath.nex.NexCaptureTest.replay(0,20,60);
+		plugin.nexSession.add(summary); tick(); tick();
+		long token=plugin.session.generation();
+		Thread clientOwner=Thread.currentThread();
+		when(client.isClientThread()).thenAnswer(call->Thread.currentThread()==clientOwner);
+		doAnswer(call->{
+			assertSame("Varbits require the client thread",clientOwner,Thread.currentThread()); return 1;
+		}).when(client).getVarbitValue(anyInt());
+		doAnswer(call->{
+			assertSame("World reads require the client thread",clientOwner,Thread.currentThread()); return EnumSet.of(WorldType.MEMBERS);
+		}).when(client).getWorldType();
+		var failure=new java.util.concurrent.atomic.AtomicReference<Throwable>();
+		Thread worker=new Thread(()->{
+			try { plugin.onProfileChanged(new ProfileChanged()); }
+			catch(Throwable ex) { failure.set(ex); }
+		},"synthetic-profile-executor");
+		worker.start(); worker.join();
+		if(failure.get()!=null) { throw new AssertionError("Worker profile invalidation failed",failure.get()); }
+		assertTrue(plugin.session.generation()>token); assertNull(plugin.session.snapshot());
+		assertTrue(plugin.nexSession.recent().isEmpty()); assertNull(plugin.ownedResult);
+		SwingUtilities.invokeAndWait(()->{
+			assertFalse(com.ironpath.dev.PanelPreview.text(panel).contains("Last kill"));
+			assertTrue(com.ironpath.dev.PanelPreview.text(panel).contains("Waiting for account"));
+		});
+		tick(); assertNull("Wait for fresh complete ticks",plugin.session.snapshot());
+		tick(); assertNotNull(plugin.session.snapshot()); assertFalse(plugin.session.snapshot().bank.known());
 	}
 
 	@Test public void identityChangeEvenWithoutEventDropsBank()

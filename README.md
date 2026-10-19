@@ -7,7 +7,7 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**19 October 2026: development build 0.23.1 — PR #48 review follow-up.**
+**19 October 2026: development build 0.23.2 — PR #48 review follow-up.**
 The native Encounter panel uses concise OSRS labels, centred results and genuine
 item/package sprites. Normal screens keep results and controls; Diagnostics holds
 technical explanations, calculation scope, provenance and reports. **Damage
@@ -17,6 +17,8 @@ Team & method, Gear & method, Gear & unlocks and Diagnostics (initially closed).
 Verified arrival shows **Waiting for Nex**; loading, bank verification, unsupported
 accounts/worlds and unavailable settings have distinct statuses. Invalid plan
 inputs explain their field bounds. Saved corrections use readable states.
+The subsequent review fixes profile-thread clearing, explicit kill/attempt report
+selection and scroll restoration after a displayed loading/banking pause.
 [Review corrections, native screenshots and validation](docs/validation/pr48-review-followup.md) ·
 [Original before/after evidence](docs/validation/ui1-47-wording-layout.md).
 

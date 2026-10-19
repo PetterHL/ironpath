@@ -1,6 +1,6 @@
 # Encounter-first UX
 
-Current presentation decisions: **19 October 2026, PR #48 approved review / build 0.23.1**.
+Current presentation decisions: **19 October 2026, PR #48 approved review / build 0.23.2**.
 [TASKS](../TASKS.md) is the sole backlog. This guidance supersedes earlier requests
 for scope/assumption paragraphs beside cards or in ordinary details. Historical
 validation records retain their original screenshots and acceptance boundaries.

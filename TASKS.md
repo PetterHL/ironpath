@@ -7,7 +7,7 @@ The user authorized consolidating existing work and updating this plan on
 acceptance. UI1 and its two P2 review corrections are merged in the
 0.20.0 delivery below. CTX1 is implemented for review in 0.21.0. PR #48 joins
 the current deliveries and implements the approved presentation/navigation
-follow-up in 0.23.1; its inherited and new evidence is recorded below.
+follow-up in 0.23.2; its inherited and new evidence is recorded below.
 
 ## Current baseline and order
 
@@ -19,7 +19,7 @@ No GitHub dependency PR is merged or feature branch overwritten.
 
 | Order | Work | State / boundary |
 |---|---|---|
-| Current | **UI1 #47 — OSRS wording, less help text, centred layout** | 0.23.1 approved PR #48 follow-up; validation below |
+| Current | **UI1 #47 — OSRS wording, less help text, centred layout** | 0.23.2 approved PR #48 follow-up; validation below |
 | Integrated for this review | **CTX1 #43 / UI1 #46 / N3 #45** | Retain all three deliveries; open dependencies still require merge authorization |
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
 | After context/evidence contracts | **N3 recommendation integration** | Declared runtime plans exist; attribution/remaining mechanics and automatic recommendations remain separate |
@@ -28,7 +28,7 @@ No GitHub dependency PR is merged or feature branch overwritten.
 
 Deliver one reviewable PR; no automatic merge or Plugin Hub publication.
 
-## PR #48 — approved review follow-up (0.23.1)
+## PR #48 — approved review follow-up (0.23.2)
 
 The 19 October review adds approved navigation and arrival wording to issue #47.
 This supersedes earlier top Encounter / Diagnostics tabs.
@@ -48,6 +48,10 @@ This supersedes earlier top Encounter / Diagnostics tabs.
 - [x] Add focused regressions, inspect native 225 × 600/font 12/20 evidence
   and prepare the current PR for review. Performed local checks, current CI
   outcome and artifact links are recorded in the PR.
+- [x] Subsequent review: keep profile-executor clearing free of live client reads,
+  retarget Diagnostics on explicit kill/attempt inspection and restore root scroll
+  after a laid-out suspension. Regressions retain background-report freezing,
+  immediate invalidation and hard-scope clearing.
 
 [Implementation, checks and screenshots](docs/validation/pr48-review-followup.md).
 Live client/player acceptance remains open; merge/publication is separate.

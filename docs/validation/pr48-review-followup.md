@@ -1,10 +1,44 @@
-# PR #48 review follow-up — 0.23.1
+# PR #48 review follow-up — 0.23.2
 
 19 October 2026. Implements the [approved review](https://github.com/PetterHL/ironpath/pull/48#pullrequestreview-5570175742)
 of `05527592b61ae7f1ca8e6b0a4217a14d82e9309b`, including its three findings,
 arrival/status requirements and replacement of top tabs with independent sections.
 The earlier [issue #47 evidence](ui1-47-wording-layout.md) retains its original
 integration bases, arithmetic checks and before/after screenshots.
+
+## Subsequent review corrections (0.23.2)
+
+Addresses all three findings in the [review of `abdd3fc`](https://github.com/PetterHL/ironpath/pull/48#pullrequestreview-5570819614):
+
+- Profile invalidation still clears generations, history, calculations and the
+  panel immediately. Off-thread rendering uses Waiting for account without
+  reading live account/world/varbit state; normal client-thread readiness resumes
+  after the queued bank/login/dirty reset and fresh complete ticks.
+- Kill details and Last attempt details select the same frozen diagnostic target
+  and clear the previous export immediately. A merely arriving result still
+  preserves the inspected report; incomplete attempts export no old calculation.
+- The panel retains its pre-suspension scroll offset independently of the shorter
+  paused viewport, including repeated pause renders. Verified return restores it
+  within the available height; hard scope changes discard it and start at the top.
+
+The three new/strengthened regressions failed against the reviewed implementation.
+The scroll regression lays out the shorter paused panel and drains the EDT before
+returning; its target stays clear of the report area that intentionally disappears.
+The production section design, arithmetic and calculation scope remain unchanged.
+
+Performed on the correction source with JDK 11.0.32.1 / Gradle 8.10:
+
+- Pinned full `test build offlineReview --no-daemon`: **348 tests / 42 suites**,
+  no failures/errors/skips; **14 scenarios / 1,009 checks / 222 PNGs**, no failures.
+- Normal `test build` passed with the same up-to-date outputs; dependencyInsight
+  confirms `latest.release` resolves to **RuneLite 1.13.2**.
+- Checked all **56** regenerated viewports are 225 × 600. Inspected fresh
+  `nex-complete` Encounter/Diagnostics viewports and `nex-visual` full-height main
+  captures at both fonts 12/20; the approved layout is retained, and fresh
+  Diagnostics shows build 0.23.2. The screenshot table below retains 0.23.1 evidence.
+- Changed-document relative links and `git diff --check` pass.
+
+The exact delivery revision and fresh CI/artifact links are recorded in PR #48.
 
 ## Result and boundaries
 
@@ -75,7 +109,7 @@ attempt, 50-record eviction and declared N3 arithmetic/report checks.
 
 ## Native screenshots
 
-Actual production Swing components, 225px width, body fonts 12/20, genuine pinned
+Retained 0.23.1 production Swing captures, 225px width, body fonts 12/20, genuine pinned
 item sprites through the test ItemManager boundary. Viewports are exactly
 225 × 600; full-height files are also in the CI artifact. These are synthetic
 component captures, not live gameplay or OS-window screenshots.

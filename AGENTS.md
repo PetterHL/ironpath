@@ -14,7 +14,7 @@
 
 ## Current delivery
 
-- Issue #47 is the active presentation refinement, development build **0.23.1**.
+- Issue #47 is the active presentation refinement, development build **0.23.2**.
   PR #48’s approved review replaces top tabs with independent collapsible sections:
   Last kill always visible; Compare setups open; Team & method, Gear & method,
   Gear & unlocks and Diagnostics initially closed, Diagnostics last. Read

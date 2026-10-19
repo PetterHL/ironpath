@@ -59,7 +59,8 @@ final class NexPanel extends PluginPanel
 	private Integer lockItem;
 	private Map<Integer,String> displayNames=Map.of();
 	private long view;
-	private java.awt.Point returnPosition, nextPosition;
+	private java.awt.Point returnPosition, nextPosition, suspendedPosition;
+	private boolean availableView;
 	private Runnable updateDiagnostics;
 	NexPanel(ItemManager items)
 	{ this(items,text->java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new java.awt.datatransfer.StringSelection(text),null),NexReport.Provenance.LIVE_PUBLIC_CLIENT); }
@@ -113,7 +114,13 @@ final class NexPanel extends PluginPanel
 			returnPosition=null; diagnosticDefaultPending=true; calculationDetailsSummary=null; calculationDetailsExpanded=false;
 			factKey="rigour"; roleKey="melee"; slotKey="weapon"; lockItem=null; draftDeathCharge=null; draftMethod=null; editingDefaults=false;
 			ownedRoleFilter="All roles"; ownedSupportFilter="Supported comparisons"; clearReport();
+			suspendedPosition=null; position=new java.awt.Point();
 		}
+		// A laid-out pause clamps the viewport. Preserve the last usable offset only once.
+		else if(paused && availableView && suspendedPosition==null) { suspendedPosition=position; }
+		else if(available && !paused && suspendedPosition!=null)
+		{ position=suspendedPosition; }
+		availableView=available && !paused;
 		visibleScope=stats.scope;
 		if(available && !paused)
 		{
@@ -199,7 +206,7 @@ final class NexPanel extends PluginPanel
 		else
 		{
 			if(stats.lastAttempt!=null && stats.lastAttempt!=stats.last)
-			{ text("Incomplete attempt"); button(content,"Last attempt details",()->{ if(contextValid.getAsBoolean()) { inspected=stats.lastAttempt; inspectedCalculation=null; rememberPosition(); redraw.run(); } }); }
+			{ text("Incomplete attempt"); button(content,"Last attempt details",()->{ if(contextValid.getAsBoolean()) { openDetails(stats.lastAttempt,null); redraw.run(); } }); }
 			if(stats.last!=null)
 			{
 				if(!coherent(stats.record(stats.last),owned)) { text("Recalculating…"); }
@@ -229,7 +236,7 @@ final class NexPanel extends PluginPanel
 					comparisons.setName("nex-owned"); comparisons.setToolTipText("Compare with owned gear");
 				}
 				JButton details=button(links,"Kill details",()->{
-					if(contextValid.getAsBoolean()) { rememberPosition(); inspected=stats.last; inspectedCalculation=owned!=null && owned.summary==stats.last?owned:null; redraw.run(); }
+					if(contextValid.getAsBoolean()) { openDetails(stats.last,owned!=null && owned.summary==stats.last?owned:null); redraw.run(); }
 				}); details.setName("nex-details"); details.setToolTipText("Kill and calculation details");
 			}
 			else { text("No complete kill yet"); }
@@ -289,7 +296,12 @@ final class NexPanel extends PluginPanel
 			diagnosticOwned==null && diagnosticSummary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE?NexReport.State.PENDING:NexReport.State.READY;
 		diagnostics(status,stats,prefs,catalog,state,()->view==currentView && (actions==null || actions.contextCurrent()));
 		content=this; updateDiagnostics=()->{ if(view==currentView) { redraw.run(); } }; revalidate(); repaint();
-		if(viewport!=null && position!=null) { SwingUtilities.invokeLater(()->{ if(view==currentView && viewport.getView()==this) { viewport.setViewPosition(new java.awt.Point(position.x,Math.min(position.y,Math.max(0,getHeight()-viewport.getExtentSize().height)))); } }); }
+		java.awt.Point restorePosition=position;
+		if(viewport!=null && restorePosition!=null) { SwingUtilities.invokeLater(()->{
+			if(view!=currentView || viewport.getView()!=this) { return; }
+			viewport.setViewPosition(new java.awt.Point(restorePosition.x,Math.min(restorePosition.y,Math.max(0,getHeight()-viewport.getExtentSize().height))));
+			if(availableView) { suspendedPosition=null; }
+		}); }
 	}
 	private static void clearBody(JPanel body,JComponent retained)
 	{ for(var c:body.getComponents()) { if(c!=retained) { body.remove(c); } } }
@@ -376,6 +388,11 @@ final class NexPanel extends PluginPanel
 		rememberPosition(); inspectedOwned=owned; ownedIndex=index; ownedPairIndex=pair;
 		ownedRoleFilter="All roles"; ownedSupportFilter=owned.choices.stream().anyMatch(c->c.supported())?"Supported comparisons":"All states";
 		selectDiagnostics(owned.summary,owned,index,pair,false);
+	}
+	private void openDetails(NexSummary summary,NexOwnedResult result)
+	{
+		rememberPosition(); inspected=summary; inspectedCalculation=result;
+		selectDiagnostics(summary,result,0,0,true);
 	}
 	private void back(Runnable redraw,java.util.function.BooleanSupplier valid)
 	{

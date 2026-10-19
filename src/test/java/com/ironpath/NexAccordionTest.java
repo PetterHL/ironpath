@@ -50,7 +50,8 @@ public class NexAccordionTest
 			named(plan,"n3-horizon",JTextField.class).setText("37");
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
 			JTextArea area=named(panel,"nex-report-text",JTextArea.class); report.set(area); area.select(2,12);
-			viewport.setView(panel); viewport.setSize(225,600); settleLayout(panel); viewport.setViewPosition(new Point(0,320)); position.set(viewport.getViewPosition());
+			// Leave room for the report, which intentionally clears during suspension.
+			viewport.setView(panel); viewport.setSize(225,600); settleLayout(panel); viewport.setViewPosition(new Point(0,1600)); position.set(viewport.getViewPosition());
 			panel.render("Inventory refresh",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",source);
 			settleLayout(panel);
 			assertSame(count,named(panel,"nex-context-count",JTextField.class)); assertEquals("7",count.getText());
@@ -68,17 +69,39 @@ public class NexAccordionTest
 			session.suspend("synthetic",301,130,true,true);
 			panel.render("Nex session paused",null,Preferences.EMPTY,catalog,session.stats(),true,null,"",null,false,NexPanel.TrackingStatus.LOADING);
 			assertFalse(PanelPreview.text(panel).contains("Owned gear · kill")); assertEquals("",report.get().getText());
-			session.revalidate("synthetic",301,140,false,true);
+			settleLayout(panel);
+		});
+		// Let the shortened suspension actually lay out and run the deferred scroll clamp.
+		SwingUtilities.invokeAndWait(()->{
+			assertTrue("Suspension clamps the visible scroll",viewport.getViewPosition().y<position.get().y);
+			panel.render("Nex session paused",null,Preferences.EMPTY,catalog,session.stats(),true,null,"",null,false,NexPanel.TrackingStatus.BANK);
+			settleLayout(panel);
+		});
+		SwingUtilities.invokeAndWait(()->{
+			session.revalidate("synthetic",301,140,true,false);
 			panel.render("Verified return",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",source,false,NexPanel.TrackingStatus.READY);
+			// A second queued refresh must not consume the saved offset before it is applied.
+			panel.render("Return inventory refresh",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",source,false,NexPanel.TrackingStatus.READY);
+			settleLayout(panel);
 			assertSame(draft.get(),named(panel,"nex-context-count",JTextField.class)); assertEquals("7",draft.get().getText());
 			assertSame(planner.get(),PanelPreview.children(panel).stream().filter(c->c instanceof NexScenarioPanel).findFirst().orElseThrow());
 			assertEquals("37",named(planner.get(),"n3-horizon",JTextField.class).getText());
+		});
+		SwingUtilities.invokeAndWait(()->assertEquals("Verified return restores the pre-suspension scroll",position.get(),viewport.getViewPosition()));
+		SwingUtilities.invokeAndWait(()->{
+			session.suspend("synthetic",301,150,true,true);
+			panel.render("Nex session paused",null,Preferences.EMPTY,catalog,session.stats(),true,null,"",null,false,NexPanel.TrackingStatus.LOADING);
+			settleLayout(panel);
+		});
+		SwingUtilities.invokeAndWait(()->{
 			session.clear("Reset"); session.select("different",301);
 			panel.render("Account changed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
+			settleLayout(panel);
 			assertNotSame(draft.get(),named(panel,"nex-context-count",JTextField.class));
 			assertFalse(PanelPreview.text(panel).contains("Owned gear · kill"));
 			assertNull(named(panel,"n3-horizon",JTextField.class));
 		});
+		SwingUtilities.invokeAndWait(()->assertEquals("Hard scope clears the suspended offset",new Point(),viewport.getViewPosition()));
 	}
 	private static void settleLayout(Container root)
 	{
