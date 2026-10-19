@@ -7,54 +7,23 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**18 October 2026: development build 0.22.1 — N3A/N3B/N3C runtime integration and report-selection correction for review.**
-**Spec and package plans** opens captured states and an optional **Conditional N3
-package plan**. Compare captured equipment → selected owned package → hypothetical
-complete upgrade using shared finite energy, Death Charge, damage, ammunition,
-quiver charges and attack delays. Declare legal opportunities/HP/start assumptions;
-unknown inputs keep dependent results unavailable. Reports retain frozen inputs
-and are selectable when copying fails. [Contract](docs/research/nex-runtime-plans.md)
-and [verification](docs/validation/nex-runtime-plans.md).
-Diagnostics now resolves its default comparison when the frozen calculation arrives,
-including when opened while pending. Explicit inspected selections stay frozen;
-unavailable comparisons also export allowlisted observed equipment and target class.
+**19 October 2026: development build 0.23.0 — issue #47 UI refinement for review.**
+The native Encounter panel uses concise OSRS labels, centred results and genuine
+item/package sprites. Normal screens keep results and controls; Diagnostics holds
+technical explanations, calculation scope, provenance and reports. **Damage
+contribution** names the existing observed hitsplat ratio; its mathematics is unchanged.
+[Native before/after evidence and validation](docs/validation/ui1-47-wording-layout.md).
 
-**Special-attack resources → Natural-restoration examples** also shows explicitly
-conditional fixed-Lightbearer phase/order sensitivity. These examples exclude DC
-by assumption; the full plan can declare casts and eligible deaths. Neither view
-attributes actual specs/procs or recommends a globally best weapon or team time.
+This isolated delivery joins current main's N3 runtime plans with CTX1 #43 and
+UI1 #46. Optional **Team & method** corrections and future defaults retain frozen
+inputs, per-field confirmation and active-encounter guards. **Plan specs & gear**
+keeps exact complete-package calculations and explicit scenario choices; unknown
+inputs withhold dependent outputs. Reports remain selectable if copying fails.
+[Context contract](docs/validation/ctx1-kill-context.md) ·
+[N3 contract](docs/research/nex-runtime-plans.md).
 
-[UI1](docs/validation/ui1-encounter-diagnostics.md) is merged in main. CTX1 remains
-in [PR #43](https://github.com/PetterHL/ironpath/pull/43); this work does not merge it.
-[TASKS](TASKS.md) owns remaining mechanics and live acceptance. The earlier
-[consolidation](docs/validation/main-consolidation-20261018.md) retains its original evidence.
-
-**18 October 2026: development build 0.21.1 — native UI refinement for review.**
-The 225px Encounter panel leads with the last kill, a compact context strip and
-supported item/package cards with genuine sprites. Secondary actions are grouped. Diagnostics keeps calculation status,
-limitations and explicit report copying together. [Before/after screenshots,
-verification and open client checks](docs/validation/ui1-46-visual-review.md).
-This follows corrected CTX1 in a separate PR; its dependency remains explicit.
-
-Optionally save usual Nex context before play or **Edit kill context** on the
-latest completed or already-inspected kill. Strategy (MP2/RP2/Other/Unknown),
-group mode and participation are separate fields. Apply affects the selected
-kill; **Use for future** separately saves defaults for later attempts. Inherited
-values remain unconfirmed. [CTX1 evidence and remaining client checks](docs/validation/ctx1-kill-context.md).
-
-Observations stay immutable. Corrections use the kill's frozen calculation inputs,
-leave another active attempt running, reconcile descriptive matched averages and
-keep reports on the same context/input revision. Completed comparisons retain
-frozen ownership/planning inputs; later Setup choices apply to future comparisons.
-Unknown, variable or unconfirmed context has no matched average. Other methods
-retain independently supported conditional ordinary arithmetic, with no automatic
-pilot recommendations or team-time estimate.
-
-[UI1 Encounter/Diagnostics and sanitized reports](docs/validation/ui1-encounter-diagnostics.md)
-are merged. [TASKS](TASKS.md) owns the order and acceptance checks. N3b/N3c remain
-conditional APIs, and live-client/player acceptance stays open. The earlier
-[main consolidation](docs/validation/main-consolidation-20261018.md) retains its
-historical evidence.
+[TASKS](TASKS.md) owns remaining mechanics and live gameplay acceptance. This
+review branch does not merge the open dependency PRs or publish the plugin.
 
 Bank-travel correction: completed history no longer expires while waiting to
 open the bank. It stays hidden until same-account/profile/world revalidation;

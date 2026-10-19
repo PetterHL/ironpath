@@ -173,7 +173,7 @@ public class NexDiagnosticsTest
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",original);
 			assertTrue(PanelPreview.text(panel).contains("Dragon arrow")); assertFalse(PanelPreview.text(panel).contains("Twisted bow"));
 			assertFalse(PanelPreview.text(panel).contains("No matched average")); assertFalse(PanelPreview.text(panel).contains("Session mean"));
-			PanelPreview.click(panel,"Compare package"); PanelPreview.click(panel,"Diagnostics");
+			PanelPreview.click(panel,"Compare gear"); PanelPreview.click(panel,"Diagnostics");
 			PanelPreview.click(panel,"Copy report now");
 			assertTrue(PanelPreview.text(panel).contains("Clipboard unavailable or busy"));
 			var area=area(panel); assertTrue(area.isFocusable()); assertFalse(area.isEditable());
@@ -198,7 +198,7 @@ public class NexDiagnosticsTest
 			PanelPreview.click(panel,"Copy report now"); assertEquals(frozen,copied.get());
 			PanelPreview.click(panel,"Encounter");
 			assertEquals("Removed text widget cannot retain an old report", "",area.getText());
-			PanelPreview.click(panel,"Owned setup comparisons");
+			PanelPreview.click(panel,"Compare with owned gear");
 			PanelPreview.combo(panel,"nex-owned-support-filter").setSelectedItem("Unavailable comparisons");
 			PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
 			assertTrue(copied.get().contains("No selected comparison")); assertFalse(copied.get().contains("Actual slots"));
@@ -234,7 +234,7 @@ public class NexDiagnosticsTest
 				PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
 				var previous=area(panel); var stale=copyButton(panel);
 				previous.select(10,100); assertTrue(PanelPreview.visible(previous));
-				if(transition.equals("Reset")) { session.clear("Reset session selected."); session.select("test",301); }
+				if(transition.equals("Reset")) { session.clear("Clear session selected."); session.select("test",301); }
 				boolean noAccount=transition.equals("Logged out") || transition.equals("Account/profile changed");
 				panel.render(transition,noAccount?null:account,Preferences.EMPTY,catalog,session.stats(),true,
 					noAccount || transition.equals("Preferences unavailable")?null:actions(),"",result);
@@ -266,7 +266,7 @@ public class NexDiagnosticsTest
 			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("READY"));
 			panel.render("Nex session paused. Open a bank to revalidate.",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",evaluate(summary));
 			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("PAUSED")); assertFalse(copied.get().contains("Actual slots"));
-			session.clear("Reset session selected."); session.select("test",301);
+			session.clear("Clear session selected."); session.select("test",301);
 			panel.render("Cleared",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",null);
 			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("RESET")); assertFalse(copied.get().contains("Report-local kill:"));
 		});

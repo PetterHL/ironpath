@@ -1,6 +1,6 @@
 # IronPath active work
 
-Updated **18 October 2026**. This is the **only active backlog and roadmap**.
+Updated **19 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized consolidating existing work and updating this plan on
 18 October. That consolidation introduced no UI/context feature or live-client
@@ -10,65 +10,49 @@ completes UI1 visual simplification in 0.21.1 before further N3 UI expansion.
 
 ## Current baseline and order
 
-Consolidated development baseline: **0.19.3** — N1 capture/session, N2 ordinary
-owned comparisons, N3a resources, N3b conditional damage/ammunition, N3c
-complete-package APIs, banking/arena-reload corrections, and DEV1.
-N3b/N3c require explicit scenario inputs; they do not automatically turn a
-captured kill into a spec recommendation or validated team-time prediction.
+Main at task start: `b47b9e76217cf7ad3e611ecdb5e2e6372cc84934`, including N3
+runtime plans (#45, 0.22.1). CTX1 #43 (`2fe5342`) and native UI1 #46 (`d5b14db`)
+remain open. Issue #47 explicitly requires one isolated integration/refinement PR;
+its merge base `32c379d` preserves main and the complete #46/CTX1 lineage.
+No GitHub dependency PR is merged or feature branch overwritten.
 
 | Order | Work | State / boundary |
 |---|---|---|
-| Complete | **UI1 — Encounter and Diagnostics** | 0.20.0 merged; both P2 review findings fixed, client acceptance open |
-| Before further N3 UI expansion | **UI1 follow-up — issue #44** | 0.21.1 native refinement; screenshot review and merge authorization open |
-| Dependency in review | **CTX1 — Editable Nex kill context** | 0.21.0 implemented for review; feature merge not authorized |
-| Alongside, when gameplay is available | **N1/N2 live acceptance** | Open; does not block offline UI development |
-| After context/evidence contracts | **N3 recommendation integration** | Kernels exist; attribution, remaining mechanics and product integration remain |
-| After N1–N3 support and validation | **N4 contribution/team-time estimates** | Not implemented/validated |
-| Later | More methods/bosses, optional recorder and screenshot export | Not prerequisites for UI1 |
+| Current | **UI1 #47 — OSRS wording, less help text, centred layout** | 0.23.0 implementation for review; validation below |
+| Integrated for this review | **CTX1 #43 / UI1 #46 / N3 #45** | Retain all three deliveries; open dependencies still require merge authorization |
+| Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
+| After context/evidence contracts | **N3 recommendation integration** | Declared runtime plans exist; attribution/remaining mechanics and automatic recommendations remain separate |
+| After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
+| Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
 
-Deliver one task at a time with a reviewable PR and evidence. Do not merge or
-publish future work without user authorization. The cleanup approval does not
-authorize future feature merges or Plugin Hub publication.
+Deliver one reviewable PR; no automatic merge or Plugin Hub publication.
 
-## UI1 follow-up — native visual refinement (issue #44)
+## UI1 #47 — presentation refinement (0.23.0, for review)
 
-Implemented for review in **0.21.1**. [Current PR #46 visual evidence](docs/validation/ui1-46-visual-review.md)
-and [the earlier iteration](docs/validation/ui1-native-refinement.md).
+- [x] Keep Encounter, Compare setups and genuine item-count package labels; apply
+  issue #47's OSRS field/action labels and accessibility/tooltips. Damage
+  contribution retains the same observed hitsplat calculation.
+- [x] Normal Encounter, cards, gear/unlocks, team editor, kill/comparison details
+  and optional planner contain results, short state/origin labels and controls.
+  Move help, scope, assumption, testing/future-work paragraphs, provenance, long
+  gaps and raw traces to the common Diagnostics area or explicit reports.
+- [x] Distinguish equipped/inventory/bank/hypothetical gear without changing search,
+  package membership, exact variants, alternative ordering or calculations.
+  Render readable account choices while preserving internal keys and every member
+  of ownership sets.
+- [x] Replace the N3 confirmation wall with explicit unchecked scenario choices;
+  missing choices and unknown numeric inputs still gate dependent results.
+- [x] Centre headings, values, coherent sprite/name groups and actions at 225px.
+  Keep forms and technical text left aligned; preserve native fonts and scrolling.
+- [x] Complete focused tests, both prescribed full checks, visual review at 12/20,
+  and validation evidence with exact delivery commit/CI artifact links.
+- [x] Prepare one reviewable PR with representative embedded before/after PNGs. Live gameplay
+  acceptance stays open; no merge or publication.
 
-The visual review adds genuine pinned item sprites to DEV1, multi-sprite package
-identity, compact context/navigation, grouped Inspect / Setup & session controls
-and retained Diagnostics calculation-details expansion. The preview assets are
-separate from production loading with [provenance/terms](THIRD_PARTY_NOTICES.md#preview-game-artwork).
-The focused disclosure regression reproduces the old failure; production image
-painting/stale callbacks, all baseline scenarios and frozen report guards remain
-covered. Real-client/player review stays open.
-The 0.20.0 structural work below did not finish the agreed visual simplification.
-This completes that goal without changing the encounter-and-method product or
-reducing the owned/new-upgrade, acquisition, resource or N4 roadmap.
-
-- [x] Native selected Encounter/Diagnostics tabs, dark result/context/item cards,
-  prominent observed duration/share and one concise optional context summary.
-- [x] Setup comparison cards identify changed items or whole packages, supported
-  modelled DPS, role/phase, a short reason and material carried/bank/search scope.
-  First two deterministic cards are initially visible; further positive cards
-  expand explicitly. All zero/negative/unavailable alternatives remain in details.
-- [x] Technical ticks, models, pilot explanations and matched-average exclusions
-  stay in Details/Diagnostics. Inputs, calculation status and material gaps are
-  grouped. Preserve explicit frozen report copying and selectable fallback.
-- [x] Optional context editor retains independent fields, per-field provenance,
-  confirmation, explicit Apply and separate future defaults. Historical report
-  and navigation actions remain usable during another active encounter.
-- [x] Extend DEV1 with pending/no-positive Encounter renders, editor/comparison
-  viewports and focused disclosure/selection regressions; inspect native 225 × 600
-  output and full-height captures at fonts 12/20 against the existing references.
-- [ ] Review the finished screenshots and authorize the feature/dependency merges.
-- [ ] Real-client sprites, scrolling/focus/DPI/clipboard and player acceptance.
-
-Dependency: corrected CTX1 #43 at `2fe5342`, still open when this work started.
-This separate PR targets its branch; it does not merge CTX1 implicitly. Remote
-main's later #45 / 0.22.1 optional N3 declared-plan integration is separate and
-must be reconciled after CTX1; this follow-up adds no N3 result sections. Further
-N3 presentation follows this visual review. Gameplay remains deferred and open.
+[Implementation, integration base, native evidence and performed checks](docs/validation/ui1-47-wording-layout.md).
+These visibility/centring decisions supersede older UI1 requests for explanatory
+scope sentences beside every card or in ordinary Details. Historical checklists
+below retain their original delivery scope.
 
 ## UI1 — Encounter and Diagnostics (merged)
 

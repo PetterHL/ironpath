@@ -42,16 +42,25 @@ final class OfflineVisualScenario
 				report.check("Unsupported owned weapon remains an explicit coverage gap "+font,true,cards.stream().anyMatch(c->c.choice.coverage.stream().anyMatch(gap->gap.contains("not modelled"))));
 				SwingUtilities.invokeAndWait(()->{ try {
 					PanelPreview.capture(r.panel,output.resolve("main-"+font+".png"),225,report);
+					concise(r,"Encounter",font,report);
+					for(var card:cards)
+					{
+						var metric=NexScenarioPanelTest.named(r.panel,"nex-card-metric-"+card.choiceIndex,JTextArea.class);
+						if(!PanelPreview.visible(metric)) { continue; }
+						var surface=NexScenarioPanelTest.named(r.panel,"nex-equipment-card-"+card.choiceIndex,JPanel.class);
+						var bounds=SwingUtilities.convertRectangle(metric,new java.awt.Rectangle(0,0,metric.getWidth(),metric.getHeight()),surface);
+						report.check("Centred card metric "+card.choiceIndex+" / "+font,true,Math.abs(bounds.getCenterX()-surface.getWidth()/2.0)<=2);
+					}
 					PanelPreview.viewport(r.panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics","nex-duration","nex-edit-context"),report);
 					PanelPreview.click(r.panel,"More comparisons ("+(cards.size()-2)+")");
 					PanelPreview.capture(r.panel,output.resolve("expanded-"+font+".png"),225,report);
 					int third=cards.get(2).choiceIndex;
 					PanelPreview.viewport(r.panel,output.resolve("expanded-viewport-"+font+".png"),225,600,"nex-equipment-card-"+third,List.of("nex-card-metric-"+third,"nex-card-scope-"+third),report);
-					PanelPreview.click(r.panel,"Edit kill context");
+					PanelPreview.click(r.panel,"Edit team & method");
 					preview(r,output,"team",font,report);
 					PanelPreview.click(r.panel,"Back to selected view");
-					PanelPreview.click(r.panel,"Setup"); preview(r,output,"gear",font,report);
-					PanelPreview.click(r.panel,"Account"); preview(r,output,"unlocks",font,report);
+					PanelPreview.click(r.panel,"Gear & method"); preview(r,output,"gear",font,report);
+					PanelPreview.click(r.panel,"Gear & unlocks"); preview(r,output,"unlocks",font,report);
 					PanelPreview.click(r.panel,"Encounter");
 					PanelPreview.click(r.panel,"Diagnostics"); preview(r,output,"diagnostics",font,report);
 					PanelPreview.click(r.panel,"Calculation details");
@@ -71,6 +80,13 @@ final class OfflineVisualScenario
 	private static void preview(OfflinePluginReplay r,Path output,String name,int font,ReviewReport report) throws Exception
 	{
 		PanelPreview.capture(r.panel,output.resolve(name+"-"+font+".png"),225,report);
+		if(!name.equals("diagnostics")) { concise(r,name,font,report); }
 		PanelPreview.viewport(r.panel,output.resolve(name+"-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics"),report);
+	}
+	private static void concise(OfflinePluginReplay r,String screen,int font,ReviewReport report)
+	{
+		String shown=PanelPreview.text(r.panel);
+		for(String prose:List.of("supplies assumed","Healing and survival","Independent state comparisons","Pilot planning scope","Planning locks apply","preferences loaded locally","preferences saved locally","Filter by role","confirm what you know"))
+		{ report.check(screen+" has no help prose: "+prose+" / "+font,false,shown.toLowerCase(java.util.Locale.ROOT).contains(prose.toLowerCase(java.util.Locale.ROOT))); }
 	}
 }

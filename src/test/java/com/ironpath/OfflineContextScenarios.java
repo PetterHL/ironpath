@@ -37,11 +37,11 @@ final class OfflineContextScenarios
 	private static void correction(OfflinePluginReplay r,Path output,int font,ReviewReport report) throws Exception
 	{
 		// Optional defaults can be saved without a kill; they do not confirm the next kill.
-		edt(()->{ PanelPreview.click(r.panel,"Future kill context"); fill(r,Strategy.UNKNOWN,Group.UNKNOWN,Participation.UNKNOWN,null,false,false); PanelPreview.click(r.panel,"Save defaults"); });
+		edt(()->{ PanelPreview.click(r.panel,"Default team & method"); fill(r,Strategy.UNKNOWN,Group.UNKNOWN,Participation.UNKNOWN,null,false,false); PanelPreview.click(r.panel,"Save defaults"); });
 		r.settle(); edt(()->{
-			PanelPreview.click(r.panel,"Context sources");
+			PanelPreview.click(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Calculation details");
 			report.check("Saved default source details refresh to the applied values",true,PanelPreview.text(r.panel).contains("Strategy: UNKNOWN; group: UNKNOWN; participation: UNKNOWN"));
-			PanelPreview.click(r.panel,"Back to selected view");
+			PanelPreview.click(r.panel,"Back to team & method"); PanelPreview.click(r.panel,"Back to selected view");
 		});
 		var first=r.fight(20,20,60,true); r.settle();
 		report.check("Unknown saved defaults stay unknown",NexContext.UNKNOWN,first.context);
@@ -62,10 +62,10 @@ final class OfflineContextScenarios
 			PanelPreview.viewport(r.panel,output.resolve("context-editor-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics","nex-context-strategy"),report);
 			PanelPreview.viewport(r.panel,output.resolve("context-fields-viewport-"+font+".png"),225,600,"nex-context-strategy",List.of("nex-context-strategy","nex-context-group","nex-context-participation","nex-context-count"),report);
 			PanelPreview.viewport(r.panel,output.resolve("context-apply-viewport-"+font+".png"),225,600,"nex-context-participation",List.of("nex-context-participation","nex-context-count","nex-context-apply"),report);
-			PanelPreview.click(r.panel,"Context sources");
+			PanelPreview.click(r.panel,"Diagnostics");
 		});
 		capture(r,output,"context-source-details",font,report);
-		edt(()->PanelPreview.click(r.panel,"Context sources"));
+		edt(()->PanelPreview.click(r.panel,"Back to team & method"));
 		edt(()->PanelPreview.click(r.panel,"Encounter"));
 		var second=r.fight(30,60,60,true); r.settle();
 		open(r); fillAndApply(r,Strategy.MP2,Group.ORGANIZED,Participation.EXACT,3,true,false); r.settle();
@@ -102,9 +102,9 @@ final class OfflineContextScenarios
 		report.check("Newer bank observation really exists",true,r.plugin.session.snapshot().bank.known());
 		r.loading(); r.arrive(false);
 		// Use real Setup action to change future planning. The old calculation must retain its lock.
-		edt(()->PanelPreview.click(r.panel,"Setup"));
+		edt(()->PanelPreview.click(r.panel,"Gear & method"));
 		edt(()->PanelPreview.combo(r.panel,"nex-lock-slot").setSelectedItem("shield"));
-		edt(()->PanelPreview.click(r.panel,"Clear selected lock")); r.callbacks.drain(); r.settle();
+		edt(()->PanelPreview.click(r.panel,"Remove selected gear lock")); r.callbacks.drain(); r.settle();
 		edt(()->PanelPreview.click(r.panel,"Encounter"));
 		report.check("Future planning lock really changed",false,r.plugin.session.preferences().nex.locks.containsKey("melee/shield"));
 		edt(()->PanelPreview.click(r.panel,"Kill and calculation details"));
@@ -138,7 +138,7 @@ final class OfflineContextScenarios
 				report.check("Clipboard fallback leaves the same attempt active",true,r.plugin.nex.capture.active() && activeKey==r.plugin.nex.capture.key());
 				edt(()->{
 					PanelPreview.click(r.panel,"Back to kill details");
-					report.check("Frozen details remain reachable after account refresh",true,PanelPreview.text(r.panel).contains("Capture adapter "));
+					report.check("Frozen details remain reachable after account refresh",true,PanelPreview.text(r.panel).contains("Kill #"+first.key+" · ") && !PanelPreview.text(r.panel).contains("Capture adapter "));
 				});
 				open(r);
 				fillAndApply(r,Strategy.RP2,Group.MASS,Participation.EXACT,12,true,true); r.settle();
@@ -215,7 +215,7 @@ final class OfflineContextScenarios
 		edt(()->PanelPreview.click(r.panel,"Encounter")); open(r);
 		fillAndApply(r,Strategy.MP2,Group.ORGANIZED,Participation.EXACT,3,true,false); r.callbacks.drain();
 		r.runWorker(r.workers.take()); Runnable stale=r.callbacks.take();
-		edt(()->{ PanelPreview.click(r.panel,"Encounter"); PanelPreview.click(r.panel,"Reset session"); }); r.callbacks.drain(); r.edt();
+		edt(()->{ PanelPreview.click(r.panel,"Encounter"); PanelPreview.click(r.panel,"Clear session"); }); r.callbacks.drain(); r.edt();
 		report.check("Reset clears annotated records and frozen inputs",0,r.plugin.nexSession.stats().records.size());
 		var next=r.fight(20,20,60,true); r.settle(); var current=r.plugin.ownedResult;
 		stale.run(); r.callbacks.drain(); r.edt();
@@ -239,9 +239,9 @@ final class OfflineContextScenarios
 		edt(()->{ PanelPreview.click(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Copy report now"); report.check("Logout report has no selected kill",false,reportText(r).contains("Report-local kill:")); });
 		capture(r,output,"logout-cleared-context",font,report);
 	}
-	private static void open(OfflinePluginReplay r) throws Exception { edt(()->PanelPreview.click(r.panel,"Edit kill context")); }
+	private static void open(OfflinePluginReplay r) throws Exception { edt(()->PanelPreview.click(r.panel,"Edit team & method")); }
 	private static void fillAndApply(OfflinePluginReplay r,Strategy strategy,Group group,Participation participation,Integer count,boolean confirm,boolean remember) throws Exception
-	{ edt(()->{ fill(r,strategy,group,participation,count,confirm,remember); PanelPreview.click(r.panel,"Apply context"); }); }
+	{ edt(()->{ fill(r,strategy,group,participation,count,confirm,remember); PanelPreview.click(r.panel,"Apply to this kill"); }); }
 	private static void fill(OfflinePluginReplay r,Strategy strategy,Group group,Participation participation,Integer count,boolean confirm,boolean remember)
 	{
 		PanelPreview.combo(r.panel,"nex-context-strategy").setSelectedItem(strategy); PanelPreview.combo(r.panel,"nex-context-group").setSelectedItem(group);

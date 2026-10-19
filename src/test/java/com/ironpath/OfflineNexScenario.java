@@ -224,7 +224,7 @@ final class OfflineNexScenario extends OfflineNexClient
 				public void enable(boolean value) { throw new UnsupportedOperationException("Read-only preview"); }
 			};
 			panel.render("Synthetic offline scenario", NexOwnedFixtures.account(null), prefs, catalog, session.stats(), true, actions, "Synthetic; no preference IO", null);
-			report.check("Pending main withholds old comparisons "+font,true,PanelPreview.text(panel).contains("Comparing the captured setups") && !PanelPreview.text(panel).contains(" DPS"));
+			report.check("Pending main withholds old comparisons "+font,true,PanelPreview.text(panel).contains("Recalculating…") && !PanelPreview.text(panel).contains(" DPS"));
 			capture(panel,output,"pending-main",font,report);
 			var nonPositive=new NexOwnedResult(result.summary,result.choices.stream().filter(c->NexPresentation.cards(new NexOwnedResult(result.summary,List.of(c))).isEmpty()).collect(java.util.stream.Collectors.toList()),result.planning);
 			panel.render("Synthetic offline scenario", NexOwnedFixtures.account(null), prefs, catalog, session.stats(), true, actions, "Synthetic; no preference IO", nonPositive);
@@ -246,17 +246,17 @@ final class OfflineNexScenario extends OfflineNexClient
 			java.nio.file.Files.writeString(output.resolve("diagnostic-report-"+font+".txt"),exported);
 			capture(panel,output,"selectable-report",font,report);
 			PanelPreview.click(panel,"Encounter");
-			PanelPreview.click(panel, "Owned setup comparisons");
+			PanelPreview.click(panel, "Compare with owned gear");
 			PanelPreview.combo(panel, "nex-owned-role-filter").setSelectedItem("ranged");
-			report.check("Comparison view " + font + "px preserves projectile", true, PanelPreview.text(panel).contains("Selected quiver projectile: Amethyst arrow"));
+			report.check("Comparison view " + font + "px preserves projectile", true, PanelPreview.text(panel).contains("Selected quiver ammo: Amethyst arrow"));
 			capture(panel, output, "comparison", font, report);
 			PanelPreview.viewport(panel,output.resolve("comparison-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics"),report);
-			PanelPreview.click(panel, "Full setups and calculation basis"); capture(panel, output, "basis", font, report);
+			PanelPreview.click(panel, "Full gear setups"); capture(panel, output, "basis", font, report);
 			PanelPreview.combo(panel, "nex-owned-support-filter").setSelectedItem("Unavailable comparisons");
 			PanelPreview.combo(panel, "nex-owned-role-filter").setSelectedItem("spec candidate");
-			report.check("Gap view " + font + "px preserves unsupported spec", true, PanelPreview.text(panel).contains("ordinary attacks cannot establish spec value"));
+			report.check("Gap view " + font + "px preserves unsupported spec", true, PanelPreview.text(panel).contains("No comparison available"));
 			capture(panel, output, "gap", font, report);
-			PanelPreview.click(panel, "Special-attack resources"); PanelPreview.click(panel, "Resource readings and rules");
+			PanelPreview.click(panel, "Spec energy & Death Charge");
 			capture(panel, output, "resources", font, report);
 			PanelPreview.click(panel, "Back to encounter"); PanelPreview.click(panel, "Kill and calculation details");
 			capture(panel, output, "kill-details", font, report);

@@ -38,6 +38,20 @@ owned gear. Missing support blocks dependent claims. Explicit supported pairwise
 comparisons remain useful even when a broader optimum is unknown. Never discard
 an item silently to manufacture a weaker baseline.
 
+## Current presentation (19 October 2026)
+
+Issue #47 supersedes earlier per-card help/scope prose. Show the result, compact
+origin/role labels and actions in normal screens. Put calculation definitions,
+assumptions, pilot restrictions, provenance, long gaps and raw traces in common
+Diagnostics/explicit reports. Damage contribution is the existing observed ratio,
+not a new contribution estimate. Centre headings, values, sprite/name groups and
+actions inside the 225px column; keep forms and technical text left aligned.
+[Narrow native evidence](validation/ui1-47-wording-layout.md) and [UX](UX.md).
+
+The integration preserves N3's frozen unlock facts through CTX1's NexEvaluation
+wrapper, as well as context/input/model revisions and pending Diagnostics defaults.
+A presentation change cannot drop either lineage or enable unsupported numbers.
+
 ## Code boundaries and transition disposition
 
 ### UI1 / CTX1 implementation (18 October 2026)

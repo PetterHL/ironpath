@@ -79,16 +79,16 @@ final class OfflineLifecycleScenarios
 		report.check("Unknown energy changes carry an explicit gap", true, result.resources.gaps.stream().anyMatch(g -> g.contains("energy readings are unavailable")));
 		capture(r, output, "main", font, report);
 		onEdt(() -> {
-			PanelPreview.click(r.panel, "Owned setup comparisons");
+			PanelPreview.click(r.panel, "Compare with owned gear");
 			PanelPreview.combo(r.panel, "nex-owned-support-filter").setSelectedItem("Unavailable comparisons");
 			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("ranged");
-			report.check("Unknown ammo has visible scoped explanation", true, PanelPreview.text(r.panel).contains("quiver") || PanelPreview.text(r.panel).contains("ammunition"));
+			report.check("Unknown ammo has visible scoped explanation", true, PanelPreview.text(r.panel).contains("No comparison available"));
 		});
 		capture(r, output, "unknown-ammo", font, report);
 		onEdt(() -> {
-			PanelPreview.click(r.panel, "Special-attack resources"); PanelPreview.click(r.panel, "Resource readings and rules");
+			PanelPreview.click(r.panel, "Spec energy & Death Charge");
 			report.check("Unknown energy is displayed as unread", true, PanelPreview.text(r.panel).contains("First recorded energy unread · last recorded unread"));
-			report.check("Unknown Death Charge is displayed as unread", true, PanelPreview.text(r.panel).contains("Death Charge active unread"));
+			report.check("Unknown Death Charge is displayed as unread", true, PanelPreview.text(r.panel).contains("Upgraded Death Charge use: Unknown"));
 		});
 		capture(r, output, "unknown-resources", font, report);
 	}
@@ -103,7 +103,7 @@ final class OfflineLifecycleScenarios
 		report.check("No last complete summary", null, r.plugin.nexSession.stats().last);
 		report.check("No complete timing mean", true, Double.isNaN(r.plugin.nexSession.stats().meanSeconds));
 		report.check("No post-kill comparison manufactured", null, r.plugin.ownedResult);
-		onEdt(() -> report.check("Incomplete result is visible", true, PanelPreview.text(r.panel).contains("Latest attempt incomplete.")));
+		onEdt(() -> report.check("Incomplete result is visible", true, PanelPreview.text(r.panel).contains("Incomplete attempt")));
 		capture(r, output, "excluded", font, report);
 		onEdt(() -> PanelPreview.click(r.panel, "Last attempt details"));
 		capture(r, output, "excluded-details", font, report);
@@ -151,7 +151,7 @@ final class OfflineLifecycleScenarios
 		report.check("Outbound scene cannot restart capture", false, r.plugin.nex.capture.active());
 		report.check("Outbound old comparison remains hidden", null, r.plugin.ownedResult);
 		onEdt(() -> {
-			report.check("Paused view explains bank revalidation", true, PanelPreview.text(r.panel).contains("Nex session paused"));
+			report.check("Paused view explains bank revalidation", true, PanelPreview.text(r.panel).contains("Session paused"));
 			report.check("Reset is available after live account revalidation", true, PanelPreview.children(r.panel).stream()
 				.anyMatch(c -> c instanceof javax.swing.JButton && "nex-reset".equals(c.getName()) && PanelPreview.visible(c)));
 		});
@@ -216,7 +216,7 @@ final class OfflineLifecycleScenarios
 		}
 		else
 		{
-			onEdt(() -> PanelPreview.click(r.panel, "Reset session"));
+			onEdt(() -> PanelPreview.click(r.panel, "Clear session"));
 			r.callbacks.drain();
 			r.trace.add("tick " + r.tick + " · Actual Reset action invalidates held worker");
 			r.runWorker(stale);
@@ -226,7 +226,7 @@ final class OfflineLifecycleScenarios
 		r.callbacks.drain(); r.edt();
 		report.check("Old result cannot republish after " + (identity ? "identity change" : "reset"), null, r.plugin.ownedResult);
 		report.check("Cleared encounter history remains empty", 0, r.plugin.nexSession.stats().attempts);
-		onEdt(() -> report.check("Cleared panel contains no old comparison", false, PanelPreview.text(r.panel).contains("Owned equipment · kill")));
+		onEdt(() -> report.check("Cleared panel contains no old comparison", false, PanelPreview.text(r.panel).contains("Owned gear · kill")));
 		capture(r, output, "stale-rejected", font, report);
 		if (identity) { r.ready(); }
 		var fresh = r.fight(20, 20, 60, true); r.settle();
@@ -244,7 +244,7 @@ final class OfflineLifecycleScenarios
 	{
 		var first = r.fight(20, 20, 60, true); r.settle();
 		onEdt(() -> {
-			PanelPreview.click(r.panel, "Owned setup comparisons");
+			PanelPreview.click(r.panel, "Compare with owned gear");
 			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("melee");
 			JComboBox<?> pairs = PanelPreview.combo(r.panel, "nex-owned-pair");
 			int bloodFury = -1;
@@ -260,22 +260,22 @@ final class OfflineLifecycleScenarios
 		onEdt(() -> {
 			report.check("Export also stays bound to earlier selected negative pair",frozenReport[0],exportText(r));
 			PanelPreview.click(r.panel,"Back to comparison");
-			report.check("Earlier comparison stays frozen", true, PanelPreview.text(r.panel).contains("Owned equipment · kill #" + first.key));
-			report.check("Selected negative alternative stays selected", true, PanelPreview.text(r.panel).contains("Blood fury healing and survival are not estimated"));
-			PanelPreview.click(r.panel, "Special-attack resources");
-			report.check("Resource review also belongs to the earlier kill", true, PanelPreview.text(r.panel).contains("Special-attack resources · kill #" + first.key));
+			report.check("Earlier comparison stays frozen", true, PanelPreview.text(r.panel).contains("Owned gear · kill #" + first.key));
+			report.check("Selected negative alternative stays selected", true, PanelPreview.text(r.panel).contains("Amulet of blood fury"));
+			PanelPreview.click(r.panel, "Spec energy & Death Charge");
+			report.check("Resource review also belongs to the earlier kill", true, PanelPreview.text(r.panel).contains("Spec energy & Death Charge · kill #" + first.key));
 		});
 		capture(r, output, "frozen-comparison", font, report);
 		onEdt(() -> { PanelPreview.click(r.panel, "Back to encounter"); PanelPreview.click(r.panel, "Kill and calculation details"); });
 		var third = r.fight(40, 60, 20, true); r.settle();
 		report.check("Third result publishes while details are inspected (kill #" + third.key + ")", true, third == r.plugin.ownedResult.summary);
-		onEdt(() -> report.check("Inspected second-kill details stay frozen", true, PanelPreview.text(r.panel).contains("Kill #" + second.key + " · COMPLETE")));
+		onEdt(() -> report.check("Inspected second-kill details stay frozen", true, PanelPreview.text(r.panel).contains("Kill #" + second.key + " · ")));
 		capture(r, output, "frozen-details", font, report);
 		onEdt(() -> {
 			PanelPreview.click(r.panel, "Back to encounter");
 			report.check("Returning shows the latest complete timing", true, PanelPreview.text(r.panel).contains("Last kill") && PanelPreview.text(r.panel).contains("24.0 s"));
-			PanelPreview.click(r.panel, "Owned setup comparisons");
-			report.check("Reopening comparisons selects the latest kill", true, PanelPreview.text(r.panel).contains("Owned equipment · kill #" + third.key));
+			PanelPreview.click(r.panel, "Compare with owned gear");
+			report.check("Reopening comparisons selects the latest kill", true, PanelPreview.text(r.panel).contains("Owned gear · kill #" + third.key));
 		});
 		capture(r, output, "latest-comparison", font, report);
 	}

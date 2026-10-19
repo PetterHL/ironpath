@@ -150,10 +150,12 @@ public final class PanelPreview
 			panel.setSize(width,Math.max(height,panel.getPreferredSize().height));
 		}
 		layout(panel);
+		viewport.setViewPosition(new java.awt.Point(0,0));
 		if(focusName!=null)
 		{
 			Component target=children(panel).stream().filter(c->focusName.equals(c.getName())).findFirst().orElseThrow();
-			var at=SwingUtilities.convertPoint(target,0,0,panel); viewport.setViewPosition(new java.awt.Point(0,Math.max(0,at.y-20)));
+			var at=SwingUtilities.convertPoint(target,0,0,panel);
+			viewport.setViewPosition(new java.awt.Point(0,Math.max(0,Math.min(at.y-20,panel.getHeight()-height))));
 		}
 		Rectangle visible=new Rectangle(viewport.getViewPosition(),viewport.getExtentSize());
 		for(String name:required)

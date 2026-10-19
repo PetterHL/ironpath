@@ -102,7 +102,7 @@ public class PreferenceLifecycleTest
 	private void setMethod() throws Exception
 	{
 		SwingUtilities.invokeAndWait(()->{
-			button("Setup").doClick();
+			button("Gear & method").doClick();
 			find(panel,javax.swing.JCheckBox.class,c->true).setSelected(false);
 			button("Save method").doClick();
 		});
@@ -150,21 +150,21 @@ public class PreferenceLifecycleTest
 	@Test public void manualConfirmClearAndLocksUpdateOnlyExplicitChoices() throws Exception
 	{
 		login(); SwingUtilities.invokeAndWait(()->{
-			button("Account").doClick();
+			button("Gear & unlocks").doClick();
 			JComboBox facts=find(panel,JComboBox.class,c->true); facts.setSelectedItem("rigour");
 			button("Owned / unlocked").doClick();
 		}); callbacks(); load(); assertTrue(plugin.session.preferences().confirmations.get("rigour").value);
-		SwingUtilities.invokeAndWait(()->button("Clear selected fact").doClick()); callbacks(); load();
+		SwingUtilities.invokeAndWait(()->button("Remove correction").doClick()); callbacks(); load();
 		assertTrue(plugin.session.preferences().confirmations.isEmpty());
 		SwingUtilities.invokeAndWait(()->{
-			button("Setup").doClick();
+			button("Gear & method").doClick();
 			find(panel,JComboBox.class,c->"nex-lock-slot".equals(c.getName())).setSelectedItem("shield");
 			JComboBox<NexPanel.ItemChoice> items=find(panel,JComboBox.class,c->"nex-lock-item".equals(c.getName()));
 			for(int i=0;i<items.getItemCount();i++) { if(items.getItemAt(i).id==22322) { items.setSelectedIndex(i); } }
-			button("Save lock / correction").doClick();
+			button("Save gear lock").doClick();
 		}); callbacks(); load(); assertTrue(plugin.session.preferences().nex.locks.containsValue(22322));
 		assertFalse(files.get(LocalPreferences.key(A)).nex.locks.isEmpty());
-		SwingUtilities.invokeAndWait(()->button("Clear selected lock").doClick()); callbacks(); load();
+		SwingUtilities.invokeAndWait(()->button("Remove selected gear lock").doClick()); callbacks(); load();
 		assertTrue(plugin.session.preferences().nex.locks.isEmpty());
 	}
 	@Test public void queuedMethodOrResetCannotCrossProfileOrEncounterRevision() throws Exception
@@ -174,7 +174,7 @@ public class PreferenceLifecycleTest
 		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(0,20,60));
 		callbacks(); load(); assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
 		plugin.onGameTick(new GameTick()); SwingUtilities.invokeAndWait(()->{});
-		SwingUtilities.invokeAndWait(()->{button("Encounter").doClick();button("Reset session").doClick();});
+		SwingUtilities.invokeAndWait(()->{button("Encounter").doClick();button("Clear session").doClick();});
 		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(100,20,60)); callbacks();
 		assertEquals(2,plugin.nexSession.recent().size());
 	}

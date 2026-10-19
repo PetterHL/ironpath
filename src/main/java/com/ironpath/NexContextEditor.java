@@ -40,18 +40,18 @@ final class NexContextEditor extends JPanel
 		count.setText(initial.participants==null?"":initial.participants.toString());
 		strategyConfirmed.setName("nex-context-confirm-strategy"); groupConfirmed.setName("nex-context-confirm-group"); countConfirmed.setName("nex-context-confirm-count"); remember.setName("nex-context-remember");
 		strategyConfirmed.setSelected(initial.strategySource==Source.ANNOTATED); groupConfirmed.setSelected(initial.groupSource==Source.ANNOTATED); countConfirmed.setSelected(initial.countSource==Source.ANNOTATED);
-		label("Phase-2 strategy"); control(strategy); if(key>=0) { control(strategyConfirmed); }
-		label("Group mode"); control(group); if(key>=0) { control(groupConfirmed); }
-		label("Participation"); control(participation); label("Exact count, including you"); control(count); if(key>=0) { control(countConfirmed); }
+		label("P2 method"); control(strategy); if(key>=0) { control(strategyConfirmed); }
+		label("Team type"); control(group); if(key>=0) { control(groupConfirmed); }
+		label("Team size"); control(participation); label("Players, including you"); control(count); if(key>=0) { control(countConfirmed); }
 		Runnable eligibility=()->{ count.setEnabled(participation.getSelectedItem()==Participation.EXACT); };
 		participation.addActionListener(e->eligibility.run()); eligibility.run();
 		if(key>=0) { control(remember); }
-		PanelWidgets.label(this,key<0?"For future attempts; each kill stays unconfirmed.":"Confirm what you know for this kill. Future defaults are separate.",false,0,PanelWidgets.MUTED);
 		PanelWidgets.text(this,""); error=(JTextArea)getComponent(getComponentCount()-1); error.setName("nex-context-error");
-		applyButton=PanelWidgets.button(this,key<0?"Save defaults":"Apply context",()->{}); applyButton.setName("nex-context-apply");
+		applyButton=PanelWidgets.button(this,key<0?"Save defaults":"Apply to this kill",()->{}); applyButton.setName("nex-context-apply");
 		applyButton.addActionListener(e->{
 			try
 			{
+				error.setText("");
 				Participation p=(Participation)participation.getSelectedItem(); Integer n=null;
 				if(p==Participation.EXACT)
 				{
@@ -66,9 +66,6 @@ final class NexContextEditor extends JPanel
 			}
 			catch(IllegalArgumentException ex) { error.setText(ex.getMessage()); revalidate(); repaint(); }
 		});
-		JPanel sources=new JPanel(); sources.setFont(font); sources.setLayout(new BoxLayout(sources,BoxLayout.Y_AXIS)); sources.setAlignmentX(LEFT_ALIGNMENT); sources.setOpaque(false);
-		PanelWidgets.text(sources,initial.provenance()); sources.setVisible(false);
-		PanelWidgets.button(this,"Context sources",()->{ sources.setVisible(!sources.isVisible()); revalidate(); repaint(); }); add(sources);
 	}
 	void bind(BiConsumer<NexContext,Boolean> apply,boolean canRemember)
 	{
@@ -85,8 +82,13 @@ final class NexContextEditor extends JPanel
 	private void control(JComponent component)
 	{
 		component.setFont(getFont()); component.setAlignmentX(LEFT_ALIGNMENT);
-		if(component instanceof JCheckBox) { component.setOpaque(false); }
+		if(component instanceof JCheckBox) { PanelWidgets.checkBox((JCheckBox)component,getFont()); }
 		component.setMaximumSize(new Dimension(net.runelite.client.ui.PluginPanel.PANEL_WIDTH-12,Math.max(28,component.getPreferredSize().height)));
-		component.getAccessibleContext().setAccessibleName(component.getName()==null?"Context field":component.getName()); add(component);
+		if(!(component instanceof JCheckBox))
+		{
+			String name=component==strategy?"P2 method":component==group?"Team type":component==participation?"Team size":"Players, including you";
+			component.getAccessibleContext().setAccessibleName(name);
+		}
+		add(component);
 	}
 }

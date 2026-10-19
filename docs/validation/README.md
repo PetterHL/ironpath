@@ -1,5 +1,7 @@
 # Validation records
 
+Current review build **0.23.0**: [issue #47 OSRS wording, concise screens and centred layout](ui1-47-wording-layout.md). It preserves main N3 plus the complete open CTX1/UI1 dependency lineage; live acceptance remains open.
+
 [DEV1 offline review workflow](dev1-offline-review.md) records the
 synthetic public-event scenarios, checked calculations, controlled publication/
 banking/history regressions, native previews and remaining live boundaries.
@@ -7,11 +9,11 @@ banking/history regressions, native previews and remaining live boundaries.
 The [18 October consolidation](main-consolidation-20261018.md) records the common
 main baseline, preserved history, validation and updated UI1/CTX1 task order.
 
-The [current PR #46 visual review](ui1-46-visual-review.md) adds genuine item
+The [earlier PR #46 visual review](ui1-46-visual-review.md) adds genuine item
 sprites, compact hierarchy/grouping and persistent Diagnostics disclosure to the
 same 0.21.1 feature PR. Live-client acceptance remains open.
 
-Current build **0.21.1** supplies [UI1 native visual refinement](ui1-native-refinement.md),
+Build **0.21.1** supplies [UI1 native visual refinement](ui1-native-refinement.md),
 with before/after native screenshots for issue #44. It follows corrected CTX1
 in a separate dependent PR; screenshot review and live acceptance stay open.
 

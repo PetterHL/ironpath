@@ -91,7 +91,8 @@ public class NexContextTest
 	{
 		var session=session(); var summary=NexOwnedFixtures.summary(List.of(NexOwnedFixtures.sample("ranged",NexOwnedFixtures.state(NexOwnedFixtures.ranged(),Map.of(11212,200L)))));
 		session.add(summary); var catalog=KnowledgeCatalog.load(new Gson());
-		var inputs=new NexEvaluation(NexOwnedFixtures.account(null),Preferences.EMPTY.nex(NexMethod.PILOT.lock("ranged/weapon",20997)),catalog);
+		var inputs=new NexEvaluation(NexOwnedFixtures.account(null),Preferences.EMPTY.nex(NexMethod.PILOT.lock("ranged/weapon",20997))
+			.confirm("fremennik-exiles",true,java.time.Instant.EPOCH),catalog);
 		var initial=session.freezeInputs(summary.key,inputs); var stale=inputs.evaluate(initial,()->true);
 		edit(session,summary,confirmed(Strategy.RP2,Group.MASS,8)); assertFalse(session.publish(initial,stale));
 		var corrected=session.record(summary.key); assertSame(inputs,corrected.inputs);
@@ -99,6 +100,9 @@ public class NexContextTest
 		assertEquals(1,result.contextRevision); assertEquals(inputs.revision,result.inputRevision); assertEquals(Strategy.RP2,result.context.strategy);
 		assertEquals(stale.choices.get(0).comparison.after.dps,result.choices.get(0).comparison.after.dps,0);
 		assertEquals(stale.planning.locks,result.planning.locks); assertFalse(result.context.pilot());
+		assertEquals(com.ironpath.model.Truth.TRUE,result.scenarioUnlocks.get("fremennik-exiles"));
+		assertEquals(com.ironpath.model.Truth.UNKNOWN,result.scenarioUnlocks.get("barbarian-training"));
+		assertEquals(stale.scenarioUnlocks,result.scenarioUnlocks);
 		edit(session,summary,NexContext.UNKNOWN); var current=session.record(summary.key);
 		var wrongModel=new NexOwnedResult(summary,result.choices,result.planning,result.scenarioUnlocks,current.context,current.revision,inputs.revision,"old-model");
 		assertFalse(session.publish(current,wrongModel)); assertNull(session.record(summary.key).calculation);

@@ -720,8 +720,14 @@ public final class KnowledgeCatalog
 		choices.put("cerberus-task", "Current eligible hellhound assignment for Cerberus (recheck)");
 		choices.put("sins-of-father", "Sins of the Father completed for the reviewed Darkmeyer blood-shard route");
 		choices.put("vyre-method", "Compatible Vyrewatch Sentinel weapon/method and supplies checked (not general melee readiness)");
-		ownershipLabels.entrySet().stream().sorted(Map.Entry.comparingByKey())
-			.forEach(e -> choices.put("owns-" + e.getKey(), e.getValue()));
+		Map<Integer,String> names=itemNames();
+		ownershipLabels.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(e -> {
+			// Some retained ownership sets used their internal key as a display label.
+			// List every exact member; a confirmation must keep the set's full meaning.
+			String label=e.getValue().equals(e.getKey())?itemSets.get(e.getKey()).stream()
+				.map(id->names.getOrDefault(id,"Item "+id)+" ("+id+")").collect(Collectors.joining(" / ")):e.getValue();
+			choices.put("owns-"+e.getKey(),label);
+		});
 		gear.values().stream().flatMap(List::stream).sorted(java.util.Comparator.comparing(g -> g.label))
 			.forEach(g -> choices.put("item-" + g.id, g.label));
 		return java.util.Collections.unmodifiableMap(choices);

@@ -100,13 +100,9 @@ No client or Plugin Hub acceptance is implied by a successful build.
 
 ## Offline review (DEV1)
 
-The offline workflow supplies ten synthetic scenarios without OSRS credentials,
-a display server or gameplay: the seven DEV1 baseline cases plus two bank/reload
-regressions from PR #38, plus the N3 declared-plan integration scenario. The first calculation/UI checkpoint was reviewed on
-
-The offline workflow supplies twelve synthetic scenarios without OSRS credentials,
-a display server or gameplay: the nine DEV1/bank/reload baseline cases and three
-CTX1 context-editing regressions. The first calculation/UI checkpoint was reviewed on
+The offline workflow supplies fourteen synthetic scenarios without OSRS credentials,
+a display server or gameplay: nine baseline/bank/reload cases, three CTX1 cases,
+N3 declared plans and the multi-item UI fixture. The first checkpoint was reviewed on
 17 October 2026; Petter authorized the remaining scenarios in the same task.
 [Validation and limits](validation/dev1-offline-review.md).
 
@@ -201,7 +197,7 @@ intentionally zero-sized. Hidden/empty areas are ignored.
 Failures still write the PNG and the affected text/reason. Visual inspection
 remains necessary; layout checks do not establish usefulness or interaction quality.
 
-The **Offline review** GitHub Actions job runs the pinned test/build and all twelve
+The **Offline review** GitHub Actions job runs the pinned test/build and all fourteen
 scenarios. It uploads `dev1-offline-review`, containing the index, reports and PNGs
 with 30-day retention, including available failure evidence. Link the exact run
 and artifact from the PR. Routine generated output stays outside Git history.
@@ -334,3 +330,13 @@ The original 12 scenarios remain, including CTX1's historical active-encounter
 report/clipboard/navigation cases. Baseline production `997f923` plus the same
 test sprite boundary/fixture produces the before views; its focused Diagnostics
 expansion test must fail. Real client cache/OS behavior remains open.
+
+## Issue #47 native review
+
+Run both TASKS commands after UI changes. `nex-visual` includes same-fixture
+Encounter, multi-item packages, team/gear/unlock settings and Diagnostics at 225px
+and fonts 12/20, with actual 600px viewports plus full-height PNGs. `nex-n3-plan`
+retains explicit finite inputs and each required scenario choice. The first-screen
+viewport explicitly resets position when reparenting a shorter-than-600px panel.
+Empty status rows occupy no space; errors are checked when present.
+[Before/after provenance, selected images and verification](validation/ui1-47-wording-layout.md).

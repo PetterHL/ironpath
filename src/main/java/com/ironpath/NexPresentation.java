@@ -58,6 +58,11 @@ final class NexPresentation
 		String phase=choice.actual.phase.toLowerCase(Locale.ROOT).replace('_',' ');
 		return Character.toUpperCase(choice.actual.role.charAt(0))+choice.actual.role.substring(1)+" · "+phase;
 	}
+	static String origin(NexOwnedResult.Choice choice,ComparisonResult pair)
+	{
+		if(choice.bankPreparation) { return "Bank gear"; }
+		return changedItems(pair).values().stream().filter(id->id>0).allMatch(choice.actual.state.slots::containsValue)?"Equipped gear":"Inventory gear";
+	}
 	static String reason(ComparisonResult pair)
 	{
 		boolean hit=pair.after.maxHit>pair.before.maxHit, accuracy=pair.available(ComparisonResult.Metric.HIT_CHANCE) && pair.after.hitChance>pair.before.hitChance;
