@@ -1,7 +1,7 @@
 # Capability and evidence inventory
 
 16 October 2026. This file records support and gaps; [TASKS](../TASKS.md) owns work.
-Current knowledge is `n3-package-1` (N3c); catalogue schema 14 and preferences schema 4 (future context defaults plus explicit Nex method/locks; schemas 1–3 migrate without kill confirmation).
+Current knowledge is `n3-decision-1` (0.24.0 for review); catalogue schema 14 and preferences schema 4 (future context defaults plus explicit Nex method/locks; schemas 1–3 migrate without kill confirmation).
 
 ## Reusable current coverage
 
@@ -34,7 +34,7 @@ the retained implementation; it does not claim Nex recommendations are ready.
 | Complete actual/owned/upgrade comparisons | Explicit shared conditions, joint usable stock/packing, locks, provenance and scoped damage/resource deltas. No automatic best-spec or personal recommendation | N3c conditional API + declared runtime plans; live acceptance open |
 | Finite spec resources (N3a) | Frozen observed review + conditional bounded energy/delay kernel; no inferred casts/procs, spec damage or upgrade ranking | N3 in progress |
 | Charged/blessed quiver and actual ammunition | Conditional offence equivalence, exact finite ammo/splinter branches and exhaustion tested; live counters and automatic opportunity use remain open | N1–N3 |
-| Food/pots/spells | Capture actual state first; alternative-plan effects need own model | N1/N3 |
+| Food/pots/spells | Six declared finite supply families with level/delay effects; consumption attribution, healing/survival and rune ledgers stay unknown | N3 0.24.0 for review |
 | Editable context | Optional typed per-kill annotations, inherited future defaults, frozen evaluation inputs and descriptive matching; no new combat mechanic | CTX1 included in main 0.23.3; live acceptance open |
 | Personal share / team seconds | No validated counterfactual | N4 |
 
@@ -53,3 +53,9 @@ comparison still excludes enchanted-bolt effects; N3c uses the N3b bolt model.
 Runtime N3A/B/C plans reuse these facts without new catalogue entries; see
 [the runtime plan contract](research/nex-runtime-plans.md). Exact new forms and
 equip requirements are still checked for every proposed/hypothetical package.
+
+0.24.0 adds four bounded minion target profiles to this catalogue, using the pinned
+monster reference and independent factual cross-checks. N3 applies their non-Magic
+flat armour at the launch-distribution boundary; ordinary model metrics alone do
+not include it. [Evidence and limits](research/nex-decision-support.md). Existing
+route/acquisition data is reused without new personal completion/pace claims.

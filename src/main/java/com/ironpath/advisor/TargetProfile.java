@@ -8,6 +8,8 @@ public final class TargetProfile
 	public String id, name, variant;
 	public int npcId, magicLevel, magicDefence;
 	public Integer defenceLevel;
+	/** N3 launch transform; ordinary model metrics do not include this per-hit adjustment. */
+	public Integer flatArmour;
 	public Integer meleeStab, meleeSlash, meleeCrush;
 	public Integer size, demonbanePercent;
 	public boolean undead, meleeScenario;

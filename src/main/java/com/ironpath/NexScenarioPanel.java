@@ -31,6 +31,9 @@ final class NexScenarioPanel extends JPanel
 	private final Map<String,JCheckBox> conditions=new LinkedHashMap<>();
 	private final Map<String,Integer> edits=new TreeMap<>();
 	private final Map<Integer,Integer> quantities=new TreeMap<>();
+	private final Map<NexSupplies.Kind,JTextField> supplyFields=new EnumMap<>(NexSupplies.Kind.class);
+	private final Map<Integer,Long> unitCosts=new TreeMap<>();
+	private final JCheckBox supplyConfirmed=new JCheckBox("Only declared supply effects");
 	private final JTextArea changes=new JTextArea();
 	private final JButton calculate;
 	private NexPlanComparison.Result result;
@@ -59,6 +62,42 @@ final class NexScenarioPanel extends JPanel
 		field("When to spec",policy,"n3-policy");
 		field("Attack ticks",opportunities,"n3-opportunities");
 		field("Death Charge cast ticks",casts,"n3-casts"); field("Eligible death ticks",deaths,"n3-deaths");
+		JPanel supplyBody=PanelWidgets.column(body); supplyBody.setVisible(false);
+		PanelWidgets.button(body,"Food & potions",()->{ if(!valid.getAsBoolean()) { return; } supplyBody.setVisible(!supplyBody.isVisible()); refresh(); }); body.add(supplyBody);
+		for(NexSupplies.Kind kind:NexSupplies.Kind.values())
+		{
+			JTextField ticks=new JTextField(); supplyFields.put(kind,ticks);
+			PanelWidgets.text(supplyBody,kind.label+" ticks"); supplyBody.getComponent(supplyBody.getComponentCount()-1).setName("n3-supply-label-"+kind.name()); ticks.setName("n3-supply-"+kind.name());
+			ticks.getAccessibleContext().setAccessibleName(kind.label+" ticks"); ticks.setToolTipText("Declared uses; comma-separated tick offsets"); control(ticks); supplyBody.add(ticks);
+		}
+		supplyConfirmed.setName("n3-supplies-confirmed"); PanelWidgets.checkBox(supplyConfirmed,font); supplyBody.add(supplyConfirmed);
+		supplyConfirmed.setToolTipText("Declare usable frozen supply stock, eating/drinking readiness and no other level changes, decay or effects. HP remains separately supplied per attack.");
+		JPanel costBody=PanelWidgets.column(body); costBody.setVisible(false);
+		PanelWidgets.button(body,"Unit costs",()->{ if(!valid.getAsBoolean()) { return; } costBody.setVisible(!costBody.isVisible()); refresh(); }); body.add(costBody);
+		JComboBox<Item> costItem=new JComboBox<>(); costItem.setName("n3-cost-item");
+		Map<Integer,String> costNames=new TreeMap<>();
+		catalog.ranged.items.stream().filter(i->i.ammo!=RangedItem.Ammo.NONE).forEach(i->costNames.put(i.id,i.label));
+		costNames.put(NexPlanSupport.SPLINTER,"Sunfire splinter");
+		for(NexSupplies.Kind kind:NexSupplies.Kind.values()) { costNames.put(kind.costKey(),kind.label); }
+		costNames.forEach((id,name)->costItem.addItem(new Item(id,name)));
+		field(costBody,"Cost unit",costItem,"n3-cost-item");
+		JTextField costValue=new JTextField(); costValue.setName("n3-cost-value"); control(costValue);
+		PanelWidgets.text(costBody,"GP per unit"); costBody.add(costValue); costValue.getAccessibleContext().setAccessibleName("GP per unit");
+		PanelWidgets.text(costBody,""); JTextArea costSummary=(JTextArea)costBody.getComponent(costBody.getComponentCount()-1); costSummary.setName("n3-cost-summary"); costBody.remove(costSummary);
+		costItem.addActionListener(e->{ Item selected=(Item)costItem.getSelectedItem(); costItem.setToolTipText(selected==null?null:selected.toString()); });
+		PanelWidgets.button(costBody,"Set unit cost",()->{
+			if(!valid.getAsBoolean()) { return; }
+			try
+			{
+				long gp=Long.parseLong(costValue.getText().trim()); if(gp<0 || gp>1000000000L) { throw new NumberFormatException(); }
+				Item selected=(Item)costItem.getSelectedItem();
+				if(unitCosts.size()>=32 && !unitCosts.containsKey(selected.id)) { message("Use at most 32 unit costs."); return; }
+				unitCosts.put(selected.id,gp);
+				costSummary.setText(unitCosts.entrySet().stream().map(e->costNames.get(e.getKey())+": "+e.getValue()+" gp").collect(java.util.stream.Collectors.joining("\n"))); invalidateResult();
+			}
+			catch(NumberFormatException ex) { message("Unit cost: enter whole GP from 0 to 1000000000."); }
+		});
+		PanelWidgets.button(costBody,"Clear unit costs",()->{ if(valid.getAsBoolean()) { unitCosts.clear(); costSummary.setText(""); invalidateResult(); } }); costBody.add(costSummary);
 		PanelWidgets.centeredLabel(body,"Hypothetical gear",true,0,net.runelite.client.ui.ColorScheme.TEXT_COLOR);
 		field("Change slot",slot,"n3-upgrade-slot"); field("Exact item",item,"n3-upgrade-item"); field("Usable quantity",quantity,"n3-upgrade-quantity");
 		slot.addActionListener(e->{ if(valid.getAsBoolean()) { items(); } });
@@ -91,18 +130,21 @@ final class NexScenarioPanel extends JPanel
 			public void changedUpdate(javax.swing.event.DocumentEvent e) { invalidateResult(); }
 		};
 		for(JTextField field:List.of(horizon,energy,restore,targetHp,playerHp,cap,opportunities,casts,deaths)) { field.getDocument().addDocumentListener(changed); }
+		for(JTextField field:supplyFields.values()) { field.getDocument().addDocumentListener(changed); }
+		supplyConfirmed.addActionListener(e->invalidateResult());
 		for(JComboBox<?> combo:List.of(order,kandarin,ruby,policy)) { combo.addActionListener(e->invalidateResult()); }
 		conditions.values().forEach(check->check.addActionListener(e->invalidateResult()));
 	}
 	void attach(BooleanSupplier valid,Consumer<Runnable> execute) { this.valid=valid; this.execute=execute; calculate.setEnabled(valid.getAsBoolean()); }
 	void detach() { valid=()->false; }
 	NexPlanComparison.Result result() { return result; }
-	private void field(String label,JComponent field,String name)
+	private void field(String label,JComponent field,String name) { field(body,label,field,name); }
+	private void field(JPanel target,String label,JComponent field,String name)
 	{
-		PanelWidgets.text(body,label); field.setName(name); field.getAccessibleContext().setAccessibleName(label); field.setToolTipText(label); control(field); body.add(field);
+		PanelWidgets.text(target,label); field.setName(name); field.getAccessibleContext().setAccessibleName(label); field.setToolTipText(label); control(field); target.add(field);
 		if(field instanceof JComboBox)
 		{
-			JComboBox<?> combo=(JComboBox<?>)field; PanelWidgets.text(body,""); JTextArea selected=(JTextArea)body.getComponent(body.getComponentCount()-1);
+			JComboBox<?> combo=(JComboBox<?>)field; PanelWidgets.text(target,""); JTextArea selected=(JTextArea)target.getComponent(target.getComponentCount()-1);
 			Runnable selection=()->{
 				String value=Objects.toString(combo.getSelectedItem(),""); combo.setToolTipText(value);
 				selected.setText(combo.getFontMetrics(combo.getFont()).stringWidth(value)>175?value:"");
@@ -138,13 +180,18 @@ final class NexScenarioPanel extends JPanel
 		{
 			int end=number(horizon,"Window length",1,SpecTimeline.MAX_TICKS,true);
 			Integer initial=energy();
+			Map<NexSupplies.Kind,List<Integer>> supplyOffsets=new EnumMap<>(NexSupplies.Kind.class);
+			for(var entry:supplyFields.entrySet()) { supplyOffsets.put(entry.getKey(),offsets(entry.getValue(),entry.getKey().label+" ticks",end,false)); }
+			List<NexSupplies.Use> supplies;
+			try { supplies=NexSupplies.ordered(supplyOffsets,end); }
+			catch(IllegalArgumentException ex) { throw new InputError(ex.getMessage()); }
 			declaration=new NexPlanComparison.Declaration(end,initial,number(restore,"First restore tick",0,25,false),
 				order.getSelectedIndex()==0?null:order.getSelectedIndex()==1?SpecTimeline.RestoreOrder.BEFORE_EVENTS:SpecTimeline.RestoreOrder.AFTER_EVENTS,
-				number(targetHp,"Target HP",1,100000,false),number(playerHp,"Player HP",1,255,false),number(cap,"Damage cap",1,100000,false),tri(kandarin),tri(ruby),conditions.values().stream().allMatch(JCheckBox::isSelected),NexPlanComparison.Policy.values()[policy.getSelectedIndex()],
-				offsets(opportunities,"Attack ticks",end,true),offsets(casts,"Death Charge cast ticks",end,false),offsets(deaths,"Eligible death ticks",end,false),edits,quantities);
+				number(targetHp,"Target HP",1,100000,false),number(playerHp,"Player HP",1,255,false),number(cap,"Damage cap",1,100000,false),tri(kandarin),tri(ruby),conditions.values().stream().allMatch(JCheckBox::isSelected) && (supplies.isEmpty() || supplyConfirmed.isSelected()),NexPlanComparison.Policy.values()[policy.getSelectedIndex()],
+				offsets(opportunities,"Attack ticks",end,true),offsets(casts,"Death Charge cast ticks",end,false),offsets(deaths,"Eligible death ticks",end,false),edits,quantities,supplies,unitCosts);
 		}
 		catch(InputError ex) { invalidateResult(); message(ex.getMessage()); return; }
-		String selectedConditions=conditions.values().stream().map(check->check.getToolTipText()+"="+check.isSelected()).collect(java.util.stream.Collectors.joining("; "));
+		String selectedConditions="Supply effects confirmed="+supplyConfirmed.isSelected()+"; "+conditions.values().stream().map(check->check.getToolTipText()+"="+check.isSelected()).collect(java.util.stream.Collectors.joining("; "));
 		long ticket=++request; result=null; report=null; message("Recalculating…"); calculate.setEnabled(false);
 		try { execute.accept(()->{
 			NexPlanComparison.Result evaluated=null; String formatted=null;
@@ -172,7 +219,19 @@ final class NexScenarioPanel extends JPanel
 		show("Owned gear",result.comparison.actualToOwned.after);
 		show("Hypothetical gear",result.comparison.ownedToUpgrade.after);
 		PanelWidgets.text(output,"Captured → owned damage: "+gain(result.comparison.actualToOwned.expectedDamage));
+		PanelWidgets.text(output,NexPlanSupport.decision(result.comparison.actualToOwned));
 		PanelWidgets.text(output,"Owned → hypothetical damage: "+gain(result.comparison.ownedToUpgrade.expectedDamage));
+		PanelWidgets.text(output,NexPlanSupport.decision(result.comparison.ownedToUpgrade));
+		if(!result.routes.isEmpty())
+		{
+			JPanel routes=PanelWidgets.column(output); routes.setVisible(false);
+			PanelWidgets.button(output,"Acquisition routes",()->{ if(!valid.getAsBoolean()) { return; } routes.setVisible(!routes.isVisible()); refresh(); }); output.add(routes);
+			for(var route:result.routes)
+			{
+				PanelWidgets.centeredLabel(routes,route.label,true,0,net.runelite.client.ui.ColorScheme.TEXT_COLOR);
+				PanelWidgets.text(routes,route.work==null?"Route unavailable":route.work);
+			}
+		}
 		PanelWidgets.text(output,"");
 		JTextArea feedback=(JTextArea)output.getComponent(output.getComponentCount()-1);
 		JButton copy=PanelWidgets.button(output,"Copy plan report",()->{
@@ -196,6 +255,10 @@ final class NexScenarioPanel extends JPanel
 			+" · Death Charge: "+r.deathChargeProcs);
 		PanelWidgets.text(output,"Energy spent / restored / lost at cap / final (%): "+r.spent/10.0+" / "+r.restored/10.0+" / "+r.wasted/10.0+" / "+r.finalEnergy/10.0);
 		PanelWidgets.text(output,"Ammo spent: "+p.spentAmmo.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(e2->catalog.itemNames().getOrDefault(e2.getKey(),"Item "+e2.getKey())+": "+e2.getValue()).collect(java.util.stream.Collectors.joining(", "))+" · splinters: "+p.spentSplinters);
+		var cost=result.costs.get(e);
+		PanelWidgets.text(output,"Ammo & supply cost: "+(cost==null?"unavailable":cost.gp==null?"unit costs missing":cost.gp+" gp"));
+		var consumed=result.consumedSupplies;
+		if(!consumed.isEmpty()) { PanelWidgets.text(output,"Supplies: "+consumed.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(entry->entry.getKey().label+": "+entry.getValue()).collect(java.util.stream.Collectors.joining(", "))); }
 		if(!p.gaps.isEmpty() || !e.resourceGaps.isEmpty()) { PanelWidgets.text(output,"Some results unavailable"); }
 	}
 	private static JScrollPane reportScroll(JPanel output)

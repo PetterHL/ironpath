@@ -201,10 +201,10 @@ public class NexPackageComparisonTest
 		e=evaluate(base,scenario(Kind.ACTUAL,s.loadouts,s.actions,unread)); assertNull(e.plan); assertTrue(e.resourceGaps.toString().contains("usable equipment"));
 		assertNotNull(e.launches.get(0).chargedDamage);
 	}
-	@Test public void unsupportedZarosMinionAndSpecialWindowsNeverUseOrdinaryNexDamage()
+	@Test public void unsupportedZarosUnknownTargetsAndSpecialWindowsNeverUseOrdinaryNexDamage()
 	{
 		var l=loadout("spec",slots(27690,0,0),0); var stock=stock(List.of(l),Map.of(),0,10);
-		for(Context ctx:List.of(new Context("NEX","ZAROS",Window.BASE),new Context("FUMUS","SMOKE",Window.BASE),new Context("NEX","BLOOD",Window.SPECIAL)))
+		for(Context ctx:List.of(new Context("NEX","ZAROS",Window.BASE),new Context("UNKNOWN","SMOKE",Window.BASE),new Context("NEX","BLOOD",Window.SPECIAL)))
 		{
 			Step step=Step.attack(0,f(ctx),f(true),f(500),f(99),f(200),f(true));
 			var e=evaluate(conditions(1,List.of(step)),scenario(Kind.ACTUAL,Map.of("s",l),Map.of(0,action("s",Attack.VOIDWAKER)),stock));

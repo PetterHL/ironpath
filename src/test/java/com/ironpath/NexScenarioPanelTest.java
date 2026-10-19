@@ -76,7 +76,7 @@ public class NexScenarioPanelTest
 		SwingUtilities.invokeAndWait(()->{
 			var panel=new NexScenarioPanel(source,0,0,catalog,text->{},"SYNTHETIC_OFFLINE",new Font("DejaVu Sans",Font.PLAIN,20)); ref.set(panel);
 			panel.attach(()->true,tasks::add); PanelPreview.click(panel,"Plan specs & gear");
-			assertEquals(9,PanelPreview.children(panel).stream().filter(c->c instanceof JCheckBox).count());
+			assertEquals(10,PanelPreview.children(panel).stream().filter(c->c instanceof JCheckBox).count());
 			assertTrue(PanelPreview.children(panel).stream().filter(c->c instanceof JCheckBox).noneMatch(c->((JCheckBox)c).isSelected()));
 			fill(panel); PanelPreview.click(panel,"Compare this plan");
 		});
@@ -128,4 +128,35 @@ public class NexScenarioPanelTest
 			assertTrue(report.getText().contains("SYNTHETIC_OFFLINE")); assertTrue(report.getText().contains("Ammo branch:"));
 		});
 	}
+	@Test public void supplyAndPriceEditsCannotPublishAPendingOlderCalculation() throws Exception
+	{
+		var source=NexPlanComparisonTest.fixture(catalog,27690,0,Map.of(6685,1L),Map.of("inventory-slots-used",1),false);
+		List<Runnable> tasks=new ArrayList<>(); var ref=new AtomicReference<NexScenarioPanel>();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=new NexScenarioPanel(source,0,0,catalog,text->{},"SYNTHETIC_OFFLINE",new Font("DejaVu Sans",Font.PLAIN,12)); ref.set(panel);
+			panel.attach(()->true,tasks::add); PanelPreview.click(panel,"Plan specs & gear"); fill(panel); PanelPreview.click(panel,"Food & potions");
+			named(panel,"n3-supply-BREW",JTextField.class).setText("0");
+			assertFalse(named(panel,"n3-supplies-confirmed",JCheckBox.class).isSelected());
+			PanelPreview.click(panel,"Compare this plan");
+		});
+		tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->{
+			assertNull(ref.get().result().comparison.actualToOwned.before.plan);
+			named(ref.get(),"n3-supplies-confirmed",JCheckBox.class).doClick(); PanelPreview.click(ref.get(),"Compare this plan");
+			named(ref.get(),"n3-supply-BREW",JTextField.class).setText("1");
+		});
+		tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->{
+			assertNull(ref.get().result()); PanelPreview.click(ref.get(),"Compare this plan");
+			PanelPreview.click(ref.get(),"Unit costs");
+			JComboBox<?> units=named(ref.get(),"n3-cost-item",JComboBox.class);
+			for(int n=0;n<units.getItemCount();n++) if(units.getItemAt(n).toString().endsWith("(6691)")) { units.setSelectedIndex(n); break; }
+			named(ref.get(),"n3-cost-value",JTextField.class).setText("0"); PanelPreview.click(ref.get(),"Set unit cost");
+		});
+		tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->{ assertNull(ref.get().result()); PanelPreview.click(ref.get(),"Compare this plan"); });
+		tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->{
+			var result=ref.get().result(); assertNotNull(result.comparison.actualToOwned.before.plan);
+			assertEquals(Long.valueOf(0),result.costs.get(result.comparison.actualToOwned.before).gp);
+			PanelPreview.click(ref.get(),"Clear unit costs"); assertNull(ref.get().result());
+		});
+	}
+
 }

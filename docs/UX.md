@@ -95,6 +95,13 @@ Lightbearer throughout; usable gear/stock; runes/legal casts; distinct eligible
 deaths; fixed HP/phase; spell/switch delays included. Detailed definitions live in
 Diagnostics. Never tick hidden confirmations or fabricate unknown values. Copy
 plan report explicitly reveals the selectable report, including clipboard fallback.
+**Food & potions** and **Unit costs** are optional closed subsections inside the
+existing planner. Food/potion lists are explicit tick declarations, with a separate
+unchecked supply-effects confirmation. Show finite consumption and scoped cost in
+results; unknown unit prices remain unavailable. **Acquisition routes** explicitly
+opens catalogue route facts for changed hypothetical exact items. Do not infer
+account readiness, remaining components or acquisition time. Detailed supply,
+price and vulnerability assumptions stay in Diagnostics/reports.
 Invalid submissions show transient field-specific constraints: window 1–3000
 whole ticks, energy 0–100% in 0.1% steps, bounded HP/restore/cap values and
 1–128 distinct increasing attack ticks before the exclusive window end. Optional

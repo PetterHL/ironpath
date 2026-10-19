@@ -126,7 +126,7 @@ public class NexPlanComparisonTest
 	{
 		var source=fixture(catalog,27690,0,Map.of(),Map.of("inventory-slots-used",0),false);
 		String report=evaluate(source,declaration(500,Map.of("cape",21295),Map.of(21295,1))).report();
-		assertTrue(report.contains("schema 2"));
+		assertTrue(report.contains("schema 3"));
 		assertTrue(report.contains("real levels={AGILITY=99, ATTACK=99, DEFENCE=99, HITPOINTS=99, MAGIC=99, PRAYER=99, RANGED=99, STRENGTH=99}"));
 		assertTrue(report.contains("visible levels={AGILITY=99, ATTACK=118, DEFENCE=99, HITPOINTS=99, MAGIC=99, PRAYER=99, RANGED=112, STRENGTH=118}"));
 		assertTrue(report.contains("active prayer flags=[PIETY]; style button=1"));

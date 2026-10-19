@@ -17,6 +17,7 @@ final class OfflineN3Scenario
 		{
 			try(var r=new OfflinePluginReplay(font))
 			{
+				r.carried.put(385,1L); r.carried.put(3144,1L); r.carried.put(6685,1L); r.carried.put(3024,1L);
 				r.fight(30,20,60,true); r.settle(); if(font==12) { OfflineReview.versions(report,r.catalog); }
 				final NexScenarioPanel[] panel={null};
 				edt(()->{
@@ -61,6 +62,41 @@ final class OfflineN3Scenario
 				});
 				capture(r,output,"conditional-results",font,report);
 				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("report-viewport-"+font+".png"),225,600,"n3-copy-report",List.of("n3-copy-report","n3-report-scroll"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
+				edt(()->{
+					PanelPreview.click(r.panel,"Food & potions");
+					for(var entry:Map.of("SHARK","1","KARAMBWAN","1","BREW","0","RESTORE","3").entrySet())
+					{ NexScenarioPanelTest.named(r.panel,"n3-supply-"+entry.getKey(),JTextField.class).setText(entry.getValue()); }
+					PanelPreview.click(r.panel,"Compare this plan");
+				}); r.settle();
+				edt(()->{
+					report.check("Undeclared supply readiness blocks plan "+font,null,panel[0].result().comparison.actualToOwned.before.plan);
+					NexScenarioPanelTest.named(r.panel,"n3-supplies-confirmed",JCheckBox.class).doClick();
+				});
+				capture(r,output,"supply-editor",font,report);
+				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("supply-viewport-"+font+".png"),225,600,"n3-supply-label-SHARK",List.of("n3-supply-SHARK","n3-supply-KARAMBWAN","n3-supply-BREW","n3-supply-RESTORE","n3-supply-SUPER_COMBAT","n3-supply-RANGING","n3-supplies-confirmed"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
+				edt(()->{
+					PanelPreview.click(r.panel,"Unit costs"); JComboBox<?> units=PanelPreview.combo(r.panel,"n3-cost-item");
+					for(int id:List.of(385,3144,6691,3030))
+					{
+						for(int i=0;i<units.getItemCount();i++) if(units.getItemAt(i).toString().endsWith("("+id+")")) { units.setSelectedIndex(i); break; }
+						NexScenarioPanelTest.named(r.panel,"n3-cost-value",JTextField.class).setText("100"); PanelPreview.click(r.panel,"Set unit cost");
+					}
+				});
+				capture(r,output,"unit-costs",font,report);
+				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("cost-viewport-"+font+".png"),225,600,"n3-cost-item",List.of("n3-cost-item","n3-cost-value","n3-cost-summary"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
+				edt(()->{ PanelPreview.click(r.panel,"Unit costs"); PanelPreview.click(r.panel,"Food & potions"); PanelPreview.click(r.panel,"Compare this plan"); }); r.settle();
+				edt(()->{
+					var result=panel[0].result(); var evaluation=result.comparison.actualToOwned.before;
+					report.check("Frozen carried supplies admit finite plan "+font,true,evaluation.plan!=null);
+					if(evaluation.plan==null) { throw new IllegalStateException(evaluation.resourceGaps.toString()); }
+					var cost=com.ironpath.nex.NexPlanSupport.cost(evaluation,result.declaration.unitCosts);
+					report.check("Four declared supply units cost 400 gp "+font,Long.valueOf(400),cost.gp);
+					report.check("Food shifts outstanding cooldown "+font,true,evaluation.plan.resources.ordinaryAttacks<finished[0].comparison.actualToOwned.before.plan.resources.ordinaryAttacks);
+					PanelPreview.click(r.panel,"Copy plan report");
+					String text=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
+					report.check("Supply and cost report retains explicit assumptions "+font,true,text.contains("Declared supply actions=[0:BREW, 1:SHARK, 1:KARAMBWAN, 3:RESTORE]") && text.contains("gp=400"));
+				});
+				capture(r,output,"supply-results",font,report);
 				edt(()->{
 					NexScenarioPanelTest.named(r.panel,"n3-target-hp",JTextField.class).setText(""); PanelPreview.click(r.panel,"Compare this plan");
 				}); r.settle();

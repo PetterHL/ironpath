@@ -53,6 +53,7 @@ final class NexReport
 			|| record!=null && (record.inputs==null?result.inputRevision!=0:result.inputRevision!=record.inputs.revision || !result.modelRevision.equals(record.inputs.modelRevision)))
 		{ out.add("Calculation unavailable/pending for K1. No other kill's result exported."); return new NexReport(out); }
 		out.add("Report-local calculation: C1; immutable calculation revision: "+result.revision);
+		out.add("Automatic N3 recommendation gaps: "+NexPlanSupport.automaticGaps());
 		var resources=result.resources; var scenarios=resources.scenarios;
 		out.add("Resource evidence (tenths percent): first="+resources.firstEnergy+"; last="+resources.lastEnergy
 			+"; sampled net increases="+resources.sampledIncreases+"; sampled net decreases="+resources.sampledDecreases

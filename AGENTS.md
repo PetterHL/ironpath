@@ -14,6 +14,13 @@
 
 ## Current delivery
 
+- N3 follow-up **0.24.0** is prepared on current main for review. Read
+  docs/research/nex-decision-support.md and docs/validation/nex-decision-support.md.
+  It adds declared finite supplies/level effects, vulnerable minion launch inputs,
+  scoped manual unit costs and catalogue acquisition routes. Unknown windows stay
+  unknown. Keep automatic launch/spec/consumption attribution and Zaros
+  overhead/stat-dependent comparisons unavailable. Existing no-coaching/N4 and
+  separate merge/publication authorization boundaries still apply.
 - Consolidated main baseline **0.23.3** includes the complete PR #48 **0.23.2** UI
   and sidebar simplification. Keep Gear & method and Gear & unlocks absent,
   including manual gear/method controls.

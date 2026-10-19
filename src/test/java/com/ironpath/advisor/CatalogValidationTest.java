@@ -186,4 +186,15 @@ public class CatalogValidationTest
 			if(source.get("id").getAsString().equals("n2-locked-offence")) { source.addProperty("revision","0000000000000000000000000000000000000000"); } } });
 	}
 
+	@Test public void minionFactsCannotAuthorizeAnotherFileOrAnUnreviewedArmourTransform()
+	{
+		for(String suffix:java.util.List.of("/blob/main/cdn/json/monsters.json","/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/equipment.json"))
+		{
+			rejects(d->{ for(var entry:d.getAsJsonArray("sources")) { var source=entry.getAsJsonObject();
+				if(source.get("id").getAsString().equals("n3-minion-reference")) { source.addProperty("url","https://github.com/weirdgloop/osrs-dps-calc"+suffix); } } });
+		}
+		rejects(d->{ for(var entry:d.getAsJsonObject("comparison").getAsJsonArray("targets")) { var target=entry.getAsJsonObject();
+			if(target.get("id").getAsString().equals("nex-fumus")) { target.addProperty("flatArmour",-3); } } });
+	}
+
 }

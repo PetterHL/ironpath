@@ -12,7 +12,7 @@ import static com.ironpath.nex.SpecAttackPlan.*;
 /** Runtime N3A/B/C join. Captured packages are evaluated under a separately declared hypothetical plan. */
 public final class NexPlanComparison
 {
-	public static final String VERSION="nex-declared-plan-2";
+	public static final String VERSION="nex-declared-plan-3";
 	public static final int MAX_OPPORTUNITIES=128;
 	public enum Policy { ORDINARY, FIRST_SPECIAL, FUNDED_SPECIAL_WITH_ORDINARY_FALLBACK }
 	public static final class Declaration
@@ -27,11 +27,25 @@ public final class NexPlanComparison
 		public final Map<String,Integer> upgrades;
 		public final Map<Integer,Integer> upgradeQuantities;
 		public final Instant declaredAt;
+		public final List<NexSupplies.Use> supplies;
+		public final Map<Integer,Long> unitCosts;
 		public Declaration(int endTick,Integer initialEnergy,Integer firstRestore,RestoreOrder order,
 			Integer targetHp,Integer playerHp,Integer hardCap,Boolean kandarin,Boolean rubyAllowed,boolean legalAndReady,
 			Policy policy,List<Integer> opportunities,List<Integer> casts,List<Integer> deaths,
 			Map<String,Integer> upgrades,Map<Integer,Integer> upgradeQuantities)
 		{
+			this(endTick,initialEnergy,firstRestore,order,targetHp,playerHp,hardCap,kandarin,rubyAllowed,legalAndReady,policy,
+				opportunities,casts,deaths,upgrades,upgradeQuantities,List.of(),Map.of());
+		}
+		public Declaration(int endTick,Integer initialEnergy,Integer firstRestore,RestoreOrder order,
+			Integer targetHp,Integer playerHp,Integer hardCap,Boolean kandarin,Boolean rubyAllowed,boolean legalAndReady,
+			Policy policy,List<Integer> opportunities,List<Integer> casts,List<Integer> deaths,
+			Map<String,Integer> upgrades,Map<Integer,Integer> upgradeQuantities,List<NexSupplies.Use> supplies,Map<Integer,Long> unitCosts)
+		{
+			NexSupplies.validate(supplies,endTick);
+			if(unitCosts.size()>32 || unitCosts.entrySet().stream().anyMatch(e->e.getKey()<1 || e.getKey()>1000000 || e.getValue()<0 || e.getValue()>1000000000L))
+			{ throw new IllegalArgumentException("Use up to 32 exact nonnegative unit costs"); }
+			this.supplies=List.copyOf(supplies); this.unitCosts=Map.copyOf(unitCosts);
 			if(endTick<1 || endTick>MAX_TICKS || opportunities.isEmpty() || opportunities.size()>MAX_OPPORTUNITIES
 				|| casts.size()>MAX_OPPORTUNITIES || deaths.size()>MAX_OPPORTUNITIES)
 			{ throw new IllegalArgumentException("Declare 1–128 attack opportunities within a 1–3000 tick horizon."); }
@@ -64,13 +78,21 @@ public final class NexPlanComparison
 		public final int choiceIndex,pairIndex;
 		public final Declaration declaration;
 		public final Comparison comparison;
-		private Result(NexOwnedResult source,int choiceIndex,int pairIndex,Declaration declaration,Comparison comparison)
-		{ this.source=source; this.choiceIndex=choiceIndex; this.pairIndex=pairIndex; this.declaration=declaration; this.comparison=comparison; }
-		/** Allowlisted standalone report: no account, containers, roster, raw timeline or item-name strings. */
+		public final List<NexPlanSupport.Route> routes;
+		public final Map<Evaluation,NexPlanSupport.Cost> costs;
+		public final Map<NexSupplies.Kind,Integer> consumedSupplies;
+		private Result(NexOwnedResult source,int choiceIndex,int pairIndex,Declaration declaration,Comparison comparison,List<NexPlanSupport.Route> routes)
+		{ this.source=source; this.choiceIndex=choiceIndex; this.pairIndex=pairIndex; this.declaration=declaration; this.comparison=comparison; this.routes=List.copyOf(routes);
+			Map<Evaluation,NexPlanSupport.Cost> costs=new HashMap<>();
+			for(Evaluation e:List.of(comparison.actualToOwned.before,comparison.actualToOwned.after,comparison.ownedToUpgrade.after))
+			{ var cost=NexPlanSupport.cost(e,declaration.unitCosts); if(cost!=null) { costs.put(e,cost); } }
+			this.costs=Map.copyOf(costs); consumedSupplies=NexSupplies.consumed(declaration.supplies);
+		}
+		/** Allowlisted standalone report: no account, containers, roster, raw timeline or client-supplied item names. */
 		public String report()
 		{
 			List<String> lines=new ArrayList<>(); Declaration d=declaration;
-			lines.add("IronPath conditional N3 scenario · schema 2 · "+VERSION);
+			lines.add("IronPath conditional N3 scenario · schema 3 · "+VERSION);
 			lines.add("Report-local kill K1; frozen calculation revision "+source.revision+"; captured state "+choiceIndex+"; pair "+pairIndex);
 			lines.add("Captured equipment and visible levels are inputs to hypothetical attacks, not attributed attack evidence.");
 			var sample=source.choices.get(choiceIndex).actual; Context context=context(sample);
@@ -88,10 +110,24 @@ public final class NexPlanComparison
 			Map<String,String> versions=new TreeMap<>();
 			for(Evaluation e:List.of(comparison.actualToOwned.before,comparison.actualToOwned.after,comparison.ownedToUpgrade.after)) { versions.putAll(e.versions); }
 			lines.add("Reviewed model/source versions="+versions);
+			lines.add("Decision support="+NexPlanSupport.VERSION+"; automatic capture-to-recommendation gaps="+NexPlanSupport.automaticGaps());
+			lines.add("Declared supply actions="+d.supplies.stream().map(u->u.tick+":"+u.kind).collect(java.util.stream.Collectors.toList())+"; model="+NexSupplies.VERSION);
+			lines.add("Supply uses precede casts/deaths/attacks. Only declared uses change levels; no decay, external boosts/drains or healing trajectory is inferred. Supplied per-attack HP stays independent.");
+			lines.add("Declared unit costs (gp per projectile/splinter/food or potion dose)="+new TreeMap<>(d.unitCosts));
 			evaluation(lines,"Captured package",comparison.actualToOwned.before);
 			evaluation(lines,"Owned baseline",comparison.actualToOwned.after);
 			evaluation(lines,"Owned plus hypothetical package",comparison.ownedToUpgrade.after);
 			delta(lines,"Captured-to-owned",comparison.actualToOwned); delta(lines,"Owned-to-upgrade",comparison.ownedToUpgrade);
+			for(var entry:Map.of("Captured",comparison.actualToOwned.before,"Owned",comparison.actualToOwned.after,"Hypothetical",comparison.ownedToUpgrade.after).entrySet())
+			{
+				var cost=costs.get(entry.getValue());
+				lines.add(entry.getKey()+" ammo and declared supply cost: "+(cost==null?"unavailable":
+					"units="+new TreeMap<>(cost.units)+"; gp="+cost.gp+"; missing unit prices="+new TreeSet<>(cost.missingPrices)));
+			}
+			for(var route:routes)
+			{ lines.add("Hypothetical acquisition · item "+route.item+": "+(route.work==null?"route unavailable":route.work)+"; unassessed stages="+route.stages+"; sources="+route.sources); }
+			lines.add("Acquisition routes are catalogue facts, not assessed missing components, drop odds, full-item ETA or account readiness. Permanent unlocks and recurring units are separate.");
+			lines.add("Costs cover this conditional resource branch only. Other gear upkeep, Death Charge runes, acquisition, healing/survival and whole-trip cost are excluded.");
 			lines.add("Conditional launch expectations at supplied fixed HP for each opportunity. No simulated HP trajectory, measured spec count, global-best recommendation, survival, contribution or team-time estimate.");
 			lines.add("No kill timestamp recorded. No account identifiers, roster fingerprints or unrelated container contents exported. Nothing is uploaded.");
 			String text=String.join("\n",lines);
@@ -166,6 +202,7 @@ public final class NexPlanComparison
 		Context context=context(sample);
 		for(int tick=0;tick<d.endTick;tick++)
 		{
+			for(NexSupplies.Use use:d.supplies) { if(use.tick==tick) { steps.add(Step.supply(use)); } }
 			if(d.casts.contains(tick)) { steps.add(Step.cast(tick,d.f(source.planning.upgradedDeathCharge,"declared cast upgrade state"))); }
 			if(d.deaths.contains(tick)) { steps.add(Step.death(tick,d.f("D"+tick,"distinct declared death"),d.f(d.legalAndReady?Boolean.TRUE:null,"death eligibility"))); }
 			int ordinal=d.opportunities.indexOf(tick);
@@ -191,16 +228,19 @@ public final class NexPlanComparison
 		Scenario proposed=new Scenario("Selected supported owned package",Kind.OWNED,Map.of("captured",actualLoad,"selected",ownedLoad),actions(ownedLoad,attackOrdinals,d),ownedStock);
 		Scenario hypothetical=new Scenario("Owned plus declared hypothetical edits",Kind.UPGRADE,Map.of("captured",actualLoad,"owned",ownedLoad,"selected",upgradeLoad),actions(upgradeLoad,attackOrdinals,d),extra);
 		var comparison=new NexPackageComparison(catalog).compare(conditions,actual,proposed,hypothetical,source.planning);
-		return new Result(source,choiceIndex,pairIndex,d,comparison);
+		return new Result(source,choiceIndex,pairIndex,d,comparison,NexPlanSupport.routes(catalog,d.upgrades.entrySet().stream()
+			.filter(e->!Objects.equals(owned.slots.get(e.getKey()),e.getValue()))
+			.collect(java.util.stream.Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue))));
 	}
 	private static String vocabulary(String value,String... allowed)
 	{ return Arrays.asList(allowed).contains(value)?value:"UNKNOWN"; }
 	private static Context context(NexSummary.Sample sample)
 	{
-		String target=sample.target!=null && sample.target.split("@",2)[0].equals("NEX")?"NEX":"UNKNOWN";
+		String target=sample.target==null?"UNKNOWN":vocabulary(sample.target.split("@",2)[0],"NEX","FUMUS","UMBRA","CRUOR","GLACIES");
 		String phase=vocabulary(sample.phase,"SMOKE","SHADOW","BLOOD","ICE","ZAROS");
 		Window window="FEAR_THE_SHADOW".equals(sample.window)?Window.FEAR_THE_SHADOW:"EMBRACE_DARKNESS".equals(sample.window)?Window.EMBRACE_DARKNESS
-			:sample.window!=null && Set.of("UNKNOWN","NONE").contains(sample.window)?Window.BASE:Window.SPECIAL;
+			:"NONE".equals(sample.window)?Window.BASE:"UNKNOWN".equals(sample.window) || sample.window==null?Window.UNKNOWN:Window.SPECIAL;
+		if(!target.equals("NEX") && ("MINION_"+target).equals(sample.window)) { window=Window.BASE; }
 		return new Context(target,phase,window);
 	}
 	private int projectile(CombatState state)

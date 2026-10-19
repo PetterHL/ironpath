@@ -19,7 +19,8 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Complete | **Current UI and sidebar simplification** | 0.23.3 consolidated main baseline; Gear & method / Gear & unlocks removed |
 | Complete | **CTX1 #43 / UI1 #46 / N3 #45 / PR #48** | Full ancestry retained in main; live acceptance remains open |
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
-| After context/evidence contracts | **N3 recommendation integration** | Declared runtime plans exist; attribution/remaining mechanics and automatic recommendations remain separate |
+| For review | **N3 decision support (0.24.0)** | Declared supplies, minion windows, scoped costs/routes and capture-to-scenario evidence contract |
+| After evidence/phase validation | **N3 automatic recommendations** | Launch/HP/cast/consumption attribution and Zaros overhead/stat support remain unavailable |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
 
@@ -271,31 +272,47 @@ User authorization on 18 October expands N3A to the combined N3A/B/C delivery.
 - [x] Integrate the runtime-plan delivery and the complete CTX1/UI lineage into main.
 - [ ] Validate native client/player use together with the existing open live checks.
 
-## N3 — Remaining recommendation integration and mechanics
+## N3 — Decision support and remaining automatic recommendations
 
-N3a resources, N3b damage/ammo and N3c package APIs plus the optional declared
-runtime plan caller are implemented. Reuse
-[N3b](docs/research/nex-spec-damage.md), [N3c](docs/research/nex-packages.md),
-NexPackageFactory/NexPackageComparison and the existing catalogue.
+Development build **0.24.0**, for review, starts from consolidated main `7f68d0e`.
+[Contract and source review](docs/research/nex-decision-support.md) ·
+[Verification](docs/validation/nex-decision-support.md).
+Reuses the N3A/B/C runtime caller, package factory and catalogue; no second engine.
 
-- [ ] Establish a bounded evidence-backed capture-to-scenario contract for useful
-  recommendations. Unknown opportunities, HP, initial resources, restore phase/
-  order and casts/deaths remain unknown. Worn time, impact equipment and net
-  energy deltas are not attack attribution.
-- [ ] Close required pilot target/phase mechanics before enabling dependent
-  personal comparisons. Separate actual-to-owned and owned-to-upgrade, recomputing
-  whole packages with exact variants, locks, hands/ammo, shared energy, displaced
-  attacks, joint usable stock and packing.
-- [ ] Add supported acquisition and recurring-cost presentation using retained
-  route data. Distinguish permanent unlocks from ammunition/quiver charges and
-  consumption. Do not revive the global-grind homepage.
-- [ ] Include food/combofood, brews/restores/potions and spells only with supported
-  consumption/delay/boost/resource evidence; preserve healing/survival gaps.
+- [x] Establish a bounded capture-to-scenario contract. Freeze public package,
+  levels and raw readings; explicitly declare legal opportunities, HP, readiness,
+  restoration/order and eligible casts/deaths. Preserve fixed allowlisted automatic
+  evidence requirements in reports; no worn-time/impact/net-delta attribution.
+- [x] Keep unknown captured windows unknown. Add matching declared vulnerable
+  Fumus/Umbra/Cruor/Glacies windows using their own stats, size and non-Magic flat
+  armour. Apply the transform before supplied HP/hard caps; preserve misses and
+  Magic-type Voidwaker handling. Other target/phase gaps preserve finite resources.
+- [x] Present higher/same/lower damage for the selected complete conditional pair,
+  with separate captured-to-owned and owned-to-upgrade results; no global ranking.
+- [x] Reuse reviewed exact-item acquisition routes without asserting completed
+  components, personal odds, pace or a full-item ETA. Keep permanent unlocks
+  separate from recurring ammunition/charges/consumption.
+- [x] Price admitted ammo, conditional splinter consumption and declared supply
+  units using explicit per-unit GP. Unknown prices withhold the scoped total;
+  other gear upkeep, spell runes, acquisition and whole-trip cost stay excluded.
+- [x] Add declared shark/karambwan combos and brew/restore/super-combat/ranging
+  doses with finite captured stock, eating/drinking bounds, shared displaced-attack
+  delays and per-launch level recomputation. Require a separate unchecked supply
+  declaration. Keep per-launch HP independent; no healing/survival optimizer.
+- [x] Extend the existing DEV1 scenario and targeted regressions for unknown
+  windows, minion transforms, dose exhaustion, drains/reboosts, scoped costs,
+  unconfirmed supply choices, stale edits, selectable reports and Reset.
+- [ ] Establish independently corroborated legal launches, per-launch HP, initial
+  readiness, restore phase/order, spell/death events and usable stock for automatic
+  recommendations. Current capture does not supply these facts.
+- [ ] Review/validate Zaros overhead and target-stat effects plus other special
+  windows before enabling dependent personal comparisons. A base-stat or minion
+  scenario is not a full encounter model. The earlier generic “Zaros soft cap”
+  wording is not an established OSRS rule and must not become a formula.
+- [ ] Validate native client/player use, real supply/charge/quantity readings and
+  gameplay mappings together with N1/N2/CTX1 live checks. No automatic spec advice,
+  cast/consumption inference, healing trajectory, survival or N4 time claim.
 
-The user requested the combined declared-plan slice above while CTX1 is still
-in review. Do not rebuild delivered kernels or advertise conditional plans as
-automatic live recommendations. Remaining automatic evidence/phase mechanics,
-acquisition and food/potion work stay open.
 
 ## N4 — Validate personal contribution and team-time estimates
 
