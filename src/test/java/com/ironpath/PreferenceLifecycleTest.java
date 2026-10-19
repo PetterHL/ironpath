@@ -174,7 +174,7 @@ public class PreferenceLifecycleTest
 		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(0,20,60));
 		callbacks(); load(); assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
 		plugin.onGameTick(new GameTick()); SwingUtilities.invokeAndWait(()->{});
-		SwingUtilities.invokeAndWait(()->{button("Encounter").doClick();button("Clear session").doClick();});
+		SwingUtilities.invokeAndWait(()->{com.ironpath.dev.PanelPreview.encounter(panel);button("Clear session").doClick();});
 		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(100,20,60)); callbacks();
 		assertEquals(2,plugin.nexSession.recent().size());
 	}

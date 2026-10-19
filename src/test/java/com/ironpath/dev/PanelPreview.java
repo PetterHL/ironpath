@@ -71,6 +71,29 @@ public final class PanelPreview
 			&& tooltip.equals(((JButton) c).getToolTipText())).findFirst().orElseThrow(() -> new IllegalStateException("Missing visible action: " + tooltip));
 		button.doClick(0);
 	}
+	/** Open an independent section without treating its header as an idempotent tab. */
+	public static void openSection(Container panel,String title)
+	{
+		requireEdt();
+		JButton header=section(panel,title);
+		if(!header.isSelected()) { header.doClick(0); }
+	}
+	public static void closeSection(Container panel,String title)
+	{
+		requireEdt(); JButton header=section(panel,title);
+		if(header.isSelected()) { header.doClick(0); }
+	}
+	private static JButton section(Container panel,String title)
+	{
+		return (JButton)children(panel).stream().filter(c->c instanceof JButton && c.getName()!=null
+			&& c.getName().startsWith("nex-section-") && title.equals(((JButton)c).getToolTipText())).findFirst().orElseThrow();
+	}
+	public static void encounter(Container panel)
+	{
+		for(String title:List.of("Team & method","Gear & method","Gear & unlocks","Diagnostics")) { closeSection(panel,title); }
+		openSection(panel,"Compare setups");
+		if(children(panel).stream().anyMatch(c->c instanceof JButton && visible(c) && "Back to encounter".equals(((JButton)c).getToolTipText()))) { click(panel,"Back to encounter"); }
+	}
 
 	public static JComboBox<?> combo(Container panel, String name)
 	{

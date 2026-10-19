@@ -45,6 +45,7 @@ public class NexSpritesTest
 		ItemManager items=mock(ItemManager.class); ClientThread clientThread=mock(ClientThread.class);
 		doAnswer(call->{ ((Runnable)call.getArgument(0)).run(); return null; }).when(clientThread).invokeLater(any(Runnable.class));
 		var delayed=new AsyncBufferedImage(clientThread,36,32,BufferedImage.TYPE_INT_ARGB);
+		when(items.getImage(anyInt())).thenAnswer(call->new AsyncBufferedImage(clientThread,36,32,BufferedImage.TYPE_INT_ARGB));
 		when(items.getImage(11212)).thenReturn(delayed);
 		var catalog=KnowledgeCatalog.load(new Gson());
 		var sample=NexOwnedFixtures.sample("ranged",NexOwnedFixtures.state(NexOwnedFixtures.ranged(),Map.of(11212,200L)));

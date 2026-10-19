@@ -36,6 +36,39 @@ public class NexScenarioPanelTest
 		for(String name:List.of("n3-legal","n3-condition-1","n3-condition-2","n3-condition-3","n3-condition-4","n3-condition-5","n3-condition-6","n3-condition-7","n3-condition-8"))
 		{ JCheckBox choice=named(panel,name,JCheckBox.class); if(!choice.isSelected()) { choice.doClick(); } }
 	}
+	@Test public void invalidFieldsExplainTheirOwnBoundsWithoutQueuingOrKeepingResults() throws Exception
+	{
+		var source=NexPlanComparisonTest.fixture(catalog,27690,0,Map.of(),Map.of("inventory-slots-used",0),false);
+		List<Runnable> tasks=new ArrayList<>();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=new NexScenarioPanel(source,0,0,catalog,text->{},"SYNTHETIC_OFFLINE",new Font("DejaVu Sans",Font.PLAIN,12));
+			panel.attach(()->true,tasks::add); PanelPreview.click(panel,"Plan specs & gear");
+			String[][] cases={
+				{"n3-horizon","4000","Window length: enter a whole number from 1 to 3000"},
+				{"n3-horizon","0","Window length"},{"n3-horizon","1.5","Window length"},
+				{"n3-energy","100.1","Starting spec energy: use 0–100% in steps of 0.1%"},
+				{"n3-energy","-1","Starting spec energy"},{"n3-energy","50.01","Starting spec energy"},{"n3-energy","text","Starting spec energy"},
+				{"n3-target-hp","0","Target HP: enter a whole number from 1 to 100000"},
+				{"n3-player-hp","256","Player HP: enter a whole number from 1 to 255"},
+				{"n3-restore","26","First restore tick: enter a whole number from 0 to 25"},
+				{"n3-cap","-1","Damage cap"},{"n3-opportunities","0,0","distinct increasing whole ticks, 0–4"},
+				{"n3-opportunities","4,0","Attack ticks"},{"n3-opportunities","0,5","before window end 5"},
+				{"n3-opportunities","-1","Attack ticks"},{"n3-opportunities","","Attack ticks"},
+				{"n3-opportunities","0,","Attack ticks"},{"n3-opportunities","9999999999999","Attack ticks"},
+				{"n3-casts","0,0","Death Charge cast ticks"},{"n3-deaths","5","Eligible death ticks"}
+			};
+			for(String[] input:cases)
+			{
+				fill(panel); named(panel,"n3-casts",JTextField.class).setText(""); named(panel,"n3-deaths",JTextField.class).setText("");
+				named(panel,input[0],JTextField.class).setText(input[1]); PanelPreview.click(panel,"Compare this plan");
+				assertTrue(Arrays.toString(input)+"\n"+PanelPreview.text(panel),PanelPreview.text(panel).contains(input[2]));
+				assertTrue(tasks.isEmpty()); assertNull(panel.result()); assertNull(named(panel,"n3-report",JTextArea.class));
+			}
+			fill(panel); named(panel,"n3-deaths",JTextField.class).setText("");
+			named(panel,"n3-energy",JTextField.class).setText("99.9"); PanelPreview.click(panel,"Compare this plan");
+			assertEquals(1,tasks.size()); assertFalse(PanelPreview.text(panel).contains("Eligible death ticks:"));
+		});
+	}
 	@Test public void eachScenarioChoiceStartsUnknownAndIndependentlyGatesFiniteResults() throws Exception
 	{
 		List<Runnable> tasks=new ArrayList<>(); var ref=new AtomicReference<NexScenarioPanel>();

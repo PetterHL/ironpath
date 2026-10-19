@@ -340,3 +340,14 @@ retains explicit finite inputs and each required scenario choice. The first-scre
 viewport explicitly resets position when reparenting a shorter-than-600px panel.
 Empty status rows occupy no space; errors are checked when present.
 [Before/after provenance, selected images and verification](validation/ui1-47-wording-layout.md).
+
+## PR #48 review follow-up
+
+Build 0.23.1 replaces top tabs with independent sections. Last kill remains
+above Compare setups; secondary forms and Diagnostics start collapsed. DEV1
+uses explicit section open/close actions and scrolls viewports to the section
+being reviewed. This supersedes earlier tab/first-screen Diagnostics directions.
+`nex-visual` adds collapsed-secondary, populated-correction and invalid-window
+viewports. `nex-bank-trip` adds verified Waiting for Nex viewports, and
+`nex-arena-reload` checks Loading encounter… before fresh public arena evidence.
+Run both TASKS commands and inspect [the follow-up evidence](validation/pr48-review-followup.md).

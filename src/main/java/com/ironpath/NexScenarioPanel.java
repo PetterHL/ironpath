@@ -129,20 +129,21 @@ final class NexScenarioPanel extends JPanel
 		revalidate(); repaint();
 	}
 	private void invalidateResult() { ++request; result=null; report=null; output.removeAll(); calculate.setEnabled(valid.getAsBoolean()); refresh(); }
-	private void message(String text) { output.removeAll(); PanelWidgets.text(output,text); refresh(); }
+	private void message(String text) { output.removeAll(); PanelWidgets.text(output,text); output.getComponent(0).setName("n3-feedback"); refresh(); }
 	private void calculate()
 	{
 		if(!valid.getAsBoolean()) { return; }
 		NexPlanComparison.Declaration declaration;
 		try
 		{
-			Integer initial=energy.getText().isBlank()?null:new BigDecimal(energy.getText().trim()).movePointRight(1).intValueExact();
-			declaration=new NexPlanComparison.Declaration(Integer.parseInt(horizon.getText().trim()),initial,number(restore),
+			int end=number(horizon,"Window length",1,SpecTimeline.MAX_TICKS,true);
+			Integer initial=energy();
+			declaration=new NexPlanComparison.Declaration(end,initial,number(restore,"First restore tick",0,25,false),
 				order.getSelectedIndex()==0?null:order.getSelectedIndex()==1?SpecTimeline.RestoreOrder.BEFORE_EVENTS:SpecTimeline.RestoreOrder.AFTER_EVENTS,
-				number(targetHp),number(playerHp),number(cap),tri(kandarin),tri(ruby),conditions.values().stream().allMatch(JCheckBox::isSelected),NexPlanComparison.Policy.values()[policy.getSelectedIndex()],
-				offsets(opportunities),offsets(casts),offsets(deaths),edits,quantities);
+				number(targetHp,"Target HP",1,100000,false),number(playerHp,"Player HP",1,255,false),number(cap,"Damage cap",1,100000,false),tri(kandarin),tri(ruby),conditions.values().stream().allMatch(JCheckBox::isSelected),NexPlanComparison.Policy.values()[policy.getSelectedIndex()],
+				offsets(opportunities,"Attack ticks",end,true),offsets(casts,"Death Charge cast ticks",end,false),offsets(deaths,"Eligible death ticks",end,false),edits,quantities);
 		}
-		catch(IllegalArgumentException | ArithmeticException ex) { invalidateResult(); message("Check HP, energy and tick inputs"); return; }
+		catch(InputError ex) { invalidateResult(); message(ex.getMessage()); return; }
 		String selectedConditions=conditions.values().stream().map(check->check.getToolTipText()+"="+check.isSelected()).collect(java.util.stream.Collectors.joining("; "));
 		long ticket=++request; result=null; report=null; message("Recalculating…"); calculate.setEnabled(false);
 		try { execute.accept(()->{
@@ -202,12 +203,38 @@ final class NexScenarioPanel extends JPanel
 
 	private static String metric(Double value) { return value==null?"unavailable":String.format(Locale.ROOT,"%.2f",value); }
 	private static String gain(Double value) { return value==null?"unavailable":String.format(Locale.ROOT,"%+.2f",value); }
-	private static Integer number(JTextField field) { return field.getText().isBlank()?null:Integer.valueOf(field.getText().trim()); }
-	private static Boolean tri(JComboBox<?> combo) { return combo.getSelectedIndex()==0?null:combo.getSelectedIndex()==2; }
-	private static List<Integer> offsets(JTextField field)
+	private static final class InputError extends IllegalArgumentException
+	{ InputError(String message) { super(message); } }
+	private static Integer number(JTextField field,String label,int min,int max,boolean required)
 	{
-		if(field.getText().isBlank()) { return List.of(); }
-		String[] parts=field.getText().trim().split(",",-1); if(parts.length>128) { throw new IllegalArgumentException(); }
-		List<Integer> result=new ArrayList<>(); for(String part:parts) { result.add(Integer.valueOf(part.trim())); } return result;
+		if(field.getText().isBlank() && !required) { return null; }
+		try { int value=Integer.parseInt(field.getText().trim()); if(value>=min && value<=max) { return value; } }
+		catch(NumberFormatException ex) { /* Use the field's public constraint below. */ }
+		throw new InputError(label+": enter a whole number from "+min+" to "+max+".");
+	}
+	private Integer energy()
+	{
+		if(energy.getText().isBlank()) { return null; }
+		try
+		{
+			int value=new BigDecimal(energy.getText().trim()).movePointRight(1).intValueExact();
+			if(value>=0 && value<=1000) { return value; }
+		}
+		catch(IllegalArgumentException | ArithmeticException ex) { /* Use a bounded, actionable message. */ }
+		throw new InputError("Starting spec energy: use 0–100% in steps of 0.1%.");
+	}
+	private static Boolean tri(JComboBox<?> combo) { return combo.getSelectedIndex()==0?null:combo.getSelectedIndex()==2; }
+	private static List<Integer> offsets(JTextField field,String label,int end,boolean required)
+	{
+		if(field.getText().isBlank() && !required) { return List.of(); }
+		String error=label+": enter "+(required?"1–128":"up to 128")+" distinct increasing whole ticks, 0–"+(end-1)+", separated by commas (before window end "+end+").";
+		String[] parts=field.getText().trim().split(",",-1); if(parts.length>NexPlanComparison.MAX_OPPORTUNITIES) { throw new InputError(error); }
+		List<Integer> result=new ArrayList<>(); int previous=-1;
+		for(String part:parts)
+		{
+			int tick; try { tick=Integer.parseInt(part.trim()); } catch(NumberFormatException ex) { throw new InputError(error); }
+			if(tick<0 || tick>=end || tick<=previous) { throw new InputError(error); } result.add(tick); previous=tick;
+		}
+		return result;
 	}
 }

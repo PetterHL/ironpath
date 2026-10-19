@@ -20,7 +20,7 @@ final class OfflineN3Scenario
 				r.fight(30,20,60,true); r.settle(); if(font==12) { OfflineReview.versions(report,r.catalog); }
 				final NexScenarioPanel[] panel={null};
 				edt(()->{
-					PanelPreview.click(r.panel,"Plan specs & gear");
+					PanelPreview.click(r.panel,"Compare with owned gear"); PanelPreview.combo(r.panel,"nex-owned-support-filter").setSelectedItem("All states");
 					PanelPreview.click(r.panel,"Spec energy & Death Charge"); PanelPreview.click(r.panel,"Natural-restoration examples");
 				});
 				report.check("N3A three bounded natural-restoration examples "+font,3,r.plugin.ownedResult.resources.scenarios.examples.size());

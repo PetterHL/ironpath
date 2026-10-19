@@ -14,7 +14,15 @@
 
 ## Current delivery
 
-- Issue #47 is the active presentation refinement, development build **0.23.0**.
+- Issue #47 is the active presentation refinement, development build **0.23.1**.
+  PR #48’s approved review replaces top tabs with independent collapsible sections:
+  Last kill always visible; Compare setups open; Team & method, Gear & method,
+  Gear & unlocks and Diagnostics initially closed, Diagnostics last. Read
+  docs/validation/pr48-review-followup.md. Preserve drafts/selection/scroll across
+  refresh and verified reloads; identity/reset/eviction still clear evidence.
+  Use Waiting for Nex only after arena/capture readiness; keep distinct loading,
+  bank, account/world and settings statuses. Invalid plan submissions need brief
+  field-specific bounds; saved correction timestamps belong in Diagnostics.
   Read docs/validation/ui1-47-wording-layout.md and docs/UX.md. TASKS.md remains
   the sole backlog. Normal screens contain results, short labels and controls;
   technical explanations, scope/assumption paragraphs, pilot/testing/future-work

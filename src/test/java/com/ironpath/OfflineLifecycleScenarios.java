@@ -124,6 +124,9 @@ final class OfflineLifecycleScenarios
 		capture(r, output, "at-bank", font, report);
 		r.loading(); r.arrive(false);
 		report.check("Recognized arena return retains history (kill #" + first.key + ")", true, first == r.plugin.nexSession.stats().last);
+		onEdt(()->report.check("Verified portal arrival is ready "+font,"Waiting for Nex",NexScenarioPanelTest.named(r.panel,"nex-tracking-status",javax.swing.JTextArea.class).getText()));
+		capture(r,output,"waiting-for-nex",font,report);
+		onEdt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("waiting-for-nex-viewport-"+font+".png"),225,600,null,List.of("nex-tracking-status"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
 		var second = r.fight(30, 60, 60, true); r.settle();
 		report.check("Second bank-trip kill is complete", Outcome.COMPLETE, second.outcome);
 		report.check("Two independent completed encounters", 2, r.plugin.nexSession.stats().complete);
@@ -151,7 +154,7 @@ final class OfflineLifecycleScenarios
 		report.check("Outbound scene cannot restart capture", false, r.plugin.nex.capture.active());
 		report.check("Outbound old comparison remains hidden", null, r.plugin.ownedResult);
 		onEdt(() -> {
-			report.check("Paused view explains bank revalidation", true, PanelPreview.text(r.panel).contains("Session paused"));
+			report.check("Paused view explains bank revalidation", true, PanelPreview.text(r.panel).contains("Open bank to verify"));
 			report.check("Reset is available after live account revalidation", true, PanelPreview.children(r.panel).stream()
 				.anyMatch(c -> c instanceof javax.swing.JButton && "nex-reset".equals(c.getName()) && PanelPreview.visible(c)));
 		});
@@ -181,10 +184,12 @@ final class OfflineLifecycleScenarios
 		r.loading(); r.bossPresent = false; r.loading(); r.arrive(false, false);
 		report.check("Missing NPCs during rebuild keep history suspended", true, r.plugin.nexSession.suspended());
 		report.check("Rebuilding scene keeps old results inaccessible", 0, r.plugin.nexSession.recent().size());
+		onEdt(()->report.check("Missing arena evidence shows loading, not ready "+font,"Loading encounter…",NexScenarioPanelTest.named(r.panel,"nex-tracking-status",javax.swing.JTextArea.class).getText()));
 		capture(r, output, "rebuilding", font, report);
 		r.bossPresent = true; r.tick(); r.settle();
 		report.check("Same-arena evidence resumes without a bank visit", false, r.plugin.nexSession.suspended());
 		report.check("Arena reload retains the exact complete summary", true, first == r.plugin.nexSession.stats().last);
+		onEdt(()->report.check("Revalidated arena is ready "+font,"Waiting for Nex",NexScenarioPanelTest.named(r.panel,"nex-tracking-status",javax.swing.JTextArea.class).getText()));
 		var second = r.fight(30, 60, 60, true); r.settle();
 		report.check("Next real smoke callback reaches capture after reload", true, second.key != first.key);
 		report.check("Next post-reload kill completes", Outcome.COMPLETE, second.outcome);
@@ -201,9 +206,9 @@ final class OfflineLifecycleScenarios
 		report.check("Replacement worker is actually queued", 1, r.workers.size());
 		report.check("Replacement remains unpublished while held", null, r.plugin.ownedResult);
 		r.edt();
-		onEdt(()->{ PanelPreview.click(r.panel,"Diagnostics"); report.check("Pending Diagnostics has no substituted calculation",true,PanelPreview.text(r.panel).contains("Calculation pending")); });
+		onEdt(()->{ PanelPreview.openSection(r.panel,"Diagnostics"); report.check("Pending Diagnostics has no substituted calculation",true,PanelPreview.text(r.panel).contains("Calculation pending")); });
 		capture(r,output,"pending-diagnostics",font,report);
-		onEdt(()->PanelPreview.click(r.panel,"Encounter"));
+		onEdt(()->PanelPreview.encounter(r.panel));
 		Runnable stale = r.workers.take();
 		Runnable publication;
 		if (identity)
@@ -254,12 +259,12 @@ final class OfflineLifecycleScenarios
 		});
 		capture(r, output, "inspecting-first", font, report);
 		final String[] frozenReport={null};
-		onEdt(()->{ PanelPreview.click(r.panel,"Diagnostics"); frozenReport[0]=exportText(r); });
+		onEdt(()->{ PanelPreview.openSection(r.panel,"Diagnostics"); frozenReport[0]=exportText(r); });
 		var second = r.fight(30, 40, 40, true); r.settle();
 		report.check("Fresh result publishes while earlier comparison is open (kill #" + second.key + ")", true, second == r.plugin.ownedResult.summary);
 		onEdt(() -> {
 			report.check("Export also stays bound to earlier selected negative pair",frozenReport[0],exportText(r));
-			PanelPreview.click(r.panel,"Back to comparison");
+			PanelPreview.closeSection(r.panel,"Diagnostics");
 			report.check("Earlier comparison stays frozen", true, PanelPreview.text(r.panel).contains("Owned gear · kill #" + first.key));
 			report.check("Selected negative alternative stays selected", true, PanelPreview.text(r.panel).contains("Amulet of blood fury"));
 			PanelPreview.click(r.panel, "Spec energy & Death Charge");
@@ -284,10 +289,10 @@ final class OfflineLifecycleScenarios
 	{ return ((javax.swing.JTextArea)PanelPreview.children(r.panel).stream().filter(c->"nex-report-text".equals(c.getName())).findFirst().orElseThrow()).getText(); }
 	private static void diagnostics(OfflinePluginReplay r,Path output,int font,ReviewReport report) throws Exception
 	{
-		onEdt(()->PanelPreview.click(r.panel,"Diagnostics"));
+		onEdt(()->PanelPreview.openSection(r.panel,"Diagnostics"));
 		capture(r,output,"diagnostics",font,report);
 		onEdt(()->{
-			try { PanelPreview.viewport(r.panel,output.resolve("diagnostics-viewport-"+font+".png"),225,600,null,List.of("nex-copy-report"),report); }
+			try { PanelPreview.viewport(r.panel,output.resolve("diagnostics-viewport-"+font+".png"),225,600,"nex-section-diagnostics",List.of("nex-copy-report"),report); }
 			catch(Exception ex) { throw new RuntimeException(ex); }
 			PanelPreview.click(r.panel,"Copy report now");
 			report.check("Clipboard failure keeps selectable report "+font,true,PanelPreview.text(r.panel).contains("Clipboard unavailable or busy"));

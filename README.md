@@ -7,12 +7,18 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**19 October 2026: development build 0.23.0 — issue #47 UI refinement for review.**
+**19 October 2026: development build 0.23.1 — PR #48 review follow-up.**
 The native Encounter panel uses concise OSRS labels, centred results and genuine
 item/package sprites. Normal screens keep results and controls; Diagnostics holds
 technical explanations, calculation scope, provenance and reports. **Damage
 contribution** names the existing observed hitsplat ratio; its mathematics is unchanged.
-[Native before/after evidence and validation](docs/validation/ui1-47-wording-layout.md).
+Last kill stays above independent collapsible sections: Compare setups (open),
+Team & method, Gear & method, Gear & unlocks and Diagnostics (initially closed).
+Verified arrival shows **Waiting for Nex**; loading, bank verification, unsupported
+accounts/worlds and unavailable settings have distinct statuses. Invalid plan
+inputs explain their field bounds. Saved corrections use readable states.
+[Review corrections, native screenshots and validation](docs/validation/pr48-review-followup.md) ·
+[Original before/after evidence](docs/validation/ui1-47-wording-layout.md).
 
 This isolated delivery joins current main's N3 runtime plans with CTX1 #43 and
 UI1 #46. Optional **Team & method** corrections and future defaults retain frozen

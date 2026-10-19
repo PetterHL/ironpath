@@ -13,7 +13,7 @@ public final class NexSession
 	private String resetReason;
 	private int world, suspendedAt;
 	private boolean suspended, atBank, returning, arenaReload;
-	private long revision;
+	private long revision, scope;
 	public synchronized long revision() { return revision; }
 	public synchronized boolean suspended() { return suspended; }
 	public synchronized boolean accepts(String identity,int world)
@@ -94,7 +94,9 @@ public final class NexSession
 		clearData();
 	}
 	public synchronized void clear() { clear(null); }
-	private void clearData() { identity=null; world=0; suspendedAt=0; suspended=atBank=returning=arenaReload=false; recent.clear(); records.clear(); ++revision; }
+	private void clearData() { identity=null; world=0; suspendedAt=0; suspended=atBank=returning=arenaReload=false; recent.clear(); records.clear(); ++revision; ++scope; }
+	/** Awaiting public arena evidence, rather than an outbound bank verification. */
+	public synchronized boolean awaitingArena() { return suspended && (returning || arenaReload); }
 	public synchronized List<NexSummary> recent() { return suspended ? List.of() : List.copyOf(recent); }
 	public synchronized Stats stats()
 	{
@@ -102,19 +104,22 @@ public final class NexSession
 		NexSummary last=all.stream().filter(s->s.outcome==Outcome.COMPLETE).reduce((a,b)->b).orElse(null);
 		List<NexSummary> cohort=new ArrayList<>();
 		if (last!=null) { all.stream().filter(s->record(last.key).matches(record(s.key))).forEach(cohort::add); }
-		return new Stats(all,last,cohort,resetReason,suspended?Map.of():records);
+		return new Stats(all,last,cohort,resetReason,suspended?Map.of():records,scope,suspended);
 	}
 	public static final class Stats
 	{
 		public final NexSummary last, lastAttempt;
 		public final String resetReason;
+		public final long scope;
+		public final boolean suspended;
 		public final int attempts, complete, failed, censored, n, shareN;
 		public final double meanSeconds, minSeconds, maxSeconds, meanShare, minShare, maxShare, aggregateShare;
 		public final List<NexSummary> cohort;
 		public final Map<Long,NexRecord> records;
 		public NexRecord record(NexSummary summary) { return summary==null?null:records.get(summary.key); }
-		Stats(List<NexSummary> all, NexSummary last, List<NexSummary> cohort,String resetReason,Map<Long,NexRecord> records)
+		Stats(List<NexSummary> all, NexSummary last, List<NexSummary> cohort,String resetReason,Map<Long,NexRecord> records,long scope,boolean suspended)
 		{
+			this.scope=scope; this.suspended=suspended;
 			this.records=Map.copyOf(records);
 			this.resetReason=resetReason;
 			this.last=last; lastAttempt=all.isEmpty()?null:all.get(all.size()-1); this.cohort=List.copyOf(cohort); attempts=all.size(); n=cohort.size();

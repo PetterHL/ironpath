@@ -1,18 +1,38 @@
 # Encounter-first UX
 
-Current presentation decisions: **19 October 2026, issue #47 / build 0.23.0**.
+Current presentation decisions: **19 October 2026, PR #48 approved review / build 0.23.1**.
 [TASKS](../TASKS.md) is the sole backlog. This guidance supersedes earlier requests
 for scope/assumption paragraphs beside cards or in ordinary details. Historical
 validation records retain their original screenshots and acceptance boundaries.
 
 ## Normal screens
 
-Keep the native 225px single column with **Encounter / Diagnostics** navigation.
+Keep one native 225px **Encounter** sidebar with independently collapsible sections.
+The last kill duration and Damage contribution stay visible above Compare setups
+(initially expanded), Team & method, Gear & method, Gear & unlocks and Diagnostics
+(initially collapsed, Diagnostics last). Each full-width header has a small arrow,
+is wholly clickable and supports Space/Enter with an accessible expansion state.
+Collapsed headers have no explanatory subtitle. Retain expansion during use.
+Do not duplicate section navigation with separate tab/buttons.
+
+Context/default and gear drafts, the selected kill/state/package, planner inputs
+and scroll position survive unrelated renders and verified scene reloads. Keep
+Plan specs & gear within its selected comparison. Hide suspended evidence and
+clear reports immediately; restore drafts only within the same session scope.
+Identity/world/reset/eviction guards discard unavailable evidence and stale actions.
+
 Encounter shows the last complete duration and **Damage contribution**, optional
 matched mean/count, a compact confirmed/unconfirmed team/method strip, **Compare
 setups** cards, inspection actions and gear/session controls. Incomplete attempts
 stay separate; pending/no-comparison/no-positive states use one brief status.
 No forced focus/navigation or live combat coaching.
+
+Use **Loading encounter…** while arrival/reload evidence is pending, **Waiting for
+Nex** only when the arena is verified and capture is ready, **Tracking kill…**
+during capture and **Kill tracking: Off** when disabled. Outbound bank verification
+keeps an actionable bank instruction. Login/account loading, unsupported account,
+unsupported world and unavailable settings have distinct brief reasons. Detailed
+transitions belong in Diagnostics.
 
 Normal cards and details show item/package identity, the supported result and
 controls. Keep short role/phase and origin labels where they identify the result:
@@ -57,6 +77,9 @@ Render account-choice descriptions, never keys such as owns-r3bFang. If a retain
 ownership label is missing, derive it from **every exact member** of the existing
 set, preserving its confirmation key and membership. Long selected names must be
 readable in the adjacent value or tooltip without changing the underlying choice.
+Saved corrections show their readable name and Owned / Not owned or Unlocked /
+Locked state. Timestamps and manual provenance belong in Diagnostics; observed
+facts keep their precedence over saved corrections.
 
 Team editing remains optional: independent strategy, team type and exact/variable/
 unknown count, per-field confirmation and a separate Use for future choice.
@@ -70,6 +93,10 @@ Lightbearer throughout; usable gear/stock; runes/legal casts; distinct eligible
 deaths; fixed HP/phase; spell/switch delays included. Detailed definitions live in
 Diagnostics. Never tick hidden confirmations or fabricate unknown values. Copy
 plan report explicitly reveals the selectable report, including clipboard fallback.
+Invalid submissions show transient field-specific constraints: window 1–3000
+whole ticks, energy 0–100% in 0.1% steps, bounded HP/restore/cap values and
+1–128 distinct increasing attack ticks before the exclusive window end. Optional
+blank inputs remain unknown. Cast/death lists have the same bounded tick format.
 
 ## Diagnostics
 
@@ -80,7 +107,8 @@ versions/provenance, long missing-coverage lists and raw in-memory readings/trac
 The retained phrase **The pilot keeps Lightbearer equipped.** belongs here.
 
 Keep useful actual gear Details actions. Do not replace removed prose with rows
-of explanation buttons, new accordions or info icons. Ordinary Full gear setups
+of explanation buttons or info icons. Use the approved main sections rather than
+adding explanation sections to individual cards. Ordinary Full gear setups
 shows gear, while calculation assumptions and raw capture/resource inspection are
 under existing Diagnostics → Calculation details. An unsupported number remains
 unavailable after its explanation moves.
@@ -99,8 +127,8 @@ clear them with record/identity/visibility guards. Paused history stays inaccess
 Centre section headings, headline values, item/package content groups and action
 button groups with balanced margins. A sprite and long name form one coherent
 centred group with naturally wrapped text. Multi-item packages retain real sprites.
-Keep form labels/fields, tables and long Diagnostics text left aligned. Keep clear
-selected tabs, restrained colours and a compact hierarchy without widening the
+Keep form labels/fields, tables and long Diagnostics text left aligned. Keep
+clear section arrows, restrained colours and a compact hierarchy without widening the
 sidebar, shrinking body fonts or introducing large empty spaces.
 
 Inspect actual same-fixture native Swing **225 × 600** viewports at body fonts
@@ -110,7 +138,8 @@ unknown/unconfirmed and no-positive states. Geometry checks supplement whole-ima
 visual inspection. Keep pinned genuine artwork/Jagex notices; these synthetic
 renders are not live client/player acceptance.
 
-[Issue #47 validation](validation/ui1-47-wording-layout.md) records exact bases,
+[PR #48 follow-up](validation/pr48-review-followup.md) and
+[issue #47 validation](validation/ui1-47-wording-layout.md) record exact bases,
 commands, evidence and remaining live checks. Retain existing banking/reload/reset,
 identity/stale callback, frozen history, Back/scroll, context and independent
 arithmetic regressions. No new formula, boss, acquisition logic, automatic spec

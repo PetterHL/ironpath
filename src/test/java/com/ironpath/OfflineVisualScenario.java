@@ -21,7 +21,7 @@ final class OfflineVisualScenario
 			+"A carried Scorching bow has no ordinary model; supported-domain search exhaustiveness does not establish a global optimum. These are synthetic states, not attributed attacks or global ranks.");
 		for(int font:List.of(12,20))
 		{
-			try(var r=new OfflinePluginReplay(font))
+			try(var r=new OfflinePluginReplay(font,true))
 			{
 				r.carried.put(29591,1L);
 				var summary=r.fight(30,20,60,true,offset->{
@@ -51,18 +51,19 @@ final class OfflineVisualScenario
 						var bounds=SwingUtilities.convertRectangle(metric,new java.awt.Rectangle(0,0,metric.getWidth(),metric.getHeight()),surface);
 						report.check("Centred card metric "+card.choiceIndex+" / "+font,true,Math.abs(bounds.getCenterX()-surface.getWidth()/2.0)<=2);
 					}
-					PanelPreview.viewport(r.panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics","nex-duration","nex-edit-context"),report);
+					PanelPreview.viewport(r.panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-duration","nex-edit-context"),report);
+					PanelPreview.viewport(r.panel,output.resolve("secondary-collapsed-viewport-"+font+".png"),225,600,"nex-section-team",List.of("nex-section-team","nex-section-gear","nex-section-unlocks","nex-section-diagnostics"),report);
 					PanelPreview.click(r.panel,"More comparisons ("+(cards.size()-2)+")");
 					PanelPreview.capture(r.panel,output.resolve("expanded-"+font+".png"),225,report);
 					int third=cards.get(2).choiceIndex;
 					PanelPreview.viewport(r.panel,output.resolve("expanded-viewport-"+font+".png"),225,600,"nex-equipment-card-"+third,List.of("nex-card-metric-"+third,"nex-card-scope-"+third),report);
 					PanelPreview.click(r.panel,"Edit team & method");
 					preview(r,output,"team",font,report);
-					PanelPreview.click(r.panel,"Back to selected view");
-					PanelPreview.click(r.panel,"Gear & method"); preview(r,output,"gear",font,report);
-					PanelPreview.click(r.panel,"Gear & unlocks"); preview(r,output,"unlocks",font,report);
-					PanelPreview.click(r.panel,"Encounter");
-					PanelPreview.click(r.panel,"Diagnostics"); preview(r,output,"diagnostics",font,report);
+					PanelPreview.closeSection(r.panel,"Team & method");
+					PanelPreview.openSection(r.panel,"Gear & method"); preview(r,output,"gear",font,report);
+					PanelPreview.openSection(r.panel,"Gear & unlocks"); preview(r,output,"unlocks",font,report);
+					PanelPreview.encounter(r.panel);
+					PanelPreview.openSection(r.panel,"Diagnostics"); preview(r,output,"diagnostics",font,report);
 					PanelPreview.click(r.panel,"Calculation details");
 					PanelPreview.capture(r.panel,output.resolve("diagnostics-expanded-"+font+".png"),225,report);
 				} catch(Exception ex) { throw new IllegalStateException(ex); } });
@@ -74,6 +75,26 @@ final class OfflineVisualScenario
 					PanelPreview.capture(r.panel,output.resolve("diagnostics-refreshed-"+font+".png"),225,report);
 					PanelPreview.viewport(r.panel,output.resolve("diagnostics-details-viewport-"+font+".png"),225,600,"nex-calculation-details",List.of(),report);
 				} catch(Exception ex) { throw new IllegalStateException(ex); } });
+				// Populate corrections through the real actions and guarded preference writer.
+				SwingUtilities.invokeAndWait(()->{
+					PanelPreview.encounter(r.panel); PanelPreview.openSection(r.panel,"Gear & unlocks");
+					PanelPreview.combo(r.panel,"nex-account-choice").setSelectedItem("owns-r3bFang"); PanelPreview.click(r.panel,"Owned / unlocked");
+				}); r.settle();
+				SwingUtilities.invokeAndWait(()->{
+					PanelPreview.combo(r.panel,"nex-account-choice").setSelectedItem("rigour"); PanelPreview.click(r.panel,"Not owned / locked");
+				}); r.settle();
+				SwingUtilities.invokeAndWait(()->{ try {
+					report.check("Populated corrections use readable state "+font,true,PanelPreview.text(r.panel).contains("Rigour unlock: Locked") && PanelPreview.text(r.panel).contains("(27246): Owned"));
+					report.check("Normal corrections omit timestamps/provenance "+font,false,PanelPreview.text(r.panel).contains("manual planning confirmation"));
+					report.check("Observed Rigour still wins over saved false correction "+font,com.ironpath.model.Truth.TRUE,com.ironpath.advisor.AccountFacts.planning(r.plugin.session.snapshot(),r.plugin.session.preferences(),"rigour"));
+					PanelPreview.capture(r.panel,output.resolve("populated-unlocks-"+font+".png"),225,report);
+					PanelPreview.viewport(r.panel,output.resolve("populated-unlocks-viewport-"+font+".png"),225,600,"nex-saved-corrections",List.of("nex-saved-corrections"),report);
+					PanelPreview.closeSection(r.panel,"Gear & unlocks"); PanelPreview.click(r.panel,"Compare with owned gear"); PanelPreview.click(r.panel,"Plan specs & gear");
+					NexScenarioPanelTest.fill(r.panel); NexScenarioPanelTest.named(r.panel,"n3-horizon",JTextField.class).setText("4000"); PanelPreview.click(r.panel,"Compare this plan");
+					report.check("Invalid window shows its actionable bound "+font,true,PanelPreview.text(r.panel).contains("Window length: enter a whole number from 1 to 3000"));
+					PanelPreview.capture(r.panel,output.resolve("invalid-window-"+font+".png"),225,report);
+					PanelPreview.viewport(r.panel,output.resolve("invalid-window-viewport-"+font+".png"),225,600,"n3-evaluate",List.of("n3-evaluate","n3-feedback"),report);
+				} catch(Exception ex) { throw new IllegalStateException(ex); } });
 			}
 		}
 	}
@@ -81,7 +102,7 @@ final class OfflineVisualScenario
 	{
 		PanelPreview.capture(r.panel,output.resolve(name+"-"+font+".png"),225,report);
 		if(!name.equals("diagnostics")) { concise(r,name,font,report); }
-		PanelPreview.viewport(r.panel,output.resolve(name+"-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics"),report);
+		PanelPreview.viewport(r.panel,output.resolve(name+"-viewport-"+font+".png"),225,600,"nex-section-"+(name.equals("team")?"team":name.equals("gear")?"gear":name.equals("unlocks")?"unlocks":"diagnostics"),List.of(),report);
 	}
 	private static void concise(OfflinePluginReplay r,String screen,int font,ReviewReport report)
 	{

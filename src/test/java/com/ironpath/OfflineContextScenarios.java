@@ -37,11 +37,11 @@ final class OfflineContextScenarios
 	private static void correction(OfflinePluginReplay r,Path output,int font,ReviewReport report) throws Exception
 	{
 		// Optional defaults can be saved without a kill; they do not confirm the next kill.
-		edt(()->{ PanelPreview.click(r.panel,"Default team & method"); fill(r,Strategy.UNKNOWN,Group.UNKNOWN,Participation.UNKNOWN,null,false,false); PanelPreview.click(r.panel,"Save defaults"); });
+		edt(()->{ PanelPreview.openSection(r.panel,"Team & method"); PanelPreview.click(r.panel,"Default team & method"); fill(r,Strategy.UNKNOWN,Group.UNKNOWN,Participation.UNKNOWN,null,false,false); PanelPreview.click(r.panel,"Save defaults"); });
 		r.settle(); edt(()->{
-			PanelPreview.click(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Calculation details");
+			PanelPreview.openSection(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Calculation details");
 			report.check("Saved default source details refresh to the applied values",true,PanelPreview.text(r.panel).contains("Strategy: UNKNOWN; group: UNKNOWN; participation: UNKNOWN"));
-			PanelPreview.click(r.panel,"Back to team & method"); PanelPreview.click(r.panel,"Back to selected view");
+			PanelPreview.openSection(r.panel,"Team & method"); PanelPreview.closeSection(r.panel,"Team & method");
 		});
 		var first=r.fight(20,20,60,true); r.settle();
 		report.check("Unknown saved defaults stay unknown",NexContext.UNKNOWN,first.context);
@@ -59,14 +59,14 @@ final class OfflineContextScenarios
 		report.check("Single confirmed kill is eligible",1,r.plugin.nexSession.stats().n);
 		capture(r,output,"corrected-context",font,report);
 		edt(()->{
-			PanelPreview.viewport(r.panel,output.resolve("context-editor-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics","nex-context-strategy"),report);
+			PanelPreview.viewport(r.panel,output.resolve("context-editor-viewport-"+font+".png"),225,600,"nex-section-team",List.of("nex-context-strategy"),report);
 			PanelPreview.viewport(r.panel,output.resolve("context-fields-viewport-"+font+".png"),225,600,"nex-context-strategy",List.of("nex-context-strategy","nex-context-group","nex-context-participation","nex-context-count"),report);
 			PanelPreview.viewport(r.panel,output.resolve("context-apply-viewport-"+font+".png"),225,600,"nex-context-participation",List.of("nex-context-participation","nex-context-count","nex-context-apply"),report);
-			PanelPreview.click(r.panel,"Diagnostics");
+			PanelPreview.openSection(r.panel,"Diagnostics");
 		});
 		capture(r,output,"context-source-details",font,report);
-		edt(()->PanelPreview.click(r.panel,"Back to team & method"));
-		edt(()->PanelPreview.click(r.panel,"Encounter"));
+		edt(()->PanelPreview.openSection(r.panel,"Team & method"));
+		edt(()->PanelPreview.encounter(r.panel));
 		var second=r.fight(30,60,60,true); r.settle();
 		open(r); fillAndApply(r,Strategy.MP2,Group.ORGANIZED,Participation.EXACT,3,true,false); r.settle();
 		var stats=r.plugin.nexSession.stats();
@@ -102,10 +102,10 @@ final class OfflineContextScenarios
 		report.check("Newer bank observation really exists",true,r.plugin.session.snapshot().bank.known());
 		r.loading(); r.arrive(false);
 		// Use real Setup action to change future planning. The old calculation must retain its lock.
-		edt(()->PanelPreview.click(r.panel,"Gear & method"));
+		edt(()->PanelPreview.openSection(r.panel,"Gear & method"));
 		edt(()->PanelPreview.combo(r.panel,"nex-lock-slot").setSelectedItem("shield"));
 		edt(()->PanelPreview.click(r.panel,"Remove selected gear lock")); r.callbacks.drain(); r.settle();
-		edt(()->PanelPreview.click(r.panel,"Encounter"));
+		edt(()->PanelPreview.encounter(r.panel));
 		report.check("Future planning lock really changed",false,r.plugin.session.preferences().nex.locks.containsKey("melee/shield"));
 		edt(()->PanelPreview.click(r.panel,"Kill and calculation details"));
 		open(r); // Keep the selected old kill's editor open as the next public attempt starts.
@@ -137,7 +137,7 @@ final class OfflineContextScenarios
 				activeReport(r,output,font,report,first.key,0,"active-frozen-report");
 				report.check("Clipboard fallback leaves the same attempt active",true,r.plugin.nex.capture.active() && activeKey==r.plugin.nex.capture.key());
 				edt(()->{
-					PanelPreview.click(r.panel,"Back to kill details");
+					PanelPreview.closeSection(r.panel,"Diagnostics");
 					report.check("Frozen details remain reachable after account refresh",true,PanelPreview.text(r.panel).contains("Kill #"+first.key+" · ") && !PanelPreview.text(r.panel).contains("Capture adapter "));
 				});
 				open(r);
@@ -158,7 +158,7 @@ final class OfflineContextScenarios
 		report.check("Historical target remains selected while a newer kill publishes",first.key,r.plugin.nexSession.record(first.key).summary.key);
 		capture(r,output,"historical-after-new-kill",font,report);
 		export(r,output,font,report,first.key,1);
-		edt(()->PanelPreview.click(r.panel,"Encounter"));
+		edt(()->PanelPreview.encounter(r.panel));
 		var third=r.fight(20,20,60,true); r.settle();
 		report.check("Remembered strategy snapshots into subsequent attempt",Strategy.RP2,third.context.strategy);
 		report.check("Remembered group stays separate",Group.MASS,third.context.group);
@@ -170,7 +170,7 @@ final class OfflineContextScenarios
 	private static void activeReport(OfflinePluginReplay r,Path output,int font,ReviewReport report,long key,long revision,String state) throws Exception
 	{
 		edt(()->{
-			int attempts=r.clipboardWrites.size(); PanelPreview.click(r.panel,"Diagnostics");
+			int attempts=r.clipboardWrites.size(); PanelPreview.openSection(r.panel,"Diagnostics");
 			JTextArea area=(JTextArea)named(r,"nex-report-text");
 			PanelPreview.click(r.panel,"Show selectable report");
 			report.check(state+" selectable report opens during active capture",true,PanelPreview.visible(area));
@@ -189,7 +189,7 @@ final class OfflineContextScenarios
 			Files.writeString(output.resolve(state+"-"+font+".txt"),text);
 		});
 		capture(r,output,state,font,report);
-		if(r.clipboardAvailable) { edt(()->PanelPreview.viewport(r.panel,output.resolve(state+"-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics","nex-copy-report"),report)); }
+		if(r.clipboardAvailable) { edt(()->PanelPreview.viewport(r.panel,output.resolve(state+"-viewport-"+font+".png"),225,600,"nex-section-diagnostics",List.of("nex-copy-report"),report)); }
 	}
 	private static void pending(OfflinePluginReplay r,Path output,int font,ReviewReport report) throws Exception
 	{
@@ -200,7 +200,7 @@ final class OfflineContextScenarios
 		fillAndApply(r,Strategy.OTHER,Group.MASS,Participation.VARIABLE,null,true,false); r.callbacks.drain(); r.edt();
 		report.check("Repeated edits each produce a distinct revision",2L,r.plugin.nexSession.record(first.key).revision);
 		capture(r,output,"pending-context",font,report);
-		edt(()->PanelPreview.click(r.panel,"Diagnostics"));
+		edt(()->PanelPreview.openSection(r.panel,"Diagnostics"));
 		edt(()->{
 			PanelPreview.click(r.panel,"Copy report now"); String text=reportText(r);
 			report.check("Pending corrected report includes current context revision",true,text.contains("Effective context revision: 2"));
@@ -212,10 +212,10 @@ final class OfflineContextScenarios
 		report.check("Delayed results cannot replace current corrected calculation",true,fresh==r.plugin.nexSession.record(first.key).calculation);
 		export(r,output,font,report,first.key,2);
 		// Hold a corrected worker's publication, then exercise the actual Reset action.
-		edt(()->PanelPreview.click(r.panel,"Encounter")); open(r);
+		edt(()->PanelPreview.encounter(r.panel)); open(r);
 		fillAndApply(r,Strategy.MP2,Group.ORGANIZED,Participation.EXACT,3,true,false); r.callbacks.drain();
 		r.runWorker(r.workers.take()); Runnable stale=r.callbacks.take();
-		edt(()->{ PanelPreview.click(r.panel,"Encounter"); PanelPreview.click(r.panel,"Clear session"); }); r.callbacks.drain(); r.edt();
+		edt(()->{ PanelPreview.encounter(r.panel); PanelPreview.click(r.panel,"Clear session"); }); r.callbacks.drain(); r.edt();
 		report.check("Reset clears annotated records and frozen inputs",0,r.plugin.nexSession.stats().records.size());
 		var next=r.fight(20,20,60,true); r.settle(); var current=r.plugin.ownedResult;
 		stale.run(); r.callbacks.drain(); r.edt();
@@ -236,7 +236,7 @@ final class OfflineContextScenarios
 		GameStateChanged logout=new GameStateChanged(); logout.setGameState(GameState.LOGIN_SCREEN); r.plugin.onGameStateChanged(logout);
 		logoutStale.run(); r.callbacks.drain(); r.edt();
 		report.check("Logout clears annotations, inputs and pending corrected results",true,r.plugin.nexSession.stats().records.isEmpty() && r.plugin.ownedResult==null);
-		edt(()->{ PanelPreview.click(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Copy report now"); report.check("Logout report has no selected kill",false,reportText(r).contains("Report-local kill:")); });
+		edt(()->{ PanelPreview.openSection(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Copy report now"); report.check("Logout report has no selected kill",false,reportText(r).contains("Report-local kill:")); });
 		capture(r,output,"logout-cleared-context",font,report);
 	}
 	private static void open(OfflinePluginReplay r) throws Exception { edt(()->PanelPreview.click(r.panel,"Edit team & method")); }
@@ -257,7 +257,7 @@ final class OfflineContextScenarios
 	private static void export(OfflinePluginReplay r,Path output,int font,ReviewReport report,long key,long revision) throws Exception
 	{
 		edt(()->{
-			PanelPreview.click(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Copy report now"); String text=reportText(r);
+			PanelPreview.openSection(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Copy report now"); String text=reportText(r);
 			report.check("Displayed diagnostic kill stays selected",true,PanelPreview.text(r.panel).contains("Frozen kill #"+key));
 			report.check("Report and selected context revision agree",true,text.contains("Effective context revision: "+revision+";") && text.contains("Calculation context/input revisions: "+revision+" /"));
 			report.check("Corrected report includes no account or roster identity",false,text.contains("offline-synthetic") || text.contains("synthetic member") || text.contains("NEX@"));

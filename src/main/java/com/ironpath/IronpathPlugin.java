@@ -66,6 +66,7 @@ public class IronpathPlugin extends Plugin
 	NexObserver nex;
 	private long lastNexRevision;
 	private boolean lastCaptureActive;
+	private NexPanel.TrackingStatus lastTrackingStatus;
 	volatile com.ironpath.advisor.NexOwnedResult ownedResult;
 	private volatile long ownedTicket;
 	private final java.util.Map<Long,com.ironpath.nex.NexRecord> pendingOwned=new java.util.concurrent.ConcurrentHashMap<>();
@@ -255,11 +256,12 @@ public class IronpathPlugin extends Plugin
 		if(arena && !nexSession.suspended()) { nex.confirmArenaSource(); }
 		if (nexReady()) { nex.method(session.preferences().nex); nex.defaults(session.preferences().nexContext); nex.tick(); }
 		boolean activeChanged=lastCaptureActive!=nex.capture.active();
-		if (lastNexRevision!=nexSession.revision() || activeChanged)
+		boolean statusChanged=lastTrackingStatus!=trackingStatus(session.snapshot());
+		if (lastNexRevision!=nexSession.revision() || activeChanged || statusChanged)
 		{
 			lastNexRevision=nexSession.revision();
 			lastCaptureActive=nex.capture.active();
-			if (!lastCaptureActive || activeChanged) { render("Nex session updated locally.",session.snapshot()); }
+			if (!lastCaptureActive || activeChanged || statusChanged) { render("Nex session updated locally.",session.snapshot()); }
 		}
 		if (!dirty) { return; }
 		long token = session.generation();
@@ -377,6 +379,7 @@ public class IronpathPlugin extends Plugin
 		String expectedIdentity=session.identity(); Preferences preferences=session.preferences();
 		String storage=session.storageStatus(); var stats=nexSession.stats();
 		boolean enabled=nex!=null && nex.enabled(), active=nex!=null && nex.capture.active();
+		NexPanel.TrackingStatus tracking=trackingStatus(snapshot); lastTrackingStatus=tracking;
 		var owned=ownedResult;
 		NexPanel.Actions actions=snapshot==null || !session.preferencesLoaded()?null:new NexPanel.Actions()
 		{
@@ -417,8 +420,23 @@ public class IronpathPlugin extends Plugin
 		SwingUtilities.invokeLater(()->{
 			if(!running || panel==null || !session.currentView(token,revision) || session.snapshot()!=snapshot || nexSession.revision()!=nexRevision
 				|| (nex!=null && nex.capture.active())!=active) { return; }
-			panel.render(message,snapshot,preferences,catalog,stats,enabled,actions,storage,owned,active);
+			panel.render(message,snapshot,preferences,catalog,stats,enabled,actions,storage,owned,active,tracking);
 		});
+	}
+	private NexPanel.TrackingStatus trackingStatus(AccountSnapshot snapshot)
+	{
+		if(client.getGameState()==GameState.LOADING) { return NexPanel.TrackingStatus.LOADING; }
+		if(client.getGameState()!=GameState.LOGGED_IN) { return NexPanel.TrackingStatus.LOGIN; }
+		if(identity()==null) { return NexPanel.TrackingStatus.ACCOUNT; }
+		if(client.getVarbitValue(VarbitID.IRONMAN)!=1) { return NexPanel.TrackingStatus.UNSUPPORTED_ACCOUNT; }
+		if(!supported()) { return NexPanel.TrackingStatus.UNSUPPORTED_WORLD; }
+		if(nex!=null && !nex.enabled()) { return NexPanel.TrackingStatus.OFF; }
+		if(nexSession.suspended()) { return nexSession.awaitingArena()?NexPanel.TrackingStatus.LOADING:NexPanel.TrackingStatus.BANK; }
+		if(snapshot==null) { return NexPanel.TrackingStatus.ACCOUNT; }
+		if(!session.preferencesLoaded()) { return NexPanel.TrackingStatus.SETTINGS_LOADING; }
+		if(!session.writable()) { return NexPanel.TrackingStatus.SETTINGS_UNAVAILABLE; }
+		if(nex!=null && nex.capture.active()) { return NexPanel.TrackingStatus.ACTIVE; }
+		return nex!=null && nex.inArena()?NexPanel.TrackingStatus.READY:NexPanel.TrackingStatus.OUTSIDE;
 	}
 	private void clearOwned()
 	{

@@ -40,6 +40,16 @@ an item silently to manufacture a weaker baseline.
 
 ## Current presentation (19 October 2026)
 
+PR #48’s approved follow-up uses one native Encounter sidebar: Last kill stays
+above independent collapsible Compare setups (open), Team & method, Gear & method,
+Gear & unlocks and Diagnostics (initially closed, Diagnostics last). Persistent
+headers/editor/report subtrees retain expansion, draft, selection and scroll. A
+non-private in-memory session scope distinguishes verified travel from hard
+identity/world/reset boundaries; suspended evidence stays hidden and exports clear.
+Ready/status labels come from actual client/session readiness, including verified
+Waiting for Nex. Invalid inputs report their field bounds; correction provenance
+stays in Diagnostics. [Follow-up evidence](validation/pr48-review-followup.md).
+
 Issue #47 supersedes earlier per-card help/scope prose. Show the result, compact
 origin/role labels and actions in normal screens. Put calculation definitions,
 assumptions, pilot restrictions, provenance, long gaps and raw traces in common

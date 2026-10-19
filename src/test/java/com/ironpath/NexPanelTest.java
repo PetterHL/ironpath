@@ -58,7 +58,7 @@ public class NexPanelTest
 			assertTrue(shown(panel).contains("Last kill")); assertFalse(shown(panel).contains("Recommended order"));
 			button(panel,"Kill and calculation details").doClick(); assertTrue(shown(panel).contains("Kill #"));
 			assertFalse(shown(panel).contains("Capture adapter"));
-			button(panel,"Diagnostics").doClick(); button(panel,"Calculation details").doClick();
+			com.ironpath.dev.PanelPreview.openSection(panel,"Diagnostics"); button(panel,"Calculation details").doClick();
 			session.add(NexCaptureTest.replay(100,40,0)); panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions,"local");
 			assertTrue(shown(panel).contains("20 local") || shown(panel).contains("27 local") || shown(panel).contains("20 observed"));
 			panel.render("Profile changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"local");
@@ -78,9 +78,9 @@ public class NexPanelTest
 				panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
 				assertTrue(shown(panel).contains("Session cleared"));
-				button(panel,"Diagnostics").doClick();
+				com.ironpath.dev.PanelPreview.openSection(panel,"Diagnostics");
 				assertTrue(shown(panel).contains("Previous session cleared: Travel did not start"));
-				button(panel,"Encounter").doClick();
+				com.ironpath.dev.PanelPreview.encounter(panel);
 				assertFalse(shown(panel).contains("synthetic-a")); assertFalse(shown(panel).contains("Last kill"));
 				capture(panel,"bank-reset-"+(int)font);
 			}
@@ -95,15 +95,15 @@ public class NexPanelTest
 			var catalog=KnowledgeCatalog.load(new Gson()); var session=new NexSession(); session.select("a",301);
 			var account=P4aFixtures.account(Set.of(11907),99,90); var panel=new NexPanel(null);
 			panel.render("Nex session paused. Open a bank to revalidate.",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",null);
-			assertTrue(shown(panel).contains("Session paused"));
+			assertTrue(shown(panel).contains("Open bank to verify"));
 			panel.render("Nex session updated locally.",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",null,true);
-			assertTrue(shown(panel).contains("Tracking this kill…")); assertFalse(shown(panel).contains("Session paused"));
+			assertTrue(shown(panel).contains("Tracking kill…")); assertFalse(shown(panel).contains("Open bank to verify"));
 			assertFalse(shown(panel).contains("Ready to observe the next"));
 			session.add(NexCaptureTest.replay(0,20,60));
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
 			button(panel,"Kill and calculation details").doClick();
 			assertFalse(shown(panel).contains("Measured start"));
-			button(panel,"Diagnostics").doClick(); button(panel,"Calculation details").doClick();
+			com.ironpath.dev.PanelPreview.openSection(panel,"Diagnostics"); button(panel,"Calculation details").doClick();
 			assertTrue(shown(panel).contains("Measured start (smoke): tick 0"));
 			assertTrue(shown(panel).contains("Nex death/dying: tick 30"));
 			assertTrue(shown(panel).contains("Arena end boundary: tick 31"));
@@ -142,12 +142,12 @@ public class NexPanelTest
 			var account=P4aFixtures.account(Set.of(11907),99,90); var panel=new NexPanel(null);
 			String paused="Nex session paused. Open a bank to revalidate this account.";
 			panel.render(paused,account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
-			button(panel,"Gear & method").doClick(); assertTrue(shown(panel).contains("Session paused"));
+			com.ironpath.dev.PanelPreview.openSection(panel,"Gear & method"); assertTrue(shown(panel).contains("Open bank to verify"));
 			assertFalse(shown(panel).contains("No complete kill yet"));
 			session.add(NexCaptureTest.replay(0,20,60));
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
-			assertTrue(shown(panel).contains("Gear & method")); assertFalse(shown(panel).contains("Automatic observations"));
-			assertFalse(shown(panel).contains("Session paused")); assertFalse(shown(panel).contains("No complete kill yet"));
+			assertTrue(button(panel,"Gear & method").isSelected()); assertFalse(shown(panel).contains("Automatic observations"));
+			assertFalse(shown(panel).contains("Open bank to verify")); assertFalse(shown(panel).contains("No complete kill yet"));
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
 	@Test public void narrowAndEnlargedFontMainSetupAndDetailsWrap() throws Exception
@@ -158,11 +158,11 @@ public class NexPanelTest
 			{
 				NexPanel panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",P4aFixtures.account(Set.of(11907),99,90),Preferences.EMPTY,catalog,session.stats(),true,actions(),"local");
-				capture(panel,"main-"+(int)font); button(panel,"Gear & method").doClick(); capture(panel,"setup-"+(int)font);
-				assertEquals("Assume upgraded Death Charge",((JCheckBox)children(panel).stream().filter(c->c instanceof JCheckBox).findFirst().orElseThrow()).getAccessibleContext().getAccessibleName()); button(panel,"Encounter").doClick();
+				capture(panel,"main-"+(int)font); com.ironpath.dev.PanelPreview.openSection(panel,"Gear & method"); capture(panel,"setup-"+(int)font);
+				assertEquals("Assume upgraded Death Charge",((JCheckBox)children(panel).stream().filter(c->c instanceof JCheckBox && visible(c)).findFirst().orElseThrow()).getAccessibleContext().getAccessibleName()); com.ironpath.dev.PanelPreview.encounter(panel);
 				button(panel,"Kill and calculation details").doClick(); capture(panel,"details-"+(int)font);
 				assertFalse(shown(panel).contains("Detected one active charge"));
-				button(panel,"Diagnostics").doClick(); button(panel,"Calculation details").doClick();
+				com.ironpath.dev.PanelPreview.openSection(panel,"Diagnostics"); button(panel,"Calculation details").doClick();
 				assertTrue(shown(panel).contains("Detected one active charge"));
 			}
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
@@ -186,9 +186,9 @@ public class NexPanelTest
 				assertFalse(shown(panel).contains("excluded from fight statistics and equipment comparisons"));
 				samples.setSelectedIndex(0);
 				assertFalse(shown(panel).contains("UNKNOWN / UNKNOWN"));
-				button(panel,"Diagnostics").doClick(); button(panel,"Calculation details").doClick();
+				com.ironpath.dev.PanelPreview.openSection(panel,"Diagnostics"); button(panel,"Calculation details").doClick();
 				assertTrue(shown(panel).contains("excluded from fight statistics and equipment comparisons"));
-				((JComboBox<?>)children(panel).stream().filter(c->"nex-history-state".equals(c.getName())).findFirst().orElseThrow()).setSelectedIndex(0);
+				((JComboBox<?>)children(NexScenarioPanelTest.named(panel,"nex-section-diagnostics-body",JPanel.class)).stream().filter(c->"nex-history-state".equals(c.getName())).findFirst().orElseThrow()).setSelectedIndex(0);
 				assertTrue(shown(panel).contains("UNKNOWN / UNKNOWN"));
 				capture(panel,"pre-smoke-"+(int)font);
 			}
@@ -214,7 +214,7 @@ public class NexPanelTest
 				public void confirm(String key,Boolean value) { confirmed.set(key); }
 			};
 			panel.render("Observed locally",account,Preferences.EMPTY,catalog,session.stats(),true,actions,"Preferences saved locally.");
-			button(panel,"Gear & unlocks").doClick();
+			com.ironpath.dev.PanelPreview.openSection(panel,"Gear & unlocks");
 			JComboBox choices=NexScenarioPanelTest.named(panel,"nex-account-choice",JComboBox.class); choices.setSelectedItem("owns-r3bFang");
 			String description=shown(panel);
 			assertTrue(description.contains("Osmumten's fang (26219)")); assertTrue(description.contains("Osmumten's fang (or) (27246)"));
@@ -247,7 +247,7 @@ public class NexPanelTest
 				assertFalse(shown(panel).contains("not total restoration or spending"));
 				assertTrue(shown(panel).contains("Upgraded Death Charge use: Observed"));
 				capture(panel,"resources-"+(int)font);
-				button(panel,"Diagnostics").doClick(); button(panel,"Calculation details").doClick();
+				com.ironpath.dev.PanelPreview.openSection(panel,"Diagnostics"); button(panel,"Calculation details").doClick();
 				assertTrue(shown(panel).contains("not total restoration or spending"));
 				button(panel,"Resource readings and rules").doClick(); capture(panel,"resources-trace-"+(int)font);
 				var readings=(JComboBox<?>)children(panel).stream().filter(c->"nex-resource-reading".equals(c.getName())).findFirst().orElseThrow();
@@ -263,7 +263,7 @@ public class NexPanelTest
 				assertTrue(shown(panel).contains("Frozen kill #1"));
 				assertTrue(shown(panel).contains("Spec energy & Death Charge · kill #1"));
 				panel.render("Profile changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"local",null);
-				assertFalse(shown(panel).contains("Death Charge")); assertFalse(shown(panel).contains("energy"));
+				assertFalse(shown(panel).contains("energy 100.0%")); assertFalse(shown(panel).contains("Frozen kill #"));
 			}
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
@@ -333,17 +333,18 @@ public class NexPanelTest
 			support.setSelectedItem("Unavailable comparisons");
 			assertTrue(shown(panel).contains("No comparison available"));
 			assertTrue(shown(panel).contains("First recorded energy 100.0% · last recorded 50.0%"));
-			button(panel,"Diagnostics").doClick(); button(panel,"Calculation details").doClick(); button(panel,"Resource readings and rules").doClick();
+			com.ironpath.dev.PanelPreview.openSection(panel,"Diagnostics"); button(panel,"Calculation details").doClick(); button(panel,"Resource readings and rules").doClick();
 			var readings=(JComboBox<?>)children(panel).stream().filter(c->"nex-resource-reading".equals(c.getName())).findFirst().orElseThrow();
 			readings.setSelectedIndex(1); assertTrue(shown(panel).contains("Tick 21 · energy 50.0%"));
+			session.suspend("a",301,40,true);
 			panel.render("Nex session paused. Open a bank to revalidate this account.",account,Preferences.EMPTY,catalog,
-				new NexSession().stats(),true,actions(),"local",null);
+				session.stats(),true,actions(),"local",null);
 			assertFalse(shown(panel).contains("No complete kill yet")); assertFalse(shown(panel).contains("First recorded energy"));
 			readings.setSelectedIndex(0); assertFalse(shown(panel).contains("energy 100.0%"));
 			var base=NexCaptureTest.replay(100,40,0);
 			var next=new com.ironpath.nex.NexSummary(2,base.startTick,base.endTick,base.sampledTicks,base.expectedTicks,
 				base.unclassifiedHits,base.outcome,base.reason,base.cohort,base.method,base.timeline,base.damage,base.gaps,base.signals,base.beforeStart);
-			session.add(next);
+			session.revalidate("a",301,50,true,false); session.add(next);
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",
 				new com.ironpath.advisor.NexOwnedResult(next,List.of()));
 			assertTrue(shown(panel).contains("Frozen kill #1"));
@@ -368,9 +369,9 @@ public class NexPanelTest
 			{
 				var panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
-				button(panel,"Diagnostics").doClick(); button(panel,"Calculation details").doClick();
+				com.ironpath.dev.PanelPreview.openSection(panel,"Diagnostics"); button(panel,"Calculation details").doClick();
 				assertTrue(shown(panel).contains("Supported scenarios: carried 2, bank preparation 1. Unavailable: 1"));
-				button(panel,"Encounter").doClick();
+				com.ironpath.dev.PanelPreview.encounter(panel);
 				button(panel,"Compare with owned gear").doClick();
 				JComboBox<?> role=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-role-filter".equals(c.getName())).findFirst().orElseThrow();
 				JComboBox<?> support=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-support-filter".equals(c.getName())).findFirst().orElseThrow();

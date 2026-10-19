@@ -235,9 +235,9 @@ final class OfflineNexScenario extends OfflineNexClient
 			report.check("Main view " + font + "px shows measured kill", true, PanelPreview.text(panel).contains("Last kill") && PanelPreview.text(panel).contains("18.0 s"));
 			capture(panel, output, "main", font, report);
 			int firstCard=NexPresentation.cards(result).get(0).choiceIndex;
-			PanelPreview.viewport(panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics","nex-duration","nex-edit-context","nex-card-metric-"+firstCard,"nex-card-scope-"+firstCard),report);
-			PanelPreview.click(panel,"Diagnostics"); capture(panel,output,"diagnostics",font,report);
-			PanelPreview.viewport(panel,output.resolve("diagnostics-viewport-"+font+".png"),225,600,null,List.of("nex-copy-report"),report);
+			PanelPreview.viewport(panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-duration","nex-edit-context","nex-card-metric-"+firstCard,"nex-card-scope-"+firstCard),report);
+			PanelPreview.openSection(panel,"Diagnostics"); capture(panel,output,"diagnostics",font,report);
+			PanelPreview.viewport(panel,output.resolve("diagnostics-viewport-"+font+".png"),225,600,"nex-section-diagnostics",List.of("nex-copy-report"),report);
 			PanelPreview.click(panel,"Copy report now");
 			report.check("Headless copy has selectable fallback "+font,true,PanelPreview.text(panel).contains("Clipboard unavailable or busy"));
 			String exported=((javax.swing.JTextArea)PanelPreview.children(panel).stream().filter(c->"nex-report-text".equals(c.getName())).findFirst().orElseThrow()).getText();
@@ -245,12 +245,12 @@ final class OfflineNexScenario extends OfflineNexClient
 			report.check("Production report retains scoped exact inputs "+font,true,exported.contains("ammo=11212") && exported.contains("RANGED=112"));
 			java.nio.file.Files.writeString(output.resolve("diagnostic-report-"+font+".txt"),exported);
 			capture(panel,output,"selectable-report",font,report);
-			PanelPreview.click(panel,"Encounter");
+			PanelPreview.encounter(panel);
 			PanelPreview.click(panel, "Compare with owned gear");
 			PanelPreview.combo(panel, "nex-owned-role-filter").setSelectedItem("ranged");
 			report.check("Comparison view " + font + "px preserves projectile", true, PanelPreview.text(panel).contains("Selected quiver ammo: Amethyst arrow"));
 			capture(panel, output, "comparison", font, report);
-			PanelPreview.viewport(panel,output.resolve("comparison-viewport-"+font+".png"),225,600,null,List.of("nex-nav-encounter","nex-nav-diagnostics"),report);
+			PanelPreview.viewport(panel,output.resolve("comparison-viewport-"+font+".png"),225,600,null,List.of("nex-section-compare"),report);
 			PanelPreview.click(panel, "Full gear setups"); capture(panel, output, "basis", font, report);
 			PanelPreview.combo(panel, "nex-owned-support-filter").setSelectedItem("Unavailable comparisons");
 			PanelPreview.combo(panel, "nex-owned-role-filter").setSelectedItem("spec candidate");

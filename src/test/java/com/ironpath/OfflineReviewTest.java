@@ -57,7 +57,7 @@ public class OfflineReviewTest
 		assertEquals(225,javax.imageio.ImageIO.read(output.resolve("expanded-20.png").toFile()).getWidth());
 	}
 	@Test public void incompleteAttemptsRemainExcluded() throws Exception { lifecycle("nex-incomplete", 4); }
-	@Test public void bankTripRetainsHistoryAndAcceptsNextKill() throws Exception { lifecycle("nex-bank-trip", 6); }
+	@Test public void bankTripRetainsHistoryAndAcceptsNextKill() throws Exception { lifecycle("nex-bank-trip", 10); }
 	@Test public void pendingIdentityPublicationCannotOverwriteFreshWork() throws Exception { lifecycle("nex-identity-pending", 6); }
 	@Test public void resetCancelsPendingWorkWithoutPreventingFreshPublication() throws Exception { lifecycle("nex-reset-pending", 6); }
 	@Test public void newResultsPreserveInspectedHistory() throws Exception { lifecycle("nex-frozen-history", 8); }

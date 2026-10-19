@@ -5,8 +5,9 @@ Start new work from current main; do not continue retired stacked branches.
 The user authorized consolidating existing work and updating this plan on
 18 October. That consolidation introduced no UI/context feature or live-client
 acceptance. UI1 and its two P2 review corrections are merged in the
-0.20.0 delivery below. CTX1 is implemented for review in 0.21.0; issue #44
-completes UI1 visual simplification in 0.21.1 before further N3 UI expansion.
+0.20.0 delivery below. CTX1 is implemented for review in 0.21.0. PR #48 joins
+the current deliveries and implements the approved presentation/navigation
+follow-up in 0.23.1; its inherited and new evidence is recorded below.
 
 ## Current baseline and order
 
@@ -18,7 +19,7 @@ No GitHub dependency PR is merged or feature branch overwritten.
 
 | Order | Work | State / boundary |
 |---|---|---|
-| Current | **UI1 #47 — OSRS wording, less help text, centred layout** | 0.23.0 implementation for review; validation below |
+| Current | **UI1 #47 — OSRS wording, less help text, centred layout** | 0.23.1 approved PR #48 follow-up; validation below |
 | Integrated for this review | **CTX1 #43 / UI1 #46 / N3 #45** | Retain all three deliveries; open dependencies still require merge authorization |
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
 | After context/evidence contracts | **N3 recommendation integration** | Declared runtime plans exist; attribution/remaining mechanics and automatic recommendations remain separate |
@@ -26,6 +27,30 @@ No GitHub dependency PR is merged or feature branch overwritten.
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
 
 Deliver one reviewable PR; no automatic merge or Plugin Hub publication.
+
+## PR #48 — approved review follow-up (0.23.1)
+
+The 19 October review adds approved navigation and arrival wording to issue #47.
+This supersedes earlier top Encounter / Diagnostics tabs.
+
+- [x] Distinct unsupported-account/world, loading/settings and bank reasons;
+  Loading encounter… / Waiting for Nex / Tracking kill… / Kill tracking: Off
+  follow actual readiness, suspension and capture state.
+- [x] Transient field-specific plan errors include window, energy, HP/restore/cap
+  and distinct increasing tick bounds; unknown inputs retain dependent gaps.
+- [x] Populated Gear & unlocks uses readable names/states, with provenance only in
+  Diagnostics. Stored keys, exact sets and observed-fact precedence stay intact.
+- [x] One sidebar: Last kill always visible, Compare setups initially open,
+  Team & method / Gear & method / Gear & unlocks / Diagnostics initially closed.
+  Independent keyboard-accessible full-row headers; Diagnostics last.
+- [x] Preserve drafts, selected frozen comparison/planner, report subtree and
+  scroll through ordinary updates/verified reloads. Hard boundaries still clear.
+- [x] Add focused regressions, inspect native 225 × 600/font 12/20 evidence
+  and prepare the current PR for review. Performed local checks, current CI
+  outcome and artifact links are recorded in the PR.
+
+[Implementation, checks and screenshots](docs/validation/pr48-review-followup.md).
+Live client/player acceptance remains open; merge/publication is separate.
 
 ## UI1 #47 — presentation refinement (0.23.0, for review)
 
