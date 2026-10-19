@@ -12,29 +12,58 @@
   validation reports retain their original scope/results and pending client checks.
 - Code, UI, documents and commits are English; discussion with Petter may be Norwegian.
 
-## Next delivery
+## Current delivery
 
-- Development build **0.22.1** implements the optional post-kill N3A/N3B/N3C
-  runtime plan integration for review. Read docs/research/nex-runtime-plans.md and
-  docs/validation/nex-runtime-plans.md. It branches from reviewed main `96d91e8`;
-  CTX1 remains a separate open PR. Do not merge either without authorization.
-- Reuse NexPlanComparison, NexPackageComparison and existing resource/damage kernels.
-  Captured packages are inputs to declared hypothetical attacks, never attributed
-  attacks. Preserve exact stock, shared conditions/delays, per-output unknowns,
-  observed reserve usability, proposal locks, frozen inputs and request/view guards.
-  No automatic spec recommendation, live coaching, target-HP trajectory or N4 claim.
-- Diagnostics resolves its default selected comparison only after a matching frozen
-  calculation arrives. Preserve explicit inspected selections, including no selection.
-  Observed equipment/target class remain allowlisted in unavailable-row reports.
-- Keep UI1 frozen inspection/reports, 0.19.3 banking/reload/reset behavior and all
-  nine original DEV1 scenarios. `nex-n3-plan` extends that same harness.
-- The 18 October main consolidation integrates reviewed development work with
-  live acceptance still open. It is not Plugin Hub approval or standing permission
-  to merge subsequent feature PRs. See docs/validation/main-consolidation-20261018.md.
+- Consolidated main baseline **0.23.3** includes the complete PR #48 **0.23.2** UI
+  and sidebar simplification. Keep Gear & method and Gear & unlocks absent,
+  including manual gear/method controls.
+  Retain Team & method, automatic observations, saved preferences and calculations.
+- Issue #47 supplies the presentation baseline, development build **0.23.2**.
+  PR #48’s approved review replaces top tabs with independent collapsible sections:
+  Last kill always visible; Compare setups open; Team & method and Diagnostics
+  initially closed, Diagnostics last after the sidebar simplification. Read
+  docs/validation/pr48-review-followup.md. Preserve drafts/selection/scroll across
+  refresh and verified reloads; identity/reset/eviction still clear evidence.
+  Use Waiting for Nex only after arena/capture readiness; keep distinct loading,
+  bank, account/world and settings statuses. Invalid plan submissions need brief
+  field-specific bounds; saved correction timestamps belong in Diagnostics.
+  Read docs/validation/ui1-47-wording-layout.md and docs/UX.md. TASKS.md remains
+  the sole backlog. Normal screens contain results, short labels and controls;
+  technical explanations, scope/assumption paragraphs, pilot/testing/future-work
+  text, provenance and raw traces belong in explicitly opened Diagnostics/reports.
+  This supersedes older instructions to attach explanatory prose to every card.
+- Use OSRS wording from issue #47. Keep Encounter, Compare setups and item-count
+  package labels. Damage contribution is only a label for the unchanged observed
+  hitsplat ratio. Keep exact item names/IDs and distinguish equipped, inventory,
+  bank and hypothetical gear; never narrow the carried-package search.
+- Centre headings, values, sprite/name groups and action groups within the native
+  225px column. Keep forms, tables and long diagnostic text left aligned. Validate
+  native 225 × 600 images and full-height screens at body fonts 12 and 20.
+- N3 scenario choices are explicit unchecked controls. Every required declaration
+  must be supplied before its shared readiness flag is known. Do not pre-confirm
+  hidden inputs. Preserve unknown gating, exact stock, complete-package arithmetic,
+  shared delays/conditions, proposal locks, frozen input and request/view guards.
+- The user authorized the 19 October main consolidation of PR #49, including
+  main/N3 #45, CTX1 #43 `2fe5342`, UI1 #46 `d5b14db` and PR #48 `836e1e9`.
+  Preserve their full ancestry and the sidebar simplification. Start new work from
+  main; retire only branch heads already included there. Future merges and Plugin
+  Hub publication need separate authorization. Live acceptance remains open.
+- Keep genuine preview sprites/test boundaries and Jagex provenance/notices.
+  Keep immutable capture, CTX1 annotations/future defaults, the 50-record lifetime,
+  frozen planning/unlock inputs, matched-cohort rules, report selection, clipboard
+  fallback, Back/scroll and expanded Diagnostics across unrelated refreshes.
+- Reuse NexPlanComparison/NexPackageComparison and existing arithmetic. No new
+  attribution, automatic spec recommendation, HP trajectory, coaching or N4 claim.
+  Preserve banking/reload/reset/identity guards and all baseline DEV1 scenarios.
 
 ## Delivery
 
-- Retained UI1 **0.20.0** adds compact Encounter / Diagnostics and an allowlisted
+- CTX1 **0.21.0** adds editable kill context and preferences schema 4; schemas
+  1–3 migrate without kill confirmation. Annotations, frozen evaluation inputs and
+  calculations share the bounded 50-record in-memory lifetime. Live snapshots and
+  active traces still clear at scene transitions; retained records stay hidden until
+  same-account/profile/world revalidation. No performance history is persisted.
+- UI1 **0.20.0** adds compact Encounter / Diagnostics and an allowlisted
   user-triggered report; retained calculations/selection are immutable across new
   results. Clipboard failure leaves selectable text. See the UI1 validation record.
 - Retained 0.19.3 behavior fixes arena-only scene reloads being mistaken

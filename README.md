@@ -7,27 +7,33 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**18 October 2026: development build 0.22.1 — N3A/N3B/N3C runtime integration and report-selection correction for review.**
-**Spec and package plans** opens captured states and an optional **Conditional N3
-package plan**. Compare captured equipment → selected owned package → hypothetical
-complete upgrade using shared finite energy, Death Charge, damage, ammunition,
-quiver charges and attack delays. Declare legal opportunities/HP/start assumptions;
-unknown inputs keep dependent results unavailable. Reports retain frozen inputs
-and are selectable when copying fails. [Contract](docs/research/nex-runtime-plans.md)
-and [verification](docs/validation/nex-runtime-plans.md).
-Diagnostics now resolves its default comparison when the frozen calculation arrives,
-including when opened while pending. Explicit inspected selections stay frozen;
-unavailable comparisons also export allowlisted observed equipment and target class.
+**19 October 2026: consolidated main build 0.23.3 — current Nex UI and sidebar simplification.**
+The native Encounter panel uses concise OSRS labels, centred results and genuine
+item/package sprites. Normal screens keep results and controls; Diagnostics holds
+technical explanations, calculation scope, provenance and reports. **Damage
+contribution** names the existing observed hitsplat ratio; its mathematics is unchanged.
+Last kill stays above independent collapsible sections: Compare setups (open),
+Team & method and Diagnostics (initially closed). Gear & method and Gear & unlocks
+are removed, including their manual controls; saved preferences still apply.
+Verified arrival shows **Waiting for Nex**; loading, bank verification, unsupported
+accounts/worlds and unavailable settings have distinct statuses. Invalid plan
+inputs explain their field bounds. Saved corrections remain inspectable in Diagnostics.
+The subsequent review fixes profile-thread clearing, explicit kill/attempt report
+selection and scroll restoration after a displayed loading/banking pause.
+[Review corrections, native screenshots and validation](docs/validation/pr48-review-followup.md) ·
+[Original before/after evidence](docs/validation/ui1-47-wording-layout.md).
 
-**Special-attack resources → Natural-restoration examples** also shows explicitly
-conditional fixed-Lightbearer phase/order sensitivity. These examples exclude DC
-by assumption; the full plan can declare casts and eligible deaths. Neither view
-attributes actual specs/procs or recommends a globally best weapon or team time.
+The main baseline includes N3 runtime plans, CTX1 #43, UI1 #46, PR #48's current
+UI and the sidebar simplification in PR #49. Optional **Team & method** corrections and future defaults retain frozen
+inputs, per-field confirmation and active-encounter guards. **Plan specs & gear**
+keeps exact complete-package calculations and explicit scenario choices; unknown
+inputs withhold dependent outputs. Reports remain selectable if copying fails.
+[Context contract](docs/validation/ctx1-kill-context.md) ·
+[N3 contract](docs/research/nex-runtime-plans.md).
 
-[UI1](docs/validation/ui1-encounter-diagnostics.md) is merged in main. CTX1 remains
-in [PR #43](https://github.com/PetterHL/ironpath/pull/43); this work does not merge it.
-[TASKS](TASKS.md) owns remaining mechanics and live acceptance. The earlier
-[consolidation](docs/validation/main-consolidation-20261018.md) retains its original evidence.
+[TASKS](TASKS.md) owns remaining mechanics and live gameplay acceptance.
+[Consolidation and verification](docs/validation/sidebar-simplification.md).
+Plugin Hub publication remains separate.
 
 Bank-travel correction: completed history no longer expires while waiting to
 open the bank. It stays hidden until same-account/profile/world revalidation;
@@ -83,10 +89,13 @@ excluded attempts and immutable timelines. Its real-client mappings and player
 acceptance are still pending. [N1 validation](docs/validation/nex-session.md).
 
 The pilot is **Nex / Trio MP2 / one kill per trip**, with Lightbearer throughout
-and assumed upgraded Death Charge. Equipment, switches and active spell state are
-observed automatically. Setup exposes optional saved planning locks/corrections;
-they never overwrite the actually-worn history. Complete summaries stay in memory
-across recognized same-account bank trips and clear on logout/profile change.
+and assumed upgraded Death Charge. Equipment, switches, active spell state and
+readable unlocks are observed automatically. The sidebar omits **Gear & method**
+(Setup), including gear locks and manual method controls, and **Gear & unlocks**
+(Account). Existing saved preferences, planning locks and manual facts still apply;
+they never overwrite the actually-worn history. No manual setup is required.
+Complete summaries stay in memory across recognized same-account bank trips and
+clear on logout/profile change.
 Observed hitsplat share is scoped to Nex and the four named minions; it is not
 server contribution or loot eligibility. Timing uses the observed smoke
 announcement and death/dying signal, with no game-timer calibration claim.
@@ -142,3 +151,9 @@ Repository: [PetterHL/ironpath](https://github.com/PetterHL/ironpath).
 Original code uses [BSD-2-Clause](LICENSE); preserve [third-party notices](THIRD_PARTY_NOTICES.md).
 The plugin has not been published to Plugin Hub. Its Hub identifier must be
 distinct from the existing Iron Compass identifier before submission.
+
+## Preview artwork
+
+Created using intellectual property belonging to Jagex Limited under the terms of Jagex's Fan Content Policy. This content is not endorsed by or affiliated with Jagex.
+
+[Genuine preview sprites: provenance and separate terms](THIRD_PARTY_NOTICES.md).

@@ -66,12 +66,10 @@ public class IronpathPlugin extends Plugin
 	NexObserver nex;
 	private long lastNexRevision;
 	private boolean lastCaptureActive;
+	private NexPanel.TrackingStatus lastTrackingStatus;
 	volatile com.ironpath.advisor.NexOwnedResult ownedResult;
 	private volatile long ownedTicket;
-	private AccountSnapshot ownedAccount;
-	private Preferences ownedPreferences;
-	private com.ironpath.nex.NexSummary ownedSummary;
-	private long ownedRevision=-1;
+	private final java.util.Map<Long,com.ironpath.nex.NexRecord> pendingOwned=new java.util.concurrent.ConcurrentHashMap<>();
 	private NavigationButton navigation;
 	private volatile boolean running;
 	private volatile long lifecycle;
@@ -256,13 +254,14 @@ public class IronpathPlugin extends Plugin
 		}
 		// Revalidation can precede a slow settings read. Keep its verified departure source in either case.
 		if(arena && !nexSession.suspended()) { nex.confirmArenaSource(); }
-		if (nexReady()) { nex.method(session.preferences().nex); nex.tick(); }
+		if (nexReady()) { nex.method(session.preferences().nex); nex.defaults(session.preferences().nexContext); nex.tick(); }
 		boolean activeChanged=lastCaptureActive!=nex.capture.active();
-		if (lastNexRevision!=nexSession.revision() || activeChanged)
+		boolean statusChanged=lastTrackingStatus!=trackingStatus(session.snapshot());
+		if (lastNexRevision!=nexSession.revision() || activeChanged || statusChanged)
 		{
 			lastNexRevision=nexSession.revision();
 			lastCaptureActive=nex.capture.active();
-			if (!lastCaptureActive || activeChanged) { render("Nex session updated locally.",session.snapshot()); }
+			if (!lastCaptureActive || activeChanged || statusChanged) { render("Nex session updated locally.",session.snapshot()); }
 		}
 		if (!dirty) { return; }
 		long token = session.generation();
@@ -353,7 +352,8 @@ public class IronpathPlugin extends Plugin
 		}));
 	}
 
-	private void changePreferences(long token, long revision, long nexRevision, String expectedIdentity, UnaryOperator<Preferences> change)
+	// Retained independently of sidebar editors; package access supports lifecycle regression tests.
+	void changePreferences(long token, long revision, long nexRevision, String expectedIdentity, UnaryOperator<Preferences> change)
 	{
 		clientThread.invokeLater(() ->
 		{
@@ -374,22 +374,36 @@ public class IronpathPlugin extends Plugin
 	private void render(String status, AccountSnapshot snapshot)
 	{
 		if(nexSession.suspended()) { status="Nex session paused. Open a bank to revalidate this account, or return from a recognized bank trip."; }
+		if(snapshot!=null && session.preferencesLoaded() && !nexSession.suspended())
+		{ evaluateOwned(snapshot,session.preferences()); }
 		long token=session.generation(), revision=session.revision(), nexRevision=nexSession.revision();
 		String expectedIdentity=session.identity(); Preferences preferences=session.preferences();
 		String storage=session.storageStatus(); var stats=nexSession.stats();
 		boolean enabled=nex!=null && nex.enabled(), active=nex!=null && nex.capture.active();
-		if(snapshot!=null && session.preferencesLoaded() && !nexSession.suspended() && (nex==null || !nex.capture.active()))
-		{ evaluateOwned(snapshot,preferences,stats.last); }
+		NexPanel.TrackingStatus tracking=trackingStatus(snapshot); lastTrackingStatus=tracking;
 		var owned=ownedResult;
 		NexPanel.Actions actions=snapshot==null || !session.preferencesLoaded()?null:new NexPanel.Actions()
 		{
 			public boolean current() { return running && session.currentView(token,revision) && session.snapshot()==snapshot && nexSession.revision()==nexRevision; }
+			public boolean contextCurrent() { return running && session.accepts(token,expectedIdentity) && session.preferencesLoaded() && nexSession.revision()==nexRevision; }
 			public boolean canEdit() { return session.writable(); }
 			public void executeScenario(Runnable task) { if(current()) { executor.execute(task); } }
 			public void method(com.ironpath.preferences.NexMethod method)
 			{ if(current()) { changePreferences(token,revision,nexRevision,expectedIdentity,p->p.nex(method)); } }
 			public void confirm(String key, Boolean value)
 			{ if(current() && catalog.factChoices().containsKey(key)) { changePreferences(token,revision,nexRevision,expectedIdentity,p->p.confirm(key,value,Instant.now())); } }
+			public void context(long key,long annotationRevision,com.ironpath.nex.NexContext context,boolean remember)
+			{
+				if(!contextCurrent()) { return; }
+				clientThread.invokeLater(()->{
+					if(!IronpathPlugin.this.current(token,expectedIdentity) || !nexSession.accepts(expectedIdentity,client.getWorld())) { return; }
+					if((key<0 || remember) && session.preferences()!=preferences) { return; }
+					// Kill/revision, rather than the latest-kill pointer, binds a historical action.
+					if(key>=0 && !nexSession.annotate(key,annotationRevision,context)) { return; }
+					if(remember && session.writable()) { saveContext(token,expectedIdentity,context); }
+					render(key<0?"Future context defaults updated.":"Kill context updated; observations preserved.",session.snapshot());
+				});
+			}
 			public void reset() { clear(nex.enabled(),"Reset session selected."); }
 			public void enable(boolean value) { clear(value,"Capture setting changed."); }
 			private void clear(boolean enable,String reason)
@@ -407,30 +421,68 @@ public class IronpathPlugin extends Plugin
 		SwingUtilities.invokeLater(()->{
 			if(!running || panel==null || !session.currentView(token,revision) || session.snapshot()!=snapshot || nexSession.revision()!=nexRevision
 				|| (nex!=null && nex.capture.active())!=active) { return; }
-			panel.render(message,snapshot,preferences,catalog,stats,enabled,actions,storage,owned,active);
+			panel.render(message,snapshot,preferences,catalog,stats,enabled,actions,storage,owned,active,tracking);
 		});
+	}
+	private NexPanel.TrackingStatus trackingStatus(AccountSnapshot snapshot)
+	{
+		// ProfileChanged can arrive on the profile executor. Clearing must not read live client state.
+		if(!client.isClientThread()) { return NexPanel.TrackingStatus.ACCOUNT; }
+		if(client.getGameState()==GameState.LOADING) { return NexPanel.TrackingStatus.LOADING; }
+		if(client.getGameState()!=GameState.LOGGED_IN) { return NexPanel.TrackingStatus.LOGIN; }
+		if(identity()==null) { return NexPanel.TrackingStatus.ACCOUNT; }
+		if(client.getVarbitValue(VarbitID.IRONMAN)!=1) { return NexPanel.TrackingStatus.UNSUPPORTED_ACCOUNT; }
+		if(!supported()) { return NexPanel.TrackingStatus.UNSUPPORTED_WORLD; }
+		if(nex!=null && !nex.enabled()) { return NexPanel.TrackingStatus.OFF; }
+		if(nexSession.suspended()) { return nexSession.awaitingArena()?NexPanel.TrackingStatus.LOADING:NexPanel.TrackingStatus.BANK; }
+		if(snapshot==null) { return NexPanel.TrackingStatus.ACCOUNT; }
+		if(!session.preferencesLoaded()) { return NexPanel.TrackingStatus.SETTINGS_LOADING; }
+		if(!session.writable()) { return NexPanel.TrackingStatus.SETTINGS_UNAVAILABLE; }
+		if(nex!=null && nex.capture.active()) { return NexPanel.TrackingStatus.ACTIVE; }
+		return nex!=null && nex.inArena()?NexPanel.TrackingStatus.READY:NexPanel.TrackingStatus.OUTSIDE;
 	}
 	private void clearOwned()
 	{
-		++ownedTicket; ownedResult=null; ownedAccount=null; ownedPreferences=null; ownedSummary=null; ownedRevision=-1;
+		++ownedTicket; ownedResult=null; pendingOwned.clear();
 	}
-	private void evaluateOwned(AccountSnapshot account,Preferences preferences,com.ironpath.nex.NexSummary summary)
+	private void saveContext(long token,String identity,com.ironpath.nex.NexContext context)
 	{
-		if(summary==null) { clearOwned(); return; }
-		if(ownedAccount==account && ownedPreferences==preferences && ownedSummary==summary && ownedRevision==nexSession.revision()) { return; }
-		ownedAccount=account; ownedPreferences=preferences; ownedSummary=summary; ownedRevision=nexSession.revision(); ownedResult=null;
-		long ticket=++ownedTicket, token=session.generation(), revision=session.revision(), nexRevision=nexSession.revision();
-		String identity=session.identity(); var knowledge=catalog;
-		executor.execute(()->{
-			var result=new com.ironpath.advisor.NexOwnedEvaluator(knowledge).evaluate(summary,account,preferences,()->running && ticket==ownedTicket);
-			clientThread.invokeLater(()->{
-				if(ticket!=ownedTicket || !current(token,identity) || !session.currentView(token,revision)
-					|| session.snapshot()!=account || nexSession.revision()!=nexRevision || nexSession.suspended()
-					|| nex.capture.active()) { return; }
-				ownedResult=result;
-				render("Owned equipment comparison updated locally.",account);
+		Preferences next=session.preferences().context(context);
+		if(!session.editPreferences(token,identity,next)) { return; }
+		if(nex!=null) { nex.defaults(next.nexContext); }
+		preferenceIO.save(LocalPreferences.key(identity),next).whenComplete((ignored,error)->clientThread.invokeLater(()->{
+			if(!current(token,identity)) { return; }
+			session.saved(token,identity,next,error==null);
+			render("Future context defaults updated.",session.snapshot());
+		}));
+	}
+	private void evaluateOwned(AccountSnapshot account,Preferences preferences)
+	{
+		var stats=nexSession.stats();
+		pendingOwned.keySet().removeIf(key->!stats.records.containsKey(key));
+		for(var summary:nexSession.recent())
+		{
+			if(summary.outcome!=com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE) { continue; }
+			var initial=nexSession.record(summary.key);
+			if(initial==null) { continue; }
+			if(initial.inputs==null) { initial=nexSession.freezeInputs(summary.key,new com.ironpath.advisor.NexEvaluation(account,preferences,catalog)); }
+			final var record=initial;
+			if(record==null) { continue; }
+			if(record.calculation!=null || pendingOwned.get(summary.key)==record) { continue; }
+			pendingOwned.put(summary.key,record);
+			long epoch=ownedTicket, token=session.generation(); String identity=session.identity();
+			executor.execute(()->{
+				var result=record.inputs.evaluate(record,()->running && epoch==ownedTicket && nexSession.record(summary.key)==record);
+				clientThread.invokeLater(()->{
+					if(epoch!=ownedTicket || !current(token,identity) || !nexSession.accepts(identity,client.getWorld())) { return; }
+					if(pendingOwned.get(summary.key)==record) { pendingOwned.remove(summary.key); }
+					if(!nexSession.publish(record,result)) { return; }
+					render("Owned equipment comparison updated locally.",session.snapshot());
+				});
 			});
-		});
+		}
+		var last=stats.last==null?null:nexSession.record(stats.last.key);
+		ownedResult=last==null?null:last.calculation;
 	}
 
 	private static BufferedImage icon()

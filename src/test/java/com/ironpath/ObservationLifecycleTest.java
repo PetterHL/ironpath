@@ -45,6 +45,7 @@ public class ObservationLifecycleTest
 	private ConfigManager config;
 	private ItemContainer bank;
 	private Widget bankWidget;
+	private NexPanel panel;
 	private final Queue<Runnable> delayed = new ArrayDeque<>();
 
 	@Before public void setup() throws Exception
@@ -84,6 +85,7 @@ public class ObservationLifecycleTest
 		bank = items(new Item(ItemID.RAIDS_PRAYERSCROLL, 1));
 		when(client.getItemContainer(InventoryID.BANK)).thenReturn(bank);
 		bankWidget = mock(Widget.class);
+		plugin.panelFactory=items->panel=new NexPanel(items);
 		plugin.startUp();
 		SwingUtilities.invokeAndWait(() -> {});
 	}
@@ -178,6 +180,37 @@ public class ObservationLifecycleTest
 		assertFalse(plugin.session.snapshot().bank.known());
 		assertFalse(plugin.session.snapshot().rigour.value());
 		assertFalse(plugin.session.publish(token, "synthetic-character-b:2", previous));
+	}
+
+	@Test public void workerProfileChangeClearsHistoryAndPanelBeforeClientRevalidation() throws Exception
+	{
+		observeBank();
+		var summary=com.ironpath.nex.NexCaptureTest.replay(0,20,60);
+		plugin.nexSession.add(summary); tick(); tick();
+		long token=plugin.session.generation();
+		Thread clientOwner=Thread.currentThread();
+		when(client.isClientThread()).thenAnswer(call->Thread.currentThread()==clientOwner);
+		doAnswer(call->{
+			assertSame("Varbits require the client thread",clientOwner,Thread.currentThread()); return 1;
+		}).when(client).getVarbitValue(anyInt());
+		doAnswer(call->{
+			assertSame("World reads require the client thread",clientOwner,Thread.currentThread()); return EnumSet.of(WorldType.MEMBERS);
+		}).when(client).getWorldType();
+		var failure=new java.util.concurrent.atomic.AtomicReference<Throwable>();
+		Thread worker=new Thread(()->{
+			try { plugin.onProfileChanged(new ProfileChanged()); }
+			catch(Throwable ex) { failure.set(ex); }
+		},"synthetic-profile-executor");
+		worker.start(); worker.join();
+		if(failure.get()!=null) { throw new AssertionError("Worker profile invalidation failed",failure.get()); }
+		assertTrue(plugin.session.generation()>token); assertNull(plugin.session.snapshot());
+		assertTrue(plugin.nexSession.recent().isEmpty()); assertNull(plugin.ownedResult);
+		SwingUtilities.invokeAndWait(()->{
+			assertFalse(com.ironpath.dev.PanelPreview.text(panel).contains("Last kill"));
+			assertTrue(com.ironpath.dev.PanelPreview.text(panel).contains("Waiting for account"));
+		});
+		tick(); assertNull("Wait for fresh complete ticks",plugin.session.snapshot());
+		tick(); assertNotNull(plugin.session.snapshot()); assertFalse(plugin.session.snapshot().bank.known());
 	}
 
 	@Test public void identityChangeEvenWithoutEventDropsBank()
@@ -304,20 +337,20 @@ public class ObservationLifecycleTest
 		assertNull(plugin.ownedResult);
 		assertTrue(plugin.nexSession.stats().complete==0);
 	}
-	@Test public void newerAccountSnapshotRejectsPendingOwnedPublicationAndRecomputes()
+	@Test public void newerAccountSnapshotCannotReplaceFrozenPostKillEvaluationInputs()
 	{
 		observeBank(); Queue<Runnable> workers=new ArrayDeque<>();
 		doAnswer(call->{ workers.add(call.getArgument(0)); return null; }).when(plugin.executor).execute(any(Runnable.class));
 		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(0,20,60)); tick();
 		assertFalse(workers.isEmpty()); Runnable stale=workers.remove();
+		var input=plugin.nexSession.record(plugin.nexSession.stats().last.key).inputs; var account=plugin.session.snapshot();
 		plugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV,items(new Item(11212,200)))); tick();
+		assertNotSame(account,plugin.session.snapshot());
 		stale.run(); while(!delayed.isEmpty()) { delayed.remove().run(); }
-		assertNull(plugin.ownedResult);
-		assertFalse(workers.isEmpty()); workers.remove().run();
-		while(!delayed.isEmpty()) { delayed.remove().run(); }
-		assertNotNull(plugin.ownedResult);
+		assertNotNull(plugin.ownedResult); assertEquals(input.revision,plugin.ownedResult.inputRevision);
+		assertTrue(workers.isEmpty());
 	}
-	@Test public void aNewPartialAttemptReschedulesPendingComparisonOfTheLastCompleteKill()
+	@Test public void anotherAttemptCannotInvalidateAFrozenComparisonOfACompletedKill()
 	{
 		observeBank(); Queue<Runnable> workers=new ArrayDeque<>();
 		doAnswer(call->{ workers.add(call.getArgument(0)); return null; }).when(plugin.executor).execute(any(Runnable.class));
@@ -326,8 +359,8 @@ public class ObservationLifecycleTest
 		plugin.nexSession.add(new com.ironpath.nex.NexSummary(complete.key+1,100,105,5,5,0,
 			com.ironpath.encounter.EncounterSummary.Outcome.CENSORED,"synthetic abandoned",complete.cohort,complete.method,
 			java.util.List.of(),java.util.Map.of(),java.util.Set.of())); tick();
-		stale.run(); while(!delayed.isEmpty()) { delayed.remove().run(); } assertNull(plugin.ownedResult);
-		assertFalse(workers.isEmpty()); workers.remove().run(); while(!delayed.isEmpty()) { delayed.remove().run(); }
+		stale.run(); while(!delayed.isEmpty()) { delayed.remove().run(); }
+		assertTrue(workers.isEmpty());
 		assertNotNull(plugin.ownedResult); assertSame(complete,plugin.ownedResult.summary);
 	}
 	@Test public void nexSummarySurvivesArenaBankArenaAndAccountSwitchDuringPendingBankingClearsIt()
@@ -432,11 +465,11 @@ public class ObservationLifecycleTest
 		tick(); tick(); tick(); assertTrue(plugin.nexSession.suspended()); assertTrue(plugin.nexSession.recent().isEmpty());
 		assertFalse(plugin.nex.capture.active());
 		observeBank(); tick(); assertFalse(plugin.nexSession.suspended()); assertSame(complete,plugin.nexSession.stats().last);
-		assertEquals(1,plugin.nexSession.stats().n);
+		assertEquals(1,plugin.nexSession.stats().complete); assertEquals(0,plugin.nexSession.stats().n);
 		SwingUtilities.invokeAndWait(()->{});
 		var navigation=org.mockito.ArgumentCaptor.forClass(net.runelite.client.ui.NavigationButton.class);
 		verify(plugin.toolbar).addNavigation(navigation.capture());
-		assertTrue(panelText(navigation.getValue().getPanel()).contains("Last complete kill"));
+		assertTrue(panelText(navigation.getValue().getPanel()).contains("Last kill"));
 		when(client.getTickCount()).thenReturn(2010); plugin.onGameStateChanged(loading);
 		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(null); plugin.onGameStateChanged(loggedIn);
 		when(client.getTickCount()).thenReturn(4000); tick(); tick();

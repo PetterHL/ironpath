@@ -8,13 +8,16 @@ public final class NexSession
 {
 	public static final int MAX_RECENT=50;
 	private final Deque<NexSummary> recent=new ArrayDeque<>();
+	private final Map<Long,NexRecord> records=new LinkedHashMap<>();
 	private String identity;
 	private String resetReason;
 	private int world, suspendedAt;
 	private boolean suspended, atBank, returning, arenaReload;
-	private long revision;
+	private long revision, scope;
 	public synchronized long revision() { return revision; }
 	public synchronized boolean suspended() { return suspended; }
+	public synchronized boolean accepts(String identity,int world)
+	{ return this.identity!=null && this.identity.equals(identity) && this.world==world && !suspended; }
 	public synchronized boolean select(String identity, int world)
 	{
 		if (!Objects.equals(this.identity,identity) || this.world!=world)
@@ -27,8 +30,29 @@ public final class NexSession
 	}
 	public synchronized void add(NexSummary summary)
 	{
-		if (identity==null || suspended) { return; }
-		resetReason=null; recent.addLast(summary); while(recent.size()>MAX_RECENT) { recent.removeFirst(); } ++revision;
+		if (identity==null || suspended || records.containsKey(summary.key)) { return; }
+		resetReason=null; recent.addLast(summary); records.put(summary.key,new NexRecord(summary));
+		while(recent.size()>MAX_RECENT) { NexSummary old=recent.removeFirst(); if(records.get(old.key).summary==old) { records.remove(old.key); } } ++revision;
+	}
+	public synchronized NexRecord record(long key) { return suspended?null:records.get(key); }
+	public synchronized NexRecord freezeInputs(long key,com.ironpath.advisor.NexEvaluation inputs)
+	{
+		NexRecord record=record(key); if(record==null || record.inputs!=null) { return record; }
+		record=record.inputs(inputs); records.put(key,record); return record;
+	}
+	public synchronized boolean publish(NexRecord expected,com.ironpath.advisor.NexOwnedResult result)
+	{
+		NexRecord record=record(expected.summary.key);
+		if(record!=expected || result.summary!=record.summary || result.contextRevision!=record.revision || record.inputs==null
+			|| result.inputRevision!=record.inputs.revision || !result.modelRevision.equals(record.inputs.modelRevision)
+			|| !result.context.equals(record.context)) { return false; }
+		records.put(record.summary.key,record.calculation(result)); ++revision; return true;
+	}
+	public synchronized boolean annotate(long key,long expectedRevision,NexContext context)
+	{
+		NexRecord old=record(key);
+		if(identity==null || old==null || old.revision!=expectedRevision || old.summary.outcome!=Outcome.COMPLETE) { return false; }
+		records.put(key,old.annotate(context)); ++revision; return true;
 	}
 	public synchronized boolean suspend(String identity, int world, int tick, boolean fromArena)
 	{ return suspend(identity,world,tick,fromArena,false); }
@@ -70,25 +94,33 @@ public final class NexSession
 		clearData();
 	}
 	public synchronized void clear() { clear(null); }
-	private void clearData() { identity=null; world=0; suspendedAt=0; suspended=atBank=returning=arenaReload=false; recent.clear(); ++revision; }
+	private void clearData() { identity=null; world=0; suspendedAt=0; suspended=atBank=returning=arenaReload=false; recent.clear(); records.clear(); ++revision; ++scope; }
+	/** Awaiting public arena evidence, rather than an outbound bank verification. */
+	public synchronized boolean awaitingArena() { return suspended && (returning || arenaReload); }
 	public synchronized List<NexSummary> recent() { return suspended ? List.of() : List.copyOf(recent); }
 	public synchronized Stats stats()
 	{
 		List<NexSummary> all=recent();
 		NexSummary last=all.stream().filter(s->s.outcome==Outcome.COMPLETE).reduce((a,b)->b).orElse(null);
 		List<NexSummary> cohort=new ArrayList<>();
-		if (last!=null) { all.stream().filter(s->s.outcome==Outcome.COMPLETE && s.cohort.equals(last.cohort)).forEach(cohort::add); }
-		return new Stats(all,last,cohort,resetReason);
+		if (last!=null) { all.stream().filter(s->record(last.key).matches(record(s.key))).forEach(cohort::add); }
+		return new Stats(all,last,cohort,resetReason,suspended?Map.of():records,scope,suspended);
 	}
 	public static final class Stats
 	{
 		public final NexSummary last, lastAttempt;
 		public final String resetReason;
+		public final long scope;
+		public final boolean suspended;
 		public final int attempts, complete, failed, censored, n, shareN;
 		public final double meanSeconds, minSeconds, maxSeconds, meanShare, minShare, maxShare, aggregateShare;
 		public final List<NexSummary> cohort;
-		Stats(List<NexSummary> all, NexSummary last, List<NexSummary> cohort,String resetReason)
+		public final Map<Long,NexRecord> records;
+		public NexRecord record(NexSummary summary) { return summary==null?null:records.get(summary.key); }
+		Stats(List<NexSummary> all, NexSummary last, List<NexSummary> cohort,String resetReason,Map<Long,NexRecord> records,long scope,boolean suspended)
 		{
+			this.scope=scope; this.suspended=suspended;
+			this.records=Map.copyOf(records);
 			this.resetReason=resetReason;
 			this.last=last; lastAttempt=all.isEmpty()?null:all.get(all.size()-1); this.cohort=List.copyOf(cohort); attempts=all.size(); n=cohort.size();
 			complete=(int)all.stream().filter(s->s.outcome==Outcome.COMPLETE).count();

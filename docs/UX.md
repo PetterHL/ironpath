@@ -1,284 +1,148 @@
 # Encounter-first UX
 
-Encounter direction selected 15 October; UI review incorporated 18 October 2026.
-UI1 is implemented for review in 0.20.0; CTX1 remains planned. TASKS.md owns
-delivery. Later versioned sections retain the implemented behavior/history.
+Current presentation decisions: **19 October 2026, sidebar simplification / build 0.23.3**,
+retaining the complete PR #48 approved UI (0.23.2).
+[TASKS](../TASKS.md) is the sole backlog. This guidance supersedes earlier requests
+for scope/assumption paragraphs beside cards or in ordinary details. Historical
+validation records retain their original screenshots and acceptance boundaries.
 
-## UI1 implementation (0.20.0, for review)
+## Normal screens
 
-One native 225px panel with **Encounter / Diagnostics** primary navigation.
-Setup and Account remain explicit secondary actions, together with comparisons,
-kill/attempt details and Reset. Keep frozen inspection and Back/scroll behavior.
+Keep one native 225px **Encounter** sidebar with independently collapsible sections.
+The last kill duration and Damage contribution stay visible above Compare setups
+(initially expanded), Team & method and Diagnostics
+(initially collapsed, Diagnostics last). Each full-width header has a small arrow,
+is wholly clickable and supports Space/Enter with an accessible expansion state.
+Collapsed headers have no explanatory subtitle. Retain expansion during use.
+Do not duplicate section navigation with separate tab/buttons.
 
-Encounter order: boss and pilot model scope; last complete duration and scoped
-observed hitsplat share; compact comparable mean/count; **Improve your setup**
-cards; secondary actions. Keep failed/censored attempts separate. At n=1, show
-one matching kill rather than repeating its mean/range. Details retain spread,
-mean-per-kill versus aggregate share, capture scope and exclusions.
+Context/default drafts, the selected kill/state/package, planner inputs
+and scroll position survive unrelated renders and verified scene reloads. Keep
+Plan specs & gear within its selected comparison. Hide suspended evidence and
+clear reports immediately; restore drafts only within the same session scope.
+Identity/world/reset/eviction guards discard unavailable evidence and stale actions.
 
-Cards are single-column, with a changed-item sprite/name (or multi-item package),
-one supported primary metric, phase/role scope, one short reason and details.
-Do not name an unchanged weapon when the gain comes from arrows or armour.
-Group/deduplicate deterministically; do not rank unrelated state percentages as
-whole-kill impact. Keep conditional/bank/partial-search qualifiers beside affected
-claims. Preserve zero/negative comparisons without filler cards. Use ItemManager
-live; label offline sprite placeholders. Stack metrics when enlarged fonts require it.
+Encounter shows the last complete duration and **Damage contribution**, optional
+matched mean/count, a compact confirmed/unconfirmed team/method strip, **Compare
+setups** cards, inspection actions and session controls. Incomplete attempts
+stay separate; pending/no-comparison/no-positive states use one brief status.
+No forced focus/navigation or live combat coaching.
 
-Diagnostics is directly available, including safe empty/reset/paused/pending
-states, without exposing hidden history or bypassing account guards. It contains
-status/build, observed-versus-assumed inputs, coverage and detailed results, plus
-one-click Copy report. The selected immutable calculation and exported report
-must agree. Use the allowlisted export contract in KILL_IMPACT.md; clipboard
-failure leaves selectable text. No automatic sending or account connection.
+Gear & method (including Gear locks and manual method controls) and Gear & unlocks
+are removed entirely, with no replacement controls. Gear, switches, active spell
+state and readable unlocks continue to be observed automatically. Existing stored
+preferences, locks, manual facts and their calculation precedence are preserved,
+including the upgraded Death Charge assumption. Unknown observations remain unknown.
+Existing Diagnostics and comparisons retain frozen evidence and assumptions.
 
-In-client Save screenshot, editable context and new numerical claims are outside
-UI1. Use DEV1 native PNGs and manual client screenshots for this first cycle.
-Check actual viewport hierarchy and controls as well as full-height text wrapping.
+Use **Loading encounter…** while arrival/reload evidence is pending, **Waiting for
+Nex** only when the arena is verified and capture is ready, **Tracking kill…**
+during capture and **Kill tracking: Off** when disabled. Outbound bank verification
+keeps an actionable bank instruction. Login/account loading, unsupported account,
+unsupported world and unavailable settings have distinct brief reasons. Detailed
+transitions belong in Diagnostics.
 
-Card selection visits carried scenarios before conditional bank preparation, then
-uses original capture order. It selects the first positive supported whole-package
-comparison in each state (proposed package first, then explicit alternatives), and
-deduplicates identical before/after equipment/projectiles within each role. A
-carried change wins over the identical bank scenario. There is no fixed quota and
-no cross-state percentage ranking; zero/negative/unavailable rows remain in details.
-A quiver-to-worn-ammo change identifies the new projectile rather than the unchanged
-weapon or a fictitious second empty-projectile upgrade.
+Normal cards and details show item/package identity, the supported result and
+controls. Keep short role/phase and origin labels where they identify the result:
+**Equipped gear**, **Inventory gear**, **Bank gear**, **Hypothetical gear**.
+Equipped means actually worn; inventory includes carried items. Search all the
+same complete carried packages. Do not relabel inventory as equipped or infer
+usable stock/packing from bank presence. Keep exact names, IDs and variants.
 
-Diagnostics freezes the selected scenario and pair. Returning with **Back to
-comparison** preserves the selected pair; **Encounter** explicitly opens the latest
-result. With no initial kill, Diagnostics can show the next published result. An
-already selected kill never silently changes when a newer kill arrives. Suspended
-history remains hidden, and identity/reset clears report text and invalidates old
-actions. The export uses a report-local K1/C1 plus a memory-only calculation
-revision and frozen planning locks, never current preferences.
+Keep **Encounter**, **Compare setups** and **{count}-item package**. Package gains
+are calculated together; independent alternatives are not additive. Cards use the
+changed item, including ammunition rather than an unchanged weapon, and genuine
+sprites for multi-item packages. There is no filler quota or cross-state ranking.
+Supported zero/negative alternatives remain available through comparison controls.
 
-An expanded selectable report retains its text selection, caret, scroll and
-clipboard feedback across refreshes while the same accessible report is selected.
-Its text/scroll subtree stays attached to preserve focus. A changed or hidden
-report clears the previous text and starts collapsed.
+**Damage contribution** is only the display label for the unchanged observed
+Nex/named-minion hitsplat ratio. Detailed scope and the difference from server loot
+credit belong in Diagnostics. No new attribution/contribution mathematics.
 
-See [UI1 validation](validation/ui1-encounter-diagnostics.md) for viewport evidence,
-clipboard fallback and the separate client checks.
+## Language and settings
 
-## Reviewed CTX1 target (after UI1 review)
+Use the following player-facing labels, including meaningful tooltips and
+accessibility names. Internal enums, preference keys and model identifiers stay
+unchanged.
 
-Show optional kill context beside the selected kill, with a compact editor and
-explicit Apply. Keep MP2/RP2/Other/Unknown, organized/mass/unknown and exact team
-count/unknown as separate dimensions. Count includes the player. A saved future
-default is separate from the selected kill's annotation; inherited is not confirmed.
-Selecting unsupported contexts preserves observations but cannot enable pilot
-recommendations. No compulsory pre-fight form. TASKS.md specifies frozen inputs,
-cohort reconciliation, migration and stale-work checks before implementation.
+| Surface | Label |
+|---|---|
+| Kill context / future defaults | Team & method / Default team & method |
+| Context fields | P2 method / Team type / Team size / Players, including you |
+| Per-kill apply | Apply to this kill |
+| Capture toggle | Kill tracking: On / Off; Turn on / off kill tracking |
+| Reset / counts | Clear session / Session stats |
+| Owned comparisons | Compare with owned gear |
+| Package detail / proposed option | Compare gear / Proposed gear setup |
+| Quiver / identical package | Selected quiver ammo / Same gear · no change |
+| Resource review / planner | Spec energy & Death Charge / Plan specs & gear |
+| Attack policy / options | When to spec / Normal attacks / Spec whenever energy allows |
+| Plan evaluation | Compare this plan |
 
-## One remembered context (existing pilot)
+Saved corrections and exact ownership-set membership remain intact after their
+editors are removed. Diagnostics retains readable descriptions, timestamps and
+manual provenance. Observed facts keep their precedence over saved corrections.
 
-The main view starts with `Nex · Trio MP2 · One kill per trip`. The method is a
-saved preference; detect equipment/spell use and ask only focused corrections.
-Lightbearer throughout and upgraded Death Charge are the confirmed pilot choices.
-A compact Setup action exposes melee, ranged and spec packages plus locked choices.
-Detected, manually assumed and unknown state must remain distinguishable.
+Team editing remains optional: independent strategy, team type and exact/variable/
+unknown count, per-field confirmation and a separate Use for future choice.
+Inherited defaults do not confirm a kill. Keep unfinished drafts and clear errors
+when resolved. Routine loaded/saved/observed-locally confirmations stay hidden;
+failed saves show **Settings not saved**.
 
-## Main view
+The N3 planner contains concise fields and explicit unchecked scenario choices:
+legal attack windows; initial attack/cast readiness; no active Death Charge;
+Lightbearer throughout; usable gear/stock; runes/legal casts; distinct eligible
+deaths; fixed HP/phase; spell/switch delays included. Detailed definitions live in
+Diagnostics. Never tick hidden confirmations or fabricate unknown values. Copy
+plan report explicitly reveals the selectable report, including clipboard fallback.
+Invalid submissions show transient field-specific constraints: window 1–3000
+whole ticks, energy 0–100% in 0.1% steps, bounded HP/restore/cap values and
+1–128 distinct increasing attack ticks before the exclusive window end. Optional
+blank inputs remain unknown. Cast/death lists have the same bounded tick format.
 
-1. Last complete kill: measured duration and observed damage share, each with a
-   defined scope. Session mean and comparable sample count are nearby; spread and
-   excluded/incomplete counts are inspectable.
-2. Improve with owned equipment: actual setup versus a proposed compatible owned
-   package. No acquisition implication.
-3. Relevant new upgrades: marginal value against the owned baseline, recurring
-   supply costs where relevant and a concise acquisition action.
+## Diagnostics
 
-Keep the first view short. Show useful results without a fixed filler quota or a
-catalogue ceiling. A card has item identity, one concrete benefit and the strongest
-supported metric. A material missing input stays next to its affected claim;
-technical diagnostics and repeated explanations belong in details.
+Diagnostics is the common, explicitly opened place for technical explanation:
+observation/timer/damage scope, matching rules, complete-package/resource models,
+assumptions, pilot restrictions, unsupported/future work, testing limitations,
+versions/provenance, long missing-coverage lists and raw in-memory readings/traces.
+The retained phrase **The pilot keeps Lightbearer equipped.** belongs here.
 
-Opening an option shows the actual/owned/candidate setup, changed slots, supported
-phase/spec results and assumptions. Acquisition is available there without making
-the player navigate multiple parallel recommendation systems. Back preserves focus
-and scroll; fresh kills must not replace the historical baseline being inspected.
+Keep useful actual gear Details actions. Do not replace removed prose with rows
+of explanation buttons or info icons. Use the approved main sections rather than
+adding explanation sections to individual cards. Ordinary Full gear setups
+shows gear, while calculation assumptions and raw capture/resource inspection are
+under existing Diagnostics → Calculation details. An unsupported number remains
+unavailable after its explanation moves.
 
-## Interaction and presentation rules
+Diagnostics and report export bind to the same immutable selected kill/comparison,
+context/input/model revisions and planning/unlock facts. Explicit selection,
+including no selection, wins over a default resolved when pending work arrives.
+Copy report is user-triggered and allowlisted. No names/identifiers, roster hashes,
+raw inventory/bank dumps, automatic upload, history logging or trace persistence.
+A busy/headless clipboard leaves selectable text. Preserve report selection/caret/
+scroll/focus subtree and expanded Calculation details across unrelated refreshes;
+clear them with record/identity/visibility guards. Paused history stays inaccessible.
 
-- Update quietly after completion. No modal, forced sidebar/focus switch, chat
-  spam, in-combat recommendation overlay or next-action coaching.
-- Use native Swing/PluginPanel and ItemManager sprites. Validate ordinary narrow
-  width, long labels, real images and enlarged fonts; never force a wider window.
-- Unknown and incomplete data have concise states. Show honest zero/no-useful-
-  upgrade results. Unsupported benefits do not masquerade as numeric priorities.
-- Display whole-package changes as such. Never add independent card gains.
-- Keep resource upgrades such as arrows separate from permanent equipment.
-- Provide Reset session. A bank trip keeps completed same-account summaries;
-  logout/account change clears them. Persistent method choice is not persistent
-  performance history.
+## Layout and verification
 
-## N1 capture foundation
+Centre section headings, headline values, item/package content groups and action
+button groups with balanced margins. A sprite and long name form one coherent
+centred group with naturally wrapped text. Multi-item packages retain real sprites.
+Keep form labels/fields, tables and long Diagnostics text left aligned. Keep
+clear section arrows, restrained colours and a compact hierarchy without widening the
+sidebar, shrinking body fonts or introducing large empty spaces.
 
-N1 development build 0.15.0 opens `Nex · Trio MP2 · One kill per trip`. Encounter,
-Setup and Account are the native navigation. The homepage shows last complete
-observed timing/share, same-cohort means, sample counts, min–max spread and excluded
-attempt counts. Partial attempts have separate inspectable evidence. Kill details
-freeze the selected summary across new results and expose timing/damage scope,
-phase/target, state/resource samples and uncertainty. No in-combat recommendations
-or forced navigation are added.
+Inspect actual same-fixture native Swing **225 × 600** viewports at body fonts
+**12 and 20**, plus full-height/scrolled output: Encounter, multi-item packages,
+team/gear/unlock settings, N3 planner and Diagnostics. Exercise pending, incomplete,
+unknown/unconfirmed and no-positive states. Geometry checks supplement whole-image
+visual inspection. Keep pinned genuine artwork/Jagex notices; these synthetic
+renders are not live client/player acceptance.
 
-Setup lists observed worn roles and keeps manual planning locks separate from
-history. Item selection uses reviewed/observed names; no per-kill setup form is
-required. The upgrade toggle is labeled an assumption, while raw detected Death
-Charge state is in details. Account corrections remain accessible. Method/locks
-and correction writes retain profile/generation/revision guards and serial local IO.
-
-N1 retired the old general homepage navigation. N2 adds the owned flow below;
-new-upgrade cards, counterfactual contribution and team seconds remain N3–N4. [Synthetic checks and pending native-client/player acceptance](validation/nex-session.md)
-are recorded separately; historical screenshots are not acceptance of this view.
-
-## N2 owned equipment
-
-Build 0.16.0 adds **Improve with owned equipment** after the last complete result.
-Each displayed role names its captured tick and conditional theoretical result;
-it does not summarize whole-kill improvement. **Owned setup comparisons** opens a
-frozen result with state/phase and carried/bank-preparation selection. Unsupported
-states remain inspectable with their actual evidence and a concise affected gap.
-
-A complete-package proposal is separate from explicit pairwise alternatives.
-Negative and unchanged results remain visible; blood-fury offence cannot establish
-healing or overall value. The physical ammo slot and selected quiver projectile
-are shown separately. Full slots and numerical/source assumptions expand under
-**Full setups and calculation basis**. Back restores the encounter position;
-new kills do not replace the inspected summary or selected pair. Identity resets
-clear it. Native sprites remain ItemManager images; synthetic captures use empty
-sprite wells. Ordinary/enlarged-font narrow captures are verification, not client
-or player acceptance.
-
-## 0.16.1 live-test follow-up
-
-The main view explicitly says **Observing the current Nex attempt** during capture,
-then returns to the last completed/partial result. Travel status is refreshed when
-capture starts; a waiting message must not imply capture is inactive. This adds no
-live combat advice. Kill details now list observed start boundary, matched smoke,
-Nex death/dying and arena-end ticks, observed phases and sample continuity. Missing
-signals have specific reasons; an excluded attempt is never silently promoted.
-See [first-client findings and retest](validation/nex-live-start.md).
-
-## 0.16.2 signal investigation
-
-The second client attempt still lacks arena boundaries. Kill details identify the
-adapter, show observed smoke separately from matched smoke, and list raw barrier
-transitions with callback/poll origin. A **Capture signal trace** button reveals
-the bounded nonpersistent sequence without requiring the equipment/inventory
-section to be shared. An unmatched end waits at most 20 ticks for diagnostic
-evidence; travel still flushes immediately. Acceptance criteria are unchanged.
-See [second-client findings](validation/nex-live-signals.md).
-
-## N3a post-kill resources
-
-Build 0.17.0 adds **Special-attack resources** inside the frozen **Owned setup
-comparisons** view. It shows first/last recorded energy, sampled net increases/
-decreases and observed Lightbearer/Death Charge evidence. **Resource readings and
-rules** expands equal-tick-ordered readings and reference costs. Unknown readings
-remain explicit. No spec/attack/proc count is inferred from energy changes, and
-at-cap readings are not labeled wasted energy. New results do not replace the
-inspected kill; identity reset clears it. No live coaching or capture change.
-The conditional resource scenario API has no player setup wizard or automatic
-spec recommendation. [Scope and validation](validation/nex-spec-resources.md).
-Combined build 0.17.1 retains the resource review alongside the 0.16.6 role/support
-filters and paused-travel presentation; changing an ordinary scenario filter does
-not change which kill the resource review describes.
-
-Build 0.18.0 adds independent N3b damage/ammo scenario kernels without a new runtime
-calculation view. Resource details explain that sampled readings cannot establish
-launches, HP or initial conditions. No automatic spec-weapon ranking or upgrade
-card is shown until those inputs and package/phase handling are supported.
-
-## 0.16.5 observed smoke start
-
-The measured interval is labeled **Observed smoke announcement → Nex death/dying**.
-Details show the measured smoke start and the optional arena start transition as
-distinct fields. A visible arena-entry transition is not an eligibility condition.
-Before-smoke states remain in the history selector with an explicit prefix and
-exclusion explanation; the default selection is the first fight state. They are
-excluded from combat statistics and owned-equipment scenarios. The start is never
-backdated, and a later smoke line cannot erase observed combat/later phases.
-End matching distinguishes dying from subsequent arena completion. Missing
-evidence remains excluded. [Contract and verification](validation/nex-smoke-anchor.md).
-
-## 0.16.6 comparison coverage and selection
-
-The main view counts supported carried scenarios, bank preparation and unavailable
-states separately. These counts do not represent fight/damage coverage. A missing
-ordinary role has an explicit unavailable message. **Owned setup comparisons**
-starts with supported scenarios when any exist, with role and support filters.
-**All states** and **Unavailable comparisons** retain the gaps; **Why comparisons
-are unavailable** expands grouped reason counts. An empty filter has a clear
-message and disabled state selector. Filtering does not recompute or alter history.
-Bank preparation remains labeled conditional, and identity changes clear the view.
-
-While a bank/travel session is paused, every navigation page shows the revalidation
-message. Setup must not describe temporarily hidden history as an empty session.
-The ordinary Setup content returns after revalidation without changing stored
-summaries or preferences.
-
-The main result/comparison follows the latest complete kill. An already inspected
-comparison stays frozen while the view remains valid; there is currently no
-selector for opening any earlier kill's comparison from the main view. A new
-partial attempt does not enter complete averages or replace the last complete
-baseline. Setup/history across further travel still needs live checks.
-
-## 0.19.0 complete-package scenarios
-
-N3c's explicit conditional scenario API connects complete packages to finite
-spec plans without changing runtime navigation or adding a setup wizard. Captured
-readings still do not establish legal launches, HP or initial conditions. No
-personal spec upgrade, contribution or seconds-saved card is shown.
-[Contract and verification](validation/nex-packages.md).
-
-## 0.19.1 bank waiting and retention
-
-Completed history remains paused and hidden until the same-account bank trip is
-verified, without a deadline for opening the bank or returning. A nearby loaded
-Nex does not falsely end the outbound wait. Opening the bank restores the last
-complete result, session statistics and details; logout/account/profile/world
-changes and Reset still clear them. The reported empty bank-open session failed
-validation and requires retesting on the corrected build.
-[Finding, regression cases and next client check](validation/nex-bank-retention.md).
-
-## 0.19.2 test visibility
-
-The header shows the actual bundled build version on the development classpath
-and in the assembled plugin. When completed history is cleared, the empty
-Encounter page retains a short constant explanation (for example world change,
-unverified travel or Reset). Fresh account reads do not overwrite that cause;
-a new captured attempt replaces it. Explanations contain no account identifiers
-or old performance data and are neither saved nor logged. Normal travel pauses
-remain separate from reset messages.
-
-A verified bank-return scene now supplies the next departure source while settings
-IO is pending. An additional scene transition must not require a completed
-preference read to preserve history. [Verification](validation/nex-bank-retention.md).
-
-## 0.19.3 arena scene reloads
-
-A scene rebuild while still in the verified Nex arena can resume observation
-without a bank visit. Completed summaries remain available after revalidation;
-active traces still end at the scene boundary. An observed departure continues
-to require bank verification, with no waiting deadline. After account/settings
-revalidation, the paused view offers Reset session with the existing view and
-identity guards. Client testing is deferred;
-[automated regression evidence](validation/nex-bank-retention.md) is recorded separately.
-
-## Combined N3 post-kill plans (0.22.0)
-
-**Spec and package plans** opens all captured states, including spec evidence.
-Each state has an optional **Conditional N3 package plan**. The player can supply
-legal opportunities and resource/HP assumptions, optionally add exact hypothetical
-item/quantity edits, then evaluate three complete packages. Unknown fields remain
-unknown. No pre-fight form is required, no context/observations are changed and
-no work is published during an active attempt. The production worker supplies
-finite resource/damage results and separate captured-to-owned / owned-to-upgrade
-deltas. A selectable **Copy plan report** retains the frozen inputs and gaps.
-[Contract and limits](research/nex-runtime-plans.md).
-
-**Special-attack resources → Natural-restoration examples** separately shows
-fixed-Lightbearer natural-only phase/order sensitivity when start/capture evidence
-supports it. Actual DC casts/procs and launches are not inferred. Neither path
-adds automatic weapon ranking, personal contribution or team-time claims.
+[PR #48 follow-up](validation/pr48-review-followup.md) and
+[issue #47 validation](validation/ui1-47-wording-layout.md) record exact bases,
+commands, evidence and remaining live checks. Retain existing banking/reload/reset,
+identity/stale callback, frozen history, Back/scroll, context and independent
+arithmetic regressions. No new formula, boss, acquisition logic, automatic spec
+recommendation or N4 estimate belongs in this presentation refinement.

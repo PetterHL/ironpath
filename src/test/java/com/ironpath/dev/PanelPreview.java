@@ -71,6 +71,29 @@ public final class PanelPreview
 			&& tooltip.equals(((JButton) c).getToolTipText())).findFirst().orElseThrow(() -> new IllegalStateException("Missing visible action: " + tooltip));
 		button.doClick(0);
 	}
+	/** Open an independent section without treating its header as an idempotent tab. */
+	public static void openSection(Container panel,String title)
+	{
+		requireEdt();
+		JButton header=section(panel,title);
+		if(!header.isSelected()) { header.doClick(0); }
+	}
+	public static void closeSection(Container panel,String title)
+	{
+		requireEdt(); JButton header=section(panel,title);
+		if(header.isSelected()) { header.doClick(0); }
+	}
+	private static JButton section(Container panel,String title)
+	{
+		return (JButton)children(panel).stream().filter(c->c instanceof JButton && c.getName()!=null
+			&& c.getName().startsWith("nex-section-") && title.equals(((JButton)c).getToolTipText())).findFirst().orElseThrow();
+	}
+	public static void encounter(Container panel)
+	{
+		for(String title:List.of("Team & method","Diagnostics")) { closeSection(panel,title); }
+		openSection(panel,"Compare setups");
+		if(children(panel).stream().anyMatch(c->c instanceof JButton && visible(c) && "Back to encounter".equals(((JButton)c).getToolTipText()))) { click(panel,"Back to encounter"); }
+	}
 
 	public static JComboBox<?> combo(Container panel, String name)
 	{
@@ -106,15 +129,18 @@ public final class PanelPreview
 		for(Component c:children(panel))
 		{
 			// RuneLiteLAF deliberately gives native scrollbar arrow buttons zero size.
-			if(!visible(c) || !(c instanceof JButton || c instanceof JLabel)
+			if(!visible(c) || !(c instanceof javax.swing.AbstractButton || c instanceof JLabel || c instanceof javax.swing.JTextField || c instanceof JComboBox)
 				|| SwingUtilities.getAncestorOfClass(javax.swing.JScrollBar.class,c)!=null) { continue; }
 			Rectangle bounds=SwingUtilities.convertRectangle(c,new Rectangle(0,0,c.getWidth(),c.getHeight()),panel);
 			if(c.getWidth()<=0 || c.getHeight()<=0 || !imageBounds.contains(bounds)) { controls.add("Control outside image: "+c.getName()); continue; }
-			if(c instanceof JButton)
+			if(c instanceof javax.swing.AbstractButton)
 			{
-				JButton button=(JButton)c; Insets insets=button.getInsets();
+				javax.swing.AbstractButton button=(javax.swing.AbstractButton)c; Insets insets=button.getInsets();
+				javax.swing.Icon icon=button.getIcon();
+				if(icon==null && c instanceof javax.swing.JCheckBox) { icon=UIManager.getIcon("CheckBox.icon"); }
+				int iconWidth=icon==null?0:icon.getIconWidth()+button.getIconTextGap();
 				View html=(View)button.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
-				if(html==null && button.getFontMetrics(button.getFont()).stringWidth(button.getText())>button.getWidth()-insets.left-insets.right)
+				if(html==null && button.getFontMetrics(button.getFont()).stringWidth(button.getText())>button.getWidth()-insets.left-insets.right-iconWidth)
 				{ controls.add("Truncated button: "+button.getToolTipText()); }
 				if(html!=null && (html.getPreferredSpan(View.X_AXIS)>button.getWidth()-insets.left-insets.right
 					|| html.getPreferredSpan(View.Y_AXIS)>button.getHeight()-insets.top-insets.bottom))
@@ -128,7 +154,7 @@ public final class PanelPreview
 		Files.createDirectories(file.getParent());
 		if (!ImageIO.write(image, "png", file.toFile())) { throw new IllegalStateException("PNG writer unavailable"); }
 		report.section(file.getFileName().toString(), "![Synthetic native Swing preview](" + file.getFileName() + ")\n\n"
-			+ width + " × " + image.getHeight() + " px. Empty item sprite wells: no ItemManager/cache sprites loaded.");
+			+ width + " × " + image.getHeight() + " px. Sprites use the pinned genuine game-art fixtures through the ItemManager boundary where configured; see the sprite provenance notice.");
 	}
 
 	/** Paint an actual scroll viewport. Required controls must fit completely in the
@@ -138,11 +164,21 @@ public final class PanelPreview
 		requireEdt();
 		Container previous=panel.getParent();
 		JViewport viewport=new JViewport(); viewport.setView(panel); viewport.setSize(width,height);
-		panel.setSize(width,Math.max(height,panel.getPreferredSize().height)); layout(panel);
+		// Reparenting invalidates nested width-dependent BoxLayouts. Settle them as
+		// for a full-height capture before scrolling, so sprite rows are not compressed
+		// by a height cached before the view acquired its final width.
+		for(int pass=0;pass<4;pass++)
+		{
+			panel.invalidate(); layout(panel);
+			panel.setSize(width,Math.max(height,panel.getPreferredSize().height));
+		}
+		layout(panel);
+		viewport.setViewPosition(new java.awt.Point(0,0));
 		if(focusName!=null)
 		{
 			Component target=children(panel).stream().filter(c->focusName.equals(c.getName())).findFirst().orElseThrow();
-			var at=SwingUtilities.convertPoint(target,0,0,panel); viewport.setViewPosition(new java.awt.Point(0,Math.max(0,at.y-20)));
+			var at=SwingUtilities.convertPoint(target,0,0,panel);
+			viewport.setViewPosition(new java.awt.Point(0,Math.max(0,Math.min(at.y-20,panel.getHeight()-height))));
 		}
 		Rectangle visible=new Rectangle(viewport.getViewPosition(),viewport.getExtentSize());
 		for(String name:required)

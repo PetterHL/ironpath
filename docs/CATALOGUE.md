@@ -1,7 +1,7 @@
 # Capability and evidence inventory
 
 16 October 2026. This file records support and gaps; [TASKS](../TASKS.md) owns work.
-Current knowledge is `n3-package-1` (N3c); catalogue schema 14 and preferences schema 3 (explicit Nex method/locks; schemas 1/2 migrate).
+Current knowledge is `n3-package-1` (N3c); catalogue schema 14 and preferences schema 4 (future context defaults plus explicit Nex method/locks; schemas 1–3 migrate without kill confirmation).
 
 ## Reusable current coverage
 
@@ -35,6 +35,7 @@ the retained implementation; it does not claim Nex recommendations are ready.
 | Finite spec resources (N3a) | Frozen observed review + conditional bounded energy/delay kernel; no inferred casts/procs, spec damage or upgrade ranking | N3 in progress |
 | Charged/blessed quiver and actual ammunition | Conditional offence equivalence, exact finite ammo/splinter branches and exhaustion tested; live counters and automatic opportunity use remain open | N1–N3 |
 | Food/pots/spells | Capture actual state first; alternative-plan effects need own model | N1/N3 |
+| Editable context | Optional typed per-kill annotations, inherited future defaults, frozen evaluation inputs and descriptive matching; no new combat mechanic | CTX1 included in main 0.23.3; live acceptance open |
 | Personal share / team seconds | No validated counterfactual | N4 |
 
 Track observation, phase offence, personal contribution and team time independently.

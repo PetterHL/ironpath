@@ -28,3 +28,31 @@ The local model is independently authored from individually checked mechanics;
 the reference harness and synthetic inputs are original to this task. The small
 result fixture contains outputs for those original inputs, with provenance and
 tolerances in docs/RESEARCH.md. This does not relicense the external calculator.
+
+## Preview game artwork
+
+Created using intellectual property belonging to Jagex Limited under the terms of Jagex's Fan Content Policy. This content is not endorsed by or affiliated with Jagex.
+
+The genuine OSRS item icons in `src/test/resources/com/ironpath/sprites/*.png`
+and their appearance in development screenshots remain Jagex Limited's property.
+They are **not licensed under this repository's BSD software licence**.
+
+Source: RuneLite's item-image service, `https://static.runelite.net/cache/item/icon/{itemId}.png`.
+The adjacent `manifest.json` records each exact item ID, source URL, retrieval date,
+dimensions and SHA-256. The original PNG bytes are retained without recolouring,
+redrawing, generative approximations or extraction of game code. These are a
+small set of test-only fixtures for this free RuneLite plugin's native UI review.
+Neither the production plugin JAR nor its resource loader contains these files;
+production uses RuneLite's public ItemManager/cache API. No runtime web request
+is added. The development-only shadow launcher includes test resources.
+
+Reuse basis reviewed 18 October 2026: Jagex's [Fan Content Policy](https://legal.jagex.com/docs/policies/fan-content-policy),
+version **1.4, 29 September 2026**, particularly 2.1/2.2 (game art versus code),
+3 (limited/revocable licence), 4.1.6 (modifications/plugins), 4.2 (sharing),
+6.1.3/6.1.6 (permitted plugin exception and no endorsement) and 8 (attribution).
+This notice does not grant broader asset redistribution or imply Jagex/Plugin Hub
+approval of this plugin's features. Screenshots are non-commercial plugin review
+evidence, not a standalone artwork package. Follow the policy for any further use.
+
+IronPath source code remains under [BSD 2-Clause](LICENSE). No third-party
+calculator code, datasets, article prose or generated item art is included.

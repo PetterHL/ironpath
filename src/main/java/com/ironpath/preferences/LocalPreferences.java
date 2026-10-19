@@ -63,7 +63,7 @@ public final class LocalPreferences implements PreferenceStorage
 		try (Reader reader = file.openReader())
 		{
 			Document doc = gson.fromJson(reader, Document.class);
-			if (doc == null || doc.schemaVersion < 1 || doc.schemaVersion > 3 || doc.skipped == null || doc.confirmations == null
+			if (doc == null || doc.schemaVersion < 1 || doc.schemaVersion > 4 || doc.skipped == null || doc.confirmations == null
 				|| doc.skipped.size() > 80 || doc.confirmations.size() > 128)
 			{ throw new IllegalArgumentException("Unsupported preferences"); }
 			// Schema 1 retains its action skips, goals and exact fact keys. Schema 2 additionally supports activity/set IDs.
@@ -79,13 +79,21 @@ public final class LocalPreferences implements PreferenceStorage
 				confirmations.put(entry.getKey(), new Preferences.Confirmation(fact.value, Instant.parse(fact.time)));
 			}
 			NexMethod method = NexMethod.PILOT;
-			if (doc.schemaVersion == 3)
+			if (doc.schemaVersion >= 3)
 			{
 				if (!NexMethod.ID.equals(doc.method) || doc.upgradedDeathCharge == null || doc.locks == null)
 				{ throw new IllegalArgumentException("Invalid Nex preferences"); }
 				method = new NexMethod(doc.upgradedDeathCharge, doc.locks);
 			}
-			return new Preferences(goal, skipped, confirmations, method);
+			com.ironpath.nex.NexContext context=com.ironpath.nex.NexContext.PILOT;
+			if(doc.schemaVersion==4)
+			{
+				if(doc.strategy==null || doc.group==null || doc.participation==null) { throw new IllegalArgumentException("Missing context defaults"); }
+				context=new com.ironpath.nex.NexContext(com.ironpath.nex.NexContext.Strategy.valueOf(doc.strategy),
+					com.ironpath.nex.NexContext.Group.valueOf(doc.group),com.ironpath.nex.NexContext.Participation.valueOf(doc.participation),
+					doc.participants,com.ironpath.nex.NexContext.Source.INHERITED,com.ironpath.nex.NexContext.Source.INHERITED,com.ironpath.nex.NexContext.Source.INHERITED);
+			}
+			return new Preferences(goal, skipped, confirmations, method,context);
 		}
 		catch (JsonParseException | IllegalArgumentException | java.time.DateTimeException ex) { throw new IOException("Invalid preference file", ex); }
 	}
@@ -95,8 +103,10 @@ public final class LocalPreferences implements PreferenceStorage
 		if ((preferences.goal != null && !goals.contains(preferences.goal)) || !decisions.containsAll(preferences.skipped)
 			|| !facts.containsAll(preferences.confirmations.keySet())) { throw new IllegalArgumentException("Unsupported preferences"); }
 		Document doc = new Document();
-		doc.schemaVersion = 3; doc.goal = preferences.goal; doc.skipped = preferences.skipped;
+		doc.schemaVersion = 4; doc.goal = preferences.goal; doc.skipped = preferences.skipped;
 		doc.method = NexMethod.ID; doc.upgradedDeathCharge = preferences.nex.upgradedDeathCharge; doc.locks = preferences.nex.locks;
+		doc.strategy=preferences.nexContext.strategy.name(); doc.group=preferences.nexContext.group.name();
+		doc.participation=preferences.nexContext.participation.name(); doc.participants=preferences.nexContext.participants;
 		doc.confirmations = new HashMap<>();
 		preferences.confirmations.forEach((id, confirmation) ->
 		{
@@ -124,6 +134,8 @@ public final class LocalPreferences implements PreferenceStorage
 		String method;
 		Boolean upgradedDeathCharge;
 		Map<String, Integer> locks;
+		String strategy, group, participation;
+		Integer participants;
 	}
 	private static final class Fact { Boolean value; String time; }
 }

@@ -20,16 +20,16 @@ final class OfflineN3Scenario
 				r.fight(30,20,60,true); r.settle(); if(font==12) { OfflineReview.versions(report,r.catalog); }
 				final NexScenarioPanel[] panel={null};
 				edt(()->{
-					PanelPreview.click(r.panel,"Spec and package plans");
-					PanelPreview.click(r.panel,"Special-attack resources"); PanelPreview.click(r.panel,"Natural-restoration examples");
+					PanelPreview.click(r.panel,"Compare with owned gear"); PanelPreview.combo(r.panel,"nex-owned-support-filter").setSelectedItem("All states");
+					PanelPreview.click(r.panel,"Spec energy & Death Charge"); PanelPreview.click(r.panel,"Natural-restoration examples");
 				});
 				report.check("N3A three bounded natural-restoration examples "+font,3,r.plugin.ownedResult.resources.scenarios.examples.size());
 				capture(r,output,"natural-examples",font,report);
 				edt(()->{
-					PanelPreview.click(r.panel,"Special-attack resources");
+					PanelPreview.click(r.panel,"Spec energy & Death Charge");
 					PanelPreview.combo(r.panel,"nex-owned-role-filter").setSelectedItem("melee");
 					panel[0]=(NexScenarioPanel)PanelPreview.children(r.panel).stream().filter(c->c instanceof NexScenarioPanel).findFirst().orElseThrow();
-					PanelPreview.click(r.panel,"Conditional N3 package plan"); fill(r.panel);
+					PanelPreview.click(r.panel,"Plan specs & gear"); fill(r.panel);
 					JComboBox<?> slot=PanelPreview.combo(r.panel,"n3-upgrade-slot"); slot.setSelectedItem("weapon");
 					JComboBox<?> items=PanelPreview.combo(r.panel,"n3-upgrade-item");
 					for(int i=0;i<items.getItemCount();i++) if(items.getItemAt(i).toString().endsWith("(27690)")) { items.setSelectedIndex(i); break; }
@@ -37,7 +37,7 @@ final class OfflineN3Scenario
 				});
 				capture(r,output,"declared-inputs",font,report);
 				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("evaluate-viewport-"+font+".png"),225,600,"n3-evaluate",List.of("n3-evaluate"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
-				edt(()->PanelPreview.click(r.panel,"Evaluate plan"));
+				edt(()->PanelPreview.click(r.panel,"Compare this plan"));
 				report.check("N3 uses plugin worker at "+font,true,r.workers.size()>0); r.settle();
 				final NexPlanComparison.Result[] finished={null};
 				edt(()->{
@@ -62,7 +62,7 @@ final class OfflineN3Scenario
 				capture(r,output,"conditional-results",font,report);
 				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("report-viewport-"+font+".png"),225,600,"n3-copy-report",List.of("n3-copy-report","n3-report-scroll"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
 				edt(()->{
-					NexScenarioPanelTest.named(r.panel,"n3-target-hp",JTextField.class).setText(""); PanelPreview.click(r.panel,"Evaluate plan");
+					NexScenarioPanelTest.named(r.panel,"n3-target-hp",JTextField.class).setText(""); PanelPreview.click(r.panel,"Compare this plan");
 				}); r.settle();
 				edt(()->{
 					var c=panel[0].result().comparison;
@@ -75,11 +75,11 @@ final class OfflineN3Scenario
 				edt(()->{
 					var same=(NexScenarioPanel)PanelPreview.children(r.panel).stream().filter(c->c instanceof NexScenarioPanel).findFirst().orElseThrow();
 					report.check("New kill preserves original plan inputs "+font,true,same==panel[0] && same.source==firstSource);
-					NexScenarioPanelTest.named(r.panel,"n3-target-hp",JTextField.class).setText("500"); PanelPreview.click(r.panel,"Evaluate plan");
+					NexScenarioPanelTest.named(r.panel,"n3-target-hp",JTextField.class).setText("500"); PanelPreview.click(r.panel,"Compare this plan");
 				});
 				if(r.workers.size()==0) { throw new IllegalStateException("Expected pending N3 worker"); }
 				Runnable stale=r.workers.take(); edt(()->PanelPreview.click(r.panel,"Back to encounter"));
-				edt(()->PanelPreview.click(r.panel,"Reset session")); r.callbacks.drain(); OfflinePluginReplay.edt();
+				edt(()->PanelPreview.click(r.panel,"Clear session")); r.callbacks.drain(); OfflinePluginReplay.edt();
 				r.runWorker(stale); OfflinePluginReplay.edt();
 				edt(()->report.check("Reset cannot resurrect scenario report "+font,false,PanelPreview.text(r.panel).contains("Conditional plan results")));
 				capture(r,output,"reset-pending",font,report);
@@ -92,7 +92,7 @@ final class OfflineN3Scenario
 		{ NexScenarioPanelTest.named(panel,entry.getKey(),JTextField.class).setText(entry.getValue()); }
 		PanelPreview.combo(panel,"n3-order").setSelectedIndex(1); PanelPreview.combo(panel,"n3-kandarin").setSelectedIndex(1);
 		PanelPreview.combo(panel,"n3-ruby").setSelectedIndex(2); PanelPreview.combo(panel,"n3-policy").setSelectedIndex(1);
-		NexScenarioPanelTest.named(panel,"n3-legal",JCheckBox.class).doClick();
+		NexScenarioPanelTest.confirmConditions(panel);
 	}
 	private static void edt(Runnable action) throws Exception { SwingUtilities.invokeAndWait(action); }
 	private static void capture(OfflinePluginReplay r,Path output,String name,int font,ReviewReport report) throws Exception

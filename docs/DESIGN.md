@@ -19,6 +19,12 @@ contribution. Lightbearer stays equipped; upgraded Death Charge is confirmed by
 the user. Longer trips are not this profile's objective. Further methods and boss/
 raid contexts remain possible without turning the pilot into a universal simulator.
 
+The 19 October sidebar simplification removes the Gear & method (Setup) and
+Gear & unlocks (Account) editors and navigation. Automatic gear/unlock observations,
+stored preferences/manual facts, planning locks, upgraded Death Charge assumptions
+and calculations remain intact. There are no replacement controls; existing kill
+details and comparisons retain observed evidence and frozen planning inputs.
+
 ## Three distinct setups
 
 | Setup | Meaning |
@@ -38,32 +44,68 @@ owned gear. Missing support blocks dependent claims. Explicit supported pairwise
 comparisons remain useful even when a broader optimum is unknown. Never discard
 an item silently to manufacture a weaker baseline.
 
+## Current presentation (19 October 2026)
+
+PR #48’s approved follow-up uses one native Encounter sidebar: Last kill stays
+above independent collapsible Compare setups (open), Team & method, Gear & method,
+Gear & unlocks and Diagnostics (initially closed, Diagnostics last). Persistent
+headers/editor/report subtrees retain expansion, draft, selection and scroll. A
+non-private in-memory session scope distinguishes verified travel from hard
+identity/world/reset boundaries; suspended evidence stays hidden and exports clear.
+Ready/status labels come from actual client/session readiness, including verified
+Waiting for Nex. Invalid inputs report their field bounds; correction provenance
+stays in Diagnostics. [Follow-up evidence](validation/pr48-review-followup.md).
+
+Issue #47 supersedes earlier per-card help/scope prose. Show the result, compact
+origin/role labels and actions in normal screens. Put calculation definitions,
+assumptions, pilot restrictions, provenance, long gaps and raw traces in common
+Diagnostics/explicit reports. Damage contribution is the existing observed ratio,
+not a new contribution estimate. Centre headings, values, sprite/name groups and
+actions inside the 225px column; keep forms and technical text left aligned.
+[Narrow native evidence](validation/ui1-47-wording-layout.md) and [UX](UX.md).
+
+The integration preserves N3's frozen unlock facts through CTX1's NexEvaluation
+wrapper, as well as context/input/model revisions and pending Diagnostics defaults.
+A presentation change cannot drop either lineage or enable unsupported numbers.
+
 ## Code boundaries and transition disposition
 
-### UI1 implementation / planned CTX1 boundaries (18 October review)
+### UI1 / CTX1 implementation (18 October 2026)
 
-UI1 (0.20.0) consumes existing immutable results through NexPresentation and
-the immutable allowlisted NexReport model. NexOwnedResult retains the evaluation
-revision and immutable planning inputs that produced it.
-Do not add calculations or account reads to Swing/export actions. The production
-allowlisted report formatter may be reused by DEV1; its runner/assertions remain
-test-only. Reuse current arithmetic, native widgets, images and lifecycle guards.
+UI1 (0.20.0) consumes immutable results through NexPresentation and the allowlisted
+NexReport. CTX1 (0.21.0) adds NexContext, NexRecord and NexEvaluation. Swing actions
+never calculate or read account state. DEV1 reuses production formatting; its
+runner and assertions remain test-only.
 
-CTX1 separates future defaults, frozen observations, planning locks and per-kill
-annotations. Do not use NexObserver.method() for historical edits: its current
-capture-censoring behavior is inappropriate. Preserve the evaluation inputs that
-produced the inspected result; annotate/recompute under explicit revisions instead
-of silently reading a newer bank/account/preferences snapshot. Retain session,
-identity, generation and stale-publication checks alongside kill/context versions.
+NexContext keeps strategy, group mode and exact/variable/unknown participation
+separate, with per-field unknown/inherited/manual-unconfirmed/annotated provenance.
+Preferences schema 4 stores only future values; schemas 1–3 migrate the fixed pilot
+as unconfirmed inheritance. NexCapture snapshots defaults at attempt start, including
+before a later smoke re-anchor. NexSummary and all observed facts remain immutable.
 
-Current cohorts are opaque strings combining method/planning locks, observed
-gear/levels/prayers and roster fingerprints. CTX1 must define typed comparability
-rules and reconcile means on edits without modifying NexSummary evidence. Planning
-locks are not observed performance; matching team count alone is not matching
-teammates or damage. Keep unknown/incompatible evidence explicit. Support is
-per output; changing a label cannot generalize the Trio MP2 model.
+NexRecord holds the effective annotation revision and frozen NexEvaluation inputs
+for each retained kill. Inputs freeze at its first post-kill evaluation, including
+ownership, planning preferences and model versions. Later bank/account/Setup changes
+apply to future comparisons. A correction evaluates those preserved inputs on the
+worker, recalculates only context support/descriptive matching, and publishes under
+identity/world/session, kill, annotation, input and model guards. Pending corrected
+outputs cannot display/export a previous revision. Historical context edits and
+future defaults use a dedicated action; neither calls NexObserver.method() nor
+interrupts another active attempt. A report and its selected calculation share revisions.
 
-CTX1 remains planned; UI1 adds no annotations, cohort redesign or combat formulas.
+NexComparability replaces string-only grouping with explicit adapter/timer,
+observed worn package, level/prayer/style/projectile and stable roster evidence,
+plus confirmed organized strategy and exact count. Unknown, variable, mass,
+unspecified Other, incomplete or incompatible evidence stays out of matched means.
+Planning locks are excluded. These are descriptive matches: equal count and visible
+roster do not prove party membership or equal teammate damage. No causal team model
+is introduced. Unsupported context retains observations and independently justified
+ordinary state arithmetic; it cannot enable Trio MP2 recommendations or team-time.
+
+Annotations, inputs and calculations share the session's 50-record in-memory bound,
+banking visibility rules and identity/world/logout/reset/disable lifetime. They
+are evicted together. There is no persisted performance history or arbitrary
+history selector. [Validation and limitations](validation/ctx1-kill-context.md).
 
 | Existing area | Disposition and concrete next use |
 |---|---|

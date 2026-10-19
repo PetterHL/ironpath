@@ -57,7 +57,7 @@ public class NexSessionTest
 		assertFalse(cleared.resetReason.contains("private-fixture")); assertNotNull(frozen.last); assertNull(frozen.resetReason);
 		session.select("private-fixture-b",301); session.revalidate("private-fixture-b",301,2001,true,false);
 		assertEquals(cleared.resetReason,session.stats().resetReason); assertNull(session.stats().last);
-		session.add(NexCaptureTest.replay(2100,20,60)); assertNull(session.stats().resetReason); assertEquals(1,session.stats().n);
+		session.add(NexCaptureTest.replay(2100,20,60)); assertNull(session.stats().resetReason); assertEquals(1,session.stats().complete);
 		assertEquals(0,cleared.attempts); assertNotNull(cleared.resetReason);
 	}
 	@Test public void delayedBankAndReturnKeepHiddenHistoryWithoutAOneMinuteDeadline()
@@ -72,7 +72,7 @@ public class NexSessionTest
 			assertTrue(session.recent().isEmpty());
 		}
 		assertTrue(session.revalidate("a",301,2001,true,false));
-		assertSame(first,session.stats().last); assertEquals(1,session.stats().n);
+		assertSame(first,session.stats().last); assertEquals(1,session.stats().complete);
 		assertTrue(session.suspend("a",301,2010,false));
 		assertFalse(session.revalidate("a",301,4000,false,false)); assertTrue(session.suspended());
 		assertTrue(session.revalidate("a",301,4001,false,true)); assertSame(first,session.stats().last);
@@ -100,7 +100,7 @@ public class NexSessionTest
 			assertTrue(session.revalidate("synthetic-a",301,i*100+55,false,true));
 			assertEquals(i+1,session.stats().complete);
 		}
-		assertEquals(4,session.stats().n);
+		assertEquals(4,session.stats().complete); assertEquals(0,session.stats().n);
 		session.suspend("synthetic-a",301,440,true);
 		assertFalse(session.revalidate("synthetic-b",301,441,true,false)); assertTrue(session.recent().isEmpty());
 	}
@@ -110,6 +110,7 @@ public class NexSessionTest
 		session.add(NexCaptureTest.replay(0,20,60)); session.add(NexCaptureTest.replay(100,40,0));
 		NexSummary first=session.recent().get(0);
 		session.add(new NexSummary(3,0,10,10,10,0,Outcome.FAILED,"death",first.cohort,first.method,List.of(),java.util.Map.of(),java.util.Set.of()));
+		for(var complete:session.recent()) { if(complete.outcome==Outcome.COMPLETE) { session.annotate(complete.key,0,NexContextTest.confirmed(NexContext.Strategy.MP2,NexContext.Group.ORGANIZED,3)); } }
 		var stats=session.stats(); assertEquals(2,stats.n); assertEquals(1,stats.failed); assertEquals(3,stats.attempts);
 		assertEquals((100.0*27/87+100.0)/2,stats.meanShare,1e-12);
 		assertEquals(100.0*(27+47)/(87+47),stats.aggregateShare,1e-12); assertNotEquals(stats.meanShare,stats.aggregateShare,0.01);
@@ -136,7 +137,7 @@ public class NexSessionTest
 	{
 		NexSession session=new NexSession(); session.select("a",301); NexSummary s=NexCaptureTest.replay(0,20,60);
 		session.add(s); session.add(new NexSummary(2,100,140,40,40,0,s.outcome,s.reason,"different-setup-or-roster",s.method,s.timeline,s.damage,s.gaps));
-		assertEquals(2,session.stats().complete); assertEquals(1,session.stats().n);
+		assertEquals(2,session.stats().complete); assertEquals(0,session.stats().n);
 	}
 	@Test public void firstVerifiedBankVisitRecognizesReturnTravelWithoutPriorArenaHistory()
 	{
