@@ -83,6 +83,7 @@ final class NexReport
 		if(choiceIndex<0 || choiceIndex>=result.choices.size())
 		{ out.add("No selected comparison."); return new NexReport(out); }
 		var choice=result.choices.get(choiceIndex); var sample=choice.actual; var captured=sample.state;
+		out.add("Frozen public target reading: "+sample.targetState.reading()+"; "+NexTargetState.VERSION);
 		out.add("Selected scenario: "+(choiceIndex+1)+"; pair: "+pairIndex+"; tick offset: "+(sample.tick-summary.startTick)
 			+"; role: "+vocabulary(sample.role,"melee","ranged","spec candidate","unclassified")
 			+"; phase: "+vocabulary(sample.phase,"SMOKE","SHADOW","BLOOD","ICE","ZAROS")

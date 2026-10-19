@@ -92,6 +92,28 @@ public class NexScenarioPanelTest
 			});
 		}
 	}
+	@Test public void zarosRequiresSeparateFixedImpactConditionsAndEditsInvalidateTheFrozenReport() throws Exception
+	{
+		List<Runnable> tasks=new ArrayList<>(); var ref=new AtomicReference<NexScenarioPanel>();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=new NexScenarioPanel(NexPlanComparisonTest.zarosFixture(catalog),0,0,catalog,text->{},"SYNTHETIC_OFFLINE",new Font("DejaVu Sans",Font.PLAIN,20)); ref.set(panel);
+			panel.attach(()->true,tasks::add); PanelPreview.click(panel,"Plan specs & gear"); fill(panel);
+			assertEquals("Soul Split",named(panel,"n3-zaros-overhead",JComboBox.class).getSelectedItem());
+			assertFalse(named(panel,"n3-zaros-fixed",JCheckBox.class).isSelected());
+			assertEquals("",named(panel,"n3-zaros-defence",JTextField.class).getText());
+			assertEquals("",named(panel,"n3-zaros-magic",JTextField.class).getText());
+			PanelPreview.click(panel,"Compare this plan");
+		}); tasks.remove(0).run();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=ref.get(); assertNotNull(panel.result().comparison.actualToOwned.before.plan); assertNull(panel.result().comparison.actualToOwned.expectedDamage);
+			named(panel,"n3-zaros-defence",JTextField.class).setText("250"); named(panel,"n3-zaros-fixed",JCheckBox.class).doClick(); PanelPreview.click(panel,"Compare this plan");
+		}); tasks.remove(0).run();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=ref.get(); assertNotNull(panel.result().comparison.actualToOwned.expectedDamage);
+			PanelPreview.click(panel,"Copy plan report"); assertTrue(named(panel,"n3-report",JTextArea.class).getText().contains("target Defence=250"));
+			PanelPreview.click(panel,"Compare this plan"); named(panel,"n3-zaros-defence",JTextField.class).setText("300"); assertNull(panel.result());
+		}); tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->assertNull(ref.get().result()));
+	}
 
 	@Test public void pendingInputEditsAndDetachedViewsCannotPublishOrCopyOldResults() throws Exception
 	{

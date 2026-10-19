@@ -9,6 +9,10 @@ import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.EnumID;
+import net.runelite.api.EnumComposition;
+import com.ironpath.nex.NexSpellResources;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -91,5 +95,24 @@ public class CombatStateReaderTest
 		assertFalse(after.specialSelected);
 		assertThrows(UnsupportedOperationException.class, () -> before.slots.put("weapon", 0));
 		assertThrows(UnsupportedOperationException.class, () -> before.prayers.clear());
+	}
+	@Test public void runePouchReadingsRequireACarriedPouchAndFreezeSeparateFromLooseRunes()
+	{
+		ItemContainer inventory=mock(ItemContainer.class); when(client.getItemContainer(InventoryID.INV)).thenReturn(inventory);
+		when(inventory.getItems()).thenReturn(new Item[]{new Item(12791,1),new Item(560,2)});
+		EnumComposition mapping=mock(EnumComposition.class); when(client.getEnum(EnumID.RUNEPOUCH_RUNE)).thenReturn(mapping);
+		when(mapping.getIntValue(7)).thenReturn(560); when(mapping.getIntValue(8)).thenReturn(565); when(mapping.getIntValue(13)).thenReturn(566);
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_TYPE_1)).thenReturn(7); when(client.getVarbitValue(VarbitID.RUNE_POUCH_QUANTITY_1)).thenReturn(3);
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_TYPE_2)).thenReturn(8); when(client.getVarbitValue(VarbitID.RUNE_POUCH_QUANTITY_2)).thenReturn(4);
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_TYPE_3)).thenReturn(13); when(client.getVarbitValue(VarbitID.RUNE_POUCH_QUANTITY_3)).thenReturn(5);
+		var before=reader.read(); assertEquals(java.util.Map.of(560,5,565,4,566,5),NexSpellResources.stock(before));
+		assertEquals(Long.valueOf(2),before.inventory.get(560));
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_QUANTITY_1)).thenReturn(1);
+		assertEquals(Integer.valueOf(3),NexSpellResources.stock(reader.read()).get(560)); assertEquals(Integer.valueOf(5),NexSpellResources.stock(before).get(560));
+		when(client.getEnum(EnumID.RUNEPOUCH_RUNE)).thenReturn(null);
+		assertThrows(IllegalArgumentException.class,()->NexSpellResources.stock(reader.read()));
+		when(inventory.getItems()).thenReturn(new Item[]{new Item(560,2)});
+		assertEquals(java.util.Map.of(560,2,565,0,566,0),NexSpellResources.stock(reader.read()));
+		assertEquals(Integer.valueOf(5),NexSpellResources.stock(before).get(560));
 	}
 }

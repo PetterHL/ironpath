@@ -6,7 +6,7 @@ import java.util.*;
 /** Bounded decision context for an immutable declared plan. No capture attribution, global ranking or price IO. */
 public final class NexPlanSupport
 {
-	public static final String VERSION="nex-plan-support-1";
+	public static final String VERSION="nex-plan-support-2";
 	public static final int SPLINTER=28924;
 	public static final class Cost
 	{
@@ -42,6 +42,7 @@ public final class NexPlanSupport
 	{
 		if(evaluation.plan==null) { return null; }
 		Map<Integer,Integer> units=new TreeMap<>(evaluation.plan.spentAmmo);
+		evaluation.spentRunes.forEach((id,n)->units.merge(id,n,Integer::sum));
 		if(evaluation.plan.spentSplinters>0) { units.merge(SPLINTER,evaluation.plan.spentSplinters,Integer::sum); }
 		for(var step:evaluation.conditions.steps)
 		{ if(step.kind==NexPackageComparison.StepKind.SUPPLY) { units.merge(step.supply.kind.costKey(),1,Integer::sum); } }

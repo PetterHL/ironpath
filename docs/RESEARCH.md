@@ -119,5 +119,10 @@ records pinned target/reference hashes, indexed factual cross-checks, separately
 reviewed item/dose IDs, finite delay/level rules and explicit unknown gates.
 Costs use declared unit prices; routes reuse existing catalogue evidence. No
 bulk reference dataset, calculator implementation or article prose is imported.
-[Verification](validation/nex-decision-support.md) separates synthetic checks from
-unperformed client/attribution/overhead and player acceptance.
+[Initial verification](validation/nex-decision-support.md) and
+[Zaros/spell follow-up](validation/nex-zaros-spells.md) separate synthetic checks
+from unperformed client/attribution/dynamic-overhead and player acceptance. Public
+NPC health APIs explicitly transmit a ratio rather than real HP. Declared target
+stats are never inferred from that ratio or from player stat drains. The follow-up
+pins official NPC/Actor/item and pouch API references plus the limited spell-cost
+cross-check; no external implementation is copied.

@@ -7,13 +7,16 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**19 October 2026: development build 0.24.0 — N3 decision support for review.**
+**19 October 2026: development build 0.25.0 — N3 decision support for review.**
 **Plan specs & gear** now supports explicit food/potion schedules with finite
 carried stock, shared attack delays and brew/restore/reboost effects. Vulnerable
 Fumus/Umbra/Cruor/Glacies windows use separate target stats and flat armour.
-**Unit costs** prices the selected ammo/splinter branch and declared supply units;
+Zaros plans require declared fixed overheads and target levels; captured NPC forms
+and health-bar readings stay separate. Death Charge checks finite loose/pouch
+Death/Blood/Soul runes and Magic after declared supplies; rejected cooldown casts
+consume no runes. **Unit costs** prices ammo, splinters, supplies and admitted runes;
 **Acquisition routes** reuses reviewed catalogue paths without inventing remaining
-account work or acquisition hours. Unknown windows and unsupported Zaros effects
+account work or acquisition hours. Unknown windows/stats and unsupported deflection
 keep dependent damage unavailable. [Contract](docs/research/nex-decision-support.md)
 · [Verification](docs/validation/nex-decision-support.md).
 Automatic attack/spec/consumption attribution and live acceptance remain open.

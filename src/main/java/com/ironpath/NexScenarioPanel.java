@@ -34,6 +34,9 @@ final class NexScenarioPanel extends JPanel
 	private final Map<NexSupplies.Kind,JTextField> supplyFields=new EnumMap<>(NexSupplies.Kind.class);
 	private final Map<Integer,Long> unitCosts=new TreeMap<>();
 	private final JCheckBox supplyConfirmed=new JCheckBox("Only declared supply effects");
+	private final JTextField targetDefence=new JTextField(),targetMagic=new JTextField();
+	private final JComboBox<String> overhead=new JComboBox<>(new String[]{"Unknown","None","Soul Split","Deflect Melee"});
+	private final JCheckBox zarosFixed=new JCheckBox("Fixed overhead & stats");
 	private final JTextArea changes=new JTextArea();
 	private final JButton calculate;
 	private NexPlanComparison.Result result;
@@ -59,6 +62,15 @@ final class NexScenarioPanel extends JPanel
 		field("First restore tick (0–25)",restore,"n3-restore"); field("Restore order",order,"n3-order");
 		field("Target HP per attack",targetHp,"n3-target-hp"); field("Player HP per attack",playerHp,"n3-player-hp");
 		field("Damage cap per hit",cap,"n3-cap"); field("Kandarin hard diary",kandarin,"n3-kandarin"); field("Ruby bolts allowed",ruby,"n3-ruby");
+		if("ZAROS".equals(sample.phase))
+		{
+			PanelWidgets.centeredLabel(body,"Zaros target",true,0,net.runelite.client.ui.ColorScheme.TEXT_COLOR);
+			overhead.setSelectedIndex(sample.targetState.overhead().ordinal());
+			field("Overhead at impact",overhead,"n3-zaros-overhead");
+			field("Target Defence level",targetDefence,"n3-zaros-defence"); field("Target Magic level",targetMagic,"n3-zaros-magic");
+			zarosFixed.setName("n3-zaros-fixed"); PanelWidgets.checkBox(zarosFixed,font); body.add(zarosFixed);
+			zarosFixed.setToolTipText("Declare these target stats and overhead at every hypothetical impact, with no intervening transfers. Exact HP remains a separate input; health-bar readings are not exact HP.");
+		}
 		field("When to spec",policy,"n3-policy");
 		field("Attack ticks",opportunities,"n3-opportunities");
 		field("Death Charge cast ticks",casts,"n3-casts"); field("Eligible death ticks",deaths,"n3-deaths");
@@ -78,6 +90,7 @@ final class NexScenarioPanel extends JPanel
 		Map<Integer,String> costNames=new TreeMap<>();
 		catalog.ranged.items.stream().filter(i->i.ammo!=RangedItem.Ammo.NONE).forEach(i->costNames.put(i.id,i.label));
 		costNames.put(NexPlanSupport.SPLINTER,"Sunfire splinter");
+		costNames.putAll(NexSpellResources.RUNES);
 		for(NexSupplies.Kind kind:NexSupplies.Kind.values()) { costNames.put(kind.costKey(),kind.label); }
 		costNames.forEach((id,name)->costItem.addItem(new Item(id,name)));
 		field(costBody,"Cost unit",costItem,"n3-cost-item");
@@ -129,9 +142,10 @@ final class NexScenarioPanel extends JPanel
 			public void removeUpdate(javax.swing.event.DocumentEvent e) { invalidateResult(); }
 			public void changedUpdate(javax.swing.event.DocumentEvent e) { invalidateResult(); }
 		};
-		for(JTextField field:List.of(horizon,energy,restore,targetHp,playerHp,cap,opportunities,casts,deaths)) { field.getDocument().addDocumentListener(changed); }
+		for(JTextField field:List.of(horizon,energy,restore,targetHp,playerHp,cap,opportunities,casts,deaths,targetDefence,targetMagic)) { field.getDocument().addDocumentListener(changed); }
 		for(JTextField field:supplyFields.values()) { field.getDocument().addDocumentListener(changed); }
 		supplyConfirmed.addActionListener(e->invalidateResult());
+		zarosFixed.addActionListener(e->invalidateResult()); overhead.addActionListener(e->invalidateResult());
 		for(JComboBox<?> combo:List.of(order,kandarin,ruby,policy)) { combo.addActionListener(e->invalidateResult()); }
 		conditions.values().forEach(check->check.addActionListener(e->invalidateResult()));
 	}
@@ -188,7 +202,8 @@ final class NexScenarioPanel extends JPanel
 			declaration=new NexPlanComparison.Declaration(end,initial,number(restore,"First restore tick",0,25,false),
 				order.getSelectedIndex()==0?null:order.getSelectedIndex()==1?SpecTimeline.RestoreOrder.BEFORE_EVENTS:SpecTimeline.RestoreOrder.AFTER_EVENTS,
 				number(targetHp,"Target HP",1,100000,false),number(playerHp,"Player HP",1,255,false),number(cap,"Damage cap",1,100000,false),tri(kandarin),tri(ruby),conditions.values().stream().allMatch(JCheckBox::isSelected) && (supplies.isEmpty() || supplyConfirmed.isSelected()),NexPlanComparison.Policy.values()[policy.getSelectedIndex()],
-				offsets(opportunities,"Attack ticks",end,true),offsets(casts,"Death Charge cast ticks",end,false),offsets(deaths,"Eligible death ticks",end,false),edits,quantities,supplies,unitCosts);
+				offsets(opportunities,"Attack ticks",end,true),offsets(casts,"Death Charge cast ticks",end,false),offsets(deaths,"Eligible death ticks",end,false),edits,quantities,supplies,unitCosts,
+				new NexPlanComparison.Zaros(NexTargetState.Overhead.values()[overhead.getSelectedIndex()],number(targetDefence,"Target Defence",0,1000,false),number(targetMagic,"Target Magic",0,1000,false),zarosFixed.isSelected()));
 		}
 		catch(InputError ex) { invalidateResult(); message(ex.getMessage()); return; }
 		String selectedConditions="Supply effects confirmed="+supplyConfirmed.isSelected()+"; "+conditions.values().stream().map(check->check.getToolTipText()+"="+check.isSelected()).collect(java.util.stream.Collectors.joining("; "));
@@ -256,7 +271,7 @@ final class NexScenarioPanel extends JPanel
 		PanelWidgets.text(output,"Energy spent / restored / lost at cap / final (%): "+r.spent/10.0+" / "+r.restored/10.0+" / "+r.wasted/10.0+" / "+r.finalEnergy/10.0);
 		PanelWidgets.text(output,"Ammo spent: "+p.spentAmmo.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(e2->catalog.itemNames().getOrDefault(e2.getKey(),"Item "+e2.getKey())+": "+e2.getValue()).collect(java.util.stream.Collectors.joining(", "))+" · splinters: "+p.spentSplinters);
 		var cost=result.costs.get(e);
-		PanelWidgets.text(output,"Ammo & supply cost: "+(cost==null?"unavailable":cost.gp==null?"unit costs missing":cost.gp+" gp"));
+		PanelWidgets.text(output,"Ammo, supplies & runes: "+(cost==null?"unavailable":cost.gp==null?"unit costs missing":cost.gp+" gp"));
 		var consumed=result.consumedSupplies;
 		if(!consumed.isEmpty()) { PanelWidgets.text(output,"Supplies: "+consumed.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(entry->entry.getKey().label+": "+entry.getValue()).collect(java.util.stream.Collectors.joining(", "))); }
 		if(!p.gaps.isEmpty() || !e.resourceGaps.isEmpty()) { PanelWidgets.text(output,"Some results unavailable"); }

@@ -15,6 +15,8 @@ import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.EnumID;
+import com.ironpath.nex.NexSpellResources;
 
 /** Reads immutable combat evidence independently of any boss adapter or proposed loadout. */
 final class CombatStateReader
@@ -77,6 +79,19 @@ final class CombatStateReader
 		resources.put("quiver-ammo-quantity-raw", client.getVarpValue(VarPlayerID.DIZANAS_QUIVER_TEMP_AMMO_AMOUNT));
 		resources.put("quiver-charged-raw", client.getVarbitValue(VarbitID.WORN_ITEMS_DIZANAS_QUIVER_CHARGED));
 		resources.put("quiver-splinters-raw", client.getVarbitValue(VarbitID.CHARGES_DIZANAS_QUIVER_QUANTITY));
+		if(inventory.known() && NexSpellResources.POUCHES.stream().anyMatch(id->inventory.value().getOrDefault(id,0L)>0))
+		{
+			int[] types={VarbitID.RUNE_POUCH_TYPE_1,VarbitID.RUNE_POUCH_TYPE_2,VarbitID.RUNE_POUCH_TYPE_3,VarbitID.RUNE_POUCH_TYPE_4,VarbitID.RUNE_POUCH_TYPE_5,VarbitID.RUNE_POUCH_TYPE_6};
+			int[] amounts={VarbitID.RUNE_POUCH_QUANTITY_1,VarbitID.RUNE_POUCH_QUANTITY_2,VarbitID.RUNE_POUCH_QUANTITY_3,VarbitID.RUNE_POUCH_QUANTITY_4,VarbitID.RUNE_POUCH_QUANTITY_5,VarbitID.RUNE_POUCH_QUANTITY_6};
+			var mapping=client.getEnum(EnumID.RUNEPOUCH_RUNE);
+			for(int i=0;i<types.length;i++)
+			{
+				int type=client.getVarbitValue(types[i]),amount=client.getVarbitValue(amounts[i]);
+				int id=type==0?0:type<0 || mapping==null?-1:mapping.getIntValue(type);
+				if(type>0 && id<=0) { id=-1; }
+				resources.put("rune-pouch-item-"+(i+1),id); resources.put("rune-pouch-quantity-"+(i+1),amount);
+			}
+		}
 		return new CombatState(slots, real, visible, prayers, client.getVarpValue(VarPlayerID.COM_MODE),
 			client.getVarpValue(VarPlayerID.SA_ENERGY), client.getVarpValue(VarPlayerID.SA_ATTACK) == 1,
 			inventory.known() ? inventory.value() : null, resources, names);

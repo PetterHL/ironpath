@@ -12,9 +12,22 @@ import static com.ironpath.nex.SpecAttackPlan.*;
 /** Runtime N3A/B/C join. Captured packages are evaluated under a separately declared hypothetical plan. */
 public final class NexPlanComparison
 {
-	public static final String VERSION="nex-declared-plan-3";
+	public static final String VERSION="nex-declared-plan-4";
 	public static final int MAX_OPPORTUNITIES=128;
 	public enum Policy { ORDINARY, FIRST_SPECIAL, FUNDED_SPECIAL_WITH_ORDINARY_FALLBACK }
+	/** Explicit scenario conditions, never derived from NPC form, health bar or player stat drains. */
+	public static final class Zaros
+	{
+		public static final Zaros UNKNOWN=new Zaros(NexTargetState.Overhead.UNKNOWN,null,null,false);
+		public final NexTargetState.Overhead overhead;
+		public final Integer defenceLevel,magicLevel;
+		public final boolean fixedWindow;
+		public Zaros(NexTargetState.Overhead overhead,Integer defenceLevel,Integer magicLevel,boolean fixedWindow)
+		{
+			Declaration.check(defenceLevel,0,1000,"Target Defence"); Declaration.check(magicLevel,0,1000,"Target Magic");
+			this.overhead=Objects.requireNonNull(overhead); this.defenceLevel=defenceLevel; this.magicLevel=magicLevel; this.fixedWindow=fixedWindow;
+		}
+	}
 	public static final class Declaration
 	{
 		public final int endTick;
@@ -29,6 +42,7 @@ public final class NexPlanComparison
 		public final Instant declaredAt;
 		public final List<NexSupplies.Use> supplies;
 		public final Map<Integer,Long> unitCosts;
+		public final Zaros zaros;
 		public Declaration(int endTick,Integer initialEnergy,Integer firstRestore,RestoreOrder order,
 			Integer targetHp,Integer playerHp,Integer hardCap,Boolean kandarin,Boolean rubyAllowed,boolean legalAndReady,
 			Policy policy,List<Integer> opportunities,List<Integer> casts,List<Integer> deaths,
@@ -41,7 +55,13 @@ public final class NexPlanComparison
 			Integer targetHp,Integer playerHp,Integer hardCap,Boolean kandarin,Boolean rubyAllowed,boolean legalAndReady,
 			Policy policy,List<Integer> opportunities,List<Integer> casts,List<Integer> deaths,
 			Map<String,Integer> upgrades,Map<Integer,Integer> upgradeQuantities,List<NexSupplies.Use> supplies,Map<Integer,Long> unitCosts)
+		{ this(endTick,initialEnergy,firstRestore,order,targetHp,playerHp,hardCap,kandarin,rubyAllowed,legalAndReady,policy,opportunities,casts,deaths,upgrades,upgradeQuantities,supplies,unitCosts,Zaros.UNKNOWN); }
+		public Declaration(int endTick,Integer initialEnergy,Integer firstRestore,RestoreOrder order,
+			Integer targetHp,Integer playerHp,Integer hardCap,Boolean kandarin,Boolean rubyAllowed,boolean legalAndReady,
+			Policy policy,List<Integer> opportunities,List<Integer> casts,List<Integer> deaths,
+			Map<String,Integer> upgrades,Map<Integer,Integer> upgradeQuantities,List<NexSupplies.Use> supplies,Map<Integer,Long> unitCosts,Zaros zaros)
 		{
+			this.zaros=Objects.requireNonNull(zaros);
 			NexSupplies.validate(supplies,endTick);
 			if(unitCosts.size()>32 || unitCosts.entrySet().stream().anyMatch(e->e.getKey()<1 || e.getKey()>1000000 || e.getValue()<0 || e.getValue()>1000000000L))
 			{ throw new IllegalArgumentException("Use up to 32 exact nonnegative unit costs"); }
@@ -92,16 +112,22 @@ public final class NexPlanComparison
 		public String report()
 		{
 			List<String> lines=new ArrayList<>(); Declaration d=declaration;
-			lines.add("IronPath conditional N3 scenario · schema 3 · "+VERSION);
+			lines.add("IronPath conditional N3 scenario · schema 4 · "+VERSION);
 			lines.add("Report-local kill K1; frozen calculation revision "+source.revision+"; captured state "+choiceIndex+"; pair "+pairIndex);
 			lines.add("Captured equipment and visible levels are inputs to hypothetical attacks, not attributed attack evidence.");
-			var sample=source.choices.get(choiceIndex).actual; Context context=context(sample);
+			var sample=source.choices.get(choiceIndex).actual; Context context=context(sample,d);
+			lines.add("Frozen public target reading: "+sample.targetState.reading()+"; "+NexTargetState.VERSION);
 			lines.add("Captured context: target="+context.target+"; phase="+context.phase+"; window="+vocabulary(sample.window,"UNKNOWN","NONE","FEAR_THE_SHADOW","EMBRACE_DARKNESS",
 				"BLOOD_SIPHON","BLOOD_SACRIFICE","ICE_CONTAIN","ICE_PRISON","MINION_FUMUS","MINION_UMBRA","MINION_CRUOR","MINION_GLACIES"));
-			lines.add("Modeled context: target="+context.target+"; phase="+context.phase+"; window="+context.window+"; captured context reused as a fixed declared launch condition.");
+			lines.add("Modeled context: target="+context.target+"; phase="+context.phase+"; window="+context.window+"; captured target/phase with separately declared fixed launch conditions.");
 			lines.add("Frozen public-state evidence; owned/hypothetical packages retain these levels, prayer flags and style button. Equip/attack access and resource/HP conditions remain separate assumptions.");
 			lines.add("Declared horizon="+d.endTick+"; energy="+d.initialEnergy+"; first restore="+d.firstRestore+"; restore order="+d.order);
 			lines.add("Declared target HP="+d.targetHp+"; player HP="+d.playerHp+"; hard cap="+d.hardCap+"; Kandarin="+d.kandarin+"; ruby allowed="+d.rubyAllowed);
+			if(context.phase.equals("ZAROS"))
+			{
+				lines.add("Declared Zaros fixed window="+d.zaros.fixedWindow+"; overhead="+d.zaros.overhead+"; target Defence="+d.zaros.defenceLevel+"; target Magic="+d.zaros.magicLevel);
+				lines.add("Zaros levels/overhead at each hypothetical impact are assumptions. Soul Split healing, Turmoil transfers, reflected damage and overhead cycling are not simulated. Missing target Magic blocks only dependent Twisted bow damage.");
+			}
 			lines.add("Declared legal opportunities / attack-ready / no initial active charge / cast-ready="+d.legalAndReady+"; policy="+d.policy);
 			lines.add("Attack offsets="+d.opportunities+"; cast offsets="+d.casts+"; distinct eligible death offsets="+d.deaths);
 			lines.add("Casts/deaths, rune availability and spell opportunities are assumptions. Blank lists explicitly exclude those events from this scenario.");
@@ -121,13 +147,13 @@ public final class NexPlanComparison
 			for(var entry:Map.of("Captured",comparison.actualToOwned.before,"Owned",comparison.actualToOwned.after,"Hypothetical",comparison.ownedToUpgrade.after).entrySet())
 			{
 				var cost=costs.get(entry.getValue());
-				lines.add(entry.getKey()+" ammo and declared supply cost: "+(cost==null?"unavailable":
+				lines.add(entry.getKey()+" ammo, declared supply and rune cost: "+(cost==null?"unavailable":
 					"units="+new TreeMap<>(cost.units)+"; gp="+cost.gp+"; missing unit prices="+new TreeSet<>(cost.missingPrices)));
 			}
 			for(var route:routes)
 			{ lines.add("Hypothetical acquisition · item "+route.item+": "+(route.work==null?"route unavailable":route.work)+"; unassessed stages="+route.stages+"; sources="+route.sources); }
 			lines.add("Acquisition routes are catalogue facts, not assessed missing components, drop odds, full-item ETA or account readiness. Permanent unlocks and recurring units are separate.");
-			lines.add("Costs cover this conditional resource branch only. Other gear upkeep, Death Charge runes, acquisition, healing/survival and whole-trip cost are excluded.");
+			lines.add("Costs cover this conditional resource branch, declared supplies and admitted Death Charge rune units only. Other gear upkeep, acquisition, healing/survival and whole-trip cost are excluded.");
 			lines.add("Conditional launch expectations at supplied fixed HP for each opportunity. No simulated HP trajectory, measured spec count, global-best recommendation, survival, contribution or team-time estimate.");
 			lines.add("No kill timestamp recorded. No account identifiers, roster fingerprints or unrelated container contents exported. Nothing is uploaded.");
 			String text=String.join("\n",lines);
@@ -151,6 +177,7 @@ public final class NexPlanComparison
 				}
 			}
 			if(e.plan==null) { return; }
+			lines.add(label+" admitted Death Charge rune units="+new TreeMap<>(e.spentRunes)+"; normal Death/Blood/Soul branch; no substitution or other rune spending; "+NexSpellResources.VERSION);
 			var p=e.plan; var r=p.resources;
 			lines.add(label+": expected launch damage="+p.expectedDamage+"; expected self damage="+p.expectedSelfDamage+"; damage gaps="+p.gaps);
 			lines.add(label+": energy spent="+r.spent+"; restored="+r.restored+"; lost at cap="+r.wasted+"; final="+r.finalEnergy+"; ordinary="+r.ordinaryAttacks+"; VW="+r.voidwakerSpecs+"; ZCB="+r.zaryteSpecs+"; DC procs="+r.deathChargeProcs);
@@ -199,7 +226,7 @@ public final class NexPlanComparison
 		Loadout ownedLoad=new Loadout(role,d.f(owned,"owned package under declared conditions"),d.f(ownedProjectile,"projectile selection"),d.f(Retrieval.NONE,"no-retrieval branch"));
 		Loadout upgradeLoad=new Loadout(role,d.f(upgrade,"hypothetical complete package"),d.f(upgradeProjectile,"projectile selection"),d.f(Retrieval.NONE,"no-retrieval branch"));
 		List<Step> steps=new ArrayList<>(); Map<Integer,Integer> attackOrdinals=new HashMap<>();
-		Context context=context(sample);
+		Context context=context(sample,d);
 		for(int tick=0;tick<d.endTick;tick++)
 		{
 			for(NexSupplies.Use use:d.supplies) { if(use.tick==tick) { steps.add(Step.supply(use)); } }
@@ -234,13 +261,21 @@ public final class NexPlanComparison
 	}
 	private static String vocabulary(String value,String... allowed)
 	{ return Arrays.asList(allowed).contains(value)?value:"UNKNOWN"; }
-	private static Context context(NexSummary.Sample sample)
+	private static Context context(NexSummary.Sample sample,Declaration d)
 	{
 		String target=sample.target==null?"UNKNOWN":vocabulary(sample.target.split("@",2)[0],"NEX","FUMUS","UMBRA","CRUOR","GLACIES");
 		String phase=vocabulary(sample.phase,"SMOKE","SHADOW","BLOOD","ICE","ZAROS");
 		Window window="FEAR_THE_SHADOW".equals(sample.window)?Window.FEAR_THE_SHADOW:"EMBRACE_DARKNESS".equals(sample.window)?Window.EMBRACE_DARKNESS
 			:"NONE".equals(sample.window)?Window.BASE:"UNKNOWN".equals(sample.window) || sample.window==null?Window.UNKNOWN:Window.SPECIAL;
 		if(!target.equals("NEX") && ("MINION_"+target).equals(sample.window)) { window=Window.BASE; }
+		if(target.equals("NEX") && phase.equals("ZAROS") && d!=null)
+		{
+			var z=d.zaros;
+			// A stable hypothetical interval must be declared even when an NPC form was observed.
+			return new Context(target,phase,z.fixedWindow?Window.BASE:Window.UNKNOWN,
+				d.f(z.overhead==NexTargetState.Overhead.UNKNOWN?null:z.overhead,"fixed Zaros overhead at every impact"),
+				d.f(z.defenceLevel,"fixed Zaros target Defence"),d.f(z.magicLevel,"fixed Zaros target Magic"));
+		}
 		return new Context(target,phase,window);
 	}
 	private int projectile(CombatState state)

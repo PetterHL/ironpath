@@ -14,6 +14,14 @@
 
 ## Current delivery
 
+- N3 PR #50 development build **0.25.0** adds frozen public target forms/health
+  ratios, separately declared fixed Zaros overhead/target levels, and finite normal
+  Death/Blood/Soul rune stock/costs for declared Death Charge. Read
+  docs/research/nex-decision-support.md and docs/validation/nex-zaros-spells.md.
+  Health ratios are not exact HP, observed forms do not confirm future impact
+  overheads, and player drains do not reveal target stats. Keep unsupported
+  deflection, unknown inputs and automatic attribution gated. No merge or publication.
+
 - N3 follow-up **0.24.0** is prepared on current main for review. Read
   docs/research/nex-decision-support.md and docs/validation/nex-decision-support.md.
   It adds declared finite supplies/level effects, vulnerable minion launch inputs,

@@ -34,7 +34,8 @@ the retained implementation; it does not claim Nex recommendations are ready.
 | Complete actual/owned/upgrade comparisons | Explicit shared conditions, joint usable stock/packing, locks, provenance and scoped damage/resource deltas. No automatic best-spec or personal recommendation | N3c conditional API + declared runtime plans; live acceptance open |
 | Finite spec resources (N3a) | Frozen observed review + conditional bounded energy/delay kernel; no inferred casts/procs, spec damage or upgrade ranking | N3 in progress |
 | Charged/blessed quiver and actual ammunition | Conditional offence equivalence, exact finite ammo/splinter branches and exhaustion tested; live counters and automatic opportunity use remain open | N1–N3 |
-| Food/pots/spells | Six declared finite supply families with level/delay effects; consumption attribution, healing/survival and rune ledgers stay unknown | N3 0.24.0 for review |
+| Food/pots/spells | Six finite supply families plus Death Charge Magic/rune checks and scoped costs; no consumption attribution, healing/survival or rune substitution | N3 0.25.0 for review |
+| Zaros | Declared fixed overhead/Defence/Magic; frozen public forms/health ratios; unknown dynamic effects and melee deflection retain gaps | N3 0.25.0 for review |
 | Editable context | Optional typed per-kill annotations, inherited future defaults, frozen evaluation inputs and descriptive matching; no new combat mechanic | CTX1 included in main 0.23.3; live acceptance open |
 | Personal share / team seconds | No validated counterfactual | N4 |
 

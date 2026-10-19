@@ -95,6 +95,12 @@ Lightbearer throughout; usable gear/stock; runes/legal casts; distinct eligible
 deaths; fixed HP/phase; spell/switch delays included. Detailed definitions live in
 Diagnostics. Never tick hidden confirmations or fabricate unknown values. Copy
 plan report explicitly reveals the selectable report, including clipboard fallback.
+Zaros states additionally expose **Overhead at impact**, target Defence/Magic and
+an unchecked **Fixed overhead & stats** declaration. A frozen NPC form may seed
+the overhead choice; it never checks the fixed-window declaration or supplies
+target levels/HP. Detailed observed health ratios belong in Diagnostics/reports.
+Death Charge uses finite captured normal-rune stock, including readable contents
+of a carried pouch. Rune costs share the existing unit-cost editor.
 **Food & potions** and **Unit costs** are optional closed subsections inside the
 existing planner. Food/potion lists are explicit tick declarations, with a separate
 unchecked supply-effects confirmation. Show finite consumption and scoped cost in

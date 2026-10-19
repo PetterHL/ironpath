@@ -4,6 +4,7 @@ import com.ironpath.advisor.KnowledgeCatalog;
 import com.ironpath.encounter.EncounterSummary.Outcome;
 import com.ironpath.nex.NexCapture;
 import com.ironpath.nex.NexSession;
+import com.ironpath.nex.NexTargetState;
 import com.ironpath.preferences.NexMethod;
 import java.util.*;
 import net.runelite.api.*;
@@ -35,7 +36,9 @@ final class NexObserver
 	{
 		for(Prayer prayer:Prayer.values()) { RESOURCE_VARBITS.add(prayer.getVarbit()); }
 		RESOURCE_VARBITS.addAll(Set.of(VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE,VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN,
-			VarbitID.WORN_ITEMS_DIZANAS_QUIVER_CHARGED,VarbitID.CHARGES_DIZANAS_QUIVER_QUANTITY));
+			VarbitID.WORN_ITEMS_DIZANAS_QUIVER_CHARGED,VarbitID.CHARGES_DIZANAS_QUIVER_QUANTITY,
+			VarbitID.RUNE_POUCH_TYPE_1,VarbitID.RUNE_POUCH_TYPE_2,VarbitID.RUNE_POUCH_TYPE_3,VarbitID.RUNE_POUCH_TYPE_4,VarbitID.RUNE_POUCH_TYPE_5,VarbitID.RUNE_POUCH_TYPE_6,
+			VarbitID.RUNE_POUCH_QUANTITY_1,VarbitID.RUNE_POUCH_QUANTITY_2,VarbitID.RUNE_POUCH_QUANTITY_3,VarbitID.RUNE_POUCH_QUANTITY_4,VarbitID.RUNE_POUCH_QUANTITY_5,VarbitID.RUNE_POUCH_QUANTITY_6));
 	}
 	static boolean resourceChanged(int varbit, int varp)
 	{
@@ -251,10 +254,26 @@ final class NexObserver
 	{
 		if (!enabled || !capture.active()) { return; }
 		Player local=client.getLocalPlayer();
-		String target=local!=null && local.getInteracting() instanceof NPC?targets.get((NPC)local.getInteracting()):null;
+		NPC npc=local!=null && local.getInteracting() instanceof NPC?(NPC)local.getInteracting():null;
+		String target=npc!=null && sameView(npc)?targets.get(npc):null;
+		NexTargetState targetState=target==null?NexTargetState.UNKNOWN:targetState(npc);
 		var state=reader.read(); int weapon=state.slots.getOrDefault("weapon",-1);
 		String role=state.specialSelected?"spec candidate":ranged.contains(weapon)?"ranged":melee.contains(weapon)?"melee":"unclassified";
-		capture.sample(client.getTickCount(),state,target,role,animation,roster());
+		capture.sample(client.getTickCount(),state,target,role,animation,roster(),targetState);
+	}
+	private static NexTargetState targetState(NPC npc)
+	{
+		NexTargetState.Form form;
+		switch(npc.getId())
+		{
+			case NpcID.NEX: form=NexTargetState.Form.NEX; break;
+			case NpcID.NEX_SPAWNING: form=NexTargetState.Form.SPAWNING; break;
+			case NpcID.NEX_SOULSPLIT: form=NexTargetState.Form.SOUL_SPLIT; break;
+			case NpcID.NEX_DEFLECT: form=NexTargetState.Form.DEFLECT_MELEE; break;
+			case NpcID.NEX_DYING: form=NexTargetState.Form.DYING; break;
+			default: form=NexTargetState.Form.MINION;
+		}
+		return new NexTargetState(form,npc.getHealthRatio(),npc.getHealthScale());
 	}
 	synchronized void hit(HitsplatApplied event)
 	{

@@ -131,7 +131,7 @@ public class NexDecisionSupportTest
 		assertEquals(Long.valueOf(0),NexPlanSupport.cost(evaluation,Map.of(21944,0L)).gp);
 		assertThrows(IllegalArgumentException.class,()->NexPlanSupport.cost(evaluation,Map.of(21944,-1L)));
 		assertTrue(result.report().contains("automatic capture-to-recommendation gaps="));
-		assertTrue(result.report().contains("Other gear upkeep, Death Charge runes"));
+		assertTrue(result.report().contains("Other gear upkeep, acquisition"));
 	}
 	@Test public void unknownUnusedStatsDoNotSuppressIndependentSupplyAdjustedOffence()
 	{

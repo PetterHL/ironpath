@@ -1,9 +1,10 @@
 # N3 decision support
 
-19 October 2026. Development build **0.24.0**, for review, from consolidated main
-`7f68d0e`. Runtime `nex-declared-plan-3`, package bridge `nex-package-5`, launch
+19 October 2026. Development build **0.25.0**, for review, from consolidated main
+`7f68d0e`. Runtime `nex-declared-plan-4`, package bridge `nex-package-6`, launch
 model `nex-spec-damage-3`, resources `nex-spec-resources-2`, supplies
-`nex-supplies-1`, presentation projection `nex-plan-support-1`, knowledge
+`nex-supplies-1`, spell stock `nex-spell-stock-1`, target readings `nex-target-state-1`,
+adapter `nex-public-5`, presentation projection `nex-plan-support-2`, knowledge
 `n3-decision-1`. Catalogue schema 14 and preference schema 4 are unchanged.
 
 ## Capture-to-scenario contract
@@ -53,11 +54,30 @@ zero. Voidwaker's Magic-type special bypasses that adjustment, while its ordinar
 melee attack receives it. This transform belongs to the launch distribution;
 ordinary model metrics alone do not include flat armour.
 
-Zaros overheads, dynamic target-stat transfers and other special windows remain
-scoped damage gaps. Earlier generic references to a “Zaros soft cap” did not
-establish an OSRS rule: indexed OSRS evidence describes overhead/stat effects,
-while similarly named RS3 content has different mechanics. No RS3 cap is imported.
-Personal comparisons depending on those effects remain disabled.
+Zaros supports separately declared fixed overhead/Defence/Magic conditions at
+every hypothetical impact. A captured NEX/SOUL_SPLIT/DEFLECT_MELEE form and readable
+health ratio/scale freeze with each sample; changes survive the capture buffer,
+and Zaros overhead changes survive package deduplication. Missing/invalid health
+readings remain null. No actors, real health, inferred stats or overhead cadence
+are stored. Old/manual fixtures default to an unknown target reading.
+
+The editor may seed an overhead from a frozen form, but its fixed-window checkbox
+starts unchecked and target levels stay blank. Known form is not a declaration
+about future impacts. Known Defence recomputes whole-package rolls against the
+existing reviewed bonuses; Twisted bow additionally requires declared target
+Magic. Unused unknown Magic cannot block independent melee/crossbow arithmetic.
+No shared catalogue profile is mutated. Missing window/overhead/required levels
+blocks damage while finite resources remain independently available. Melee packages,
+including melee-derived specials, retain an explicit gap under Deflect Melee;
+no unreviewed exception or reflected-damage formula is enabled. Ranged packages
+can use a declared deflect window. Soul Split healing and Turmoil transfers are
+not simulated; per-impact HP and fixed levels are independently declared.
+
+Earlier generic references to a “Zaros soft cap” did not establish an OSRS rule.
+No RS3 cap, player-drain-to-target-stat inference, overhead-cycle prediction or
+health-bar-to-exact-HP conversion is imported. Automatic dependent comparisons
+remain disabled. Official Actor API documentation explicitly says the server
+does not transmit actors' real health.
 
 ## Finite declared supplies
 
@@ -99,13 +119,34 @@ not simulated or optimized. No consumption is attributed from inventory loss.
 
 ## Cost and acquisition presentation
 
+### Death Charge rune branch
+
+Declared casts require known Magic 80 after the declared brew/restore sequence.
+Each cast admitted by the existing 100-tick cooldown spends one normal Death
+560, Blood 565 and Soul 566 rune; a cooldown-rejected cast spends none. All used
+packages must fund the same total number of casts. Frozen loose inventory counts
+and readable slots of an exact carried rune pouch (12791/24416/27281/27509) can
+fund it. Pouch types map through the public RuneLite enum; unread/invalid mappings
+stay unknown and a pouch absent from that captured inventory supplies no runes.
+Enough loose runes remain independently sufficient even if a carried pouch is
+unread. Unused pools do not block a no-cast scenario. No later account/bank read
+is substituted, and the pouch/rune stacks retain their reserved inventory slots.
+
+This is the explicit normal-rune branch, with no combination-rune substitution,
+pickups, rune-saving or other spell spending. Insufficient/unread required runes
+or a drained/unknown required Magic level blocks finite resources influenced by
+those casts while retaining independent launch inputs. Spellbook/quest/access,
+eligibility and legal spell/switch opportunities remain declarations. Runes and
+raw counters do not attribute actual casts or eligible deaths.
+
 Unit costs are optional bounded whole GP amounts, scoped to this declared plan.
 Counts include only admitted ammo, the specified splinter branch and the shared
 finite declared supply uses. Potion cost keys denote **one dose**, not one full
 bottle. Missing prices keep the scoped GP total unavailable; an explicitly entered
 zero is distinct. Computation happens on the worker and is frozen with the result.
-This excludes other gear upkeep, Death Charge runes, acquisition and whole-trip
-cost. No prices are fetched, persisted or presented as current market quotations.
+Admitted normal Death Charge runes join the same per-unit cost ledger. This
+excludes other gear upkeep, acquisition and whole-trip cost. No prices are
+fetched, persisted or presented as current market quotations.
 A resource branch's cost is not expected average random consumption.
 
 Acquisition routes match exact changed hypothetical item IDs in the retained
@@ -122,7 +163,11 @@ become recurring ammunition, splinter or dose costs.
 | [Pinned monster facts](https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/monsters.json) | Fetched 19 October; SHA-256 `ec38284c4651cf76a568b5e95cd11cc942e2077d901d20041f770e56460dbca2`. Independently recorded four bounded profiles only. |
 | [Pinned launch reference](https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/src/lib/PlayerVsNPCCalc.ts) | Fetched; retained SHA-256 `6c0b467e61fe85ed5cd752991d4a072b695431809cf0d4616d02946e95929801`. Cross-check: flat armour applies to accurate non-Magic damage. No code copied. |
 | [Fumus](https://oldschool.runescape.wiki/w/Fumus), [Umbra](https://oldschool.runescape.wiki/w/Umbra), [indexed Fumus](https://osrsindex.com/wiki/fumus?site=osrs_wiki), [indexed Umbra](https://osrsindex.com/wiki/umbra?site=osrs_wiki) | Indexed material independently corroborates vulnerability and -2 armour. Full Wiki/mirror fetches returned 403; indexed content is not a fresh server test. |
-| [OSRS Nex strategy evidence](https://osrsindex.com/wiki/nex-strategies?site=osrs_wiki) | Indexed overhead/stat descriptions inspected. Full fetch failed; this does not establish exact Zaros target stats or enable that phase. |
+| [OSRS Nex strategy evidence](https://osrsindex.com/wiki/nex-strategies?site=osrs_wiki) | Indexed descriptions corroborate Soul Split, Deflect Melee, Turmoil transfers and healing. Full fetch failed; exact dynamic stats, impact-time transitions and deflection exceptions remain unknown. Fixed scenario conditions are declarations. |
+| [Official NPC forms](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-api/src/main/java/net/runelite/api/gameval/NpcID.java) | Fetched 19 October; SHA-256 `6afa1a51c4f03ba60159544e90ec3c8d002337165ea90a9cfcf8510798caf47a`. Public forms 11278–11282 checked; no timing/cycle inference. |
+| [Official Actor health API](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-api/src/main/java/net/runelite/api/Actor.java) | Fetched; SHA-256 `99046fb21e7fd797daaad62d162cfc64d5af6c7abb7540e2b6b5b1fc3ab722c4`. Ratio/scale and -1 unread semantics; real target health is not transmitted. |
+| [RuneLite pouch reference](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-client/src/main/java/net/runelite/client/plugins/runepouch/RunepouchOverlay.java) | Fetched; SHA-256 `a3bff77cecf6e2d9b09ddc6ee8663d25a56d0fe7f308de5a35d9dfa6ccf9476b`. Independently checked public type/quantity varbits, enum and exact carried pouch forms. No plugin integration, overlay code or images copied. |
+| [Official Arceuus beta spell-cost announcement](https://store.steampowered.com/news/posts/?enddate=1619605485&feed=steam_community_announcements), [current indexed Death rune table](https://osrsindex.com/wiki/death-rune?site=osrs_wiki) | Official 28 April 2021 table supplies Death Charge level 80 and one Death/Blood/Soul rune. Current indexed tables corroborate those bounded costs; full Wiki fetch remains blocked. No beta proc-eligibility or other spell rules imported. |
 | [Food/Fast foods](https://oldschool.runescape.wiki/w/Food/Fast_foods), [indexed food mechanics](https://osrsindex.com/wiki/food-fast-foods?site=osrs_wiki), [Potions](https://osrsindex.com/wiki/potions?site=osrs_wiki) | Indexed waiting-weapon, food/combo and separate three-tick drinking facts; full retrieval blocked. Existing K12 review remains historical. |
 | [Indexed official food-delay post copy](https://oldschool.runescape.wiki/w/Update%3AThe_Ruinous_Powers_-_Updated_Greenlight_Poll_Blog) | Original action/eat-delay explanation corroborates additive 3+2 combo delay; proposed prayer effects are not implemented. |
 | [Indexed brew](https://osrsindex.com/wiki/saradomin-brew?site=osrs_wiki), [indexed restore](https://osrsindex.com/wiki/super-restore?site=osrs_wiki) | Current-level brew drain and base-level restore ceiling cross-checked. No generic 3:1 ratio is assumed. |
@@ -143,7 +188,8 @@ later account reads cannot change an inspected plan. Existing session, visibilit
 view/request, Reset/logout/world/profile and eviction guards apply unchanged.
 No supply plan, price or performance history is persisted.
 
-Standalone plan report schema 3 projects fixed supply enums/ticks, declared unit
+Standalone plan report schema 4 projects fixed target enums/health readings,
+separately declared Zaros conditions, admitted rune units, fixed supply enums/ticks, declared unit
 costs, scoped counts/cost gaps, static catalogue route facts/source IDs and existing
 frozen package/calculation inputs. It remains bounded to 24,000 characters, with a
 truncation notice and selectable clipboard fallback. No raw containers, account

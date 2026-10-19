@@ -6,6 +6,7 @@ import com.ironpath.nex.NexPlanComparison;
 import java.nio.file.Path;
 import java.util.*;
 import javax.swing.*;
+import static org.mockito.Mockito.when;
 
 /** DEV1 extension: public-event capture -> frozen N2 -> native declared N3A/B/C plan -> guarded worker. */
 final class OfflineN3Scenario
@@ -120,6 +121,49 @@ final class OfflineN3Scenario
 				edt(()->report.check("Reset cannot resurrect scenario report "+font,false,PanelPreview.text(r.panel).contains("Conditional plan results")));
 				capture(r,output,"reset-pending",font,report);
 			}
+			zaros(output,report,font);
+		}
+	}
+	private static void zaros(Path output,ReviewReport report,int font) throws Exception
+	{
+		try(var r=new OfflinePluginReplay(font))
+		{
+			r.carried.put(560,3L); r.carried.put(565,3L); r.carried.put(566,3L);
+			r.fight(30,20,60,true,offset->{ if(offset==8) {
+				when(r.boss.getId()).thenReturn(net.runelite.api.gameval.NpcID.NEX_SOULSPLIT);
+				when(r.boss.getHealthRatio()).thenReturn(9); when(r.boss.getHealthScale()).thenReturn(30);
+			} }); r.settle();
+			final NexScenarioPanel[] planner={null};
+			edt(()->{
+				PanelPreview.click(r.panel,"Compare with owned gear"); PanelPreview.combo(r.panel,"nex-owned-support-filter").setSelectedItem("All states");
+				int selected=-1;
+				for(int i=0;i<r.plugin.ownedResult.choices.size();i++)
+				{ var s=r.plugin.ownedResult.choices.get(i).actual; if(s.phase.equals("ZAROS") && s.targetState.overhead()==com.ironpath.nex.NexTargetState.Overhead.SOUL_SPLIT) { selected=i; break; } }
+				if(selected<0) { throw new IllegalStateException("No frozen Soul Split state"); }
+				PanelPreview.combo(r.panel,"nex-owned-state").setSelectedIndex(selected);
+				planner[0]=(NexScenarioPanel)PanelPreview.children(r.panel).stream().filter(c->c instanceof NexScenarioPanel).findFirst().orElseThrow();
+				PanelPreview.click(r.panel,"Plan specs & gear"); fill(r.panel);
+				report.check("Zaros form seeds overhead without confirmation "+font,"Soul Split",PanelPreview.combo(r.panel,"n3-zaros-overhead").getSelectedItem());
+				report.check("Zaros stable impact choice starts unchecked "+font,false,NexScenarioPanelTest.named(r.panel,"n3-zaros-fixed",JCheckBox.class).isSelected());
+				NexScenarioPanelTest.named(r.panel,"n3-casts",JTextField.class).setText("0");
+				PanelPreview.click(r.panel,"Compare this plan");
+			}); r.settle();
+			edt(()->{
+				report.check("Unknown Zaros stats withhold damage "+font,null,planner[0].result().comparison.actualToOwned.before.plan.expectedDamage);
+				report.check("Known rune stock preserves resources "+font,Map.of(560,1,565,1,566,1),planner[0].result().comparison.actualToOwned.before.spentRunes);
+				NexScenarioPanelTest.named(r.panel,"n3-zaros-defence",JTextField.class).setText("250");
+				NexScenarioPanelTest.named(r.panel,"n3-zaros-fixed",JCheckBox.class).doClick();
+			});
+			capture(r,output,"zaros-inputs",font,report);
+			edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("zaros-viewport-"+font+".png"),225,600,"n3-zaros-overhead",List.of("n3-zaros-overhead","n3-zaros-defence","n3-zaros-magic","n3-zaros-fixed"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
+			edt(()->PanelPreview.click(r.panel,"Compare this plan")); r.settle();
+			edt(()->{
+				report.check("Declared Zaros target recomputes damage "+font,true,planner[0].result().comparison.actualToOwned.before.plan.expectedDamage!=null);
+				PanelPreview.click(r.panel,"Copy plan report"); String text=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
+				report.check("Zaros report preserves health ratio and distinct declarations "+font,true,text.contains("health ratio/scale=9/30") && text.contains("target Defence=250; target Magic=null") && text.contains("admitted Death Charge rune units={560=1, 565=1, 566=1}"));
+				try { java.nio.file.Files.writeString(output.resolve("zaros-report-"+font+".txt"),text); } catch(Exception ex) { throw new IllegalStateException(ex); }
+			});
+			capture(r,output,"zaros-results",font,report);
 		}
 	}
 	private static void fill(JPanel panel)
