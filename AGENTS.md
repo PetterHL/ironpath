@@ -14,8 +14,9 @@
 
 ## Current delivery
 
-- Sidebar simplification **0.23.3** builds on the complete PR #48 **0.23.2** UI.
-  Remove Gear & method and Gear & unlocks, including manual gear/method controls.
+- Consolidated main baseline **0.23.3** includes the complete PR #48 **0.23.2** UI
+  and sidebar simplification. Keep Gear & method and Gear & unlocks absent,
+  including manual gear/method controls.
   Retain Team & method, automatic observations, saved preferences and calculations.
 - Issue #47 supplies the presentation baseline, development build **0.23.2**.
   PR #48’s approved review replaces top tabs with independent collapsible sections:
@@ -42,10 +43,11 @@
   must be supplied before its shared readiness flag is known. Do not pre-confirm
   hidden inputs. Preserve unknown gating, exact stock, complete-package arithmetic,
   shared delays/conditions, proposal locks, frozen input and request/view guards.
-- The isolated implementation integrates main `b47b9e7` (N3 #45), CTX1 #43
-  `2fe5342` and UI1 #46 `d5b14db`; merge commit `32c379d` retains both parents.
-  The two feature PRs were still open at task start. Neither their GitHub branches
-  nor main were changed. Merge and Plugin Hub publication need user authorization.
+- The user authorized the 19 October main consolidation of PR #49, including
+  main/N3 #45, CTX1 #43 `2fe5342`, UI1 #46 `d5b14db` and PR #48 `836e1e9`.
+  Preserve their full ancestry and the sidebar simplification. Start new work from
+  main; retire only branch heads already included there. Future merges and Plugin
+  Hub publication need separate authorization. Live acceptance remains open.
 - Keep genuine preview sprites/test boundaries and Jagex provenance/notices.
   Keep immutable capture, CTX1 annotations/future defaults, the 50-record lifetime,
   frozen planning/unlock inputs, matched-cohort rules, report selection, clipboard

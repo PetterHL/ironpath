@@ -33,3 +33,20 @@ Verification: JDK 11.0.32.1 / Gradle 8.10 / RuneLite 1.13.2.
 Current CI/artifact evidence is recorded in PR #49. These are synthetic checks;
 live RuneLite, gameplay, native OS focus/scroll/DPI/clipboard and player acceptance
 remain separate.
+
+## Main consolidation — 19 October 2026
+
+The user authorized merging the complete delivery into main and cleaning up the
+covered PRs/branches. PR #49 targets main and preserves the full CTX1 #43, UI1 #46,
+PR #48 and N3 #45 ancestry with a merge commit. Retire branch heads only after
+verifying that they are ancestors of the resulting main; retain unique work.
+Current instructions, backlog and development documentation identify 0.23.3 as the
+common baseline. Live-client/player acceptance and Plugin Hub publication remain
+separate from this merge authorization.
+
+The tested runtime source is `7970794412a4041df8452b4ff5e6be3e458f59f2`.
+[Exact-source CI run](https://github.com/PetterHL/ironpath/actions/runs/39262910960)
+passed, with the fresh
+[DEV1 reports and previews](https://github.com/PetterHL/ironpath/actions/runs/39262910960/artifacts/12191618501).
+The consolidation follow-up changes documentation only; PR #49 records its final
+head checks and merge result.

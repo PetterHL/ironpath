@@ -7,7 +7,7 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
-**19 October 2026: development build 0.23.3 — sidebar simplification on the complete PR #48 UI.**
+**19 October 2026: consolidated main build 0.23.3 — current Nex UI and sidebar simplification.**
 The native Encounter panel uses concise OSRS labels, centred results and genuine
 item/package sprites. Normal screens keep results and controls; Diagnostics holds
 technical explanations, calculation scope, provenance and reports. **Damage
@@ -23,16 +23,17 @@ selection and scroll restoration after a displayed loading/banking pause.
 [Review corrections, native screenshots and validation](docs/validation/pr48-review-followup.md) ·
 [Original before/after evidence](docs/validation/ui1-47-wording-layout.md).
 
-This isolated delivery joins current main's N3 runtime plans with CTX1 #43 and
-UI1 #46. Optional **Team & method** corrections and future defaults retain frozen
+The main baseline includes N3 runtime plans, CTX1 #43, UI1 #46, PR #48's current
+UI and the sidebar simplification in PR #49. Optional **Team & method** corrections and future defaults retain frozen
 inputs, per-field confirmation and active-encounter guards. **Plan specs & gear**
 keeps exact complete-package calculations and explicit scenario choices; unknown
 inputs withhold dependent outputs. Reports remain selectable if copying fails.
 [Context contract](docs/validation/ctx1-kill-context.md) ·
 [N3 contract](docs/research/nex-runtime-plans.md).
 
-[TASKS](TASKS.md) owns remaining mechanics and live gameplay acceptance. This
-review branch does not merge the open dependency PRs or publish the plugin.
+[TASKS](TASKS.md) owns remaining mechanics and live gameplay acceptance.
+[Consolidation and verification](docs/validation/sidebar-simplification.md).
+Plugin Hub publication remains separate.
 
 Bank-travel correction: completed history no longer expires while waiting to
 open the bank. It stays hidden until same-account/profile/world revalidation;

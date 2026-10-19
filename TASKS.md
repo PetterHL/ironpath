@@ -2,31 +2,28 @@
 
 Updated **19 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
-The user authorized consolidating existing work and updating this plan on
-18 October. That consolidation introduced no UI/context feature or live-client
-acceptance. UI1 and its two P2 review corrections are merged in the
-0.20.0 delivery below. CTX1 is implemented for review in 0.21.0. PR #48 joins
-the current deliveries and implements the approved presentation/navigation
-follow-up in 0.23.2; its inherited and new evidence is recorded below.
+The user authorized merging the complete 0.23.3 delivery into main and cleaning
+up covered PRs/branches on 19 October. This includes CTX1 #43, native UI1 #46,
+PR #48's current presentation/follow-up fixes and PR #49's sidebar simplification.
+Integration does not establish live-client or player acceptance.
 
 ## Current baseline and order
 
-Main at task start: `b47b9e76217cf7ad3e611ecdb5e2e6372cc84934`, including N3
-runtime plans (#45, 0.22.1). CTX1 #43 (`2fe5342`) and native UI1 #46 (`d5b14db`)
-remain open. Issue #47 explicitly requires one isolated integration/refinement PR;
-its merge base `32c379d` preserves main and the complete #46/CTX1 lineage.
-No GitHub dependency PR is merged or feature branch overwritten.
+Main baseline: **0.23.3**, including N3 #45, CTX1 #43 (`2fe5342`), native UI1 #46
+(`d5b14db`), PR #48 (`836e1e9`) and the sidebar simplification (`7970794`).
+Merge ancestry preserves all deliveries. Covered PRs/branches are retired only
+after their heads are verified as ancestors of main; no unique work is discarded.
 
 | Order | Work | State / boundary |
 |---|---|---|
-| Current | **UI1 #47 — OSRS wording, less help text, centred layout** | 0.23.2 approved PR #48 follow-up; validation below |
-| Integrated for this review | **CTX1 #43 / UI1 #46 / N3 #45** | Retain all three deliveries; open dependencies still require merge authorization |
+| Complete | **Current UI and sidebar simplification** | 0.23.3 consolidated main baseline; Gear & method / Gear & unlocks removed |
+| Complete | **CTX1 #43 / UI1 #46 / N3 #45 / PR #48** | Full ancestry retained in main; live acceptance remains open |
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
 | After context/evidence contracts | **N3 recommendation integration** | Declared runtime plans exist; attribution/remaining mechanics and automatic recommendations remain separate |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
 
-Deliver one reviewable PR; no automatic merge or Plugin Hub publication.
+Deliver future changes through focused PRs; no automatic merge or Plugin Hub publication.
 
 ## Sidebar simplification (0.23.3)
 
@@ -176,11 +173,11 @@ N3b/N3c advice, time/trip claims, full history browser, recording and in-client
 Save screenshot. Add native screenshot saving later if manual screenshots and
 DEV1 artifacts prove insufficient.
 
-## CTX1 — Editable Nex kill context (implemented for review)
+## CTX1 — Editable Nex kill context (included in main)
 
 Implementation: **0.21.0**. [Contracts, automated evidence and remaining client
-checks](docs/validation/ctx1-kill-context.md). UI1 is merged at 96d91e8; this feature
-requires its own PR review and merge authorization.
+checks](docs/validation/ctx1-kill-context.md). The 19 October consolidation includes
+the complete reviewed feature lineage. Live-client/player checks remain open.
 
 **Goal:** optionally set usual context before play or correct a selected completed
 kill afterwards, preserving evidence and any other active attempt.
@@ -251,7 +248,7 @@ historical successes and the later lost-history failure in the
 Gameplay is an acceptance activity, not a requirement after each offline edit.
 Integration does not convert unperformed checks into passes.
 
-## N3A/N3B/N3C — Post-kill runtime plans (implemented for review)
+## N3A/N3B/N3C — Post-kill runtime plans (included in main)
 
 Build 0.22.0 (report-selection follow-up 0.22.1) joins the existing kernels without claiming automatic attack attribution.
 User authorization on 18 October expands N3A to the combined N3A/B/C delivery.
@@ -271,8 +268,8 @@ User authorization on 18 October expands N3A to the combined N3A/B/C delivery.
 - [x] Resolve the default Diagnostics selection when a matching calculation arrives
   after opening the page; preserve explicit filters/selection and export observed
   slots/target class even when the selected output is unavailable.
-- [ ] Review/merge the feature PR when authorized; validate native client/player use
-  together with the existing open live checks. CTX1 remains a separate open PR.
+- [x] Integrate the runtime-plan delivery and the complete CTX1/UI lineage into main.
+- [ ] Validate native client/player use together with the existing open live checks.
 
 ## N3 — Remaining recommendation integration and mechanics
 

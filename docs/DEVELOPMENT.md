@@ -12,10 +12,10 @@ main` and `git pull --ff-only`, then create a short-lived branch for the change.
 Preserve any local changes and unrelated branches. Close the development client
 before updating or rebuilding it.
 
-The 18 October consolidation makes main the common base for N3b/N3c, banking/
-arena-reload fixes and all nine DEV1 scenarios. Do not start from the retired
-stacked PR branches. UI1 is merged; CTX1 (0.21.0) is implemented for review.
-TASKS.md owns the order, with live acceptance tracked separately. After merging future authorized work, delete only heads whose
+The 19 October consolidation makes main **0.23.3** the common base for N3 plans,
+CTX1, the current UI, sidebar simplification and all 14 DEV1 scenarios. Do not
+start from retired feature branches. TASKS.md owns the order, with live acceptance
+tracked separately. After merging future authorized work, delete only heads whose
 commits are preserved in main (or an explicit archive); never discard unique work.
 
 Windows PowerShell:
@@ -334,7 +334,7 @@ expansion test must fail. Real client cache/OS behavior remains open.
 ## Issue #47 native review
 
 Run both TASKS commands after UI changes. `nex-visual` includes same-fixture
-Encounter, multi-item packages, team/gear/unlock settings and Diagnostics at 225px
+Encounter, multi-item packages, team settings and Diagnostics at 225px
 and fonts 12/20, with actual 600px viewports plus full-height PNGs. `nex-n3-plan`
 retains explicit finite inputs and each required scenario choice. The first-screen
 viewport explicitly resets position when reparenting a shorter-than-600px panel.
@@ -357,3 +357,9 @@ selection and suspended-scroll findings. Focused regressions dispatch a logged-i
 profile change from a worker, select another kill/incomplete attempt after copying
 a report, and lay out/drain the EDT during suspension before verified return.
 The full pinned gate and normal build remain required.
+
+Build 0.23.3 removes Gear & method and Gear & unlocks from the complete current UI.
+The corresponding editor screenshots are retired; saved-preference/precedence
+checks use the guarded backend. All 14 scenarios remain active. Main now includes
+the complete CTX1/UI1/PR #48 lineage and this simplification.
+[Scope and verification](validation/sidebar-simplification.md).

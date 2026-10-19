@@ -1,6 +1,6 @@
 # Validation records
 
-Current review build **0.23.0**: [issue #47 OSRS wording, concise screens and centred layout](ui1-47-wording-layout.md). It preserves main N3 plus the complete open CTX1/UI1 dependency lineage; live acceptance remains open.
+Current main build **0.23.3**: [sidebar simplification and main consolidation](sidebar-simplification.md). It includes N3, the complete CTX1/UI1 lineage and PR #48's current UI/follow-up corrections. Live acceptance remains open; earlier records retain their original scope and screenshots.
 
 [DEV1 offline review workflow](dev1-offline-review.md) records the
 synthetic public-event scenarios, checked calculations, controlled publication/
