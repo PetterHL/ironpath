@@ -106,11 +106,14 @@ public final class NexSupplies
 			{
 				case BREW:
 					for(String skill:List.of("ATTACK","STRENGTH","RANGED","MAGIC"))
-					{ int current=need(levels,skill); levels.put(skill,Math.max(0,current-current/10-2)); }
+					{ if(levels.containsKey(skill)) { int current=need(levels,skill); levels.put(skill,Math.max(0,current-current/10-2)); } }
 					boost(base,levels,"DEFENCE",20,2); break;
 				case RESTORE:
 					for(String skill:List.of("ATTACK","STRENGTH","DEFENCE","RANGED","MAGIC"))
-					{ int current=need(levels,skill),max=need(base,skill); if(current<max) { levels.put(skill,Math.min(max,current+max/4+8)); } }
+					{
+						if(!levels.containsKey(skill) || !base.containsKey(skill)) { levels.remove(skill); continue; }
+						int current=need(levels,skill),max=need(base,skill); if(current<max) { levels.put(skill,Math.min(max,current+max/4+8)); }
+					}
 					break;
 				case SUPER_COMBAT:
 					for(String skill:List.of("ATTACK","STRENGTH","DEFENCE")) { boost(base,levels,skill,15,5); } break;
@@ -128,6 +131,7 @@ public final class NexSupplies
 	}
 	private static void boost(Map<String,Integer> base,Map<String,Integer> levels,String skill,int percent,int flat)
 	{
+		if(!levels.containsKey(skill) || !base.containsKey(skill)) { levels.remove(skill); return; }
 		int current=need(levels,skill),max=need(base,skill),amount=max*percent/100+flat;
 		levels.put(skill,Math.max(current,Math.min(max+amount,current+amount)));
 	}

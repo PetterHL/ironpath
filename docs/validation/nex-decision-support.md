@@ -28,12 +28,12 @@ JDK **11.0.32.1**, Gradle **8.10**, RuneLite **1.13.2**, DejaVu Sans body fonts
 
 ```sh
 source /workspace/ironpath-environment/activate.sh
-./gradlew test build offlineReview --args='nex-n3-plan' --no-daemon
 ./gradlew -PruneLiteVersion=1.13.2 test build offlineReview --no-daemon
+./gradlew test build --no-daemon
 ```
 
 The normal compatibility command resolves the same RuneLite 1.13.2 classpath.
-Both final commands **PASS**: **358 tests across 43 suites, zero failures/errors/skips; 14 DEV1 scenarios, 997 checks, zero failures and 220 PNGs**. The final pinned run reused the successful normal test/build outputs and regenerated all scenarios.
+Both final commands **PASS**: **359 tests across 43 suites, zero failures/errors/skips; 14 DEV1 scenarios, 997 checks, zero failures and 220 PNGs**. The final pinned run executes the full suite and regenerates all scenarios; the following normal compatibility run reuses the same successful outputs.
 Existing Gradle/RuneLite deprecation and headless Fontconfig messages are non-fatal.
 An initial offline compile could not resolve the restored dependency cache; online
 resolution succeeded. An intermediate normal run overlapped another Gradle test
@@ -45,7 +45,9 @@ Hand-checked tests cover the 4-tick launch at offset 0 followed by shark +3 and
 karambwan +2 at offset 1: ready shifts to 9, so opportunities 4/8 spend nothing and
 12 is admitted. Idle food creates no fictitious lost attack. Three brews lower a
 118 Strength state to 82; restore returns it to 99, then super combat to 118.
-A restore never recreates a lost boost. Four- and three-dose bottles pool to seven
+A restore never recreates a lost boost. Unknown unused skills do not suppress
+independently supported melee/ranged levels; an affected missing base level
+removes that dependent level rather than retaining a stale value. Four- and three-dose bottles pool to seven
 doses, while insufficient/unknown stock and potion/eating cooldown conflicts fail.
 
 Target checks verify all four phase mappings and their own defence rolls, accurate

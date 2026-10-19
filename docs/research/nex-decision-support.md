@@ -90,7 +90,9 @@ complete scenario's own cooldown, so different weapon delays displace attacks
 independently under the same declaration.
 
 Each opportunity recomputes offensive metrics from the declared brew/restore/
-reboost level sequence. Other drains/boosts and natural level decay are excluded
+reboost level sequence. Unknown unused skills stay unknown without suppressing
+an independently supported combat family; a missing affected base level withholds
+that restored/boosted skill rather than preserving a stale known value. Other drains/boosts and natural level decay are excluded
 by explicit assumption. Player HP stays separately supplied for every launch;
 food/brew healing, incoming damage, prayer restoration/drain and survival are
 not simulated or optimized. No consumption is attributed from inventory loss.

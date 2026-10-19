@@ -133,4 +133,15 @@ public class NexDecisionSupportTest
 		assertTrue(result.report().contains("automatic capture-to-recommendation gaps="));
 		assertTrue(result.report().contains("Other gear upkeep, Death Charge runes"));
 	}
+	@Test public void unknownUnusedStatsDoNotSuppressIndependentSupplyAdjustedOffence()
+	{
+		var melee=NexSupplies.ordered(Map.of(BREW,List.of(0),RESTORE,List.of(3),SUPER_COMBAT,List.of(6)),10);
+		var levels=NexSupplies.levels(Map.of("ATTACK",99,"STRENGTH",99),Map.of("ATTACK",118,"STRENGTH",118),melee,9);
+		assertEquals(Map.of("ATTACK",118,"STRENGTH",118),levels);
+		var ranged=NexSupplies.ordered(Map.of(BREW,List.of(0),RESTORE,List.of(3),RANGING,List.of(6)),10);
+		assertEquals(Map.of("RANGED",112),NexSupplies.levels(Map.of("RANGED",99),Map.of("RANGED",112),ranged,9));
+		// A restore needs the affected base level; its absence cannot preserve a stale known attack level.
+		assertFalse(NexSupplies.levels(Map.of(),Map.of("ATTACK",50),ranged,9).containsKey("ATTACK"));
+	}
+
 }
