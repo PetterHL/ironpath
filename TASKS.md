@@ -1,38 +1,105 @@
 # IronPath active work
 
-Updated **18 October 2026**. This is the **only active backlog and roadmap**.
+Updated **19 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized consolidating existing work and updating this plan on
 18 October. That consolidation introduced no UI/context feature or live-client
-acceptance. UI1 and its two P2 review corrections are complete in the separate
-0.20.0 delivery below; the user authorized PR #42's merge on 18 October.
+acceptance. UI1 and its two P2 review corrections are merged in the
+0.20.0 delivery below. CTX1 is implemented for review in 0.21.0. PR #48 joins
+the current deliveries and implements the approved presentation/navigation
+follow-up in 0.23.2; its inherited and new evidence is recorded below.
 
 ## Current baseline and order
 
-Consolidated development baseline: **0.19.3** — N1 capture/session, N2 ordinary
-owned comparisons, N3a resources, N3b conditional damage/ammunition, N3c
-complete-package APIs, banking/arena-reload corrections, and DEV1.
-N3b/N3c require explicit scenario inputs; they do not automatically turn a
-captured kill into a spec recommendation or validated team-time prediction.
+Main at task start: `b47b9e76217cf7ad3e611ecdb5e2e6372cc84934`, including N3
+runtime plans (#45, 0.22.1). CTX1 #43 (`2fe5342`) and native UI1 #46 (`d5b14db`)
+remain open. Issue #47 explicitly requires one isolated integration/refinement PR;
+its merge base `32c379d` preserves main and the complete #46/CTX1 lineage.
+No GitHub dependency PR is merged or feature branch overwritten.
 
 | Order | Work | State / boundary |
 |---|---|---|
-| Complete | **UI1 — Encounter and Diagnostics** | 0.20.0; both P2 review findings fixed, merge authorized; client acceptance open |
-| Next | **CTX1 — Editable Nex kill context** | After UI1 merge; separate lifecycle/data task |
-| Alongside, when gameplay is available | **N1/N2 live acceptance** | Open; does not block offline UI development |
-| After context/evidence contracts | **N3 recommendation integration** | Kernels exist; attribution, remaining mechanics and product integration remain |
-| After N1–N3 support and validation | **N4 contribution/team-time estimates** | Not implemented/validated |
-| Later | More methods/bosses, optional recorder and screenshot export | Not prerequisites for UI1 |
+| Current | **UI1 #47 — OSRS wording, less help text, centred layout** | 0.23.2 approved PR #48 follow-up; validation below |
+| Integrated for this review | **CTX1 #43 / UI1 #46 / N3 #45** | Retain all three deliveries; open dependencies still require merge authorization |
+| Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
+| After context/evidence contracts | **N3 recommendation integration** | Declared runtime plans exist; attribution/remaining mechanics and automatic recommendations remain separate |
+| After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
+| Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
 
-Deliver one task at a time with a reviewable PR and evidence. Do not merge or
-publish future work without user authorization. The cleanup approval does not
-authorize future feature merges or Plugin Hub publication.
+Deliver one reviewable PR; no automatic merge or Plugin Hub publication.
 
-## UI1 — Encounter and Diagnostics (review corrections complete)
+## Sidebar simplification (0.23.3)
+
+- [x] Retain the complete PR #48 UI (`836e1e9`), including CTX1 #43, UI1 #46,
+  current main's N3 plans and the profile/report/scroll corrections.
+- [x] Remove Gear & method and Gear & unlocks entirely, including manual gear
+  locks/method controls. Keep Team & method and the remaining layout unchanged.
+- [x] Preserve automatic observations, stored preferences/manual facts, upgraded
+  Death Charge assumptions, calculations and lifecycle guards. Add no controls.
+- [x] Verify with the full unit/build/offline workflow and native 225px/font
+  12/20 previews. [Evidence](docs/validation/sidebar-simplification.md).
+  Live RuneLite acceptance remains separate.
+
+## PR #48 — approved review follow-up (0.23.2)
+
+The 19 October review adds approved navigation and arrival wording to issue #47.
+This supersedes earlier top Encounter / Diagnostics tabs.
+
+- [x] Distinct unsupported-account/world, loading/settings and bank reasons;
+  Loading encounter… / Waiting for Nex / Tracking kill… / Kill tracking: Off
+  follow actual readiness, suspension and capture state.
+- [x] Transient field-specific plan errors include window, energy, HP/restore/cap
+  and distinct increasing tick bounds; unknown inputs retain dependent gaps.
+- [x] Populated Gear & unlocks uses readable names/states, with provenance only in
+  Diagnostics. Stored keys, exact sets and observed-fact precedence stay intact.
+- [x] One sidebar: Last kill always visible, Compare setups initially open,
+  Team & method / Gear & method / Gear & unlocks / Diagnostics initially closed.
+  Independent keyboard-accessible full-row headers; Diagnostics last.
+- [x] Preserve drafts, selected frozen comparison/planner, report subtree and
+  scroll through ordinary updates/verified reloads. Hard boundaries still clear.
+- [x] Add focused regressions, inspect native 225 × 600/font 12/20 evidence
+  and prepare the current PR for review. Performed local checks, current CI
+  outcome and artifact links are recorded in the PR.
+- [x] Subsequent review: keep profile-executor clearing free of live client reads,
+  retarget Diagnostics on explicit kill/attempt inspection and restore root scroll
+  after a laid-out suspension. Regressions retain background-report freezing,
+  immediate invalidation and hard-scope clearing.
+
+[Implementation, checks and screenshots](docs/validation/pr48-review-followup.md).
+Live client/player acceptance remains open; merge/publication is separate.
+
+## UI1 #47 — presentation refinement (0.23.0, for review)
+
+- [x] Keep Encounter, Compare setups and genuine item-count package labels; apply
+  issue #47's OSRS field/action labels and accessibility/tooltips. Damage
+  contribution retains the same observed hitsplat calculation.
+- [x] Normal Encounter, cards, gear/unlocks, team editor, kill/comparison details
+  and optional planner contain results, short state/origin labels and controls.
+  Move help, scope, assumption, testing/future-work paragraphs, provenance, long
+  gaps and raw traces to the common Diagnostics area or explicit reports.
+- [x] Distinguish equipped/inventory/bank/hypothetical gear without changing search,
+  package membership, exact variants, alternative ordering or calculations.
+  Render readable account choices while preserving internal keys and every member
+  of ownership sets.
+- [x] Replace the N3 confirmation wall with explicit unchecked scenario choices;
+  missing choices and unknown numeric inputs still gate dependent results.
+- [x] Centre headings, values, coherent sprite/name groups and actions at 225px.
+  Keep forms and technical text left aligned; preserve native fonts and scrolling.
+- [x] Complete focused tests, both prescribed full checks, visual review at 12/20,
+  and validation evidence with exact delivery commit/CI artifact links.
+- [x] Prepare one reviewable PR with representative embedded before/after PNGs. Live gameplay
+  acceptance stays open; no merge or publication.
+
+[Implementation, integration base, native evidence and performed checks](docs/validation/ui1-47-wording-layout.md).
+These visibility/centring decisions supersede older UI1 requests for explanatory
+scope sentences beside every card or in ordinary Details. Historical checklists
+below retain their original delivery scope.
+
+## UI1 — Encounter and Diagnostics (merged)
 
 Implementation: **0.20.0**. Both PR #42 P2 findings have focused regressions and
 passing full validation. [Commands, screenshots and limits](docs/validation/ui1-encounter-diagnostics.md).
-Merge is authorized; real-client/player acceptance remains open.
+Merged in main at 96d91e8; real-client/player acceptance remains open.
 
 **Goal:** make the existing native panel compact and useful, and let Petter copy
 a reliable report into ChatGPT/Codex after playing. Use existing supported
@@ -109,48 +176,57 @@ N3b/N3c advice, time/trip claims, full history browser, recording and in-client
 Save screenshot. Add native screenshot saving later if manual screenshots and
 DEV1 artifacts prove insufficient.
 
-## CTX1 — Editable Nex kill context (after UI1 review)
+## CTX1 — Editable Nex kill context (implemented for review)
+
+Implementation: **0.21.0**. [Contracts, automated evidence and remaining client
+checks](docs/validation/ctx1-kill-context.md). UI1 is merged at 96d91e8; this feature
+requires its own PR review and merge authorization.
 
 **Goal:** optionally set usual context before play or correct a selected completed
 kill afterwards, preserving evidence and any other active attempt.
 
-- [ ] Separate phase-2 strategy (MP2/RP2/Other/Unknown), group mode
+- [x] Separate phase-2 strategy (MP2/RP2/Other/Unknown), group mode
   (organized/mass/unknown), and validated positive participant count including
   the player (or unknown). Mass never overwrites strategy. Variable/unconfirmed
   participation cannot become a falsely exact constant count.
-- [ ] Separate saved defaults, immutable captured facts, planning locks and
+- [x] Separate saved defaults, immutable captured facts, planning locks and
   bounded in-memory per-kill annotations. Snapshot defaults at attempt start;
   inherited values are not automatically confirmed. Migrate the fixed pilot
   without inventing confirmation. Keep per-field provenance and edit revisions.
-- [ ] Put a compact context editor beside the selected kill with explicit Apply
+- [x] Put a compact context editor beside the selected kill with explicit Apply
   and a separate remember-for-future option. No mandatory pre-fight form.
   Initially cover the latest completed and already-inspected record; an arbitrary
   history comparison selector does not already exist and needs explicit scope.
-- [ ] Use a dedicated annotation action, not NexObserver.method(), which currently
+- [x] Use a dedicated annotation action, not NexObserver.method(), which currently
   censors capture on method changes. Future defaults changed during combat apply
   to the next attempt; historical edits cannot interrupt the current attempt.
-- [ ] Recompute only supported dependent outputs from preserved evaluation inputs.
+- [x] Recompute only supported dependent outputs from preserved evaluation inputs.
   Do not silently add new bank observations/preferences to a context-only edit.
   Guard session generation, kill key, annotation revision and calculation-input/
   model revisions alongside existing checks. Pending/old results cannot be
   relabeled as newly corrected results.
-- [ ] Replace opaque string-only grouping where necessary with explicit
+- [x] Replace opaque string-only grouping where necessary with explicit
   comparability evidence. Planning locks are not observed performance. Preserve
   timer/adapter scope, observed setup and team uncertainty; equal team count is
   not equal teammate damage/composition. Reconcile aggregates after edits, keeping
   incomplete/incompatible/unconfirmed kills out of matched averages.
-- [ ] Define support per output. Other methods/team counts cannot reuse Trio MP2
+- [x] Define support per output. Other methods/team counts cannot reuse Trio MP2
   recommendations by changing a label. Retain observations and independently
   justified arithmetic; withhold dependent recommendations/team-time. Nearby
   players do not establish party membership.
-- [ ] Extend DEV1 for unknown/inherited context, post-kill correction, an older
+- [x] Extend DEV1 for unknown/inherited context, post-kill correction, an older
   kill edited during a new attempt, repeated edits/pending publication, unsupported
   modes, preference migration, cohort reconciliation, reset/logout/eviction and
   frozen inspection/report consistency. Persist no performance history.
 
-Acceptance: edits affect only their intended kill/default; observed timing,
+Automated acceptance: edits affect only their intended kill/default; observed timing,
 damage and timeline stay unchanged; supported results/report revisions agree;
-a historical annotation never censors another active attempt.
+a historical annotation never censors another active attempt. Real-client editor,
+focus/scroll/clipboard and player acceptance remain open. Completed comparison
+inputs freeze once; later ownership/preferences apply to future comparisons.
+PR #43's P2 review correction additionally covers copying/navigating the older
+report after fresh combat account reads, with clipboard success/fallback and
+uninterrupted active capture. See the CTX1 validation record for corrected-head counts.
 
 ## N1/N2 — Remaining live acceptance
 

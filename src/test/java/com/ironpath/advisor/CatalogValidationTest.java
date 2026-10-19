@@ -14,6 +14,17 @@ import static org.junit.Assert.*;
 /** Fail closed on mistakes that could change the meaning or provenance of bundled advice. */
 public class CatalogValidationTest
 {
+	@Test public void readableOwnershipDescriptionsKeepEveryExactSetMember() throws Exception
+	{
+		var catalog=KnowledgeCatalog.load(new Gson()); var choices=catalog.factChoices();
+		assertEquals(java.util.List.of(26219,27246),catalog.itemSets.get("r3bFang"));
+		assertEquals(java.util.List.of(31088,31091,31092,31093,31094,31095,31096,31097),catalog.itemSets.get("r3bAnyTreads"));
+		for(String key:java.util.List.of("r3bFang","r3bScythe","r3bSoulreaper","r3bLance","r3bEmberlight","r3bHasta","r3bPrimTreads","r3bAnyTreads","r3bSalveE"))
+		{
+			String description=choices.get("owns-"+key); assertFalse(description.contains(key));
+			for(int id:catalog.itemSets.get(key)) { assertTrue(id+" in "+description,description.contains(catalog.itemNames().get(id)+" ("+id+")")); }
+		}
+	}
 	private JsonObject document()
 	{
 		return new JsonParser().parse(new InputStreamReader(getClass().getResourceAsStream("/com/ironpath/catalog.json"),

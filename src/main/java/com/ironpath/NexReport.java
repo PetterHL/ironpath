@@ -16,19 +16,28 @@ final class NexReport
 
 	static NexReport snapshot(NexSummary summary,NexOwnedResult result,int choiceIndex,int pairIndex,
 		KnowledgeCatalog catalog,Provenance provenance,State state)
+	{ return snapshot(summary,result,choiceIndex,pairIndex,catalog,provenance,state,null); }
+	static NexReport snapshot(NexSummary summary,NexOwnedResult result,int choiceIndex,int pairIndex,
+		KnowledgeCatalog catalog,Provenance provenance,State state,NexRecord record)
 	{
 		List<String> out=new ArrayList<>();
 		out.add("IronPath diagnostic report · schema 2");
 		out.add("Evidence: "+provenance+"; status: "+state);
 		out.add("Build: "+BuildInfo.VERSION+"; adapter: "+NexCapture.VERSION+"; evaluator: "+NexOwnedEvaluator.VERSION);
 		out.add("Models: "+MeleeModel.VERSION+" / "+RangedModel.VERSION+"; knowledge: "+(catalog==null?"unavailable":catalog.version));
-		out.add("Pilot model/planning scope: Nex / Trio MP2 / one kill per trip; per-kill strategy/team context unconfirmed.");
+		out.add("Pilot model/planning scope: Nex / Trio MP2 / one kill per trip; inheritance is not per-kill confirmation.");
 		out.add("No kill timestamp recorded. Tick offsets below are relative to measured start. This is a diagnostic snapshot, not a replay recording.");
 		// Hidden/cleared state must never be recoverable even if a caller accidentally supplies it.
 		if(state==State.NO_ACCOUNT || state==State.PAUSED || state==State.RESET || state==State.NOT_READY)
 		{ out.add("Session evidence unavailable or hidden; no kill/calculation exported."); return new NexReport(out); }
 		if(summary==null) { out.add("No captured kill available."); return new NexReport(out); }
 		out.add("Report-local kill: K1; outcome: "+summary.outcome+"; exclusion: "+exclusion(summary));
+		NexContext context=record!=null && record.summary==summary?record.context:result!=null && result.summary==summary?result.context:summary.context;
+		long contextRevision=record!=null && record.summary==summary?record.revision:result!=null && result.summary==summary?result.contextRevision:0;
+		out.add("Attempt-start context (defaults): "+summary.context.label()+"; "+summary.context.provenance());
+		out.add("Effective context revision: "+contextRevision+"; "+context.label()+"; "+context.provenance());
+		out.add("Output support: observed duration/share unchanged; conditional ordinary arithmetic uses captured state and frozen planning inputs. Pilot context confirmed="+context.pilot()+". Automatic method recommendations and team-time estimates unavailable.");
+		out.add("Comparability: "+(record==null?"not evaluated":record.exclusion()==null?"eligible for descriptive matching; count alone is insufficient":record.exclusion())+". Planning locks are not observed performance; roster identities omitted.");
 		out.add("Timer: "+summary.timerScope+"; duration seconds: "+summary.seconds());
 		out.add("Damage scope: "+NexSummary.DAMAGE_SCOPE);
 		out.add("Observed local/total hitsplats: "+summary.localDamage()+" / "+summary.totalDamage()+"; share percent: "+summary.share());
@@ -40,7 +49,8 @@ final class NexReport
 				+"; arena start="+offset(s.boundaryTick,summary)+"; arena end="+offset(s.barrierEndTick,summary)+"; continuous="+s.continuous);
 		}
 		out.add("Capture gaps: "+summary.gaps.size()+"; launch attribution, event-order ambiguity, internal charges and consumption are not established.");
-		if(result==null || result.summary!=summary)
+		if(state==State.PENDING || result==null || result.summary!=summary || result.contextRevision!=contextRevision || !result.context.equals(context)
+			|| record!=null && (record.inputs==null?result.inputRevision!=0:result.inputRevision!=record.inputs.revision || !result.modelRevision.equals(record.inputs.modelRevision)))
 		{ out.add("Calculation unavailable/pending for K1. No other kill's result exported."); return new NexReport(out); }
 		out.add("Report-local calculation: C1; immutable calculation revision: "+result.revision);
 		var resources=result.resources; var scenarios=resources.scenarios;
@@ -56,6 +66,8 @@ final class NexReport
 				+"; admitted uses="+example.minUses+".."+example.maxUses+"; final energy="+example.minFinalEnergy+".."+example.maxFinalEnergy
 				+"; lost at cap="+example.minWasted+".."+example.maxWasted+"; cases="+example.cases);
 		}
+
+		out.add("Calculation context/input revisions: "+result.contextRevision+" / "+result.inputRevision+"; models: "+result.modelRevision);
 		out.add("Scenario counts (not fight coverage): supported="+result.choices.stream().filter(c->c.supported()).count()
 			+"; unavailable="+result.choices.stream().filter(c->!c.supported()).count());
 		Map<String,Integer> gaps=new TreeMap<>();

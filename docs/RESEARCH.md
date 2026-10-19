@@ -101,3 +101,13 @@ remain open; no reference implementation or dataset is imported.
 [The post-kill contract](research/nex-runtime-plans.md) records captured versus
 declared inputs, finite stock, source reuse and the observed-reserve boundary.
 [Validation](validation/nex-runtime-plans.md) retains synthetic and client limits.
+
+## CTX1 context contract
+
+CTX1 (0.21.0) changes metadata, lifecycle and descriptive comparability. It adds no
+combat formula or new target/method mechanics. MP2/RP2/Other/Unknown and group/count
+are user declarations; nearby public players do not establish a party. Inherited
+defaults are not kill confirmations. Conditional ordinary state arithmetic retains
+its existing N2 evidence/limitations outside the pilot; this does not generalize
+method recommendations or N4. [Synthetic verification](validation/ctx1-kill-context.md)
+distinguishes automated data/worker/Swing checks from unperformed live acceptance.

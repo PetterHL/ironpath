@@ -11,9 +11,15 @@ import javax.swing.*;
 final class NexResourcesPanel
 {
 	static void populate(JPanel panel,NexResourceReview review,BooleanSupplier valid,Runnable relayout)
+	{ populate(panel,review,valid,relayout,false); }
+	static void populate(JPanel panel,NexResourceReview review,BooleanSupplier valid,Runnable relayout,boolean diagnostic)
 	{
-		PanelWidgets.text(panel,"Special-attack resources · kill #"+review.summaryKey);
+		PanelWidgets.text(panel,"Spec energy & Death Charge · kill #"+review.summaryKey);
 		PanelWidgets.text(panel,"First recorded energy "+energy(review.firstEnergy)+" · last recorded "+energy(review.lastEnergy));
+		PanelWidgets.text(panel,"Sampled net energy: +"+energy(review.sampledIncreases)+" / −"+energy(review.sampledDecreases));
+		PanelWidgets.text(panel,"Observed Lightbearer: "+(review.fixedLightbearerObserved?"Every reading":"Unknown"));
+		PanelWidgets.text(panel,"Upgraded Death Charge use: "+(review.improvedActiveObserved?"Observed":"Unknown"));
+		if(diagnostic) {
 		PanelWidgets.text(panel,"Sampled energy changes: +"+energy(review.sampledIncreases)+" / −"+energy(review.sampledDecreases)
 			+". These are net changes between readings, not total restoration or spending.");
 		PanelWidgets.text(panel,review.fixedLightbearerObserved?"Lightbearer appears in every recorded fight state. The restoration phase is unobserved."
@@ -22,24 +28,25 @@ final class NexResourcesPanel
 			:"Improved Death Charge use is unestablished by these readings. One or zero charges cannot establish upgrade absence.");
 		PanelWidgets.text(panel,"Energy changes can combine spending and restoration. They do not identify spec weapons, attack counts, casts or procs. Charge decreases may include expiry; a full energy reading does not measure wasted restoration.");
 		for(String gap:review.gaps) { PanelWidgets.text(panel,gap); }
+		}
 		JPanel examples=new JPanel(); examples.setFont(panel.getFont()); examples.setOpaque(false);
 		examples.setLayout(new BoxLayout(examples,BoxLayout.Y_AXIS)); examples.setAlignmentX(0); examples.setVisible(false);
 		PanelWidgets.button(panel,"Natural-restoration examples",()->{
 			if(valid.getAsBoolean()) { examples.setVisible(!examples.isVisible()); relayout.run(); }
 		});
 		var scenarios=review.scenarios;
-		PanelWidgets.text(examples,"Conditional energy examples · not a weapon recommendation");
+		PanelWidgets.text(examples,"Conditional energy examples");
 		if(scenarios.examples.isEmpty())
 		{
-			PanelWidgets.text(examples,"Examples unavailable for this capture:");
-			for(var gap:scenarios.gaps) { PanelWidgets.text(examples,gap.explanation); }
+			PanelWidgets.text(examples,"No resource example available");
+			if(diagnostic) for(var gap:scenarios.gaps) { PanelWidgets.text(examples,gap.explanation); }
 		}
-		else
+		else if(diagnostic)
 		{
 			PanelWidgets.text(examples,"Starting from the measured-start reading of "+energy(scenarios.initialEnergy)
 				+" over "+scenarios.duration+" ticks (end excluded). Fixed Lightbearer is an assumption supported by the recorded states.");
 		}
-		PanelWidgets.text(examples,NexResourceScenarios.ASSUMPTIONS);
+		if(diagnostic) { PanelWidgets.text(examples,NexResourceScenarios.ASSUMPTIONS); }
 		for(var example:scenarios.examples)
 		{
 			PanelWidgets.text(examples,example.schedule.label+" · "+energy(example.schedule.cost)+" · attempt every "+example.schedule.delay+" ticks"
@@ -47,9 +54,11 @@ final class NexResourcesPanel
 				+"\nFinal energy: "+energyRange(example.minFinalEnergy,example.maxFinalEnergy)
 				+" · lost at cap: "+energyRange(example.minWasted,example.maxWasted));
 		}
-		PanelWidgets.text(examples,NexResourceScenarios.LIMITS);
+		if(diagnostic) { PanelWidgets.text(examples,NexResourceScenarios.LIMITS);
 		PanelWidgets.text(examples,"Actual Death Charge casts, eligible deaths and proc timing remain unknown. Active-charge readings and upgrade availability do not establish them.");
+		}
 		panel.add(examples);
+		if(!diagnostic) { return; }
 		JPanel trace=new JPanel(); trace.setFont(panel.getFont()); trace.setOpaque(false);
 		trace.setLayout(new BoxLayout(trace,BoxLayout.Y_AXIS)); trace.setAlignmentX(0); trace.setVisible(false);
 		PanelWidgets.button(panel,"Resource readings and rules",()->{

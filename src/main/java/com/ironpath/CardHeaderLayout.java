@@ -13,8 +13,10 @@ final class CardHeaderLayout implements LayoutManager
 	}
 	@Override public void layoutContainer(Container parent)
 	{
-		int width=width(parent); parent.getComponent(0).setBounds(0,0,40,40);
-		parent.getComponent(1).setBounds(46,0,Math.max(1,width-46),parent.getHeight());
+		int width=width(parent); Component title=parent.getComponent(1);
+		int textWidth=Math.min(Math.max(1,width-46),title.getPreferredSize().width), x=Math.max(0,(width-46-textWidth)/2);
+		parent.getComponent(0).setBounds(x,Math.max(0,(parent.getHeight()-40)/2),40,40);
+		title.setBounds(x+46,0,textWidth,parent.getHeight());
 	}
 	@Override public Dimension minimumLayoutSize(Container parent) { return new Dimension(0,40); }
 	@Override public void addLayoutComponent(String name,Component component) {}

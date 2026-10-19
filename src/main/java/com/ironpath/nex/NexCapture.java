@@ -21,6 +21,7 @@ public final class NexCapture
 	private final Set<String> gaps=new LinkedHashSet<>(), phases=new LinkedHashSet<>(), gear=new TreeSet<>();
 	private long serial, key;
 	private volatile NexMethod method;
+	private NexContext context;
 	private int origin, start, last, sampled, lastSample, boundaryTick=-1, death=-1, barrierEnd=-1,
 		smokeTick=-1, observedSmoke=-1, events, unclassified;
 	private String phase="UNKNOWN", window="UNKNOWN", roster;
@@ -31,9 +32,12 @@ public final class NexCapture
 	public long key() { return key; }
 	/** A true start flag denotes an actually observed smoke announcement, never arena entry. */
 	public void start(int tick, boolean smokeObserved, NexMethod method, String roster)
+	{ start(tick,smokeObserved,method,roster,NexContext.PILOT); }
+	public void start(int tick,boolean smokeObserved,NexMethod method,String roster,NexContext defaults)
 	{
 		if (active()) { abort(tick,Outcome.CENSORED,"New encounter before completion"); }
 		this.method=Objects.requireNonNull(method); key=++serial; origin=start=last=tick; lastSample=tick-1;
+		this.context=Objects.requireNonNull(defaults).inherited();
 		this.roster=roster; fullStart=smokeObserved; continuous=true; rosterStable=roster!=null;
 		smokeTick=observedSmoke=smokeObserved?tick:-1;
 		phase=fullStart?"SMOKE":"UNKNOWN"; window="UNKNOWN";
@@ -163,7 +167,10 @@ public final class NexCapture
 		String cohort=VERSION+":"+method.cohort()+":"+gear+":"+(rosterStable?roster:"unmatched-"+key);
 		NexSummary.Signals signals=new NexSummary.Signals(boundaryTick<0?null:boundaryTick,smokeTick<0?null:smokeTick,
 			death<0?null:death,barrierEnd<0?null:barrierEnd,continuous,phases,observedSmoke<0?null:observedSmoke,this.signals);
-		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps,signals,beforeStart));
+		Set<NexComparability.Setup> setups=new HashSet<>();
+		timeline.forEach(s->setups.add(new NexComparability.Setup(s.role,s.state)));
+		NexComparability comparability=new NexComparability(VERSION,setups,roster,rosterStable);
+		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps,signals,beforeStart,context,comparability));
 		clear();
 	}
 }

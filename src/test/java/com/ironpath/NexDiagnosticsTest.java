@@ -64,6 +64,101 @@ public class NexDiagnosticsTest
 		result.choices.get(0).comparison.target.defenceLevel=1;
 		assertEquals(text,snapshot.format());
 	}
+	@Test public void compactCardsExpandWithoutDroppingAlternativesAndKeepSelectionWhenReturningFromDiagnostics() throws Exception
+	{
+		List<NexSummary.Sample> samples=new ArrayList<>();
+		for(String missing:List.of("none","head","neck"))
+		{
+			var slots=new LinkedHashMap<>(NexOwnedFixtures.ranged()); if(!missing.equals("none")) { slots.put(missing,0); }
+			samples.add(NexOwnedFixtures.sample("ranged",NexOwnedFixtures.state(slots,Map.of(11212,200L))));
+		}
+		var summary=NexOwnedFixtures.summary(samples); var result=evaluate(summary); var cards=NexPresentation.cards(result);
+		assertTrue("Three distinct complete-package changes",cards.size()>=3);
+		SwingUtilities.invokeAndWait(()->{
+			var session=new NexSession(); session.select("test",301); session.add(summary);
+			var panel=new NexPanel(null); var account=NexOwnedFixtures.account(null);
+			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			assertTrue(expandedSection(panel,"nex-section-compare")); assertFalse(expandedSection(panel,"nex-section-diagnostics"));
+			assertEquals(2,visibleCards(panel));
+			PanelPreview.click(panel,"More comparisons ("+(cards.size()-2)+")"); assertEquals(cards.size(),visibleCards(panel));
+			panel.render("Account refresh",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			assertEquals("Expansion survives refresh",cards.size(),visibleCards(panel));
+			var third=cards.get(2);
+			((JButton)PanelPreview.children(panel).stream().filter(c->("nex-card-"+third.choiceIndex).equals(c.getName())).findFirst().orElseThrow()).doClick();
+			assertEquals(third.pairIndex,PanelPreview.combo(panel,"nex-owned-pair").getSelectedIndex());
+			PanelPreview.openSection(panel,"Diagnostics"); assertTrue(expandedSection(panel,"nex-section-diagnostics"));
+			PanelPreview.closeSection(panel,"Diagnostics");
+			assertEquals(third.pairIndex,PanelPreview.combo(panel,"nex-owned-pair").getSelectedIndex());
+			PanelPreview.click(panel,"Back to encounter"); assertEquals(cards.size(),visibleCards(panel));
+			PanelPreview.click(panel,"Fewer comparisons"); assertEquals(2,visibleCards(panel));
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Calculation details");
+			assertTrue(PanelPreview.text(panel).contains("build "+BuildInfo.VERSION));
+			assertTrue(PanelPreview.text(panel).contains("Independent state comparisons"));
+		});
+	}
+	private static long visibleCards(NexPanel panel)
+	{ return PanelPreview.children(panel).stream().filter(c->c.getName()!=null && c.getName().startsWith("nex-equipment-card-") && PanelPreview.visible(c)).count(); }
+	private static boolean expandedSection(NexPanel panel,String name)
+	{ return ((JButton)PanelPreview.children(panel).stream().filter(c->name.equals(c.getName())).findFirst().orElseThrow()).isSelected(); }
+	@Test public void diagnosticCalculationDetailsSurviveAccountRefreshesUntilTheSelectedKillChanges() throws Exception
+	{
+		var first=summary(1,true); var original=evaluate(first); var second=summary(2,false); var next=evaluate(second);
+		SwingUtilities.invokeAndWait(()->{
+			var session=new NexSession(); session.select("test",301); session.add(first);
+			var panel=new NexPanel(null);
+			panel.render("Observed",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",original);
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Calculation details");
+			for(String status:List.of("Inventory refreshed","Equipment refreshed","Bank refreshed"))
+			{
+				panel.render(status,NexOwnedFixtures.account(Set.of(11212)),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",original);
+				assertTrue("Keep expanded calculation details after "+status,PanelPreview.text(panel).contains("State coverage"));
+			}
+			PanelPreview.click(panel,"Calculation details");
+			panel.render("Another refresh",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",original);
+			assertFalse("An explicitly collapsed section stays collapsed",PanelPreview.text(panel).contains("State coverage"));
+			PanelPreview.click(panel,"Calculation details"); session.add(second);
+			panel.render("New result",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",next);
+			assertTrue("A newer kill does not replace frozen Diagnostics or its disclosure",PanelPreview.text(panel).contains("State coverage"));
+			PanelPreview.closeSection(panel,"Diagnostics"); PanelPreview.openSection(panel,"Diagnostics");
+			assertTrue("Toggling the section keeps the frozen disclosure",PanelPreview.text(panel).contains("State coverage"));
+			PanelPreview.encounter(panel); PanelPreview.click(panel,"Compare with owned gear"); PanelPreview.openSection(panel,"Diagnostics");
+			assertFalse("A different selected kill starts collapsed",PanelPreview.text(panel).contains("State coverage"));
+			PanelPreview.click(panel,"Calculation details");
+			panel.render("Logged out",null,Preferences.EMPTY,catalog,session.stats(),true,null,"");
+			assertFalse("Identity clearing cannot retain expanded history",PanelPreview.text(panel).contains("State coverage"));
+		});
+	}
+	@Test public void explicitKillAndAttemptDetailsRetargetTheFrozenReport() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			var first=summary(1,true); var second=summary(2,false);
+			var firstResult=evaluate(first); var secondResult=evaluate(second);
+			var session=new NexSession(); session.select("synthetic",301); session.add(first);
+			var copied=new AtomicReference<String>(); var panel=new NexPanel(null,copied::set,NexReport.Provenance.SYNTHETIC_OFFLINE);
+			var account=NexOwnedFixtures.account(null);
+			panel.render("First result",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",firstResult);
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			String frozen=copied.get(); JTextArea old=area(panel);
+			PanelPreview.closeSection(panel,"Diagnostics"); session.add(second);
+			panel.render("Second result",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",secondResult);
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			assertEquals("Background results keep the frozen target",frozen,copied.get());
+			PanelPreview.closeSection(panel,"Diagnostics"); PanelPreview.click(panel,"Kill and calculation details");
+			assertEquals("Explicit selection clears the previous export immediately","",old.getText());
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			assertTrue(PanelPreview.text(panel).contains("Frozen kill #2"));
+			assertTrue(copied.get().contains("immutable calculation revision: "+secondResult.revision));
+			assertNotEquals(frozen,copied.get());
+			PanelPreview.click(panel,"Back to encounter"); PanelPreview.closeSection(panel,"Diagnostics"); old=area(panel);
+			var attempt=new NexSummary(3,110,120,10,10,0,Outcome.CENSORED,"synthetic abandoned",second.cohort,second.method,List.of(),Map.of(),Set.of());
+			session.add(attempt);
+			panel.render("Incomplete attempt",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",secondResult);
+			PanelPreview.click(panel,"Last attempt details"); assertEquals("",old.getText());
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			assertTrue(PanelPreview.text(panel).contains("Frozen kill #3")); assertTrue(copied.get().contains("CENSORED"));
+			assertFalse("An attempt cannot export the previous kill's calculation",copied.get().contains("immutable calculation revision:"));
+		});
+	}
 	@Test public void hiddenOrMismatchedResultsCannotBeExported()
 	{
 		var summary=summary(1,true); var result=evaluate(summary);
@@ -110,8 +205,8 @@ public class NexDiagnosticsTest
 			var panel=new NexPanel(null,text->{ copied.set(text); throw new IllegalStateException("busy"); },NexReport.Provenance.SYNTHETIC_OFFLINE);
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",original);
 			assertTrue(PanelPreview.text(panel).contains("Dragon arrow")); assertFalse(PanelPreview.text(panel).contains("Twisted bow"));
-			assertTrue(PanelPreview.text(panel).contains("1 matching kill")); assertFalse(PanelPreview.text(panel).contains("Session mean"));
-			PanelPreview.click(panel,"Compare package"); PanelPreview.click(panel,"Diagnostics");
+			assertFalse(PanelPreview.text(panel).contains("No matched average")); assertFalse(PanelPreview.text(panel).contains("Session mean"));
+			PanelPreview.click(panel,"Compare gear"); PanelPreview.openSection(panel,"Diagnostics");
 			PanelPreview.click(panel,"Copy report now");
 			assertTrue(PanelPreview.text(panel).contains("Clipboard unavailable or busy"));
 			var area=area(panel); assertTrue(area.isFocusable()); assertFalse(area.isEditable());
@@ -134,15 +229,17 @@ public class NexDiagnosticsTest
 			assertReportInteraction(panel,area,frozen,position,detachments.get());
 			copied.set("unchanged"); stale.doClick(); assertEquals("unchanged",copied.get());
 			PanelPreview.click(panel,"Copy report now"); assertEquals(frozen,copied.get());
-			PanelPreview.click(panel,"Encounter");
-			assertEquals("Removed text widget cannot retain an old report", "",area.getText());
-			PanelPreview.click(panel,"Owned setup comparisons");
+			PanelPreview.encounter(panel);
+			assertEquals("Collapsing Diagnostics preserves the selected report", frozen,area.getText());
+			assertFalse(PanelPreview.visible(area));
+			PanelPreview.click(panel,"Compare with owned gear");
+			assertEquals("Changing selection clears the previous report widget","",area.getText());
 			PanelPreview.combo(panel,"nex-owned-support-filter").setSelectedItem("Unavailable comparisons");
-			PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
 			assertTrue(copied.get().contains("No selected comparison")); assertFalse(copied.get().contains("Actual slots"));
 			panel.render("Identity changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"");
 			copied.set("unchanged"); stale.doClick(); assertEquals("unchanged",copied.get());
-			PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
 			assertFalse(copied.get().contains("Actual slots")); assertFalse(copied.get().contains("25.0"));
 		});
 	}
@@ -169,10 +266,10 @@ public class NexDiagnosticsTest
 				var account=NexOwnedFixtures.account(null); var copied=new AtomicReference<String>();
 				var panel=new NexPanel(null,copied::set,NexReport.Provenance.SYNTHETIC_OFFLINE);
 				panel.render("Ready",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
-				PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+				PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
 				var previous=area(panel); var stale=copyButton(panel);
 				previous.select(10,100); assertTrue(PanelPreview.visible(previous));
-				if(transition.equals("Reset")) { session.clear("Reset session selected."); session.select("test",301); }
+				if(transition.equals("Reset")) { session.clear("Clear session selected."); session.select("test",301); }
 				boolean noAccount=transition.equals("Logged out") || transition.equals("Account/profile changed");
 				panel.render(transition,noAccount?null:account,Preferences.EMPTY,catalog,session.stats(),true,
 					noAccount || transition.equals("Preferences unavailable")?null:actions(),"",result);
@@ -192,7 +289,7 @@ public class NexDiagnosticsTest
 			var account=NexOwnedFixtures.account(null); var copied=new AtomicReference<String>();
 			var panel=new NexPanel(null,copied::set,NexReport.Provenance.SYNTHETIC_OFFLINE);
 			panel.render("Waiting for login",null,Preferences.EMPTY,catalog,session.stats(),true,null,"");
-			PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
 			assertTrue(copied.get().contains("NO_ACCOUNT"));
 			var summary=summary(1,true); session.add(summary);
 			panel.render("Pending",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",null);
@@ -204,7 +301,7 @@ public class NexDiagnosticsTest
 			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("READY"));
 			panel.render("Nex session paused. Open a bank to revalidate.",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",evaluate(summary));
 			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("PAUSED")); assertFalse(copied.get().contains("Actual slots"));
-			session.clear("Reset session selected."); session.select("test",301);
+			session.clear("Clear session selected."); session.select("test",301);
 			panel.render("Cleared",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",null);
 			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("RESET")); assertFalse(copied.get().contains("Report-local kill:"));
 		});
@@ -227,12 +324,12 @@ public class NexDiagnosticsTest
 				{
 					assertTrue(session.suspend("test",301,100,true));
 					panel.render("Nex session paused. Open a bank to revalidate.",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",null);
-					PanelPreview.click(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+					PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
 					assertTrue(copied.get().contains("PAUSED")); assertFalse(copied.get().contains("Observed slots"));
 					assertTrue(session.revalidate("test",301,101,true,false));
 				}
 				panel.render("Pending",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",null);
-				if(!bankReturn) { PanelPreview.click(panel,"Diagnostics"); }
+				if(!bankReturn) { PanelPreview.openSection(panel,"Diagnostics"); }
 				PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("PENDING"));
 				panel.render("Ready",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
 				PanelPreview.click(panel,"Copy report now");

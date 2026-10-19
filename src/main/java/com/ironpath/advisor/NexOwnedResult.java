@@ -50,6 +50,9 @@ public final class NexOwnedResult
 	public final com.ironpath.preferences.NexMethod planning;
 	/** Frozen equip/unlock planning facts; later account reads cannot change an inspected scenario. */
 	public final Map<String,com.ironpath.model.Truth> scenarioUnlocks;
+	public final com.ironpath.nex.NexContext context;
+	public final long contextRevision,inputRevision;
+	public final String modelRevision;
 	public final List<Choice> choices;
 	public final com.ironpath.nex.NexResourceReview resources;
 	public final Map<String,Integer> gaps;
@@ -57,11 +60,15 @@ public final class NexOwnedResult
 	{ this(summary,choices,null); }
 	public NexOwnedResult(NexSummary summary, List<Choice> choices, com.ironpath.preferences.NexMethod planning)
 	{ this(summary,choices,planning,Map.of()); }
-	public NexOwnedResult(NexSummary summary, List<Choice> choices, com.ironpath.preferences.NexMethod planning,
+	public NexOwnedResult(NexSummary summary,List<Choice> choices,com.ironpath.preferences.NexMethod planning,
 		Map<String,com.ironpath.model.Truth> scenarioUnlocks)
+	{ this(summary,choices,planning,scenarioUnlocks,summary==null?com.ironpath.nex.NexContext.UNKNOWN:summary.context,0,0,NexOwnedEvaluator.VERSION); }
+	public NexOwnedResult(NexSummary summary,List<Choice> choices,com.ironpath.preferences.NexMethod planning,
+		Map<String,com.ironpath.model.Truth> scenarioUnlocks,com.ironpath.nex.NexContext context,long contextRevision,long inputRevision,String modelRevision)
 	{
 		this.scenarioUnlocks=Map.copyOf(scenarioUnlocks);
 		revision=REVISIONS.incrementAndGet(); this.planning=planning;
+		this.context=context; this.contextRevision=contextRevision; this.inputRevision=inputRevision; this.modelRevision=modelRevision;
 		this.summary=summary; this.choices=List.copyOf(choices);
 		// Constructed with the frozen post-kill result on the existing guarded worker.
 		resources=summary==null?null:com.ironpath.nex.NexResourceReview.from(summary);

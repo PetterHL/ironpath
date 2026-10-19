@@ -163,8 +163,8 @@ public class PreferenceLifecycleTest
 		Preferences saved=Preferences.EMPTY.nex(NexMethod.PILOT.lock("melee/shield",22322)).confirm("rigour",true,Instant.EPOCH);
 		files.put(LocalPreferences.key(A),saved); login();
 		SwingUtilities.invokeAndWait(() -> {
-			assertNull(button("Setup")); assertNull(button("Account"));
-			button("Diagnostics").doClick(); button("Encounter").doClick(); button("Reset session").doClick();
+			assertNull(button("Gear & method")); assertNull(button("Gear & unlocks"));
+			com.ironpath.dev.PanelPreview.openSection(panel,"Diagnostics"); com.ironpath.dev.PanelPreview.encounter(panel); button("Clear session").doClick();
 		}); callbacks(); load();
 		assertSame(saved,plugin.session.preferences()); assertSame(saved,files.get(LocalPreferences.key(A)));
 		assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
@@ -177,7 +177,7 @@ public class PreferenceLifecycleTest
 		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(0,20,60));
 		callbacks(); load(); assertTrue(plugin.session.preferences().nex.upgradedDeathCharge);
 		plugin.onGameTick(new GameTick()); SwingUtilities.invokeAndWait(()->{});
-		SwingUtilities.invokeAndWait(()->{button("Encounter").doClick();button("Reset session").doClick();});
+		SwingUtilities.invokeAndWait(()->{com.ironpath.dev.PanelPreview.encounter(panel);button("Clear session").doClick();});
 		plugin.nexSession.add(com.ironpath.nex.NexCaptureTest.replay(100,20,60)); callbacks();
 		assertEquals(2,plugin.nexSession.recent().size());
 	}
