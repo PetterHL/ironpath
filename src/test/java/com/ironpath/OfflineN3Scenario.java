@@ -195,6 +195,44 @@ final class OfflineN3Scenario
 				try { java.nio.file.Files.writeString(output.resolve("impact-report-"+font+".txt"),impactReport[0]); } catch(Exception ex) { throw new IllegalStateException(ex); }
 			});
 			capture(r,output,"impact-results",font,report);
+			edt(()->{
+				NexScenarioPanelTest.saveImpact(r.panel,0,500,250,"Deflect Melee");
+				NexScenarioPanelTest.saveImpact(r.panel,5,10,300,"Deflect Melee");
+				PanelPreview.combo(r.panel,"n3-policy").setSelectedIndex(2);
+				PanelPreview.combo(r.panel,"n3-upgrade-slot").setSelectedItem("weapon");
+				JComboBox<?> items=PanelPreview.combo(r.panel,"n3-upgrade-item");
+				for(int i=0;i<items.getItemCount();i++) if(items.getItemAt(i).toString().endsWith("(27690)")) { items.setSelectedIndex(i); break; }
+				PanelPreview.click(r.panel,"Add item"); PanelPreview.click(r.panel,"Compare this plan");
+			}); r.settle();
+			edt(()->{
+				var result=planner[0].result(); var ordinary=result.comparison.actualToOwned.before.plan; var special=result.comparison.ownedToUpgrade.after.plan;
+				report.check("Deflect ordinary Fang keeps dependent damage gap "+font,null,ordinary.expectedDamage);
+				report.check("Deflect declared VW admits two Magic specials "+font,2,special.resources.voidwakerSpecs);
+				report.check("Deflect declared VW has supported damage "+font,true,special.expectedDamage!=null && special.gaps.isEmpty());
+				report.check("Deflect declared VW retains independent HP cap minimum "+font,10,special.hits.get(1).damage.minimum);
+				report.check("Deflect declared VW retains independent HP cap maximum "+font,10,special.hits.get(1).damage.maximum);
+				report.check("Deflect unknown ordinary baseline withholds marginal gain "+font,null,result.comparison.ownedToUpgrade.expectedDamage);
+				PanelPreview.click(r.panel,"Copy plan report"); String text=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
+				report.check("Deflect report retains attack-type rule and explicit overhead "+font,true,text.contains("Voidwaker's Magic-type special is supported") && text.contains("overhead=DEFLECT_MELEE") && text.contains("nex-package-7"));
+				try { java.nio.file.Files.writeString(output.resolve("deflect-funded-report-"+font+".txt"),text); } catch(Exception ex) { throw new IllegalStateException(ex); }
+			});
+			capture(r,output,"deflect-funded-results",font,report);
+			edt(()->{
+				try { PanelPreview.viewport(r.panel,output.resolve("deflect-funded-viewport-"+font+".png"),225,600,"n3-copy-report",List.of("n3-copy-report","n3-report-scroll"),report); }
+				catch(Exception ex) { throw new IllegalStateException(ex); }
+				NexScenarioPanelTest.named(r.panel,"n3-energy",JTextField.class).setText("50"); PanelPreview.click(r.panel,"Compare this plan");
+			}); r.settle();
+			edt(()->{
+				var plan=planner[0].result().comparison.ownedToUpgrade.after.plan;
+				report.check("Deflect low energy admits one special "+font,1,plan.resources.voidwakerSpecs);
+				report.check("Deflect low energy admits ordinary fallback "+font,1,plan.resources.ordinaryAttacks);
+				report.check("Deflect ordinary fallback keeps total damage unavailable "+font,null,plan.expectedDamage);
+				report.check("Deflect supported first special remains inspectable "+font,true,plan.hits.get(0).damage!=null);
+				report.check("Deflect fallback adds exactly one damage gap "+font,1,plan.gaps.size());
+				PanelPreview.click(r.panel,"Copy plan report"); impactReport[0]=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
+				try { java.nio.file.Files.writeString(output.resolve("deflect-fallback-report-"+font+".txt"),impactReport[0]); } catch(Exception ex) { throw new IllegalStateException(ex); }
+			});
+			capture(r,output,"deflect-fallback-results",font,report);
 			r.fight(35,40,40,true); r.settle();
 			edt(()->{
 				report.check("New kill preserves frozen per-attack report "+font,impactReport[0],NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText());

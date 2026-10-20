@@ -1,7 +1,8 @@
 # Validation records
 
-Development build **0.26.0**, for review: [N3 decision support](nex-decision-support.md),
-[Zaros/spell follow-up](nex-zaros-spells.md) and [per-attack conditions](nex-impact-conditions.md).
+Development build **0.27.0**, for review: [N3 decision support](nex-decision-support.md),
+[Zaros/spell follow-up](nex-zaros-spells.md), [per-attack conditions](nex-impact-conditions.md)
+and [Deflect Melee attack types](nex-deflect-attack-type.md).
 Declared finite supplies, minion/Zaros windows, spell runes and scoped costs/routes extend the existing
 N3 runtime path; automatic attribution and live acceptance remain open.
 

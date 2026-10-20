@@ -60,14 +60,32 @@ public class NexImpactConditionsTest
 		assertEquals(44.5,e.plan.expectedDamage,1e-12); assertEquals(2,e.plan.hits.size());
 		assertFalse(e.conditions.steps.get(2).targetHp.known()); // tick 1 is rejected by the weapon delay.
 	}
-	@Test public void oneDeflectionOrUnconfirmedImpactWithholdsOnlyDependentDamage()
+	@Test public void oneUnknownOrUnconfirmedImpactWithholdsOnlyDependentDamage()
 	{
-		for(var z:List.of(new Zaros(NexTargetState.Overhead.DEFLECT_MELEE,250,null,true),new Zaros(NexTargetState.Overhead.NONE,250,null,false)))
+		for(var z:List.of(new Zaros(NexTargetState.Overhead.UNKNOWN,250,null,true),new Zaros(NexTargetState.Overhead.NONE,250,null,false)))
 		{
 			var e=evaluate(NexPlanComparisonTest.zarosFixture(catalog),declaration(List.of(0,4),Map.of(0,impact(500,250,NexTargetState.Overhead.SOUL_SPLIT),4,new Impact(500,99,200,true,z)))).comparison.actualToOwned.before;
 			assertNotNull(e.plan); assertNull(e.plan.expectedDamage); assertEquals(1000,e.plan.resources.spent); assertEquals(2,e.plan.hits.size());
 			assertNotNull(e.plan.hits.get(0).damage); assertNull(e.plan.hits.get(1).damage);
 		}
+	}
+	@Test public void perAttackDeflectionSupportsFundedMagicSpecialsButNotAdmittedMeleeFallbacks()
+	{
+		var source=NexPlanComparisonTest.zarosFixture(catalog);
+		var first=impact(500,250,NexTargetState.Overhead.DEFLECT_MELEE); var next=impact(10,300,NexTargetState.Overhead.DEFLECT_MELEE);
+		var r=evaluate(source,declaration(List.of(0,4),Map.of(0,first,4,next)));
+		for(var e:List.of(r.comparison.actualToOwned.before,r.comparison.actualToOwned.after,r.comparison.ownedToUpgrade.after))
+		{
+			assertEquals(44.5,e.plan.expectedDamage,1e-12); assertEquals(1000,e.plan.resources.spent); assertTrue(e.plan.gaps.isEmpty());
+			assertEquals(0,e.plan.expectedSelfDamage,0); assertNull(e.launches.get(1).chargedDamage); assertNull(e.launches.get(3).chargedDamage);
+		}
+		assertEquals(0,r.comparison.actualToOwned.expectedDamage,0); assertTrue(r.report().contains("Voidwaker's Magic-type special is supported"));
+		assertTrue(r.report().contains("nex-package-7")); assertTrue(r.report().contains("overhead=DEFLECT_MELEE"));
+		var fallback=evaluate(source,declaration(List.of(0,4,8),Map.of(0,first,4,next,8,first))).comparison.actualToOwned.before;
+		assertNull(fallback.plan.expectedDamage); assertEquals(1000,fallback.plan.resources.spent);
+		assertEquals(2,fallback.plan.resources.voidwakerSpecs); assertEquals(1,fallback.plan.resources.ordinaryAttacks);
+		assertNotNull(fallback.plan.hits.get(0).damage); assertNotNull(fallback.plan.hits.get(1).damage); assertNull(fallback.plan.hits.get(2).damage);
+		assertEquals(1,fallback.plan.gaps.size());
 	}
 	@Test public void rubyEligibilityAndPlayerHpVaryWithoutChangingSharedStock()
 	{

@@ -14,6 +14,12 @@
 
 ## Current delivery
 
+- N3 PR #50 development build **0.27.0** gates declared Zaros deflection by the
+  actual attack type. Voidwaker's Magic-type special is supported in an explicitly
+  declared Deflect Melee impact; ordinary melee, including that weapon's unfunded
+  fallback, retains its damage gap. Rejected fallback gaps never poison admitted
+  specials. Read docs/validation/nex-deflect-attack-type.md and its source review.
+  Preserve unknown overhead/stat/HP/readiness gates and independent resources.
 - N3 PR #50 build **0.26.0** adds optional independently declared per-attack HP,
   caps, ruby eligibility and Zaros impact conditions through the same package
   bridge. Read docs/validation/nex-impact-conditions.md. Missing rows/fields stay

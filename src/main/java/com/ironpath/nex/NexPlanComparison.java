@@ -12,7 +12,7 @@ import static com.ironpath.nex.SpecAttackPlan.*;
 /** Runtime N3A/B/C join. Captured packages are evaluated under a separately declared hypothetical plan. */
 public final class NexPlanComparison
 {
-	public static final String VERSION="nex-declared-plan-5";
+	public static final String VERSION="nex-declared-plan-6";
 	public static final int MAX_OPPORTUNITIES=128;
 	public enum Policy { ORDINARY, FIRST_SPECIAL, FUNDED_SPECIAL_WITH_ORDINARY_FALLBACK }
 	public enum ConditionMode { FIXED, PER_OPPORTUNITY }
@@ -162,7 +162,11 @@ public final class NexPlanComparison
 				lines.add("Declared attack tick="+tick+"; target HP="+impact.targetHp+"; player HP="+impact.playerHp+"; hard cap="+impact.hardCap+"; ruby allowed="+impact.rubyAllowed
 					+(context.phase.equals("ZAROS")?"; impact confirmed="+z.fixedWindow+"; overhead="+z.overhead+"; target Defence="+z.defenceLevel+"; target Magic="+z.magicLevel:""));
 			}
-			if(context.phase.equals("ZAROS")) { lines.add("Zaros levels/overhead at each hypothetical impact are assumptions. Soul Split healing, Turmoil transfers, reflected damage and overhead cycling are not simulated. Missing target Magic blocks only dependent Twisted bow damage."); }
+			if(context.phase.equals("ZAROS"))
+			{
+				lines.add("Zaros levels/overhead at each hypothetical impact are assumptions. Soul Split healing, Turmoil transfers, reflected damage and overhead cycling are not simulated. Missing target Magic blocks only dependent Twisted bow damage.");
+				lines.add("Deflect Melee gates attack damage type: Voidwaker's Magic-type special is supported; ordinary melee, including its unfunded fallback, retains a damage gap. Rejected attacks add no damage gap.");
+			}
 			lines.add("Per-opportunity conditions replace fixed inputs. Missing rows/fields stay unknown; no carry-forward or expected-damage HP feedback. Special and same-tick fallback share the same inputs across every package.");
 			lines.add("Declared legal opportunities / attack-ready / no initial active charge / cast-ready="+d.legalAndReady+"; policy="+d.policy);
 			lines.add("Attack offsets="+d.opportunities+"; cast offsets="+d.casts+"; distinct eligible death offsets="+d.deaths);

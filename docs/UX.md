@@ -105,6 +105,10 @@ individual row explicitly; unsaved edits cannot silently produce an older result
 New/missing rows start unknown and unconfirmed. A compact saved-row list retains
 the declared values. Clearing rows does not reinstate fixed values; changing back
 to fixed mode is explicit. No overhead cycle or healing/stat trajectory is inferred.
+Declared Deflect Melee results distinguish Voidwaker specials from ordinary melee
+fallbacks. Supported special damage may coexist with an unavailable baseline or
+delta. Keep the attack-type explanation and reflection limits in the plan report;
+no extra controls or automatically confirmed inputs are needed.
 Death Charge uses finite captured normal-rune stock, including readable contents
 of a carried pouch. Rune costs share the existing unit-cost editor.
 **Food & potions** and **Unit costs** are optional closed subsections inside the

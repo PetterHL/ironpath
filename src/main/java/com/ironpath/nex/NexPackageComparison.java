@@ -12,7 +12,7 @@ import static com.ironpath.nex.SpecAttackPlan.*;
 /** Complete-package bridge, not a capture-to-attack inference or encounter/HP simulator. */
 public final class NexPackageComparison
 {
-	public static final String VERSION="nex-package-6";
+	public static final String VERSION="nex-package-7";
 	public enum Kind { ACTUAL, OWNED, UPGRADE }
 	public enum Availability { CARRIED, BANK_PREPARATION }
 	public enum Start { ATTACK_READY_NO_CHARGE_CAST_READY, OTHER }
@@ -377,7 +377,7 @@ public final class NexPackageComparison
 		if(q==Quiver.CHARGED || q==Quiver.BLESSED) { uncharged=setup.edit("cape",Integer.toString(unchargedCape(slots.get("cape")))); }
 		return new PackageInputs(uncharged,setup,isMelee,delay,ammo,q);
 	}
-	private String contextGap(Step step,PackageInputs inputs)
+	private String contextGap(Step step,PackageInputs inputs,Action action)
 	{
 		Context c=need(step.context);
 		if(Set.of("FUMUS","UMBRA","CRUOR","GLACIES").contains(c.target))
@@ -390,8 +390,10 @@ public final class NexPackageComparison
 		{
 			if(c.window!=Window.BASE) { return "Zaros fixed overhead/stat window unconfirmed"; }
 			if(!c.overhead.known() || c.overhead.value()==NexTargetState.Overhead.UNKNOWN) { return "Zaros overhead unknown"; }
-			// A melee-derived special is not proof of a reviewed exception to Nex's deflection.
-			if(inputs.melee && c.overhead.value()==NexTargetState.Overhead.DEFLECT_MELEE) { return "Deflect Melee interaction unsupported for this melee package"; }
+			// Disrupt deals Magic damage despite deriving its max from melee stats. The same
+			// weapon's ordinary fallback still deals melee damage and retains the deflection gap.
+			if(inputs.melee && action.attack!=Attack.VOIDWAKER && c.overhead.value()==NexTargetState.Overhead.DEFLECT_MELEE)
+			{ return "Deflect Melee interaction unsupported for this melee attack"; }
 			number(c.defenceLevel,0,1000);
 			if(!inputs.melee && ranged.get(inputs.charged.slots.get("weapon")).weapon==RangedItem.Weapon.TWISTED) { number(c.magicLevel,0,1000); }
 			return null;
@@ -588,7 +590,7 @@ public final class NexPackageComparison
 				PoweredMagic.Metrics uncharged=null,charged=null; SpecAttackModel.Damage ud=null,cd=null; String gap=null;
 				try
 				{
-					gap=contextGap(step,input);
+					gap=contextGap(step,input,action);
 					if(gap==null) { for(String id:target(step).sources) { versions.put(id,catalog.sources.get(id).revision); } }
 					if(gap==null)
 					{

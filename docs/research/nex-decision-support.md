@@ -1,7 +1,7 @@
 # N3 decision support
 
-20 October 2026. Development build **0.26.0**, for review, from consolidated main
-`7f68d0e`. Runtime `nex-declared-plan-5`, package bridge `nex-package-6`, launch
+20 October 2026. Development build **0.27.0**, for review, from consolidated main
+`7f68d0e`. Runtime `nex-declared-plan-6`, package bridge `nex-package-7`, launch
 model `nex-spec-damage-3`, resources `nex-spec-resources-2`, supplies
 `nex-supplies-1`, spell stock `nex-spell-stock-1`, target readings `nex-target-state-1`,
 adapter `nex-public-5`, presentation projection `nex-plan-support-2`, knowledge
@@ -68,10 +68,10 @@ about future impacts. Known Defence recomputes whole-package rolls against the
 existing reviewed bonuses; Twisted bow additionally requires declared target
 Magic. Unused unknown Magic cannot block independent melee/crossbow arithmetic.
 No shared catalogue profile is mutated. Missing window/overhead/required levels
-blocks damage while finite resources remain independently available. Melee packages,
-including melee-derived specials, retain an explicit gap under Deflect Melee;
-no unreviewed exception or reflected-damage formula is enabled. Ranged packages
-can use a declared deflect window. Soul Split healing and Turmoil transfers are
+blocks damage while finite resources remain independently available. Ordinary
+melee attacks retain an explicit gap under Deflect Melee. Voidwaker's Magic-type
+special and ranged attacks can use a declared deflect window. No ordinary-melee
+reflected-damage formula is enabled. Soul Split healing and Turmoil transfers are
 not simulated; per-impact HP and fixed levels are independently declared.
 
 Earlier generic references to a “Zaros soft cap” did not establish an OSRS rule.
@@ -97,13 +97,40 @@ conditions and supply-adjusted levels. Rejected cooldown/energy/stock opportunit
 spend nothing and do not add damage gaps to the admitted result. An admitted
 unknown/unsupported impact withholds total dependent damage and deltas while
 retaining independent finite resources and other supported launch calculations.
-Deflect Melee remains unsupported for melee-derived packages, including specials.
+Deflect Melee remains unsupported for ordinary melee, including Voidwaker's
+ordinary fallback; its Magic-type special is handled separately below.
 
 This extends the declaration contract using existing independently authored
 arithmetic. No new game formula, external source or catalogue fact is added.
 It permits varying explicit scenarios; it does not simulate Turmoil/Soul Split,
 establish actual impact timings or close automatic evidence requirements.
 [Verification](../validation/nex-impact-conditions.md).
+
+### Deflect Melee and attack type
+
+Build 0.27.0 applies the Zaros gate to the declared attack, after checking its exact
+weapon package. Disrupt uses the existing guaranteed Magic-type distribution
+derived from that Voidwaker package's melee max. It is not an ordinary melee hit
+solely because its stats come from melee equipment. The narrow rule combines
+Jagex's released Disrupt damage type with the reviewed melee-only scope of Nex's
+curse; it is an independently derived interaction, not new measured server evidence
+or a claim that every special bypasses prayers. The pinned launch reference also
+separates Disrupt's damage type from its stat family. Source details appear below.
+
+Known explicit overhead, confirmed impact window, target Defence and required
+HP/caps remain required. Unused target Magic/player HP/ruby eligibility do not
+block independent melee-family arithmetic, as before. All complete alternatives
+retain their own max hit and the same shared impact conditions. No new input,
+automatic confirmation, target-level inference or capture attribution is added.
+
+Ordinary Fang/other melee and Voidwaker's ordinary fallback retain a named damage
+gap under Deflect Melee. A funded special rejects its same-tick fallback by cooldown,
+so the rejected fallback's gap contributes nothing. An unfunded special can admit
+that ordinary fallback: its resources remain available but total damage and any
+dependent marginal comparison remain unknown. A supported hypothetical special
+cannot make an unsupported captured/owned baseline numerical. Reflected damage,
+Soul Split healing, Turmoil and overhead timing stay outside this delivery.
+[Verification](../validation/nex-deflect-attack-type.md).
 
 ## Finite declared supplies
 
@@ -186,10 +213,11 @@ become recurring ammunition, splinter or dose costs.
 
 | Reference | Review and retrieval |
 |---|---|
+| [Jagex Wilderness Boss Rework launch](https://secure.runescape.com/m=news/wilderness-boss-rework?oldschool=1) | Released 25 January 2023, article updated 27 January; rendered article retrieved 20 October 2026. Disrupt's released guaranteed Magic damage, 50% energy and own melee max are explicit. This supersedes the earlier design proposal's 60% cost. Raw worker retrieval returned 403; no raw-document hash is claimed. No source text/assets copied. |
 | [Pinned monster facts](https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/monsters.json) | Fetched 19 October; SHA-256 `ec38284c4651cf76a568b5e95cd11cc942e2077d901d20041f770e56460dbca2`. Independently recorded four bounded profiles only. |
 | [Pinned launch reference](https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/src/lib/PlayerVsNPCCalc.ts) | Fetched; retained SHA-256 `6c0b467e61fe85ed5cd752991d4a072b695431809cf0d4616d02946e95929801`. Cross-check: flat armour applies to accurate non-Magic damage. No code copied. |
 | [Fumus](https://oldschool.runescape.wiki/w/Fumus), [Umbra](https://oldschool.runescape.wiki/w/Umbra), [indexed Fumus](https://osrsindex.com/wiki/fumus?site=osrs_wiki), [indexed Umbra](https://osrsindex.com/wiki/umbra?site=osrs_wiki) | Indexed material independently corroborates vulnerability and -2 armour. Full Wiki/mirror fetches returned 403; indexed content is not a fresh server test. |
-| [OSRS Nex strategy evidence](https://osrsindex.com/wiki/nex-strategies?site=osrs_wiki) | Indexed descriptions corroborate Soul Split, Deflect Melee, Turmoil transfers and healing. Full fetch failed; exact dynamic stats, impact-time transitions and deflection exceptions remain unknown. Fixed scenario conditions are declarations. |
+| [OSRS Nex strategy evidence](https://osrsindex.com/wiki/nex-strategies?site=osrs_wiki) | Indexed descriptions reviewed again 20 October corroborate Soul Split, melee-only deflection, Turmoil transfers and healing. Full fetch failed; exact dynamic stats, impact-time transitions and ordinary-melee reflection remain unknown. The Magic-type interaction is derived from the curse's stated scope and Jagex's released weapon type, not an independently measured bypass. Fixed/per-impact scenario conditions are declarations. |
 | [Official NPC forms](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-api/src/main/java/net/runelite/api/gameval/NpcID.java) | Fetched 19 October; SHA-256 `6afa1a51c4f03ba60159544e90ec3c8d002337165ea90a9cfcf8510798caf47a`. Public forms 11278–11282 checked; no timing/cycle inference. |
 | [Official Actor health API](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-api/src/main/java/net/runelite/api/Actor.java) | Fetched; SHA-256 `99046fb21e7fd797daaad62d162cfc64d5af6c7abb7540e2b6b5b1fc3ab722c4`. Ratio/scale and -1 unread semantics; real target health is not transmitted. |
 | [RuneLite pouch reference](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-client/src/main/java/net/runelite/client/plugins/runepouch/RunepouchOverlay.java) | Fetched; SHA-256 `a3bff77cecf6e2d9b09ddc6ee8663d25a56d0fe7f308de5a35d9dfa6ccf9476b`. Independently checked public type/quantity varbits, enum and exact carried pouch forms. No plugin integration, overlay code or images copied. |

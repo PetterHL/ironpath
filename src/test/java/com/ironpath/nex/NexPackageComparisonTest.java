@@ -252,6 +252,47 @@ public class NexPackageComparisonTest
 		runnable(independent); assertNotNull(independent.plan.expectedDamage);
 		assertEquals(259L*214,independent.launches.get(0).chargedMetrics.defenceRoll);
 	}
+	@Test public void deflectionDistinguishesVoidwakerSpecialFromItsOrdinaryAttackAndRecomputesWholePackages()
+	{
+		var base=loadout("spec",slots(27690,0,0),0);
+		var edited=new HashMap<>(base.state.value().slots); edited.put("neck",29801);
+		var owned=loadout("spec",edited,0); var pool=stock(List.of(base,owned),Map.of(),0,10);
+		var context=new Context("NEX","ZAROS",Window.BASE,f(NexTargetState.Overhead.DEFLECT_MELEE),f(250),unknown("unused target Magic"));
+		var step=Step.attack(0,f(context),f(true),f(500),unknown("unused player HP"),f(200),unknown("unused ruby eligibility"));
+		var c=conditions(1,List.of(step)); var actions=Map.of(0,action("s",Attack.VOIDWAKER));
+		var a=evaluate(c,scenario(Kind.ACTUAL,Map.of("s",base),actions,pool));
+		var o=evaluate(c,scenario(Kind.OWNED,Map.of("s",owned),actions,pool));
+		runnable(a); runnable(o);
+		// Complete max 35 -> uniform 17..52 (mean 34.5); own max 38 -> 19..57 (mean 38).
+		assertEquals(34.5,a.plan.expectedDamage,1e-12); assertEquals(38,o.plan.expectedDamage,1e-12);
+		assertEquals(3.5,bridge.compare(a,o).expectedDamage,1e-12); assertEquals(0,a.plan.expectedSelfDamage,0);
+		assertEquals(17,a.plan.hits.get(0).damage.minimum); assertEquals(52,a.plan.hits.get(0).damage.maximum);
+		assertEquals(500,a.plan.resources.spent); assertTrue(a.plan.spentAmmo.isEmpty());
+		var ordinary=zaros(base,NexTargetState.Overhead.DEFLECT_MELEE,250,null);
+		runnable(ordinary); assertNull(ordinary.plan.expectedDamage); assertTrue(ordinary.plan.gaps.toString().contains("melee attack"));
+		var capped=Step.attack(0,f(context),f(true),f(10),f(99),f(200),f(true));
+		var limited=evaluate(conditions(1,List.of(capped)),scenario(Kind.ACTUAL,Map.of("s",base),actions,pool));
+		assertEquals(10,limited.plan.expectedDamage,1e-12);
+	}
+	@Test public void deflectionGapContributesOnlyWhenAnOrdinaryFallbackIsAdmitted()
+	{
+		var l=loadout("spec",slots(27690,0,0),0); var pool=stock(List.of(l),Map.of(),0,10);
+		var ctx=new Context("NEX","ZAROS",Window.BASE,f(NexTargetState.Overhead.DEFLECT_MELEE),f(250),unknown("unused target Magic"));
+		List<Step> steps=new ArrayList<>(); Map<Integer,Action> actions=new TreeMap<>();
+		for(int tick:List.of(0,4)) for(Attack type:List.of(Attack.VOIDWAKER,Attack.ORDINARY))
+		{ actions.put(steps.size(),action("s",type)); steps.add(Step.attack(tick,f(ctx),f(true),f(500),f(99),f(200),f(true))); }
+		var c=conditions(5,steps); var scenario=scenario(Kind.ACTUAL,Map.of("s",l),actions,pool);
+		var funded=evaluate(c,scenario); runnable(funded);
+		assertEquals(69,funded.plan.expectedDamage,1e-12); assertEquals(1000,funded.plan.resources.spent);
+		assertEquals(2,funded.plan.resources.voidwakerSpecs); assertEquals(0,funded.plan.resources.ordinaryAttacks); assertTrue(funded.plan.gaps.isEmpty());
+		assertNull(funded.launches.get(1).chargedDamage); assertNull(funded.launches.get(3).chargedDamage);
+		var low=new Conditions(c.scope,c.endTick,f(500),c.firstRestoreTick,c.order,c.start,c.hardKandarin,c.steps);
+		var fallback=evaluate(low,scenario); runnable(fallback);
+		assertNull(fallback.plan.expectedDamage); assertEquals(500,fallback.plan.resources.spent);
+		assertEquals(1,fallback.plan.resources.voidwakerSpecs); assertEquals(1,fallback.plan.resources.ordinaryAttacks);
+		assertEquals(34.5,fallback.plan.hits.get(0).damage.expectedDamage,1e-12); assertNull(fallback.plan.hits.get(1).damage);
+		assertEquals(1,fallback.plan.gaps.size()); assertEquals(3,fallback.plan.hits.get(1).eventIndex);
+	}
 	@Test public void fullReportedSwitchPackagesKeepDefenderAndSharedGearWithoutRewritingHistory()
 	{
 		var melee=loadout("melee",NexOwnedFixtures.melee(),0); var ranged=loadout("ranged",NexOwnedFixtures.ranged(),21326);

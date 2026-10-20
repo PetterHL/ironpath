@@ -292,6 +292,14 @@ N1–N4 checks. DEV1 adds no real encounter recorder/export or relaxed trace pol
 
 ## N3 declared-plan review
 
+Build 0.27.0 extends the same `nex-n3-plan` scenario with explicitly declared
+Deflect Melee impacts. Inspect `deflect-funded-results-*`,
+`deflect-funded-viewport-*` and `deflect-fallback-results-*` at 12/20, plus their
+matching `deflect-*-report-*` exports. Funded Magic-type Voidwaker specials remain
+supported; an ordinary Fang baseline and an admitted unfunded Voidwaker fallback
+retain damage gaps. No controls or automatic evidence gates change.
+[Source derivation, checks and limits](validation/nex-deflect-attack-type.md).
+
 `nex-n3-plan` extends DEV1 with public-event capture, frozen N2 inputs, the native
 conditional editor and the production N3A/B/C worker. It checks separate package
 marginals, finite stock, missing HP, historical inspection and Reset while work

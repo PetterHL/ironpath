@@ -126,3 +126,10 @@ NPC health APIs explicitly transmit a ratio rather than real HP. Declared target
 stats are never inferred from that ratio or from player stat drains. The follow-up
 pins official NPC/Actor/item and pouch API references plus the limited spell-cost
 cross-check; no external implementation is copied.
+
+The 20 October [attack-type review](validation/nex-deflect-attack-type.md) derives
+a narrow declared Deflect Melee interaction from Jagex's released Magic-type
+Voidwaker special and the reviewed melee-only curse scope. It distinguishes the
+guaranteed special from its ordinary fallback; it does not establish ordinary
+reflection, overhead timing or live-server agreement. The contract records the
+official launch article, rechecked pinned reference hash and indexed-source limits.

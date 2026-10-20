@@ -134,6 +134,11 @@ and Zaros conditions through those same shared steps. A missing row remains
 unknown; fixed/previous rows cannot supply it. Reports use standalone schema 5
 to distinguish the selected mode and every declared opportunity. This is an
 input contract, not automatic attribution or a simulated HP/stat/overhead path.
+Build 0.27.0 distinguishes Magic-type Voidwaker specials from ordinary melee
+under a declared Deflect Melee impact. The same weapon's admitted ordinary fallback
+retains a damage gap; rejected fallbacks contribute none. Independent resource
+accounting survives, and an unsupported baseline still withholds pairwise damage.
+No reflected-damage amount or survival result is inferred.
 Compare complete alternative plans under the same declared conditions; do not
 add a spec's damage to every ordinary baseline attack it displaces.
 

@@ -66,13 +66,16 @@ public class NexPlanComparisonTest
 		var unknown=evaluate(source,base);
 		assertNotNull(unknown.comparison.actualToOwned.before.plan); assertNull(unknown.comparison.actualToOwned.before.plan.expectedDamage);
 		assertEquals(500,unknown.comparison.actualToOwned.before.plan.resources.spent);
-		var z=new NexPlanComparison.Zaros(NexTargetState.Overhead.SOUL_SPLIT,250,null,true);
-		var d=new NexPlanComparison.Declaration(base.endTick,base.initialEnergy,base.firstRestore,base.order,base.targetHp,base.playerHp,base.hardCap,base.kandarin,base.rubyAllowed,base.legalAndReady,
-			base.policy,base.opportunities,base.casts,base.deaths,base.upgrades,base.upgradeQuantities,List.of(),Map.of(),z);
-		var declared=evaluate(source,d); assertEquals(34.5,declared.comparison.actualToOwned.before.plan.expectedDamage,1e-12);
-		String text=declared.report(); assertTrue(text.contains("form=SOUL_SPLIT; overhead=SOUL_SPLIT; health ratio/scale=9/30"));
-		assertTrue(text.contains("Declared Zaros fixed window=true; overhead=SOUL_SPLIT; target Defence=250; target Magic=null"));
-		assertFalse(text.contains("PRIVATE_SENTINEL")); assertTrue(text.contains("exact HP and target levels unknown"));
+		for(var overhead:List.of(NexTargetState.Overhead.SOUL_SPLIT,NexTargetState.Overhead.DEFLECT_MELEE))
+		{
+			var z=new NexPlanComparison.Zaros(overhead,250,null,true);
+			var d=new NexPlanComparison.Declaration(base.endTick,base.initialEnergy,base.firstRestore,base.order,base.targetHp,base.playerHp,base.hardCap,base.kandarin,base.rubyAllowed,base.legalAndReady,
+				base.policy,base.opportunities,base.casts,base.deaths,base.upgrades,base.upgradeQuantities,List.of(),Map.of(),z);
+			var declared=evaluate(source,d); assertEquals(34.5,declared.comparison.actualToOwned.before.plan.expectedDamage,1e-12);
+			String text=declared.report(); assertTrue(text.contains("form=SOUL_SPLIT; overhead=SOUL_SPLIT; health ratio/scale=9/30"));
+			assertTrue(text.contains("Declared Zaros fixed window=true; overhead="+overhead+"; target Defence=250; target Magic=null"));
+			assertFalse(text.contains("PRIVATE_SENTINEL")); assertTrue(text.contains("exact HP and target levels unknown"));
+		}
 		assertThrows(IllegalArgumentException.class,()->new NexPlanComparison.Zaros(NexTargetState.Overhead.NONE,1001,230,true));
 	}
 	@Test public void allThreeModelsShareFrozenCompletePackagesAndKeepMarginalGainsSeparate()
