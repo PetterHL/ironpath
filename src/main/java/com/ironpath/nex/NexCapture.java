@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /** Bounded deterministic Nex evidence machine. The adapter supplies reviewed signals and spawn keys. */
 public final class NexCapture
 {
-	public static final String VERSION="nex-public-6";
+	public static final String VERSION="nex-public-7";
 	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, MAX_SIGNALS=32,
 		END_GRACE=5, END_WAIT=20;
 	private final Consumer<NexSummary> sink;
@@ -22,6 +22,7 @@ public final class NexCapture
 	private final List<NexObservations.Signal> resourceSignals=new ArrayList<>();
 	private final List<NexObservations.Flight> flights=new ArrayList<>();
 	private final List<NexObservations.Impact> impacts=new ArrayList<>();
+	private final List<NexObservations.Health> health=new ArrayList<>();
 	private boolean observationsTruncated;
 	private final Set<String> gaps=new LinkedHashSet<>(), phases=new LinkedHashSet<>(), gear=new TreeSet<>();
 	private long serial, key;
@@ -122,7 +123,7 @@ public final class NexCapture
 					+":"+new TreeMap<>(state.visibleLevels)+":"+new TreeSet<>(state.prayers));
 				NexSummary.Sample previous=timeline.isEmpty()?null:timeline.get(timeline.size()-1);
 				if (previous==null || animation>=0 || !previous.state.equals(state) || !previous.phase.equals(phase)
-					|| !previous.window.equals(window) || !Objects.equals(previous.target,target) || !previous.role.equals(role) || !previous.targetState.equals(targetState))
+					|| !previous.window.equals(window) || !Objects.equals(previous.target,target) || !previous.role.equals(role) || previous.targetState.form!=targetState.form)
 				{
 					if (timeline.size()+beforeStart.size()>=MAX_SAMPLES) { abort(tick,Outcome.CENSORED,"State buffer limit reached"); return; }
 					timeline.add(new NexSummary.Sample(tick,phase,window,target,role,animation,state,targetState));
@@ -147,10 +148,10 @@ public final class NexCapture
 	{ return observation(tick,false); }
 	private boolean observation(int tick,boolean resourceTail)
 	{
-		if(!active() || !resourceTail && death>=0 && tick>death || !event(tick)) { return false; }
-		if(launches.size()+resourceSignals.size()+flights.size()+impacts.size()>=NexObservations.MAX)
+		if(!active() || !resourceTail && death>=0 && tick>death) { return false; }
+		if(launches.size()+resourceSignals.size()+flights.size()+impacts.size()+health.size()>=NexObservations.MAX)
 		{ observationsTruncated=true; return false; }
-		return true;
+		return event(tick);
 	}
 	public void launch(int tick,int cycle,long order,int animation,CombatState state,String target,NexTargetState targetState,
 		NexObservations.Weapon weapon,NexObservations.Attack attack)
@@ -162,7 +163,14 @@ public final class NexCapture
 	public void resource(NexObservations.Signal signal) { if(observation(signal.tick,true)) { resourceSignals.add(signal); } }
 	public void flight(NexObservations.Flight flight) { if(observation(flight.tick)) { flights.add(flight); } }
 	public void impact(NexObservations.Impact impact) { if(observation(impact.tick)) { impacts.add(impact); } }
-	private void clearObservations() { launches.clear(); resourceSignals.clear(); flights.clear(); impacts.clear(); observationsTruncated=false; }
+	/** HP-only changes belong to the diagnostic bound, never the worn-state buffer. */
+	public void health(NexObservations.Health reading)
+	{
+		var previous=health.isEmpty()?null:health.get(health.size()-1);
+		if(previous!=null && Objects.equals(previous.target,reading.target) && previous.targetState.equals(reading.targetState)) { return; }
+		if(observation(reading.tick)) { health.add(reading); }
+	}
+	private void clearObservations() { launches.clear(); resourceSignals.clear(); flights.clear(); impacts.clear(); health.clear(); observationsTruncated=false; }
 	public void flush(int tick) { finishIfReady(tick,true); }
 	private void finishIfReady(int tick, boolean leaving)
 	{
@@ -198,7 +206,7 @@ public final class NexCapture
 		Set<NexComparability.Setup> setups=new HashSet<>();
 		timeline.forEach(s->setups.add(new NexComparability.Setup(s.role,s.state)));
 		NexComparability comparability=new NexComparability(VERSION,setups,roster,rosterStable);
-		NexObservations observations=new NexObservations(launches,resourceSignals,flights,impacts,observationsTruncated);
+		NexObservations observations=new NexObservations(launches,resourceSignals,flights,impacts,health,observationsTruncated);
 		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps,signals,beforeStart,context,comparability,observations));
 		clear();
 	}

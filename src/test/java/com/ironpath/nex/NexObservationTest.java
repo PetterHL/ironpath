@@ -9,6 +9,24 @@ import static org.junit.Assert.*;
 /** Arithmetic and lifecycle tests of synthetic evidence, not live RuneLite validation. */
 public class NexObservationTest
 {
+	@Test public void selectedZarosOverheadSeparatesCountsAndImportedLaunchTicksWithoutUsingHpAsAKey()
+	{
+		List<NexSummary> out=new ArrayList<>(); var c=new NexCapture(out::add); c.start(0,true,NexMethod.PILOT,"roster");
+		c.phase(0,"ZAROS","UNKNOWN"); var state=NexCaptureTest.state(26219,12954,1000,2);
+		for(int t=0;t<3;t++)
+		{
+			var form=t==1?NexTargetState.Form.DEFLECT_MELEE:NexTargetState.Form.SOUL_SPLIT;
+			var target=new NexTargetState(form,30-t,30);
+			c.sample(t,state,"NEX@spawn","melee",-1,"roster",target);
+			c.launch(t,30*t,t+1,9471,state,"NEX@spawn",target,NexObservations.Weapon.FANG,NexObservations.Attack.ORDINARY_CANDIDATE);
+		}
+		c.abort(3,Outcome.CENSORED,"test"); var summary=out.get(0);
+		assertEquals(List.of(0,2),NexObservationReview.planLaunches(summary,summary.timeline.get(0)).stream().map(l->l.sample.tick).collect(java.util.stream.Collectors.toList()));
+		assertEquals(2,NexObservationReview.launches(summary,summary.timeline.get(0)).size());
+		assertEquals(1,NexObservationReview.launches(summary,summary.timeline.get(1)).size());
+		var otherSpawn=new NexSummary.Sample(0,"ZAROS","UNKNOWN","NEX@different","melee",-1,state,summary.timeline.get(0).targetState);
+		assertTrue(NexObservationReview.launches(summary,otherSpawn).isEmpty());
+	}
 	@Test public void barIntervalsContainEveryReachableIntegerWithoutInventingExactHp()
 	{
 		for(int max:new int[]{1,10,99,500,1000,3400}) for(int scale:new int[]{1,2,30,255}) for(int hp=0;hp<=max;hp++)
@@ -28,6 +46,7 @@ public class NexObservationTest
 	{
 		List<NexSummary> out=new ArrayList<>(); var c=new NexCapture(out::add);
 		c.start(0,false,NexMethod.PILOT,"roster");
+		c.health(new NexObservations.Health(0,0,0,"NEX@old",new NexTargetState(NexTargetState.Form.NEX,30,30)));
 		c.resource(new NexObservations.Signal(NexObservations.Kind.ENERGY,0,0,1,500,500,null));
 		assertTrue(c.anchorSmoke(1,"roster"));
 		for(int i=0;i<NexObservations.MAX+10;i++)
@@ -35,6 +54,7 @@ public class NexObservationTest
 		c.abort(2,Outcome.CENSORED,"test");
 		assertEquals(NexObservations.MAX,out.get(0).observations.signals.size()); assertTrue(out.get(0).observations.truncated);
 		assertTrue(out.get(0).observations.signals.stream().allMatch(s->s.value==1000));
+		assertTrue(out.get(0).observations.health.isEmpty());
 		assertThrows(UnsupportedOperationException.class,()->out.get(0).observations.signals.clear());
 		c.start(3,true,NexMethod.PILOT,"roster"); c.abort(4,Outcome.CENSORED,"next");
 		assertTrue(out.get(1).observations.signals.isEmpty()); assertFalse(out.get(1).observations.truncated);

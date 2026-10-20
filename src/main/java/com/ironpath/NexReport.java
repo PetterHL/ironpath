@@ -19,6 +19,9 @@ final class NexReport
 	{ return snapshot(summary,result,choiceIndex,pairIndex,catalog,provenance,state,null); }
 	static NexReport snapshot(NexSummary summary,NexOwnedResult result,int choiceIndex,int pairIndex,
 		KnowledgeCatalog catalog,Provenance provenance,State state,NexRecord record)
+	{ return snapshot(summary,result,choiceIndex,pairIndex,catalog,provenance,state,record,0); }
+	static NexReport snapshot(NexSummary summary,NexOwnedResult result,int choiceIndex,int pairIndex,
+		KnowledgeCatalog catalog,Provenance provenance,State state,NexRecord record,int observationPage)
 	{
 		List<String> out=new ArrayList<>();
 		out.add("IronPath diagnostic report · schema 2");
@@ -53,7 +56,7 @@ final class NexReport
 			|| record!=null && (record.inputs==null?result.inputRevision!=0:result.inputRevision!=record.inputs.revision || !result.modelRevision.equals(record.inputs.modelRevision)))
 		{ out.add("Calculation unavailable/pending for K1. No other kill's result exported."); return new NexReport(out); }
 		out.add("Report-local calculation: C1; immutable calculation revision: "+result.revision);
-		observation(out,summary,result);
+		observation(out,summary,result,observationPage);
 		out.add("Automatic N3 recommendation gaps: "+NexPlanSupport.automaticGaps());
 		var resources=result.resources; var scenarios=resources.scenarios;
 		out.add("Resource evidence (tenths percent): first="+resources.firstEnergy+"; last="+resources.lastEnergy
@@ -141,7 +144,7 @@ final class NexReport
 		return new NexReport(out);
 	}
 	private static String offset(Integer tick,NexSummary summary) { return tick==null?"unobserved":Integer.toString(tick-summary.startTick); }
-	private static void observation(List<String> out,NexSummary summary,NexOwnedResult result)
+	private static void observation(List<String> out,NexSummary summary,NexOwnedResult result,int observationPage)
 	{
 		var o=summary.observations; var r=result.observations;
 		out.add("Automatic observation="+NexObservations.VERSION+"; launches="+o.launches.size()+"; distinct projectiles="+o.flights.size()+"; own impacts="+o.impacts.size()+"; truncated="+o.truncated);
@@ -151,27 +154,9 @@ final class NexReport
 		out.add("Resource callbacks after the measured end are diagnostic end-grace evidence only; they do not extend duration/damage. Measured end tick offset="+(summary.endTick-summary.startTick));
 		out.add("Impact correlation: one candidate="+r.matches.stream().filter(m->m.candidates.size()==1).count()+"; multiple candidates="+r.matches.stream().filter(m->m.candidates.size()>1).count()
 			+"; unmatched="+r.matches.stream().filter(m->m.candidates.isEmpty()).count()+"; zero hits="+o.impacts.stream().filter(h->h.amount==0).count()+". All candidates remain unvalidated, including singleton matches and other owned damage sources.");
-		int baseCycle=o.launches.stream().mapToInt(l->l.cycle).min().orElseGet(()->o.signals.stream().mapToInt(s->s.cycle).min().orElse(0));
-		long baseOrder=o.signals.stream().mapToLong(s->s.order).min().orElse(0);
-		for(int i=0;i<Math.min(16,o.launches.size());i++)
-		{
-			int index=o.launches.size()<=16 || i<8?i:o.launches.size()-16+i;
-			var l=o.launches.get(index);
-			out.add("Launch candidate L"+(index+1)+": tick="+(l.sample.tick-summary.startTick)+"; relative cycle="+(l.cycle-baseCycle)+"; weapon="+l.weapon+"; kind="+l.attack
-				+"; animation="+l.sample.animation+"; reconciled="+r.reconciled.get(l)+"; target="+targetClass(l.sample.target)+"; phase="+vocabulary(l.sample.phase,"SMOKE","SHADOW","BLOOD","ICE","ZAROS")+"; "+l.sample.targetState.health.reading());
-		}
-		List<NexObservations.Signal> callbacks=new ArrayList<>();
-		for(var signal:o.signals) { if(signal.kind!=NexObservations.Kind.TICK_RESOURCES) { callbacks.add(signal); } }
-		out.add("Polled energy/server reconciliation points="+o.signals.stream().filter(s->s.kind==NexObservations.Kind.TICK_RESOURCES).count()+"; client callback rows below exclude unchanged tick polls.");
-		for(int i=0;i<Math.min(16,callbacks.size());i++)
-		{
-			var s=callbacks.get(callbacks.size()<=16 || i<8?i:callbacks.size()-16+i);
-			out.add("Resource callback: tick="+(s.tick-summary.startTick)+"; relative cycle="+(s.cycle-baseCycle)+"; relative order="+(s.order-baseOrder)+"; kind="+s.kind+"; event/polled value="+s.value+"; server value="+s.serverValue+"; target="+targetClass(s.target));
-		}
-		out.add("Observation detail rows omitted="+(Math.max(0,o.launches.size()-16)+Math.max(0,callbacks.size()-16))+"; flights/impacts and polls summarized only. No source order is inferred from client callback order; DC end effects/charge loss do not distinguish proc from expiry. Full-energy regeneration remains a client test item.");
+		out.addAll(r.window.page(observationPage));
+		out.add("DC end effects/charge loss do not distinguish proc from expiry. Full-energy regeneration remains a client test item.");
 	}
-	private static String targetClass(String target)
-	{ return vocabulary(target==null?null:target.split("@",2)[0],"NEX","FUMUS","UMBRA","CRUOR","GLACIES"); }
 	private static String exclusion(NexSummary summary)
 	{
 		if(summary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE) { return "none"; }

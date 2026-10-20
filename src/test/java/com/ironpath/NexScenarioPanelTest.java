@@ -3,6 +3,7 @@ package com.ironpath;
 import com.google.gson.Gson;
 import com.ironpath.advisor.*;
 import com.ironpath.dev.PanelPreview;
+import com.ironpath.nex.*;
 import java.awt.Font;
 import java.util.*;
 import java.util.concurrent.atomic.*;
@@ -49,6 +50,40 @@ public class NexScenarioPanelTest
 			JCheckBox confirmed=named(panel,"n3-impact-confirmed",JCheckBox.class); if(!confirmed.isSelected()) { confirmed.doClick(); }
 		}
 		PanelPreview.click(panel,"Save attack conditions");
+	}
+	@Test public void importingRecordedTicksInvalidatesSavedImpactAndSupplyConfirmationsInAPopulatedPlan() throws Exception
+	{
+		var original=NexPlanComparisonTest.zarosFixture(catalog); var old=original.summary; var sample=original.choices.get(0).actual;
+		List<NexObservations.Launch> launches=new ArrayList<>();
+		for(int tick:List.of(0,5))
+		{ launches.add(new NexObservations.Launch(tick+1,tick*30,new NexSummary.Sample(tick,sample.phase,sample.window,sample.target,sample.role,11240,sample.state,sample.targetState),NexObservations.Weapon.VOIDWAKER,NexObservations.Attack.SPECIAL_CANDIDATE)); }
+		var summary=new NexSummary(old.key,old.startTick,old.endTick,old.sampledTicks,old.expectedTicks,old.unclassifiedHits,old.outcome,old.reason,old.cohort,old.method,old.timeline,old.damage,old.gaps,old.signals,old.beforeStart,old.context,old.comparability,new NexObservations(launches,List.of(),List.of(),List.of(),false));
+		var source=new NexOwnedResult(summary,original.choices,original.planning,original.scenarioUnlocks);
+		List<Runnable> tasks=new ArrayList<>(); var ref=new AtomicReference<NexScenarioPanel>();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=new NexScenarioPanel(source,0,0,catalog,text->{},"SYNTHETIC_OFFLINE",new Font("DejaVu Sans",Font.PLAIN,12)); ref.set(panel);
+			panel.attach(()->true,tasks::add); PanelPreview.click(panel,"Plan specs & gear"); fill(panel);
+			named(panel,"n3-horizon",JTextField.class).setText("11"); named(panel,"n3-opportunities",JTextField.class).setText("0,5,10");
+			named(panel,"n3-per-attack",JCheckBox.class).doClick();
+			for(int tick:List.of(0,5,10)) { saveImpact(panel,tick,500,250,"Soul Split"); }
+			named(panel,"n3-supplies-confirmed",JCheckBox.class).doClick();
+			PanelPreview.click(panel,"Compare this plan"); assertEquals(1,tasks.size());
+			PanelPreview.click(panel,"Use recorded attack ticks");
+			assertEquals("0,5",named(panel,"n3-opportunities",JTextField.class).getText());
+			assertTrue(PanelPreview.children(panel).stream().filter(c->c instanceof JCheckBox && c!=named(panel,"n3-per-attack",JCheckBox.class)).noneMatch(c->((JCheckBox)c).isSelected()));
+			for(int tick:List.of(0,5))
+			{
+				named(panel,"n3-impact-tick",JTextField.class).setText(Integer.toString(tick)); PanelPreview.click(panel,"Load attack conditions");
+				assertFalse(named(panel,"n3-impact-confirmed",JCheckBox.class).isSelected());
+				assertEquals("500",named(panel,"n3-impact-hp",JTextField.class).getText());
+			}
+		});
+		tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->assertNull(ref.get().result()));
+		SwingUtilities.invokeAndWait(()->{ confirmConditions(ref.get()); PanelPreview.click(ref.get(),"Compare this plan"); });
+		tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->{
+			assertNotNull(ref.get().result().comparison.actualToOwned.before.plan);
+			assertNull("Saved Zaros assumptions must be confirmed again",ref.get().result().comparison.actualToOwned.expectedDamage);
+		});
 	}
 	@Test public void perAttackEditorKeepsMissingRowsUnknownAndExportsOnlySavedInputs() throws Exception
 	{

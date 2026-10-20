@@ -282,6 +282,7 @@ final class NexObserver
 		var state=reader.read(); int weapon=state.slots.getOrDefault("weapon",-1);
 		String role=state.specialSelected?"spec candidate":ranged.contains(weapon)?"ranged":melee.contains(weapon)?"melee":"unclassified";
 		capture.sample(client.getTickCount(),state,target,role,animation,roster(),targetState);
+		capture.health(new NexObservations.Health(client.getTickCount(),client.getGameCycle(),++callbackOrder,target,targetState));
 		if(animation>=0)
 		{
 			NexObservations.Weapon pilot=weapon==26219 || weapon==27246?NexObservations.Weapon.FANG:weapon==20997?NexObservations.Weapon.TWISTED_BOW
@@ -345,7 +346,7 @@ final class NexObserver
 			|| hp!=client.getVarbitValue(VarbitID.HPBAR_HUD_HP) || maximum!=client.getVarbitValue(VarbitID.HPBAR_HUD_BASEHP)
 			|| targets.keySet().stream().filter(n->sameView(n) && n.getId()==definition).count()!=1) { return; }
 		hudTarget=npc; hudDefinition=definition; hudHp=hp; hudMaximum=maximum; hudTick=client.getTickCount(); hudCycle=client.getGameCycle();
-		sample(-1);
+		capture.health(new NexObservations.Health(hudTick,hudCycle,++callbackOrder,targets.get(npc),targetState(npc)));
 	}
 	private void resource(NexObservations.Kind kind,int value,int server,String target)
 	{ capture.resource(new NexObservations.Signal(kind,client.getTickCount(),client.getGameCycle(),++callbackOrder,value,server,target)); }
@@ -384,7 +385,8 @@ final class NexObserver
 		if(source!=null && source!=client.getLocalPlayer() || target!=null && identity==null) { return; }
 		if(projectiles.size()>=NexObservations.MAX) { return; }
 		projectiles.add(projectile);
-		capture.flight(new NexObservations.Flight(client.getTickCount(),client.getGameCycle(),++callbackOrder,projectile.getId(),projectile.getStartCycle(),projectile.getEndCycle(),identity,source!=null));
+		capture.flight(new NexObservations.Flight(client.getTickCount(),client.getGameCycle(),++callbackOrder,projectile.getId(),projectile.getStartCycle(),projectile.getEndCycle(),identity,source!=null,
+			identity==null?NexTargetState.UNKNOWN:targetState((NPC)target)));
 	}
 	synchronized void hit(HitsplatApplied event)
 	{

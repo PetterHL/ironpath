@@ -7,6 +7,13 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
+**20 October 2026: review corrections in development build 0.28.1.**
+HP-only diagnostics no longer fill the main state buffer. Recorded-tick imports
+clear saved impact/supply confirmations, and launch matching preserves the selected
+Zaros overhead. Diagnostics and copied reports share a selectable 12-event window
+with relative time/order, target forms and candidate links. Client acceptance
+remains open in the [validation record](docs/validation/nex-observation.md).
+
 **20 October 2026: development build 0.28.0 — bounded Nex observation for review.**
 The PR #50 follow-up records fresh boss-HUD HP candidates or bounded health-bar
 intervals, pilot attack/launch-package candidates, distinct projectiles, own zero

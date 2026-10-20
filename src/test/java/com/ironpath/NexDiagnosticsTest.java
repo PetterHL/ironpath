@@ -77,6 +77,65 @@ public class NexDiagnosticsTest
 		assertTrue(text.contains("CONDITIONAL_STATE_OFFENCE")); assertFalse(text.contains(PRIVATE)); assertFalse(text.contains("999999"));
 		assertFalse(report(summary,result,0,0,NexReport.State.PAUSED).format().contains("DC_END_EFFECT"));
 	}
+	private NexSummary windowSummary()
+	{
+		var old=summary(1,true); var sample=old.timeline.get(0);
+		var target=new NexTargetState(NexTargetState.Form.SOUL_SPLIT,15,30);
+		var launchSample=new NexSummary.Sample(10,"ZAROS","UNKNOWN",sample.target,sample.role,426,sample.state,target);
+		var launch=new NexObservations.Launch(100,300,launchSample,NexObservations.Weapon.TWISTED_BOW,NexObservations.Attack.ORDINARY_CANDIDATE);
+		List<NexObservations.Signal> signals=new ArrayList<>();
+		for(int i=0;i<40;i++) { signals.add(new NexObservations.Signal(i%2==0?NexObservations.Kind.TICK_RESOURCES:NexObservations.Kind.ENERGY,12+i,361+i,103+i,500+i,600+i,PRIVATE,sample.state)); }
+		var observations=new NexObservations(List.of(launch),signals,List.of(new NexObservations.Flight(10,301,101,1120,300,360,sample.target,true)),
+			List.of(new NexObservations.Impact(12,360,102,sample.target,0,target)),false);
+		return new NexSummary(old.key,old.startTick,old.endTick,old.sampledTicks,old.expectedTicks,old.unclassifiedHits,old.outcome,old.reason,old.cohort,old.method,old.timeline,old.damage,old.gaps,old.signals,old.beforeStart,old.context,old.comparability,observations);
+	}
+	@Test public void boundedEventWindowsExposeMiddleCallbacksLinksAndFormsWithoutPrivateIdentifiers()
+	{
+		var summary=windowSummary(); var result=evaluate(summary); var window=result.observations.window;
+		assertEquals(4,window.pages()); String first=String.join("\n",window.page(0));
+		assertTrue(first.contains("form=SOUL_SPLIT")); assertTrue(first.contains("Projectile F1")); assertTrue(first.contains("Impact I1; amount=0; launch candidates=[L1]; projectile candidates=[F1]"));
+		assertTrue(first.contains("relative cycle=60; relative order=2; target=T1/NEX"));
+		assertFalse(first.contains(PRIVATE)); assertTrue(first.contains("outside=31"));
+		String middle=NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.READY,null,1).format();
+		assertTrue(middle.contains("Observation event window 2/4")); assertTrue(middle.contains("event/polled value=509"));
+		assertFalse(middle.contains("Projectile F1")); assertFalse(middle.contains(PRIVATE)); assertTrue(middle.length()<=NexReport.MAX_CHARS);
+		assertEquals(window.page(3),window.page(Integer.MAX_VALUE));
+		assertFalse(NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.PAUSED,null,1).format().contains("event/polled value"));
+	}
+	@Test public void denseEventLinksExposeTheirOwnLimitsAndKeepTheReportBounded()
+	{
+		var old=summary(1,true); var sample=old.timeline.get(0);
+		List<NexObservations.Launch> launches=new ArrayList<>(); List<NexObservations.Flight> flights=new ArrayList<>();
+		List<NexObservations.Impact> impacts=new ArrayList<>();
+		for(int i=0;i<400;i++) { launches.add(new NexObservations.Launch(i,300,sample,NexObservations.Weapon.TWISTED_BOW,NexObservations.Attack.ORDINARY_CANDIDATE)); }
+		for(int i=0;i<400;i++) { flights.add(new NexObservations.Flight(10,301,400+i,1120,300,360,sample.target,true)); }
+		for(int i=0;i<1248;i++) { impacts.add(new NexObservations.Impact(12,360,800+i,sample.target,0,NexTargetState.UNKNOWN)); }
+		var observations=new NexObservations(launches,List.of(),flights,impacts,true);
+		var summary=new NexSummary(old.key,old.startTick,old.endTick,old.sampledTicks,old.expectedTicks,old.unclassifiedHits,old.outcome,old.reason,old.cohort,old.method,old.timeline,old.damage,old.gaps,old.signals,old.beforeStart,old.context,old.comparability,observations);
+		var result=evaluate(summary); var window=result.observations.window;
+		assertTrue(String.join("\n",window.page(33)).contains("links omitted=392"));
+		String last=String.join("\n",window.page(window.pages()-1));
+		assertTrue(last.contains("link search incomplete")); assertTrue(last.contains("truncated=true; links incomplete=true"));
+		String text=NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.READY,null,window.pages()-1).format();
+		assertTrue(text.length()<=NexReport.MAX_CHARS); assertFalse(text.contains(PRIVATE));
+	}
+	@Test public void eventSelectionAndCopiedReportStayTogetherAcrossRefreshAndHideDuringBanking() throws Exception
+	{
+		var summary=windowSummary(); var result=evaluate(summary); AtomicReference<String> copied=new AtomicReference<>();
+		SwingUtilities.invokeAndWait(()->{
+			var session=new NexSession(); session.select("test",301); session.add(summary);
+			var panel=new NexPanel(null,copied::set,NexReport.Provenance.SYNTHETIC_OFFLINE);
+			panel.render("Observed",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Calculation details");
+			PanelPreview.combo(panel,"nex-observation-page").setSelectedIndex(1);
+			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("Observation event window 2/4"));
+			panel.render("Refresh",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			assertEquals(1,PanelPreview.combo(panel,"nex-observation-page").getSelectedIndex());
+			panel.render("Nex session paused",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			assertNull(NexScenarioPanelTest.named(panel,"nex-observation-page",JComboBox.class));
+			assertFalse(PanelPreview.text(panel).contains("event/polled value=509"));
+		});
+	}
 	@Test public void compactCardsExpandWithoutDroppingAlternativesAndKeepSelectionWhenReturningFromDiagnostics() throws Exception
 	{
 		List<NexSummary.Sample> samples=new ArrayList<>();

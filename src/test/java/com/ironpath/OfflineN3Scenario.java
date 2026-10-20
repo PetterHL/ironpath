@@ -120,6 +120,16 @@ final class OfflineN3Scenario
 					report.check("Missing HP withholds damage delta "+font,null,c.ownedToUpgrade.expectedDamage);
 				});
 				capture(r,output,"unknown-hp",font,report);
+				edt(()->{
+					PanelPreview.openSection(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Calculation details");
+					var pages=PanelPreview.combo(r.panel,"nex-observation-page");
+					report.check("Observation events have selectable windows "+font,true,pages.getItemCount()>1);
+					pages.setSelectedIndex(1); PanelPreview.click(r.panel,"Copy report now");
+					report.check("Copied report uses selected event window "+font,true,NexScenarioPanelTest.named(r.panel,"nex-report-text",JTextArea.class).getText().contains("Observation event window 2/"));
+				});
+				capture(r,output,"observation-events",font,report);
+				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("observation-events-viewport-"+font+".png"),225,600,"nex-observation-page",List.of("nex-observation-page"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
+				edt(()->PanelPreview.closeSection(r.panel,"Diagnostics"));
 				var firstSource=finished[0].source;
 				r.fight(35,40,40,true); r.settle();
 				report.check("Next kill cannot mutate frozen launch evidence "+font,1,firstSource.summary.observations.launches.size());

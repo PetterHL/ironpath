@@ -39,7 +39,8 @@ final class NexPanel extends PluginPanel
 	private com.ironpath.nex.NexRecord diagnosticRecord;
 	private NexSummary contextTarget;
 	private NexContextEditor contextEditor;
-	private int diagnosticChoice, diagnosticPair;
+	private int diagnosticChoice, diagnosticPair, observationPage;
+	private NexSummary observationSummary;
 	private boolean diagnosticDefaultPending;
 	private JTextArea reportArea;
 	private JScrollPane reportScroll;
@@ -108,6 +109,7 @@ final class NexPanel extends PluginPanel
 			inspected=null; inspectedOwned=null; inspectedCalculation=null; diagnosticSummary=null; diagnosticOwned=null; diagnosticRecord=null;
 			contextTarget=null; contextEditor=null; scenarioPanel=null; ownedIndex=0; ownedPairIndex=0;
 			returnPosition=null; diagnosticDefaultPending=true; calculationDetailsSummary=null; calculationDetailsExpanded=false;
+			observationSummary=null; observationPage=0;
 			editingDefaults=false;
 			ownedRoleFilter="All roles"; ownedSupportFilter="Supported comparisons"; clearReport();
 			suspendedPosition=null; position=new java.awt.Point();
@@ -410,7 +412,8 @@ final class NexPanel extends PluginPanel
 		NexSummary summary=hidden?null:diagnosticSummary; NexOwnedResult result=hidden?null:diagnosticOwned;
 		if(summary!=null) { text("Frozen kill #"+summary.key+" · "+summary.outcome); }
 		else { text("No visible kill evidence"); }
-		String report=NexReport.snapshot(summary,result,diagnosticChoice,diagnosticPair,catalog,provenance,state,hidden?null:diagnosticRecord).format();
+		if(!hidden && summary!=observationSummary) { observationSummary=summary; observationPage=0; }
+		String report=NexReport.snapshot(summary,result,diagnosticChoice,diagnosticPair,catalog,provenance,state,hidden?null:diagnosticRecord,observationPage).format();
 		if(reportArea!=null && !report.equals(reportArea.getText())) { clearReport(); }
 		PanelWidgets.text(content,reportFeedback); final JTextArea feedback=(JTextArea)content.getComponent(content.getComponentCount()-1);
 		button(content,"Copy report now",()->{
@@ -479,6 +482,21 @@ final class NexPanel extends PluginPanel
 				PanelWidgets.text(basis,"Starting food units / potion doses: "+result.observations.startSupplies+" (null unknown). Consumption remains unconfirmed.");
 				if(result.observations.correlationLimited) { PanelWidgets.text(basis,"Correlation work limit reached; candidate matches are incomplete."); }
 				if(summary.observations.truncated) { PanelWidgets.text(basis,"Observation buffer full; later observations omitted."); }
+				PanelWidgets.label(basis,"Observation events",true,0,ColorScheme.TEXT_COLOR);
+				var window=result.observations.window;
+				JComboBox<String> eventPage=new JComboBox<>(); eventPage.setName("nex-observation-page");
+				for(int i=0;i<window.pages();i++) { eventPage.addItem("Events "+(i+1)+" / "+window.pages()); }
+				eventPage.setSelectedIndex(Math.min(observationPage,window.pages()-1));
+				eventPage.setFont(getFont()); eventPage.setAlignmentX(LEFT_ALIGNMENT); eventPage.setMaximumSize(new Dimension(PANEL_WIDTH-12,eventPage.getPreferredSize().height));
+				eventPage.getAccessibleContext().setAccessibleName("Observation event window"); basis.add(eventPage);
+				PanelWidgets.text(basis,String.join("\n\n",window.page(observationPage)));
+				JTextArea events=(JTextArea)basis.getComponent(basis.getComponentCount()-1); events.setName("nex-observation-events");
+				events.setEditable(false); events.setFocusable(true); events.getAccessibleContext().setAccessibleName("Sanitized observation events");
+				eventPage.addActionListener(e->{
+					if(!valid.getAsBoolean()) { return; }
+					observationPage=eventPage.getSelectedIndex();
+					if(updateDiagnostics!=null) { updateDiagnostics.run(); }
+				});
 				long carried=result.choices.stream().filter(c->c.supported() && !c.bankPreparation).count();
 				long bank=result.choices.stream().filter(c->c.supported() && c.bankPreparation).count();
 				PanelWidgets.text(basis,"Supported scenarios: carried "+carried+", bank preparation "+bank+". Unavailable: "+(result.choices.size()-carried-bank)+". Counts are not fight coverage.");

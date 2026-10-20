@@ -292,6 +292,11 @@ N1–N4 checks. DEV1 adds no real encounter recorder/export or relaxed trace pol
 
 ## N3 declared-plan review
 
+Build 0.28.1 additionally captures `observation-events-12.png` / `-20.png` and
+native `observation-events-viewport-*` screenfuls. Inspect the event-page selector,
+relative timings/links and matching copied report; full client acceptance remains
+separate. Long HUD traffic and populated-plan imports have regression coverage.
+
 Build 0.28.0 extends `nex-n3-plan` with a synthetic animation callback, settled
 state/start-resource assertions and an unchecked recorded-tick draft. Inspect
 `declared-inputs-12.png` / `-20.png` at the recorded-tick control and full-height

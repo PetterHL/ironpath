@@ -14,11 +14,15 @@
 
 ## Current delivery
 
-- Observation follow-up **0.28.0** is a separate dependency PR above open PR #50
+- Observation follow-up **0.28.1** is a separate dependency PR above open PR #50
   `f02028d`; main was checked at `7f68d0e`. Read docs/research/nex-observation.md
   and docs/validation/nex-observation.md. Preserve bounded immutable callback and
   settled-state evidence, HUD candidate versus bar-interval/unknown validity,
-  launch gear, misses/ambiguity and per-result support. HUD/weapon/DC mappings
+  launch gear, misses/ambiguity and per-result support. HP-only diagnostics use
+  the shared observation bound, never worn-state slots; diagnostic overflow cannot
+  censor the main capture. Preserve Zaros-overhead matching, unchecked saved
+  impact/supply confirmations on recorded-tick import, and selected event windows.
+  HUD/weapon/DC mappings
   are not live-validated. Recorded ticks seed explicit unchecked scenarios only;
   no inferred opportunities, consumption, dynamic HP or N4 result. The user
   authorized this observation instrumentation; merge/publication remain separate.

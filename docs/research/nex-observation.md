@@ -1,7 +1,7 @@
 # Nex observation slice
 
-20 October 2026. Build **0.28.0**, adapter `nex-public-6`, target readings
-`nex-target-state-2`, evidence `nex-observations-1`, knowledge `n3-observation-1`.
+20 October 2026. Build **0.28.1**, adapter `nex-public-7`, target readings
+`nex-target-state-2`, evidence `nex-observations-2`, knowledge `n3-observation-1`.
 This is a separate follow-up to open PR #50 (`f02028d`, 0.27.0). Main was checked
 at `7f68d0e`; neither branch has been merged as part of this delivery.
 
@@ -32,9 +32,11 @@ No aggregate attack-weighted damage, spec count or recommendation is manufacture
 
 The existing **Plan specs & gear** editor can copy matching, classified candidate
 ticks to an explicit conditional draft, rebased to its first callback. It requires
-the same frozen full state, target, phase and window. Duplicate ticks, over 128
-entries or truncated capture withhold this shortcut. The action clears scenario
-confirmations; HP, caps, readiness, restore phase/order, casts, deaths, stock
+the same frozen full state, target, phase, window and Zaros overhead. Duplicate
+ticks, over 128 entries or truncated capture withhold this shortcut. The action clears scenario
+confirmations, including supply effects and every saved impact confirmation.
+Removed attack rows are discarded; matching draft values remain unconfirmed.
+HP, caps, readiness, restore phase/order, casts, deaths, stock
 usability and mechanics remain explicit inputs. The normal NexPlanComparison /
 NexPackageComparison path evaluates it. These ticks do not establish missed
 opportunities or the schedule of an alternative weapon.
@@ -69,7 +71,9 @@ one bounds positive health to 1..M. Invalid readings/maxima yield UNKNOWN.
 These are bounds conditional on the reviewed maximum and bar semantics, not
 exact impact HP. No midpoint is substituted. Unchanged readings can be deduplicated;
 the retained reading keeps its original time, and every candidate launch/impact
-gets a fresh immutable reading.
+gets a fresh immutable reading. HP-only changes use the separate observation
+buffer, including source switches and loss of readability. They never consume
+worn-state slots; target/form/phase/player-state changes still do.
 
 ## Mapping and event order
 
@@ -101,19 +105,27 @@ contrast with RuneLite remains unresolved; **SpecTimeline is unchanged**.
 
 ## Bounds, privacy and lifetime
 
-At most 2048 combined launches/signals/flights/impacts are retained per attempt,
-in addition to existing capture limits. Overflow is explicit and disables the
-recorded-tick shortcut. Correlation has a 1,000,000-check work bound and marks
-incomplete matches. Smoke reanchor discards pre-smoke observation events without
+At most 2048 combined health readings/launches/signals/flights/impacts are retained
+per attempt, in addition to existing capture limits. Overflow is explicit and disables the
+recorded-tick shortcut without censoring the main capture. Rejected overflow
+diagnostics do not spend the main event budget. Correlation has a 1,000,000-check
+work bound and marks incomplete matches. Smoke reanchor discards pre-smoke observation events without
 backfilling; existing pre-smoke state history stays separate.
 
 Diagnostics consumes frozen worker results. The user-triggered schema-2 report
-adds fixed enums, counts, HP bounds, up to 16 launch rows and 16 resource callback
-rows (first/last eight when needed), relative time/order and explicit omissions.
-Tick polls/flight/impact details are summarized. It is a bounded diagnostic
-projection, not a lossless trace. No names, spawn/world identifiers, containers,
-roster keys or arbitrary event strings are exported. Existing 24,000-character,
-clipboard fallback, selected-record/revision and hidden-session guards apply.
+adds fixed enums, counts and HP bounds plus the selected 12-event window. All
+retained health, launch, projectile, own-impact and resource/poll rows are
+selectable in callback order. Each row shows relative tick/cycle/order, a local
+target reference and observed form where supplied; absent forms remain UNKNOWN.
+Launch/projectile/impact links remain candidates and use at most eight references
+per row, with explicit omitted-link counts and a shared 1,000,000-check search
+bound. Window headers identify rows outside the selection, capture truncation
+and incomplete link searches. This is a bounded diagnostic projection, not a
+lossless trace or new recorder. Event selection and copied reports share the same
+frozen kill, survive unrelated refreshes and hide during suspension. No names,
+spawn/world identifiers, containers, roster keys or arbitrary event strings are
+exported. Existing 24,000-character, clipboard fallback, selected-record/revision
+and hidden-session guards apply.
 Raw state stays in the same 50-record memory lifetime; no files, uploads or
 performance persistence are added.
 

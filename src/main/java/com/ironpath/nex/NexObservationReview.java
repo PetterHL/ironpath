@@ -21,6 +21,7 @@ public final class NexObservationReview
 	public final Map<NexSupplies.Kind,Integer> startSupplies;
 	public final boolean correlationLimited;
 	public final int hudReadings,barReadings;
+	public final NexObservationWindow window;
 	public NexObservationReview(NexSummary summary)
 	{
 		Map<NexObservations.Launch,Reconciliation> settled=new LinkedHashMap<>();
@@ -77,12 +78,14 @@ public final class NexObservationReview
 			catch(IllegalArgumentException invalid) { /* Unread/invalid quantities never become zero stock. */ }
 		}
 		startSupplies=supplies;
-		hudReadings=(int)summary.timeline.stream().filter(s->s.targetState.health.source==NexHealth.Source.BOSS_HUD).count();
-		barReadings=(int)summary.timeline.stream().filter(s->s.targetState.health.source==NexHealth.Source.ACTOR_BAR).count();
+		hudReadings=(int)summary.observations.health.stream().filter(s->s.targetState.health.source==NexHealth.Source.BOSS_HUD).count();
+		barReadings=(int)summary.observations.health.stream().filter(s->s.targetState.health.source==NexHealth.Source.ACTOR_BAR).count();
+		window=new NexObservationWindow(summary,this);
 	}
 	/** Same target/phase/package/current levels, not worn duration or impact-time equipment. */
 	public static boolean sameState(NexSummary.Sample a,NexSummary.Sample b)
-	{ return Objects.equals(a.target,b.target) && a.phase.equals(b.phase) && a.window.equals(b.window) && a.state.equals(b.state); }
+	{ return Objects.equals(a.target,b.target) && a.phase.equals(b.phase) && a.window.equals(b.window) && a.state.equals(b.state)
+		&& (!"ZAROS".equals(a.phase) || a.targetState.overhead()==b.targetState.overhead()); }
 	private static boolean sameInputs(com.ironpath.encounter.CombatState a,com.ironpath.encounter.CombatState b)
 	{ return a.slots.equals(b.slots) && a.realLevels.equals(b.realLevels) && a.visibleLevels.equals(b.visibleLevels) && a.prayers.equals(b.prayers) && Objects.equals(a.style,b.style); }
 	public static List<NexObservations.Launch> launches(NexSummary summary,NexSummary.Sample sample)

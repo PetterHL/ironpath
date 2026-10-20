@@ -1,6 +1,6 @@
 # Nex observation verification and client checks
 
-20 October 2026. Build **0.28.0** follows open PR #50 at `f02028d`; checked main
+20 October 2026. Build **0.28.1** follows open PR #50 at `f02028d`; checked main
 was `7f68d0e` (0.23.3). The focused PR targets `n3/decision-support` to keep the
 dependency separate. No merge or Plugin Hub publication is authorized here.
 [Evidence/support contract and sources](../research/nex-observation.md).
@@ -46,7 +46,7 @@ Run sequentially with JDK 11 and the prepared environment:
 ./gradlew test build --no-daemon
 ```
 
-Both commands passed sequentially on 20 October with JDK 11.0.32.1, Gradle 8.10
+Initial 0.28.0 commands passed sequentially on 20 October with JDK 11.0.32.1, Gradle 8.10
 and resolved RuneLite 1.13.2: **393 tests / 46 suites, zero failures/errors/skips;
 14 DEV1 scenarios / 1,121 checks; 240 PNGs**. All 62 exported viewports are
 225 × 600. The normal build resolved the same classpath and reused the successful
@@ -59,11 +59,40 @@ Dependency-cache misses during initial offline attempts are setup failures, not
 executed tests. Synthetic success does not validate RuneLite event mapping or
 player usefulness.
 
+## PR #51 review corrections (0.28.1)
+
+- Move HP-only changes into the shared 2,048-observation bound. Worn-state
+  compaction still distinguishes targets, forms, phase/window and player state.
+  Diagnostic overflow is explicit and cannot exhaust the main state/event bound.
+- Recorded-tick import clears general, fixed Zaros, supply and all saved impact
+  confirmations. Removed impact rows are dropped; remaining draft values cannot
+  restore a confirmation when loaded. Pending old results are invalidated.
+- Match launch counts/tick imports using the selected Zaros overhead, consistent
+  with existing comparison-state deduplication; HP differences do not split it.
+- Add worker-built, allowlisted 12-event pages shared by Diagnostics and Copy
+  report. Relative time/order, local target references, form and bounded candidate
+  links expose middle events, with explicit capture/window/link omissions.
+- New regressions exercise 1,200 continuous HUD ticks through diagnostic overflow,
+  import into a populated confirmed plan, Soul Split/Deflect separation, event
+  pagination/correlation/privacy and selection/report coherence during refresh/bank.
+  DEV1 captures event selection and the matching copied report at both fonts.
+
+Both required builds pass with JDK 11.0.32.1 and Gradle 8.10:
+**399 tests / 46 suites, zero failures/errors/skips; 14 DEV1 scenarios /
+1,131 checks; 244 PNGs**, including **64 native 225 × 600 viewports**. The pinned
+review uses RuneLite 1.13.2; the normal `latest.release` build resolves RuneLite
+1.13.3, verified with `dependencyInsight`. Both versions pass the full test suite. The event selector, report selection and full-height output were inspected
+at fonts 12/20; changed-document links and `git diff --check` pass. The PR records
+the exact delivered commit and its current CI/report artifact links.
+Live acceptance has not been performed in this correction round.
+
 ## Client procedure — still open
 
-Use build 0.28.0 with RuneLite 1.13.2. During a Nex capture, perform isolated
+Use build 0.28.1 with RuneLite 1.13.2. During a Nex capture, perform isolated
 actions first, then one ordinary pilot kill. After completion, open **Diagnostics
-→ Calculation details** and inspect **Resource readings and rules**; **Copy
+→ Calculation details → Observation events**. Select the window containing the
+action; the report includes that same bounded window, including health, polls,
+projectiles and own hits. Inspect **Resource readings and rules** too; **Copy
 report** exports only on request. Select **All states** in owned comparisons to
 inspect unsupported phases too. Preserve a report before Reset; no report is
 saved or uploaded automatically. Tests must be repeated for reliability.

@@ -30,6 +30,21 @@ public class NexAutomaticObservationTest
 		f.observer.hud();
 	}
 	private NexSummary finish() { f.observer.transition(); return f.session.recent().get(0); }
+	@Test public void longHudTrafficAndDiagnosticOverflowCannotCensorTheMainCapture()
+	{
+		when(f.boss.getHealthRatio()).thenReturn(15); when(f.boss.getHealthScale()).thenReturn(30);
+		for(int t=2;t<=1200;t++)
+		{
+			f.tick.set(t); f.observer.tick(); hud(NpcID.NEX,1700,3400);
+			assertTrue("HUD-enabled capture must remain active at tick "+t,f.observer.capture.active());
+		}
+		var summary=finish();
+		assertEquals("Only initial/form/player state belongs in the main buffer",1,summary.timeline.size());
+		assertTrue(summary.signals.continuous); assertEquals(1201,summary.sampledTicks);
+		assertTrue(summary.observations.truncated);
+		assertTrue(summary.observations.health.stream().anyMatch(h->h.targetState.health.source==NexHealth.Source.BOSS_HUD));
+		assertNotEquals("State buffer limit reached",summary.reason);
+	}
 	@Test public void hudExpiresOnTickTargetLossFormChangePredictionAndReload()
 	{
 		when(f.boss.getHealthRatio()).thenReturn(15); when(f.boss.getHealthScale()).thenReturn(30);
@@ -40,12 +55,12 @@ public class NexAutomaticObservationTest
 		f.tick.set(5); hud(NpcID.NEX,1500,3400); when(f.boss.getId()).thenReturn(NpcID.NEX_SOULSPLIT); f.observer.changed(f.boss); f.observer.sample(-1);
 		f.tick.set(6); hud(NpcID.NEX_SOULSPLIT,1400,3400); when(f.client.getServerVarbitValue(VarbitID.HPBAR_HUD_HP)).thenReturn(1390); f.observer.sample(-1);
 		var s=finish();
-		var first=s.timeline.stream().filter(x->x.tick==2).reduce((a,b)->b).orElseThrow().targetState.health;
+		var first=s.observations.health.stream().filter(x->x.tick==2).reduce((a,b)->b).orElseThrow().targetState.health;
 		assertEquals(NexHealth.Source.BOSS_HUD,first.source); assertEquals(Integer.valueOf(1700),first.lower);
 		assertEquals(NexHealth.Validity.AWAITING_CLIENT_VALIDATION,first.validity); assertNotNull(first.target);
-		assertTrue(s.timeline.stream().filter(x->x.tick==3).allMatch(x->x.targetState.health.source==NexHealth.Source.ACTOR_BAR));
-		assertEquals(NexHealth.Source.ACTOR_BAR,s.timeline.get(s.timeline.size()-1).targetState.health.source);
-		assertTrue(s.timeline.stream().filter(x->x.target!=null && x.target.startsWith("UMBRA")).noneMatch(x->x.targetState.health.source==NexHealth.Source.BOSS_HUD));
+		assertTrue(s.observations.health.stream().filter(x->x.tick==3).allMatch(x->x.targetState.health.source==NexHealth.Source.ACTOR_BAR));
+		assertEquals(NexHealth.Source.ACTOR_BAR,s.observations.health.get(s.observations.health.size()-1).targetState.health.source);
+		assertTrue(s.observations.health.stream().filter(x->x.target!=null && x.target.startsWith("UMBRA")).noneMatch(x->x.targetState.health.source==NexHealth.Source.BOSS_HUD));
 		f.observer.clearActive(); assertEquals(Integer.valueOf(1700),first.lower);
 	}
 	@Test public void hudRejectsDuplicateDefinitionHiddenWidgetWrongNpcAndServerDisagreement()
@@ -56,7 +71,7 @@ public class NexAutomaticObservationTest
 		Widget hidden=mock(Widget.class); when(hidden.isHidden()).thenReturn(true); when(f.client.getWidget(InterfaceID.HpbarHud.HP_BAR_TEXT)).thenReturn(hidden); f.observer.hud();
 		var duplicate=f.npc(NpcID.NEX_SHADOWMAGE,3); f.observer.spawn(duplicate); when(f.player.getInteracting()).thenReturn(f.minion);
 		hud(NpcID.NEX_SHADOWMAGE,300,500);
-		assertTrue(finish().timeline.stream().noneMatch(s->s.targetState.health.source==NexHealth.Source.BOSS_HUD));
+		assertTrue(finish().observations.health.stream().noneMatch(s->s.targetState.health.source==NexHealth.Source.BOSS_HUD));
 	}
 	@Test public void launchPackageSurvivesDelayedMissAfterSwitchAndProjectileCallbacksDeduplicate()
 	{
@@ -78,8 +93,8 @@ public class NexAutomaticObservationTest
 		f.tick.set(2); hud(NpcID.NEX,1700,3400);
 		f.observer.interactingChanged(f.player); f.observer.hud(); f.observer.sample(-1);
 		var summary=finish();
-		assertNotEquals(NexHealth.Source.BOSS_HUD,summary.timeline.get(summary.timeline.size()-1).targetState.health.source);
-		assertTrue(summary.timeline.stream().anyMatch(s->s.targetState.health.source==NexHealth.Source.BOSS_HUD));
+		assertNotEquals(NexHealth.Source.BOSS_HUD,summary.observations.health.get(summary.observations.health.size()-1).targetState.health.source);
+		assertTrue(summary.observations.health.stream().anyMatch(s->s.targetState.health.source==NexHealth.Source.BOSS_HUD));
 	}
 	@Test public void energyCallbackBeforeActorUpdateAndDcEndDoNotBecomeSpecsOrProcs()
 	{
