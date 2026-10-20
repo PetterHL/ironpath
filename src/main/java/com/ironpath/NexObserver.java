@@ -5,6 +5,8 @@ import com.ironpath.encounter.EncounterSummary.Outcome;
 import com.ironpath.nex.NexCapture;
 import com.ironpath.nex.NexSession;
 import com.ironpath.nex.NexTargetState;
+import com.ironpath.nex.NexHealth;
+import com.ironpath.nex.NexObservations;
 import com.ironpath.preferences.NexMethod;
 import java.util.*;
 import net.runelite.api.*;
@@ -19,8 +21,14 @@ final class NexObserver
 	private final Client client;
 	private final CombatStateReader reader;
 	private final Set<Integer> melee=new HashSet<>(), ranged=new HashSet<>();
+	private final Map<Integer,Integer> targetMaxima=new HashMap<>();
 	private final Map<NPC,String> targets=new IdentityHashMap<>();
 	private final Set<Hitsplat> hits=Collections.newSetFromMap(new IdentityHashMap<>());
+	private final Set<Projectile> projectiles=Collections.newSetFromMap(new IdentityHashMap<>());
+	private final Map<ActorSpotAnim,Integer> effects=new IdentityHashMap<>();
+	private long callbackOrder;
+	private NPC hudTarget;
+	private int hudTick=-1,hudCycle=-1,hudDefinition=-1,hudHp=-1,hudMaximum=-1,hudUpdateTick=-1;
 	private final List<String> signals=new ArrayList<>();
 	private NPC boss;
 	private int barrier=-1, boundary=-100, smoke=-100, bossGone=-1, bossForm=-1, view=Integer.MIN_VALUE;
@@ -35,7 +43,7 @@ final class NexObserver
 	static
 	{
 		for(Prayer prayer:Prayer.values()) { RESOURCE_VARBITS.add(prayer.getVarbit()); }
-		RESOURCE_VARBITS.addAll(Set.of(VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE,VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN,
+		RESOURCE_VARBITS.addAll(Set.of(VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE,VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN,VarbitID.DEATH_CHARGE_SCROLL_USED,
 			VarbitID.WORN_ITEMS_DIZANAS_QUIVER_CHARGED,VarbitID.CHARGES_DIZANAS_QUIVER_QUANTITY,
 			VarbitID.RUNE_POUCH_TYPE_1,VarbitID.RUNE_POUCH_TYPE_2,VarbitID.RUNE_POUCH_TYPE_3,VarbitID.RUNE_POUCH_TYPE_4,VarbitID.RUNE_POUCH_TYPE_5,VarbitID.RUNE_POUCH_TYPE_6,
 			VarbitID.RUNE_POUCH_QUANTITY_1,VarbitID.RUNE_POUCH_QUANTITY_2,VarbitID.RUNE_POUCH_QUANTITY_3,VarbitID.RUNE_POUCH_QUANTITY_4,VarbitID.RUNE_POUCH_QUANTITY_5,VarbitID.RUNE_POUCH_QUANTITY_6));
@@ -53,6 +61,8 @@ final class NexObserver
 		this.client=client; reader=new CombatStateReader(client); capture=new NexCapture(session::add);
 		catalog.melee.items.stream().filter(i->i.slot.equals("weapon")).forEach(i->melee.add(i.id));
 		catalog.ranged.items.stream().filter(i->i.slot.equals("weapon")).forEach(i->ranged.add(i.id));
+		catalog.comparison.targets.stream().filter(t->t.id.startsWith("nex-") && t.hitpoints!=null)
+			.forEach(t->targetMaxima.put(t.npcId,t.hitpoints));
 	}
 	synchronized boolean enabled() { return enabled; }
 	synchronized void enable(boolean value) { clearActive(); enabled=value; }
@@ -85,7 +95,10 @@ final class NexObserver
 	/** Same public arena evidence used to revalidate a bank return, independent of preference IO readiness. */
 	synchronized void confirmArenaSource() { arenaObserved=true; }
 	synchronized void clearActive()
-	{ capture.clear(); targets.clear(); hits.clear(); signals.clear(); boss=null; attempted=arenaObserved=false; bossGone=bossForm=-1; barrier=-1; boundary=smoke=-100; view=Integer.MIN_VALUE; rosterTick=Integer.MIN_VALUE; cachedRoster=null; }
+	{ capture.clear(); targets.clear(); hits.clear(); projectiles.clear(); effects.clear(); resetHud(); signals.clear(); boss=null; attempted=arenaObserved=false; bossGone=bossForm=-1; barrier=-1; boundary=smoke=-100; view=Integer.MIN_VALUE; rosterTick=Integer.MIN_VALUE; cachedRoster=null; }
+	private void invalidateHud() { hudTarget=null; hudTick=hudCycle=hudDefinition=hudHp=hudMaximum=-1; }
+	private void resetHud() { invalidateHud(); hudUpdateTick=-1; }
+	synchronized void interactingChanged(Actor actor) { if(actor==client.getLocalPlayer()) { resetHud(); } }
 	private void signal(String value)
 	{
 		String entry="tick "+client.getTickCount()+" · "+value;
@@ -110,7 +123,7 @@ final class NexObserver
 		if (bossId(actor.getId()))
 		{
 			if (boss!=null && boss!=actor)
-			{ capture.abort(client.getTickCount(),Outcome.CENSORED,"Nex spawn identity replaced"); targets.clear(); boundary=smoke=-100; }
+			{ capture.abort(client.getTickCount(),Outcome.CENSORED,"Nex spawn identity replaced"); targets.clear(); projectiles.clear(); effects.clear(); resetHud(); boundary=smoke=-100; }
 			if(boss!=actor || bossForm!=actor.getId()) { signal("Nex form "+actor.getId()+(boss!=actor?" (new actor)":" (same actor)")); }
 			if(boss!=actor) { attempted=false; }
 			bossForm=actor.getId();
@@ -126,12 +139,14 @@ final class NexObserver
 	}
 	synchronized void changed(NPC actor)
 	{
+		if(actor==hudTarget || client.getLocalPlayer()!=null && client.getLocalPlayer().getInteracting()==actor) { resetHud(); }
 		if (actor==boss && !bossId(actor.getId()))
 		{ capture.abort(client.getTickCount(),Outcome.CENSORED,"Unreviewed Nex transformation"); clearActive(); }
 		else if (targetName(actor.getId())!=null) { spawn(actor); }
 	}
 	synchronized void despawn(NPC actor)
 	{
+		if(actor==hudTarget) { resetHud(); }
 		// Keep boss identity until the end grace window; despawn alone never completes a kill.
 		if (actor!=boss) { targets.remove(actor); } else { signal("Nex despawn"); bossGone=client.getTickCount(); }
 	}
@@ -208,8 +223,14 @@ final class NexObserver
 		if (capture.active() && (!sameView(local) || !sameView(boss)))
 		{ capture.abort(tick,Outcome.CENSORED,"World-view identity changed"); clearActive(); return; }
 		startIfReady(true);
-		sample(-1);
-		if(!capture.active()) { hits.clear(); }
+		var settled=sample(-1);
+		if(capture.active())
+		{
+			NPC target=local!=null && local.getInteracting() instanceof NPC?(NPC)local.getInteracting():null;
+			capture.resource(new NexObservations.Signal(NexObservations.Kind.TICK_RESOURCES,tick,client.getGameCycle(),++callbackOrder,
+				client.getVarpValue(net.runelite.api.gameval.VarPlayerID.SA_ENERGY),client.getServerVarpValue(net.runelite.api.gameval.VarPlayerID.SA_ENERGY),targets.get(target),settled));
+		}
+		if(!capture.active()) { hits.clear(); projectiles.clear(); effects.clear(); resetHud(); }
 	}
 	private void startIfReady(boolean allowPartial)
 	{
@@ -217,13 +238,13 @@ final class NexObserver
 		boolean smokeStart=smoke==tick;
 		if(capture.active())
 		{
-			if(smokeStart) { capture.anchorSmoke(tick,roster()); }
+			if(smokeStart && capture.anchorSmoke(tick,roster())) { projectiles.clear(); effects.clear(); resetHud(); }
 			return;
 		}
 		if(attempted || boss==null || (barrier!=3 && !(smokeStart && barrier==2))
 			|| boss.getId()==NpcID.NEX_DYING || !sameView(client.getLocalPlayer())) { return; }
 		if(!smokeStart && !allowPartial && boundary!=tick) { return; }
-		hits.clear(); attempted=true;
+		hits.clear(); projectiles.clear(); effects.clear(); resetHud(); attempted=true;
 		capture.start(tick,smokeStart,method,roster(),defaults);
 		if(boundary>=0 && boundary<=tick) { capture.barrierStart(boundary); }
 		signals.forEach(capture::signal);
@@ -250,18 +271,36 @@ final class NexObserver
 		}
 		return roster.isEmpty()?null:String.join(",",roster);
 	}
-	synchronized void sample(int animation)
+	synchronized com.ironpath.encounter.CombatState sample(int animation)
 	{
-		if (!enabled || !capture.active()) { return; }
+		if (!enabled || !capture.active()) { return null; }
 		Player local=client.getLocalPlayer();
 		NPC npc=local!=null && local.getInteracting() instanceof NPC?(NPC)local.getInteracting():null;
 		String target=npc!=null && sameView(npc)?targets.get(npc):null;
+		if(target==null) { resetHud(); }
 		NexTargetState targetState=target==null?NexTargetState.UNKNOWN:targetState(npc);
 		var state=reader.read(); int weapon=state.slots.getOrDefault("weapon",-1);
 		String role=state.specialSelected?"spec candidate":ranged.contains(weapon)?"ranged":melee.contains(weapon)?"melee":"unclassified";
 		capture.sample(client.getTickCount(),state,target,role,animation,roster(),targetState);
+		if(animation>=0)
+		{
+			NexObservations.Weapon pilot=weapon==26219 || weapon==27246?NexObservations.Weapon.FANG:weapon==20997?NexObservations.Weapon.TWISTED_BOW
+				:weapon==27690?NexObservations.Weapon.VOIDWAKER:weapon==26374?NexObservations.Weapon.ZARYTE_CROSSBOW:null;
+			if(pilot!=null)
+			{
+				// Generated animation names are mapping candidates, not live acceptance of these weapon combinations.
+				boolean ordinary=pilot==NexObservations.Weapon.FANG && animation==9471 || pilot==NexObservations.Weapon.TWISTED_BOW && animation==426
+					|| pilot==NexObservations.Weapon.VOIDWAKER && (animation==386 || animation==390);
+				boolean ambiguousCrossbow=pilot==NexObservations.Weapon.ZARYTE_CROSSBOW && (animation==7552 || animation==9168);
+				boolean special=pilot==NexObservations.Weapon.VOIDWAKER && (animation==11240 || animation==11275);
+				capture.launch(client.getTickCount(),client.getGameCycle(),++callbackOrder,animation,state,target,targetState,pilot,
+					special?NexObservations.Attack.SPECIAL_CANDIDATE:ordinary?NexObservations.Attack.ORDINARY_CANDIDATE
+						:ambiguousCrossbow?NexObservations.Attack.ORDINARY_OR_SPECIAL_CANDIDATE:NexObservations.Attack.UNCLASSIFIED);
+			}
+		}
+		return state;
 	}
-	private static NexTargetState targetState(NPC npc)
+	private NexTargetState targetState(NPC npc)
 	{
 		NexTargetState.Form form;
 		switch(npc.getId())
@@ -273,7 +312,79 @@ final class NexObserver
 			case NpcID.NEX_DYING: form=NexTargetState.Form.DYING; break;
 			default: form=NexTargetState.Form.MINION;
 		}
-		return new NexTargetState(form,npc.getHealthRatio(),npc.getHealthScale());
+		String target=targets.get(npc);
+		// Normal permanent-world maxima, independently reviewed; no party scaling or inferred maximum.
+		NexHealth hp=NexHealth.bar(npc.getHealthRatio(),npc.getHealthScale(),targetMaxima.getOrDefault(bossId(npc.getId())?NpcID.NEX:npc.getId(),0),
+			client.getTickCount(),client.getGameCycle(),target,npc.getId(),view);
+		if(hudTarget!=npc || hudDefinition!=npc.getId()) { invalidateHud(); }
+		if(hudTarget==npc && hudTick==client.getTickCount() && client.getGameCycle()>=hudCycle && hudVisible()
+			&& hudHp==client.getServerVarbitValue(VarbitID.HPBAR_HUD_HP) && hudMaximum==client.getServerVarbitValue(VarbitID.HPBAR_HUD_BASEHP)
+			&& hudDefinition==client.getServerVarpValue(net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_NPC)
+			&& hudHp==client.getVarbitValue(VarbitID.HPBAR_HUD_HP) && hudMaximum==client.getVarbitValue(VarbitID.HPBAR_HUD_BASEHP)
+			&& hudDefinition==client.getVarpValue(net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_NPC))
+		{ hp=NexHealth.hud(hudHp,hudMaximum,hudTick,hudCycle,target,hudDefinition,view); }
+		return new NexTargetState(form,npc.getHealthRatio(),npc.getHealthScale(),hp);
+	}
+	/** A definition ID never supplies a spawn identity. Bind only at the actual HUD script callback. */
+	private boolean hudVisible()
+	{
+		var widget=client.getWidget(net.runelite.api.gameval.InterfaceID.HpbarHud.HP_BAR_TEXT);
+		return client.getVarbitValue(VarbitID.HPBAR_HUD_BOSS_DISABLED)==0 && widget!=null && !widget.isHidden();
+	}
+	synchronized void hud()
+	{
+		invalidateHud();
+		if(!enabled || !capture.active() || hudUpdateTick!=client.getTickCount() || !hudVisible()) { return; }
+		Player local=client.getLocalPlayer();
+		if(local==null || !(local.getInteracting() instanceof NPC)) { return; }
+		NPC npc=(NPC)local.getInteracting();
+		int definition=client.getServerVarpValue(net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_NPC);
+		int hp=client.getServerVarbitValue(VarbitID.HPBAR_HUD_HP),maximum=client.getServerVarbitValue(VarbitID.HPBAR_HUD_BASEHP);
+		if(!sameView(npc) || !targets.containsKey(npc) || npc.getId()!=definition || hp<0 || maximum<1 || maximum>100000 || hp>maximum
+			|| definition!=client.getVarpValue(net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_NPC)
+			|| hp!=client.getVarbitValue(VarbitID.HPBAR_HUD_HP) || maximum!=client.getVarbitValue(VarbitID.HPBAR_HUD_BASEHP)
+			|| targets.keySet().stream().filter(n->sameView(n) && n.getId()==definition).count()!=1) { return; }
+		hudTarget=npc; hudDefinition=definition; hudHp=hp; hudMaximum=maximum; hudTick=client.getTickCount(); hudCycle=client.getGameCycle();
+		sample(-1);
+	}
+	private void resource(NexObservations.Kind kind,int value,int server,String target)
+	{ capture.resource(new NexObservations.Signal(kind,client.getTickCount(),client.getGameCycle(),++callbackOrder,value,server,target)); }
+	synchronized void resourceEvent(int varbit,int varp,int value)
+	{
+		if(!enabled || !capture.active()) { return; }
+		if(varbit==VarbitID.HPBAR_HUD_HP || varbit==VarbitID.HPBAR_HUD_BASEHP
+			|| varp==net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_INFO || varp==net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_NPC)
+		{ hudUpdateTick=client.getTickCount(); }
+		if(varp==net.runelite.api.gameval.VarPlayerID.SA_ENERGY)
+		{ resource(NexObservations.Kind.ENERGY,value,client.getServerVarpValue(varp),null); }
+		else if(varbit==VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE) { resource(NexObservations.Kind.DEATH_CHARGE_ACTIVE,value,client.getServerVarbitValue(varbit),null); }
+		else if(varbit==VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN) { resource(NexObservations.Kind.DEATH_CHARGE_COOLDOWN,value,client.getServerVarbitValue(varbit),null); }
+		else if(varbit==VarbitID.DEATH_CHARGE_SCROLL_USED) { resource(NexObservations.Kind.DEATH_CHARGE_UPGRADE,value,client.getServerVarbitValue(varbit),null); }
+	}
+	synchronized void spot(Actor actor)
+	{
+		if(!enabled || !capture.active() || actor!=client.getLocalPlayer()) { return; }
+		Set<ActorSpotAnim> present=Collections.newSetFromMap(new IdentityHashMap<>());
+		if(actor.getSpotAnims()!=null) for(var animation:actor.getSpotAnims())
+		{
+			if(present.size()>=32) { break; }
+			present.add(animation); int id=animation.getId();
+			if(Objects.equals(effects.put(animation,id),id)) { continue; }
+			if(id==1854 || id==3288) { resource(NexObservations.Kind.DC_CAST_EFFECT,id,-1,null); }
+			if(id==1855 || id==3289) { resource(NexObservations.Kind.DC_END_EFFECT,id,-1,null); }
+		}
+		effects.keySet().retainAll(present);
+	}
+	synchronized void projectile(Projectile projectile)
+	{
+		if(!enabled || !capture.active() || projectile==null || projectiles.contains(projectile)) { return; }
+		Actor source=projectile.getSourceActor(),target=projectile.getTargetActor();
+		String identity=target instanceof NPC && sameView(target)?targets.get(target):null;
+		// Ignore known other sources; retain nullable source/target evidence without assigning launch gear.
+		if(source!=null && source!=client.getLocalPlayer() || target!=null && identity==null) { return; }
+		if(projectiles.size()>=NexObservations.MAX) { return; }
+		projectiles.add(projectile);
+		capture.flight(new NexObservations.Flight(client.getTickCount(),client.getGameCycle(),++callbackOrder,projectile.getId(),projectile.getStartCycle(),projectile.getEndCycle(),identity,source!=null));
 	}
 	synchronized void hit(HitsplatApplied event)
 	{
@@ -281,10 +392,12 @@ final class NexObserver
 		NPC target=(NPC)event.getActor(); Hitsplat hit=event.getHitsplat();
 		if (targetName(target.getId())==null || !sameView(target) || !targets.containsKey(target) || !hits.add(hit)) { return; }
 		if (hits.size()>NexCapture.MAX_EVENTS) { capture.abort(client.getTickCount(),Outcome.CENSORED,"Hit identity limit"); hits.clear(); return; }
+		if(hit.isMine() && hit.getHitsplatType()!=HitsplatID.HEAL) { capture.impact(new NexObservations.Impact(client.getTickCount(),client.getGameCycle(),++callbackOrder,targets.get(target),hit.getAmount(),targetState(target))); }
 		capture.hit(client.getTickCount(),++hitSerial,targets.get(target),hit.getAmount(),hit.isMine(),hit.isOthers(),hit.getHitsplatType()==HitsplatID.HEAL);
 	}
 	synchronized void death(Actor actor)
 	{
+		if(actor instanceof NPC && targets.containsKey(actor)) { resource(NexObservations.Kind.TARGET_DEATH,0,-1,targets.get(actor)); }
 		if (actor==client.getLocalPlayer()) { capture.abort(client.getTickCount(),Outcome.FAILED,"Player death"); }
 		else if (actor==boss && sameView(actor)) { signal("Nex ActorDeath"); capture.death(client.getTickCount()); }
 	}

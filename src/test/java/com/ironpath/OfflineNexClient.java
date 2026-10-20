@@ -33,11 +33,13 @@ class OfflineNexClient
 		Thread clientThread = Thread.currentThread();
 		when(client.isClientThread()).thenAnswer(i -> Thread.currentThread() == clientThread);
 		when(client.getTickCount()).thenAnswer(i -> tick);
+		when(client.getGameCycle()).thenAnswer(i->tick*30);
 		when(client.getVarbitValue(anyInt())).thenAnswer(i -> {
 			int id = i.getArgument(0);
 			if (id == VarbitID.NEX_BARRIER) { return barrier; }
 			if (id == VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE) { return charge; }
 			if (id == VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN) { return cooldown; }
+			if (id == VarbitID.DEATH_CHARGE_SCROLL_USED) { return 1; }
 			if (id == VarbitID.WORN_ITEMS_DIZANAS_QUIVER_CHARGED) { return quiverCharged; }
 			if (id == VarbitID.CHARGES_DIZANAS_QUIVER_QUANTITY) { return splinters; }
 			throw new IllegalArgumentException("Unspecified synthetic varbit " + id);
@@ -51,6 +53,8 @@ class OfflineNexClient
 			if (id == VarPlayerID.DIZANAS_QUIVER_TEMP_AMMO_AMOUNT) { return ammoQuantity; }
 			throw new IllegalArgumentException("Unspecified synthetic varp " + id);
 		});
+		when(client.getServerVarpValue(anyInt())).thenAnswer(i->client.getVarpValue(i.getArgument(0)));
+		when(client.getServerVarbitValue(anyInt())).thenAnswer(i->client.getVarbitValue(i.getArgument(0)));
 		when(client.getRealSkillLevel(any(Skill.class))).thenReturn(99);
 		when(client.getBoostedSkillLevel(any(Skill.class))).thenAnswer(i -> {
 			Skill skill = i.getArgument(0);

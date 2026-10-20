@@ -82,6 +82,19 @@ final class NexScenarioPanel extends JPanel
 		}
 		field("When to spec",policy,"n3-policy");
 		field("Attack ticks",opportunities,"n3-opportunities");
+		var recorded=NexObservationReview.planLaunches(source.summary,sample);
+		if(!recorded.isEmpty())
+		{
+			PanelWidgets.button(body,"Use recorded attack ticks",()->{
+				if(!valid.getAsBoolean()) { return; }
+				int start=recorded.get(0).sample.tick;
+				opportunities.setText(recorded.stream().map(l->Integer.toString(l.sample.tick-start)).collect(java.util.stream.Collectors.joining(",")));
+				horizon.setText(Integer.toString(recorded.get(recorded.size()-1).sample.tick-start+1));
+				// This button copies a candidate schedule only. Every declaration remains unchecked.
+				conditions.values().forEach(c->c.setSelected(false)); zarosFixed.setSelected(false); impactConfirmed.setSelected(false);
+				invalidateResult();
+			});
+		}
 		perAttack.setName("n3-per-attack"); PanelWidgets.checkBox(perAttack,font); body.add(perAttack);
 		perAttack.setToolTipText("Replace fixed HP, caps, ruby eligibility and Zaros inputs with saved values for each attack tick. Missing ticks and blank fields stay unknown; fixed values are not reused.");
 		JPanel impactBody=PanelWidgets.column(body); impactBody.setVisible(false); body.add(impactBody);

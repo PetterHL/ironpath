@@ -14,6 +14,14 @@
 
 ## Current delivery
 
+- Observation follow-up **0.28.0** is a separate dependency PR above open PR #50
+  `f02028d`; main was checked at `7f68d0e`. Read docs/research/nex-observation.md
+  and docs/validation/nex-observation.md. Preserve bounded immutable callback and
+  settled-state evidence, HUD candidate versus bar-interval/unknown validity,
+  launch gear, misses/ambiguity and per-result support. HUD/weapon/DC mappings
+  are not live-validated. Recorded ticks seed explicit unchecked scenarios only;
+  no inferred opportunities, consumption, dynamic HP or N4 result. The user
+  authorized this observation instrumentation; merge/publication remain separate.
 - N3 PR #50 development build **0.27.0** gates declared Zaros deflection by the
   actual attack type. Voidwaker's Magic-type special is supported in an explicitly
   declared Deflect Melee impact; ordinary melee, including that weapon's unfunded

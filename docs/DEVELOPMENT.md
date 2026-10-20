@@ -292,6 +292,12 @@ N1–N4 checks. DEV1 adds no real encounter recorder/export or relaxed trace pol
 
 ## N3 declared-plan review
 
+Build 0.28.0 extends `nex-n3-plan` with a synthetic animation callback, settled
+state/start-resource assertions and an unchecked recorded-tick draft. Inspect
+`declared-inputs-12.png` / `-20.png` at the recorded-tick control and full-height
+Diagnostics at both fonts. All 14 scenarios and both full commands remain required.
+[Observation verification and exact pending client checks](validation/nex-observation.md).
+
 Build 0.27.0 extends the same `nex-n3-plan` scenario with explicitly declared
 Deflect Melee impacts. Inspect `deflect-funded-results-*`,
 `deflect-funded-viewport-*` and `deflect-fallback-results-*` at 12/20, plus their

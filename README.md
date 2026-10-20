@@ -7,6 +7,17 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
+**20 October 2026: development build 0.28.0 — bounded Nex observation for review.**
+The PR #50 follow-up records fresh boss-HUD HP candidates or bounded health-bar
+intervals, pilot attack/launch-package candidates, distinct projectiles, own zero
+hits, settled state and Death Charge/resource callbacks. Smoke-callback quantities
+stay separate from consumption. Diagnostics and the existing user-triggered report
+show the frozen evidence; recorded attack ticks can seed an explicit N3 draft
+without confirming its assumptions. Conditional state comparisons retain their
+independent phase/target support. HUD/weapon/DC mappings and full-energy timing
+still need [these exact client checks](docs/validation/nex-observation.md).
+[Contract, sources and remaining gates](docs/research/nex-observation.md).
+
 **20 October 2026: development build 0.27.0 — N3 decision support for review.**
 **Plan specs & gear** now supports explicit food/potion schedules with finite
 carried stock, shared attack delays and brew/restore/reboost effects. Vulnerable

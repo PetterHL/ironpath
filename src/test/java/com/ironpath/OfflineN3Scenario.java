@@ -19,7 +19,17 @@ final class OfflineN3Scenario
 			try(var r=new OfflinePluginReplay(font))
 			{
 				r.carried.put(385,1L); r.carried.put(3144,1L); r.carried.put(6685,1L); r.carried.put(3024,1L);
-				r.fight(30,20,60,true); r.settle(); if(font==12) { OfflineReview.versions(report,r.catalog); }
+				r.fight(30,20,60,true,offset->{
+					if(offset==4)
+					{
+						when(r.local.getAnimation()).thenReturn(9471);
+						var event=new net.runelite.api.events.AnimationChanged(); event.setActor(r.local); r.plugin.onAnimationChanged(event);
+					}
+				}); r.settle(); if(font==12) { OfflineReview.versions(report,r.catalog); }
+				report.check("Pilot animation callback retained "+font,1,r.plugin.ownedResult.summary.observations.launches.size());
+				report.check("Server-agreed smoke callback energy "+font,Integer.valueOf(1000),r.plugin.ownedResult.observations.startEnergy);
+				var observed=r.plugin.ownedResult.summary.observations.launches.get(0);
+				report.check("Settled callback preserves same launch inputs "+font,com.ironpath.nex.NexObservationReview.Reconciliation.SAME_INPUTS,r.plugin.ownedResult.observations.reconciled.get(observed));
 				final NexScenarioPanel[] panel={null};
 				edt(()->{
 					PanelPreview.click(r.panel,"Compare with owned gear"); PanelPreview.combo(r.panel,"nex-owned-support-filter").setSelectedItem("All states");
@@ -31,7 +41,10 @@ final class OfflineN3Scenario
 					PanelPreview.click(r.panel,"Spec energy & Death Charge");
 					PanelPreview.combo(r.panel,"nex-owned-role-filter").setSelectedItem("melee");
 					panel[0]=(NexScenarioPanel)PanelPreview.children(r.panel).stream().filter(c->c instanceof NexScenarioPanel).findFirst().orElseThrow();
-					PanelPreview.click(r.panel,"Plan specs & gear"); fill(r.panel);
+					PanelPreview.click(r.panel,"Plan specs & gear"); PanelPreview.click(r.panel,"Use recorded attack ticks");
+					report.check("Recorded offsets seed only a draft "+font,"0",NexScenarioPanelTest.named(r.panel,"n3-opportunities",JTextField.class).getText());
+					report.check("Recorded draft never confirms readiness "+font,false,NexScenarioPanelTest.named(r.panel,"n3-legal",JCheckBox.class).isSelected());
+					fill(r.panel);
 					JComboBox<?> slot=PanelPreview.combo(r.panel,"n3-upgrade-slot"); slot.setSelectedItem("weapon");
 					JComboBox<?> items=PanelPreview.combo(r.panel,"n3-upgrade-item");
 					for(int i=0;i<items.getItemCount();i++) if(items.getItemAt(i).toString().endsWith("(27690)")) { items.setSelectedIndex(i); break; }
@@ -109,6 +122,7 @@ final class OfflineN3Scenario
 				capture(r,output,"unknown-hp",font,report);
 				var firstSource=finished[0].source;
 				r.fight(35,40,40,true); r.settle();
+				report.check("Next kill cannot mutate frozen launch evidence "+font,1,firstSource.summary.observations.launches.size());
 				edt(()->{
 					var same=(NexScenarioPanel)PanelPreview.children(r.panel).stream().filter(c->c instanceof NexScenarioPanel).findFirst().orElseThrow();
 					report.check("New kill preserves original plan inputs "+font,true,same==panel[0] && same.source==firstSource);

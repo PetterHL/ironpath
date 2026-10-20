@@ -186,6 +186,21 @@ public class CatalogValidationTest
 			if(source.get("id").getAsString().equals("n2-locked-offence")) { source.addProperty("revision","0000000000000000000000000000000000000000"); } } });
 	}
 
+	@Test public void observationMaximaUseTheReviewedTargetsAndCannotBroadenTheirSource() throws Exception
+	{
+		var catalog=KnowledgeCatalog.load(new Gson());
+		for(var target:catalog.comparison.targets)
+		{
+			if(target.id.equals("nex-base")) { assertEquals(Integer.valueOf(3400),target.hitpoints); }
+			if(java.util.Set.of("nex-fumus","nex-umbra","nex-cruor","nex-glacies").contains(target.id))
+			{ assertEquals(Integer.valueOf(500),target.hitpoints); }
+		}
+		rejects(d->{ for(var entry:d.getAsJsonArray("sources")) { var source=entry.getAsJsonObject();
+			if(source.get("id").getAsString().equals("n3-observation-hp")) { source.addProperty("url","https://github.com/weirdgloop/osrs-dps-calc/blob/main/cdn/json/monsters.json"); } } });
+		rejects(d->{ for(var entry:d.getAsJsonObject("comparison").getAsJsonArray("targets")) { var target=entry.getAsJsonObject();
+			if(target.get("id").getAsString().equals("nex-base")) { target.addProperty("hitpoints",0); } } });
+	}
+
 	@Test public void minionFactsCannotAuthorizeAnotherFileOrAnUnreviewedArmourTransform()
 	{
 		for(String suffix:java.util.List.of("/blob/main/cdn/json/monsters.json","/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/equipment.json"))

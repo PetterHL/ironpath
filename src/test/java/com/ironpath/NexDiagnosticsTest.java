@@ -64,6 +64,19 @@ public class NexDiagnosticsTest
 		result.choices.get(0).comparison.target.defenceLevel=1;
 		assertEquals(text,snapshot.format());
 	}
+	@Test public void observationReportsKeepScopedEvidenceAndOmitIdentitiesContainersAndHiddenHistory()
+	{
+		var old=summary(1,true); var sample=old.timeline.get(0);
+		var launch=new NexObservations.Launch(1,300,sample,NexObservations.Weapon.TWISTED_BOW,NexObservations.Attack.ORDINARY_CANDIDATE);
+		var observations=new NexObservations(List.of(launch),List.of(new NexObservations.Signal(NexObservations.Kind.DC_END_EFFECT,11,330,2,3289,-1,PRIVATE)),
+			List.of(),List.of(new NexObservations.Impact(12,360,3,sample.target,0,NexTargetState.UNKNOWN)),false);
+		var summary=new NexSummary(old.key,old.startTick,old.endTick,old.sampledTicks,old.expectedTicks,old.unclassifiedHits,old.outcome,old.reason,
+			old.cohort,old.method,old.timeline,old.damage,old.gaps,old.signals,old.beforeStart,old.context,old.comparability,observations);
+		var result=evaluate(summary); String text=report(summary,result,0,0,NexReport.State.READY).format();
+		assertTrue(text.contains("weapon=TWISTED_BOW")); assertTrue(text.contains("kind=DC_END_EFFECT")); assertTrue(text.contains("zero hits=1"));
+		assertTrue(text.contains("CONDITIONAL_STATE_OFFENCE")); assertFalse(text.contains(PRIVATE)); assertFalse(text.contains("999999"));
+		assertFalse(report(summary,result,0,0,NexReport.State.PAUSED).format().contains("DC_END_EFFECT"));
+	}
 	@Test public void compactCardsExpandWithoutDroppingAlternativesAndKeepSelectionWhenReturningFromDiagnostics() throws Exception
 	{
 		List<NexSummary.Sample> samples=new ArrayList<>();

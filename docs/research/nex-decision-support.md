@@ -7,6 +7,10 @@ model `nex-spec-damage-3`, resources `nex-spec-resources-2`, supplies
 adapter `nex-public-5`, presentation projection `nex-plan-support-2`, knowledge
 `n3-decision-1`. Catalogue schema 14 and preference schema 4 are unchanged.
 
+The [0.28.0 observation follow-up](nex-observation.md) adds candidate HP/launch/
+resource capture and recorded-tick drafts. The 0.27.0 contract below remains the
+declared-plan baseline; candidate readings do not confirm hypothetical impacts.
+
 ## Capture-to-scenario contract
 
 This is a post-kill conditional comparison, never a reconstructed actual attack
@@ -59,8 +63,9 @@ every hypothetical impact, either fixed or independently supplied per attack.
 A captured NEX/SOUL_SPLIT/DEFLECT_MELEE form and readable
 health ratio/scale freeze with each sample; changes survive the capture buffer,
 and Zaros overhead changes survive package deduplication. Missing/invalid health
-readings remain null. No actors, real health, inferred stats or overhead cadence
-are stored. Old/manual fixtures default to an unknown target reading.
+readings remain null. This baseline stores no actors, exact HP, inferred stats or
+overhead cadence. The follow-up stores separately labelled HUD candidates and
+bar bounds; old/manual fixtures still default to unknown target readings.
 
 The editor may seed an overhead from a frozen form, but its fixed-window checkbox
 starts unchecked and target levels stay blank. Known form is not a declaration
@@ -76,9 +81,10 @@ not simulated; per-impact HP and fixed levels are independently declared.
 
 Earlier generic references to a “Zaros soft cap” did not establish an OSRS rule.
 No RS3 cap, player-drain-to-target-stat inference, overhead-cycle prediction or
-health-bar-to-exact-HP conversion is imported. Automatic dependent comparisons
-remain disabled. Official Actor API documentation explicitly says the server
-does not transmit actors' real health.
+health-bar-to-exact-HP conversion is imported. Dependent automatic comparisons
+remain gated. The generic Actor API describes quantized bars; RuneLite's separate
+boss HUD supplies integer HP. Nex-specific binding/freshness and impact timing
+remain unvalidated in the observation follow-up.
 
 ### Independent per-attack conditions
 
@@ -219,7 +225,7 @@ become recurring ammunition, splinter or dose costs.
 | [Fumus](https://oldschool.runescape.wiki/w/Fumus), [Umbra](https://oldschool.runescape.wiki/w/Umbra), [indexed Fumus](https://osrsindex.com/wiki/fumus?site=osrs_wiki), [indexed Umbra](https://osrsindex.com/wiki/umbra?site=osrs_wiki) | Indexed material independently corroborates vulnerability and -2 armour. Full Wiki/mirror fetches returned 403; indexed content is not a fresh server test. |
 | [OSRS Nex strategy evidence](https://osrsindex.com/wiki/nex-strategies?site=osrs_wiki) | Indexed descriptions reviewed again 20 October corroborate Soul Split, melee-only deflection, Turmoil transfers and healing. Full fetch failed; exact dynamic stats, impact-time transitions and ordinary-melee reflection remain unknown. The Magic-type interaction is derived from the curse's stated scope and Jagex's released weapon type, not an independently measured bypass. Fixed/per-impact scenario conditions are declarations. |
 | [Official NPC forms](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-api/src/main/java/net/runelite/api/gameval/NpcID.java) | Fetched 19 October; SHA-256 `6afa1a51c4f03ba60159544e90ec3c8d002337165ea90a9cfcf8510798caf47a`. Public forms 11278–11282 checked; no timing/cycle inference. |
-| [Official Actor health API](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-api/src/main/java/net/runelite/api/Actor.java) | Fetched; SHA-256 `99046fb21e7fd797daaad62d162cfc64d5af6c7abb7540e2b6b5b1fc3ab722c4`. Ratio/scale and -1 unread semantics; real target health is not transmitted. |
+| [Official Actor health API](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-api/src/main/java/net/runelite/api/Actor.java) | Fetched; SHA-256 `99046fb21e7fd797daaad62d162cfc64d5af6c7abb7540e2b6b5b1fc3ab722c4`. Generic ratio/scale and -1 unread semantics. This does not describe the separate boss HUD channel; see the observation follow-up. |
 | [RuneLite pouch reference](https://github.com/runelite/runelite/blob/e98399f931c60bfa8e42f924da850f508ec8e00d/runelite-client/src/main/java/net/runelite/client/plugins/runepouch/RunepouchOverlay.java) | Fetched; SHA-256 `a3bff77cecf6e2d9b09ddc6ee8663d25a56d0fe7f308de5a35d9dfa6ccf9476b`. Independently checked public type/quantity varbits, enum and exact carried pouch forms. No plugin integration, overlay code or images copied. |
 | [Official Arceuus beta spell-cost announcement](https://store.steampowered.com/news/posts/?enddate=1619605485&feed=steam_community_announcements), [current indexed Death rune table](https://osrsindex.com/wiki/death-rune?site=osrs_wiki) | Official 28 April 2021 table supplies Death Charge level 80 and one Death/Blood/Soul rune. Current indexed tables corroborate those bounded costs; full Wiki fetch remains blocked. No beta proc-eligibility or other spell rules imported. |
 | [Food/Fast foods](https://oldschool.runescape.wiki/w/Food/Fast_foods), [indexed food mechanics](https://osrsindex.com/wiki/food-fast-foods?site=osrs_wiki), [Potions](https://osrsindex.com/wiki/potions?site=osrs_wiki) | Indexed waiting-weapon, food/combo and separate three-tick drinking facts; full retrieval blocked. Existing K12 review remains historical. |

@@ -20,6 +20,7 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Complete | **CTX1 #43 / UI1 #46 / N3 #45 / PR #48** | Full ancestry retained in main; live acceptance remains open |
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
 | For review | **N3 decision support (0.27.0)** | Declared per-attack conditions, Magic-type Voidwaker under Deflect Melee, supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
+| For review, dependent on PR #50 | **Nex observation (0.28.0)** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
 | After evidence validation | **N3 automatic recommendations** | Exact launch/HP/readiness/cast/consumption evidence remains unavailable; declared scenarios cannot establish it |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
@@ -272,6 +273,34 @@ User authorization on 18 October expands N3A to the combined N3A/B/C delivery.
 - [x] Integrate the runtime-plan delivery and the complete CTX1/UI lineage into main.
 - [ ] Validate native client/player use together with the existing open live checks.
 
+## Nex observation follow-up (0.28.0)
+
+Main/PR #50 were checked on 20 October: main `7f68d0e`, PR #50 open at
+`f02028d` (0.27.0), matching the research baseline. The focused follow-up uses
+PR #50 as its unmerged dependency. [Contract and sources](docs/research/nex-observation.md)
+· [Offline evidence and exact client procedure](docs/validation/nex-observation.md).
+
+- [x] Implement timed/spawn-scoped fresh HUD candidates, conditional actor-bar
+  HP bounds from the existing catalogue and unknowns; reject stale target/form/
+  scene values. Do not call the Nex HUD channel live-validated or pre-impact HP.
+- [x] Freeze pilot animation equipment/levels/target, distinct projectile evidence,
+  own misses and ambiguous hits; reconcile later state without changing callbacks.
+- [x] Freeze smoke-callback stock/food units/potion doses, client/server resources,
+  raw Death Charge upgrade/active/cooldown/effects and tracked deaths. Do not infer
+  consumption, casts/procs, resource cause or readiness from these signals.
+- [x] Join matching launch-state candidates to independently supported post-kill
+  comparisons; copy classified recorded ticks into the existing explicit N3 draft.
+  Preserve unchecked assumptions, worker/input/report guards and dynamic-mechanic gaps.
+- [x] Add focused synthetic arithmetic/order/lifecycle/privacy regressions and
+  extend the existing DEV1 production-worker/panel scenario. Offline evidence is
+  recorded separately from client acceptance in the validation record and PR.
+- [ ] Execute the ten controlled client checks in the validation record: HP
+  forms/targets/HUD visibility, ordinary/spec/missed/delayed attacks, concurrent
+  resources, DC proc versus expiry, full energy, stock/consumption and lifecycle.
+- [ ] Promote only corroborated mappings and dependent results after client
+  checks. Initial readiness, legal/missed opportunities, alternate weapon schedules,
+  confirmed supply uses, dynamic Nex stats/healing/reflection and N4 remain open.
+
 ## N3 — Decision support and remaining automatic recommendations
 
 Development build **0.27.0**, for review, starts from consolidated main `7f68d0e`.
@@ -324,7 +353,8 @@ Reuses the N3A/B/C runtime caller, package factory and catalogue; no second engi
   baseline. Rejected fallback gaps do not suppress funded supported specials.
 - [ ] Establish independently corroborated legal launches, per-launch HP, initial
   readiness, restore phase/order, spell/death events and usable stock for automatic
-  recommendations. Current capture does not supply these facts.
+  recommendations. The 0.28.0 candidate capture supplies inspection evidence,
+  not accepted mappings, legal opportunities or inferred readiness.
 - [ ] Corroborate dynamic Zaros transfers/healing, impact-time overheads, ordinary
   melee deflection/reflection and other special windows before enabling dependent automatic
   personal comparisons. Fixed declarations are not a full encounter model. No

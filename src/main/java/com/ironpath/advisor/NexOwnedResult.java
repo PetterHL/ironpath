@@ -55,6 +55,7 @@ public final class NexOwnedResult
 	public final String modelRevision;
 	public final List<Choice> choices;
 	public final com.ironpath.nex.NexResourceReview resources;
+	public final com.ironpath.nex.NexObservationReview observations;
 	public final Map<String,Integer> gaps;
 	public NexOwnedResult(NexSummary summary, List<Choice> choices)
 	{ this(summary,choices,null); }
@@ -72,6 +73,7 @@ public final class NexOwnedResult
 		this.summary=summary; this.choices=List.copyOf(choices);
 		// Constructed with the frozen post-kill result on the existing guarded worker.
 		resources=summary==null?null:com.ironpath.nex.NexResourceReview.from(summary);
+		observations=summary==null?null:new com.ironpath.nex.NexObservationReview(summary);
 		Map<String,Integer> counts=new LinkedHashMap<>();
 		for(Choice choice:choices) { if(!choice.supported()) { counts.merge(choice.gapReason(),1,Integer::sum); } }
 		gaps=Collections.unmodifiableMap(counts);

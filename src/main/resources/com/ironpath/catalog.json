@@ -1,7 +1,7 @@
 {
   "schemaVersion": 14,
-  "knowledgeVersion": "n3-decision-1",
-  "reviewed": "2026-10-19",
+  "knowledgeVersion": "n3-observation-1",
+  "reviewed": "2026-10-20",
   "sources": [
     {
       "id": "rigour",
@@ -19541,6 +19541,19 @@
       "models": [],
       "routes": [],
       "contexts": []
+    },
+    {
+      "id": "n3-observation-hp",
+      "url": "https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/monsters.json",
+      "author": "OSRS Wiki contributors; Weird Gloop development reference",
+      "type": "bounded normal-world maximum HP cross-check",
+      "revision": "89c3e25b344aea90d0189746e4b5f73dde0f0383",
+      "accessed": "2026-10-20",
+      "reviewed": "2026-10-20",
+      "reuseBasis": "Independently recorded Nex maximum 3400 and four minion maxima 500 for actor-bar bounds. No current HP, code, prose, assets or bulk dataset copied. See docs/research/nex-observation.md.",
+      "licence": "GPL development reference and Wiki-derived facts; no expressive content redistributed.",
+      "decisions": [], "items": [], "models": [], "routes": [],
+      "contexts": ["nex-base", "nex-fumus", "nex-umbra", "nex-cruor", "nex-glacies"]
     },
     {
       "id": "n3-minion-reference",
@@ -48120,6 +48133,7 @@
         "name": "Nex \u00b7 base-stat ordinary offence scenario",
         "npcId": 11278,
         "variant": "STANDARD",
+        "hitpoints": 3400,
         "scalingSupported": true,
         "magicLevel": 230,
         "magicDefence": 300,
@@ -48133,6 +48147,7 @@
         "meleeCrush": 60,
         "size": 3,
         "sources": [
+          "n3-observation-hp",
           "r2-nex",
           "r3b2-nex"
         ]
@@ -48142,6 +48157,7 @@
         "name": "Fumus · declared vulnerable base-stat window",
         "npcId": 11283,
         "variant": "STANDARD",
+        "hitpoints": 500,
         "scalingSupported": true,
         "magicLevel": 200,
         "magicDefence": 150,
@@ -48156,6 +48172,7 @@
         "size": 1,
         "flatArmour": -2,
         "sources": [
+          "n3-observation-hp",
           "n3-minion-reference"
         ]
       },
@@ -48164,6 +48181,7 @@
         "name": "Umbra · declared vulnerable base-stat window",
         "npcId": 11284,
         "variant": "STANDARD",
+        "hitpoints": 500,
         "scalingSupported": true,
         "magicLevel": 200,
         "magicDefence": 150,
@@ -48178,6 +48196,7 @@
         "size": 1,
         "flatArmour": -2,
         "sources": [
+          "n3-observation-hp",
           "n3-minion-reference"
         ]
       },
@@ -48186,6 +48205,7 @@
         "name": "Cruor · declared vulnerable base-stat window",
         "npcId": 11285,
         "variant": "STANDARD",
+        "hitpoints": 500,
         "scalingSupported": true,
         "magicLevel": 200,
         "magicDefence": 150,
@@ -48200,6 +48220,7 @@
         "size": 1,
         "flatArmour": -2,
         "sources": [
+          "n3-observation-hp",
           "n3-minion-reference"
         ]
       },
@@ -48208,6 +48229,7 @@
         "name": "Glacies · declared vulnerable base-stat window",
         "npcId": 11286,
         "variant": "STANDARD",
+        "hitpoints": 500,
         "scalingSupported": true,
         "magicLevel": 200,
         "magicDefence": 150,
@@ -48222,6 +48244,7 @@
         "size": 1,
         "flatArmour": -2,
         "sources": [
+          "n3-observation-hp",
           "n3-minion-reference"
         ]
       }

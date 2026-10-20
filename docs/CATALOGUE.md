@@ -1,7 +1,12 @@
 # Capability and evidence inventory
 
 16 October 2026. This file records support and gaps; [TASKS](../TASKS.md) owns work.
-Current knowledge is `n3-decision-1` (0.26.0 for review); catalogue schema 14 and preferences schema 4 (future context defaults plus explicit Nex method/locks; schemas 1–3 migrate without kill confirmation).
+Current knowledge is `n3-observation-1` (0.28.0 for review); catalogue schema 14 and preferences schema 4 (future context defaults plus explicit Nex method/locks; schemas 1–3 migrate without kill confirmation).
+
+The [observation follow-up](research/nex-observation.md) adds five reviewed maximum
+HP facts to the same target records (Nex 3400; named minions 500). These bound
+actor bars; current/impact HP is separate. HUD and pilot launch/resource candidates
+are implemented but not live-validated. Existing per-result mechanic gates remain.
 
 ## Reusable current coverage
 

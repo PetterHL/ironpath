@@ -6,6 +6,12 @@ retains its source work; the former optional-boss product placement is supersede
 
 ## Observation
 
+Build 0.28.0 adds [bounded candidate observation](research/nex-observation.md):
+separate HUD/bar HP sources, launch packages and tick reconciliation, distinct
+projectiles/zero hits, smoke-callback stock and raw Death Charge/server resources.
+The [client procedure](validation/nex-observation.md) remains open. Candidate
+matching never upgrades readiness, consumption or a hypothetical impact to observed.
+
 Record encounter/spawn identity, method, phase/subphase, target, completion status,
 actually worn states, current levels/prayers, relevant ammo and spec-energy changes.
 Distinguish attack launch evidence from delayed impacts. A hitsplat has no universal
