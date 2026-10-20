@@ -129,6 +129,11 @@ HP/window/package and saving/charge conditions. Never feed expected damage back
 as actual remaining HP. Ruby self-damage is conditional cost, not a survival or
 healing model. Resource branch probabilities describe specified independent
 retrieval/charge rolls only, not encounter uncertainty or upgrade confidence.
+Runtime build 0.26.0 permits independently declared per-opportunity HP/caps/ruby
+and Zaros conditions through those same shared steps. A missing row remains
+unknown; fixed/previous rows cannot supply it. Reports use standalone schema 5
+to distinguish the selected mode and every declared opportunity. This is an
+input contract, not automatic attribution or a simulated HP/stat/overhead path.
 Compare complete alternative plans under the same declared conditions; do not
 add a spec's damage to every ordinary baseline attack it displaces.
 

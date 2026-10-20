@@ -1,6 +1,6 @@
 # IronPath active work
 
-Updated **19 October 2026**. This is the **only active backlog and roadmap**.
+Updated **20 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized merging the complete 0.23.3 delivery into main and cleaning
 up covered PRs/branches on 19 October. This includes CTX1 #43, native UI1 #46,
@@ -19,7 +19,7 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Complete | **Current UI and sidebar simplification** | 0.23.3 consolidated main baseline; Gear & method / Gear & unlocks removed |
 | Complete | **CTX1 #43 / UI1 #46 / N3 #45 / PR #48** | Full ancestry retained in main; live acceptance remains open |
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
-| For review | **N3 decision support (0.25.0)** | Declared supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
+| For review | **N3 decision support (0.26.0)** | Declared per-attack conditions, supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
 | After evidence validation | **N3 automatic recommendations** | Exact launch/HP/readiness/cast/consumption evidence remains unavailable; declared scenarios cannot establish it |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
@@ -274,10 +274,11 @@ User authorization on 18 October expands N3A to the combined N3A/B/C delivery.
 
 ## N3 — Decision support and remaining automatic recommendations
 
-Development build **0.25.0**, for review, starts from consolidated main `7f68d0e`.
+Development build **0.26.0**, for review, starts from consolidated main `7f68d0e`.
 [Contract and source review](docs/research/nex-decision-support.md) ·
 [Initial verification](docs/validation/nex-decision-support.md) ·
-[Zaros/spell verification](docs/validation/nex-zaros-spells.md).
+[Zaros/spell verification](docs/validation/nex-zaros-spells.md) ·
+[Per-attack verification](docs/validation/nex-impact-conditions.md).
 Reuses the N3A/B/C runtime caller, package factory and catalogue; no second engine.
 
 - [x] Establish a bounded capture-to-scenario contract. Freeze public package,
@@ -312,6 +313,10 @@ Reuses the N3A/B/C runtime caller, package factory and catalogue; no second engi
 - [x] Check normal Death/Blood/Soul rune stock from frozen loose stacks and carried
   pouch readings; validate Magic at admitted casts after supplies and charge only
   casts accepted by the existing cooldown. Preserve independent no-cast plans.
+- [x] Allow independently declared per-attack HP/caps/ruby eligibility and Zaros
+  impact overhead/Defence/Magic. Replace fixed inputs explicitly; absent rows and
+  blank values stay unknown. Reuse the complete-package bridge and shared finite
+  resource timeline; preserve same-tick fallback, frozen reports and request guards.
 - [ ] Establish independently corroborated legal launches, per-launch HP, initial
   readiness, restore phase/order, spell/death events and usable stock for automatic
   recommendations. Current capture does not supply these facts.

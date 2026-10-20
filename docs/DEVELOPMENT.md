@@ -363,3 +363,10 @@ The corresponding editor screenshots are retired; saved-preference/precedence
 checks use the guarded backend. All 14 scenarios remain active. Main now includes
 the complete CTX1/UI1/PR #48 lineage and this simplification.
 [Scope and verification](validation/sidebar-simplification.md).
+
+Build 0.26.0 extends `nex-n3-plan` with independent per-attack HP/caps/ruby and
+Zaros conditions. Inspect `impact-inputs-*` and `impact-results-*` full-height
+PNGs, `impact-hp-viewport-*` / `impact-zaros-viewport-*` native 225 × 600 views
+and matching `impact-report-*.txt` schema-5 exports. Public-event replay includes
+missing-row unknowns, shared complete-package conditions, new-kill freezing,
+edited pending work and Reset. [Verification and open limits](validation/nex-impact-conditions.md).

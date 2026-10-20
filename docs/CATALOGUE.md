@@ -1,7 +1,7 @@
 # Capability and evidence inventory
 
 16 October 2026. This file records support and gaps; [TASKS](../TASKS.md) owns work.
-Current knowledge is `n3-decision-1` (0.24.0 for review); catalogue schema 14 and preferences schema 4 (future context defaults plus explicit Nex method/locks; schemas 1–3 migrate without kill confirmation).
+Current knowledge is `n3-decision-1` (0.26.0 for review); catalogue schema 14 and preferences schema 4 (future context defaults plus explicit Nex method/locks; schemas 1–3 migrate without kill confirmation).
 
 ## Reusable current coverage
 
@@ -35,7 +35,7 @@ the retained implementation; it does not claim Nex recommendations are ready.
 | Finite spec resources (N3a) | Frozen observed review + conditional bounded energy/delay kernel; no inferred casts/procs, spec damage or upgrade ranking | N3 in progress |
 | Charged/blessed quiver and actual ammunition | Conditional offence equivalence, exact finite ammo/splinter branches and exhaustion tested; live counters and automatic opportunity use remain open | N1–N3 |
 | Food/pots/spells | Six finite supply families plus Death Charge Magic/rune checks and scoped costs; no consumption attribution, healing/survival or rune substitution | N3 0.25.0 for review |
-| Zaros | Declared fixed overhead/Defence/Magic; frozen public forms/health ratios; unknown dynamic effects and melee deflection retain gaps | N3 0.25.0 for review |
+| Zaros | Declared fixed or per-attack overhead/Defence/Magic and independent HP/caps; frozen public forms/health ratios; unknown dynamic effects and melee deflection retain gaps | N3 0.26.0 for review |
 | Editable context | Optional typed per-kill annotations, inherited future defaults, frozen evaluation inputs and descriptive matching; no new combat mechanic | CTX1 included in main 0.23.3; live acceptance open |
 | Personal share / team seconds | No validated counterfactual | N4 |
 

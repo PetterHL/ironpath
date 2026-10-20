@@ -14,6 +14,13 @@
 
 ## Current delivery
 
+- N3 PR #50 build **0.26.0** adds optional independently declared per-attack HP,
+  caps, ruby eligibility and Zaros impact conditions through the same package
+  bridge. Read docs/validation/nex-impact-conditions.md. Missing rows/fields stay
+  unknown; never carry forward fixed/earlier inputs or feed expected damage into
+  HP. All compared packages and same-tick fallback share the same impact inputs.
+  Keep explicit unchecked confirmation, draft/publication guards and schema-5
+  bounded frozen reports. Dynamic mechanic simulation/attribution remains open.
 - N3 PR #50 development build **0.25.0** adds frozen public target forms/health
   ratios, separately declared fixed Zaros overhead/target levels, and finite normal
   Death/Blood/Soul rune stock/costs for declared Death Charge. Read
@@ -26,7 +33,7 @@
   docs/research/nex-decision-support.md and docs/validation/nex-decision-support.md.
   It adds declared finite supplies/level effects, vulnerable minion launch inputs,
   scoped manual unit costs and catalogue acquisition routes. Unknown windows stay
-  unknown. Keep automatic launch/spec/consumption attribution and Zaros
+  unknown. Keep automatic launch/spec/consumption attribution and automatic Zaros
   overhead/stat-dependent comparisons unavailable. Existing no-coaching/N4 and
   separate merge/publication authorization boundaries still apply.
 - Consolidated main baseline **0.23.3** includes the complete PR #48 **0.23.2** UI

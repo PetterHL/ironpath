@@ -1,7 +1,7 @@
 # N3 decision support
 
-19 October 2026. Development build **0.25.0**, for review, from consolidated main
-`7f68d0e`. Runtime `nex-declared-plan-4`, package bridge `nex-package-6`, launch
+20 October 2026. Development build **0.26.0**, for review, from consolidated main
+`7f68d0e`. Runtime `nex-declared-plan-5`, package bridge `nex-package-6`, launch
 model `nex-spec-damage-3`, resources `nex-spec-resources-2`, supplies
 `nex-supplies-1`, spell stock `nex-spell-stock-1`, target readings `nex-target-state-1`,
 adapter `nex-public-5`, presentation projection `nex-plan-support-2`, knowledge
@@ -54,8 +54,9 @@ zero. Voidwaker's Magic-type special bypasses that adjustment, while its ordinar
 melee attack receives it. This transform belongs to the launch distribution;
 ordinary model metrics alone do not include flat armour.
 
-Zaros supports separately declared fixed overhead/Defence/Magic conditions at
-every hypothetical impact. A captured NEX/SOUL_SPLIT/DEFLECT_MELEE form and readable
+Zaros supports separately declared overhead/Defence/Magic conditions at
+every hypothetical impact, either fixed or independently supplied per attack.
+A captured NEX/SOUL_SPLIT/DEFLECT_MELEE form and readable
 health ratio/scale freeze with each sample; changes survive the capture buffer,
 and Zaros overhead changes survive package deduplication. Missing/invalid health
 readings remain null. No actors, real health, inferred stats or overhead cadence
@@ -78,6 +79,31 @@ No RS3 cap, player-drain-to-target-stat inference, overhead-cycle prediction or
 health-bar-to-exact-HP conversion is imported. Automatic dependent comparisons
 remain disabled. Official Actor API documentation explicitly says the server
 does not transmit actors' real health.
+
+### Independent per-attack conditions
+
+Optional `PER_OPPORTUNITY` mode replaces fixed HP/caps/ruby/Zaros inputs with a
+bounded immutable map keyed by declared attack tick. Each saved row independently
+supplies target HP, player HP, hard cap, ruby eligibility and (for Zaros) overhead,
+Defence/Magic and an unchecked impact confirmation. Missing rows/fields stay
+unknown, even when fixed inputs or earlier rows are known. Removed/non-opportunity
+keys are rejected. No interpolation, carry-forward, health-bar inversion, predicted
+overhead cadence, player-drain inference or expected-damage HP feedback is used.
+
+The existing bridge already evaluates independent `Step` conditions. Runtime plans
+now pass the selected row into that bridge for every package and both special and
+same-tick ordinary fallback. Each admitted launch uses its own supplied HP/stat
+conditions and supply-adjusted levels. Rejected cooldown/energy/stock opportunities
+spend nothing and do not add damage gaps to the admitted result. An admitted
+unknown/unsupported impact withholds total dependent damage and deltas while
+retaining independent finite resources and other supported launch calculations.
+Deflect Melee remains unsupported for melee-derived packages, including specials.
+
+This extends the declaration contract using existing independently authored
+arithmetic. No new game formula, external source or catalogue fact is added.
+It permits varying explicit scenarios; it does not simulate Turmoil/Soul Split,
+establish actual impact timings or close automatic evidence requirements.
+[Verification](../validation/nex-impact-conditions.md).
 
 ## Finite declared supplies
 
@@ -188,8 +214,9 @@ later account reads cannot change an inspected plan. Existing session, visibilit
 view/request, Reset/logout/world/profile and eviction guards apply unchanged.
 No supply plan, price or performance history is persisted.
 
-Standalone plan report schema 4 projects fixed target enums/health readings,
-separately declared Zaros conditions, admitted rune units, fixed supply enums/ticks, declared unit
+Standalone plan report schema 5 projects fixed target enums/health readings,
+the selected condition mode and each declared attack's HP/cap/ruby/Zaros inputs,
+admitted rune units, fixed supply enums/ticks, declared unit
 costs, scoped counts/cost gaps, static catalogue route facts/source IDs and existing
 frozen package/calculation inputs. It remains bounded to 24,000 characters, with a
 truncation notice and selectable clipboard fallback. No raw containers, account

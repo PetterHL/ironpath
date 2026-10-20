@@ -164,6 +164,51 @@ final class OfflineN3Scenario
 				try { java.nio.file.Files.writeString(output.resolve("zaros-report-"+font+".txt"),text); } catch(Exception ex) { throw new IllegalStateException(ex); }
 			});
 			capture(r,output,"zaros-results",font,report);
+			edt(()->{
+				NexScenarioPanelTest.named(r.panel,"n3-opportunities",JTextField.class).setText("0,5");
+				report.check("Per-attack option starts unchecked "+font,false,NexScenarioPanelTest.named(r.panel,"n3-per-attack",JCheckBox.class).isSelected());
+				NexScenarioPanelTest.named(r.panel,"n3-per-attack",JCheckBox.class).doClick(); NexScenarioPanelTest.saveImpact(r.panel,0,500,250,"Soul Split");
+				PanelPreview.click(r.panel,"Compare this plan");
+			}); r.settle();
+			edt(()->{
+				var evaluation=planner[0].result().comparison.actualToOwned.before;
+				report.check("Missing impact row retains resources "+font,true,evaluation.plan!=null);
+				report.check("Missing impact row cannot borrow fixed HP or overhead "+font,null,evaluation.plan.expectedDamage);
+				NexScenarioPanelTest.saveImpact(r.panel,5,10,300,"None");
+			});
+			capture(r,output,"impact-inputs",font,report);
+			edt(()->{
+				try {
+					PanelPreview.viewport(r.panel,output.resolve("impact-hp-viewport-"+font+".png"),225,600,"n3-per-attack",List.of("n3-per-attack","n3-impact-tick","n3-impact-hp","n3-impact-player-hp","n3-impact-cap"),report);
+					PanelPreview.viewport(r.panel,output.resolve("impact-zaros-viewport-"+font+".png"),225,600,"n3-impact-overhead",List.of("n3-impact-overhead","n3-impact-defence","n3-impact-magic","n3-impact-confirmed"),report);
+				} catch(Exception ex) { throw new IllegalStateException(ex); }
+				PanelPreview.click(r.panel,"Compare this plan");
+			}); r.settle();
+			final String[] impactReport={null};
+			edt(()->{
+				var result=planner[0].result(); var evaluation=result.comparison.actualToOwned.before;
+				report.check("Per-attack stats and HP admit damage "+font,true,evaluation.plan.expectedDamage!=null);
+				report.check("Second impact keeps separately supplied HP "+font,Integer.valueOf(10),evaluation.conditions.steps.get(3).targetHp.value()); // cast at 0 precedes attack/fallback.
+				report.check("All packages share impact conditions "+font,true,evaluation.conditions==result.comparison.actualToOwned.after.conditions && evaluation.conditions==result.comparison.ownedToUpgrade.after.conditions);
+				PanelPreview.click(r.panel,"Copy plan report"); impactReport[0]=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
+				report.check("Per-attack report exports distinct declared values "+font,true,impactReport[0].contains("schema 5") && impactReport[0].contains("Declared attack tick=5; target HP=10; player HP=99; hard cap=200; ruby allowed=true; impact confirmed=true; overhead=NONE; target Defence=300; target Magic=null"));
+				try { java.nio.file.Files.writeString(output.resolve("impact-report-"+font+".txt"),impactReport[0]); } catch(Exception ex) { throw new IllegalStateException(ex); }
+			});
+			capture(r,output,"impact-results",font,report);
+			r.fight(35,40,40,true); r.settle();
+			edt(()->{
+				report.check("New kill preserves frozen per-attack report "+font,impactReport[0],NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText());
+				PanelPreview.click(r.panel,"Compare this plan");
+				NexScenarioPanelTest.named(r.panel,"n3-impact-hp",JTextField.class).setText("20");
+			}); r.settle();
+			edt(()->{
+				report.check("Draft edits reject pending per-attack publication "+font,null,planner[0].result());
+				report.check("Draft edits clear old per-attack export "+font,null,NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class));
+				PanelPreview.click(r.panel,"Load attack conditions"); PanelPreview.click(r.panel,"Compare this plan");
+			});
+			Runnable stale=r.workers.take(); edt(()->PanelPreview.click(r.panel,"Back to encounter"));
+			edt(()->PanelPreview.click(r.panel,"Clear session")); r.callbacks.drain(); OfflinePluginReplay.edt(); r.runWorker(stale); OfflinePluginReplay.edt();
+			edt(()->report.check("Reset rejects pending per-attack publication "+font,false,PanelPreview.text(r.panel).contains("Conditional plan results")));
 		}
 	}
 	private static void fill(JPanel panel)
