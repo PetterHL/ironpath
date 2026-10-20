@@ -7,6 +7,13 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
+**20 October 2026: client-test follow-up in development build 0.28.2.**
+Copy report now includes all retained target/HP-source summaries, candidate
+animation groups, the running RuneLite version and fixed HUD callback/rejection
+counts. One copy supplies the test overview; selecting event windows is optional.
+Nex-specific integer HUD availability remains unconfirmed. Ordinary overhead
+health bars remain bounded actor-bar readings.
+
 **20 October 2026: review corrections in development build 0.28.1.**
 HP-only diagnostics no longer fill the main state buffer. Recorded-tick imports
 clear saved impact/supply confirmations, and launch matching preserves the selected

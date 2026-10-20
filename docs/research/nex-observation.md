@@ -1,7 +1,7 @@
 # Nex observation slice
 
-20 October 2026. Build **0.28.1**, adapter `nex-public-7`, target readings
-`nex-target-state-2`, evidence `nex-observations-2`, knowledge `n3-observation-1`.
+20 October 2026. Build **0.28.2**, adapter `nex-public-8`, target readings
+`nex-target-state-2`, evidence `nex-observations-3`, knowledge `n3-observation-1`.
 This is a separate follow-up to open PR #50 (`f02028d`, 0.27.0). Main was checked
 at `7f68d0e`; neither branch has been merged as part of this delivery.
 
@@ -62,6 +62,22 @@ integer lower/upper bounds. **This build emits no validated Nex HUD HP.** The
 strict binding checks are implemented and tested synthetically; live mapping,
 freshness and within-tick impact meaning still require the client checks below.
 No candidate HUD value populates a numerical N3 impact input automatically.
+
+The generic RuneLite HUD handler does not establish that OSRS Nex supplies that
+channel. No Nex-specific source guarantee was established in the 20 October source
+recheck; RS3/private-server bars and other plugins are not evidence for it. A normal
+bar above the actor is the separate quantized Actor channel. Missing HUD candidates
+do not by themselves identify a bug or a disabled setting.
+
+Fixed HUD counters record variable updates, script callbacks, accepted bindings
+and the first failed guard (freshness, disabled/missing/hidden widget, interaction,
+tracking/definition, values, server agreement or ambiguity). Each counter saturates
+at 65,535 with an explicit at-limit flag; no actor or raw HUD payload is retained
+by these counts. They neither spend state/observation/event slots nor change the
+binding rules. They clear with observation evidence at smoke reanchor, attempt and
+existing lifecycle boundaries. An accepted callback may lack a retained HP row
+after diagnostic truncation; counts do not promote validity or prove server timing.
+
 
 Otherwise ACTOR_BAR / BOUNDED uses reviewed normal-world maxima from the existing
 catalogue: Nex 3400, each named minion 500. For scale s > 1 and positive ratio r,
@@ -126,6 +142,16 @@ frozen kill, survive unrelated refreshes and hide during suspension. No names,
 spawn/world identifiers, containers, roster keys or arbitrary event strings are
 exported. Existing 24,000-character, clipboard fallback, selected-record/revision
 and hidden-session guards apply.
+
+Every report also includes a worker-built whole-capture overview, independent of
+the selected page: all six allowlisted target classes by HP source, observed forms,
+retained-reading counts and first/last source-labelled bounds/ticks. Up to twelve
+most frequent weapon/animation/classification groups have callback counts, never
+attack/spec counts. The overview is capped at 7,000 characters with explicit omitted
+fields/groups. HUD counters and an allowlisted RuneLite version make one copied
+report sufficient for the next capture diagnosis. It remains a summary of retained
+evidence, not a complete trace, confirmed HP trajectory or mapping acceptance.
+
 Raw state stays in the same 50-record memory lifetime; no files, uploads or
 performance persistence are added.
 

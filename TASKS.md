@@ -20,7 +20,7 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Complete | **CTX1 #43 / UI1 #46 / N3 #45 / PR #48** | Full ancestry retained in main; live acceptance remains open |
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
 | For review | **N3 decision support (0.27.0)** | Declared per-attack conditions, Magic-type Voidwaker under Deflect Melee, supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
-| For review, dependent on PR #50 | **Nex observation (0.28.1)** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
+| For review, dependent on PR #50 | **Nex observation (0.28.2)** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
 | After evidence validation | **N3 automatic recommendations** | Exact launch/HP/readiness/cast/consumption evidence remains unavailable; declared scenarios cannot establish it |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
@@ -273,7 +273,7 @@ User authorization on 18 October expands N3A to the combined N3A/B/C delivery.
 - [x] Integrate the runtime-plan delivery and the complete CTX1/UI lineage into main.
 - [ ] Validate native client/player use together with the existing open live checks.
 
-## Nex observation follow-up (0.28.1)
+## Nex observation follow-up (0.28.2)
 
 Main/PR #50 were checked on 20 October: main `7f68d0e`, PR #50 open at
 `f02028d` (0.27.0), matching the research baseline. The focused follow-up uses
@@ -298,6 +298,10 @@ PR #50 as its unmerged dependency. [Contract and sources](docs/research/nex-obse
   invalidate saved impact/supply confirmations on tick import, preserve the
   selected Zaros overhead and expose bounded selectable event windows in
   Diagnostics/reports. Add long-capture, populated-plan and matching regressions.
+- [x] Make client evidence one-copy: whole-capture per-target/source HP summaries,
+  bounded animation groups, RuneLite version and fixed saturating HUD callback/
+  first-failed-guard counts. Preserve the selected event window as optional detail;
+  distinguish actor bars from unconfirmed Nex-specific HUD availability.
 - [ ] Execute the ten controlled client checks in the validation record: HP
   forms/targets/HUD visibility, ordinary/spec/missed/delayed attacks, concurrent
   resources, DC proc versus expiry, full energy, stock/consumption and lifecycle.
@@ -357,7 +361,7 @@ Reuses the N3A/B/C runtime caller, package factory and catalogue; no second engi
   baseline. Rejected fallback gaps do not suppress funded supported specials.
 - [ ] Establish independently corroborated legal launches, per-launch HP, initial
   readiness, restore phase/order, spell/death events and usable stock for automatic
-  recommendations. The 0.28.1 candidate capture supplies inspection evidence,
+  recommendations. The 0.28.2 candidate capture supplies inspection evidence,
   not accepted mappings, legal opportunities or inferred readiness.
 - [ ] Corroborate dynamic Zaros transfers/healing, impact-time overheads, ordinary
   melee deflection/reflection and other special windows before enabling dependent automatic

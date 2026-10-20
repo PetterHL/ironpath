@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /** Bounded deterministic Nex evidence machine. The adapter supplies reviewed signals and spawn keys. */
 public final class NexCapture
 {
-	public static final String VERSION="nex-public-7";
+	public static final String VERSION="nex-public-8";
 	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, MAX_SIGNALS=32,
 		END_GRACE=5, END_WAIT=20;
 	private final Consumer<NexSummary> sink;
@@ -23,6 +23,7 @@ public final class NexCapture
 	private final List<NexObservations.Flight> flights=new ArrayList<>();
 	private final List<NexObservations.Impact> impacts=new ArrayList<>();
 	private final List<NexObservations.Health> health=new ArrayList<>();
+	private final Map<NexObservations.HudCheck,Integer> hudChecks=new EnumMap<>(NexObservations.HudCheck.class);
 	private boolean observationsTruncated;
 	private final Set<String> gaps=new LinkedHashSet<>(), phases=new LinkedHashSet<>(), gear=new TreeSet<>();
 	private long serial, key;
@@ -170,7 +171,10 @@ public final class NexCapture
 		if(previous!=null && Objects.equals(previous.target,reading.target) && previous.targetState.equals(reading.targetState)) { return; }
 		if(observation(reading.tick)) { health.add(reading); }
 	}
-	private void clearObservations() { launches.clear(); resourceSignals.clear(); flights.clear(); impacts.clear(); health.clear(); observationsTruncated=false; }
+	/** Fixed counters never spend main capture events or observation rows. Saturation is explicit in reports. */
+	public void hudCheck(NexObservations.HudCheck check)
+	{ if(active()) { hudChecks.compute(check,(k,n)->n==null?1:Math.min(NexObservations.MAX_HUD_COUNT,n+1)); } }
+	private void clearObservations() { launches.clear(); resourceSignals.clear(); flights.clear(); impacts.clear(); health.clear(); hudChecks.clear(); observationsTruncated=false; }
 	public void flush(int tick) { finishIfReady(tick,true); }
 	private void finishIfReady(int tick, boolean leaving)
 	{
@@ -206,7 +210,7 @@ public final class NexCapture
 		Set<NexComparability.Setup> setups=new HashSet<>();
 		timeline.forEach(s->setups.add(new NexComparability.Setup(s.role,s.state)));
 		NexComparability comparability=new NexComparability(VERSION,setups,roster,rosterStable);
-		NexObservations observations=new NexObservations(launches,resourceSignals,flights,impacts,health,observationsTruncated);
+		NexObservations observations=new NexObservations(launches,resourceSignals,flights,impacts,health,observationsTruncated,hudChecks);
 		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps,signals,beforeStart,context,comparability,observations));
 		clear();
 	}

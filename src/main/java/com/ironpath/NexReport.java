@@ -27,6 +27,8 @@ final class NexReport
 		out.add("IronPath diagnostic report · schema 2");
 		out.add("Evidence: "+provenance+"; status: "+state);
 		out.add("Build: "+BuildInfo.VERSION+"; adapter: "+NexCapture.VERSION+"; evaluator: "+NexOwnedEvaluator.VERSION);
+		String clientVersion=net.runelite.client.RuneLiteProperties.getVersion();
+		out.add("RuneLite client version: "+(clientVersion!=null && clientVersion.matches("\\d+\\.\\d+\\.\\d+(?:-SNAPSHOT)?")?clientVersion:"UNKNOWN"));
 		out.add("Models: "+MeleeModel.VERSION+" / "+RangedModel.VERSION+"; knowledge: "+(catalog==null?"unavailable":catalog.version));
 		out.add("Pilot model/planning scope: Nex / Trio MP2 / one kill per trip; inheritance is not per-kill confirmation.");
 		out.add("No kill timestamp recorded. Tick offsets below are relative to measured start. This is a diagnostic snapshot, not a replay recording.");
@@ -56,6 +58,7 @@ final class NexReport
 			|| record!=null && (record.inputs==null?result.inputRevision!=0:result.inputRevision!=record.inputs.revision || !result.modelRevision.equals(record.inputs.modelRevision)))
 		{ out.add("Calculation unavailable/pending for K1. No other kill's result exported."); return new NexReport(out); }
 		out.add("Report-local calculation: C1; immutable calculation revision: "+result.revision);
+		out.addAll(result.observations.overview);
 		observation(out,summary,result,observationPage);
 		out.add("Automatic N3 recommendation gaps: "+NexPlanSupport.automaticGaps());
 		var resources=result.resources; var scenarios=resources.scenarios;

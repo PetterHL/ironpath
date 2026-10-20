@@ -119,6 +119,24 @@ public class NexDiagnosticsTest
 		String text=NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.READY,null,window.pages()-1).format();
 		assertTrue(text.length()<=NexReport.MAX_CHARS); assertFalse(text.contains(PRIVATE));
 	}
+	@Test public void defaultCopyIncludesMiddleMinionHealthWithoutSearchingEventWindows()
+	{
+		var old=summary(1,true); List<NexObservations.Health> health=new ArrayList<>();
+		for(int tick=0;tick<20;tick++)
+		{ health.add(new NexObservations.Health(tick,tick*30,tick,"NEX@"+PRIVATE,new NexTargetState(NexTargetState.Form.NEX,29,30,NexHealth.bar(29,30,3400,tick,tick*30,"NEX@"+PRIVATE,11278,-1)))); }
+		health.add(new NexObservations.Health(25,750,21,"FUMUS@"+PRIVATE,new NexTargetState(NexTargetState.Form.MINION,14,50,NexHealth.bar(14,50,500,25,750,"FUMUS@"+PRIVATE,11283,-1))));
+		health.add(new NexObservations.Health(80,2400,22,"CRUOR@"+PRIVATE,new NexTargetState(NexTargetState.Form.MINION,10,50,NexHealth.bar(10,50,500,80,2400,"CRUOR@"+PRIVATE,11285,-1))));
+		var observations=new NexObservations(List.of(),List.of(),List.of(),List.of(),health,false,Map.of(NexObservations.HudCheck.SCRIPT_CALLBACK,3,NexObservations.HudCheck.WIDGET_MISSING,3));
+		var summary=new NexSummary(old.key,old.startTick,old.endTick,old.sampledTicks,old.expectedTicks,old.unclassifiedHits,old.outcome,old.reason,old.cohort,old.method,old.timeline,old.damage,old.gaps,old.signals,old.beforeStart,old.context,old.comparability,observations);
+		var result=evaluate(summary); assertFalse(String.join("\n",result.observations.window.page(0)).contains("FUMUS"));
+		String text=report(summary,result,0,0,NexReport.State.READY).format();
+		assertTrue(text.contains("Health target=FUMUS; source=ACTOR_BAR; retained readings=1; forms=[MINION]; first=tick 25, bounds 133..142/500, BOUNDED"));
+		assertTrue(text.contains("Health target=CRUOR; source=ACTOR_BAR; retained readings=1; forms=[MINION]; first=tick 80, bounds 92..102/500, BOUNDED"));
+		assertTrue(text.contains("SCRIPT_CALLBACK=3")); assertTrue(text.contains("WIDGET_MISSING=3")); assertTrue(text.contains("ACCEPTED_CALLBACK=0"));
+		assertTrue(text.contains("RuneLite client version:")); assertFalse(text.contains(PRIVATE));
+		assertTrue(String.join("\n",result.observations.overview).length()<=NexObservationSummary.MAX_CHARS);
+		assertFalse(report(summary,result,0,0,NexReport.State.PAUSED).format().contains("Health target="));
+	}
 	@Test public void eventSelectionAndCopiedReportStayTogetherAcrossRefreshAndHideDuringBanking() throws Exception
 	{
 		var summary=windowSummary(); var result=evaluate(summary); AtomicReference<String> copied=new AtomicReference<>();

@@ -1,6 +1,6 @@
 # Nex observation verification and client checks
 
-20 October 2026. Build **0.28.1** follows open PR #50 at `f02028d`; checked main
+20 October 2026. Build **0.28.2** follows open PR #50 at `f02028d`; checked main
 was `7f68d0e` (0.23.3). The focused PR targets `n3/decision-support` to keep the
 dependency separate. No merge or Plugin Hub publication is authorized here.
 [Evidence/support contract and sources](../research/nex-observation.md).
@@ -86,21 +86,51 @@ at fonts 12/20; changed-document links and `git diff --check` pass. The PR recor
 the exact delivered commit and its current CI/report artifact links.
 Live acceptance has not been performed in this correction round.
 
+## One-copy client-test follow-up (0.28.2)
+
+- Every copied report includes a bounded overview of all retained target/HP-source
+  groups, first/last labelled readings, observed forms and candidate animation
+  counts, regardless of the selected event window. It is capped at 7,000 characters
+  and twelve animation groups with explicit omissions; report size remains 24,000.
+- Fixed HUD variable/script/accepted/first-failed-guard counters distinguish no
+  observed callbacks from rejected bindings. Counters saturate at 65,535, never
+  spend the main event/state or observation bounds and clear at existing boundaries.
+- Reports identify the running RuneLite version. Native Diagnostics keeps the
+  current event window as optional detail and describes the one-copy summary.
+- Source recheck confirms the generic RuneLite channel, not Nex availability.
+  An overhead actor bar remains a separate quantized source; zero HUD candidates
+  alone neither establish a fault nor require changing a setting. HUD acceptance
+  remains open. No private captures or performance history are added to Git.
+- Synthetic tests cover rejected/accepted HUD counters, saturation/reanchor/next
+  attempt, middle-minion readings in the default report, privacy/size/hidden state
+  and the production Copy report action at fonts 12/20.
+
+Both required commands passed sequentially with JDK 11.0.32.1 / Gradle 8.10:
+**401 tests / 46 suites, zero failures/errors/skips; 14 DEV1 scenarios /
+1,133 checks; 244 PNGs, including 64 native 225 × 600 viewports**. Pinned review
+uses RuneLite 1.13.2; the normal build resolves 1.13.3, verified separately with
+`dependencyInsight`. Native event/report controls and full-height output were
+inspected at fonts 12/20. Changed-document links and `git diff --check` pass.
+The PR records the exact delivery commit and current-head CI/artifact links.
+
 ## Client procedure — still open
 
-Use build 0.28.1 with RuneLite 1.13.2. During a Nex capture, perform isolated
-actions first, then one ordinary pilot kill. After completion, open **Diagnostics
-→ Calculation details → Observation events**. Select the window containing the
-action; the report includes that same bounded window, including health, polls,
-projectiles and own hits. Inspect **Resource readings and rules** too; **Copy
-report** exports only on request. Select **All states** in owned comparisons to
-inspect unsupported phases too. Preserve a report before Reset; no report is
+Use build 0.28.2 with RuneLite 1.13.2. For the next diagnosis, play one ordinary
+pilot kill and use **Diagnostics → Copy report now** once after completion. Leave
+the event-window selector unchanged: the overview covers all retained target/HP
+sources and HUD callback/rejection counters. Note which HP displays were actually
+visible. No numeric HUD display is presumed to exist for Nex.
+
+For isolated follow-up actions, **Calculation details → Observation events**
+provides optional detailed rows; copying also includes the selected window.
+Inspect **Resource readings and rules** as needed. Reports export only on request.
+Select **All states** in owned comparisons to inspect unsupported phases too. Preserve a report before Reset; no report is
 saved or uploaded automatically. Tests must be repeated for reliability.
 
 | Check | Exact action and expected evidence |
 |---|---|
-| HP/forms | With HUD enabled, inspect Nex in ordinary, Soul Split and Deflect forms. Compare displayed HUD integers against selected-state/candidate report values. Source must be BOSS_HUD only after a matching fresh update, with AWAITING_CLIENT_VALIDATION. Record whether each form actually supplies the channel. |
-| HP/target changes | Switch Nex → each vulnerable minion → Nex, lose interaction briefly, and disable/enable the HUD. A minion must never inherit Nex HP. Missing updates must fall back to ACTOR_BAR bounds or UNKNOWN. Inspect same-tick damage/healing separately; do not label the captured value pre-impact HP. |
+| HP/forms | Inspect ordinary, Soul Split and Deflect forms and note the actual visible HP display. Establish whether a separate integer HUD exists for each form before comparing its values. Accepted bindings must be BOSS_HUD / AWAITING_CLIENT_VALIDATION; otherwise ACTOR_BAR bounds or UNKNOWN remain valid evidence and HUD availability stays open. No other plugin is required. |
+| HP/target changes | Switch Nex → each vulnerable minion → Nex, lose interaction briefly, and, if a native HUD is available, disable/enable it. A minion must never inherit Nex HP. Missing updates must fall back to ACTOR_BAR bounds or UNKNOWN. Inspect same-tick damage/healing separately; do not label the captured value pre-impact HP. |
 | Ordinary attacks/misses | For each actually carried pilot weapon, count a few isolated attacks including zero hits. Compare candidate animation/weapon/target and one-versus-multiple/unmatched impact counts against independent observation. Unrecognized animations must remain UNCLASSIFIED. Test actual ZCB ordinary/spec animations separately; they are not differentiated automatically. |
 | Delayed hit/gear switch | Launch a bow/crossbow attack, switch to melee before impact, and inspect both states. The candidate must retain the launch callback's ranged package. Reconciliation may show changed inputs; the later hit must never be relabeled as a Fang launch. Repeat with overlapping owned damage/target switches; ambiguous matches must stay candidates. |
 | Concurrent resources | Observe one isolated special, then a special near natural restoration and near a Death Charge restoration. Original ENERGY callback values/order and server readings must remain separate. A 50%/75% net change must not create an inferred spec count. |

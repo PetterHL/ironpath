@@ -483,6 +483,7 @@ final class NexPanel extends PluginPanel
 				if(result.observations.correlationLimited) { PanelWidgets.text(basis,"Correlation work limit reached; candidate matches are incomplete."); }
 				if(summary.observations.truncated) { PanelWidgets.text(basis,"Observation buffer full; later observations omitted."); }
 				PanelWidgets.label(basis,"Observation events",true,0,ColorScheme.TEXT_COLOR);
+				PanelWidgets.text(basis,"Copy report includes a summary of all targets and HUD checks. Event windows are optional details.");
 				var window=result.observations.window;
 				JComboBox<String> eventPage=new JComboBox<>(); eventPage.setName("nex-observation-page");
 				for(int i=0;i<window.pages();i++) { eventPage.addItem("Events "+(i+1)+" / "+window.pages()); }

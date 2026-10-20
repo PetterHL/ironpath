@@ -46,18 +46,24 @@ public class NexObservationTest
 	{
 		List<NexSummary> out=new ArrayList<>(); var c=new NexCapture(out::add);
 		c.start(0,false,NexMethod.PILOT,"roster");
+		c.hudCheck(NexObservations.HudCheck.DISABLED);
 		c.health(new NexObservations.Health(0,0,0,"NEX@old",new NexTargetState(NexTargetState.Form.NEX,30,30)));
 		c.resource(new NexObservations.Signal(NexObservations.Kind.ENERGY,0,0,1,500,500,null));
 		assertTrue(c.anchorSmoke(1,"roster"));
+		for(int i=0;i<NexObservations.MAX_HUD_COUNT+10;i++) { c.hudCheck(NexObservations.HudCheck.SCRIPT_CALLBACK); }
+		assertTrue(c.active());
 		for(int i=0;i<NexObservations.MAX+10;i++)
 		{ c.resource(new NexObservations.Signal(NexObservations.Kind.ENERGY,1,30,i+2,1000,1000,null)); }
 		c.abort(2,Outcome.CENSORED,"test");
 		assertEquals(NexObservations.MAX,out.get(0).observations.signals.size()); assertTrue(out.get(0).observations.truncated);
 		assertTrue(out.get(0).observations.signals.stream().allMatch(s->s.value==1000));
 		assertTrue(out.get(0).observations.health.isEmpty());
+		assertEquals(Map.of(NexObservations.HudCheck.SCRIPT_CALLBACK,NexObservations.MAX_HUD_COUNT),out.get(0).observations.hudChecks);
+		assertThrows(UnsupportedOperationException.class,()->out.get(0).observations.hudChecks.clear());
 		assertThrows(UnsupportedOperationException.class,()->out.get(0).observations.signals.clear());
 		c.start(3,true,NexMethod.PILOT,"roster"); c.abort(4,Outcome.CENSORED,"next");
 		assertTrue(out.get(1).observations.signals.isEmpty()); assertFalse(out.get(1).observations.truncated);
+		assertTrue(out.get(1).observations.hudChecks.isEmpty());
 	}
 	@Test public void overlappingAndZeroHitsKeepAllCandidatesAndNeverUseImpactEquipment()
 	{

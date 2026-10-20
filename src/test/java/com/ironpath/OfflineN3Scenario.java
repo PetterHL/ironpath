@@ -124,6 +124,9 @@ final class OfflineN3Scenario
 					PanelPreview.openSection(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Calculation details");
 					var pages=PanelPreview.combo(r.panel,"nex-observation-page");
 					report.check("Observation events have selectable windows "+font,true,pages.getItemCount()>1);
+					PanelPreview.click(r.panel,"Copy report now");
+					String copied=NexScenarioPanelTest.named(r.panel,"nex-report-text",JTextArea.class).getText();
+					report.check("Default copy includes whole-capture health and HUD checks "+font,true,copied.contains("Health target=NEX;") && copied.contains("HUD checks=") && copied.contains("RuneLite client version:"));
 					pages.setSelectedIndex(1); PanelPreview.click(r.panel,"Copy report now");
 					report.check("Copied report uses selected event window "+font,true,NexScenarioPanelTest.named(r.panel,"nex-report-text",JTextArea.class).getText().contains("Observation event window 2/"));
 				});

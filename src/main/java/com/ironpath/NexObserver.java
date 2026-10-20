@@ -335,17 +335,27 @@ final class NexObserver
 	synchronized void hud()
 	{
 		invalidateHud();
-		if(!enabled || !capture.active() || hudUpdateTick!=client.getTickCount() || !hudVisible()) { return; }
+		if(!enabled || !capture.active()) { return; }
+		capture.hudCheck(NexObservations.HudCheck.SCRIPT_CALLBACK);
+		if(hudUpdateTick!=client.getTickCount()) { capture.hudCheck(NexObservations.HudCheck.NO_FRESH_VARIABLE); return; }
+		if(client.getVarbitValue(VarbitID.HPBAR_HUD_BOSS_DISABLED)!=0) { capture.hudCheck(NexObservations.HudCheck.DISABLED); return; }
+		var widget=client.getWidget(net.runelite.api.gameval.InterfaceID.HpbarHud.HP_BAR_TEXT);
+		if(widget==null) { capture.hudCheck(NexObservations.HudCheck.WIDGET_MISSING); return; }
+		if(widget.isHidden()) { capture.hudCheck(NexObservations.HudCheck.WIDGET_HIDDEN); return; }
 		Player local=client.getLocalPlayer();
-		if(local==null || !(local.getInteracting() instanceof NPC)) { return; }
+		if(local==null || !(local.getInteracting() instanceof NPC)) { capture.hudCheck(NexObservations.HudCheck.NO_INTERACTION); return; }
 		NPC npc=(NPC)local.getInteracting();
 		int definition=client.getServerVarpValue(net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_NPC);
 		int hp=client.getServerVarbitValue(VarbitID.HPBAR_HUD_HP),maximum=client.getServerVarbitValue(VarbitID.HPBAR_HUD_BASEHP);
-		if(!sameView(npc) || !targets.containsKey(npc) || npc.getId()!=definition || hp<0 || maximum<1 || maximum>100000 || hp>maximum
-			|| definition!=client.getVarpValue(net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_NPC)
-			|| hp!=client.getVarbitValue(VarbitID.HPBAR_HUD_HP) || maximum!=client.getVarbitValue(VarbitID.HPBAR_HUD_BASEHP)
-			|| targets.keySet().stream().filter(n->sameView(n) && n.getId()==definition).count()!=1) { return; }
+		if(!sameView(npc) || !targets.containsKey(npc)) { capture.hudCheck(NexObservations.HudCheck.UNTRACKED_TARGET); return; }
+		if(npc.getId()!=definition) { capture.hudCheck(NexObservations.HudCheck.DEFINITION_MISMATCH); return; }
+		if(hp<0 || maximum<1 || maximum>100000 || hp>maximum) { capture.hudCheck(NexObservations.HudCheck.INVALID_VALUES); return; }
+		if(definition!=client.getVarpValue(net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_NPC)
+			|| hp!=client.getVarbitValue(VarbitID.HPBAR_HUD_HP) || maximum!=client.getVarbitValue(VarbitID.HPBAR_HUD_BASEHP))
+		{ capture.hudCheck(NexObservations.HudCheck.SERVER_DISAGREEMENT); return; }
+		if(targets.keySet().stream().filter(n->sameView(n) && n.getId()==definition).count()!=1) { capture.hudCheck(NexObservations.HudCheck.AMBIGUOUS_TARGET); return; }
 		hudTarget=npc; hudDefinition=definition; hudHp=hp; hudMaximum=maximum; hudTick=client.getTickCount(); hudCycle=client.getGameCycle();
+		capture.hudCheck(NexObservations.HudCheck.ACCEPTED_CALLBACK);
 		capture.health(new NexObservations.Health(hudTick,hudCycle,++callbackOrder,targets.get(npc),targetState(npc)));
 	}
 	private void resource(NexObservations.Kind kind,int value,int server,String target)
@@ -355,7 +365,7 @@ final class NexObserver
 		if(!enabled || !capture.active()) { return; }
 		if(varbit==VarbitID.HPBAR_HUD_HP || varbit==VarbitID.HPBAR_HUD_BASEHP
 			|| varp==net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_INFO || varp==net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_NPC)
-		{ hudUpdateTick=client.getTickCount(); }
+		{ hudUpdateTick=client.getTickCount(); capture.hudCheck(NexObservations.HudCheck.VARIABLE_UPDATE); }
 		if(varp==net.runelite.api.gameval.VarPlayerID.SA_ENERGY)
 		{ resource(NexObservations.Kind.ENERGY,value,client.getServerVarpValue(varp),null); }
 		else if(varbit==VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE) { resource(NexObservations.Kind.DEATH_CHARGE_ACTIVE,value,client.getServerVarbitValue(varbit),null); }

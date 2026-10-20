@@ -30,6 +30,25 @@ public class NexAutomaticObservationTest
 		f.observer.hud();
 	}
 	private NexSummary finish() { f.observer.transition(); return f.session.recent().get(0); }
+	@Test public void hudCountersDistinguishAbsentUpdatesRejectedBindingsAndAcceptedCandidates()
+	{
+		f.tick.set(2); f.observer.hud();
+		f.observer.resourceEvent(-1,VarPlayerID.HPBAR_HUD_INFO,1); f.observer.hud();
+		Widget widget=mock(Widget.class); when(widget.isHidden()).thenReturn(true);
+		when(f.client.getWidget(InterfaceID.HpbarHud.HP_BAR_TEXT)).thenReturn(widget); f.observer.hud();
+		when(f.client.getVarbitValue(VarbitID.HPBAR_HUD_BOSS_DISABLED)).thenReturn(1); f.observer.hud();
+		when(f.client.getVarbitValue(VarbitID.HPBAR_HUD_BOSS_DISABLED)).thenReturn(0); hud(NpcID.NEX,1700,3400);
+		when(f.client.getVarbitValue(VarbitID.HPBAR_HUD_HP)).thenReturn(1699); f.observer.hud();
+		when(f.player.getInteracting()).thenReturn(null); f.observer.hud();
+		var summary=finish(); var checks=summary.observations.hudChecks;
+		assertEquals(Integer.valueOf(7),checks.get(NexObservations.HudCheck.SCRIPT_CALLBACK));
+		assertEquals(Integer.valueOf(2),checks.get(NexObservations.HudCheck.VARIABLE_UPDATE));
+		for(var check:List.of(NexObservations.HudCheck.NO_FRESH_VARIABLE,NexObservations.HudCheck.WIDGET_MISSING,
+			NexObservations.HudCheck.WIDGET_HIDDEN,NexObservations.HudCheck.DISABLED,NexObservations.HudCheck.ACCEPTED_CALLBACK,
+			NexObservations.HudCheck.SERVER_DISAGREEMENT,NexObservations.HudCheck.NO_INTERACTION))
+		{ assertEquals(check.name(),Integer.valueOf(1),checks.get(check)); }
+		assertEquals(1,new NexObservationReview(summary).hudReadings);
+	}
 	@Test public void longHudTrafficAndDiagnosticOverflowCannotCensorTheMainCapture()
 	{
 		when(f.boss.getHealthRatio()).thenReturn(15); when(f.boss.getHealthScale()).thenReturn(30);

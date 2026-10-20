@@ -292,6 +292,13 @@ N1–N4 checks. DEV1 adds no real encounter recorder/export or relaxed trace pol
 
 ## N3 declared-plan review
 
+Build 0.28.2 makes **Diagnostics → Copy report now** sufficient for the next
+capture diagnosis: its bounded overview covers all retained target/HP sources,
+weapon/animation groups and HUD callback/rejection counters, and records the
+running RuneLite version. Event windows remain optional detail. Do not presume
+that Nex emits RuneLite's generic integer-HUD channel or equate it with an actor's
+normal overhead health bar.
+
 Build 0.28.1 additionally captures `observation-events-12.png` / `-20.png` and
 native `observation-events-viewport-*` screenfuls. Inspect the event-page selector,
 relative timings/links and matching copied report; full client acceptance remains
