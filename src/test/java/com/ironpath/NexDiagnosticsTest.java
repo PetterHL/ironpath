@@ -73,7 +73,7 @@ public class NexDiagnosticsTest
 		var summary=new NexSummary(old.key,old.startTick,old.endTick,old.sampledTicks,old.expectedTicks,old.unclassifiedHits,old.outcome,old.reason,
 			old.cohort,old.method,old.timeline,old.damage,old.gaps,old.signals,old.beforeStart,old.context,old.comparability,observations);
 		var result=evaluate(summary); String text=report(summary,result,0,0,NexReport.State.READY).format();
-		assertTrue(text.contains("weapon=TWISTED_BOW")); assertTrue(text.contains("kind=DC_END_EFFECT")); assertTrue(text.contains("zero hits=1"));
+		assertTrue(text.contains("\"weapon\":\"TWISTED_BOW\"")); assertTrue(text.contains("\"type\":\"DC_END_EFFECT\"")); assertTrue(text.contains("zero hits=1"));
 		assertTrue(text.contains("CONDITIONAL_STATE_OFFENCE")); assertFalse(text.contains(PRIVATE)); assertFalse(text.contains("999999"));
 		assertFalse(report(summary,result,0,0,NexReport.State.PAUSED).format().contains("DC_END_EFFECT"));
 	}
@@ -97,7 +97,8 @@ public class NexDiagnosticsTest
 		assertTrue(first.contains("relative cycle=60; relative order=2; target=T1/NEX"));
 		assertFalse(first.contains(PRIVATE)); assertTrue(first.contains("outside=31"));
 		String middle=NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.READY,null,1).format();
-		assertTrue(middle.contains("Observation event window 2/4")); assertTrue(middle.contains("event/polled value=509"));
+		assertTrue(middle.contains("\"schema\":\"nex-evidence-1\"")); assertTrue(middle.contains("\"value\":509"));
+		assertEquals(middle,NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.READY,null,0).format());
 		assertFalse(middle.contains("Projectile F1")); assertFalse(middle.contains(PRIVATE)); assertTrue(middle.length()<=NexReport.MAX_CHARS);
 		assertEquals(window.page(3),window.page(Integer.MAX_VALUE));
 		assertFalse(NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.PAUSED,null,1).format().contains("event/polled value"));
@@ -118,6 +119,8 @@ public class NexDiagnosticsTest
 		assertTrue(last.contains("link search incomplete")); assertTrue(last.contains("truncated=true; links incomplete=true"));
 		String text=NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.READY,null,window.pages()-1).format();
 		assertTrue(text.length()<=NexReport.MAX_CHARS); assertFalse(text.contains(PRIVATE));
+		var json=evidence(text); assertEquals(2048,json.getAsJsonArray("events").size()); assertTrue(json.get("captureTruncated").getAsBoolean());
+		assertEquals(0,json.get("exportOmissions").getAsInt());
 	}
 	@Test public void defaultCopyIncludesMiddleMinionHealthWithoutSearchingEventWindows()
 	{
@@ -146,13 +149,106 @@ public class NexDiagnosticsTest
 			panel.render("Observed",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Calculation details");
 			PanelPreview.combo(panel,"nex-observation-page").setSelectedIndex(1);
-			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("Observation event window 2/4"));
+			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("\"schema\":\"nex-evidence-1\""));
 			panel.render("Refresh",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
 			assertEquals(1,PanelPreview.combo(panel,"nex-observation-page").getSelectedIndex());
 			panel.render("Nex session paused",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
 			assertNull(NexScenarioPanelTest.named(panel,"nex-observation-page",JComboBox.class));
 			assertFalse(PanelPreview.text(panel).contains("event/polled value=509"));
 		});
+	}
+	private static com.google.gson.JsonObject evidence(String report)
+	{
+		int start=report.indexOf("```json\n")+8;
+		assertTrue("One machine-readable evidence block",start>=8);
+		return new com.google.gson.JsonParser().parse(report.substring(start,report.indexOf("\n```",start))).getAsJsonObject();
+	}
+	@Test public void oneProductionCopyExportsLongCaptureAcrossAllPagesWithOnlyUnchangedPollsOmitted() throws Exception
+	{
+		var old=summary(1,true); var base=old.timeline.get(0).state;
+		var switched=new HashMap<>(base.slots); switched.put("cape",0);
+		var counters=new HashMap<>(base.resources); counters.put("death-charge-active",2); counters.put("death-charge-active-server",1);
+		var changed=new CombatState(switched,base.realLevels,base.visibleLevels,base.prayers,base.style,500,false,base.inventory,counters,base.itemNames);
+		List<NexObservations.Signal> signals=new ArrayList<>(); List<NexObservations.Launch> launches=new ArrayList<>();
+		List<NexObservations.Flight> flights=new ArrayList<>(); List<NexObservations.Impact> impacts=new ArrayList<>(); List<NexObservations.Health> health=new ArrayList<>();
+		for(int t=1;t<=1500;t++)
+		{
+			String target=(t>=500 && t<600?"FUMUS@":"NEX@")+PRIVATE;
+			var state=t==750?changed:base;
+			signals.add(new NexObservations.Signal(NexObservations.Kind.TICK_RESOURCES,t,t*30,t*10, t==750?500:1000,1000,target,state));
+			if(t%10==0 && t<=1200)
+			{
+				var form=new NexTargetState(t>=500 && t<600?NexTargetState.Form.MINION:NexTargetState.Form.NEX,15,30);
+				var sample=new NexSummary.Sample(t,"BLOOD","NONE",target,"ranged",426,state,form);
+				launches.add(new NexObservations.Launch(t*10+1,t*30,sample,NexObservations.Weapon.TWISTED_BOW,NexObservations.Attack.ORDINARY_CANDIDATE));
+				flights.add(new NexObservations.Flight(t,t*30,t*10+2,1120,t*30,t*30+60,target,true,form));
+				impacts.add(new NexObservations.Impact(t+2,t*30+60,t*10+3,target,t%20==0?0:42,form));
+			}
+		}
+		for(int t:List.of(1,550,1499))
+		{
+			String target=(t==550?"FUMUS@":"NEX@")+PRIVATE;
+			var hp=t==550?NexHealth.hud(200,500,t,t*30,target,11283,-1):NexHealth.bar(15,30,3400,t,t*30,target,11278,-1);
+			health.add(new NexObservations.Health(t,t*30,t*10+4,target,new NexTargetState(t==550?NexTargetState.Form.MINION:NexTargetState.Form.NEX,15,30,hp)));
+		}
+		signals.add(new NexObservations.Signal(NexObservations.Kind.DC_CAST_EFFECT,500,15000,5005,3288,-1,"NEX@"+PRIVATE));
+		signals.add(new NexObservations.Signal(NexObservations.Kind.DC_END_EFFECT,1501,45030,15015,3289,-1,"NEX@"+PRIVATE));
+		var observations=new NexObservations(launches,signals,flights,impacts,health,false);
+		var summary=new NexSummary(old.key,0,1500,1500,1500,0,old.outcome,old.reason,old.cohort,old.method,old.timeline,old.damage,old.gaps,old.signals,old.beforeStart,old.context,old.comparability,observations);
+		var result=evaluate(summary); assertTrue(result.observations.window.pages()>100);
+		AtomicReference<String> copied=new AtomicReference<>();
+		SwingUtilities.invokeAndWait(()->{
+			var session=new NexSession(); session.select("test",301); session.add(summary);
+			var panel=new NexPanel(null,copied::set,NexReport.Provenance.SYNTHETIC_OFFLINE);
+			panel.render("Observed",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			String first=copied.get(); var json=evidence(first);
+			assertEquals(1865,json.get("retainedCallbacks").getAsInt()); assertEquals(1495,json.get("unchangedPollsOmitted").getAsInt());
+			assertEquals(370,json.getAsJsonArray("events").size()); assertEquals(0,json.get("exportOmissions").getAsInt());
+			assertFalse(json.get("captureTruncated").getAsBoolean()); assertTrue(json.getAsJsonObject("targets").toString().contains("FUMUS"));
+			long previous=-1; int attacks=0,hits=0,zeros=0,hp=0; boolean middleEnergy=false,lateDc=false;
+			for(var element:json.getAsJsonArray("events"))
+			{
+				var e=element.getAsJsonObject(); long order=e.get("order").getAsLong(); assertTrue(order>previous); previous=order;
+				String type=e.get("type").getAsString();
+				if(type.equals("LAUNCH")) { attacks++; assertEquals(20997,json.getAsJsonArray("states").get(e.get("state").getAsInt()).getAsJsonObject().getAsJsonObject("slots").get("weapon").getAsInt()); }
+				if(type.equals("IMPACT")) { hits++; if(e.get("amount").getAsInt()==0) { zeros++; } }
+				if(type.equals("HEALTH")) { hp++;
+					var reading=e.getAsJsonObject("targetState").getAsJsonObject("health");
+					assertEquals(e.get("tick").getAsInt(),reading.get("tick").getAsInt());
+					assertEquals(e.get("tick").getAsInt()==550?"BOSS_HUD":"ACTOR_BAR",reading.get("source").getAsString());
+				}
+				if(type.equals("TICK_RESOURCES") && e.get("tick").getAsInt()==750) { middleEnergy=e.get("value").getAsInt()==500;
+					var settled=json.getAsJsonArray("states").get(e.get("state").getAsInt()).getAsJsonObject();
+					assertEquals(0,settled.getAsJsonObject("slots").get("cape").getAsInt());
+					assertEquals(2,settled.getAsJsonObject("resources").get("death-charge-active").getAsInt());
+					assertEquals(1,settled.getAsJsonObject("resources").get("death-charge-active-server").getAsInt()); }
+				if(type.equals("DC_END_EFFECT")) { lateDc=e.get("tick").getAsInt()==1501; }
+			}
+			assertEquals(120,attacks); assertEquals(120,hits); assertEquals(60,zeros); assertEquals(3,hp); assertTrue(middleEnergy); assertTrue(lateDc);
+			assertTrue(first.length()>24000); assertTrue(first.length()<NexReport.MAX_CHARS); assertFalse(first.contains(PRIVATE)); assertFalse(first.contains("999999"));
+			PanelPreview.click(panel,"Calculation details"); PanelPreview.combo(panel,"nex-observation-page").setSelectedIndex(50);
+			PanelPreview.click(panel,"Copy report now"); assertEquals(first,copied.get());
+		});
+	}
+	@Test public void maximumChangingCaptureFitsWithoutDroppingStateOrCallbacks()
+	{
+		var old=summary(1,true); var base=old.timeline.get(0).state;
+		List<NexSummary.Sample> samples=new ArrayList<>(); List<NexObservations.Signal> signals=new ArrayList<>();
+		for(int i=0;i<NexCapture.MAX_SAMPLES+NexObservations.MAX;i++)
+		{
+			var levels=new HashMap<>(base.visibleLevels); levels.put("HITPOINTS",i);
+			var state=new CombatState(base.slots,base.realLevels,levels,base.prayers,base.style,base.specialEnergy,false,base.inventory,base.resources);
+			if(i<NexCapture.MAX_SAMPLES) { samples.add(new NexSummary.Sample(i,"ICE","NONE","NEX@"+PRIVATE,"ranged",426,state)); }
+			else { signals.add(new NexObservations.Signal(NexObservations.Kind.TICK_RESOURCES,i,30*i,i,1000,1000,"NEX@"+PRIVATE,state)); }
+		}
+		var o=new NexObservations(List.of(),signals,List.of(),List.of(),false);
+		var summary=new NexSummary(old.key,0,3000,3000,3000,0,old.outcome,old.reason,old.cohort,old.method,samples,old.damage,old.gaps,old.signals,old.beforeStart,old.context,old.comparability,o);
+		String text=report(summary,new NexOwnedResult(summary,List.of()),-1,0,NexReport.State.READY).format();
+		var json=evidence(text); assertTrue(json.get("exportComplete").getAsBoolean());
+		assertEquals(2048,json.getAsJsonArray("events").size()); assertEquals(1024,json.getAsJsonArray("samples").size());
+		assertEquals(3072,json.getAsJsonArray("states").size()); assertEquals(0,json.get("unchangedPollsOmitted").getAsInt());
+		assertTrue(text.length()<=NexReport.MAX_CHARS); assertFalse(text.contains(PRIVATE));
 	}
 	@Test public void compactCardsExpandWithoutDroppingAlternativesAndKeepSelectionWhenReturningFromDiagnostics() throws Exception
 	{
@@ -281,7 +377,7 @@ public class NexDiagnosticsTest
 	@Test public void outputIsBoundedAndDisclosesOmittedFields()
 	{
 		var summary=summary(1,true); var result=evaluate(summary);
-		catalog.sources.values().forEach(source->source.revision="x".repeat(NexReport.MAX_CHARS));
+		catalog.sources.values().forEach(source->source.revision="x".repeat(NexReport.MAX_NARRATIVE_CHARS));
 		String text=report(summary,result,0,0,NexReport.State.READY).format();
 		assertTrue(text.length()<=NexReport.MAX_CHARS); assertTrue(text.contains("fields omitted by size limit"));
 		assertTrue(text.contains("Omissions:"));

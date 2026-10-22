@@ -1,6 +1,6 @@
 # Nex observation slice
 
-20 October 2026. Build **0.28.2**, adapter `nex-public-8`, target readings
+22 October 2026. Build **0.28.3**, adapter `nex-public-8`, target readings
 `nex-target-state-2`, evidence `nex-observations-3`, knowledge `n3-observation-1`.
 This is a separate follow-up to open PR #50 (`f02028d`, 0.27.0). Main was checked
 at `7f68d0e`; neither branch has been merged as part of this delivery.
@@ -128,29 +128,44 @@ diagnostics do not spend the main event budget. Correlation has a 1,000,000-chec
 work bound and marks incomplete matches. Smoke reanchor discards pre-smoke observation events without
 backfilling; existing pre-smoke state history stays separate.
 
-Diagnostics consumes frozen worker results. The user-triggered schema-2 report
-adds fixed enums, counts and HP bounds plus the selected 12-event window. All
-retained health, launch, projectile, own-impact and resource/poll rows are
-selectable in callback order. Each row shows relative tick/cycle/order, a local
-target reference and observed form where supplied; absent forms remain UNKNOWN.
-Launch/projectile/impact links remain candidates and use at most eight references
-per row, with explicit omitted-link counts and a shared 1,000,000-check search
-bound. Window headers identify rows outside the selection, capture truncation
-and incomplete link searches. This is a bounded diagnostic projection, not a
-lossless trace or new recorder. Event selection and copied reports share the same
-frozen kill, survive unrelated refreshes and hide during suspension. No names,
-spawn/world identifiers, containers, roster keys or arbitrary event strings are
-exported. Existing 24,000-character, clipboard fallback, selected-record/revision
-and hidden-session guards apply.
+Diagnostics consumes frozen worker results and retains its selectable 12-event
+pages, bounded candidate links and explicit capture/link-search omissions. Copy
+report is independent of that page. Its schema-2 narrative keeps the 24,000-character
+budget and the 7,000-character target/HP/animation overview, while a separate fenced
+JSON block (`schema: nex-evidence-1`) exports the whole retained evidence projection.
+The report remains a diagnostic document, not a lossless replay or new recorder.
 
-Every report also includes a worker-built whole-capture overview, independent of
-the selected page: all six allowlisted target classes by HP source, observed forms,
-retained-reading counts and first/last source-labelled bounds/ticks. Up to twelve
-most frequent weapon/animation/classification groups have callback counts, never
-attack/spec counts. The overview is capped at 7,000 characters with explicit omitted
-fields/groups. HUD counters and an allowlisted RuneLite version make one copied
-report sufficient for the next capture diagnosis. It remains a summary of retained
-evidence, not a complete trace, confirmed HP trajectory or mapping acceptance.
+The JSON contains callback-ordered `events`, tick-only `samples` and `beforeStart`,
+a zero-based deduplicated `states` table and report-local `targets`. Tick offsets
+use measured start; event cycles/orders and HP cycles use the first retained
+callback as origin. Target IDs are local references, never spawn/world identifiers.
+Samples have no invented callback order. HP source, validity, bounds, maximum and
+original reading time remain explicit, including source changes and unknowns.
+Every launch has its animation, classification, phase/window, target/form, immutable
+state reference and reconciliation. Projectiles retain their IDs, source-local flag
+and start/end offsets; impacts retain zero damage and bounded unvalidated launch
+candidate links. Link omissions and incomplete correlations stay explicit.
+
+State fields allowlist exact equipped IDs, base/visible levels, offensive prayer
+flags, style, selected spec, energy and existing resource/DC client/server counters.
+No arbitrary map keys/strings, item names, full containers, roster keys, account IDs
+or raw signal traces are serialized. Absent numeric fields are JSON null; adapter-provided unread sentinels such as
+-1 remain unchanged. Unknown is never converted to zero. No new stock-usability, consumption or proc inference.
+
+Only repeated `TICK_RESOURCES` polls with identical allowlisted payload/state/target
+are omitted; value/server disagreement, changed state and reversions are retained.
+Non-poll callbacks and HP readings are never dropped by this compaction. The JSON
+reports retained/exported callback counts, unchanged polls omitted and upstream
+capture truncation. A complete export means all *retained* useful evidence, not
+recovery of evidence already lost to the unchanged observation limit. Candidate
+lists keep the existing eight-link bound, separately from event coverage.
+
+Evidence bypasses the narrative budget so selected comparison prose cannot crowd
+out late events. Output stays bounded by the existing 2,048 observations and 1,024
+combined main/pre-start state samples, fixed vocabularies/numeric fields and state
+deduplication (8,000,000-character report ceiling). Clipboard fallback, frozen
+selected-record/revision, bank/reload, hidden-session, reset and identity guards
+are unchanged. The worker builds the immutable JSON; Copy never reads live state.
 
 Raw state stays in the same 50-record memory lifetime; no files, uploads or
 performance persistence are added.

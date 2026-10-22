@@ -3,7 +3,7 @@ package com.ironpath.nex;
 import java.util.*;
 import java.util.function.Predicate;
 
-/** Worker-built allowlisted event pages, shared by Diagnostics and its explicit report. */
+/** Worker-built allowlisted Diagnostics pages. Clipboard evidence is exported independently. */
 public final class NexObservationWindow
 {
 	public static final int PAGE_SIZE=12,MAX_LINKS=8;

@@ -128,7 +128,8 @@ final class OfflineN3Scenario
 					String copied=NexScenarioPanelTest.named(r.panel,"nex-report-text",JTextArea.class).getText();
 					report.check("Default copy includes whole-capture health and HUD checks "+font,true,copied.contains("Health target=NEX;") && copied.contains("HUD checks=") && copied.contains("RuneLite client version:"));
 					pages.setSelectedIndex(1); PanelPreview.click(r.panel,"Copy report now");
-					report.check("Copied report uses selected event window "+font,true,NexScenarioPanelTest.named(r.panel,"nex-report-text",JTextArea.class).getText().contains("Observation event window 2/"));
+					report.check("Copied evidence is independent of UI event page "+font,true,copied.equals(NexScenarioPanelTest.named(r.panel,"nex-report-text",JTextArea.class).getText()));
+					try { java.nio.file.Files.writeString(output.resolve("observation-report-"+font+".txt"),copied); } catch(Exception ex) { throw new IllegalStateException(ex); }
 				});
 				capture(r,output,"observation-events",font,report);
 				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("observation-events-viewport-"+font+".png"),225,600,"nex-observation-page",List.of("nex-observation-page"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });

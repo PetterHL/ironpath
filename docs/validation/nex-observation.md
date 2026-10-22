@@ -154,3 +154,34 @@ less typing for explicit plans at the recorded callbacks. Still open in the
 client: verified launches/HP/Death Charge semantics, full-energy timing and stock
 freshness. Opportunity schedules, confirmed consumption, dynamic Zaros mechanics,
 ordinary reflection, healing, personal contribution and seconds saved stay gated.
+
+## Whole-capture clipboard follow-up (0.28.3, 22 October 2026)
+
+Copy report now includes the entire retained allowlisted evidence projection as
+`nex-evidence-1` JSON, independent of the selected UI page. It preserves explicit
+callback timing/order, local targets, forms/HP source/validity/time, immutable
+launch/settled states, projectiles, zero/positive impacts, resource callbacks and
+Death Charge evidence. Main/pre-start samples retain tick timing separately.
+Only unchanged resource polls are compacted; state tables deduplicate payloads.
+The old narrative budget cannot remove event records. Capture/privacy/lifecycle
+bounds and the clipboard fallback remain; no new inference or recommendation.
+
+The production-Copy regression uses 1,500 ticks / 1,865 retained callbacks, with
+120 animation candidates, 120 projectiles, 120 impacts (60 zero), three HP readings,
+a middle minion, a temporary energy change/reversion and an end-grace DC callback.
+One copy parses all 370 useful callbacks; exactly 1,495 unchanged polls are omitted.
+Selecting UI page 51 produces identical clipboard text. Private sentinel keys,
+item names, target identities and unrelated inventory stock remain absent.
+Dense 2,048-event coverage and existing hidden-session/privacy/clipboard tests
+remain active. DEV1 checks page-independent Copy at both fonts.
+
+Both required full commands passed with JDK 11.0.32.1 / Gradle 8.10:
+**403 tests / 46 suites, zero failures/errors/skips** on pinned RuneLite 1.13.2
+and normal latest.release RuneLite 1.13.3 (verified with `dependencyInsight`). DEV1: **14 scenarios / 1,133 checks; 244
+PNGs**, including **64 native 225 × 600 viewports**. Full-height observation
+Diagnostics and native viewports were inspected at fonts 12/20. Synthetic Copy
+reports at both fonts parse as JSON; page selection leaves their evidence unchanged.
+Changed-document links and `git diff --check` pass. The PR records the delivered
+commit and current-head CI/artifact links.
+Live RuneLite/OS clipboard acceptance remains open; synthetic tests do not validate
+Nex HUD/weapon/DC mappings or infer attack opportunities, consumption or procs.

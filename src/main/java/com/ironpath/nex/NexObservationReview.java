@@ -23,6 +23,7 @@ public final class NexObservationReview
 	public final int hudReadings,barReadings;
 	public final NexObservationWindow window;
 	public final List<String> overview;
+	public final String export;
 	public NexObservationReview(NexSummary summary)
 	{
 		Map<NexObservations.Launch,Reconciliation> settled=new LinkedHashMap<>();
@@ -83,6 +84,7 @@ public final class NexObservationReview
 		barReadings=(int)summary.observations.health.stream().filter(s->s.targetState.health.source==NexHealth.Source.ACTOR_BAR).count();
 		window=new NexObservationWindow(summary,this);
 		overview=NexObservationSummary.from(summary);
+		export=NexObservationExport.from(summary,this);
 	}
 	/** Same target/phase/package/current levels, not worn duration or impact-time equipment. */
 	public static boolean sameState(NexSummary.Sample a,NexSummary.Sample b)

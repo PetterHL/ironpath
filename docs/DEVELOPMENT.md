@@ -292,6 +292,14 @@ N1–N4 checks. DEV1 adds no real encounter recorder/export or relaxed trace pol
 
 ## N3 declared-plan review
 
+Build 0.28.3 exports all retained allowlisted observation evidence in a fenced
+`nex-evidence-1` JSON block from **Diagnostics → Copy report now**, regardless of
+the selected 12-event UI page. State is deduplicated and unchanged resource polls
+are omitted; callbacks, HP changes and late completion-grace signals remain.
+A 1,500-tick production-Copy regression covers middle-minion HP, 120 candidate
+attacks/projectiles/impacts, zero hits, energy changes and late Death Charge.
+DEV1 checks identical copied evidence across UI pages at fonts 12/20.
+
 Build 0.28.2 makes **Diagnostics → Copy report now** sufficient for the next
 capture diagnosis: its bounded overview covers all retained target/HP sources,
 weapon/animation groups and HUD callback/rejection counters, and records the
