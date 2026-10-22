@@ -14,7 +14,7 @@
 
 ## Current delivery
 
-- Observation follow-up **0.28.2** is a separate dependency PR above open PR #50
+- Observation follow-up **0.28.3** is a separate dependency PR above open PR #50
   `f02028d`; main was checked at `7f68d0e`. Read docs/research/nex-observation.md
   and docs/validation/nex-observation.md. Preserve bounded immutable callback and
   settled-state evidence, HUD candidate versus bar-interval/unknown validity,
@@ -22,9 +22,12 @@
   the shared observation bound, never worn-state slots; diagnostic overflow cannot
   censor the main capture. Preserve Zaros-overhead matching, unchecked saved
   impact/supply confirmations on recorded-tick import, and selected event windows.
-  Copy report includes a bounded whole-capture target/source/animation overview
-  and fixed HUD callback/first-failed-guard counters. No callback is not proof
+  Copy report includes whole-capture allowlisted JSON independently of the selected
+  UI page, plus the bounded overview and fixed HUD callback/first-failed-guard counters. No callback is not proof
   of an absent Nex HUD; a normal overhead actor bar is a different source.
+  The 22 October single-report live check validates whole-capture export only;
+  low hitsplat coverage and unresolved projectile sources require a separate issue.
+  See the live-check section in docs/validation/nex-observation.md.
   HUD/weapon/DC mappings are not live-validated. Recorded ticks seed explicit unchecked scenarios only;
   no inferred opportunities, consumption, dynamic HP or N4 result. The user
   authorized this observation instrumentation; merge/publication remain separate.

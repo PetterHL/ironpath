@@ -122,7 +122,8 @@ sources and HUD callback/rejection counters. Note which HP displays were actuall
 visible. No numeric HUD display is presumed to exist for Nex.
 
 For isolated follow-up actions, **Calculation details → Observation events**
-provides optional detailed rows; copying also includes the selected window.
+provides optional detailed rows; build 0.28.3 copies the whole retained evidence
+projection independently of that window.
 Inspect **Resource readings and rules** as needed. Reports export only on request.
 Select **All states** in owned comparisons to inspect unsupported phases too. Preserve a report before Reset; no report is
 saved or uploaded automatically. Tests must be repeated for reliability.
@@ -185,3 +186,89 @@ Changed-document links and `git diff --check` pass. The PR records the delivered
 commit and current-head CI/artifact links.
 Live RuneLite/OS clipboard acceptance remains open; synthetic tests do not validate
 Nex HUD/weapon/DC mappings or infer attack opportunities, consumption or procs.
+
+## Live one-copy check (22 October 2026)
+
+One user-supplied live report from **IronPath 0.28.3 / RuneLite 1.13.2**, code
+`b46df204f9a24d47a9097217b8647145c8282acc`, was parsed and inspected in this session.
+The raw report remains outside Git. These are aggregate diagnostic findings from
+one kill, not a public capture fixture or validation of combat attribution.
+No independent action/video log was supplied; the kill has no recorded timestamp.
+
+### Export result: passed for this report
+
+- Status READY, outcome COMPLETE; measured interval **578 ticks / 346.8 seconds**.
+  The report covers Smoke, Shadow, Blood, Ice and Zaros, and all four minions.
+- The single pasted report contains a valid `nex-evidence-1` JSON block with
+  **1,444 retained observations**, **1,284 exported events**, **160 unchanged
+  polls omitted**, **866 main samples**, **5 pre-start samples** and **578
+  deduplicated states**. Callback order and all referenced state indices validate.
+- `captureTruncated=false`, `correlationLimited=false`, `exportOmissions=0` and
+  `exportComplete=true`; narrative fields are not size-truncated. The overview
+  omits two animation groups by its own bound; their events remain in the JSON.
+- Evidence includes retained target/form changes, actor-bar/unknown HP, weapon switches,
+  launch state, energy/DC callbacks and completion-grace resources through tick
+  590. Measured-end energy is 200 tenths-percent; a separate tick-579 callback
+  records 300. That tail does not extend the measured interval or replace its
+  final energy reading.
+- This demonstrates one-report ingestion without navigating event pages. It does
+  not independently establish whether the native OS clipboard API or selectable
+  fallback supplied the pasted text, or establish repeated-run reliability.
+
+### Observation findings: follow-up required
+
+| Channel | Direct evidence | Limit / status |
+|---|---|---|
+| HP | 162 ACTOR_BAR and 90 UNKNOWN health events; Nex ordinary/Soul Split/Deflect Melee forms and all four minions are represented | Actor-bar intervals remain conditional on their reviewed maximum/semantics; no exact impact-time HP claim |
+| Integer HUD | 233 variable updates, 241 script callbacks; first failed guards: 136 NO_FRESH_VARIABLE and 105 WIDGET_HIDDEN; zero accepted | Callbacks exist. This does not prove that Nex supplies a usable integer HUD or identify a broken setting |
+| Projectiles | 379 retained projectiles; every `localSource` is false | In this adapter, known non-local sources are filtered before capture; false therefore represents an unresolved/null source here, not an observed other player. No local projectile was identified; ranged correlation remains unsupported |
+| Hitsplats / impacts | 10 own impacts, including one zero, sum to 167; reported local/total damage is 167/636 | Strong coverage inconsistency: Nex bar bounds alone move from 3286–3314 to 29–57, before accounting for minions. The 26.26% observed ratio is not accepted as whole-kill damage contribution. Root cause is not established |
+| Animations | 44 bow ordinary, 41 Fang ordinary and 6 Voidwaker special candidates; 72 other callbacks remain UNCLASSIFIED | These are 163 animation callbacks, not 163 confirmed attacks. Six special-animation candidates coincide by tick with six -500 energy callbacks; causal attribution remains unvalidated |
+| Gear | Frozen states include Twisted bow, Fang and Voidwaker; every exported state has Lightbearer | The observed state evidence is available; launch/server action-order and package-effect acceptance remain separate |
+
+The six -500 energy changes are at ticks **4, 124, 134, 266, 504 and 508**.
+At tick 504 the report preserves both 900→1000 and 1000→500 in callback order.
+No special count is inferred from net energy changes or hypothetical schedules.
+
+Death Charge evidence is also inspectable from the same copy:
+
+| Cast-effect tick | Active client/server reading | Next recorded active zero | Subsequent/nearby tracked minion death |
+|---|---|---|---|
+| 109 | 2 / 2 | 209 | Umbra 209 |
+| 223 | 2 / 2 | 323 | Cruor 348 |
+| 370 | 2 / 2 | 470 | Glacies 471 |
+
+There are three cast-effect records, no end-effect records, no observed active
+2→1 transition and no +150 energy callback. These observations establish neither
+an eligible proc nor the cause of charge loss. Do not relabel the zeros as expiry,
+claim a failed proc, or turn this sequence into tactical advice.
+
+**Acceptance boundary:** the complete one-copy export works on this supplied
+live report. `COMPLETE` establishes correlated encounter completion, not complete
+hitsplat/projectile attribution. Damage coverage and local projectile attribution
+remain unresolved. HUD availability, animation mappings, DC semantics and controlled
+full-energy/stock/lifecycle tests retain their existing acceptance requirements.
+No numerical model, recommendation or runtime behavior was changed by this review.
+
+### Proposed separate issue
+
+Suggested title: **Validate Nex hitsplat coverage and projectile source evidence**.
+The active follow-up is tracked in [TASKS](../../TASKS.md); no new issue is created
+by this documentation update.
+
+- Reproduce why observed local/total damage coverage is so low. Add bounded,
+  allowlisted counters at the public-event and filtering/classification boundaries
+  to distinguish missing callbacks, rejected targets/views, duplicate handling and
+  hitsplat classification. Do not guess a root cause from this report alone.
+- Preserve source UNKNOWN separately from LOCAL/OTHER in projectile diagnostics;
+  validate the supported public API's source availability and callback timing.
+  Do not assign ownership from projectile ID, nearest animation or likely gear.
+- Use focused regressions plus controlled client examples with independent
+  attack/hitsplat notes, including positive/zero hits, delayed projectiles and
+  target/gear switches. A candidate correlation alone cannot establish coverage.
+- Make any damage-share presentation/support correction explicit if whole-kill
+  coverage remains unverified. Preserve independently useful timing, HP and
+  resource evidence; do not replace missing measurements with modeled damage.
+- Retain privacy/allowlists, memory and lifecycle bounds, unknowns, one-copy export,
+  UI pagination and existing arithmetic. Run the required tests/DEV1 after fixes.
+  HUD/DC semantic acceptance can be tracked separately; it is not silently passed.

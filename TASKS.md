@@ -1,6 +1,6 @@
 # IronPath active work
 
-Updated **20 October 2026**. This is the **only active backlog and roadmap**.
+Updated **22 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized merging the complete 0.23.3 delivery into main and cleaning
 up covered PRs/branches on 19 October. This includes CTX1 #43, native UI1 #46,
@@ -21,6 +21,7 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
 | For review | **N3 decision support (0.27.0)** | Declared per-attack conditions, Magic-type Voidwaker under Deflect Melee, supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
 | For review, dependent on PR #50 | **Nex observation (0.28.3)** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
+| Follow-up issue to create | **Nex damage coverage / projectile source evidence** | One live 0.28.3 report confirms whole-capture export but shows only 10 own impacts / 636 total damage and no identified local projectile; [findings and proposed issue scope](docs/validation/nex-observation.md#live-one-copy-check-22-october-2026). Root cause and attribution remain open |
 | After evidence validation | **N3 automatic recommendations** | Exact launch/HP/readiness/cast/consumption evidence remains unavailable; declared scenarios cannot establish it |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
