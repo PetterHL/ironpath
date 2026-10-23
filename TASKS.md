@@ -21,7 +21,7 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
 | For review | **N3 decision support (0.27.0)** | Declared per-attack conditions, Magic-type Voidwaker under Deflect Melee, supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
 | For review, dependent on PR #50 | **Nex observation (0.28.3)** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
-| Issue [#52](https://github.com/PetterHL/ironpath/issues/52), follow-up from PR #51 `feb439b` | **Nex damage coverage / projectile source evidence (0.29.0)** | One live 0.28.3 report confirms whole-capture export but shows only 10 own impacts / 636 total damage and no identified local projectile; [findings and proposed issue scope](docs/validation/nex-observation.md#live-one-copy-check-22-october-2026). Root cause and attribution remain open; [source review, corrections and validation](docs/validation/nex-damage-observation.md). Focused delivery tracks #52; live acceptance remains open |
+| Issue [#52](https://github.com/PetterHL/ironpath/issues/52), PR [#53](https://github.com/PetterHL/ironpath/pull/53) | **Nex damage coverage / projectile source evidence (0.29.0)** | One live kill confirms object reuse (487/513 callbacks), retains all 171 own impacts and matches per-target damage minus healing to 5,400 HP. [Evidence and limits](docs/validation/nex-damage-observation.md#live-one-copy-check--23-october-2026). Projectile/HUD attribution, resource semantics and broader lifecycle acceptance remain open |
 | After evidence validation | **N3 automatic recommendations** | Exact launch/HP/readiness/cast/consumption evidence remains unavailable; declared scenarios cannot establish it |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
@@ -48,8 +48,16 @@ which authorizes this dependent correction branch despite the default main-first
 - [x] Complete required sequential builds, source/version evidence and native font 12/20
   review: 410 tests / 47 suites on RuneLite 1.13.2 and 1.13.3; 14 DEV1 scenarios /
   1,137 checks. Focused issue #52 links the delivery PR with exact commit/CI/artifact evidence.
-- [ ] Next live capture: locate actual losses with boundary counters; do not claim synthetic
-  reuse as the live root cause. Broader DC/full-energy semantics remain separate research.
+- [x] Analyze the supplied 0.29.0 live report: 487/513 repeated-object callbacks,
+  all 171 own impacts retained, and damage minus healing matches each target's HP.
+  This confirms the correction for one kill; the earlier kill is not reconstructed.
+- [ ] Investigate the 364 UNKNOWN projectile sources and rejected HUD bindings offline;
+  do not infer ownership or exact HP from animation, ID or bar loss.
+- [ ] Research full-cap regeneration and DC eligibility/active transitions separately
+  using the existing report; no resource/model change is authorized by this evidence alone.
+- [ ] Bank return / next kill / arena reload: separate deferred lifecycle acceptance.
+  A second kill is not a prerequisite for accepting this single-kill correction or
+  continuing offline analysis/documentation; the user confirmed this on 23 October.
 
 [Verification and short next-live procedure](docs/validation/nex-damage-observation.md).
 No merge or Plugin Hub publication is authorized.

@@ -8,6 +8,11 @@ you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
 **23 October 2026: development build 0.29.0 — Nex callback coverage follow-up.**
+One supplied live kill now confirms repeated hitsplat-object use, retains all 171
+own impacts and matches damage minus healing to the HP of all five targets.
+[Single-kill findings and remaining gates](docs/validation/nex-damage-observation.md#live-one-copy-check--23-october-2026).
+Bank/next-kill acceptance is deferred; projectile sources and resource semantics remain open.
+
 Damage contribution now reads **Unverified** while whole-kill coverage is open.
 Diagnostics preserves the scoped recorded damage sums/ratio. Direct hitsplat
 callback processing no longer rejects events by payload-object identity; bounded

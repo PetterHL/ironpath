@@ -23,8 +23,9 @@ All RuneLite references below are pinned to **1.13.2**,
 - [Hooks.post](https://github.com/runelite/runelite/blob/84233cdb5ebc324d1d079de9da0ce61a772558fc/runelite-client/src/main/java/net/runelite/client/callback/Hooks.java)
   forwards to the event bus. IronPath has one subscribed forwarding handler.
   The public source does not establish the injected client's object allocation
-  lifetime. The resolved binary supplies the narrower evidence below; no live
-  session object reuse or duplicate dispatch has been demonstrated.
+  lifetime. The resolved binary supplies the narrower evidence below. The later
+  23 October live check confirms repeated object use; duplicate dispatch has
+  not been demonstrated.
 
 The actual Gradle-resolved `net.runelite:injected-client:1.13.2` artifact was
 also inspected using JDK 11 `jar`/`javap -p -c` during development. SHA-256:
@@ -56,8 +57,11 @@ callback or censors capture. Synthetic mutable reuse reproduces the former
 filter's failure mode, now supported
 by the pinned binary's reuse path, **not a replay of the supplied live kill or a
 measured explanation of all its missing damage**.
-The next report is needed to locate real losses. Removing the unsupported gate
-does not prove whole-kill coverage or recover previously omitted damage.
+The later 23 October live report confirms 487 repeated-object callbacks among
+513 tracked-target callbacks, preserves all 171 own impacts and passes the
+per-target damage-minus-healing check. This supports the correction for that
+kill; it does not recover or quantify all losses in the earlier 0.28.3 report.
+[Detailed single-kill evidence and limits](../validation/nex-damage-observation.md#live-one-copy-check--23-october-2026).
 
 ## Source comparison and disposition
 
@@ -67,7 +71,7 @@ does not prove whole-kill coverage or recover previously omitted damage.
 | [Damage Counter](https://github.com/0anth/damage-counter/blob/d69450bf84a738c696fa71591cd3a9700562f236/src/main/java/com/damagecounter/DamageCounterPlugin.java), `d69450bf84a738c696fa71591cd3a9700562f236` | Same immediate event pattern, no fight-long payload identity guard. Do not adopt its broad total accumulation, boss-reset or Party/name handling. Keep explicit heal/unclassified treatment. |
 | [Combat Logger](https://github.com/SuperNerdEric/combat-logger/blob/c2805b8faef25ec90dae9042d71c8bf08a8c387d/src/main/java/com/combatlogger/CombatLoggerPlugin.java), `c2805b8faef25ec90dae9042d71c8bf08a8c387d` | Immediate scalar capture and explicit unknown source support the existing immutable path. Party evidence stays separate. No names, full containers, disk log, queue, Party integration or source inference imported. |
 | [Special Counter](https://github.com/runelite/runelite/blob/84233cdb5ebc324d1d079de9da0ce61a772558fc/runelite-client/src/main/java/net/runelite/client/plugins/specialcounter/SpecialCounterPlugin.java) | Energy callback may precede actor update; captures original tick before deferred actor read. Already adapted in IronPath: original payload/time/server reading and later tick state are separate. Preserve both; no parallel deferred classifier, confirmed spec or weapon attribution from a delta. |
-| [Regeneration Meter](https://github.com/runelite/runelite/blob/84233cdb5ebc324d1d079de9da0ce61a772558fc/runelite-client/src/main/java/net/runelite/client/plugins/regenmeter/RegenMeterPlugin.java) | Compares fixed Lightbearer interval and ring-switch clock adjustment; resets the regeneration clock at 1000 energy. Full-cap behavior remains unresolved against the existing declared model. Record as a separate mechanics follow-up; do not silently change SpecTimeline or infer readiness. |
+| [Regeneration Meter](https://github.com/runelite/runelite/blob/84233cdb5ebc324d1d079de9da0ce61a772558fc/runelite-client/src/main/java/net/runelite/client/plugins/regenmeter/RegenMeterPlugin.java) | Compares fixed Lightbearer interval and ring-switch clock adjustment; resets the regeneration clock at 1000 energy. The later live capture records full energy at tick 129, spending at 137 and the next +10% at 162. General full-cap behavior remains a separate mechanics follow-up; do not silently change SpecTimeline or infer readiness. |
 | [Timers and Buffs](https://github.com/runelite/runelite/blob/84233cdb5ebc324d1d079de9da0ce61a772558fc/runelite-client/src/main/java/net/runelite/client/plugins/timersandbuffs/TimersAndBuffsPlugin.java) | DC active 2 creates a timer, 1 creates only after 0, and 0 removes it. Already retain raw active/client/server transitions and normal/upgraded effects. Timer display is not proof of proc, expiry, cast or causal energy restoration; broader DC semantics remain separate. |
 
 The processing integration, counters and tests are independently authored. The
@@ -132,4 +136,4 @@ page-independent; unchanged-poll compaction, allowlists, bounds, worker guards,
 privacy and clipboard fallback remain. The old `nex-evidence-1` contract is not
 silently relabeled. UI pagination remains 12 rows.
 
-[Validation and next live procedure](../validation/nex-damage-observation.md).
+[Validation, single-kill live findings and deferred checks](../validation/nex-damage-observation.md).

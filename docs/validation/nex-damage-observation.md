@@ -4,10 +4,10 @@
 `feb439bdc93278e05b08844a0ab941f5593adf87`; underlying PR #50 is
 `f02028dd0af74e358e69e8b268bdcae64c669761`. Main checked at `7f68d0e`.
 [Research, source revisions and decisions](../research/nex-damage-observation.md).
-The 0.28.3 live report's coverage cause remains unresolved; no new gameplay
-or dynamic client object-reuse observation is claimed. Development inspection
-of the resolved 1.13.2 binary confirms a mutable slot-reuse path; the research
-record identifies its checksum and exact evidence boundary.
+The original offline delivery is recorded below. The supplied 0.29.0 live report
+now confirms repeated hitsplat-object use and a complete per-target damage/healing
+accounting check for one kill; see the dated live check. Its findings do not
+quantify all losses in the earlier 0.28.3 kill or establish general coverage.
 
 ## Verification scope
 
@@ -68,27 +68,93 @@ and its focused follow-up PR. That PR records the exact delivered commit,
 current-head CI run and artifact links. No raw live report or bytecode dump is
 included in Git.
 
-## Next live check
+## Live one-copy check — 23 October 2026
 
-1. Load the identified build; enable observation before the smoke start. Run one
-   ordinary Trio MP2 kill through completion. Copy report once from Diagnostics;
-   event-page navigation is unnecessary. Keep the original report outside Git.
-2. Check build/adapter/schema, `captureTruncated`, counter `atLimit`, callback/
-   export counts and omissions. Inspect NEX and each minion independently:
-   entry sums → first rejection boundary → own/other/heal/unclassified → retained/
-   omitted impacts. Counters include post-death callbacks and overlapping reuse
-   diagnostics; compare measured classes with recorded damage, not entry totals.
-3. Inspect repeated-object counts without assuming they explain the former live
-   loss. Check callback starvation versus target/view/lifecycle exclusions versus
-   unknown classification and observation overflow. No single result establishes
-   repeated-session coverage or server contribution.
-4. Inspect flight `source` and callback exclusion counts. UNKNOWN remains unknown;
-   no ownership from ID/proximity/animation. Compare delayed ordinary/special/zero
-   events and gear switches only as unvalidated candidate links.
-5. Bank, return for the next kill, and exercise an arena reload. Confirm frozen
-   report selection and 50-record/reset/identity boundaries. Separately compare
-   original energy/DC callbacks to settled readings, including spending after full
-   energy; DC proc/expiry and full-energy mechanics require their own evidence.
+One user-supplied report identifies **LIVE_PUBLIC_CLIENT / READY**, build
+**0.29.0**, adapter `nex-public-9`, RuneLite **1.13.2**, export `nex-evidence-2`.
+The reviewed code delivery is `14cd28b23d00af6fba4abced1cd074ae8b25d7b4`;
+the report itself embeds a build version, not a commit SHA. No kill timestamp is
+recorded; 23 October is the review date. The original report remains outside Git
+(SHA-256 `ce2920c5bec6d646cd3455f40bd45ae4f71d92b2cbbc21515a2398305b957776`).
+Only bounded aggregate findings and relative tick offsets are documented here.
 
-Whole-kill contribution remains unavailable. No merge, Plugin Hub publication,
-automatic recommendation, consumption inference or N4/time claim.
+**Capture/export:** COMPLETE; **567 / 567** sampled/expected ticks, **340.2 s**
+from observed smoke to dying, all five phases. The JSON parses with strictly
+increasing retained callback order: **1,559 retained observations, 1,406 exported
+callbacks, 153 unchanged polls omitted, zero export omissions**. Neither capture
+nor correlation is truncated/limited; no callback counter is at its saturation
+limit. The 860 main and 10 pre-start state rows remain within the 1,024-row bound.
+This verifies one-copy ingestion for this report, not repeated clipboard or
+bank/reload behavior.
+
+**Hitsplat correction:** **513** callbacks on the five tracked targets include
+**487 repeated-object callbacks**. All **171 own impacts / 2,090 damage** are
+retained, including **52 zero-damage impacts**. There are **313 other-classified
+hits / 4,184 damage** and **29 healing callbacks / 874 healing**. No tracked target
+hits are rejected by identity, missing/view/tracking guards, unclassified type or
+capture boundaries; no own impact is omitted. The outside/non-NPC rejection
+counts remain separate and do not enter these totals.
+
+| Target | Own damage | Other damage | Healing | Damage minus healing |
+|---|---:|---:|---:|---:|
+| Nex | 1,404 | 2,865 | 869 | 3,400 |
+| Fumus | 177 | 323 | 0 | 500 |
+| Umbra | 194 | 306 | 0 | 500 |
+| Cruor | 150 | 355 | 5 | 500 |
+| Glacies | 165 | 335 | 0 | 500 |
+| Total | 2,090 | 4,184 | 874 | 5,400 |
+
+Thus **6,274 damage − 874 healing = 5,400**, matching the reviewed initial HP
+of Nex and four minions, independently for each target. This is strong
+single-kill evidence for the corrected callback handling and damage accounting.
+It confirms live object reuse and that the old fight-long identity gate would
+reject repeated objects. It does not reconstruct the earlier kill, prove every
+callback's causal owner, exclude offsetting errors, establish universal coverage
+or validate server contribution/loot semantics. The recorded **33.3121%** ratio
+remains diagnostic; the Unverified headline and null whole-kill contribution stay.
+
+**Remaining observation evidence:** all **364 retained projectiles** have
+`source=UNKNOWN`; there is no identified LOCAL flight. Existing ranged links
+therefore remain unavailable/candidates, never inferred from animation or ID.
+Zero HUD bindings were accepted: 270 script callbacks split into 136 no-fresh-
+variable and 134 hidden-widget rejections. The disabled counter is zero; this
+report does not show that a HUD setting was disabled. Quantized actor-bar
+readings remain available.
+
+**Resource follow-up from the existing capture:** energy reaches 1,000 at relative
+tick 129, falls to 500 at tick 137 and rises to 600 at tick 162: the next +10%
+reading is **25 ticks after spending from full**. In contrast, spending at tick
+224 follows a regeneration reading at 212 and precedes the next at 237, retaining
+the 25-tick interval while below full. These are observed sequences relevant to
+the model's full-cap clock; they do not establish a general replacement rule.
+At Cruor's tick-290 death, +150 energy and Death Charge active 2→1 occur in the
+same cycle; Umbra's tick-178 death has no matching restoration/active transition.
+Six Voidwaker 11275 animation candidates coincide with energy drops, retaining
+immutable callback gear and settled-state distinctions. These observations do
+not automatically confirm spec execution, eligible deaths, casts, procs or expiry.
+No SpecTimeline, Death Charge kernel or automatic readiness gate is changed here.
+
+Checks performed for this documentation update: reparse the supplied JSON;
+verify chronology, retention counts, every target's arithmetic, reused-object
+counts, all own impact sums/zero hits, saturation flags, source uncertainty and
+resource offsets; validate changed-document links and `git diff --check`.
+The 410-test / 14-scenario results above remain scoped to the code delivery.
+No new gameplay, automated test result or implementation change is claimed by
+this documentation-only update.
+
+## Remaining work and deferred live checks
+
+The user agreed to continue analysis/documentation from this report. **A second
+kill is not required to accept this single-kill hitsplat correction or continue
+offline work.** Bank return, a subsequent capture and arena reload remain a
+separate lifecycle acceptance item, deferred until gameplay is convenient.
+
+- Investigate projectile source availability/timing from public API/source evidence;
+  retain UNKNOWN and the existing filter/correlation scope meanwhile.
+- Keep integer Nex HUD validity open; use actor-bar bounds without guessing exact HP.
+- Research full-energy regeneration and Death Charge eligibility/active transitions
+  separately, using the existing report before requesting another targeted capture.
+- Broader lifecycle acceptance, whole-kill/server contribution, automatic
+  recommendations, consumption and N4/time estimates remain open.
+
+No merge or Plugin Hub publication is authorized.
