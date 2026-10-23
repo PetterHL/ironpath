@@ -54,7 +54,9 @@ public class NexDiagnosticsTest
 		assertTrue(text.contains("schema 2")); assertTrue(text.contains("SYNTHETIC_OFFLINE"));
 		assertTrue(text.contains("Report-local kill: K1")); assertFalse(text.contains("kill #1"));
 		assertTrue(text.contains("immutable calculation revision: "+result.revision));
-		assertTrue(text.contains("20 / 80; share percent: 25.0"));
+		assertTrue(evidence(text).get("wholeKillContributionPercent").isJsonNull());
+		assertEquals("UNVERIFIED",evidence(text).get("damageCoverage").getAsString());
+		assertTrue(text.contains("20 / 80; recorded hitsplat ratio percent (coverage unverified): 25.0"));
 		assertTrue(text.contains("RANGED=112")); assertTrue(text.contains("ammo=11212"));
 		assertTrue(text.contains("Relevant carried candidate quantity · item 11212: 200"));
 		assertTrue(text.contains("selected quiver projectile: 21326"));
@@ -85,7 +87,7 @@ public class NexDiagnosticsTest
 		var launch=new NexObservations.Launch(100,300,launchSample,NexObservations.Weapon.TWISTED_BOW,NexObservations.Attack.ORDINARY_CANDIDATE);
 		List<NexObservations.Signal> signals=new ArrayList<>();
 		for(int i=0;i<40;i++) { signals.add(new NexObservations.Signal(i%2==0?NexObservations.Kind.TICK_RESOURCES:NexObservations.Kind.ENERGY,12+i,361+i,103+i,500+i,600+i,PRIVATE,sample.state)); }
-		var observations=new NexObservations(List.of(launch),signals,List.of(new NexObservations.Flight(10,301,101,1120,300,360,sample.target,true)),
+		var observations=new NexObservations(List.of(launch),signals,List.of(new NexObservations.Flight(10,301,101,1120,300,360,sample.target,NexObservations.Source.LOCAL)),
 			List.of(new NexObservations.Impact(12,360,102,sample.target,0,target)),false);
 		return new NexSummary(old.key,old.startTick,old.endTick,old.sampledTicks,old.expectedTicks,old.unclassifiedHits,old.outcome,old.reason,old.cohort,old.method,old.timeline,old.damage,old.gaps,old.signals,old.beforeStart,old.context,old.comparability,observations);
 	}
@@ -97,7 +99,7 @@ public class NexDiagnosticsTest
 		assertTrue(first.contains("relative cycle=60; relative order=2; target=T1/NEX"));
 		assertFalse(first.contains(PRIVATE)); assertTrue(first.contains("outside=31"));
 		String middle=NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.READY,null,1).format();
-		assertTrue(middle.contains("\"schema\":\"nex-evidence-1\"")); assertTrue(middle.contains("\"value\":509"));
+		assertTrue(middle.contains("\"schema\":\"nex-evidence-2\"")); assertTrue(middle.contains("\"value\":509"));
 		assertEquals(middle,NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.READY,null,0).format());
 		assertFalse(middle.contains("Projectile F1")); assertFalse(middle.contains(PRIVATE)); assertTrue(middle.length()<=NexReport.MAX_CHARS);
 		assertEquals(window.page(3),window.page(Integer.MAX_VALUE));
@@ -109,7 +111,7 @@ public class NexDiagnosticsTest
 		List<NexObservations.Launch> launches=new ArrayList<>(); List<NexObservations.Flight> flights=new ArrayList<>();
 		List<NexObservations.Impact> impacts=new ArrayList<>();
 		for(int i=0;i<400;i++) { launches.add(new NexObservations.Launch(i,300,sample,NexObservations.Weapon.TWISTED_BOW,NexObservations.Attack.ORDINARY_CANDIDATE)); }
-		for(int i=0;i<400;i++) { flights.add(new NexObservations.Flight(10,301,400+i,1120,300,360,sample.target,true)); }
+		for(int i=0;i<400;i++) { flights.add(new NexObservations.Flight(10,301,400+i,1120,300,360,sample.target,NexObservations.Source.LOCAL)); }
 		for(int i=0;i<1248;i++) { impacts.add(new NexObservations.Impact(12,360,800+i,sample.target,0,NexTargetState.UNKNOWN)); }
 		var observations=new NexObservations(launches,List.of(),flights,impacts,true);
 		var summary=new NexSummary(old.key,old.startTick,old.endTick,old.sampledTicks,old.expectedTicks,old.unclassifiedHits,old.outcome,old.reason,old.cohort,old.method,old.timeline,old.damage,old.gaps,old.signals,old.beforeStart,old.context,old.comparability,observations);
@@ -149,7 +151,7 @@ public class NexDiagnosticsTest
 			panel.render("Observed",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Calculation details");
 			PanelPreview.combo(panel,"nex-observation-page").setSelectedIndex(1);
-			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("\"schema\":\"nex-evidence-1\""));
+			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("\"schema\":\"nex-evidence-2\""));
 			panel.render("Refresh",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
 			assertEquals(1,PanelPreview.combo(panel,"nex-observation-page").getSelectedIndex());
 			panel.render("Nex session paused",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
@@ -181,7 +183,7 @@ public class NexDiagnosticsTest
 				var form=new NexTargetState(t>=500 && t<600?NexTargetState.Form.MINION:NexTargetState.Form.NEX,15,30);
 				var sample=new NexSummary.Sample(t,"BLOOD","NONE",target,"ranged",426,state,form);
 				launches.add(new NexObservations.Launch(t*10+1,t*30,sample,NexObservations.Weapon.TWISTED_BOW,NexObservations.Attack.ORDINARY_CANDIDATE));
-				flights.add(new NexObservations.Flight(t,t*30,t*10+2,1120,t*30,t*30+60,target,true,form));
+				flights.add(new NexObservations.Flight(t,t*30,t*10+2,1120,t*30,t*30+60,target,NexObservations.Source.LOCAL,form));
 				impacts.add(new NexObservations.Impact(t+2,t*30+60,t*10+3,target,t%20==0?0:42,form));
 			}
 		}
@@ -351,7 +353,7 @@ public class NexDiagnosticsTest
 		for(var state:List.of(NexReport.State.NO_ACCOUNT,NexReport.State.PAUSED,NexReport.State.RESET,NexReport.State.NOT_READY))
 		{
 			String text=report(summary,result,0,0,state).format();
-			assertFalse(text.contains("Report-local kill:")); assertFalse(text.contains("Actual slots")); assertFalse(text.contains("share percent: 25.0"));
+			assertFalse(text.contains("Report-local kill:")); assertFalse(text.contains("Actual slots")); assertFalse(text.contains("recorded hitsplat ratio percent (coverage unverified): 25.0"));
 		}
 		String text=report(summary,evaluate(summary(2,true)),0,0,NexReport.State.PENDING).format();
 		assertTrue(text.contains("No other kill's result exported")); assertFalse(text.contains("Candidate slots"));
@@ -426,7 +428,7 @@ public class NexDiagnosticsTest
 			panel.render("Identity changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"");
 			copied.set("unchanged"); stale.doClick(); assertEquals("unchanged",copied.get());
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
-			assertFalse(copied.get().contains("Actual slots")); assertFalse(copied.get().contains("share percent: 25.0"));
+			assertFalse(copied.get().contains("Actual slots")); assertFalse(copied.get().contains("recorded hitsplat ratio percent (coverage unverified): 25.0"));
 		});
 	}
 	private static void assertReportInteraction(NexPanel panel,JTextArea original,String frozen,java.awt.Point position,int detachments)

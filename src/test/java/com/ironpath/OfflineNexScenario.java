@@ -51,7 +51,7 @@ final class OfflineNexScenario extends OfflineNexClient
 		when(hit.getHitsplatType()).thenReturn(mine ? HitsplatID.DAMAGE_ME : HitsplatID.DAMAGE_OTHER);
 		when(hit.getAmount()).thenReturn(amount);
 		HitsplatApplied event = new HitsplatApplied(); event.setActor(actor); event.setHitsplat(hit);
-		observer.hit(event); observer.hit(event); // Same object duplicate must not double-count.
+		observer.hit(event);
 	}
 
 	void run(Path output, ReviewReport report) throws Exception
@@ -81,7 +81,7 @@ final class OfflineNexScenario extends OfflineNexClient
 			}
 			if (t == 5) { replay.at(t, "Shadow game message", () -> observer.chat(ChatMessageType.GAMEMESSAGE, "Nex: Darken my shadow!")); }
 			if (t == 8) { replay.at(t, "Ranged MP2 window", () -> observer.overhead(boss, "Embrace darkness!")); }
-			if (t == 9) { replay.at(t, "20 mine on Nex, 60 other on Umbra; duplicate callbacks", () -> { hit(boss, true, 20); hit(minion, false, 60); }); }
+			if (t == 9) { replay.at(t, "20 mine on Nex, 60 other on Umbra", () -> { hit(boss, true, 20); hit(minion, false, 60); }); }
 			if (t == 10)
 			{
 				replay.at(t, "Equip melee with defender and Piety before window callback", () -> worn = NexOwnedFixtures.melee());

@@ -44,11 +44,11 @@ final class NexReport
 		long contextRevision=record!=null && record.summary==summary?record.revision:result!=null && result.summary==summary?result.contextRevision:0;
 		out.add("Attempt-start context (defaults): "+summary.context.label()+"; "+summary.context.provenance());
 		out.add("Effective context revision: "+contextRevision+"; "+context.label()+"; "+context.provenance());
-		out.add("Output support: observed duration/share unchanged; conditional ordinary arithmetic uses captured state and frozen planning inputs. Pilot context confirmed="+context.pilot()+". Automatic method recommendations and team-time estimates unavailable.");
+		out.add("Output support: observed duration retained; whole-kill damage contribution unavailable (coverage unverified); conditional ordinary arithmetic uses captured state and frozen planning inputs. Pilot context confirmed="+context.pilot()+". Automatic method recommendations and team-time estimates unavailable.");
 		out.add("Comparability: "+(record==null?"not evaluated":record.exclusion()==null?"eligible for descriptive matching; count alone is insufficient":record.exclusion())+". Planning locks are not observed performance; roster identities omitted.");
 		out.add("Timer: "+summary.timerScope+"; duration seconds: "+summary.seconds());
 		out.add("Damage scope: "+NexSummary.DAMAGE_SCOPE);
-		out.add("Observed local/total hitsplats: "+summary.localDamage()+" / "+summary.totalDamage()+"; share percent: "+summary.share());
+		out.add("Observed local/total hitsplats: "+summary.localDamage()+" / "+summary.totalDamage()+"; recorded hitsplat ratio percent (coverage unverified): "+summary.share());
 		out.add("Sampled/expected ticks: "+summary.sampledTicks+" / "+summary.expectedTicks+"; unclassified hits: "+summary.unclassifiedHits);
 		if(summary.signals!=null)
 		{

@@ -1,6 +1,6 @@
 # IronPath active work
 
-Updated **22 October 2026**. This is the **only active backlog and roadmap**.
+Updated **23 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized merging the complete 0.23.3 delivery into main and cleaning
 up covered PRs/branches on 19 October. This includes CTX1 #43, native UI1 #46,
@@ -21,12 +21,46 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
 | For review | **N3 decision support (0.27.0)** | Declared per-attack conditions, Magic-type Voidwaker under Deflect Melee, supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
 | For review, dependent on PR #50 | **Nex observation (0.28.3)** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
-| Follow-up issue to create | **Nex damage coverage / projectile source evidence** | One live 0.28.3 report confirms whole-capture export but shows only 10 own impacts / 636 total damage and no identified local projectile; [findings and proposed issue scope](docs/validation/nex-observation.md#live-one-copy-check-22-october-2026). Root cause and attribution remain open |
+| Issue [#52](https://github.com/PetterHL/ironpath/issues/52), PR [#53](https://github.com/PetterHL/ironpath/pull/53) | **Nex damage coverage / projectile source evidence (0.29.0)** | One live kill confirms object reuse (487/513 callbacks), retains all 171 own impacts and matches per-target damage minus healing to 5,400 HP. [Evidence and limits](docs/validation/nex-damage-observation.md#live-one-copy-check--23-october-2026). Projectile/HUD attribution, resource semantics and broader lifecycle acceptance remain open |
 | After evidence validation | **N3 automatic recommendations** | Exact launch/HP/readiness/cast/consumption evidence remains unavailable; declared scenarios cannot establish it |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
 
 Deliver future changes through focused PRs; no automatic merge or Plugin Hub publication.
+
+## Nex callback coverage follow-up (0.29.0)
+
+Integration base: PR #51 `feb439bdc93278e05b08844a0ab941f5593adf87`, dependent
+on PR #50 `f02028dd0af74e358e69e8b268bdcae64c669761`; main `7f68d0e`.
+This follows the explicit [23 October handoff](https://github.com/PetterHL/ironpath/pull/51#issuecomment-6359152035),
+which authorizes this dependent correction branch despite the default main-first rule.
+
+- [x] Compare pinned public callback contracts and the six requested plugin implementations;
+  [record adopted/existing/deferred patterns and notices](docs/research/nex-damage-observation.md).
+- [x] Replace unsupported hitsplat-object identity rejection with direct scalar callback
+  capture; fixed enum counters expose entry/filter/classification sums and reuse.
+- [x] Preserve projectile scope and first-callback timing; distinguish LOCAL/OTHER/UNKNOWN,
+  report exclusions, and withhold ranged matches without local-source evidence.
+- [x] Withhold whole-kill contribution at headline/report boundaries; retain observed
+  damage sums/ratio and independent timing/gear/resource results in Diagnostics.
+- [x] Version one-copy export to `nex-evidence-2`; preserve all useful retained events,
+  UI pagination, allowlists, bounded memory, workers, confirmation and lifecycle guards.
+- [x] Complete required sequential builds, source/version evidence and native font 12/20
+  review: 410 tests / 47 suites on RuneLite 1.13.2 and 1.13.3; 14 DEV1 scenarios /
+  1,137 checks. Focused issue #52 links the delivery PR with exact commit/CI/artifact evidence.
+- [x] Analyze the supplied 0.29.0 live report: 487/513 repeated-object callbacks,
+  all 171 own impacts retained, and damage minus healing matches each target's HP.
+  This confirms the correction for one kill; the earlier kill is not reconstructed.
+- [ ] Investigate the 364 UNKNOWN projectile sources and rejected HUD bindings offline;
+  do not infer ownership or exact HP from animation, ID or bar loss.
+- [ ] Research full-cap regeneration and DC eligibility/active transitions separately
+  using the existing report; no resource/model change is authorized by this evidence alone.
+- [ ] Bank return / next kill / arena reload: separate deferred lifecycle acceptance.
+  A second kill is not a prerequisite for accepting this single-kill correction or
+  continuing offline analysis/documentation; the user confirmed this on 23 October.
+
+[Verification and short next-live procedure](docs/validation/nex-damage-observation.md).
+No merge or Plugin Hub publication is authorized.
 
 ## Sidebar simplification (0.23.3)
 

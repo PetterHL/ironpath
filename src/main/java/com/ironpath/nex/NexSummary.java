@@ -10,7 +10,7 @@ import java.util.Set;
 public final class NexSummary
 {
 	public static final String TIMER = "Observed Nex smoke announcement to Nex death/dying; game ticks × 0.6. Not calibrated to the game timer.";
-	public static final String DAMAGE_SCOPE = "Observed mine / (mine + other) damage hitsplats on Nex + Fumus/Umbra/Cruor/Glacies; healing and unclassified types excluded. Not loot credit; thralls/DoT/overkill may differ.";
+	public static final String DAMAGE_SCOPE = "Observed mine / (mine + other) damage hitsplats on Nex + Fumus/Umbra/Cruor/Glacies; healing and unclassified types excluded. Whole-kill coverage UNVERIFIED; this ratio is not whole-kill damage contribution or loot credit; thralls/DoT/overkill may differ.";
 	public static final class Sample
 	{
 		public final int tick, animation;
@@ -90,5 +90,6 @@ public final class NexSummary
 	public double seconds() { return Math.max(0,endTick-startTick)*0.6; }
 	public long localDamage() { return damage.values().stream().mapToLong(d->d.local).sum(); }
 	public long totalDamage() { return damage.values().stream().mapToLong(d->d.total).sum(); }
+	/** Ratio of recorded classified payloads only; no whole-kill coverage or contribution support. */
 	public Double share() { return totalDamage()==0 ? null : 100.0*localDamage()/totalDamage(); }
 }

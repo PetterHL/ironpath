@@ -1,5 +1,12 @@
 # Nex observation verification and client checks
 
+23 October follow-up: build **0.29.0** retains this observation delivery and adds
+[callback/source corrections](../research/nex-damage-observation.md) and
+[new validation](../validation/nex-damage-observation.md). Whole-kill damage
+contribution is Unverified; export advances to `nex-evidence-2`. The results below
+retain their original revision scope.
+
+
 20 October 2026. Build **0.28.2** follows open PR #50 at `f02028d`; checked main
 was `7f68d0e` (0.23.3). The focused PR targets `n3/decision-support` to keep the
 dependency separate. No merge or Plugin Hub publication is authorized here.

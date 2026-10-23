@@ -41,6 +41,7 @@ final class OfflineVisualScenario
 				report.check("At least one multi-item package "+font,true,cards.stream().anyMatch(c->NexPresentation.changedItems(c.pair).size()>1));
 				report.check("Unsupported owned weapon remains an explicit coverage gap "+font,true,cards.stream().anyMatch(c->c.choice.coverage.stream().anyMatch(gap->gap.contains("not modelled"))));
 				SwingUtilities.invokeAndWait(()->{ try {
+					report.check("Whole-kill contribution is unverified "+font,"Unverified",NexScenarioPanelTest.named(r.panel,"nex-share",JTextArea.class).getText());
 					PanelPreview.capture(r.panel,output.resolve("main-"+font+".png"),225,report);
 					concise(r,"Encounter",font,report);
 					for(var card:cards)
@@ -51,7 +52,7 @@ final class OfflineVisualScenario
 						var bounds=SwingUtilities.convertRectangle(metric,new java.awt.Rectangle(0,0,metric.getWidth(),metric.getHeight()),surface);
 						report.check("Centred card metric "+card.choiceIndex+" / "+font,true,Math.abs(bounds.getCenterX()-surface.getWidth()/2.0)<=2);
 					}
-					PanelPreview.viewport(r.panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-duration","nex-edit-context"),report);
+					PanelPreview.viewport(r.panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-duration","nex-share","nex-edit-context"),report);
 					PanelPreview.viewport(r.panel,output.resolve("secondary-collapsed-viewport-"+font+".png"),225,600,"nex-section-team",List.of("nex-section-team","nex-section-diagnostics"),report);
 					PanelPreview.click(r.panel,"More comparisons ("+(cards.size()-2)+")");
 					PanelPreview.capture(r.panel,output.resolve("expanded-"+font+".png"),225,report);

@@ -152,7 +152,7 @@ final class OfflinePluginReplay extends OfflineNexClient implements AutoCloseabl
 		when(hit.getHitsplatType()).thenReturn(mine ? HitsplatID.DAMAGE_ME : HitsplatID.DAMAGE_OTHER);
 		when(hit.getAmount()).thenReturn(amount);
 		HitsplatApplied event = new HitsplatApplied(); event.setActor(target); event.setHitsplat(hit);
-		plugin.onHitsplatApplied(event); plugin.onHitsplatApplied(event);
+		plugin.onHitsplatApplied(event);
 	}
 
 	/** Fresh callbacks produce every summary; no pre-completed summary is injected. */
@@ -173,7 +173,7 @@ final class OfflinePluginReplay extends OfflineNexClient implements AutoCloseabl
 			int offset = t - start;
 			if (offset == 1) { replay.at(t, "Barrier payload 3 before poll", () -> barrier(3)); }
 			if (offset == 2) { replay.at(t, "Shadow ranged window", () -> { overhead("Darken my shadow!"); overhead("Embrace darkness!"); }); }
-			if (offset == 3) { replay.at(t, "Scoped hits; duplicate callbacks", () -> { hit(boss, true, mine); hit(minion, false, other); }); }
+			if (offset == 3) { replay.at(t, "Scoped independent hit callbacks", () -> { hit(boss, true, mine); hit(minion, false, other); }); }
 			if (offset == 4) { replay.at(t, "Melee switch with defender", () -> {
 				worn = NexOwnedFixtures.melee(); overhead("Fear the shadow!");
 				plugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.WORN, client.getItemContainer(InventoryID.WORN)));

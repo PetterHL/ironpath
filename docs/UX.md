@@ -1,5 +1,12 @@
 # Encounter-first UX
 
+Build **0.29.0** shows **Unverified** under Damage contribution until whole-kill
+coverage is established. Diagnostics keeps the scoped recorded numerator,
+denominator and hitsplat ratio; complete timing and independent gear/resource
+results remain available. Export `nex-evidence-2` carries typed projectile source
+and bounded callback boundary counts/sums. [Contract](research/nex-damage-observation.md).
+
+
 Current presentation decisions: **19 October 2026, sidebar simplification / build 0.23.3**,
 retaining the complete PR #48 approved UI (0.23.2).
 [TASKS](../TASKS.md) is the sole backlog. This guidance supersedes earlier requests
@@ -69,9 +76,10 @@ changed item, including ammunition rather than an unchanged weapon, and genuine
 sprites for multi-item packages. There is no filler quota or cross-state ranking.
 Supported zero/negative alternatives remain available through comparison controls.
 
-**Damage contribution** is only the display label for the unchanged observed
-Nex/named-minion hitsplat ratio. Detailed scope and the difference from server loot
-credit belong in Diagnostics. No new attribution/contribution mathematics.
+**Damage contribution** retains its label and displays **Unverified**. Recorded
+Nex/named-minion local/total damage and its unchanged ratio belong in Diagnostics
+with unverified whole-kill coverage. Do not use a coverage threshold or HP-bar
+loss as an inferred denominator. No new attribution/contribution mathematics.
 
 ## Language and settings
 

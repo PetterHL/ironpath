@@ -86,7 +86,7 @@ public class NexObserverTest
 		Hitsplat hit=mock(Hitsplat.class); when(hit.isMine()).thenReturn(mine); when(hit.isOthers()).thenReturn(other);
 		when(hit.getHitsplatType()).thenReturn(type); when(hit.getAmount()).thenReturn(amount);
 		HitsplatApplied event=new HitsplatApplied(); event.setActor(actor); event.setHitsplat(hit);
-		observer.hit(event); observer.hit(event);
+		observer.hit(event);
 	}
 	void phasesAndEnd()
 	{

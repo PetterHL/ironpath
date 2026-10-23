@@ -1,5 +1,12 @@
 # Nex observation slice
 
+23 October follow-up: build **0.29.0** retains this observation delivery and adds
+[callback/source corrections](../research/nex-damage-observation.md) and
+[new validation](../validation/nex-damage-observation.md). Whole-kill damage
+contribution is Unverified; export advances to `nex-evidence-2`. The results below
+retain their original revision scope.
+
+
 22 October 2026. Build **0.28.3**, adapter `nex-public-8`, target readings
 `nex-target-state-2`, evidence `nex-observations-3`, knowledge `n3-observation-1`.
 This is a separate follow-up to open PR #50 (`f02028d`, 0.27.0). Main was checked

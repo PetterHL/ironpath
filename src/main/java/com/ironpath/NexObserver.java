@@ -7,6 +7,8 @@ import com.ironpath.nex.NexSession;
 import com.ironpath.nex.NexTargetState;
 import com.ironpath.nex.NexHealth;
 import com.ironpath.nex.NexObservations;
+import com.ironpath.nex.NexCallbackDiagnostics;
+import static com.ironpath.nex.NexCallbackDiagnostics.Stage.*;
 import com.ironpath.preferences.NexMethod;
 import java.util.*;
 import net.runelite.api.*;
@@ -23,6 +25,7 @@ final class NexObserver
 	private final Set<Integer> melee=new HashSet<>(), ranged=new HashSet<>();
 	private final Map<Integer,Integer> targetMaxima=new HashMap<>();
 	private final Map<NPC,String> targets=new IdentityHashMap<>();
+	// Diagnostic object reuse only. Object identity is not a public event key.
 	private final Set<Hitsplat> hits=Collections.newSetFromMap(new IdentityHashMap<>());
 	private final Set<Projectile> projectiles=Collections.newSetFromMap(new IdentityHashMap<>());
 	private final Map<ActorSpotAnim,Integer> effects=new IdentityHashMap<>();
@@ -238,7 +241,7 @@ final class NexObserver
 		boolean smokeStart=smoke==tick;
 		if(capture.active())
 		{
-			if(smokeStart && capture.anchorSmoke(tick,roster())) { projectiles.clear(); effects.clear(); resetHud(); }
+			if(smokeStart && capture.anchorSmoke(tick,roster())) { hits.clear(); projectiles.clear(); effects.clear(); resetHud(); }
 			return;
 		}
 		if(attempted || boss==null || (barrier!=3 && !(smokeStart && barrier==2))
@@ -386,26 +389,53 @@ final class NexObserver
 		}
 		effects.keySet().retainAll(present);
 	}
+	private void check(NexCallbackDiagnostics.Target target,NexCallbackDiagnostics.Stage stage,int amount)
+	{ capture.callback(target,stage,amount); }
 	synchronized void projectile(Projectile projectile)
 	{
-		if(!enabled || !capture.active() || projectile==null || projectiles.contains(projectile)) { return; }
-		Actor source=projectile.getSourceActor(),target=projectile.getTargetActor();
+		if(!enabled || !capture.active()) { return; }
+		Actor source=projectile==null?null:projectile.getSourceActor(),target=projectile==null?null:projectile.getTargetActor();
 		String identity=target instanceof NPC && sameView(target)?targets.get(target):null;
-		// Ignore known other sources; retain nullable source/target evidence without assigning launch gear.
-		if(source!=null && source!=client.getLocalPlayer() || target!=null && identity==null) { return; }
-		if(projectiles.size()>=NexObservations.MAX) { return; }
+		var scope=target instanceof NPC?NexCallbackDiagnostics.target(targetName(((NPC)target).getId())):NexCallbackDiagnostics.Target.UNKNOWN;
+		check(scope,PROJECTILE_ENTRY,0);
+		if(projectile==null) { check(scope,PROJECTILE_NULL,0); return; }
+		if(projectiles.contains(projectile)) { check(scope,PROJECTILE_REPEAT,0); return; }
+		// Public actors are nullable, with no promised later resolution time. Preserve first-callback scope.
+		if(source!=null && source!=client.getLocalPlayer()) { check(scope,PROJECTILE_OTHER_SOURCE,0); return; }
+		if(target!=null && identity==null) { check(scope,PROJECTILE_OUTSIDE_TARGET,0); return; }
+		if(projectiles.size()>=NexObservations.MAX) { check(scope,PROJECTILE_OBJECT_LIMIT,0); return; }
 		projectiles.add(projectile);
-		capture.flight(new NexObservations.Flight(client.getTickCount(),client.getGameCycle(),++callbackOrder,projectile.getId(),projectile.getStartCycle(),projectile.getEndCycle(),identity,source!=null,
+		var evidence=source==null?NexObservations.Source.UNKNOWN:NexObservations.Source.LOCAL;
+		check(scope,source==null?PROJECTILE_UNKNOWN:PROJECTILE_LOCAL,0);
+		capture.flight(new NexObservations.Flight(client.getTickCount(),client.getGameCycle(),++callbackOrder,projectile.getId(),projectile.getStartCycle(),projectile.getEndCycle(),identity,evidence,
 			identity==null?NexTargetState.UNKNOWN:targetState((NPC)target)));
 	}
 	synchronized void hit(HitsplatApplied event)
 	{
-		if (!enabled || !capture.active() || !(event.getActor() instanceof NPC)) { return; }
-		NPC target=(NPC)event.getActor(); Hitsplat hit=event.getHitsplat();
-		if (targetName(target.getId())==null || !sameView(target) || !targets.containsKey(target) || !hits.add(hit)) { return; }
-		if (hits.size()>NexCapture.MAX_EVENTS) { capture.abort(client.getTickCount(),Outcome.CENSORED,"Hit identity limit"); hits.clear(); return; }
-		if(hit.isMine() && hit.getHitsplatType()!=HitsplatID.HEAL) { capture.impact(new NexObservations.Impact(client.getTickCount(),client.getGameCycle(),++callbackOrder,targets.get(target),hit.getAmount(),targetState(target))); }
-		capture.hit(client.getTickCount(),++hitSerial,targets.get(target),hit.getAmount(),hit.isMine(),hit.isOthers(),hit.getHitsplatType()==HitsplatID.HEAL);
+		if (!enabled || !capture.active()) { return; }
+		Actor actor=event==null?null:event.getActor(); Hitsplat hit=event==null?null:event.getHitsplat();
+		NPC target=actor instanceof NPC?(NPC)actor:null;
+		String name=target==null?null:targetName(target.getId());
+		var scope=target==null?NexCallbackDiagnostics.Target.UNKNOWN:name==null?NexCallbackDiagnostics.Target.OUTSIDE:NexCallbackDiagnostics.target(name);
+		// Freeze scalars on entry; never retain a mutable payload in the worker evidence.
+		int amount=hit==null?0:hit.getAmount(),type=hit==null?-1:hit.getHitsplatType();
+		boolean mine=hit!=null && hit.isMine(),other=hit!=null && hit.isOthers();
+		check(scope,HIT_ENTRY,amount);
+		if(target==null) { check(scope,HIT_NOT_NPC,amount); return; }
+		if(hit==null) { check(scope,HIT_MISSING_PAYLOAD,0); return; }
+		if(name==null) { check(scope,HIT_UNKNOWN_TARGET,amount); return; }
+		if(!sameView(target)) { check(scope,HIT_WRONG_VIEW,amount); return; }
+		if(!targets.containsKey(target)) { check(scope,HIT_UNTRACKED,amount); return; }
+		if(hits.contains(hit)) { check(scope,HIT_REPEATED_OBJECT,amount); }
+		else if(hits.size()<NexObservations.MAX) { hits.add(hit); }
+		else { check(scope,HIT_OBJECT_TRACKING_LIMIT,amount); }
+		// HitsplatApplied describes an application, including non-rendered hits. No identity lifetime is promised.
+		// Count each delivery. Amount/tick and object identity cannot distinguish duplicate dispatch from valid hits.
+		boolean accepted=capture.hit(client.getTickCount(),++hitSerial,targets.get(target),amount,mine,other,type==HitsplatID.HEAL);
+		if(accepted && mine)
+		{
+			capture.impact(new NexObservations.Impact(client.getTickCount(),client.getGameCycle(),++callbackOrder,targets.get(target),amount,targetState(target)));
+		}
 	}
 	synchronized void death(Actor actor)
 	{

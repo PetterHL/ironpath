@@ -124,7 +124,7 @@ public class NexPanelTest
 			assertTrue(shown(panel).contains("Nex death/dying: tick 30"));
 			assertTrue(shown(panel).contains("Arena end boundary: tick 31"));
 			assertTrue(shown(panel).contains("Smoke line observed: tick 0"));
-			assertTrue(shown(panel).contains("Capture adapter nex-public-8"));
+			assertTrue(shown(panel).contains("Capture adapter nex-public-9"));
 			assertTrue(shown(panel).contains("Barrier readings:"));
 			button(panel,"Capture signal trace").doClick();
 		} catch(Exception ex) { throw new RuntimeException(ex); } });

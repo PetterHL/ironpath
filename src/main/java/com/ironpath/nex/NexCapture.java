@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /** Bounded deterministic Nex evidence machine. The adapter supplies reviewed signals and spawn keys. */
 public final class NexCapture
 {
-	public static final String VERSION="nex-public-8";
+	public static final String VERSION="nex-public-9";
 	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, MAX_SIGNALS=32,
 		END_GRACE=5, END_WAIT=20;
 	private final Consumer<NexSummary> sink;
@@ -25,6 +25,9 @@ public final class NexCapture
 	private final List<NexObservations.Health> health=new ArrayList<>();
 	private final Map<NexObservations.HudCheck,Integer> hudChecks=new EnumMap<>(NexObservations.HudCheck.class);
 	private boolean observationsTruncated;
+	private final NexCallbackDiagnostics.Builder callbacks=new NexCallbackDiagnostics.Builder();
+	public void callback(NexCallbackDiagnostics.Target target,NexCallbackDiagnostics.Stage stage,int amount)
+	{ if(active()) { callbacks.add(target,stage,amount); } }
 	private final Set<String> gaps=new LinkedHashSet<>(), phases=new LinkedHashSet<>(), gear=new TreeSet<>();
 	private long serial, key;
 	private volatile NexMethod method;
@@ -133,14 +136,31 @@ public final class NexCapture
 		}
 		finishIfReady(tick,false);
 	}
-	public void hit(int tick, long eventKey, String target, int amount, boolean mine, boolean other, boolean heal)
+	/** The caller supplies a distinct event key, never a mutable hitsplat object identity. */
+	public boolean hit(int tick, long eventKey, String target, int amount, boolean mine, boolean other, boolean heal)
 	{
-		if (!event(tick) || !hitKeys.add(eventKey) || amount<0 || (death>=0 && tick>death)) { return; }
-		if (heal) { gaps.add("Healing observed and excluded from damage ratio"); return; }
-		if (!mine && !other) { ++unclassified; gaps.add("Unclassified hitsplats excluded from damage ratio"); return; }
+		if(!active()) { return false; }
+		var scopeTarget=NexCallbackDiagnostics.target(target);
+		NexCallbackDiagnostics.Stage stage;
+		if(tick<last) { stage=NexCallbackDiagnostics.Stage.HIT_OUT_OF_ORDER; }
+		else if(amount<0) { stage=NexCallbackDiagnostics.Stage.HIT_INVALID_AMOUNT; }
+		else if(death>=0 && tick>death) { stage=NexCallbackDiagnostics.Stage.HIT_AFTER_DEATH; }
+		else if(hitKeys.contains(eventKey)) { stage=NexCallbackDiagnostics.Stage.HIT_DUPLICATE_KEY; }
+		else if(events>=MAX_EVENTS || tick-origin>MAX_TICKS) { stage=NexCallbackDiagnostics.Stage.HIT_CAPTURE_LIMIT; }
+		else if(heal) { stage=NexCallbackDiagnostics.Stage.HIT_HEAL; }
+		else if(!mine && !other) { stage=NexCallbackDiagnostics.Stage.HIT_UNCLASSIFIED; }
+		else { stage=mine?NexCallbackDiagnostics.Stage.HIT_OWN:NexCallbackDiagnostics.Stage.HIT_OTHER; }
+		callback(scopeTarget,stage,amount);
+		if(stage==NexCallbackDiagnostics.Stage.HIT_INVALID_AMOUNT || stage==NexCallbackDiagnostics.Stage.HIT_AFTER_DEATH
+			|| stage==NexCallbackDiagnostics.Stage.HIT_DUPLICATE_KEY) { return false; }
+		if(!event(tick)) { return false; }
+		hitKeys.add(eventKey);
+		if (heal) { gaps.add("Healing observed and excluded from damage ratio"); return false; }
+		if (!mine && !other) { ++unclassified; gaps.add("Unclassified hitsplats excluded from damage ratio"); return false; }
 		String scope=phase+" / "+window+" / "+target;
 		NexSummary.Damage before=damage.getOrDefault(scope,new NexSummary.Damage(0,0));
 		damage.put(scope,new NexSummary.Damage(before.local+(mine?amount:0),before.total+amount));
+		return true;
 	}
 	public void death(int tick) { if (event(tick) && death<0) { death=tick; } }
 	public void barrierEnd(int tick) { if (event(tick) && barrierEnd<0) { barrierEnd=tick; } }
@@ -148,10 +168,16 @@ public final class NexCapture
 	private boolean observation(int tick)
 	{ return observation(tick,false); }
 	private boolean observation(int tick,boolean resourceTail)
+	{ return observation(tick,resourceTail,null,null,null,0); }
+	private boolean observation(int tick,boolean resourceTail,String target,NexCallbackDiagnostics.Stage retained,NexCallbackDiagnostics.Stage omitted,int amount)
 	{
-		if(!active() || !resourceTail && death>=0 && tick>death) { return false; }
-		if(launches.size()+resourceSignals.size()+flights.size()+impacts.size()+health.size()>=NexObservations.MAX)
-		{ observationsTruncated=true; return false; }
+		if(!active()) { return false; }
+		boolean tail=!resourceTail && death>=0 && tick>death;
+		boolean full=launches.size()+resourceSignals.size()+flights.size()+impacts.size()+health.size()>=NexObservations.MAX;
+		// Freeze the boundary count before event() can finish/clear a capture at its main limit.
+		if(retained!=null) { callback(NexCallbackDiagnostics.target(target),tail || full || tick<last || events>=MAX_EVENTS || tick-origin>MAX_TICKS?omitted:retained,amount); }
+		if(tail) { return false; }
+		if(full) { observationsTruncated=true; return false; }
 		return event(tick);
 	}
 	public void launch(int tick,int cycle,long order,int animation,CombatState state,String target,NexTargetState targetState,
@@ -162,8 +188,10 @@ public final class NexCapture
 	}
 	/** Keep late resource callbacks during the existing bounded end grace; never extend the fight timeline. */
 	public void resource(NexObservations.Signal signal) { if(observation(signal.tick,true)) { resourceSignals.add(signal); } }
-	public void flight(NexObservations.Flight flight) { if(observation(flight.tick)) { flights.add(flight); } }
-	public void impact(NexObservations.Impact impact) { if(observation(impact.tick)) { impacts.add(impact); } }
+	public void flight(NexObservations.Flight flight)
+	{ if(observation(flight.tick,false,flight.target,NexCallbackDiagnostics.Stage.PROJECTILE_RETAINED,NexCallbackDiagnostics.Stage.PROJECTILE_OMITTED,0)) { flights.add(flight); } }
+	public void impact(NexObservations.Impact impact)
+	{ if(observation(impact.tick,false,impact.target,NexCallbackDiagnostics.Stage.HIT_IMPACT_RETAINED,NexCallbackDiagnostics.Stage.HIT_IMPACT_OMITTED,impact.amount)) { impacts.add(impact); } }
 	/** HP-only changes belong to the diagnostic bound, never the worn-state buffer. */
 	public void health(NexObservations.Health reading)
 	{
@@ -174,7 +202,7 @@ public final class NexCapture
 	/** Fixed counters never spend main capture events or observation rows. Saturation is explicit in reports. */
 	public void hudCheck(NexObservations.HudCheck check)
 	{ if(active()) { hudChecks.compute(check,(k,n)->n==null?1:Math.min(NexObservations.MAX_HUD_COUNT,n+1)); } }
-	private void clearObservations() { launches.clear(); resourceSignals.clear(); flights.clear(); impacts.clear(); health.clear(); hudChecks.clear(); observationsTruncated=false; }
+	private void clearObservations() { launches.clear(); resourceSignals.clear(); flights.clear(); impacts.clear(); health.clear(); hudChecks.clear(); callbacks.clear(); observationsTruncated=false; }
 	public void flush(int tick) { finishIfReady(tick,true); }
 	private void finishIfReady(int tick, boolean leaving)
 	{
@@ -210,7 +238,7 @@ public final class NexCapture
 		Set<NexComparability.Setup> setups=new HashSet<>();
 		timeline.forEach(s->setups.add(new NexComparability.Setup(s.role,s.state)));
 		NexComparability comparability=new NexComparability(VERSION,setups,roster,rosterStable);
-		NexObservations observations=new NexObservations(launches,resourceSignals,flights,impacts,health,observationsTruncated,hudChecks);
+		NexObservations observations=new NexObservations(launches,resourceSignals,flights,impacts,health,observationsTruncated,hudChecks,callbacks.snapshot());
 		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps,signals,beforeStart,context,comparability,observations));
 		clear();
 	}

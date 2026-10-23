@@ -27,6 +27,10 @@ server contribution API. Observed local damage divided by observed total damage
 must name its target/damage coverage. Thralls, damage-over-time, healing, missed
 events, overkill and eligibility/MVP rules require review. Do not equate this ratio
 with loot credit, drop probability or a guaranteed server value.
+Build 0.29.0 withholds the whole-kill Damage contribution headline as Unverified;
+recorded local/total sums and their ratio remain diagnostic evidence with
+unverified coverage. Callback counters locate losses but cannot establish coverage
+by themselves. [Source/support review](research/nex-damage-observation.md).
 
 ## Session
 

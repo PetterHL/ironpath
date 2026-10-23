@@ -19,7 +19,7 @@ licences and reuse basis. Wiki content is CC BY-NC-SA 3.0; see the checked
 RuneLite's source is BSD-2-Clause. Only a
 small selection of checked mechanic facts informs original explanations; no
 Wiki prose, equipment tables, images, transcripts or third-party progression
-catalogue is redistributed. No competitor code or catalogue was used.
+catalogue is redistributed. No competitor catalogue is redistributed. Nex observation source-pattern references are described below.
 
 P4a's external OSRS Wiki DPS calculator reference was run separately at
 `89c3e25b344aea90d0189746e4b5f73dde0f0383` under its GPL-3.0 licence. Its source,
@@ -56,3 +56,17 @@ evidence, not a standalone artwork package. Follow the policy for any further us
 
 IronPath source code remains under [BSD 2-Clause](LICENSE). No third-party
 calculator code, datasets, article prose or generated item art is included.
+
+## Nex observation source patterns
+
+Build 0.29.0 follows RuneLite DPS Counter and Damage Counter's direct
+HitsplatApplied-to-scalar classification pattern, adapted to IronPath's existing
+spawn/view, immutable capture, privacy and lifecycle boundaries. The integration,
+bounded counters and tests are independently written; no external handler is
+copied verbatim. Their complete BSD-2-Clause notices are retained in
+[LICENSES/Nex-observation-references.txt](LICENSES/Nex-observation-references.txt).
+Combat Logger was inspected as a comparison for immediate scalar/unknown-source
+capture; no code, queues, Party integration or export was imported. Resource timing
+references were compared against existing IronPath behavior without copying code.
+Exact sources and dispositions are in the
+[research record](docs/research/nex-damage-observation.md).

@@ -14,6 +14,15 @@
 
 ## Current delivery
 
+- PR #53 **0.29.0** (`14cd28b`, based on PR #51 `feb439b`) now has one supplied
+  23 October live report: 487/513 tracked-target callbacks reuse objects, all 171
+  own impacts are retained, and per-target damage minus healing matches 5,400 HP.
+  Read docs/validation/nex-damage-observation.md. This accepts the hitsplat
+  correction for that kill, not universal coverage/server contribution. Keep the
+  Unverified headline, UNKNOWN projectile sources and unvalidated HUD/resource
+  semantics. The user deferred bank/next-kill/reload acceptance; do not require
+  another kill before continuing analysis/documentation from the existing report.
+
 - Observation follow-up **0.28.3** is a separate dependency PR above open PR #50
   `f02028d`; main was checked at `7f68d0e`. Read docs/research/nex-observation.md
   and docs/validation/nex-observation.md. Preserve bounded immutable callback and

@@ -55,7 +55,7 @@ public final class NexObservationReview
 				if(ranged) for(var flight:summary.observations.flights)
 				{
 					if(++work>1000000) { limited=true; break; }
-					if(flight.localSource && Objects.equals(flight.target,hit.target) && Math.abs((long)flight.startCycle-launch.cycle)<=30
+					if(flight.source==NexObservations.Source.LOCAL && Objects.equals(flight.target,hit.target) && Math.abs((long)flight.startCycle-launch.cycle)<=30
 						&& Math.abs((long)flight.endCycle-hit.cycle)<=30) { possible=true; }
 				}
 				if(possible) { candidates.add(launch); }

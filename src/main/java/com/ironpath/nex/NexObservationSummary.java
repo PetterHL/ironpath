@@ -24,6 +24,17 @@ public final class NexObservationSummary
 		for(var check:NexObservations.HudCheck.values()) { checks.put(check,o.hudChecks.getOrDefault(check,0)); }
 		out.add("HUD checks="+checks+"; per-counter limit="+NexObservations.MAX_HUD_COUNT+"; at limit="+checks.containsValue(NexObservations.MAX_HUD_COUNT));
 		out.add("HUD counters cover active-capture callbacks and the first failed binding guard. Zero accepted callbacks do not establish Nex HUD availability; accepted callbacks may have omitted HP rows after capture truncation.");
+		out.add("Whole-kill damage coverage UNVERIFIED. Callback counts/sums include rejected/tail payloads and are not fight damage; full boundary counters are in the JSON export.");
+		for(var target:NexCallbackDiagnostics.Target.values())
+		{
+			var entry=o.callbacks.get(target,NexCallbackDiagnostics.Stage.HIT_ENTRY);
+			if(entry.count==0) { continue; }
+			StringBuilder line=new StringBuilder("Hit callbacks "+target+": entry="+entry.count+"/"+entry.amount);
+			for(var stage:List.of(NexCallbackDiagnostics.Stage.HIT_OWN,NexCallbackDiagnostics.Stage.HIT_OTHER,NexCallbackDiagnostics.Stage.HIT_HEAL,NexCallbackDiagnostics.Stage.HIT_UNCLASSIFIED,NexCallbackDiagnostics.Stage.HIT_REPEATED_OBJECT))
+			{ var n=o.callbacks.get(target,stage); line.append("; ").append(stage).append("=").append(n.count).append("/").append(n.amount); }
+			out.add(line+" (count/positive payload sum; saturating)");
+		}
+		out.add("Projectile source: LOCAL / OTHER / UNKNOWN. Known other sources and known outside targets are excluded; counters count callbacks. Retained nullable readings stay UNKNOWN; repeated movement callbacks do not resolve ownership. Hit object identity never rejects a delivery.");
 		Map<Target,Map<NexHealth.Source,HealthGroup>> groups=new EnumMap<>(Target.class);
 		for(var reading:o.health)
 		{
