@@ -1,5 +1,11 @@
 # Validation records
 
+Development build **0.27.0**, for review: [N3 decision support](nex-decision-support.md),
+[Zaros/spell follow-up](nex-zaros-spells.md), [per-attack conditions](nex-impact-conditions.md)
+and [Deflect Melee attack types](nex-deflect-attack-type.md).
+Declared finite supplies, minion/Zaros windows, spell runes and scoped costs/routes extend the existing
+N3 runtime path; automatic attribution and live acceptance remain open.
+
 Current main build **0.23.3**: [sidebar simplification and main consolidation](sidebar-simplification.md). It includes N3, the complete CTX1/UI1 lineage and PR #48's current UI/follow-up corrections. Live acceptance remains open; earlier records retain their original scope and screenshots.
 
 [DEV1 offline review workflow](dev1-offline-review.md) records the

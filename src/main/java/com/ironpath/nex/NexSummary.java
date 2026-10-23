@@ -16,8 +16,11 @@ public final class NexSummary
 		public final int tick, animation;
 		public final String phase, window, target, role;
 		public final CombatState state;
+		public final NexTargetState targetState;
 		public Sample(int tick, String phase, String window, String target, String role, int animation, CombatState state)
-		{ this.tick=tick; this.phase=phase; this.window=window; this.target=target; this.role=role; this.animation=animation; this.state=state; }
+		{ this(tick,phase,window,target,role,animation,state,NexTargetState.UNKNOWN); }
+		public Sample(int tick,String phase,String window,String target,String role,int animation,CombatState state,NexTargetState targetState)
+		{ this.tick=tick; this.phase=phase; this.window=window; this.target=target; this.role=role; this.animation=animation; this.state=state; this.targetState=java.util.Objects.requireNonNull(targetState); }
 	}
 	public static final class Damage
 	{

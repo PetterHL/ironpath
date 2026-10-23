@@ -1,5 +1,9 @@
 # Post-kill N3A/N3B/N3C integration
 
+**0.24.0 addendum:** [N3 decision support](nex-decision-support.md) supersedes this
+original delivery’s unknown-window, minion, supply/cost and schema boundaries.
+The original 0.22.0 evidence below retains its historical scope.
+
 18 October 2026. Development build 0.22.0. Runtime join
 `nex-declared-plan-2`; package bridge `nex-package-4`. Based on main `96d91e8`;
 CTX1 remains a separate PR. Existing mechanics and source/licence reviews are

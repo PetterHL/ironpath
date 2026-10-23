@@ -92,9 +92,32 @@ failed saves show **Settings not saved**.
 The N3 planner contains concise fields and explicit unchecked scenario choices:
 legal attack windows; initial attack/cast readiness; no active Death Charge;
 Lightbearer throughout; usable gear/stock; runes/legal casts; distinct eligible
-deaths; fixed HP/phase; spell/switch delays included. Detailed definitions live in
+deaths; declared HP/phase; spell/switch delays included. Detailed definitions live in
 Diagnostics. Never tick hidden confirmations or fabricate unknown values. Copy
 plan report explicitly reveals the selectable report, including clipboard fallback.
+Zaros states additionally expose **Overhead at impact**, target Defence/Magic and
+an unchecked **Fixed overhead & stats** declaration. A frozen NPC form may seed
+the overhead choice; it never checks the fixed-window declaration or supplies
+target levels/HP. Detailed observed health ratios belong in Diagnostics/reports.
+**Use per-attack conditions** starts unchecked. Selecting it replaces the fixed
+HP/cap/ruby/Zaros fields with an optional attack-tick editor. Save or load an
+individual row explicitly; unsaved edits cannot silently produce an older result.
+New/missing rows start unknown and unconfirmed. A compact saved-row list retains
+the declared values. Clearing rows does not reinstate fixed values; changing back
+to fixed mode is explicit. No overhead cycle or healing/stat trajectory is inferred.
+Declared Deflect Melee results distinguish Voidwaker specials from ordinary melee
+fallbacks. Supported special damage may coexist with an unavailable baseline or
+delta. Keep the attack-type explanation and reflection limits in the plan report;
+no extra controls or automatically confirmed inputs are needed.
+Death Charge uses finite captured normal-rune stock, including readable contents
+of a carried pouch. Rune costs share the existing unit-cost editor.
+**Food & potions** and **Unit costs** are optional closed subsections inside the
+existing planner. Food/potion lists are explicit tick declarations, with a separate
+unchecked supply-effects confirmation. Show finite consumption and scoped cost in
+results; unknown unit prices remain unavailable. **Acquisition routes** explicitly
+opens catalogue route facts for changed hypothetical exact items. Do not infer
+account readiness, remaining components or acquisition time. Detailed supply,
+price and vulnerability assumptions stay in Diagnostics/reports.
 Invalid submissions show transient field-specific constraints: window 1–3000
 whole ticks, energy 0–100% in 0.1% steps, bounded HP/restore/cap values and
 1–128 distinct increasing attack ticks before the exclusive window end. Optional

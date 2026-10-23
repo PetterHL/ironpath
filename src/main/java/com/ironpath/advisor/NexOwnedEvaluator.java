@@ -38,7 +38,7 @@ public final class NexOwnedEvaluator
 		{
 			if(!current.getAsBoolean()) { return new NexOwnedResult(summary,List.of(),prefs.nex); }
 			// Preserve all distinct input states/windows. Never choose the longest worn setup.
-			List<Object> key=Arrays.asList(s.role,s.phase,s.window,targetName(s.target),s.state);
+			List<Object> key=Arrays.asList(s.role,s.phase,s.window,targetName(s.target),s.state,s.phase.equals("ZAROS")?s.targetState.overhead():null);
 			if(!seen.add(key)) { continue; }
 			String gap=contextGap(s);
 			CombatSetup before=null;

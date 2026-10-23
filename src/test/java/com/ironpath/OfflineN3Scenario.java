@@ -6,6 +6,7 @@ import com.ironpath.nex.NexPlanComparison;
 import java.nio.file.Path;
 import java.util.*;
 import javax.swing.*;
+import static org.mockito.Mockito.when;
 
 /** DEV1 extension: public-event capture -> frozen N2 -> native declared N3A/B/C plan -> guarded worker. */
 final class OfflineN3Scenario
@@ -17,6 +18,7 @@ final class OfflineN3Scenario
 		{
 			try(var r=new OfflinePluginReplay(font))
 			{
+				r.carried.put(385,1L); r.carried.put(3144,1L); r.carried.put(6685,1L); r.carried.put(3024,1L);
 				r.fight(30,20,60,true); r.settle(); if(font==12) { OfflineReview.versions(report,r.catalog); }
 				final NexScenarioPanel[] panel={null};
 				edt(()->{
@@ -62,6 +64,41 @@ final class OfflineN3Scenario
 				capture(r,output,"conditional-results",font,report);
 				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("report-viewport-"+font+".png"),225,600,"n3-copy-report",List.of("n3-copy-report","n3-report-scroll"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
 				edt(()->{
+					PanelPreview.click(r.panel,"Food & potions");
+					for(var entry:Map.of("SHARK","1","KARAMBWAN","1","BREW","0","RESTORE","3").entrySet())
+					{ NexScenarioPanelTest.named(r.panel,"n3-supply-"+entry.getKey(),JTextField.class).setText(entry.getValue()); }
+					PanelPreview.click(r.panel,"Compare this plan");
+				}); r.settle();
+				edt(()->{
+					report.check("Undeclared supply readiness blocks plan "+font,null,panel[0].result().comparison.actualToOwned.before.plan);
+					NexScenarioPanelTest.named(r.panel,"n3-supplies-confirmed",JCheckBox.class).doClick();
+				});
+				capture(r,output,"supply-editor",font,report);
+				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("supply-viewport-"+font+".png"),225,600,"n3-supply-label-SHARK",List.of("n3-supply-SHARK","n3-supply-KARAMBWAN","n3-supply-BREW","n3-supply-RESTORE","n3-supply-SUPER_COMBAT","n3-supply-RANGING","n3-supplies-confirmed"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
+				edt(()->{
+					PanelPreview.click(r.panel,"Unit costs"); JComboBox<?> units=PanelPreview.combo(r.panel,"n3-cost-item");
+					for(int id:List.of(385,3144,6691,3030))
+					{
+						for(int i=0;i<units.getItemCount();i++) if(units.getItemAt(i).toString().endsWith("("+id+")")) { units.setSelectedIndex(i); break; }
+						NexScenarioPanelTest.named(r.panel,"n3-cost-value",JTextField.class).setText("100"); PanelPreview.click(r.panel,"Set unit cost");
+					}
+				});
+				capture(r,output,"unit-costs",font,report);
+				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("cost-viewport-"+font+".png"),225,600,"n3-cost-item",List.of("n3-cost-item","n3-cost-value","n3-cost-summary"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
+				edt(()->{ PanelPreview.click(r.panel,"Unit costs"); PanelPreview.click(r.panel,"Food & potions"); PanelPreview.click(r.panel,"Compare this plan"); }); r.settle();
+				edt(()->{
+					var result=panel[0].result(); var evaluation=result.comparison.actualToOwned.before;
+					report.check("Frozen carried supplies admit finite plan "+font,true,evaluation.plan!=null);
+					if(evaluation.plan==null) { throw new IllegalStateException(evaluation.resourceGaps.toString()); }
+					var cost=com.ironpath.nex.NexPlanSupport.cost(evaluation,result.declaration.unitCosts);
+					report.check("Four declared supply units cost 400 gp "+font,Long.valueOf(400),cost.gp);
+					report.check("Food shifts outstanding cooldown "+font,true,evaluation.plan.resources.ordinaryAttacks<finished[0].comparison.actualToOwned.before.plan.resources.ordinaryAttacks);
+					PanelPreview.click(r.panel,"Copy plan report");
+					String text=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
+					report.check("Supply and cost report retains explicit assumptions "+font,true,text.contains("Declared supply actions=[0:BREW, 1:SHARK, 1:KARAMBWAN, 3:RESTORE]") && text.contains("gp=400"));
+				});
+				capture(r,output,"supply-results",font,report);
+				edt(()->{
 					NexScenarioPanelTest.named(r.panel,"n3-target-hp",JTextField.class).setText(""); PanelPreview.click(r.panel,"Compare this plan");
 				}); r.settle();
 				edt(()->{
@@ -84,6 +121,132 @@ final class OfflineN3Scenario
 				edt(()->report.check("Reset cannot resurrect scenario report "+font,false,PanelPreview.text(r.panel).contains("Conditional plan results")));
 				capture(r,output,"reset-pending",font,report);
 			}
+			zaros(output,report,font);
+		}
+	}
+	private static void zaros(Path output,ReviewReport report,int font) throws Exception
+	{
+		try(var r=new OfflinePluginReplay(font))
+		{
+			r.carried.put(560,3L); r.carried.put(565,3L); r.carried.put(566,3L);
+			r.fight(30,20,60,true,offset->{ if(offset==8) {
+				when(r.boss.getId()).thenReturn(net.runelite.api.gameval.NpcID.NEX_SOULSPLIT);
+				when(r.boss.getHealthRatio()).thenReturn(9); when(r.boss.getHealthScale()).thenReturn(30);
+			} }); r.settle();
+			final NexScenarioPanel[] planner={null};
+			edt(()->{
+				PanelPreview.click(r.panel,"Compare with owned gear"); PanelPreview.combo(r.panel,"nex-owned-support-filter").setSelectedItem("All states");
+				int selected=-1;
+				for(int i=0;i<r.plugin.ownedResult.choices.size();i++)
+				{ var s=r.plugin.ownedResult.choices.get(i).actual; if(s.phase.equals("ZAROS") && s.targetState.overhead()==com.ironpath.nex.NexTargetState.Overhead.SOUL_SPLIT) { selected=i; break; } }
+				if(selected<0) { throw new IllegalStateException("No frozen Soul Split state"); }
+				PanelPreview.combo(r.panel,"nex-owned-state").setSelectedIndex(selected);
+				planner[0]=(NexScenarioPanel)PanelPreview.children(r.panel).stream().filter(c->c instanceof NexScenarioPanel).findFirst().orElseThrow();
+				PanelPreview.click(r.panel,"Plan specs & gear"); fill(r.panel);
+				report.check("Zaros form seeds overhead without confirmation "+font,"Soul Split",PanelPreview.combo(r.panel,"n3-zaros-overhead").getSelectedItem());
+				report.check("Zaros stable impact choice starts unchecked "+font,false,NexScenarioPanelTest.named(r.panel,"n3-zaros-fixed",JCheckBox.class).isSelected());
+				NexScenarioPanelTest.named(r.panel,"n3-casts",JTextField.class).setText("0");
+				PanelPreview.click(r.panel,"Compare this plan");
+			}); r.settle();
+			edt(()->{
+				report.check("Unknown Zaros stats withhold damage "+font,null,planner[0].result().comparison.actualToOwned.before.plan.expectedDamage);
+				report.check("Known rune stock preserves resources "+font,Map.of(560,1,565,1,566,1),planner[0].result().comparison.actualToOwned.before.spentRunes);
+				NexScenarioPanelTest.named(r.panel,"n3-zaros-defence",JTextField.class).setText("250");
+				NexScenarioPanelTest.named(r.panel,"n3-zaros-fixed",JCheckBox.class).doClick();
+			});
+			capture(r,output,"zaros-inputs",font,report);
+			edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("zaros-viewport-"+font+".png"),225,600,"n3-zaros-overhead",List.of("n3-zaros-overhead","n3-zaros-defence","n3-zaros-magic","n3-zaros-fixed"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
+			edt(()->PanelPreview.click(r.panel,"Compare this plan")); r.settle();
+			edt(()->{
+				report.check("Declared Zaros target recomputes damage "+font,true,planner[0].result().comparison.actualToOwned.before.plan.expectedDamage!=null);
+				PanelPreview.click(r.panel,"Copy plan report"); String text=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
+				report.check("Zaros report preserves health ratio and distinct declarations "+font,true,text.contains("health ratio/scale=9/30") && text.contains("target Defence=250; target Magic=null") && text.contains("admitted Death Charge rune units={560=1, 565=1, 566=1}"));
+				try { java.nio.file.Files.writeString(output.resolve("zaros-report-"+font+".txt"),text); } catch(Exception ex) { throw new IllegalStateException(ex); }
+			});
+			capture(r,output,"zaros-results",font,report);
+			edt(()->{
+				NexScenarioPanelTest.named(r.panel,"n3-opportunities",JTextField.class).setText("0,5");
+				report.check("Per-attack option starts unchecked "+font,false,NexScenarioPanelTest.named(r.panel,"n3-per-attack",JCheckBox.class).isSelected());
+				NexScenarioPanelTest.named(r.panel,"n3-per-attack",JCheckBox.class).doClick(); NexScenarioPanelTest.saveImpact(r.panel,0,500,250,"Soul Split");
+				PanelPreview.click(r.panel,"Compare this plan");
+			}); r.settle();
+			edt(()->{
+				var evaluation=planner[0].result().comparison.actualToOwned.before;
+				report.check("Missing impact row retains resources "+font,true,evaluation.plan!=null);
+				report.check("Missing impact row cannot borrow fixed HP or overhead "+font,null,evaluation.plan.expectedDamage);
+				NexScenarioPanelTest.saveImpact(r.panel,5,10,300,"None");
+			});
+			capture(r,output,"impact-inputs",font,report);
+			edt(()->{
+				try {
+					PanelPreview.viewport(r.panel,output.resolve("impact-hp-viewport-"+font+".png"),225,600,"n3-per-attack",List.of("n3-per-attack","n3-impact-tick","n3-impact-hp","n3-impact-player-hp","n3-impact-cap"),report);
+					PanelPreview.viewport(r.panel,output.resolve("impact-zaros-viewport-"+font+".png"),225,600,"n3-impact-overhead",List.of("n3-impact-overhead","n3-impact-defence","n3-impact-magic","n3-impact-confirmed"),report);
+				} catch(Exception ex) { throw new IllegalStateException(ex); }
+				PanelPreview.click(r.panel,"Compare this plan");
+			}); r.settle();
+			final String[] impactReport={null};
+			edt(()->{
+				var result=planner[0].result(); var evaluation=result.comparison.actualToOwned.before;
+				report.check("Per-attack stats and HP admit damage "+font,true,evaluation.plan.expectedDamage!=null);
+				report.check("Second impact keeps separately supplied HP "+font,Integer.valueOf(10),evaluation.conditions.steps.get(3).targetHp.value()); // cast at 0 precedes attack/fallback.
+				report.check("All packages share impact conditions "+font,true,evaluation.conditions==result.comparison.actualToOwned.after.conditions && evaluation.conditions==result.comparison.ownedToUpgrade.after.conditions);
+				PanelPreview.click(r.panel,"Copy plan report"); impactReport[0]=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
+				report.check("Per-attack report exports distinct declared values "+font,true,impactReport[0].contains("schema 5") && impactReport[0].contains("Declared attack tick=5; target HP=10; player HP=99; hard cap=200; ruby allowed=true; impact confirmed=true; overhead=NONE; target Defence=300; target Magic=null"));
+				try { java.nio.file.Files.writeString(output.resolve("impact-report-"+font+".txt"),impactReport[0]); } catch(Exception ex) { throw new IllegalStateException(ex); }
+			});
+			capture(r,output,"impact-results",font,report);
+			edt(()->{
+				NexScenarioPanelTest.saveImpact(r.panel,0,500,250,"Deflect Melee");
+				NexScenarioPanelTest.saveImpact(r.panel,5,10,300,"Deflect Melee");
+				PanelPreview.combo(r.panel,"n3-policy").setSelectedIndex(2);
+				PanelPreview.combo(r.panel,"n3-upgrade-slot").setSelectedItem("weapon");
+				JComboBox<?> items=PanelPreview.combo(r.panel,"n3-upgrade-item");
+				for(int i=0;i<items.getItemCount();i++) if(items.getItemAt(i).toString().endsWith("(27690)")) { items.setSelectedIndex(i); break; }
+				PanelPreview.click(r.panel,"Add item"); PanelPreview.click(r.panel,"Compare this plan");
+			}); r.settle();
+			edt(()->{
+				var result=planner[0].result(); var ordinary=result.comparison.actualToOwned.before.plan; var special=result.comparison.ownedToUpgrade.after.plan;
+				report.check("Deflect ordinary Fang keeps dependent damage gap "+font,null,ordinary.expectedDamage);
+				report.check("Deflect declared VW admits two Magic specials "+font,2,special.resources.voidwakerSpecs);
+				report.check("Deflect declared VW has supported damage "+font,true,special.expectedDamage!=null && special.gaps.isEmpty());
+				report.check("Deflect declared VW retains independent HP cap minimum "+font,10,special.hits.get(1).damage.minimum);
+				report.check("Deflect declared VW retains independent HP cap maximum "+font,10,special.hits.get(1).damage.maximum);
+				report.check("Deflect unknown ordinary baseline withholds marginal gain "+font,null,result.comparison.ownedToUpgrade.expectedDamage);
+				PanelPreview.click(r.panel,"Copy plan report"); String text=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
+				report.check("Deflect report retains attack-type rule and explicit overhead "+font,true,text.contains("Voidwaker's Magic-type special is supported") && text.contains("overhead=DEFLECT_MELEE") && text.contains("nex-package-7"));
+				try { java.nio.file.Files.writeString(output.resolve("deflect-funded-report-"+font+".txt"),text); } catch(Exception ex) { throw new IllegalStateException(ex); }
+			});
+			capture(r,output,"deflect-funded-results",font,report);
+			edt(()->{
+				try { PanelPreview.viewport(r.panel,output.resolve("deflect-funded-viewport-"+font+".png"),225,600,"n3-copy-report",List.of("n3-copy-report","n3-report-scroll"),report); }
+				catch(Exception ex) { throw new IllegalStateException(ex); }
+				NexScenarioPanelTest.named(r.panel,"n3-energy",JTextField.class).setText("50"); PanelPreview.click(r.panel,"Compare this plan");
+			}); r.settle();
+			edt(()->{
+				var plan=planner[0].result().comparison.ownedToUpgrade.after.plan;
+				report.check("Deflect low energy admits one special "+font,1,plan.resources.voidwakerSpecs);
+				report.check("Deflect low energy admits ordinary fallback "+font,1,plan.resources.ordinaryAttacks);
+				report.check("Deflect ordinary fallback keeps total damage unavailable "+font,null,plan.expectedDamage);
+				report.check("Deflect supported first special remains inspectable "+font,true,plan.hits.get(0).damage!=null);
+				report.check("Deflect fallback adds exactly one damage gap "+font,1,plan.gaps.size());
+				PanelPreview.click(r.panel,"Copy plan report"); impactReport[0]=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
+				try { java.nio.file.Files.writeString(output.resolve("deflect-fallback-report-"+font+".txt"),impactReport[0]); } catch(Exception ex) { throw new IllegalStateException(ex); }
+			});
+			capture(r,output,"deflect-fallback-results",font,report);
+			r.fight(35,40,40,true); r.settle();
+			edt(()->{
+				report.check("New kill preserves frozen per-attack report "+font,impactReport[0],NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText());
+				PanelPreview.click(r.panel,"Compare this plan");
+				NexScenarioPanelTest.named(r.panel,"n3-impact-hp",JTextField.class).setText("20");
+			}); r.settle();
+			edt(()->{
+				report.check("Draft edits reject pending per-attack publication "+font,null,planner[0].result());
+				report.check("Draft edits clear old per-attack export "+font,null,NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class));
+				PanelPreview.click(r.panel,"Load attack conditions"); PanelPreview.click(r.panel,"Compare this plan");
+			});
+			Runnable stale=r.workers.take(); edt(()->PanelPreview.click(r.panel,"Back to encounter"));
+			edt(()->PanelPreview.click(r.panel,"Clear session")); r.callbacks.drain(); OfflinePluginReplay.edt(); r.runWorker(stale); OfflinePluginReplay.edt();
+			edt(()->report.check("Reset rejects pending per-attack publication "+font,false,PanelPreview.text(r.panel).contains("Conditional plan results")));
 		}
 	}
 	private static void fill(JPanel panel)

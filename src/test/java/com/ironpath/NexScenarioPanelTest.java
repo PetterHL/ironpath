@@ -36,6 +36,63 @@ public class NexScenarioPanelTest
 		for(String name:List.of("n3-legal","n3-condition-1","n3-condition-2","n3-condition-3","n3-condition-4","n3-condition-5","n3-condition-6","n3-condition-7","n3-condition-8"))
 		{ JCheckBox choice=named(panel,name,JCheckBox.class); if(!choice.isSelected()) { choice.doClick(); } }
 	}
+	static void saveImpact(JPanel panel,int tick,int hp,int defence,String overhead)
+	{
+		named(panel,"n3-impact-tick",JTextField.class).setText(Integer.toString(tick));
+		PanelPreview.click(panel,"Load attack conditions");
+		named(panel,"n3-impact-hp",JTextField.class).setText(Integer.toString(hp));
+		named(panel,"n3-impact-player-hp",JTextField.class).setText("99"); named(panel,"n3-impact-cap",JTextField.class).setText("200");
+		named(panel,"n3-impact-ruby",JComboBox.class).setSelectedIndex(2);
+		if(named(panel,"n3-impact-confirmed",JCheckBox.class)!=null)
+		{
+			named(panel,"n3-impact-defence",JTextField.class).setText(Integer.toString(defence)); named(panel,"n3-impact-overhead",JComboBox.class).setSelectedItem(overhead);
+			JCheckBox confirmed=named(panel,"n3-impact-confirmed",JCheckBox.class); if(!confirmed.isSelected()) { confirmed.doClick(); }
+		}
+		PanelPreview.click(panel,"Save attack conditions");
+	}
+	@Test public void perAttackEditorKeepsMissingRowsUnknownAndExportsOnlySavedInputs() throws Exception
+	{
+		List<Runnable> tasks=new ArrayList<>(); var ref=new AtomicReference<NexScenarioPanel>();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=new NexScenarioPanel(NexPlanComparisonTest.zarosFixture(catalog),0,0,catalog,text->{},"SYNTHETIC_OFFLINE",new Font("DejaVu Sans",Font.PLAIN,20)); ref.set(panel);
+			panel.attach(()->true,tasks::add); PanelPreview.click(panel,"Plan specs & gear"); fill(panel);
+			assertFalse(named(panel,"n3-per-attack",JCheckBox.class).isSelected()); assertFalse(named(panel,"n3-impact-confirmed",JCheckBox.class).isSelected());
+			named(panel,"n3-per-attack",JCheckBox.class).doClick(); saveImpact(panel,0,500,250,"Soul Split");
+			PanelPreview.click(panel,"Compare this plan");
+		}); tasks.remove(0).run();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=ref.get(); assertNotNull(panel.result().comparison.actualToOwned.before.plan); assertNull(panel.result().comparison.actualToOwned.expectedDamage);
+			named(panel,"n3-impact-tick",JTextField.class).setText("4"); PanelPreview.click(panel,"Load attack conditions");
+			assertEquals("",named(panel,"n3-impact-hp",JTextField.class).getText()); assertEquals("Unknown",named(panel,"n3-impact-overhead",JComboBox.class).getSelectedItem());
+			assertFalse(named(panel,"n3-impact-confirmed",JCheckBox.class).isSelected());
+			named(panel,"n3-impact-hp",JTextField.class).setText("10"); PanelPreview.click(panel,"Compare this plan");
+			assertTrue(tasks.isEmpty()); assertTrue(PanelPreview.text(panel).contains("Save or load this attack's conditions"));
+			saveImpact(panel,4,10,300,"None"); PanelPreview.click(panel,"Compare this plan");
+		}); tasks.remove(0).run();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=ref.get(); assertNotNull(panel.result().comparison.actualToOwned.before.plan.expectedDamage);
+			assertEquals(Integer.valueOf(10),panel.result().declaration.impacts.get(4).targetHp);
+			PanelPreview.click(panel,"Copy plan report"); String text=named(panel,"n3-report",JTextArea.class).getText();
+			assertTrue(text.contains("Condition mode=PER_OPPORTUNITY")); assertTrue(text.contains("Declared attack tick=4; target HP=10"));
+			PanelPreview.click(panel,"Compare this plan"); named(panel,"n3-impact-hp",JTextField.class).setText("20");
+			assertNull(panel.result()); assertNull(named(panel,"n3-report",JTextArea.class));
+		}); tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->assertNull(ref.get().result()));
+	}
+	@Test public void perAttackRemovedTicksAndInvalidDraftsExplainBoundsBeforeQueuing() throws Exception
+	{
+		List<Runnable> tasks=new ArrayList<>();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=new NexScenarioPanel(NexPlanComparisonTest.zarosFixture(catalog),0,0,catalog,text->{},"SYNTHETIC_OFFLINE",new Font("DejaVu Sans",Font.PLAIN,12));
+			panel.attach(()->true,tasks::add); PanelPreview.click(panel,"Plan specs & gear"); fill(panel); named(panel,"n3-per-attack",JCheckBox.class).doClick();
+			named(panel,"n3-impact-tick",JTextField.class).setText("1"); PanelPreview.click(panel,"Save attack conditions");
+			assertTrue(PanelPreview.text(panel).contains("choose one of the declared attack ticks"));
+			named(panel,"n3-impact-tick",JTextField.class).setText("0"); named(panel,"n3-impact-player-hp",JTextField.class).setText("256");
+			PanelPreview.click(panel,"Save attack conditions"); assertTrue(PanelPreview.text(panel).contains("Player HP: enter a whole number from 1 to 255"));
+			saveImpact(panel,4,10,300,"None"); named(panel,"n3-opportunities",JTextField.class).setText("0"); PanelPreview.click(panel,"Compare this plan");
+			assertTrue(PanelPreview.text(panel).contains("Saved conditions include removed attack ticks")); assertTrue(tasks.isEmpty());
+			PanelPreview.click(panel,"Clear attack conditions"); PanelPreview.click(panel,"Compare this plan"); assertEquals(1,tasks.size());
+		});
+	}
 	@Test public void invalidFieldsExplainTheirOwnBoundsWithoutQueuingOrKeepingResults() throws Exception
 	{
 		var source=NexPlanComparisonTest.fixture(catalog,27690,0,Map.of(),Map.of("inventory-slots-used",0),false);
@@ -76,7 +133,7 @@ public class NexScenarioPanelTest
 		SwingUtilities.invokeAndWait(()->{
 			var panel=new NexScenarioPanel(source,0,0,catalog,text->{},"SYNTHETIC_OFFLINE",new Font("DejaVu Sans",Font.PLAIN,20)); ref.set(panel);
 			panel.attach(()->true,tasks::add); PanelPreview.click(panel,"Plan specs & gear");
-			assertEquals(9,PanelPreview.children(panel).stream().filter(c->c instanceof JCheckBox).count());
+			assertEquals(11,PanelPreview.children(panel).stream().filter(c->c instanceof JCheckBox).count());
 			assertTrue(PanelPreview.children(panel).stream().filter(c->c instanceof JCheckBox).noneMatch(c->((JCheckBox)c).isSelected()));
 			fill(panel); PanelPreview.click(panel,"Compare this plan");
 		});
@@ -91,6 +148,28 @@ public class NexScenarioPanelTest
 				named(ref.get(),name,JCheckBox.class).doClick();
 			});
 		}
+	}
+	@Test public void zarosRequiresSeparateFixedImpactConditionsAndEditsInvalidateTheFrozenReport() throws Exception
+	{
+		List<Runnable> tasks=new ArrayList<>(); var ref=new AtomicReference<NexScenarioPanel>();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=new NexScenarioPanel(NexPlanComparisonTest.zarosFixture(catalog),0,0,catalog,text->{},"SYNTHETIC_OFFLINE",new Font("DejaVu Sans",Font.PLAIN,20)); ref.set(panel);
+			panel.attach(()->true,tasks::add); PanelPreview.click(panel,"Plan specs & gear"); fill(panel);
+			assertEquals("Soul Split",named(panel,"n3-zaros-overhead",JComboBox.class).getSelectedItem());
+			assertFalse(named(panel,"n3-zaros-fixed",JCheckBox.class).isSelected());
+			assertEquals("",named(panel,"n3-zaros-defence",JTextField.class).getText());
+			assertEquals("",named(panel,"n3-zaros-magic",JTextField.class).getText());
+			PanelPreview.click(panel,"Compare this plan");
+		}); tasks.remove(0).run();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=ref.get(); assertNotNull(panel.result().comparison.actualToOwned.before.plan); assertNull(panel.result().comparison.actualToOwned.expectedDamage);
+			named(panel,"n3-zaros-defence",JTextField.class).setText("250"); named(panel,"n3-zaros-fixed",JCheckBox.class).doClick(); PanelPreview.click(panel,"Compare this plan");
+		}); tasks.remove(0).run();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=ref.get(); assertNotNull(panel.result().comparison.actualToOwned.expectedDamage);
+			PanelPreview.click(panel,"Copy plan report"); assertTrue(named(panel,"n3-report",JTextArea.class).getText().contains("target Defence=250"));
+			PanelPreview.click(panel,"Compare this plan"); named(panel,"n3-zaros-defence",JTextField.class).setText("300"); assertNull(panel.result());
+		}); tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->assertNull(ref.get().result()));
 	}
 
 	@Test public void pendingInputEditsAndDetachedViewsCannotPublishOrCopyOldResults() throws Exception
@@ -128,4 +207,35 @@ public class NexScenarioPanelTest
 			assertTrue(report.getText().contains("SYNTHETIC_OFFLINE")); assertTrue(report.getText().contains("Ammo branch:"));
 		});
 	}
+	@Test public void supplyAndPriceEditsCannotPublishAPendingOlderCalculation() throws Exception
+	{
+		var source=NexPlanComparisonTest.fixture(catalog,27690,0,Map.of(6685,1L),Map.of("inventory-slots-used",1),false);
+		List<Runnable> tasks=new ArrayList<>(); var ref=new AtomicReference<NexScenarioPanel>();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=new NexScenarioPanel(source,0,0,catalog,text->{},"SYNTHETIC_OFFLINE",new Font("DejaVu Sans",Font.PLAIN,12)); ref.set(panel);
+			panel.attach(()->true,tasks::add); PanelPreview.click(panel,"Plan specs & gear"); fill(panel); PanelPreview.click(panel,"Food & potions");
+			named(panel,"n3-supply-BREW",JTextField.class).setText("0");
+			assertFalse(named(panel,"n3-supplies-confirmed",JCheckBox.class).isSelected());
+			PanelPreview.click(panel,"Compare this plan");
+		});
+		tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->{
+			assertNull(ref.get().result().comparison.actualToOwned.before.plan);
+			named(ref.get(),"n3-supplies-confirmed",JCheckBox.class).doClick(); PanelPreview.click(ref.get(),"Compare this plan");
+			named(ref.get(),"n3-supply-BREW",JTextField.class).setText("1");
+		});
+		tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->{
+			assertNull(ref.get().result()); PanelPreview.click(ref.get(),"Compare this plan");
+			PanelPreview.click(ref.get(),"Unit costs");
+			JComboBox<?> units=named(ref.get(),"n3-cost-item",JComboBox.class);
+			for(int n=0;n<units.getItemCount();n++) if(units.getItemAt(n).toString().endsWith("(6691)")) { units.setSelectedIndex(n); break; }
+			named(ref.get(),"n3-cost-value",JTextField.class).setText("0"); PanelPreview.click(ref.get(),"Set unit cost");
+		});
+		tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->{ assertNull(ref.get().result()); PanelPreview.click(ref.get(),"Compare this plan"); });
+		tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->{
+			var result=ref.get().result(); assertNotNull(result.comparison.actualToOwned.before.plan);
+			assertEquals(Long.valueOf(0),result.costs.get(result.comparison.actualToOwned.before).gp);
+			PanelPreview.click(ref.get(),"Clear unit costs"); assertNull(ref.get().result());
+		});
+	}
+
 }

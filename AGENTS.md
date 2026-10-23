@@ -14,6 +14,34 @@
 
 ## Current delivery
 
+- N3 PR #50 development build **0.27.0** gates declared Zaros deflection by the
+  actual attack type. Voidwaker's Magic-type special is supported in an explicitly
+  declared Deflect Melee impact; ordinary melee, including that weapon's unfunded
+  fallback, retains its damage gap. Rejected fallback gaps never poison admitted
+  specials. Read docs/validation/nex-deflect-attack-type.md and its source review.
+  Preserve unknown overhead/stat/HP/readiness gates and independent resources.
+- N3 PR #50 build **0.26.0** adds optional independently declared per-attack HP,
+  caps, ruby eligibility and Zaros impact conditions through the same package
+  bridge. Read docs/validation/nex-impact-conditions.md. Missing rows/fields stay
+  unknown; never carry forward fixed/earlier inputs or feed expected damage into
+  HP. All compared packages and same-tick fallback share the same impact inputs.
+  Keep explicit unchecked confirmation, draft/publication guards and schema-5
+  bounded frozen reports. Dynamic mechanic simulation/attribution remains open.
+- N3 PR #50 development build **0.25.0** adds frozen public target forms/health
+  ratios, separately declared fixed Zaros overhead/target levels, and finite normal
+  Death/Blood/Soul rune stock/costs for declared Death Charge. Read
+  docs/research/nex-decision-support.md and docs/validation/nex-zaros-spells.md.
+  Health ratios are not exact HP, observed forms do not confirm future impact
+  overheads, and player drains do not reveal target stats. Keep unsupported
+  deflection, unknown inputs and automatic attribution gated. No merge or publication.
+
+- N3 follow-up **0.24.0** is prepared on current main for review. Read
+  docs/research/nex-decision-support.md and docs/validation/nex-decision-support.md.
+  It adds declared finite supplies/level effects, vulnerable minion launch inputs,
+  scoped manual unit costs and catalogue acquisition routes. Unknown windows stay
+  unknown. Keep automatic launch/spec/consumption attribution and automatic Zaros
+  overhead/stat-dependent comparisons unavailable. Existing no-coaching/N4 and
+  separate merge/publication authorization boundaries still apply.
 - Consolidated main baseline **0.23.3** includes the complete PR #48 **0.23.2** UI
   and sidebar simplification. Keep Gear & method and Gear & unlocks absent,
   including manual gear/method controls.

@@ -111,3 +111,25 @@ defaults are not kill confirmations. Conditional ordinary state arithmetic retai
 its existing N2 evidence/limitations outside the pilot; this does not generalize
 method recommendations or N4. [Synthetic verification](validation/ctx1-kill-context.md)
 distinguishes automated data/worker/Swing checks from unperformed live acceptance.
+
+## N3 decision support (19 October 2026)
+
+[Capture-to-scenario, minion and supply review](research/nex-decision-support.md)
+records pinned target/reference hashes, indexed factual cross-checks, separately
+reviewed item/dose IDs, finite delay/level rules and explicit unknown gates.
+Costs use declared unit prices; routes reuse existing catalogue evidence. No
+bulk reference dataset, calculator implementation or article prose is imported.
+[Initial verification](validation/nex-decision-support.md) and
+[Zaros/spell follow-up](validation/nex-zaros-spells.md) separate synthetic checks
+from unperformed client/attribution/dynamic-overhead and player acceptance. Public
+NPC health APIs explicitly transmit a ratio rather than real HP. Declared target
+stats are never inferred from that ratio or from player stat drains. The follow-up
+pins official NPC/Actor/item and pouch API references plus the limited spell-cost
+cross-check; no external implementation is copied.
+
+The 20 October [attack-type review](validation/nex-deflect-attack-type.md) derives
+a narrow declared Deflect Melee interaction from Jagex's released Magic-type
+Voidwaker special and the reviewed melee-only curse scope. It distinguishes the
+guaranteed special from its ordinary fallback; it does not establish ordinary
+reflection, overhead timing or live-server agreement. The contract records the
+official launch article, rechecked pinned reference hash and indexed-source limits.

@@ -81,7 +81,10 @@ public final class KnowledgeCatalog
 			boolean paceEvidence=source.url.matches("https://osrsmethods\\.com/methods/(completing-the-corrupted-gauntlet|killing-zulrah|killing-demonic-gorillas|killing-tormented-demons|killing-phantom-muspah-twisted-bow)");
 			boolean api = source.url.matches("https://github\\.com/runelite/runelite/blob/[a-f0-9]{40}/runelite-api/src/main/java/net/runelite/api/gameval/ItemID\\.java");
 			boolean equipmentFacts=source.url.matches("https://github\\.com/weirdgloop/osrs-dps-calc/blob/[a-f0-9]{40}/cdn/json/equipment\\.json");
-			if (!wiki && !api && !official && !paceEvidence && !equipmentFacts)
+			boolean minionFacts=source.id.equals("n3-minion-reference") && source.url.matches("https://github\\.com/weirdgloop/osrs-dps-calc/blob/[a-f0-9]{40}/cdn/json/monsters\\.json")
+				&& source.items.isEmpty() && source.models.isEmpty() && source.decisions.isEmpty() && source.routes.isEmpty();
+			if(source.id.equals("n3-minion-reference") && !minionFacts) { throw new IllegalArgumentException("Exact minion source required"); }
+			if (!wiki && !api && !official && !paceEvidence && !equipmentFacts && !minionFacts)
 			{
 				throw new IllegalArgumentException("Unapproved source URL");
 			}
@@ -386,6 +389,7 @@ public final class KnowledgeCatalog
 				|| target.scalingSupported && !target.analytical && target.npcId < 1 || target.magicLevel < 0 || target.magicLevel > 10000
 				|| target.analytical && (target.npcId != 0 || !target.variant.equals("STANDARD") || !target.scalingSupported
 					|| target.defenceLevel == null || target.defenceLevel != 0 || target.magicLevel != 0 || target.magicDefence != 0)
+				|| target.flatArmour!=null && target.flatArmour!=0 && target.flatArmour!=-2
 				|| target.magicDefence < -64 || target.magicDefence > 10000
 				|| target.defenceLevel != null && (target.defenceLevel < 0 || target.defenceLevel > 10000)
 				|| target.magicAttack != null && (target.magicAttack < 0 || target.magicAttack > 10000)

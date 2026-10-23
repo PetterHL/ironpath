@@ -12,19 +12,26 @@ import static com.ironpath.nex.SpecAttackPlan.*;
 /** Complete-package bridge, not a capture-to-attack inference or encounter/HP simulator. */
 public final class NexPackageComparison
 {
-	public static final String VERSION="nex-package-4";
+	public static final String VERSION="nex-package-7";
 	public enum Kind { ACTUAL, OWNED, UPGRADE }
 	public enum Availability { CARRIED, BANK_PREPARATION }
 	public enum Start { ATTACK_READY_NO_CHARGE_CAST_READY, OTHER }
-	public enum StepKind { ATTACK, CAST, DEATH }
+	public enum StepKind { ATTACK, CAST, DEATH, SUPPLY }
 	/** BASE means the reviewed, explicitly conditional Nex base-stat ordinary window. */
-	public enum Window { BASE, FEAR_THE_SHADOW, EMBRACE_DARKNESS, SPECIAL }
+	public enum Window { UNKNOWN, BASE, FEAR_THE_SHADOW, EMBRACE_DARKNESS, SPECIAL }
 	public static final class Context
 	{
 		public final String target,phase;
 		public final Window window;
+		public final ScenarioFact<NexTargetState.Overhead> overhead;
+		public final ScenarioFact<Integer> defenceLevel,magicLevel;
 		public Context(String target,String phase,Window window)
-		{ this.target=Objects.requireNonNull(target); this.phase=Objects.requireNonNull(phase); this.window=Objects.requireNonNull(window); }
+		{ this(target,phase,window,ScenarioFact.unknown("Overhead not declared","Zaros overhead"),ScenarioFact.unknown("Dynamic Defence not declared","target Defence"),ScenarioFact.unknown("Dynamic Magic not declared","target Magic")); }
+		public Context(String target,String phase,Window window,ScenarioFact<NexTargetState.Overhead> overhead,ScenarioFact<Integer> defenceLevel,ScenarioFact<Integer> magicLevel)
+		{
+			this.target=Objects.requireNonNull(target); this.phase=Objects.requireNonNull(phase); this.window=Objects.requireNonNull(window);
+			this.overhead=Objects.requireNonNull(overhead); this.defenceLevel=Objects.requireNonNull(defenceLevel); this.magicLevel=Objects.requireNonNull(magicLevel);
+		}
 	}
 	public static final class Step
 	{
@@ -34,23 +41,26 @@ public final class NexPackageComparison
 		public final ScenarioFact<Boolean> legal,rubyAllowed,upgraded,eligible;
 		public final ScenarioFact<Integer> targetHp,playerHp,hardCap;
 		public final ScenarioFact<String> deathKey;
+		public final NexSupplies.Use supply;
 		private Step(int tick,StepKind kind,ScenarioFact<Context> context,ScenarioFact<Boolean> legal,
 			ScenarioFact<Integer> targetHp,ScenarioFact<Integer> playerHp,ScenarioFact<Integer> hardCap,
-			ScenarioFact<Boolean> rubyAllowed,ScenarioFact<Boolean> upgraded,ScenarioFact<Boolean> eligible,ScenarioFact<String> deathKey)
+			ScenarioFact<Boolean> rubyAllowed,ScenarioFact<Boolean> upgraded,ScenarioFact<Boolean> eligible,ScenarioFact<String> deathKey,NexSupplies.Use supply)
 		{
 			if(tick<0 || tick>=MAX_TICKS) { throw new IllegalArgumentException("Step tick outside scenario bounds"); }
 			this.tick=tick; this.kind=kind; this.context=context; this.legal=legal;
 			this.targetHp=targetHp; this.playerHp=playerHp; this.hardCap=hardCap; this.rubyAllowed=rubyAllowed;
-			this.upgraded=upgraded; this.eligible=eligible; this.deathKey=deathKey;
+			this.upgraded=upgraded; this.eligible=eligible; this.deathKey=deathKey; this.supply=supply;
 		}
 		public static Step attack(int tick,ScenarioFact<Context> context,ScenarioFact<Boolean> legal,
 			ScenarioFact<Integer> targetHp,ScenarioFact<Integer> playerHp,ScenarioFact<Integer> hardCap,ScenarioFact<Boolean> rubyAllowed)
 		{ return new Step(tick,StepKind.ATTACK,Objects.requireNonNull(context),Objects.requireNonNull(legal),
-			Objects.requireNonNull(targetHp),Objects.requireNonNull(playerHp),Objects.requireNonNull(hardCap),Objects.requireNonNull(rubyAllowed),null,null,null); }
+			Objects.requireNonNull(targetHp),Objects.requireNonNull(playerHp),Objects.requireNonNull(hardCap),Objects.requireNonNull(rubyAllowed),null,null,null,null); }
 		public static Step cast(int tick,ScenarioFact<Boolean> upgraded)
-		{ return new Step(tick,StepKind.CAST,null,null,null,null,null,null,Objects.requireNonNull(upgraded),null,null); }
+		{ return new Step(tick,StepKind.CAST,null,null,null,null,null,null,Objects.requireNonNull(upgraded),null,null,null); }
 		public static Step death(int tick,ScenarioFact<String> key,ScenarioFact<Boolean> eligible)
-		{ return new Step(tick,StepKind.DEATH,null,null,null,null,null,null,null,Objects.requireNonNull(eligible),Objects.requireNonNull(key)); }
+		{ return new Step(tick,StepKind.DEATH,null,null,null,null,null,null,null,Objects.requireNonNull(eligible),Objects.requireNonNull(key),null); }
+		public static Step supply(NexSupplies.Use use)
+		{ return new Step(use.tick,StepKind.SUPPLY,null,null,null,null,null,null,null,null,null,use); }
 	}
 	/** One shared immutable declaration is required for every compared plan, including equal-tick order and HP. */
 	public static final class Conditions
@@ -66,9 +76,15 @@ public final class NexPackageComparison
 			ScenarioFact<Boolean> hardKandarin,List<Step> steps)
 		{
 			if(scope==null || scope.isBlank() || steps.size()>MAX_EVENTS) { throw new IllegalArgumentException("Bounded declared scenario required"); }
-			int last=-1;
+			int last=-1; boolean actionsStarted=false;
 			for(Step step:steps)
-			{ if(step.tick<last) { throw new IllegalArgumentException("Steps must retain declared tick/order"); } last=step.tick; }
+			{
+				if(step.tick<last) { throw new IllegalArgumentException("Steps must retain declared tick/order"); }
+				if(step.tick!=last) { actionsStarted=false; }
+				if(step.kind==StepKind.SUPPLY && actionsStarted) { throw new IllegalArgumentException("Declare supplies before casts, deaths and attacks at the same tick"); }
+				if(step.kind!=StepKind.SUPPLY) { actionsStarted=true; }
+				last=step.tick;
+			}
 			this.scope=scope; this.endTick=Objects.requireNonNull(endTick); this.initialEnergy=Objects.requireNonNull(initialEnergy);
 			this.firstRestoreTick=Objects.requireNonNull(firstRestoreTick); this.order=Objects.requireNonNull(order);
 			this.start=Objects.requireNonNull(start); this.hardKandarin=Objects.requireNonNull(hardKandarin); this.steps=List.copyOf(steps);
@@ -173,6 +189,7 @@ public final class NexPackageComparison
 		public final Scenario scenario;
 		public final Map<String,PackageInputs> packages;
 		public final Map<Integer,Derived> launches;
+		public final Map<Integer,Integer> spentRunes;
 		/** Resource event index -> shared step index, preserving idle and ineligible-death omissions. */
 		public final Map<Integer,Integer> eventSteps;
 		public final SpecAttackPlan.Result plan;
@@ -182,11 +199,12 @@ public final class NexPackageComparison
 		/** All reviewed dependencies, including item forms, quiver branches and model versions. */
 		public final Map<String,String> versions;
 		private Evaluation(Conditions conditions,String method,Scenario scenario,Map<String,PackageInputs> packages,Map<Integer,Derived> launches,Map<Integer,Integer> eventSteps,
-			SpecAttackPlan.Result plan,List<String> resourceGaps,List<String> evidence,Map<String,String> versions)
+			SpecAttackPlan.Result plan,List<String> resourceGaps,List<String> evidence,Map<String,String> versions,Map<Integer,Integer> spentRunes)
 		{
 			this.conditions=conditions; this.method=method; this.scenario=scenario; this.packages=Map.copyOf(packages); this.launches=Map.copyOf(launches);
 			this.eventSteps=Map.copyOf(eventSteps);
 			this.plan=plan; this.resourceGaps=List.copyOf(resourceGaps); this.evidence=List.copyOf(evidence); this.versions=Map.copyOf(versions);
+			this.spentRunes=plan==null?Map.of():Map.copyOf(spentRunes);
 			remainingSplinters=plan!=null && scenario.stock.splinters.known()?scenario.stock.splinters.value()-plan.spentSplinters:null;
 		}
 	}
@@ -359,18 +377,54 @@ public final class NexPackageComparison
 		if(q==Quiver.CHARGED || q==Quiver.BLESSED) { uncharged=setup.edit("cape",Integer.toString(unchargedCape(slots.get("cape")))); }
 		return new PackageInputs(uncharged,setup,isMelee,delay,ammo,q);
 	}
-	private String contextGap(Step step,PackageInputs inputs)
+	private String contextGap(Step step,PackageInputs inputs,Action action)
 	{
 		Context c=need(step.context);
+		if(Set.of("FUMUS","UMBRA","CRUOR","GLACIES").contains(c.target))
+		{
+			String phase=Map.of("FUMUS","SMOKE","UMBRA","SHADOW","CRUOR","BLOOD","GLACIES","ICE").get(c.target);
+			return phase.equals(c.phase) && c.window==Window.BASE?null:"Minion phase/vulnerability window unconfirmed";
+		}
 		if(!c.target.equals("NEX")) { return "Target/minion mechanics unreviewed: "+c.target; }
-		if(!Set.of("SMOKE","SHADOW","BLOOD","ICE").contains(c.phase)) { return "Phase mechanics unreviewed (including Zaros soft caps): "+c.phase; }
+		if(c.phase.equals("ZAROS"))
+		{
+			if(c.window!=Window.BASE) { return "Zaros fixed overhead/stat window unconfirmed"; }
+			if(!c.overhead.known() || c.overhead.value()==NexTargetState.Overhead.UNKNOWN) { return "Zaros overhead unknown"; }
+			// Disrupt deals Magic damage despite deriving its max from melee stats. The same
+			// weapon's ordinary fallback still deals melee damage and retains the deflection gap.
+			if(inputs.melee && action.attack!=Attack.VOIDWAKER && c.overhead.value()==NexTargetState.Overhead.DEFLECT_MELEE)
+			{ return "Deflect Melee interaction unsupported for this melee attack"; }
+			number(c.defenceLevel,0,1000);
+			if(!inputs.melee && ranged.get(inputs.charged.slots.get("weapon")).weapon==RangedItem.Weapon.TWISTED) { number(c.magicLevel,0,1000); }
+			return null;
+		}
+		if(!Set.of("SMOKE","SHADOW","BLOOD","ICE").contains(c.phase)) { return "Phase/overhead and target-stat effects unreviewed: "+c.phase; }
+		if(c.window==Window.UNKNOWN) { return "Target window unknown"; }
 		if(c.window==Window.SPECIAL) { return "Special window effects are not modelled"; }
 		if(c.window==Window.EMBRACE_DARKNESS && inputs.melee) { return "MP2 Embrace darkness does not establish a legal melee launch"; }
 		return null;
 	}
-	private PoweredMagic.Metrics metrics(CombatSetup setup,Loadout loadout,boolean isMelee)
+	private TargetProfile target(Step step)
 	{
-		Map<String,Integer> levels=need(loadout.state).visibleLevels;
+		Context c=need(step.context); String name=c.target;
+		if(name.equals("NEX") && c.phase.equals("ZAROS"))
+		{
+			// Copy only the reviewed Nex offensive-model inputs; never mutate the shared catalogue.
+			TargetProfile p=new TargetProfile(); p.id=target.id; p.name="Nex · declared fixed Zaros stats"; p.variant=target.variant; p.npcId=target.npcId;
+			p.defenceLevel=number(c.defenceLevel,0,1000); p.magicLevel=c.magicLevel.known()?number(c.magicLevel,0,1000):target.magicLevel;
+			p.magicAttack=target.magicAttack; p.magicDefence=target.magicDefence; p.size=target.size;
+			p.meleeStab=target.meleeStab; p.meleeSlash=target.meleeSlash; p.meleeCrush=target.meleeCrush;
+			p.rangedLight=target.rangedLight; p.rangedStandard=target.rangedStandard; p.rangedHeavy=target.rangedHeavy;
+			p.flatArmour=target.flatArmour; p.scalingSupported=true; p.sources=target.sources;
+			return p;
+		}
+		return name.equals("NEX")?target:catalog.comparison.targets.stream().filter(t->t.id.equals("nex-"+name.toLowerCase(Locale.ROOT))).findFirst()
+			.orElseThrow(()->new IllegalArgumentException("Target mechanics unknown"));
+	}
+	private PoweredMagic.Metrics metrics(CombatSetup setup,Loadout loadout,boolean isMelee,List<NexSupplies.Use> supplies,int tick,TargetProfile target)
+	{
+		CombatState state=need(loadout.state);
+		Map<String,Integer> levels=NexSupplies.levels(state.realLevels,state.visibleLevels,supplies,tick);
 		for(String key:isMelee?List.of("ATTACK","STRENGTH"):List.of("RANGED"))
 		{ if(!levels.containsKey(key)) { throw new IllegalArgumentException("Visible "+key+" unread"); } }
 		return isMelee?MeleeModel.calculateVisible(levels.get("ATTACK"),levels.get("STRENGTH"),setup,target,melee)
@@ -379,7 +433,7 @@ public final class NexPackageComparison
 	private SpecAttackModel.Damage damage(Conditions conditions,Step step,Action action,PackageInputs inputs,CombatSetup setup,
 		PoweredMagic.Metrics metrics,String basis)
 	{
-		SpecAttackModel.Limit limit=new SpecAttackModel.Limit(number(step.targetHp,1,100000),number(step.hardCap,1,100000));
+		SpecAttackModel.Limit limit=new SpecAttackModel.Limit(number(step.targetHp,1,100000),number(step.hardCap,1,100000),target(step).flatArmour==null?0:target(step).flatArmour);
 		if(action.attack==Attack.VOIDWAKER) { return SpecAttackModel.voidwaker(metrics.maxHit,limit,basis); }
 		if(inputs.melee)
 		{
@@ -462,6 +516,7 @@ public final class NexPackageComparison
 		evidence(evidence,conditions.endTick,conditions.initialEnergy,conditions.firstRestoreTick,conditions.order,conditions.start,conditions.hardKandarin,
 			scenario.stock.equipment,scenario.stock.ammunition,scenario.stock.splinters,scenario.stock.inventorySpace,scenario.stock.unlocks,scenario.stock.bankPacking);
 		versions.put("bridge",VERSION); versions.put("knowledge",catalog.version); versions.put("melee",MeleeModel.VERSION); versions.put("ranged",RangedModel.VERSION);
+		versions.put("supplies",NexSupplies.VERSION); versions.put("target-evidence",NexTargetState.VERSION); versions.put("spell-stock",NexSpellResources.VERSION);
 		versions.put("damage",SpecAttackModel.VERSION); versions.put("plan",SpecAttackPlan.VERSION); versions.put("resources",SpecTimeline.VERSION);
 		for(String id:target.sources) { versions.put(id,catalog.sources.get(id).revision); }
 		for(String id:catalog.melee.sources) { versions.put(id,catalog.sources.get(id).revision); }
@@ -483,6 +538,21 @@ public final class NexPackageComparison
 		}
 		try { if(packages.size()==scenario.loadouts.size()) { packing(scenario,packages); } }
 		catch(IllegalArgumentException ex) { gaps.add(ex.getMessage()); }
+		List<NexSupplies.Use> supplies=conditions.steps.stream().filter(s->s.kind==StepKind.SUPPLY).map(s->s.supply).collect(Collectors.toList());
+		try
+		{
+			NexSupplies.validate(supplies,number(conditions.endTick,1,MAX_TICKS));
+			if(!supplies.isEmpty())
+			{
+				// All declared supplies stay reserved in joint packing, including bottles after a sip.
+				Loadout first=scenario.loadouts.values().iterator().next();
+				Map<Integer,Long> inventory=need(first.state).inventory;
+				if(scenario.loadouts.values().stream().anyMatch(l->!Objects.equals(need(l.state).inventory,inventory)))
+				{ throw new IllegalArgumentException("Shared supply inventory differs across packages"); }
+				NexSupplies.stock(supplies,inventory);
+			}
+		}
+		catch(IllegalArgumentException ex) { gaps.add(ex.getMessage()); }
 		List<Event> events=new ArrayList<>(); Map<Integer,Launch> launches=new TreeMap<>(); Map<Integer,Integer> eventSteps=new TreeMap<>();
 		for(var action:scenario.actions.entrySet())
 		{
@@ -493,8 +563,15 @@ public final class NexPackageComparison
 		{
 			Step step=conditions.steps.get(i);
 			evidence(evidence,step.context,step.legal,step.targetHp,step.playerHp,step.hardCap,step.rubyAllowed,step.upgraded,step.eligible,step.deathKey);
+			if(step.context!=null && step.context.known() && step.context.value().phase.equals("ZAROS"))
+			{ var c=step.context.value(); evidence(evidence,c.overhead,c.defenceLevel,c.magicLevel); }
 			try
 			{
+				if(step.kind==StepKind.SUPPLY)
+				{
+					if(step.supply.kind.attackDelay>0) { eventSteps.put(events.size(),i); events.add(Event.food(step.tick,step.supply.kind.attackDelay)); }
+					continue;
+				}
 				if(step.kind==StepKind.CAST)
 				{
 					boolean upgraded=need(step.upgraded);
@@ -513,10 +590,11 @@ public final class NexPackageComparison
 				PoweredMagic.Metrics uncharged=null,charged=null; SpecAttackModel.Damage ud=null,cd=null; String gap=null;
 				try
 				{
-					gap=contextGap(step,input);
+					gap=contextGap(step,input,action);
+					if(gap==null) { for(String id:target(step).sources) { versions.put(id,catalog.sources.get(id).revision); } }
 					if(gap==null)
 					{
-						uncharged=metrics(input.uncharged,loadout,input.melee); charged=metrics(input.charged,loadout,input.melee);
+						uncharged=metrics(input.uncharged,loadout,input.melee,supplies,step.tick,target(step)); charged=metrics(input.charged,loadout,input.melee,supplies,step.tick,target(step));
 						String basis=conditions.scope+" · step "+i+" · "+scenario.label+" · "+loadout.state.evidence()+" · "+VERSION;
 						ud=damage(conditions,step,action,input,input.uncharged,uncharged,basis+" · uncharged package");
 						cd=damage(conditions,step,action,input,input.charged,charged,basis+" · charged package");
@@ -541,7 +619,7 @@ public final class NexPackageComparison
 			}
 			catch(IllegalArgumentException ex) { gaps.add("Step "+i+": "+ex.getMessage()); }
 		}
-		SpecAttackPlan.Result result=null;
+		SpecAttackPlan.Result result=null; Map<Integer,Integer> spentRunes=Map.of();
 		try
 		{
 			int end=number(conditions.endTick,1,MAX_TICKS),energy=number(conditions.initialEnergy,0,CAP),restore=number(conditions.firstRestoreTick,0,Ring.LIGHTBEARER.interval);
@@ -551,6 +629,7 @@ public final class NexPackageComparison
 			int splinters=chargedQuiver || scenario.stock.splinters.known()?number(scenario.stock.splinters,0,20000):0;
 			if(gaps.isEmpty())
 			{
+				spentRunes=NexSpellResources.spent(conditions,scenario);
 				SpecTimeline.Plan energyPlan=new SpecTimeline.Plan(energy,end,Ring.LIGHTBEARER,restore,order,events);
 				result=new SpecAttackPlan().run(new SpecAttackPlan.Plan(conditions.scope,energyPlan,launches,ammunition(scenario.stock,packages),splinters));
 			}
@@ -559,7 +638,7 @@ public final class NexPackageComparison
 		evidence.add("Conditional launch expectations for one declared resource branch; not observed outcomes, a kill forecast, or global best owned.");
 		evidence.add("Only selected projectile pools enter the launch ledger. No charged quiver means zero splinter consumption, not known physical stock; use remainingSplinters for the supplied pool.");
 		evidence.add("Shared method: "+method.cohort()+"; availability "+scenario.stock.availability+"; hypothetical exact items "+scenario.stock.hypothetical);
-		return new Evaluation(conditions,method.cohort(),scenario,packages,derived,eventSteps,result,gaps,evidence,versions);
+		return new Evaluation(conditions,method.cohort(),scenario,packages,derived,eventSteps,result,gaps,evidence,versions,spentRunes);
 	}
 	public Delta compare(Evaluation before,Evaluation after)
 	{

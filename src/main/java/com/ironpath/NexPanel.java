@@ -584,7 +584,8 @@ final class NexPanel extends PluginPanel
 				if(!ownedRoleFilter.equals("All roles") && !ownedRoleFilter.equals(c.actual.role)) { continue; }
 				if(ownedSupportFilter.equals("Supported comparisons") && !c.supported()
 					|| ownedSupportFilter.equals("Unavailable comparisons") && c.supported()) { continue; }
-				indices.add(i); states.addItem(c.actual.role+" · tick "+c.actual.tick+" · "+c.actual.phase+(c.bankPreparation?" · bank preparation":" · carried"));
+				indices.add(i); states.addItem((i+1)+": "+c.actual.role+" · tick "+c.actual.tick+" · "+c.actual.phase
+					+(c.actual.phase.equals("ZAROS")?" · "+c.actual.targetState.overhead():"")+(c.bankPreparation?" · bank preparation":" · carried"));
 			}
 			if(!indices.isEmpty()) { states.setSelectedIndex(Math.max(0,indices.indexOf(ownedIndex))); }
 			filling[0]=false; states.setEnabled(!indices.isEmpty());

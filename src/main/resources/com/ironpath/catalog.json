@@ -1,7 +1,7 @@
 {
   "schemaVersion": 14,
-  "knowledgeVersion": "n3-package-1",
-  "reviewed": "2026-10-16",
+  "knowledgeVersion": "n3-decision-1",
+  "reviewed": "2026-10-19",
   "sources": [
     {
       "id": "rigour",
@@ -19541,6 +19541,27 @@
       "models": [],
       "routes": [],
       "contexts": []
+    },
+    {
+      "id": "n3-minion-reference",
+      "url": "https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/monsters.json",
+      "author": "OSRS Wiki contributors; Weird Gloop development reference",
+      "type": "pinned target facts cross-check",
+      "revision": "89c3e25b344aea90d0189746e4b5f73dde0f0383",
+      "accessed": "2026-10-19",
+      "reviewed": "2026-10-19",
+      "reuseBasis": "Independently recorded bounded stats for four Nex minions. No implementation, prose, images or bulk dataset copied. Hash, transform cross-check and retrieval limits in docs/research/nex-decision-support.md.",
+      "licence": "GPL development reference and Wiki-derived facts; no expressive content redistributed.",
+      "decisions": [],
+      "items": [],
+      "models": [],
+      "routes": [],
+      "contexts": [
+        "nex-fumus",
+        "nex-umbra",
+        "nex-cruor",
+        "nex-glacies"
+      ]
     }
   ],
   "decisions": [
@@ -48114,6 +48135,94 @@
         "sources": [
           "r2-nex",
           "r3b2-nex"
+        ]
+      },
+      {
+        "id": "nex-fumus",
+        "name": "Fumus · declared vulnerable base-stat window",
+        "npcId": 11283,
+        "variant": "STANDARD",
+        "scalingSupported": true,
+        "magicLevel": 200,
+        "magicDefence": 150,
+        "magicAttack": 0,
+        "defenceLevel": 200,
+        "rangedLight": 50,
+        "rangedStandard": 50,
+        "rangedHeavy": 50,
+        "meleeStab": 25,
+        "meleeSlash": 100,
+        "meleeCrush": 100,
+        "size": 1,
+        "flatArmour": -2,
+        "sources": [
+          "n3-minion-reference"
+        ]
+      },
+      {
+        "id": "nex-umbra",
+        "name": "Umbra · declared vulnerable base-stat window",
+        "npcId": 11284,
+        "variant": "STANDARD",
+        "scalingSupported": true,
+        "magicLevel": 200,
+        "magicDefence": 150,
+        "magicAttack": 0,
+        "defenceLevel": 200,
+        "rangedLight": 25,
+        "rangedStandard": 25,
+        "rangedHeavy": 25,
+        "meleeStab": 100,
+        "meleeSlash": 100,
+        "meleeCrush": 100,
+        "size": 1,
+        "flatArmour": -2,
+        "sources": [
+          "n3-minion-reference"
+        ]
+      },
+      {
+        "id": "nex-cruor",
+        "name": "Cruor · declared vulnerable base-stat window",
+        "npcId": 11285,
+        "variant": "STANDARD",
+        "scalingSupported": true,
+        "magicLevel": 200,
+        "magicDefence": 150,
+        "magicAttack": 0,
+        "defenceLevel": 200,
+        "rangedLight": 50,
+        "rangedStandard": 50,
+        "rangedHeavy": 50,
+        "meleeStab": 100,
+        "meleeSlash": 25,
+        "meleeCrush": 100,
+        "size": 1,
+        "flatArmour": -2,
+        "sources": [
+          "n3-minion-reference"
+        ]
+      },
+      {
+        "id": "nex-glacies",
+        "name": "Glacies · declared vulnerable base-stat window",
+        "npcId": 11286,
+        "variant": "STANDARD",
+        "scalingSupported": true,
+        "magicLevel": 200,
+        "magicDefence": 150,
+        "magicAttack": 0,
+        "defenceLevel": 200,
+        "rangedLight": 50,
+        "rangedStandard": 50,
+        "rangedHeavy": 50,
+        "meleeStab": 100,
+        "meleeSlash": 100,
+        "meleeCrush": 25,
+        "size": 1,
+        "flatArmour": -2,
+        "sources": [
+          "n3-minion-reference"
         ]
       }
     ]

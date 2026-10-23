@@ -5,7 +5,7 @@ import java.util.*;
 /** Independent finite resource scenario. Supplied opportunities are assumptions, never inferred attacks. */
 public final class SpecTimeline
 {
-	public static final String VERSION="nex-spec-resources-1";
+	public static final String VERSION="nex-spec-resources-2";
 	public static final int CAP=1000, RESTORE=100, DEATH_CHARGE_RESTORE=150,
 		DEATH_CHARGE_TICKS=100, MAX_TICKS=3000, MAX_EVENTS=2048;
 	public enum Ring
@@ -23,7 +23,7 @@ public final class SpecTimeline
 	/** Sensitivity policies; neither establishes actual server ordering on an unresolved tick. */
 	public enum RestoreOrder { BEFORE_EVENTS, AFTER_EVENTS }
 	public enum Status { APPLIED, INSUFFICIENT_ENERGY, ATTACK_DELAY, NO_AMMUNITION, CAST_COOLDOWN, NO_ACTIVE_CHARGE, DUPLICATE_DEATH }
-	private enum Kind { CAST, DEATH, ATTACK }
+	private enum Kind { CAST, DEATH, ATTACK, FOOD }
 	public static final class Event
 	{
 		public final int tick, delay;
@@ -35,6 +35,12 @@ public final class SpecTimeline
 		{
 			if(tick<0 || tick>=MAX_TICKS) { throw new IllegalArgumentException("Event tick outside scenario bounds"); }
 			this.tick=tick; this.kind=kind; this.attack=attack; this.delay=delay; this.deathKey=deathKey; this.upgraded=upgraded;
+		}
+		/** Food shifts an outstanding weapon cooldown; idle eating creates no fictitious lost attack. */
+		public static Event food(int tick,int delay)
+		{
+			if(delay!=2 && delay!=3) { throw new IllegalArgumentException("Reviewed food delay required"); }
+			return new Event(tick,Kind.FOOD,null,delay,null,false);
 		}
 		public static Event cast(int tick,boolean upgraded) { return new Event(tick,Kind.CAST,null,0,null,upgraded); }
 		/** The caller must establish death eligibility; an NPC dying is insufficient. Keys identify distinct deaths. */
@@ -52,7 +58,7 @@ public final class SpecTimeline
 		public static Event zaryteCrossbow(int tick,boolean rapid)
 		{ return new Event(tick,Kind.ATTACK,Attack.ZARYTE_CROSSBOW,rapid?5:6,null,false); }
 		public String label()
-		{ return kind==Kind.ATTACK?attack.toString():kind==Kind.CAST?(upgraded?"Improved Death Charge cast":"Death Charge cast"):"Eligible death"; }
+		{ if(kind==Kind.FOOD) { return "Declared food"; } return kind==Kind.ATTACK?attack.toString():kind==Kind.CAST?(upgraded?"Improved Death Charge cast":"Death Charge cast"):"Eligible death"; }
 		public boolean isAttack() { return kind==Kind.ATTACK; }
 	}
 	/** Starts attack-ready, with no active Death Charge and an available cast. These are explicit assumptions. */
@@ -116,6 +122,9 @@ public final class SpecTimeline
 			Status status=Status.APPLIED;
 			switch(e.kind)
 			{
+				case FOOD:
+					if(ready>e.tick) { ready+=e.delay; }
+					break;
 				case CAST:
 					if(e.tick<castReady) { status=Status.CAST_COOLDOWN; }
 					else { charges=e.upgraded?2:1; expires=castReady=e.tick+DEATH_CHARGE_TICKS; }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.ironpath.advisor.KnowledgeCatalog;
 import com.ironpath.encounter.EncounterSummary.Outcome;
 import com.ironpath.nex.NexSession;
+import com.ironpath.nex.NexTargetState;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.runelite.api.*;
@@ -58,6 +59,27 @@ public class NexObserverTest
 	{
 		observer.tick(); observer.overhead(boss,"Fill my soul with smoke!");
 		tick.set(1); barrier.set(3); observer.tick(); assertTrue(observer.capture.active());
+	}
+	@Test public void publicTargetFormsAndHealthBarsFreezeWithoutInventingExactHpOrCarryingAFormerTarget() throws Exception
+	{
+		when(boss.getHealthRatio()).thenReturn(9); when(boss.getHealthScale()).thenReturn(30);
+		start();
+		tick.set(2); observer.overhead(boss,"NOW, THE POWER OF ZAROS!");
+		when(boss.getId()).thenReturn(NpcID.NEX_SOULSPLIT); observer.changed(boss); observer.sample(-1);
+		tick.set(3); when(boss.getId()).thenReturn(NpcID.NEX_DEFLECT); observer.changed(boss); observer.sample(-1);
+		tick.set(4); when(boss.getHealthRatio()).thenReturn(-1); observer.sample(-1);
+		tick.set(5); when(player.getInteracting()).thenReturn(null); observer.sample(-1);
+		observer.transition(); var summary=session.recent().get(0);
+		var soul=summary.timeline.stream().filter(s->s.targetState.form==NexTargetState.Form.SOUL_SPLIT).findFirst().orElseThrow();
+		var deflect=summary.timeline.stream().filter(s->s.targetState.form==NexTargetState.Form.DEFLECT_MELEE && s.tick==3).findFirst().orElseThrow();
+		assertEquals(NexTargetState.Overhead.SOUL_SPLIT,soul.targetState.overhead());
+		assertEquals(NexTargetState.Overhead.DEFLECT_MELEE,deflect.targetState.overhead());
+		assertEquals(Integer.valueOf(9),soul.targetState.healthRatio); assertEquals(Integer.valueOf(30),soul.targetState.healthScale);
+		assertTrue(soul.targetState.reading().contains("exact HP and target levels unknown"));
+		assertNull(summary.timeline.stream().filter(s->s.tick==4).findFirst().orElseThrow().targetState.healthRatio);
+		assertSame(NexTargetState.UNKNOWN,summary.timeline.stream().filter(s->s.tick==5).findFirst().orElseThrow().targetState);
+		when(boss.getHealthRatio()).thenReturn(1); observer.clearActive();
+		assertEquals(Integer.valueOf(9),soul.targetState.healthRatio); assertEquals(NexTargetState.Overhead.SOUL_SPLIT,soul.targetState.overhead());
 	}
 	void hit(NPC actor,boolean mine,boolean other,int type,int amount)
 	{

@@ -165,7 +165,7 @@ public class NexDiagnosticsTest
 		for(var state:List.of(NexReport.State.NO_ACCOUNT,NexReport.State.PAUSED,NexReport.State.RESET,NexReport.State.NOT_READY))
 		{
 			String text=report(summary,result,0,0,state).format();
-			assertFalse(text.contains("Report-local kill:")); assertFalse(text.contains("Actual slots")); assertFalse(text.contains("25.0"));
+			assertFalse(text.contains("Report-local kill:")); assertFalse(text.contains("Actual slots")); assertFalse(text.contains("share percent: 25.0"));
 		}
 		String text=report(summary,evaluate(summary(2,true)),0,0,NexReport.State.PENDING).format();
 		assertTrue(text.contains("No other kill's result exported")); assertFalse(text.contains("Candidate slots"));
@@ -240,7 +240,7 @@ public class NexDiagnosticsTest
 			panel.render("Identity changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"");
 			copied.set("unchanged"); stale.doClick(); assertEquals("unchanged",copied.get());
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
-			assertFalse(copied.get().contains("Actual slots")); assertFalse(copied.get().contains("25.0"));
+			assertFalse(copied.get().contains("Actual slots")); assertFalse(copied.get().contains("share percent: 25.0"));
 		});
 	}
 	private static void assertReportInteraction(NexPanel panel,JTextArea original,String frozen,java.awt.Point position,int detachments)

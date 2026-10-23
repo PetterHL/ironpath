@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /** Bounded deterministic Nex evidence machine. The adapter supplies reviewed signals and spawn keys. */
 public final class NexCapture
 {
-	public static final String VERSION="nex-public-4";
+	public static final String VERSION="nex-public-5";
 	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, MAX_SIGNALS=32,
 		END_GRACE=5, END_WAIT=20;
 	private final Consumer<NexSummary> sink;
@@ -94,6 +94,8 @@ public final class NexCapture
 		if (nextWindow!=null) { window=nextWindow; }
 	}
 	public void sample(int tick, CombatState state, String target, String role, int animation, String roster)
+	{ sample(tick,state,target,role,animation,roster,NexTargetState.UNKNOWN); }
+	public void sample(int tick,CombatState state,String target,String role,int animation,String roster,NexTargetState targetState)
 	{
 		if (!event(tick)) { return; }
 		if (death<0)
@@ -114,10 +116,10 @@ public final class NexCapture
 					+":"+new TreeMap<>(state.visibleLevels)+":"+new TreeSet<>(state.prayers));
 				NexSummary.Sample previous=timeline.isEmpty()?null:timeline.get(timeline.size()-1);
 				if (previous==null || animation>=0 || !previous.state.equals(state) || !previous.phase.equals(phase)
-					|| !previous.window.equals(window) || !Objects.equals(previous.target,target) || !previous.role.equals(role))
+					|| !previous.window.equals(window) || !Objects.equals(previous.target,target) || !previous.role.equals(role) || !previous.targetState.equals(targetState))
 				{
 					if (timeline.size()+beforeStart.size()>=MAX_SAMPLES) { abort(tick,Outcome.CENSORED,"State buffer limit reached"); return; }
-					timeline.add(new NexSummary.Sample(tick,phase,window,target,role,animation,state));
+					timeline.add(new NexSummary.Sample(tick,phase,window,target,role,animation,state,targetState));
 				}
 			}
 		}

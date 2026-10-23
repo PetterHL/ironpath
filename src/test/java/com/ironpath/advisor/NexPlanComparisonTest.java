@@ -50,6 +50,34 @@ public class NexPlanComparisonTest
 		NexPlanComparison.Policy.FIRST_SPECIAL,List.of(0),List.of(),List.of(),upgrades,quantities); }
 	private NexPlanComparison.Result evaluate(NexOwnedResult source,NexPlanComparison.Declaration declaration)
 	{ return new NexPlanComparison(catalog).evaluate(source,0,0,declaration); }
+	public static NexOwnedResult zarosFixture(KnowledgeCatalog catalog)
+	{
+		var original=fixture(catalog,27690,0,Map.of(),Map.of("inventory-slots-used",0),false);
+		var old=original.choices.get(0).actual;
+		var sample=new NexSummary.Sample(old.tick,"ZAROS","UNKNOWN",old.target,old.role,old.animation,old.state,
+			new NexTargetState(NexTargetState.Form.SOUL_SPLIT,9,30));
+		var s=original.summary;
+		var summary=new NexSummary(s.key,s.startTick,s.endTick,s.sampledTicks,s.expectedTicks,s.unclassifiedHits,s.outcome,s.reason,s.cohort,s.method,List.of(sample),s.damage,s.gaps);
+		return new NexOwnedResult(summary,List.of(new NexOwnedResult.Choice(sample,null,null,"Zaros needs a declaration",true,List.of())),original.planning,Map.of());
+	}
+	@Test public void frozenZarosReadingsNeverPreconfirmItsHypotheticalStatsOrImpactWindow()
+	{
+		var source=zarosFixture(catalog); var base=declaration(500,Map.of(),Map.of());
+		var unknown=evaluate(source,base);
+		assertNotNull(unknown.comparison.actualToOwned.before.plan); assertNull(unknown.comparison.actualToOwned.before.plan.expectedDamage);
+		assertEquals(500,unknown.comparison.actualToOwned.before.plan.resources.spent);
+		for(var overhead:List.of(NexTargetState.Overhead.SOUL_SPLIT,NexTargetState.Overhead.DEFLECT_MELEE))
+		{
+			var z=new NexPlanComparison.Zaros(overhead,250,null,true);
+			var d=new NexPlanComparison.Declaration(base.endTick,base.initialEnergy,base.firstRestore,base.order,base.targetHp,base.playerHp,base.hardCap,base.kandarin,base.rubyAllowed,base.legalAndReady,
+				base.policy,base.opportunities,base.casts,base.deaths,base.upgrades,base.upgradeQuantities,List.of(),Map.of(),z);
+			var declared=evaluate(source,d); assertEquals(34.5,declared.comparison.actualToOwned.before.plan.expectedDamage,1e-12);
+			String text=declared.report(); assertTrue(text.contains("form=SOUL_SPLIT; overhead=SOUL_SPLIT; health ratio/scale=9/30"));
+			assertTrue(text.contains("Declared Zaros fixed window=true; overhead="+overhead+"; target Defence=250; target Magic=null"));
+			assertFalse(text.contains("PRIVATE_SENTINEL")); assertTrue(text.contains("exact HP and target levels unknown"));
+		}
+		assertThrows(IllegalArgumentException.class,()->new NexPlanComparison.Zaros(NexTargetState.Overhead.NONE,1001,230,true));
+	}
 	@Test public void allThreeModelsShareFrozenCompletePackagesAndKeepMarginalGainsSeparate()
 	{
 		var source=fixture(catalog,27690,0,Map.of(29801,1L),Map.of("inventory-slots-used",1),true);
@@ -126,7 +154,7 @@ public class NexPlanComparisonTest
 	{
 		var source=fixture(catalog,27690,0,Map.of(),Map.of("inventory-slots-used",0),false);
 		String report=evaluate(source,declaration(500,Map.of("cape",21295),Map.of(21295,1))).report();
-		assertTrue(report.contains("schema 2"));
+		assertTrue(report.contains("schema 5"));
 		assertTrue(report.contains("real levels={AGILITY=99, ATTACK=99, DEFENCE=99, HITPOINTS=99, MAGIC=99, PRAYER=99, RANGED=99, STRENGTH=99}"));
 		assertTrue(report.contains("visible levels={AGILITY=99, ATTACK=118, DEFENCE=99, HITPOINTS=99, MAGIC=99, PRAYER=99, RANGED=112, STRENGTH=118}"));
 		assertTrue(report.contains("active prayer flags=[PIETY]; style button=1"));
@@ -158,12 +186,53 @@ public class NexPlanComparisonTest
 	}
 	@Test public void explicitImprovedDeathChargeEventsAndFallbackUseOneFiniteTimeline()
 	{
-		var source=fixture(catalog,27690,0,Map.of(),Map.of("inventory-slots-used",0),false);
+		var source=fixture(catalog,27690,0,Map.of(560,1L,565,1L,566,1L),Map.of("inventory-slots-used",3),false);
 		var d=new NexPlanComparison.Declaration(6,0,25,SpecTimeline.RestoreOrder.BEFORE_EVENTS,500,99,200,false,true,true,
 			NexPlanComparison.Policy.FUNDED_SPECIAL_WITH_ORDINARY_FALLBACK,List.of(0,4),List.of(0),List.of(0,1),Map.of(),Map.of());
 		var r=evaluate(source,d); var p=r.comparison.actualToOwned.before.plan;
 		assertNotNull(r.comparison.actualToOwned.before.resourceGaps.toString(),p); assertEquals(2,p.resources.deathChargeProcs);
 		assertEquals(300,p.resources.restored); assertEquals(0,p.resources.voidwakerSpecs); assertEquals(2,p.resources.ordinaryAttacks); assertEquals(0,p.resources.spent);
+	}
+	@Test public void finiteDeathChargeRunesRespectCooldownAndJoinScopedUnitCosts()
+	{
+		var source=fixture(catalog,27690,0,Map.of(560,3L,565,3L,566,3L),Map.of("inventory-slots-used",3),false);
+		var d=new NexPlanComparison.Declaration(201,1000,25,SpecTimeline.RestoreOrder.BEFORE_EVENTS,500,99,200,false,true,true,
+			NexPlanComparison.Policy.ORDINARY,List.of(0,200),List.of(0,1,100,200),List.of(),Map.of(),Map.of(),List.of(),Map.of(560,100L,565,200L,566,0L));
+		var result=evaluate(source,d); var e=result.comparison.actualToOwned.before;
+		assertNotNull(e.resourceGaps.toString(),e.plan); assertEquals(Map.of(560,3,565,3,566,3),e.spentRunes);
+		assertTrue(e.plan.resources.entries.stream().anyMatch(x->x.tick==1 && x.status==SpecTimeline.Status.CAST_COOLDOWN));
+		assertEquals(Long.valueOf(900),result.costs.get(e).gp);
+		assertTrue(result.report().contains("admitted Death Charge rune units={560=3, 565=3, 566=3}"));
+		var insufficient=fixture(catalog,27690,0,Map.of(560,3L,565,2L,566,3L),Map.of("inventory-slots-used",3),false);
+		var blocked=evaluate(insufficient,d).comparison.actualToOwned.before;
+		assertNull(blocked.plan); assertTrue(blocked.resourceGaps.toString().contains("Blood rune")); assertTrue(blocked.spentRunes.isEmpty());
+		assertNotNull(blocked.launches.get(1).chargedDamage);
+	}
+	@Test public void declaredBrewsCannotCastDeathChargeBelowItsMagicRequirementAndRestoreReenablesIt()
+	{
+		var source=fixture(catalog,27690,0,Map.of(560,1L,565,1L,566,1L,6685,1L,3024,1L),Map.of("inventory-slots-used",5),false);
+		for(boolean restored:List.of(false,true))
+		{
+			var supplies=new ArrayList<>(List.of(new NexSupplies.Use(0,NexSupplies.Kind.BREW),new NexSupplies.Use(3,NexSupplies.Kind.BREW)));
+			if(restored) { supplies.add(new NexSupplies.Use(6,NexSupplies.Kind.RESTORE)); }
+			var d=new NexPlanComparison.Declaration(8,1000,25,SpecTimeline.RestoreOrder.BEFORE_EVENTS,500,99,200,false,true,true,
+				NexPlanComparison.Policy.ORDINARY,List.of(0),List.of(restored?6:3),List.of(),Map.of(),Map.of(),supplies,Map.of());
+			var e=evaluate(source,d).comparison.actualToOwned.before;
+			if(restored) { assertNotNull(e.resourceGaps.toString(),e.plan); assertEquals(Map.of(560,1,565,1,566,1),e.spentRunes); }
+			else { assertNull(e.plan); assertTrue(e.resourceGaps.toString().contains("Magic 80")); }
+		}
+	}
+	@Test public void unreadPouchBlocksOnlyRuneDependentPlansAndLooseRunesCanIndependentlyFundCasts()
+	{
+		var empty=fixture(catalog,27690,0,Map.of(12791,1L),Map.of("inventory-slots-used",1),false);
+		assertNotNull(evaluate(empty,declaration(500,Map.of(),Map.of())).comparison.actualToOwned.before.plan);
+		var d=new NexPlanComparison.Declaration(1,1000,25,SpecTimeline.RestoreOrder.BEFORE_EVENTS,500,99,200,false,true,true,
+			NexPlanComparison.Policy.FIRST_SPECIAL,List.of(0),List.of(0),List.of(),Map.of(),Map.of());
+		var blocked=evaluate(empty,d).comparison.actualToOwned.before;
+		assertNull(blocked.plan); assertTrue(blocked.resourceGaps.toString().contains("pouch contents unread")); assertNotNull(blocked.launches.get(1).chargedDamage);
+		var loose=fixture(catalog,27690,0,Map.of(12791,1L,560,1L,565,1L,566,1L),Map.of("inventory-slots-used",4),false);
+		var supported=evaluate(loose,d).comparison.actualToOwned.before; assertNotNull(supported.resourceGaps.toString(),supported.plan);
+		assertEquals(Map.of(560,1,565,1,566,1),supported.spentRunes);
 	}
 	@Test public void unknownInventoryNeverBecomesUsableStockAndHypotheticalStockDoesNotLeakIntoOwned()
 	{

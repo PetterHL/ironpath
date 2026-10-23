@@ -7,6 +7,26 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
+**20 October 2026: development build 0.27.0 — N3 decision support for review.**
+**Plan specs & gear** now supports explicit food/potion schedules with finite
+carried stock, shared attack delays and brew/restore/reboost effects. Vulnerable
+Fumus/Umbra/Cruor/Glacies windows use separate target stats and flat armour.
+Zaros plans require declared overheads and target levels; captured NPC forms
+and health-bar readings stay separate. Optional **Use per-attack conditions**
+supplies independent HP, caps, ruby eligibility and Zaros conditions at each
+attack tick. Missing rows stay unknown; earlier/fixed values are never copied
+into them. [Impact conditions and verification](docs/validation/nex-impact-conditions.md).
+Death Charge checks finite loose/pouch
+Death/Blood/Soul runes and Magic after declared supplies; rejected cooldown casts
+consume no runes. **Unit costs** prices ammo, splinters, supplies and admitted runes;
+**Acquisition routes** reuses reviewed catalogue paths without inventing remaining
+account work or acquisition hours. Declared Deflect Melee impacts support
+Voidwaker's Magic-type special; ordinary melee and an admitted ordinary fallback
+retain their damage gaps. Unknown windows/stats still withhold dependent damage.
+[Attack-type verification](docs/validation/nex-deflect-attack-type.md) · [Contract](docs/research/nex-decision-support.md)
+· [Verification](docs/validation/nex-decision-support.md).
+Automatic attack/spec/consumption attribution and live acceptance remain open.
+
 **19 October 2026: consolidated main build 0.23.3 — current Nex UI and sidebar simplification.**
 The native Encounter panel uses concise OSRS labels, centred results and genuine
 item/package sprites. Normal screens keep results and controls; Diagnostics holds
