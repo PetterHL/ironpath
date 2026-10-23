@@ -1,5 +1,11 @@
 # Evidence and research index
 
+23 October: [N3 evidence validation](research/n3-evidence-validation.md) reviews
+merged PRs #50/#51/#53 and the existing 0.29.0 live findings. Fixed-ring full-cap
+regeneration is corrected; repeat projectile getters gain bounded diagnostics.
+Every remaining N3 gap has its exact unknown and minimum live observation.
+Automatic recommendations remain unavailable.
+
 23 October: [Nex callback/source comparison](research/nex-damage-observation.md)
 records the public hitsplat contract, six pinned plugin implementations, direct
 scalar callback processing, bounded rejection/classification diagnostics and typed

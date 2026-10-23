@@ -33,11 +33,40 @@ public class SpecTimelineTest
 		assertEquals(0,run(0,25,Ring.LIGHTBEARER,25).finalEnergy); // exclusive end
 		assertEquals(100,run(0,26,Ring.LIGHTBEARER,25).finalEnergy);
 	}
-	@Test public void restorationAtTheCapIsLostAndDoesNotBankForLater()
+	@Test public void fullEnergyStopsNaturalRestorationUntilAnIntervalAfterSpending()
 	{
 		Result r=run(1000,80,Ring.LIGHTBEARER,25,Event.voidwaker(26),Event.voidwaker(30));
-		assertEquals(100,r.wasted); assertEquals(200,r.restored); assertEquals(200,r.finalEnergy);
+		assertEquals(0,r.wasted); assertEquals(200,r.restored); assertEquals(200,r.finalEnergy);
+		assertEquals(List.of(51,76),r.entries.stream().filter(e->e.eventIndex==-1).map(e->e.tick).collect(java.util.stream.Collectors.toList()));
 		assertEquals(1000+r.restored-r.spent,r.finalEnergy);
+	}
+	@Test public void recordedFullCapAndBelowCapOffsetsHaveDifferentClockBehavior()
+	{
+		// Existing report: full at 129, spending at 137, next +100 at 162 (offsets 0,8,33).
+		for(RestoreOrder order:RestoreOrder.values()) for(int phase=0;phase<=25;phase++)
+		{
+			var r=model.run(new Plan(1000,34,Ring.LIGHTBEARER,phase,order,List.of(Event.voidwaker(8))));
+			assertEquals(600,r.finalEnergy); assertEquals(100,r.restored); assertEquals(0,r.wasted);
+			assertEquals(33,r.entries.stream().filter(e->e.eventIndex==-1).findFirst().get().tick);
+		}
+		// Below full, a spend at 224 does not move the 212 -> 237 cycle (offsets 0,12,25).
+		var below=run(600,26,Ring.LIGHTBEARER,25,Event.voidwaker(12));
+		assertEquals(200,below.finalEnergy);
+		assertEquals(25,below.entries.stream().filter(e->e.eventIndex==-1).findFirst().get().tick);
+		var standard=run(1000,59,Ring.STANDARD,0,Event.voidwaker(8));
+		assertEquals(58,standard.entries.stream().filter(e->e.eventIndex==-1).findFirst().get().tick);
+	}
+	@Test public void reachingFullByNaturalOrDeclaredDeathChargeRestartsTheClockAfterLaterSpending()
+	{
+		var natural=run(900,55,Ring.LIGHTBEARER,5,Event.voidwaker(29));
+		assertEquals(List.of(5,54),natural.entries.stream().filter(e->e.eventIndex==-1).map(e->e.tick).collect(java.util.stream.Collectors.toList()));
+		assertEquals(600,natural.finalEnergy); assertEquals(0,natural.wasted);
+		var proc=run(950,29,Ring.LIGHTBEARER,10,Event.cast(0,true),Event.eligibleDeath(1,"declared"),Event.voidwaker(3));
+		assertEquals(600,proc.finalEnergy); assertEquals(100,proc.wasted);
+		assertEquals(28,proc.entries.stream().filter(e->e.eventIndex==-1).findFirst().get().tick);
+		// Within-tick caller order remains explicit, including a cap-reaching proc then a spend.
+		var sameTick=run(950,27,Ring.LIGHTBEARER,1,Event.cast(0,true),Event.eligibleDeath(1,"declared"),Event.voidwaker(1));
+		assertEquals(26,sameTick.entries.stream().filter(e->e.eventIndex==-1 && e.tick>1).findFirst().get().tick);
 	}
 	@Test public void improvedDeathChargeNeedsACastAndTwoDistinctEligibleDeaths()
 	{

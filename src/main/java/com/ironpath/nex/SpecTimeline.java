@@ -5,7 +5,7 @@ import java.util.*;
 /** Independent finite resource scenario. Supplied opportunities are assumptions, never inferred attacks. */
 public final class SpecTimeline
 {
-	public static final String VERSION="nex-spec-resources-2";
+	public static final String VERSION="nex-spec-resources-3";
 	public static final int CAP=1000, RESTORE=100, DEATH_CHARGE_RESTORE=150,
 		DEATH_CHARGE_TICKS=100, MAX_TICKS=3000, MAX_EVENTS=2048;
 	public enum Ring
@@ -108,13 +108,21 @@ public final class SpecTimeline
 	private static final class State
 	{
 		int energy, restored, spent, wasted, ready, charges, expires, castReady, ordinary, voidwaker, zaryte, procs;
+		int interval, nextRestore;
 		final Set<String> deaths=new HashSet<>();
 		final List<Entry> entries=new ArrayList<>();
 		void gain(int eventIndex,int tick,String label,int amount)
 		{
 			int before=energy, accepted=Math.min(amount,CAP-energy); energy+=accepted;
 			restored+=accepted; wasted+=amount-accepted;
+			if(energy==CAP) { nextRestore=-1; }
 			entries.add(new Entry(eventIndex,tick,label,Status.APPLIED,before,energy,amount-accepted));
+		}
+		void restore(int tick)
+		{
+			if(tick!=nextRestore) { return; }
+			gain(-1,tick,"Natural restoration",RESTORE);
+			if(energy<CAP) { nextRestore=tick+interval; }
 		}
 		void apply(Event e,int index,AttackResources resources)
 		{
@@ -144,6 +152,8 @@ public final class SpecTimeline
 					else
 					{
 						energy-=e.attack.cost; spent+=e.attack.cost; ready=e.tick+e.delay;
+						// Spending below full preserves phase; leaving full starts a fresh interval.
+						if(before==CAP && energy<CAP) { nextRestore=e.tick+interval; }
 						if(e.attack==Attack.ORDINARY) { ++ordinary; }
 						else if(e.attack==Attack.VOIDWAKER) { ++voidwaker; }
 						else { ++zaryte; }
@@ -166,15 +176,16 @@ public final class SpecTimeline
 	}
 	Result run(Plan plan,AttackResources resources)
 	{
-		State s=new State(); s.energy=plan.initialEnergy;
+		State s=new State(); s.energy=plan.initialEnergy; s.interval=plan.ring.interval;
+		// No natural regeneration clock runs while full. Initial phase matters only below full.
+		s.nextRestore=s.energy==CAP?-1:plan.firstRestoreTick;
 		int index=0;
 		for(int tick=0;tick<plan.endTick;tick++)
 		{
-			boolean restore=tick>=plan.firstRestoreTick && (tick-plan.firstRestoreTick)%plan.ring.interval==0;
-			if(restore && plan.order==RestoreOrder.BEFORE_EVENTS) { s.gain(-1,tick,"Natural restoration",RESTORE); }
+			if(plan.order==RestoreOrder.BEFORE_EVENTS) { s.restore(tick); }
 			while(index<plan.events.size() && plan.events.get(index).tick==tick)
 			{ s.apply(plan.events.get(index),index,resources); ++index; }
-			if(restore && plan.order==RestoreOrder.AFTER_EVENTS) { s.gain(-1,tick,"Natural restoration",RESTORE); }
+			if(plan.order==RestoreOrder.AFTER_EVENTS) { s.restore(tick); }
 		}
 		return new Result(s);
 	}

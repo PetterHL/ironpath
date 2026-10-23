@@ -1,5 +1,12 @@
 # IronPath
 
+**23 October 2026: development build 0.30.0 — N3 evidence validation.**
+The declared fixed-ring model now pauses regeneration at full special energy.
+Repeat projectile getter counters expose later availability without changing
+first-flight UNKNOWN attribution; evidence export is `nex-evidence-3`.
+**Automatic recommendations remain unavailable.**
+[Readiness, source evidence and smallest remaining observations](docs/validation/n3-evidence-validation.md).
+
 **Understand your setup. Find upgrades that matter where you play.**
 
 IronPath is a free, local RuneLite plugin for account-aware PvM improvement.

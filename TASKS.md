@@ -9,8 +9,8 @@ Integration does not establish live-client or player acceptance.
 
 ## Current baseline and order
 
-Main baseline: **0.23.3**, including N3 #45, CTX1 #43 (`2fe5342`), native UI1 #46
-(`d5b14db`), PR #48 (`836e1e9`) and the sidebar simplification (`7970794`).
+Main baseline: **0.29.0**, `1fe77cb`, including merged PR #50 (`289f371`),
+PR #51 (`43d20a1`) and PR #53 (`1fe77cb`) above the complete 0.23.3 lineage.
 Merge ancestry preserves all deliveries. Covered PRs/branches are retired only
 after their heads are verified as ancestors of main; no unique work is discarded.
 
@@ -19,14 +19,40 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Complete | **Current UI and sidebar simplification** | 0.23.3 consolidated main baseline; Gear & method / Gear & unlocks removed |
 | Complete | **CTX1 #43 / UI1 #46 / N3 #45 / PR #48** | Full ancestry retained in main; live acceptance remains open |
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
-| For review | **N3 decision support (0.27.0)** | Declared per-attack conditions, Magic-type Voidwaker under Deflect Melee, supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
-| For review, dependent on PR #50 | **Nex observation (0.28.3)** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
-| Issue [#52](https://github.com/PetterHL/ironpath/issues/52), PR [#53](https://github.com/PetterHL/ironpath/pull/53) | **Nex damage coverage / projectile source evidence (0.29.0)** | One live kill confirms object reuse (487/513 callbacks), retains all 171 own impacts and matches per-target damage minus healing to 5,400 HP. [Evidence and limits](docs/validation/nex-damage-observation.md#live-one-copy-check--23-october-2026). Projectile/HUD attribution, resource semantics and broader lifecycle acceptance remain open |
-| After evidence validation | **N3 automatic recommendations** | Exact launch/HP/readiness/cast/consumption evidence remains unavailable; declared scenarios cannot establish it |
+| Integrated | **N3 decision support (0.27.0), PR #50** | Declared per-attack conditions, Magic-type Voidwaker under Deflect Melee, supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
+| Integrated | **Nex observation (0.28.3), PR #51** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
+| Integrated: issue [#52](https://github.com/PetterHL/ironpath/issues/52), PR [#53](https://github.com/PetterHL/ironpath/pull/53) | **Nex damage coverage / projectile source evidence (0.29.0)** | One live kill confirms object reuse (487/513 callbacks), retains all 171 own impacts and matches per-target damage minus healing to 5,400 HP. [Evidence and limits](docs/validation/nex-damage-observation.md#live-one-copy-check--23-october-2026). Projectile/HUD attribution, resource semantics and broader lifecycle acceptance remain open |
+| For review | **N3 evidence validation (0.30.0)** | Fixed-ring full-cap clock corrected; repeat projectile source getters counted without promotion. [Readiness and minimum live observations](docs/validation/n3-evidence-validation.md) |
+| After evidence validation | **N3 automatic recommendations** | **NOT READY**: all eight automatic gates remain. Legal launches, exact impact HP, readiness/order, casts/eligibility and resource use remain unknown; declared scenarios cannot establish them |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
 
 Deliver future changes through focused PRs; no automatic merge or Plugin Hub publication.
+
+## N3 evidence validation (0.30.0)
+
+From current main `1fe77cb`, after merged PRs #50/#51/#53.
+[Source review, exact unknowns and smallest observations](docs/research/n3-evidence-validation.md)
+· [Verification and readiness](docs/validation/n3-evidence-validation.md).
+
+- [x] Review the active roadmap, three merged PRs, current implementation and
+  committed 0.29.0 live findings; pin RuneLite 1.13.2 public contracts/source.
+  No new raw-report parse or Nex kill is claimed.
+- [x] Correct the declared fixed-ring natural clock: stop at cap, restart a full
+  interval when leaving full, preserve phase below full. Keep initial phase/order
+  and same-tick cap/proc policy explicit; no automatic readiness inference.
+- [x] Split retained-object repeat projectile source getter counts into
+  LOCAL/OTHER/UNKNOWN. Preserve first-flight source/target and all correlation,
+  bound, lifecycle and privacy gates; a later LOCAL getter cannot enable a match.
+- [x] Record exact remaining unknowns, insufficient signals and minimum controlled
+  observations for launches/ownership, impact HP, readiness/energy, DC transitions,
+  usable stock/packing and consumption. A fresh complete Nex kill is not required.
+- [ ] Finish current-delivery executable/DEV1 verification and record exact
+  commit, dependency versions, CI/artifact evidence before review handoff.
+- [ ] Establish the remaining corroborated mappings before automatic recommendations.
+  **NOT READY**: retain all eight automatic gaps and unchecked declarations.
+  N4, contribution/time estimates, broader lifecycle acceptance and unrelated UI
+  work remain separate.
 
 ## Nex callback coverage follow-up (0.29.0)
 
@@ -51,10 +77,12 @@ which authorizes this dependent correction branch despite the default main-first
 - [x] Analyze the supplied 0.29.0 live report: 487/513 repeated-object callbacks,
   all 171 own impacts retained, and damage minus healing matches each target's HP.
   This confirms the correction for one kill; the earlier kill is not reconstructed.
-- [ ] Investigate the 364 UNKNOWN projectile sources and rejected HUD bindings offline;
-  do not infer ownership or exact HP from animation, ID or bar loss.
-- [ ] Research full-cap regeneration and DC eligibility/active transitions separately
-  using the existing report; no resource/model change is authorized by this evidence alone.
+- [x] Investigate the 364 UNKNOWN projectile sources and rejected HUD bindings offline;
+  [0.30.0 findings](docs/research/n3-evidence-validation.md) retain ownership/HP unknowns
+  and specify the missing observations. No ownership or exact HP is inferred.
+- [x] Research full-cap regeneration and DC eligibility/active transitions using the
+  existing report and pinned public sources. The 0.30.0 fixed-ring correction is
+  corroborated; cast/eligibility/proc/expiry classification remains unavailable.
 - [ ] Bank return / next kill / arena reload: separate deferred lifecycle acceptance.
   A second kill is not a prerequisite for accepting this single-kill correction or
   continuing offline analysis/documentation; the user confirmed this on 23 October.

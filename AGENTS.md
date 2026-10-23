@@ -14,6 +14,16 @@
 
 ## Current delivery
 
+- N3 evidence validation **0.30.0** starts from integrated main `1fe77cb` after
+  PRs #50/#51/#53 merged on 23 October. Read docs/research/n3-evidence-validation.md
+  and docs/validation/n3-evidence-validation.md. Fixed-ring natural regeneration
+  stops at cap and restarts a full interval on spending from full; phase below
+  full is preserved. Repeat projectile source getters add diagnostic counters only:
+  never promote an UNKNOWN first flight. Keep all eight automatic gaps, unknown
+  HP/readiness/DC/consumption gates and unchecked scenarios. Existing live findings
+  suffice for this offline step; no new complete kill is required. Older delivery
+  dependency statements below describe their original scope.
+
 - PR #53 **0.29.0** (`14cd28b`, based on PR #51 `feb439b`) now has one supplied
   23 October live report: 487/513 tracked-target callbacks reuse objects, all 171
   own impacts are retained, and per-target damage minus healing matches 5,400 HP.

@@ -17,8 +17,8 @@ public class NexResourceScenariosTest
 	{
 		var s=scenario(125,true,List.of(sample(0,1000,25975),sample(40,0,25975)));
 		assertTrue(s.gaps.isEmpty()); assertEquals(3,s.examples.size());
-		var vw=s.examples.get(0); assertEquals(2,vw.minUses); assertEquals(3,vw.maxUses); assertEquals(52,vw.cases);
-		var zcb=s.examples.get(1); assertEquals(1,zcb.minUses); assertEquals(2,zcb.maxUses);
+		var vw=s.examples.get(0); assertEquals(2,vw.minUses); assertEquals(2,vw.maxUses); assertEquals(52,vw.cases);
+		var zcb=s.examples.get(1); assertEquals(1,zcb.minUses); assertEquals(1,zcb.maxUses);
 		// Later sampled zero does not become spending or an input event in the hypothetical example.
 		var unchanged=scenario(125,true,List.of(sample(0,1000,25975)));
 		assertEquals(unchanged.examples.get(0).maxUses,vw.maxUses);
