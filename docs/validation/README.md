@@ -1,5 +1,10 @@
 # Validation records
 
+Development build **0.28.2**, for review above PR #50:
+[Nex observation implementation, offline evidence and client procedure](nex-observation.md).
+HUD/launch/resource candidates and recorded-tick drafts do not establish accepted
+live mappings, consumption, legal opportunities or N4 outcomes.
+
 Development build **0.27.0**, for review: [N3 decision support](nex-decision-support.md),
 [Zaros/spell follow-up](nex-zaros-spells.md), [per-attack conditions](nex-impact-conditions.md)
 and [Deflect Melee attack types](nex-deflect-attack-type.md).

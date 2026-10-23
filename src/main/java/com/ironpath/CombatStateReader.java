@@ -68,6 +68,11 @@ final class CombatStateReader
 		}
 		resources.put("death-charge-active", client.getVarbitValue(VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE));
 		resources.put("death-charge-cooldown", client.getVarbitValue(VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN));
+		resources.put("death-charge-upgrade-raw",client.getVarbitValue(VarbitID.DEATH_CHARGE_SCROLL_USED));
+		resources.put("death-charge-active-server",client.getServerVarbitValue(VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE));
+		resources.put("death-charge-cooldown-server",client.getServerVarbitValue(VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN));
+		resources.put("death-charge-upgrade-server",client.getServerVarbitValue(VarbitID.DEATH_CHARGE_SCROLL_USED));
+		resources.put("spec-energy-server",client.getServerVarpValue(VarPlayerID.SA_ENERGY));
 		var equipment = client.getItemContainer(InventoryID.WORN);
 		if (equipment != null)
 		{

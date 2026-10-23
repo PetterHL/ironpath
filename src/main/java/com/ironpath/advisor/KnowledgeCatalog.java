@@ -84,7 +84,12 @@ public final class KnowledgeCatalog
 			boolean minionFacts=source.id.equals("n3-minion-reference") && source.url.matches("https://github\\.com/weirdgloop/osrs-dps-calc/blob/[a-f0-9]{40}/cdn/json/monsters\\.json")
 				&& source.items.isEmpty() && source.models.isEmpty() && source.decisions.isEmpty() && source.routes.isEmpty();
 			if(source.id.equals("n3-minion-reference") && !minionFacts) { throw new IllegalArgumentException("Exact minion source required"); }
-			if (!wiki && !api && !official && !paceEvidence && !equipmentFacts && !minionFacts)
+			boolean hpFacts=source.id.equals("n3-observation-hp")
+				&& source.url.equals("https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/monsters.json")
+				&& source.items.isEmpty() && source.models.isEmpty() && source.decisions.isEmpty() && source.routes.isEmpty()
+				&& new HashSet<>(source.contexts).equals(Set.of("nex-base","nex-fumus","nex-umbra","nex-cruor","nex-glacies"));
+			if(source.id.equals("n3-observation-hp") && !hpFacts) { throw new IllegalArgumentException("Exact Nex HP source required"); }
+			if (!wiki && !api && !official && !paceEvidence && !equipmentFacts && !minionFacts && !hpFacts)
 			{
 				throw new IllegalArgumentException("Unapproved source URL");
 			}
@@ -390,6 +395,7 @@ public final class KnowledgeCatalog
 				|| target.analytical && (target.npcId != 0 || !target.variant.equals("STANDARD") || !target.scalingSupported
 					|| target.defenceLevel == null || target.defenceLevel != 0 || target.magicLevel != 0 || target.magicDefence != 0)
 				|| target.flatArmour!=null && target.flatArmour!=0 && target.flatArmour!=-2
+				|| target.hitpoints!=null && (target.hitpoints<1 || target.hitpoints>100000)
 				|| target.magicDefence < -64 || target.magicDefence > 10000
 				|| target.defenceLevel != null && (target.defenceLevel < 0 || target.defenceLevel > 10000)
 				|| target.magicAttack != null && (target.magicAttack < 0 || target.magicAttack > 10000)

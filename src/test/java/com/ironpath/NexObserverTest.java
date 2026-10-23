@@ -76,7 +76,7 @@ public class NexObserverTest
 		assertEquals(NexTargetState.Overhead.DEFLECT_MELEE,deflect.targetState.overhead());
 		assertEquals(Integer.valueOf(9),soul.targetState.healthRatio); assertEquals(Integer.valueOf(30),soul.targetState.healthScale);
 		assertTrue(soul.targetState.reading().contains("exact HP and target levels unknown"));
-		assertNull(summary.timeline.stream().filter(s->s.tick==4).findFirst().orElseThrow().targetState.healthRatio);
+		assertNull(summary.observations.health.stream().filter(s->s.tick==4).findFirst().orElseThrow().targetState.healthRatio);
 		assertSame(NexTargetState.UNKNOWN,summary.timeline.stream().filter(s->s.tick==5).findFirst().orElseThrow().targetState);
 		when(boss.getHealthRatio()).thenReturn(1); observer.clearActive();
 		assertEquals(Integer.valueOf(9),soul.targetState.healthRatio); assertEquals(NexTargetState.Overhead.SOUL_SPLIT,soul.targetState.overhead());

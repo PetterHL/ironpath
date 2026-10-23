@@ -6,6 +6,20 @@ retaining the complete PR #48 approved UI (0.23.2).
 for scope/assumption paragraphs beside cards or in ordinary details. Historical
 validation records retain their original screenshots and acceptance boundaries.
 
+Build 0.28.3 adds observation details only in Diagnostics and user-triggered
+reports. The existing conditional planner may offer **Use recorded attack ticks**
+for a matching bounded candidate state; the action clears scenario confirmations.
+HP/attack/DC mapping and ambiguous-event explanations stay in Diagnostics, while
+the ordinary per-state comparisons preserve their own support gates. No live
+combat prompt, new gear editor or automatically confirmed impact input is added.
+Calculation details includes a selectable 12-event observation window; Copy report
+exports all retained allowlisted observations as JSON, with deduplicated state and
+unchanged resource polls omitted, plus the existing overview/HUD counters. Copy is
+independent of event-page selection. An ordinary overhead HP bar is not an integer boss-HUD reading.
+Event selection survives unrelated refreshes and stays
+hidden with the selected session evidence.
+[Contract](research/nex-observation.md) · [Client procedure](validation/nex-observation.md).
+
 ## Normal screens
 
 Keep one native 225px **Encounter** sidebar with independently collapsible sections.

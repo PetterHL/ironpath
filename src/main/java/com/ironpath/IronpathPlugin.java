@@ -172,6 +172,7 @@ public class IronpathPlugin extends Plugin
 	{
 		if(nexReady())
 		{
+			nex.resourceEvent(event.getVarbitId(),event.getVarpId(),event.getValue());
 			if(event.getVarbitId()==VarbitID.NEX_BARRIER) { nex.barrier(event.getValue()); }
 			if(NexObserver.resourceChanged(event.getVarbitId(),event.getVarpId())) { nex.sample(-1); }
 		}
@@ -317,6 +318,14 @@ public class IronpathPlugin extends Plugin
  { if(nexReady()) { nex.overhead(event.getActor(),event.getOverheadText()); } }
  @Subscribe public void onAnimationChanged(net.runelite.api.events.AnimationChanged event)
  { if(nexReady() && event.getActor()==client.getLocalPlayer()) { nex.sample(event.getActor().getAnimation()); } }
+ @Subscribe public void onProjectileMoved(net.runelite.api.events.ProjectileMoved event)
+ { if(nexReady()) { nex.projectile(event.getProjectile()); } }
+ @Subscribe public void onGraphicChanged(net.runelite.api.events.GraphicChanged event)
+ { if(nexReady()) { nex.spot(event.getActor()); } }
+ @Subscribe public void onInteractingChanged(net.runelite.api.events.InteractingChanged event)
+ { if(nexReady()) { nex.interactingChanged(event.getSource()); } }
+ @Subscribe public void onScriptPostFired(net.runelite.api.events.ScriptPostFired event)
+ { if(nexReady() && event.getScriptId()==net.runelite.api.ScriptID.HP_HUD_UPDATE) { nex.hud(); } }
  @Subscribe public void onChatMessage(net.runelite.api.events.ChatMessage event)
  { if(nexReady()) { nex.chat(event.getType(),event.getMessage()); } }
 

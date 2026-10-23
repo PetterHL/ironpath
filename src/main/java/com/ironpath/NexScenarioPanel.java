@@ -44,6 +44,7 @@ final class NexScenarioPanel extends JPanel
 		impactOverhead=new JComboBox<>(new String[]{"Unknown","None","Soul Split","Deflect Melee"});
 	private final Map<Integer,NexPlanComparison.Impact> impacts=new TreeMap<>();
 	private boolean impactDirty;
+	private JTextArea impactSummary;
 	private final JTextArea changes=new JTextArea();
 	private final JButton calculate;
 	private NexPlanComparison.Result result;
@@ -82,6 +83,24 @@ final class NexScenarioPanel extends JPanel
 		}
 		field("When to spec",policy,"n3-policy");
 		field("Attack ticks",opportunities,"n3-opportunities");
+		var recorded=NexObservationReview.planLaunches(source.summary,sample);
+		if(!recorded.isEmpty())
+		{
+			PanelWidgets.button(body,"Use recorded attack ticks",()->{
+				if(!valid.getAsBoolean()) { return; }
+				int start=recorded.get(0).sample.tick;
+				opportunities.setText(recorded.stream().map(l->Integer.toString(l.sample.tick-start)).collect(java.util.stream.Collectors.joining(",")));
+				horizon.setText(Integer.toString(recorded.get(recorded.size()-1).sample.tick-start+1));
+				// This button copies a candidate schedule only. Every declaration remains unchecked.
+				conditions.values().forEach(c->c.setSelected(false)); zarosFixed.setSelected(false); impactConfirmed.setSelected(false);
+				supplyConfirmed.setSelected(false);
+				impacts.keySet().retainAll(recorded.stream().map(l->l.sample.tick-start).collect(java.util.stream.Collectors.toSet()));
+				impacts.replaceAll((tick,impact)->new NexPlanComparison.Impact(impact.targetHp,impact.playerHp,impact.hardCap,impact.rubyAllowed,
+					new NexPlanComparison.Zaros(impact.zaros.overhead,impact.zaros.defenceLevel,impact.zaros.magicLevel,false)));
+				impactSummary.setText(impactSummary());
+				invalidateResult();
+			});
+		}
 		perAttack.setName("n3-per-attack"); PanelWidgets.checkBox(perAttack,font); body.add(perAttack);
 		perAttack.setToolTipText("Replace fixed HP, caps, ruby eligibility and Zaros inputs with saved values for each attack tick. Missing ticks and blank fields stay unknown; fixed values are not reused.");
 		JPanel impactBody=PanelWidgets.column(body); impactBody.setVisible(false); body.add(impactBody);
@@ -95,7 +114,7 @@ final class NexScenarioPanel extends JPanel
 			impactConfirmed.setName("n3-impact-confirmed"); PanelWidgets.checkBox(impactConfirmed,font); impactBody.add(impactConfirmed);
 			impactConfirmed.setToolTipText("Confirm these separately supplied conditions at this hypothetical attack's impact. No overhead cadence, stat transfer or exact HP is inferred.");
 		}
-		PanelWidgets.text(impactBody,""); JTextArea impactSummary=(JTextArea)impactBody.getComponent(impactBody.getComponentCount()-1); impactBody.remove(impactSummary); impactSummary.setName("n3-impact-summary");
+		PanelWidgets.text(impactBody,""); impactSummary=(JTextArea)impactBody.getComponent(impactBody.getComponentCount()-1); impactBody.remove(impactSummary); impactSummary.setName("n3-impact-summary");
 		PanelWidgets.button(impactBody,"Save attack conditions",()->{
 			if(!valid.getAsBoolean()) { return; }
 			try

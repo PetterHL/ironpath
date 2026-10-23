@@ -7,6 +7,31 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
+**20 October 2026: client-test follow-up in development build 0.28.2.**
+Copy report now includes all retained target/HP-source summaries, candidate
+animation groups, the running RuneLite version and fixed HUD callback/rejection
+counts. One copy supplies the test overview; selecting event windows is optional.
+Nex-specific integer HUD availability remains unconfirmed. Ordinary overhead
+health bars remain bounded actor-bar readings.
+
+**20 October 2026: review corrections in development build 0.28.1.**
+HP-only diagnostics no longer fill the main state buffer. Recorded-tick imports
+clear saved impact/supply confirmations, and launch matching preserves the selected
+Zaros overhead. Diagnostics and copied reports share a selectable 12-event window
+with relative time/order, target forms and candidate links. Client acceptance
+remains open in the [validation record](docs/validation/nex-observation.md).
+
+**20 October 2026: development build 0.28.0 — bounded Nex observation for review.**
+The PR #50 follow-up records fresh boss-HUD HP candidates or bounded health-bar
+intervals, pilot attack/launch-package candidates, distinct projectiles, own zero
+hits, settled state and Death Charge/resource callbacks. Smoke-callback quantities
+stay separate from consumption. Diagnostics and the existing user-triggered report
+show the frozen evidence; recorded attack ticks can seed an explicit N3 draft
+without confirming its assumptions. Conditional state comparisons retain their
+independent phase/target support. HUD/weapon/DC mappings and full-energy timing
+still need [these exact client checks](docs/validation/nex-observation.md).
+[Contract, sources and remaining gates](docs/research/nex-observation.md).
+
 **20 October 2026: development build 0.27.0 — N3 decision support for review.**
 **Plan specs & gear** now supports explicit food/potion schedules with finite
 carried stock, shared attack delays and brew/restore/reboost effects. Vulnerable

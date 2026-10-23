@@ -3,6 +3,13 @@
 Updated 15 October 2026. This file separates the accepted product decision from
 verified implementation and remaining research. [TASKS](../TASKS.md) owns delivery.
 
+20 October: [Nex observation sources and support contract](research/nex-observation.md)
+correct the generic-health limitation, document the distinct HUD channel and
+review bounded pilot/Death Charge signals. [Implementation/offline checks and
+pending client acceptance](validation/nex-observation.md) are separate. Five
+maximum-HP facts join the existing catalogue; no licensed implementation or dataset
+is copied. The full-energy clock contrast remains a controlled client test.
+
 ## Decision and inspection
 
 The user approved Nex Trio MP2, one kill per trip, Lightbearer throughout, upgraded

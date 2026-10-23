@@ -6,6 +6,12 @@ retains its source work; the former optional-boss product placement is supersede
 
 ## Observation
 
+Build 0.28.0 adds [bounded candidate observation](research/nex-observation.md):
+separate HUD/bar HP sources, launch packages and tick reconciliation, distinct
+projectiles/zero hits, smoke-callback stock and raw Death Charge/server resources.
+The [client procedure](validation/nex-observation.md) remains open. Candidate
+matching never upgrades readiness, consumption or a hypothetical impact to observed.
+
 Record encounter/spawn identity, method, phase/subphase, target, completion status,
 actually worn states, current levels/prayers, relevant ammo and spec-energy changes.
 Distinguish attack launch evidence from delayed impacts. A hitsplat has no universal
@@ -74,8 +80,11 @@ The version-2 production report explicitly projects numeric setup/state inputs,
 per-metric support and outputs, relevant candidate quantities and source/model
 revisions. Adapter exclusions and comparison gaps are mapped to fixed allowlisted
 reasons/categories; arbitrary reason strings and embedded target identities never
-leave the application. A formatted report is limited to 24,000 characters, with
-whole fields omitted and a visible omission count. Only the selected comparison
+leave the application. Narrative fields retain a 24,000-character budget, with whole fields omitted and
+a visible omission count. Build 0.28.3 adds a separate whole-capture allowlisted
+JSON evidence block; fixed capture bounds and deduplicated state keep the entire
+report within 8,000,000 characters. Only unchanged resource polls are omitted,
+with explicit counts and upstream capture/link truncation flags. Only the selected comparison
 is exported; unrelated scenarios and ownership/unlock provenance are explicitly
 omitted. This is sufficient for scoped diagnosis, not a complete calculation or
 event replay. DEV1 alone writes synthetic reports to its build artifacts.

@@ -8,29 +8,37 @@ import java.util.*;
  * item-name map, raw trace or container serialization can enter the report model. */
 final class NexReport
 {
-	static final int MAX_CHARS=24000;
+	// Narrative retains its old budget. Evidence is separately bounded by 2,048 callbacks
+	// and 1,024 samples, numeric fields/fixed vocabularies, and deduplicated states.
+	static final int MAX_NARRATIVE_CHARS=24000, MAX_CHARS=8_000_000;
 	enum Provenance { LIVE_PUBLIC_CLIENT, SYNTHETIC_OFFLINE }
 	enum State { READY, PENDING, NO_ACCOUNT, NO_KILL, PAUSED, RESET, NOT_READY }
 	private final List<String> lines;
-	private NexReport(List<String> lines) { this.lines=List.copyOf(lines); }
+	private final String evidence;
+	private NexReport(List<String> lines,String evidence) { this.lines=List.copyOf(lines); this.evidence=evidence; }
 
 	static NexReport snapshot(NexSummary summary,NexOwnedResult result,int choiceIndex,int pairIndex,
 		KnowledgeCatalog catalog,Provenance provenance,State state)
 	{ return snapshot(summary,result,choiceIndex,pairIndex,catalog,provenance,state,null); }
 	static NexReport snapshot(NexSummary summary,NexOwnedResult result,int choiceIndex,int pairIndex,
 		KnowledgeCatalog catalog,Provenance provenance,State state,NexRecord record)
+	{ return snapshot(summary,result,choiceIndex,pairIndex,catalog,provenance,state,record,0); }
+	static NexReport snapshot(NexSummary summary,NexOwnedResult result,int choiceIndex,int pairIndex,
+		KnowledgeCatalog catalog,Provenance provenance,State state,NexRecord record,int ignoredObservationPage)
 	{
-		List<String> out=new ArrayList<>();
+		List<String> out=new ArrayList<>(); String evidence=null;
 		out.add("IronPath diagnostic report · schema 2");
 		out.add("Evidence: "+provenance+"; status: "+state);
 		out.add("Build: "+BuildInfo.VERSION+"; adapter: "+NexCapture.VERSION+"; evaluator: "+NexOwnedEvaluator.VERSION);
+		String clientVersion=net.runelite.client.RuneLiteProperties.getVersion();
+		out.add("RuneLite client version: "+(clientVersion!=null && clientVersion.matches("\\d+\\.\\d+\\.\\d+(?:-SNAPSHOT)?")?clientVersion:"UNKNOWN"));
 		out.add("Models: "+MeleeModel.VERSION+" / "+RangedModel.VERSION+"; knowledge: "+(catalog==null?"unavailable":catalog.version));
 		out.add("Pilot model/planning scope: Nex / Trio MP2 / one kill per trip; inheritance is not per-kill confirmation.");
 		out.add("No kill timestamp recorded. Tick offsets below are relative to measured start. This is a diagnostic snapshot, not a replay recording.");
 		// Hidden/cleared state must never be recoverable even if a caller accidentally supplies it.
 		if(state==State.NO_ACCOUNT || state==State.PAUSED || state==State.RESET || state==State.NOT_READY)
-		{ out.add("Session evidence unavailable or hidden; no kill/calculation exported."); return new NexReport(out); }
-		if(summary==null) { out.add("No captured kill available."); return new NexReport(out); }
+		{ out.add("Session evidence unavailable or hidden; no kill/calculation exported."); return new NexReport(out,evidence); }
+		if(summary==null) { out.add("No captured kill available."); return new NexReport(out,evidence); }
 		out.add("Report-local kill: K1; outcome: "+summary.outcome+"; exclusion: "+exclusion(summary));
 		NexContext context=record!=null && record.summary==summary?record.context:result!=null && result.summary==summary?result.context:summary.context;
 		long contextRevision=record!=null && record.summary==summary?record.revision:result!=null && result.summary==summary?result.contextRevision:0;
@@ -51,8 +59,11 @@ final class NexReport
 		out.add("Capture gaps: "+summary.gaps.size()+"; launch attribution, event-order ambiguity, internal charges and consumption are not established.");
 		if(state==State.PENDING || result==null || result.summary!=summary || result.contextRevision!=contextRevision || !result.context.equals(context)
 			|| record!=null && (record.inputs==null?result.inputRevision!=0:result.inputRevision!=record.inputs.revision || !result.modelRevision.equals(record.inputs.modelRevision)))
-		{ out.add("Calculation unavailable/pending for K1. No other kill's result exported."); return new NexReport(out); }
+		{ out.add("Calculation unavailable/pending for K1. No other kill's result exported."); return new NexReport(out,evidence); }
 		out.add("Report-local calculation: C1; immutable calculation revision: "+result.revision);
+		out.addAll(result.observations.overview);
+		observation(out,summary,result);
+		evidence=result.observations.export;
 		out.add("Automatic N3 recommendation gaps: "+NexPlanSupport.automaticGaps());
 		var resources=result.resources; var scenarios=resources.scenarios;
 		out.add("Resource evidence (tenths percent): first="+resources.firstEnergy+"; last="+resources.lastEnergy
@@ -81,8 +92,10 @@ final class NexReport
 		}
 		else { out.add("Frozen planning assumptions unavailable in this fixture."); }
 		if(choiceIndex<0 || choiceIndex>=result.choices.size())
-		{ out.add("No selected comparison."); return new NexReport(out); }
+		{ out.add("No selected comparison."); return new NexReport(out,evidence); }
 		var choice=result.choices.get(choiceIndex); var sample=choice.actual; var captured=sample.state;
+		out.add("Matching recorded launch-state candidates="+NexObservationReview.launches(summary,sample).size()
+			+"; supported result="+(choice.supported()?"CONDITIONAL_STATE_OFFENCE":"DEPENDENT_DAMAGE_UNAVAILABLE")+"; no missed-opportunity or alternative schedule inference.");
 		out.add("Frozen public target reading: "+sample.targetState.reading()+"; "+NexTargetState.VERSION);
 		out.add("Selected scenario: "+(choiceIndex+1)+"; pair: "+pairIndex+"; tick offset: "+(sample.tick-summary.startTick)
 			+"; role: "+vocabulary(sample.role,"melee","ranged","spec candidate","unclassified")
@@ -102,9 +115,9 @@ final class NexReport
 			+"; style button: "+captured.style+"; energy tenths percent: "+captured.specialEnergy+"; selected spec: "+captured.specialSelected);
 		for(String key:List.of("quiver-ammo-id-raw","quiver-ammo-quantity-raw","quiver-splinters-raw","quiver-charged-raw","worn-ammo-quantity","inventory-slots-used","death-charge-active"))
 		{ out.add("Observed counter "+key+": "+captured.resources.getOrDefault(key,-1)+" (-1 unread; raw counters do not prove usable stock)"); }
-		if(!choice.supported()) { out.add("Selected comparison unavailable: "+gapCode(choice.gapReason())); return new NexReport(out); }
+		if(!choice.supported()) { out.add("Selected comparison unavailable: "+gapCode(choice.gapReason())); return new NexReport(out,evidence); }
 		List<ComparisonResult> pairs=new ArrayList<>(); pairs.add(choice.comparison); pairs.addAll(choice.alternatives);
-		if(pairIndex<0 || pairIndex>=pairs.size()) { out.add("Selected pair unavailable; no substitute exported."); return new NexReport(out); }
+		if(pairIndex<0 || pairIndex>=pairs.size()) { out.add("Selected pair unavailable; no substitute exported."); return new NexReport(out,evidence); }
 		var pair=pairs.get(pairIndex);
 		out.add("Comparison versions: "+pair.modelVersion+" / "+pair.knowledgeVersion+"; offence scope: "+pair.offenceScope);
 		setup(out,"Actual",pair.beforeSetup); setup(out,"Candidate",pair.afterSetup);
@@ -135,9 +148,21 @@ final class NexReport
 		if(pair.beforeSetup.slots.containsValue(24780) || pair.afterSetup.slots.containsValue(24780))
 		{ out.add("Blood fury healing/survival unmodelled; offence alone cannot establish overall value."); }
 		out.add("Coverage omissions: "+choice.coverage.size()+" scoped coverage notices; unmodelled alternatives may change the global optimum.");
-		return new NexReport(out);
+		return new NexReport(out,evidence);
 	}
 	private static String offset(Integer tick,NexSummary summary) { return tick==null?"unobserved":Integer.toString(tick-summary.startTick); }
+	private static void observation(List<String> out,NexSummary summary,NexOwnedResult result)
+	{
+		var o=summary.observations; var r=result.observations;
+		out.add("Automatic observation="+NexObservations.VERSION+"; launches="+o.launches.size()+"; distinct projectiles="+o.flights.size()+"; own impacts="+o.impacts.size()+"; truncated="+o.truncated);
+		out.add("HP states: HUD candidates="+r.hudReadings+"; bounded actor bars="+r.barReadings+". HUD data is not validated Nex impact HP; no HP trajectory inferred.");
+		out.add("Smoke-callback start stock="+(r.startResources==null?"UNKNOWN":"CAPTURED_NOT_CONSUMPTION")+"; server-agreed starting energy="+r.startEnergy+"; attack/spell readiness and inherited charge lifetime UNKNOWN.");
+		out.add("Starting food units / potion doses="+r.startSupplies+" (null unread); consumption UNKNOWN. Correlation incomplete="+r.correlationLimited+"; unmatched counts may include work-limit omissions.");
+		out.add("Resource callbacks after the measured end are diagnostic end-grace evidence only; they do not extend duration/damage. Measured end tick offset="+(summary.endTick-summary.startTick));
+		out.add("Impact correlation: one candidate="+r.matches.stream().filter(m->m.candidates.size()==1).count()+"; multiple candidates="+r.matches.stream().filter(m->m.candidates.size()>1).count()
+			+"; unmatched="+r.matches.stream().filter(m->m.candidates.isEmpty()).count()+"; zero hits="+o.impacts.stream().filter(h->h.amount==0).count()+". All candidates remain unvalidated, including singleton matches and other owned damage sources.");
+		out.add("DC end effects/charge loss do not distinguish proc from expiry. Full-energy regeneration remains a client test item.");
+	}
 	private static String exclusion(NexSummary summary)
 	{
 		if(summary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE) { return "none"; }
@@ -209,10 +234,17 @@ final class NexReport
 		StringBuilder out=new StringBuilder(); int omitted=0;
 		for(String line:lines)
 		{
-			if(out.length()+line.length()+footer.length()+100>MAX_CHARS) { omitted++; }
+			if(out.length()+line.length()+footer.length()+100>MAX_NARRATIVE_CHARS) { omitted++; }
 			else { out.append(line).append('\n'); }
 		}
 		out.append("Bounded output: ").append(omitted==0?"no selected fields truncated":omitted+" fields omitted by size limit");
-		return out.append(footer).toString();
+		out.append(footer);
+		if(evidence!=null)
+		{
+			// Valid capture bounds fit as a whole. Never silently emit a partial JSON document.
+			if(out.length()+evidence.length()+16<=MAX_CHARS) { out.append("```json\n").append(evidence).append("\n```\n"); }
+			else { out.append("Evidence unavailable: export exceeds size limit.\n```json\n{\"schema\":\"nex-evidence-1\",\"exportComplete\":false,\"reason\":\"SIZE_LIMIT\"}\n```\n"); }
+		}
+		return out.toString();
 	}
 }
