@@ -8,7 +8,7 @@ final class NexHelp
 	static void populate(JPanel panel)
 	{
 		for(String explanation:new String[]{
-			"Damage contribution uses observed Nex + named-minion hitsplats, not server loot credit. Timing runs from observed smoke to Nex death/dying with corroborating completion.",
+			"Damage contribution is unverified because whole-kill damage coverage is unknown. Diagnostics retains only the recorded Nex + named-minion damage sums and hitsplat ratio, not server loot credit. Timing runs from observed smoke to Nex death/dying with corroborating completion.",
 			"Independent state comparisons are alternatives, not additive gains or a whole-kill ranking. Complete packages are calculated together. A partial supported-domain search does not establish the global best owned setup.",
 			"Equipped gear means the changed items are already worn in that captured state; inventory gear is carried, and bank gear is conditional next-trip preparation. Bank presence does not establish usable quantities or joint packing. Supplies are assumptions. Healing and survival are unmodelled.",
 			"The pilot keeps Lightbearer equipped.",

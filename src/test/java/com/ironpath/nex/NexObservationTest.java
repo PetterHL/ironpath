@@ -72,7 +72,7 @@ public class NexObservationTest
 		var bow=NexCaptureTest.state(20997,0,1000,2);
 		c.sample(0,bow,"NEX@spawn","ranged",-1,"roster");
 		c.launch(1,30,1,426,bow,"NEX@spawn",NexTargetState.UNKNOWN,NexObservations.Weapon.TWISTED_BOW,NexObservations.Attack.ORDINARY_CANDIDATE);
-		c.flight(new NexObservations.Flight(1,30,2,1120,30,90,"NEX@spawn",true));
+		c.flight(new NexObservations.Flight(1,30,2,1120,30,90,"NEX@spawn",NexObservations.Source.LOCAL));
 		c.launch(2,60,3,426,bow,"NEX@spawn",NexTargetState.UNKNOWN,NexObservations.Weapon.TWISTED_BOW,NexObservations.Attack.ORDINARY_CANDIDATE);
 		c.sample(2,NexCaptureTest.state(26219,12954,1000,2),"NEX@spawn","melee",-1,"roster");
 		c.impact(new NexObservations.Impact(3,90,4,"NEX@spawn",0,NexTargetState.UNKNOWN));

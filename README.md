@@ -7,6 +7,18 @@ The selected direction is an encounter-and-method workflow: understand the setup
 you actually use, find better uses of owned equipment, then compare worthwhile
 new upgrades and their effect on your play.
 
+**23 October 2026: development build 0.29.0 — Nex callback coverage follow-up.**
+Damage contribution now reads **Unverified** while whole-kill coverage is open.
+Diagnostics preserves the scoped recorded damage sums/ratio. Direct hitsplat
+callback processing no longer rejects events by payload-object identity; bounded
+counts/sums expose entry, rejection, classification and repeated-object evidence.
+Projectile sources are explicit LOCAL / OTHER / UNKNOWN. One-copy evidence export
+is now `nex-evidence-2`, with all retained useful events and full fixed counters.
+The earlier live report's missing-damage cause remains unresolved; synthetic
+object reuse is not a replay of the live kill; the pinned client binary confirms
+a mutable reuse path. [Source comparison](docs/research/nex-damage-observation.md)
+· [Verification and next live check](docs/validation/nex-damage-observation.md).
+
 **20 October 2026: client-test follow-up in development build 0.28.2.**
 Copy report now includes all retained target/HP-source summaries, candidate
 animation groups, the running RuneLite version and fixed HUD callback/rejection
@@ -56,7 +68,8 @@ Automatic attack/spec/consumption attribution and live acceptance remain open.
 The native Encounter panel uses concise OSRS labels, centred results and genuine
 item/package sprites. Normal screens keep results and controls; Diagnostics holds
 technical explanations, calculation scope, provenance and reports. **Damage
-contribution** names the existing observed hitsplat ratio; its mathematics is unchanged.
+contribution** originally named the observed hitsplat ratio; build 0.29.0 withholds
+that headline value while coverage remains unverified.
 Last kill stays above independent collapsible sections: Compare setups (open),
 Team & method and Diagnostics (initially closed). Gear & method and Gear & unlocks
 are removed, including their manual controls; saved preferences still apply.
@@ -129,7 +142,7 @@ losses and zero. Nex ordinary offence uses exact sampled levels/prayers and a
 labeled base-stat scenario; it does not estimate kill time or personal contribution.
 [N2 evidence and remaining checks](docs/validation/nex-owned.md).
 
-N1 session capture retains last complete timing/share, comparable means/ranges,
+N1 session capture retains last complete timing and diagnostic damage evidence, comparable means/ranges,
 excluded attempts and immutable timelines. Its real-client mappings and player
 acceptance are still pending. [N1 validation](docs/validation/nex-session.md).
 

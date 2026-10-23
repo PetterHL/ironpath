@@ -31,7 +31,7 @@ the retained implementation; it does not claim Nex recommendations are ready.
 | Phase/subphase/minion and completion adapter | Static reviewed adapter + synthetic replays; live mapping validation pending | N1 |
 | Saved method, actual melee/ranged/spec packages, locks | Worn timeline, saved locks and supported ordinary package proposals; spec states remain evidence | N1–N3 |
 | Same-session summaries surviving banking | Mocked round trips pass; one in-session retained bank visit confirmed; broader trips pending | N1 |
-| Scoped observed damage contribution | Classified hitsplat share for explicit Nex/minion targets, not server contribution | N1 |
+| Recorded damage evidence | Scoped Nex/minion numerator/denominator and ratio in Diagnostics; whole-kill contribution unavailable, coverage unverified (0.29.0) | N1 |
 | Relevant owned whole-package evaluation | Supported carried and bank-preparation searches; explicit pairs and coverage gaps. No global-best or combined packing claim | N2 |
 | Locked melee forms | Exact Dragon defender (l) 24143 and Infernal cape (l) 24224 reviewed; no generic variant normalization or damaged-form support | N2 |
 | Reported account | Anonymous reported-gear fixture; Ancient blessing melee and separate quiver projectile supported. Actual levels/stock still unknown; Scorching remains unmodelled | N2–N3 |

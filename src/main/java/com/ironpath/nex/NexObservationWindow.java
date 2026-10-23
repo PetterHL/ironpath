@@ -38,8 +38,8 @@ public final class NexObservationWindow
 		{
 			var f=o.flights.get(i);
 			rows.add(new Row(f.tick,f.cycle,f.order,f.target,f.targetState.form,
-				"Projectile F"+(i+1)+"; id="+f.id+"; local source="+f.localSource+"; start/end cycle offsets from this callback="+((long)f.startCycle-f.cycle)+"/"+((long)f.endCycle-f.cycle)
-				+"; launch candidates="+links(o.launches,"L",l->f.localSource && f.target!=null && Objects.equals(f.target,l.sample.target)
+				"Projectile F"+(i+1)+"; id="+f.id+"; source="+f.source+"; start/end cycle offsets from this callback="+((long)f.startCycle-f.cycle)+"/"+((long)f.endCycle-f.cycle)
+				+"; launch candidates="+links(o.launches,"L",l->f.source==NexObservations.Source.LOCAL && f.target!=null && Objects.equals(f.target,l.sample.target)
 					&& (l.weapon==NexObservations.Weapon.TWISTED_BOW || l.weapon==NexObservations.Weapon.ZARYTE_CROSSBOW)
 					&& l.order<f.order && Math.abs((long)f.startCycle-l.cycle)<=30)));
 		}
@@ -48,7 +48,7 @@ public final class NexObservationWindow
 			var h=o.impacts.get(i); Set<NexObservations.Launch> candidates=new HashSet<>(review.matches.get(i).candidates);
 			rows.add(new Row(h.tick,h.cycle,h.order,h.target,h.targetState.form,
 				"Impact I"+(i+1)+"; amount="+h.amount+"; launch candidates="+links(o.launches,"L",candidates::contains)
-				+"; projectile candidates="+links(o.flights,"F",f->f.localSource && h.target!=null && Objects.equals(h.target,f.target)
+				+"; projectile candidates="+links(o.flights,"F",f->f.source==NexObservations.Source.LOCAL && h.target!=null && Objects.equals(h.target,f.target)
 					&& f.order<h.order && Math.abs((long)f.endCycle-h.cycle)<=30)+"; "+h.targetState.health.reading()));
 		}
 		for(var h:o.health)

@@ -184,7 +184,7 @@ final class NexPanel extends PluginPanel
 				boolean enlarged=getFont().getSize()>=18;
 				JPanel metrics=PanelWidgets.column(kill); kill.add(metrics);
 				killMetric(metrics,String.format(Locale.ROOT,"%.1f s",stats.last.seconds()),enlarged?"Time":"Duration","nex-duration",enlarged);
-				killMetric(metrics,stats.last.share()==null?"Unknown":String.format(Locale.ROOT,"%.1f%%",stats.last.share()),"Damage contribution","nex-share",enlarged);
+				killMetric(metrics,"Unverified","Damage contribution","nex-share",enlarged);
 				if(stats.n>1) { PanelWidgets.text(kill,aggregateLabel(stats)); }
 				if(inspectedOwned==null && inspected==null) { context(stats.record(stats.last),redraw,contextValid); }
 			}
@@ -461,16 +461,17 @@ final class NexPanel extends PluginPanel
 		PanelWidgets.text(basis,"Default team & method: "+prefs.nexContext.label()+"\n"+prefs.nexContext.provenance());
 		if(diagnosticRecord!=null && !hidden) { PanelWidgets.text(basis,diagnosticRecord.context.provenance()); }
 		NexHelp.populate(basis);
-		PanelWidgets.text(basis,"Timing: smoke → death/dying. Observed hitsplat share: Nex + named minions, not server loot credit.");
+		PanelWidgets.text(basis,"Timing: smoke → death/dying. Damage contribution unavailable: whole-kill coverage unverified.");
 		if(summary!=null)
 		{
+			PanelWidgets.text(basis,"Recorded damage: "+summary.localDamage()+" local / "+summary.totalDamage()+" total; observed hitsplat ratio "+(summary.share()==null?"unavailable":String.format(Locale.ROOT,"%.2f%%",summary.share()))+". Nex + named minions only; healing/unclassified excluded. Whole-kill coverage unverified.");
 			PanelWidgets.text(basis,"State coverage "+Math.min(summary.sampledTicks,summary.expectedTicks)+" / "+summary.expectedTicks+" ticks · "+summary.unclassifiedHits+" unclassified hits");
 			if(summary==stats.last)
 			{
 				PanelWidgets.text(basis,aggregateLabel(stats));
 				if(stats.n==0) { PanelWidgets.text(basis,stats.record(summary).exclusion()); }
 				if(stats.n>1) { PanelWidgets.text(basis,String.format(Locale.ROOT,"Range %.1f–%.1f s",stats.minSeconds,stats.maxSeconds)); }
-				if(stats.shareN>1) { PanelWidgets.text(basis,String.format(Locale.ROOT,"Mean per-kill share %.1f%% · %d kills; aggregate %.1f%%",stats.meanShare,stats.shareN,stats.aggregateShare)); }
+				if(stats.shareN>1) { PanelWidgets.text(basis,String.format(Locale.ROOT,"Mean recorded hitsplat ratio %.1f%% · %d kills; aggregate %.1f%%",stats.meanShare,stats.shareN,stats.aggregateShare)); }
 				PanelWidgets.text(basis,"Matched averages require confirmed strategy/group/count, compatible timer/adapter, worn packages, sampled levels/prayers and a stable observed arena roster. Planning locks are excluded. Equal count is not equal teammate damage; visible people do not prove party membership.");
 			}
 			if(result!=null)

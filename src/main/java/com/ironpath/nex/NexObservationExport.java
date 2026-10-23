@@ -41,7 +41,7 @@ public final class NexObservationExport
 		for(int i=0;i<o.flights.size();i++)
 		{
 			var f=o.flights.get(i); var e=event("PROJECTILE",f.tick,f.cycle,f.order,f.target);
-			e.addProperty("id","F"+(i+1)); e.addProperty("projectile",f.id); e.addProperty("localSource",f.localSource);
+			e.addProperty("id","F"+(i+1)); e.addProperty("projectile",f.id); e.addProperty("source",f.source.name());
 			e.addProperty("startCycleOffset",(long)f.startCycle-f.cycle); e.addProperty("endCycleOffset",(long)f.endCycle-f.cycle);
 			e.add("targetState",targetState(f.targetState)); events.add(e);
 		}
@@ -70,13 +70,31 @@ public final class NexObservationExport
 			}
 			retained.add(e);
 		}
-		JsonObject root=new JsonObject(); root.addProperty("schema","nex-evidence-1"); root.addProperty("kill","K1");
+		JsonObject root=new JsonObject(); root.addProperty("schema","nex-evidence-2"); root.addProperty("kill","K1");
 		root.addProperty("timing","tick relative to measured start; cycle/order relative to first retained callback; samples have tick only");
 		root.addProperty("scope","All retained allowlisted observations; correlations remain unvalidated candidates. Zero impacts are observed zero damage, not inferred attacks. No opportunity, consumption or proc inference.");
 		root.addProperty("measuredEndTick",summary.endTick-summary.startTick); root.addProperty("captureTruncated",o.truncated);
 		root.addProperty("correlationLimited",review.correlationLimited); root.addProperty("retainedCallbacks",events.size());
 		root.addProperty("unchangedPollsOmitted",compressed); root.addProperty("exportedCallbacks",retained.size()); root.addProperty("exportOmissions",0); root.addProperty("exportComplete",true);
 		root.add("events",retained);
+		root.addProperty("damageCoverage","UNVERIFIED");
+		root.addProperty("wholeKillContributionPercent",(Number)null);
+		root.addProperty("observedLocalDamage",summary.localDamage()); root.addProperty("observedTotalDamage",summary.totalDamage());
+		root.addProperty("observedHitsplatRatioPercent",summary.share());
+		root.addProperty("callbackCounterScope","Active attempt only; cleared on smoke reanchor; includes rejected and post-death callbacks. Positive payload sums, not fight damage. Object reuse is counted, never rejected. Projectile exclusions count callbacks, not distinct shots.");
+		root.addProperty("callbackCountLimit",NexCallbackDiagnostics.MAX_COUNT); root.addProperty("callbackAmountLimit",NexCallbackDiagnostics.MAX_AMOUNT);
+		JsonObject counters=new JsonObject();
+		for(var target:NexCallbackDiagnostics.Target.values())
+		{
+			JsonObject stages=new JsonObject();
+			for(var stage:NexCallbackDiagnostics.Stage.values())
+			{
+				var tally=o.callbacks.get(target,stage); JsonObject entry=new JsonObject();
+				entry.addProperty("count",tally.count); entry.addProperty("amount",tally.amount); entry.addProperty("atLimit",tally.atLimit()); stages.add(stage.name(),entry);
+			}
+			counters.add(target.name(),stages);
+		}
+		root.add("callbackChecks",counters);
 		root.add("samples",samples(summary.timeline)); root.add("beforeStart",samples(summary.beforeStart));
 		JsonArray stateTable=new JsonArray(); states.keySet().forEach(stateTable::add); root.add("states",stateTable);
 		JsonObject targetTable=new JsonObject(); targets.forEach((raw,ref)->targetTable.addProperty(ref,targetClass(raw))); root.add("targets",targetTable);

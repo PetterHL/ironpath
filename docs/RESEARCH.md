@@ -1,5 +1,12 @@
 # Evidence and research index
 
+23 October: [Nex callback/source comparison](research/nex-damage-observation.md)
+records the public hitsplat contract, six pinned plugin implementations, direct
+scalar callback processing, bounded rejection/classification diagnostics and typed
+projectile uncertainty. The resolved 1.13.2 binary confirms a mutable payload reuse path; its occurrence
+and quantitative effect in the supplied live kill remain unmeasured. DC/full-energy mechanics remain separate.
+
+
 Updated 15 October 2026. This file separates the accepted product decision from
 verified implementation and remaining research. [TASKS](../TASKS.md) owns delivery.
 
