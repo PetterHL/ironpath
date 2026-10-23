@@ -43,7 +43,31 @@ JSON counter agreement and lifecycle clearing. Existing maximum bounds,
 saturation, privacy, page-independent Copy, unknown/confirmation, frozen-worker
 and reset regressions remain required.
 
-The managed workspace remained pending during preparation. Repository CI is
-used for executable checks; exact commands, result counts and artifact links
-will be recorded after the current delivery completes. No previous build result
-is relabeled as validation for this change.
+Both prescribed commands passed sequentially in repository CI on code delivery
+[`288fa1d8ad76f23fbda67708599d08b8bccf05d6`](https://github.com/PetterHL/ironpath/commit/288fa1d8ad76f23fbda67708599d08b8bccf05d6):
+
+```sh
+./gradlew -PruneLiteVersion=1.13.2 test build offlineReview --no-daemon
+./gradlew test build --no-daemon
+```
+
+The runner used **Temurin JDK 11.0.32+1 / Gradle 8.10**. The pinned command
+used **RuneLite 1.13.2**; the normal build resolved **1.13.3**, verified by the
+subsequent `dependencyInsight` step. Logs show success for every one of the
+**14 DEV1 scenarios**, as well as both test/build commands. No new unit-test
+total or manual artifact-content count is asserted from the job summary.
+
+**CI: PASS** — [run 40020736579](https://github.com/PetterHL/ironpath/actions/runs/40020736579).
+[Current code-delivery reports and native PNG artifact](https://github.com/PetterHL/ironpath/actions/runs/40020736579/artifacts/12529649256),
+`dev1-offline-review`, SHA-256
+`bd740cc17da000bc2517ae11a112a79322cf0be562ba400837f591b5bf6fd486`.
+[Review PR #54](https://github.com/PetterHL/ironpath/pull/54) records the current
+head status; this result remains scoped to the exact code delivery above.
+
+The changed patch was reviewed and changed-document relative file targets and
+added/edited source whitespace checked. The managed workspace stayed pending:
+there was no local JVM run, raw live-report reparse, ZIP-content audit or manual
+PNG inspection in this step. CI generated the native previews and ran their
+existing automated assertions. No product layout was changed; real client,
+player, clipboard and broader lifecycle acceptance remain open. This documentation
+follow-up does not relabel earlier 0.29.0 results as current validation.

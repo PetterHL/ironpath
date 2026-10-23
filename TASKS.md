@@ -47,8 +47,10 @@ From current main `1fe77cb`, after merged PRs #50/#51/#53.
 - [x] Record exact remaining unknowns, insufficient signals and minimum controlled
   observations for launches/ownership, impact HP, readiness/energy, DC transitions,
   usable stock/packing and consumption. A fresh complete Nex kill is not required.
-- [ ] Finish current-delivery executable/DEV1 verification and record exact
-  commit, dependency versions, CI/artifact evidence before review handoff.
+- [x] Complete both prescribed commands in CI: pinned RuneLite 1.13.2 and normal
+  1.13.3, JDK 11.0.32+1 / Gradle 8.10; all 14 DEV1 scenarios pass. Exact code
+  commit and CI/artifact evidence are in the validation record. Workspace startup
+  prevented local execution and manual PNG inspection; no live acceptance is claimed.
 - [ ] Establish the remaining corroborated mappings before automatic recommendations.
   **NOT READY**: retain all eight automatic gaps and unchecked declarations.
   N4, contribution/time estimates, broader lifecycle acceptance and unrelated UI
