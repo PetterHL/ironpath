@@ -31,7 +31,7 @@
   not unknown-state guards: observed signals and inferred attacks/readiness must
   stay distinct. A scoped result needs its own validated support; unresolved
   full-plan resource gates must not block independent ordinary-damage outputs.
-  The current 0.30.0 runtime still has all eight automatic gaps. Keep declared
+  The 0.31.0 runtime retains all eight full-plan automatic gaps. Keep declared
   scenarios unchecked and full finite-plan gates intact. Defer ranged/spec
   expansion, N4 and other bosses until the first useful automatic slice.
   The roadmap documentation was integrated through PR #54; implementation

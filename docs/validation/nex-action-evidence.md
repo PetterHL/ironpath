@@ -55,7 +55,9 @@ claim is enabled.
   even a unique temporal candidate is not ownership proof. Amount never selects
   the attack sample. The first-flight projectile contract is unchanged.
 - Export shares existing report-local targets, deduplicated numeric states and
-  relative times. The whole timeline is independent of the selected UI page.
+  relative times. The timeline is independent of the selected UI page. The existing
+  8,000,000-character report ceiling remains: a size failure emits explicit
+  exportComplete=false instead of a partial JSON timeline. Consumers must reject it.
   Existing frozen calculation/input/context, historical view, stale publication,
   hidden/reset report and session retention guards remain. A consumer must check
   mapping support, truncation and per-result target/mechanic/HP validity; an
@@ -78,8 +80,32 @@ page-independent copying and preserves the first timeline across the next kill.
 All fourteen scenarios and existing lifecycle/arithmetic/unknown-state regressions
 remain required. Generated reports/PNGs belong to build artifacts, not Git.
 
-Full pinned/normal command results and artifact review are recorded below after
-execution. Synthetic verification is not controlled-client evidence.
+Code revision: [`dfd4662`](https://github.com/PetterHL/ironpath/commit/dfd4662ebfe23f228abe7fdbfe9d4adc0ed5d1bb).
+Local Temurin JDK **11.0.32.1+1**, Gradle **8.10**:
+
+```sh
+./gradlew -PruneLiteVersion=1.13.2 test build offlineReview --no-daemon
+./gradlew test build --no-daemon
+```
+
+The pinned command **passed** on RuneLite **1.13.2**: **428 tests / 48 suites**, no
+failures/errors, and all **14 DEV1 scenarios / 1,145 checks / 244 PNGs** passed.
+The final pinned run took 4m 8s. The initial offline attempt had no cached RuneLite
+artifact; dependencies were resolved through the configured network/proxy before
+verification. That failed resolution is not counted as executed tests.
+
+The normal compatibility command also **passed** (2m 52s): **428 tests / 48
+suites**, no failures/errors. `dependencyInsight` resolved RuneLite **1.13.3**.
+The commands ran sequentially; code is unchanged from `dfd4662`. Subsequent
+validation-record updates change documentation only.
+
+Inspected the current `nex-n3-plan` observation viewports at native 225 × 600 and
+fonts 12/20, plus both full-height views. Parsed both production copied JSON
+blocks: 34 action signals, one provisional inference at offset 4, shark at 6 and
+upgraded DC at 7; all state/target/settled-order references resolve. Copies are
+page-independent and the earlier timeline survives the next kill. Changed patch
+whitespace and relative Markdown targets pass. CI and its artifact are linked
+from the delivery PR. Synthetic verification is not controlled-client evidence.
 
 ## Short controlled client check — pending
 
