@@ -86,6 +86,29 @@ public class NexDecisionSupportTest
 		assertEquals(Integer.valueOf(7),NexSupplies.quantities(Map.of(6685,1L,6687,1L)).get(BREW));
 		assertThrows(IllegalArgumentException.class,()->NexSupplies.stock(uses,null));
 	}
+	@Test public void karambwanBlocksEveryPotionUntilThreeTicksAfterEating()
+	{
+		for(NexSupplies.Kind potion:List.of(BREW,RESTORE,SUPER_COMBAT,RANGING))
+		{
+			for(int tick:List.of(1,2))
+			{
+				assertThrows(potion+" at tick "+tick,IllegalArgumentException.class,
+					()->NexSupplies.ordered(Map.of(KARAMBWAN,List.of(0),potion,List.of(tick)),10));
+			}
+			var uses=NexSupplies.ordered(Map.of(KARAMBWAN,List.of(0),potion,List.of(3)),10);
+			assertEquals(2,uses.size()); assertEquals(potion,uses.get(1).kind); assertEquals(3,uses.get(1).tick);
+		}
+	}
+	@Test public void sameTickFoodPotionKarambwanComboPreservesOrderAndExtendsTheSharedPotionCooldown()
+	{
+		var combo=NexSupplies.ordered(Map.of(SHARK,List.of(0),BREW,List.of(0),KARAMBWAN,List.of(0),RESTORE,List.of(3)),10);
+		assertEquals(List.of(SHARK,BREW,KARAMBWAN,RESTORE),combo.stream().map(u->u.kind).collect(java.util.stream.Collectors.toList()));
+		// A potion at tick 0 is normally ready again at 3; a karambwan at 1 moves that boundary to 4.
+		assertThrows(IllegalArgumentException.class,
+			()->NexSupplies.ordered(Map.of(BREW,List.of(0),KARAMBWAN,List.of(1),RESTORE,List.of(3)),10));
+		var staggered=NexSupplies.ordered(Map.of(BREW,List.of(0),KARAMBWAN,List.of(1),RESTORE,List.of(4)),10);
+		assertEquals(3,staggered.size()); assertEquals(4,staggered.get(2).tick);
+	}
 	@Test public void minionsUseTheirOwnDefencesAndAccurateNonMagicFlatArmourBeforeHpAndCaps()
 	{
 		for(var entry:Map.of("FUMUS","SMOKE","UMBRA","SHADOW","CRUOR","BLOOD","GLACIES","ICE").entrySet())

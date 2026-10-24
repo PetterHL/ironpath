@@ -51,6 +51,30 @@ public class NexScenarioPanelTest
 		}
 		PanelPreview.click(panel,"Save attack conditions");
 	}
+	@Test public void earlyPotionAfterKarambwanIsRejectedBeforeQueuingAndTheBoundaryCanBeCompared() throws Exception
+	{
+		var source=NexPlanComparisonTest.fixture(catalog,27690,0,Map.of(3144,1L,3024,1L),Map.of("inventory-slots-used",2),false);
+		List<Runnable> tasks=new ArrayList<>(); var ref=new AtomicReference<NexScenarioPanel>();
+		SwingUtilities.invokeAndWait(()->{
+			var panel=new NexScenarioPanel(source,0,0,catalog,text->{},"SYNTHETIC_OFFLINE",new Font("DejaVu Sans",Font.PLAIN,12)); ref.set(panel);
+			panel.attach(()->true,tasks::add); PanelPreview.click(panel,"Plan specs & gear"); fill(panel);
+			named(panel,"n3-supply-KARAMBWAN",JTextField.class).setText("0");
+			named(panel,"n3-supplies-confirmed",JCheckBox.class).doClick();
+			for(int tick:List.of(1,2))
+			{
+				named(panel,"n3-supply-RESTORE",JTextField.class).setText(Integer.toString(tick));
+				PanelPreview.click(panel,"Compare this plan");
+				assertTrue("Early restore must not queue a calculation",tasks.isEmpty()); assertNull(panel.result());
+				assertTrue(PanelPreview.text(panel).contains("Leave at least 3 ticks"));
+			}
+			named(panel,"n3-supply-RESTORE",JTextField.class).setText("3"); PanelPreview.click(panel,"Compare this plan");
+			assertEquals(1,tasks.size());
+		});
+		tasks.remove(0).run(); SwingUtilities.invokeAndWait(()->{
+			var result=ref.get().result(); assertNotNull(result); assertNotNull(result.comparison.actualToOwned.before.plan);
+			assertEquals(Map.of(NexSupplies.Kind.KARAMBWAN,1,NexSupplies.Kind.RESTORE,1),result.consumedSupplies);
+		});
+	}
 	@Test public void importingRecordedTicksInvalidatesSavedImpactAndSupplyConfirmationsInAPopulatedPlan() throws Exception
 	{
 		var original=NexPlanComparisonTest.zarosFixture(catalog); var old=original.summary; var sample=original.choices.get(0).actual;
