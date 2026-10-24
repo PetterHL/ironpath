@@ -19,6 +19,8 @@
   Preserve bounded typed messages, Fang signal/settled-state distinctions,
   provisional inference/rejection reasons, unknown initial readiness, pre-smoke
   clock context, zero/ambiguous impacts and frozen schema-4 action export.
+  Incomplete segments with actions receive guarded worker diagnostics without
+  numerical choices; the controlled check does not require a complete kill.
   Controlled client mapping validation is unperformed. No automatic advice or
   full-plan gate is enabled. N3-ADVICE follows supported mapping evidence.
 

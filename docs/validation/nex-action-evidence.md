@@ -77,10 +77,17 @@ DEV1's existing `nex-n3-plan` public-plugin replay now adds food/DC messages,
 checks exactly one provisional Fang inference despite continuing animation,
 exports the timeline through the real worker/report at fonts 12 and 20, checks
 page-independent copying and preserves the first timeline across the next kill.
+The `nex-incomplete` replay additionally exercises a deliberately aborted short
+segment through the guarded worker and real Copy report action, asserting a
+provisional Fang row and typed food/DC evidence with no numerical choices or
+complete-kill statistics. Incomplete segments with action evidence now receive
+worker diagnostics through the existing record/input/publication guards; the
+N2 evaluator retains its COMPLETE-only comparison gate.
 All fourteen scenarios and existing lifecycle/arithmetic/unknown-state regressions
 remain required. Generated reports/PNGs belong to build artifacts, not Git.
 
-Code revision: [`dfd4662`](https://github.com/PetterHL/ironpath/commit/dfd4662ebfe23f228abe7fdbfe9d4adc0ed5d1bb).
+Final code revision: [`54105a9`](https://github.com/PetterHL/ironpath/commit/54105a968c6c07d3d0317f0eaca4b87acdc2ed72).
+The following verification-record commit changes documentation only.
 Local Temurin JDK **11.0.32.1+1**, Gradle **8.10**:
 
 ```sh
@@ -88,24 +95,24 @@ Local Temurin JDK **11.0.32.1+1**, Gradle **8.10**:
 ./gradlew test build --no-daemon
 ```
 
-The pinned command **passed** on RuneLite **1.13.2**: **428 tests / 48 suites**, no
-failures/errors, and all **14 DEV1 scenarios / 1,145 checks / 244 PNGs** passed.
-The final pinned run took 4m 8s. The initial offline attempt had no cached RuneLite
-artifact; dependencies were resolved through the configured network/proxy before
-verification. That failed resolution is not counted as executed tests.
+The final pinned command **passed** in 4m 7s on RuneLite **1.13.2**:
+**428 tests / 48 suites**, no failures/errors, and all **14 DEV1 scenarios /
+1,153 checks / 244 PNGs** passed. The normal build uses `latest.release`;
+[PR #55](https://github.com/PetterHL/ironpath/pull/55) records its final local
+result, actual resolved version, current CI run and report/PNG artifact.
+The commands run sequentially in each environment. Initial missing-cache/setup
+failures are not counted as executed tests; dependencies were resolved through
+the configured network/proxy before verification.
 
-The normal compatibility command also **passed** (2m 52s): **428 tests / 48
-suites**, no failures/errors. `dependencyInsight` resolved RuneLite **1.13.3**.
-The commands ran sequentially; code is unchanged from `dfd4662`. Subsequent
-validation-record updates change documentation only.
-
-Inspected the current `nex-n3-plan` observation viewports at native 225 × 600 and
-fonts 12/20, plus both full-height views. Parsed both production copied JSON
-blocks: 34 action signals, one provisional inference at offset 4, shark at 6 and
-upgraded DC at 7; all state/target/settled-order references resolve. Copies are
-page-independent and the earlier timeline survives the next kill. Changed patch
-whitespace and relative Markdown targets pass. CI and its artifact are linked
-from the delivery PR. Synthetic verification is not controlled-client evidence.
+Inspected `nex-n3-plan` observation viewports at native 225 × 600 and fonts 12/20,
+plus both full-height views. Parsed both production copied JSON blocks: 34 action
+signals, one provisional inference at offset 4, shark at 6 and upgraded DC at 7;
+all state/target/settled-order references resolve. Copies are page-independent and
+the earlier timeline survives the next kill. Parsed both `nex-incomplete` copied
+reports as well: 15 action rows, one provisional launch, shark and upgraded DC,
+CENSORED outcome and no numerical choices. Inspected its enlarged-font Diagnostics
+viewport. Changed patch whitespace and relative Markdown targets pass. Synthetic
+verification is not controlled-client evidence.
 
 ## Short controlled client check — pending
 
@@ -115,7 +122,9 @@ arena segment followed by leaving is sufficient; a completed kill is unnecessary
 The existing observer is arena-scoped; it does not record unrelated NPC practice.
 
 1. Open the arena before smoke so a few pre-start settled ticks are captured.
-   Use **Diagnostics → Copy report now** after the segment. An incomplete attempt
+   Open **Last attempt details** for that segment, then use
+   **Diagnostics → Copy report now** (an older complete kill may otherwise stay
+   selected). An incomplete attempt
    remains inspectable; wait for its normal post-attempt worker result before
    copying. Check `nex-evidence-4`, `actionTimeline.mappingStatus`, truncation and
    the actual relative event times. Do not annotate any mapping as confirmed yet.
