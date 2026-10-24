@@ -1,6 +1,6 @@
 # IronPath active work
 
-Updated **23 October 2026**. This is the **only active backlog and roadmap**.
+Updated **24 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized merging the complete 0.23.3 delivery into main and cleaning
 up covered PRs/branches on 19 October. This includes CTX1 #43, native UI1 #46,
@@ -9,8 +9,8 @@ Integration does not establish live-client or player acceptance.
 
 ## Current baseline and order
 
-Main baseline: **0.23.3**, including N3 #45, CTX1 #43 (`2fe5342`), native UI1 #46
-(`d5b14db`), PR #48 (`836e1e9`) and the sidebar simplification (`7970794`).
+Main baseline: **0.29.0**, `1fe77cb`, including merged PR #50 (`289f371`),
+PR #51 (`43d20a1`) and PR #53 (`1fe77cb`) above the complete 0.23.3 lineage.
 Merge ancestry preserves all deliveries. Covered PRs/branches are retired only
 after their heads are verified as ancestors of main; no unique work is discarded.
 
@@ -19,14 +19,145 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Complete | **Current UI and sidebar simplification** | 0.23.3 consolidated main baseline; Gear & method / Gear & unlocks removed |
 | Complete | **CTX1 #43 / UI1 #46 / N3 #45 / PR #48** | Full ancestry retained in main; live acceptance remains open |
 | Alongside, when gameplay is available | **N1/N2/CTX1/N3 live acceptance** | Open; no new Nex kill required for offline UI review |
-| For review | **N3 decision support (0.27.0)** | Declared per-attack conditions, Magic-type Voidwaker under Deflect Melee, supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
-| For review, dependent on PR #50 | **Nex observation (0.28.3)** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
-| Issue [#52](https://github.com/PetterHL/ironpath/issues/52), PR [#53](https://github.com/PetterHL/ironpath/pull/53) | **Nex damage coverage / projectile source evidence (0.29.0)** | One live kill confirms object reuse (487/513 callbacks), retains all 171 own impacts and matches per-target damage minus healing to 5,400 HP. [Evidence and limits](docs/validation/nex-damage-observation.md#live-one-copy-check--23-october-2026). Projectile/HUD attribution, resource semantics and broader lifecycle acceptance remain open |
-| After evidence validation | **N3 automatic recommendations** | Exact launch/HP/readiness/cast/consumption evidence remains unavailable; declared scenarios cannot establish it |
+| Integrated | **N3 decision support (0.27.0), PR #50** | Declared per-attack conditions, Magic-type Voidwaker under Deflect Melee, supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
+| Integrated | **Nex observation (0.28.3), PR #51** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
+| Integrated: issue [#52](https://github.com/PetterHL/ironpath/issues/52), PR [#53](https://github.com/PetterHL/ironpath/pull/53) | **Nex damage coverage / projectile source evidence (0.29.0)** | One live kill confirms object reuse (487/513 callbacks), retains all 171 own impacts and matches per-target damage minus healing to 5,400 HP. [Evidence and limits](docs/validation/nex-damage-observation.md#live-one-copy-check--23-october-2026). Projectile/HUD attribution, resource semantics and broader lifecycle acceptance remain open |
+| For review: [PR #54](https://github.com/PetterHL/ironpath/pull/54) | **N3 evidence validation (0.30.0)** | Full-cap clock correction, diagnostic repeat-source counters and the 24 October Nex delivery decision. No automatic recommendation yet |
+| Next, after #54 integration | **N3-ACTION: action evidence and attack clock** | One implementation PR: bounded Fang attack state, food/DC messages, consumer-ready timeline and controlled mapping check |
+| First product milestone, after supported mappings are validated | **N3-ADVICE: scoped automatic Nex comparison** | Ordinary Fang equipment changes at fixed weapon/style/tempo, using the same supported attack sample and per-result uncertainty |
+| After the first useful comparison | **Broader N3 automatic recommendations** | Ranged attribution and finite spec/DC/supply plans remain gated; solve dependencies as needed for each added output |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
 
 Deliver future changes through focused PRs; no automatic merge or Plugin Hub publication.
+
+## Nex delivery decision — 24 October 2026
+
+**Keep Nex Trio MP2 as the pilot.** Do not pivot to Vardorvis or rebuild the
+engine/UI. The next product milestone is one automatic post-kill equipment
+comparison for supported ordinary **Osmumten's fang** attacks, holding weapon,
+style and attack tempo fixed. This is a deliberate first slice, not a claim that
+Fang was observed in every recorded window or that it is the best weapon.
+
+[Reviewed plugin patterns and limits](docs/research/nex-action-evidence.md)
+inform the two implementation steps below. Reuse the current observer, N2 package
+search, damage kernels, frozen reports and panel. No other plugin is required at runtime.
+
+Decisions:
+
+- Implement a bounded attack-state/cooldown model using local signals and settled
+  state. Keep directly observed evidence separate from inferred launch/readiness.
+  An attack click or available cooldown is not proof of an executed attack or a
+  wasted legal opportunity. Start with supported ordinary Fang melee; unsupported
+  weapons/styles/windows remain excluded with reasons.
+- Add successful food and Death Charge game-message mappings. Food messages can
+  inform attack delay; DC messages can establish a cast candidate alongside
+  existing active/cooldown/effect evidence. Silence, an energy delta or an active
+  transition alone cannot establish consumption, a cast, proc or expiry.
+- Use valid target-HP bounds where the existing damage model can support them.
+  Exact HP is unnecessary when every compatible HP gives the same answer.
+  Otherwise expose a justified range or withhold that dependent result; never
+  substitute the bar midpoint or stale post-impact HP for exact pre-impact HP.
+- Make support specific to the output. Ordinary damage comparisons need compatible
+  attack/target/gear inputs, not a solved Death Charge or joint-packing timeline.
+  The current eight-item automatic-gap list is a static full-plan checklist,
+  not measured progress. **0.30.0 still has all eight gaps and no automatic
+  recommendation.** The later scoped result must have its own validated support
+  contract; do not bypass the full finite-plan guards.
+- Defer ranged ownership, full spec/DC/resource optimization and N4 seconds/team
+  contribution until the first slice works. UNKNOWN first-flight sources stay
+  UNKNOWN. Vardorvis is a source reference only; no second-boss adapter now.
+
+### N3-ACTION — Next implementation PR
+
+Start from current main **after PR #54 is integrated**. This is one cohesive
+implementation PR, not another research-only or counter-only delivery.
+
+- [ ] Extend the existing Nex observer with allowlisted food and normal/upgraded
+  DC success messages, including the relevant game-message types. Normalize tags,
+  retain typed events with tick/source/confidence, and never store raw chat/names.
+  Preserve Nex phase parsing and distinguish unrelated/player/plugin messages.
+- [ ] Implement the bounded Fang attack-state/cooldown model using local animation,
+  target identity, weapon/style and reconciled tick state. Cover continuing
+  animations, blocking, rejected clicks, weapon swaps and food delay. Retain misses
+  and zero hits; ambiguous launches/impacts remain ambiguous.
+- [ ] Preserve unknown initial readiness and bounded pre-start context; smoke is
+  not a cooldown reset. Keep lifecycle, identity, buffer, overflow and worker
+  guards. Do not deduplicate legitimate equal same-tick events by text alone.
+- [ ] Export a frozen, inspectable action timeline through the existing report:
+  observed signals, inferred attacks, confidence/rejection reasons, cooldown and
+  food/DC events. It must be usable by N3-ADVICE, not just aggregate counters.
+- [ ] Test accepted/rejected/repeating attacks, misses, block/movement, swaps,
+  eat/attack ordering, normal/upgraded DC, unrelated chat, unknown pre-start state,
+  ambiguous impacts and reset/overflow. Run the prescribed pinned and normal
+  builds and existing offline review; update schema/model versions as needed.
+- [ ] Provide one short controlled client procedure comparing a known sequence
+  of Fang attacks, eating and DC casts with the exported timeline. A fresh full
+  Nex kill is not required for those basic mappings; Nex-specific phase/target
+  support still needs encounter evidence before N3-ADVICE promotes it.
+  Record exact agreements/disagreements and leave untested mappings provisional.
+
+**Done for code review:** the event model, consumer-ready timeline and meaningful
+replays/builds are delivered in one PR with the short client procedure. **Done
+for promotion:** the supported mappings agree with controlled client evidence.
+If a mapping fails, narrow or correct that mapping; do not restart a generic
+diagnostics project or silently label it confirmed.
+
+### N3-ADVICE — First useful automatic result
+
+Follow N3-ACTION with a post-kill comparison in the existing Compare setups panel:
+
+- [ ] Automatically construct actual versus relevant owned/hypothetical equipment
+  packages for supported ordinary Fang attacks, holding weapon/style/tempo and
+  compatible observed conditions fixed. Reuse N2 search and existing arithmetic;
+  do not build a second calculator or require per-kill declaration forms.
+- [ ] Compare expected damage for the **same supported attack sample**. Include
+  zero-damage/missed attacks; selection must not depend on damage landing.
+  Show the number of included attacks and exclusions/ambiguity in Details or the
+  report. Do not extrapolate the subset to whole-kill damage or changed rotations.
+- [ ] Require valid target/phase/overhead and relevant input support. For uncertain
+  HP, evaluate the paired comparison over the same feasible states, including
+  mechanic breakpoints; endpoints alone need a proof of sufficiency. Preserve
+  negative gains and support gaps. Unresolved resource inputs block only results
+  that actually depend on them.
+- [ ] Deliver an end-to-end frozen replay from captured action evidence to one
+  correctly scoped equipment result, plus unknown/unsupported/ambiguous and
+  zero-hit cases. Validate supported Nex windows against a short captured segment.
+  Show concise results in the existing panel; provenance belongs in Diagnostics.
+
+**Product acceptance:** a supported Nex segment automatically produces a useful
+Fang equipment comparison with coverage and defensible uncertainty. An unsupported
+segment explains the missing input. No seconds saved, whole-kill contribution,
+best-spec claim, live coaching or hypothetical attack opportunities are implied.
+Only then broaden the supported attack set and resume full N3/N4 work.
+
+## N3 evidence validation (0.30.0)
+
+From current main `1fe77cb`, after merged PRs #50/#51/#53.
+[Source review, exact unknowns and smallest observations](docs/research/n3-evidence-validation.md)
+· [Verification and readiness](docs/validation/n3-evidence-validation.md).
+
+- [x] Review the active roadmap, three merged PRs, current implementation and
+  committed 0.29.0 live findings; pin RuneLite 1.13.2 public contracts/source.
+  No new raw-report parse or Nex kill is claimed.
+- [x] Correct the declared fixed-ring natural clock: stop at cap, restart a full
+  interval when leaving full, preserve phase below full. Keep initial phase/order
+  and same-tick cap/proc policy explicit; no automatic readiness inference.
+- [x] Split retained-object repeat projectile source getter counts into
+  LOCAL/OTHER/UNKNOWN. Preserve first-flight source/target and all correlation,
+  bound, lifecycle and privacy gates; a later LOCAL getter cannot enable a match.
+- [x] Record exact remaining unknowns, insufficient signals and minimum controlled
+  observations for launches/ownership, impact HP, readiness/energy, DC transitions,
+  usable stock/packing and consumption. A fresh complete Nex kill is not required.
+- [x] Complete both prescribed commands in CI: pinned RuneLite 1.13.2 and normal
+  1.13.3, JDK 11.0.32+1 / Gradle 8.10; all 14 DEV1 scenarios pass. Exact code
+  commit and CI/artifact evidence are in the validation record. Workspace startup
+  prevented local execution and manual PNG inspection; no live acceptance is claimed.
+- [ ] Full-plan automatic recommendations remain **NOT READY**: retain all eight
+  automatic gaps and unchecked declarations in 0.30.0. The 24 October decision
+  above schedules N3-ACTION then a separately supported N3-ADVICE result; it does
+  not claim those mappings already exist. N4, contribution/time estimates,
+  broader lifecycle acceptance and unrelated UI work remain separate.
 
 ## Nex callback coverage follow-up (0.29.0)
 
@@ -51,10 +182,12 @@ which authorizes this dependent correction branch despite the default main-first
 - [x] Analyze the supplied 0.29.0 live report: 487/513 repeated-object callbacks,
   all 171 own impacts retained, and damage minus healing matches each target's HP.
   This confirms the correction for one kill; the earlier kill is not reconstructed.
-- [ ] Investigate the 364 UNKNOWN projectile sources and rejected HUD bindings offline;
-  do not infer ownership or exact HP from animation, ID or bar loss.
-- [ ] Research full-cap regeneration and DC eligibility/active transitions separately
-  using the existing report; no resource/model change is authorized by this evidence alone.
+- [x] Investigate the 364 UNKNOWN projectile sources and rejected HUD bindings offline;
+  [0.30.0 findings](docs/research/n3-evidence-validation.md) retain ownership/HP unknowns
+  and specify the missing observations. No ownership or exact HP is inferred.
+- [x] Research full-cap regeneration and DC eligibility/active transitions using the
+  existing report and pinned public sources. The 0.30.0 fixed-ring correction is
+  corroborated; cast/eligibility/proc/expiry classification remains unavailable.
 - [ ] Bank return / next kill / arena reload: separate deferred lifecycle acceptance.
   A second kill is not a prerequisite for accepting this single-kill correction or
   continuing offline analysis/documentation; the user confirmed this on 23 October.

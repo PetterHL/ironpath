@@ -1,10 +1,25 @@
 # Evidence and research index
 
+24 October: [Nex action evidence and delivery decision](research/nex-action-evidence.md)
+records pinned attack-timer, food, Death Charge and combat-comparison patterns,
+including rejected ownership/HP shortcuts. Nex remains the pilot. TASKS.md
+schedules action evidence, then a scoped automatic Fang equipment comparison;
+this is a plan, not implemented or live-validated automatic support.
+
+23 October: [N3 evidence validation](research/n3-evidence-validation.md) reviews
+merged PRs #50/#51/#53 and the existing 0.29.0 live findings. Fixed-ring full-cap
+regeneration is corrected; repeat projectile getters gain bounded diagnostics.
+Every remaining N3 gap has its exact unknown and minimum live observation.
+Automatic recommendations remain unavailable.
+
 23 October: [Nex callback/source comparison](research/nex-damage-observation.md)
 records the public hitsplat contract, six pinned plugin implementations, direct
 scalar callback processing, bounded rejection/classification diagnostics and typed
-projectile uncertainty. The resolved 1.13.2 binary confirms a mutable payload reuse path; its occurrence
-and quantitative effect in the supplied live kill remain unmeasured. DC/full-energy mechanics remain separate.
+projectile uncertainty. The resolved 1.13.2 binary confirms a mutable payload reuse
+path; the later [single-kill validation](validation/nex-damage-observation.md#live-one-copy-check--23-october-2026)
+records 487/513 reused callbacks and all 171 own impacts retained. This is not
+universal attribution coverage. The subsequent N3 evidence review covers the
+full-cap clock; DC cast/proc/expiry mappings remain open.
 
 
 Updated 15 October 2026. This file separates the accepted product decision from

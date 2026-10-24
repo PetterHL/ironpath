@@ -14,6 +14,31 @@
 
 ## Current delivery
 
+- **24 October 2026 Nex decision:** keep Nex Trio MP2; no Vardorvis pivot.
+  TASKS.md owns the sequence: review/integrate #54, implement N3-ACTION, validate
+  supported mappings, then deliver N3-ADVICE's ordinary Fang equipment comparison
+  at fixed weapon/style/tempo. Read docs/research/nex-action-evidence.md.
+  Reuse the existing observer, package search, combat kernels, frozen reports and
+  panel. This supersedes older blanket scheduling restrictions on new attribution,
+  not unknown-state guards: observed signals and inferred attacks/readiness must
+  stay distinct. A scoped result needs its own validated support; unresolved
+  full-plan resource gates must not block independent ordinary-damage outputs.
+  The current 0.30.0 runtime still has all eight automatic gaps. Keep declared
+  scenarios unchecked and full finite-plan gates intact. Defer ranged/spec
+  expansion, N4 and other bosses until the first useful automatic slice.
+  This documentation follow-up belongs in existing PR #54; start the next
+  implementation from current main after its integration.
+
+- N3 evidence validation **0.30.0** starts from integrated main `1fe77cb` after
+  PRs #50/#51/#53 merged on 23 October. Read docs/research/n3-evidence-validation.md
+  and docs/validation/n3-evidence-validation.md. Fixed-ring natural regeneration
+  stops at cap and restarts a full interval on spending from full; phase below
+  full is preserved. Repeat projectile source getters add diagnostic counters only:
+  never promote an UNKNOWN first flight. Keep all eight automatic gaps, unknown
+  HP/readiness/DC/consumption gates and unchecked scenarios. Existing live findings
+  suffice for this offline step; no new complete kill is required. Older delivery
+  dependency statements below describe their original scope.
+
 - PR #53 **0.29.0** (`14cd28b`, based on PR #51 `feb439b`) now has one supplied
   23 October live report: 487/513 tracked-target callbacks reuse objects, all 171
   own impacts are retained, and per-target damage minus healing matches 5,400 HP.
@@ -106,8 +131,9 @@
   Keep immutable capture, CTX1 annotations/future defaults, the 50-record lifetime,
   frozen planning/unlock inputs, matched-cohort rules, report selection, clipboard
   fallback, Back/scroll and expanded Diagnostics across unrelated refreshes.
-- Reuse NexPlanComparison/NexPackageComparison and existing arithmetic. No new
-  attribution, automatic spec recommendation, HP trajectory, coaching or N4 claim.
+- Reuse NexPlanComparison/NexPackageComparison and existing arithmetic. New scoped
+  attribution follows the 24 October decision and validation requirements above;
+  no automatic spec recommendation, HP trajectory, coaching or N4 claim.
   Preserve banking/reload/reset/identity guards and all baseline DEV1 scenarios.
 
 ## Delivery

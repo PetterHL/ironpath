@@ -1,5 +1,11 @@
 # Nex N3a: finite special-attack resources
 
+23 October 2026: build **0.30.0**, `nex-spec-resources-3`, supersedes the
+original full-cap clock below: natural regeneration stops at 1,000 and spending
+from full starts a complete fixed-ring interval. Phase below full is preserved.
+[Corroborating sources, existing live offsets and limits](n3-evidence-validation.md#conditional-natural-regeneration-clock).
+The original implementation record below retains its historical scope.
+
 Reviewed 16 October 2026. Model `nex-spec-resources-1`, development build 0.17.0.
 Based on N2 build 0.16.5 / capture adapter `nex-public-4`. This adds resource
 evidence and an independently authored resource scenario kernel. It does not
@@ -55,8 +61,9 @@ no in-combat recommendations. Current adapter/client acceptance remains open.
 `SpecTimeline` accepts a known initial energy in tenths of percent, an exclusive
 end tick, a fixed ring for the entire scenario, a first natural-restore tick and
 ordered explicit events. All energy sources share the 1000-unit cap. Excess
-restoration is lost at that event; it cannot be saved for later. Natural phase
-continues through spending/full energy. The input starts with **no active Death
+restoration is lost at that event; it cannot be saved for later. In the original version natural phase
+continued through full energy; version 3 corrects that behavior as noted above.
+Spending below full preserves phase. The input starts with **no active Death
 Charge and its cast available, with attacks initially ready**; it must not be used to replay a capture with
 unknown prior cast/cooldown state.
 

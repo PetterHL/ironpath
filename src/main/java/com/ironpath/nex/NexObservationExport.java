@@ -70,7 +70,7 @@ public final class NexObservationExport
 			}
 			retained.add(e);
 		}
-		JsonObject root=new JsonObject(); root.addProperty("schema","nex-evidence-2"); root.addProperty("kill","K1");
+		JsonObject root=new JsonObject(); root.addProperty("schema","nex-evidence-3"); root.addProperty("kill","K1");
 		root.addProperty("timing","tick relative to measured start; cycle/order relative to first retained callback; samples have tick only");
 		root.addProperty("scope","All retained allowlisted observations; correlations remain unvalidated candidates. Zero impacts are observed zero damage, not inferred attacks. No opportunity, consumption or proc inference.");
 		root.addProperty("measuredEndTick",summary.endTick-summary.startTick); root.addProperty("captureTruncated",o.truncated);
@@ -81,7 +81,7 @@ public final class NexObservationExport
 		root.addProperty("wholeKillContributionPercent",(Number)null);
 		root.addProperty("observedLocalDamage",summary.localDamage()); root.addProperty("observedTotalDamage",summary.totalDamage());
 		root.addProperty("observedHitsplatRatioPercent",summary.share());
-		root.addProperty("callbackCounterScope","Active attempt only; cleared on smoke reanchor; includes rejected and post-death callbacks. Positive payload sums, not fight damage. Object reuse is counted, never rejected. Projectile exclusions count callbacks, not distinct shots.");
+		root.addProperty("callbackCounterScope","Active attempt only; cleared on smoke reanchor; includes rejected and post-death callbacks. Positive payload sums, not fight damage. Object reuse is counted, never rejected. Projectile exclusions and repeat source readings count callbacks, not distinct shots. Repeat source readings never revise first-flight source or enable matching.");
 		root.addProperty("callbackCountLimit",NexCallbackDiagnostics.MAX_COUNT); root.addProperty("callbackAmountLimit",NexCallbackDiagnostics.MAX_AMOUNT);
 		JsonObject counters=new JsonObject();
 		for(var target:NexCallbackDiagnostics.Target.values())

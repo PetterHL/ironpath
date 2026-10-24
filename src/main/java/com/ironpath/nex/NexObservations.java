@@ -5,7 +5,7 @@ import java.util.*;
 /** Immutable bounded callback evidence. Correlation is not a legal-opportunity or consumption model. */
 public final class NexObservations
 {
-	public static final String VERSION="nex-observations-4";
+	public static final String VERSION="nex-observations-5";
 	public static final int MAX=2048;
 	public static final int MAX_HUD_COUNT=65535;
 	public enum HudCheck { VARIABLE_UPDATE, SCRIPT_CALLBACK, NO_FRESH_VARIABLE, DISABLED, WIDGET_MISSING, WIDGET_HIDDEN,

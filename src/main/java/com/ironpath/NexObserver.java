@@ -399,7 +399,14 @@ final class NexObserver
 		var scope=target instanceof NPC?NexCallbackDiagnostics.target(targetName(((NPC)target).getId())):NexCallbackDiagnostics.Target.UNKNOWN;
 		check(scope,PROJECTILE_ENTRY,0);
 		if(projectile==null) { check(scope,PROJECTILE_NULL,0); return; }
-		if(projectiles.contains(projectile)) { check(scope,PROJECTILE_REPEAT,0); return; }
+		if(projectiles.contains(projectile))
+		{
+			check(scope,PROJECTILE_REPEAT,0);
+			// Later getter availability is diagnostic only; never revise the retained first flight.
+			check(scope,source==null?PROJECTILE_REPEAT_UNKNOWN_SOURCE
+				:source==client.getLocalPlayer()?PROJECTILE_REPEAT_LOCAL_SOURCE:PROJECTILE_REPEAT_OTHER_SOURCE,0);
+			return;
+		}
 		// Public actors are nullable, with no promised later resolution time. Preserve first-callback scope.
 		if(source!=null && source!=client.getLocalPlayer()) { check(scope,PROJECTILE_OTHER_SOURCE,0); return; }
 		if(target!=null && identity==null) { check(scope,PROJECTILE_OUTSIDE_TARGET,0); return; }

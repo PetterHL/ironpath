@@ -87,12 +87,35 @@ public class NexDamageObservationTest
 		assertTrue(review.matches.get(0).candidates.isEmpty());
 		String ui=String.join("\n",review.window.page(0)); assertTrue(ui.contains("source=UNKNOWN"));
 		var json=new JsonParser().parse(review.export).getAsJsonObject();
-		assertEquals("nex-evidence-2",json.get("schema").getAsString()); assertFalse(review.export.contains("localSource"));
+		assertEquals("nex-evidence-3",json.get("schema").getAsString()); assertFalse(review.export.contains("localSource"));
 		assertTrue(review.export.contains("\"source\":\"UNKNOWN\""));
 		assertEquals("UNVERIFIED",json.get("damageCoverage").getAsString()); assertTrue(json.get("wholeKillContributionPercent").isJsonNull());
+		tally(summary,NEX,PROJECTILE_REPEAT_LOCAL_SOURCE,1,0);
 		tally(summary,NEX,PROJECTILE_ENTRY,3,0); tally(summary,NEX,PROJECTILE_REPEAT,1,0); tally(summary,NEX,PROJECTILE_OTHER_SOURCE,1,0);
 		tally(summary,UNKNOWN,PROJECTILE_OUTSIDE_TARGET,1,0);
 		assertEquals(1,json.getAsJsonObject("callbackChecks").getAsJsonObject("NEX").getAsJsonObject("PROJECTILE_UNKNOWN").get("count").getAsInt());
+	}
+	@Test public void repeatedProjectileGetterReadingsStayDiagnosticAcrossSourceAndTargetChanges()
+	{
+		Projectile p=mock(Projectile.class); when(p.getTargetActor()).thenReturn(f.boss);
+		f.observer.projectile(p); f.observer.projectile(p);
+		when(p.getSourceActor()).thenReturn(f.player); f.observer.projectile(p);
+		when(p.getSourceActor()).thenReturn(mock(Player.class)); f.observer.projectile(p);
+		when(p.getTargetActor()).thenReturn(f.player); f.observer.projectile(p);
+		var summary=finish();
+		assertEquals(1,summary.observations.flights.size());
+		assertEquals(NexObservations.Source.UNKNOWN,summary.observations.flights.get(0).source);
+		tally(summary,NEX,PROJECTILE_REPEAT_UNKNOWN_SOURCE,1,0);
+		tally(summary,NEX,PROJECTILE_REPEAT_LOCAL_SOURCE,1,0);
+		tally(summary,NEX,PROJECTILE_REPEAT_OTHER_SOURCE,1,0);
+		tally(summary,UNKNOWN,PROJECTILE_REPEAT_OTHER_SOURCE,1,0);
+		// Scope is the target getter at this callback, not a new shot or a retained target mutation.
+		assertEquals(NexTargetState.Form.NEX,summary.observations.flights.get(0).targetState.form);
+		var json=new JsonParser().parse(new NexObservationReview(summary).export).getAsJsonObject();
+		assertEquals(1,json.getAsJsonObject("callbackChecks").getAsJsonObject("NEX")
+			.getAsJsonObject("PROJECTILE_REPEAT_LOCAL_SOURCE").get("count").getAsInt());
+		f.observer.clearActive(); f.tick.set(0); f.start();
+		assertTrue(finish().observations.callbacks.counts.isEmpty());
 	}
 	@Test public void diagnosticSaturationDoesNotSpendCaptureSlotsAndClearsWithSmokeAndLifecycle()
 	{

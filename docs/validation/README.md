@@ -1,5 +1,12 @@
 # Validation records
 
+Build **0.30.0**: [N3 evidence-validation status](n3-evidence-validation.md), from
+main 0.29.0 including merged PRs #50/#51/#53. All automatic recommendation gates
+remain; the fixed-ring full-cap clock and repeat projectile getter diagnostics
+are the only implementation changes. [Pinned sources and minimum observations](../research/n3-evidence-validation.md).
+
+Earlier delivery records below retain their original revision/status scope.
+
 Development build **0.28.2**, for review above PR #50:
 [Nex observation implementation, offline evidence and client procedure](nex-observation.md).
 HUD/launch/resource candidates and recorded-tick drafts do not establish accepted
