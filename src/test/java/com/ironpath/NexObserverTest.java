@@ -88,6 +88,53 @@ public class NexObserverTest
 		HitsplatApplied event=new HitsplatApplied(); event.setActor(actor); event.setHitsplat(hit);
 		observer.hit(event);
 	}
+	@Test public void actionMessagesAreTypedBoundedAndDoNotReplacePhaseParsingOrRetainChat()
+	{
+		start();
+		String normal="Upon the death of your next foe, some of your special attack energy will be restored.";
+		String upgraded="Upon the death of your next two foes, some of your special attack energy will be restored.";
+		observer.chat(ChatMessageType.SPAM,"<col=ff0000>You eat the shark.</col>");
+		observer.chat(ChatMessageType.SPAM,"You eat the karambwan."); observer.chat(ChatMessageType.SPAM,"You eat the karambwan.");
+		observer.chat(ChatMessageType.GAMEMESSAGE,"<col=00ff00>"+normal+"</col>"); observer.chat(ChatMessageType.GAMEMESSAGE,upgraded);
+		observer.chat(ChatMessageType.PUBLICCHAT,normal); observer.chat(ChatMessageType.NPC_SAY,normal);
+		observer.chat(ChatMessageType.CONSOLE,upgraded); observer.chat(ChatMessageType.GAMEMESSAGE,"Player's unrelated private content");
+		observer.chat(ChatMessageType.GAMEMESSAGE,"You eat the monkfish.");
+		observer.chat(ChatMessageType.GAMEMESSAGE,"Nex: Darken my shadow!");
+		observer.transition(); var s=session.recent().get(0);
+		assertEquals(2,s.actions.signals.stream().filter(a->a.kind==com.ironpath.nex.NexActions.Kind.FOOD_KARAMBWAN).count());
+		assertEquals(1,s.actions.signals.stream().filter(a->a.kind==com.ironpath.nex.NexActions.Kind.DC_NORMAL).count());
+		assertEquals(1,s.actions.signals.stream().filter(a->a.kind==com.ironpath.nex.NexActions.Kind.DC_UPGRADED).count());
+		assertEquals(1,s.actions.signals.stream().filter(a->a.kind==com.ironpath.nex.NexActions.Kind.FOOD_UNKNOWN).count());
+		assertTrue(s.timeline.stream().anyMatch(a->a.phase.equals("SHADOW")));
+		String export=new com.ironpath.nex.NexObservationReview(s).export;
+		assertTrue(export.contains("FOOD_SHARK")); assertTrue(export.contains("SPAM_MESSAGE")); assertTrue(export.contains("nex-fang-clock-1"));
+		assertFalse(export.contains("Upon the death")); assertFalse(export.contains("unrelated private")); assertFalse(export.contains("synthetic roster"));
+		assertFalse(export.contains("NEX@")); assertFalse(export.contains("monkfish"));
+	}
+	@Test public void arenaPrestartActionsAndSmokeDoNotResetTheFangClockButLifecycleDoes()
+	{
+		observer.tick(); when(player.getAnimation()).thenReturn(9471); observer.animation(); observer.tick();
+		tick.set(1); observer.tick(); tick.set(2); observer.overhead(boss,"Fill my soul with smoke!"); observer.tick();
+		observer.transition(); var s=session.recent().get(0);
+		var timeline=new com.ironpath.nex.NexActionTimeline(s);
+		var first=timeline.entries.stream().filter(com.ironpath.nex.NexActionTimeline.Entry::attack).findFirst().orElseThrow();
+		assertEquals(0,first.signal.tick); assertNull(first.readyBefore); assertEquals(2,s.startTick);
+		assertEquals(Integer.valueOf(5),timeline.entries.get(timeline.entries.size()-1).readyAfter);
+		tick.set(30); observer.tick(); observer.overhead(boss,"Fill my soul with smoke!"); observer.tick(); observer.transition();
+		var next=session.recent().get(1); assertTrue(next.actions.signals.stream().allMatch(a->a.tick>=30));
+		assertTrue(new com.ironpath.nex.NexActionTimeline(next).entries.stream().allMatch(a->a.readyBefore==null));
+	}
+
+	@Test public void prestartContextOverflowIsExplicitAndResetClearsTheBound()
+	{
+		observer.tick();
+		for(int i=0;i<com.ironpath.nex.NexActions.PRE_MAX+1;i++) { observer.chat(ChatMessageType.SPAM,"You eat the shark."); }
+		observer.overhead(boss,"Fill my soul with smoke!"); observer.transition();
+		assertTrue(session.recent().get(0).actions.truncated);
+		tick.set(20); observer.tick(); observer.overhead(boss,"Fill my soul with smoke!"); observer.transition();
+		assertFalse(session.recent().get(1).actions.truncated);
+	}
+
 	void phasesAndEnd()
 	{
 		for(int t=2;t<=36;t++)

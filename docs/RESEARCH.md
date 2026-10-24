@@ -4,7 +4,8 @@
 records pinned attack-timer, food, Death Charge and combat-comparison patterns,
 including rejected ownership/HP shortcuts. Nex remains the pilot. TASKS.md
 schedules action evidence, then a scoped automatic Fang equipment comparison;
-this is a plan, not implemented or live-validated automatic support.
+0.31.0 now implements the [bounded provisional action timeline](validation/nex-action-evidence.md).
+Controlled mapping validation and automatic advice remain unavailable.
 
 23 October: [N3 evidence validation](research/n3-evidence-validation.md) reviews
 merged PRs #50/#51/#53 and the existing 0.29.0 live findings. Fixed-ring full-cap

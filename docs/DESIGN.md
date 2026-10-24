@@ -146,6 +146,17 @@ automatic attack attribution or runtime weapon recommendation. See
 Do not prebuild a generic rules engine. Extract shared code when it has a concrete
 consumer, preserving its semantics and tests.
 
+### N3-ACTION implementation (24 October 2026)
+
+`NexActions` adds a separate bounded immutable stream of local animation,
+interaction, settled tick and typed message signals to the existing summary.
+The adapter retains ten ticks / 128 rows of pre-start arena context; smoke does
+not reset readiness. `NexActionTimeline` runs within `NexObservationReview` on the
+worker and exposes provisional Fang attacks, exclusions/ambiguity, cooldown and
+impact candidates. No availability-only attack, exact HP, proc/expiry or advice
+is inferred. The schema-4 allowlisted report shares target/state tables and guards.
+[Contract and pending mapping validation](validation/nex-action-evidence.md).
+
 ## Invariants
 
 - Public client reads occur on the client thread; workers/Swing receive immutable

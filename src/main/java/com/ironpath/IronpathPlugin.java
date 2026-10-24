@@ -317,7 +317,7 @@ public class IronpathPlugin extends Plugin
  @Subscribe public void onOverheadTextChanged(net.runelite.api.events.OverheadTextChanged event)
  { if(nexReady()) { nex.overhead(event.getActor(),event.getOverheadText()); } }
  @Subscribe public void onAnimationChanged(net.runelite.api.events.AnimationChanged event)
- { if(nexReady() && event.getActor()==client.getLocalPlayer()) { nex.sample(event.getActor().getAnimation()); } }
+ { if(nexReady() && event.getActor()==client.getLocalPlayer()) { nex.animation(); } }
  @Subscribe public void onProjectileMoved(net.runelite.api.events.ProjectileMoved event)
  { if(nexReady()) { nex.projectile(event.getProjectile()); } }
  @Subscribe public void onGraphicChanged(net.runelite.api.events.GraphicChanged event)
