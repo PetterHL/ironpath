@@ -62,7 +62,7 @@ public final class NexActionTimeline
 			{
 				reason=Reason.MESSAGE;
 				if(s.kind==FOOD_UNKNOWN) { ready=null; }
-				else if(ready!=null) { ready=Math.max(s.tick,ready)+(s.kind==FOOD_SHARK?3:2); }
+				else if(ready!=null && s.tick<ready) { ready+=s.kind==FOOD_SHARK?3:2; }
 			}
 			else if(s.kind==DC_NORMAL || s.kind==DC_UPGRADED) { reason=Reason.MESSAGE; }
 			else
@@ -87,8 +87,8 @@ public final class NexActionTimeline
 					else if(s.sample.target==null) { reason=Reason.NO_TARGET; }
 					else if(s.moving) { reason=Reason.MOVING; }
 					else if(s.tick==lastAttack) { reason=Reason.REPEATED_SIGNAL; }
-					else if(ready!=null && s.tick<ready) { reason=Reason.COOLDOWN; }
 					else if(foodTicks.contains(s.tick)) { reason=Reason.SAME_TICK_FOOD; }
+					else if(ready!=null && s.tick<ready) { reason=Reason.COOLDOWN; }
 					else if(settled==null) { reason=Reason.NO_SETTLED_STATE; }
 					else if(!sameInputs(s,settled)) { reason=Reason.SETTLED_INPUTS_CHANGED; }
 					if(reason==Reason.ANIMATION_CALLBACK || reason==Reason.FRAME_RESTART)

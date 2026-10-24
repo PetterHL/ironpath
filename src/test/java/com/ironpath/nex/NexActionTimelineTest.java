@@ -59,11 +59,34 @@ public class NexActionTimelineTest
 	}
 	@Test public void eatAndAttackSameTickAreAmbiguousInEitherCallbackOrder()
 	{
+		for(int tick:List.of(0,3,5,10))
+		for(var food:List.of(FOOD_SHARK,FOOD_KARAMBWAN,FOOD_UNKNOWN))
 		for(boolean eatFirst:List.of(true,false))
 		{
-			start(0); if(eatFirst) { signal(0,FOOD_SHARK); } attack(0); if(!eatFirst) { signal(0,FOOD_SHARK); }
-			var t=new NexActionTimeline(finish(1)); assertTrue(attacks(t).isEmpty());
-			assertTrue(t.entries.stream().anyMatch(e->e.reason==SAME_TICK_FOOD)); assertNull(t.entries.get(t.entries.size()-1).readyAfter);
+			start(0);
+			if(tick>0) { attack(0); for(int i=1;i<tick;i++) { signal(i,SETTLED); } }
+			if(eatFirst) { signal(tick,food); } attack(tick); if(!eatFirst) { signal(tick,food); }
+			attack(tick+1); var t=new NexActionTimeline(finish(tick+2));
+			var conflict=t.entries.stream().filter(e->e.signal.tick==tick && e.signal.kind==ANIMATION).findFirst().orElseThrow();
+			assertEquals(SAME_TICK_FOOD,conflict.reason); assertEquals(NexActionTimeline.Confidence.AMBIGUOUS,conflict.confidence);
+			assertNull(conflict.readyAfter);
+			assertTrue(t.entries.stream().filter(e->e.signal.tick==tick).allMatch(e->!e.attack()));
+			assertNull(t.entries.stream().filter(e->e.signal.tick==tick).reduce((a,b)->b).orElseThrow().readyAfter);
+			assertEquals(tick==0?1:2,attacks(t).size());
+			var next=attacks(t).get(attacks(t).size()-1); assertEquals(tick+1,next.signal.tick); assertNull(next.readyBefore);
+		}
+	}
+	@Test public void sharkAndKarambwanAfterExpiredCooldownDoNotDelayTheNextAttack()
+	{
+		for(var food:List.of(FOOD_SHARK,FOOD_KARAMBWAN))
+		for(int tick:List.of(5,10))
+		{
+			start(0); attack(0); for(int i=1;i<=tick;i++) { signal(i,SETTLED); }
+			signal(tick,food); attack(tick+1); var t=new NexActionTimeline(finish(tick+2));
+			var meal=t.entries.stream().filter(e->e.signal.kind==food).findFirst().orElseThrow();
+			assertEquals(Integer.valueOf(5),meal.readyBefore); assertEquals(Integer.valueOf(5),meal.readyAfter);
+			assertEquals(2,attacks(t).size()); assertEquals(tick+1,attacks(t).get(1).signal.tick);
+			assertEquals(NexActionTimeline.Readiness.AVAILABLE,attacks(t).get(1).readiness);
 		}
 	}
 	@Test public void settledSwapMissingTargetMovingUnknownStyleAndSpecialStayExcluded()

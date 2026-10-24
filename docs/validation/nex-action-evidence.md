@@ -43,7 +43,8 @@ claim is enabled.
   the ordinary-window case retains MAPPING_UNVALIDATED. Cooldown availability does
   not establish an attack, legality or a wasted opportunity.
 - Known food-message delays add three ticks for shark and two for karambwan to
-  a known clock; unknown food invalidates it. Unknown initial readiness stays
+  a known outstanding cooldown; eating at or after readiness does not start a
+  new cooldown. Unknown food invalidates the clock. Unknown initial readiness stays
   unknown until a provisional attack anchors the clock. Attack plus food at the
   same tick is ambiguous in either callback order, because callback order is not
   server action order. Full-HP eating can be silent; no message cannot prove no
@@ -136,7 +137,8 @@ The existing observer is arena-scoped; it does not record unrelated NPC practice
    held animation or interaction alone. Record disagreements, not just totals.
 3. While below full HP, eat one shark and one karambwan on distinct known ticks.
    Check the SPAM/GAMEMESSAGE source, kind, exact separate deliveries and the
-   provisional +3/+2 clock changes. If naturally testing combo/same-tick eating,
+   provisional +3/+2 changes to an outstanding cooldown; eating after it expires
+   must not postpone the next attack. If naturally testing combo/same-tick eating,
    expect ambiguity for a same-tick attack. Check an unsupported food is unknown,
    and keep full-HP silence explicitly inconclusive. Do not infer stock used.
 4. Cast the available Death Charge variant once when legal. Match normal or
