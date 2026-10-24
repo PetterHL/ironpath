@@ -317,7 +317,7 @@ public class IronpathPlugin extends Plugin
  @Subscribe public void onOverheadTextChanged(net.runelite.api.events.OverheadTextChanged event)
  { if(nexReady()) { nex.overhead(event.getActor(),event.getOverheadText()); } }
  @Subscribe public void onAnimationChanged(net.runelite.api.events.AnimationChanged event)
- { if(nexReady() && event.getActor()==client.getLocalPlayer()) { nex.sample(event.getActor().getAnimation()); } }
+ { if(nexReady() && event.getActor()==client.getLocalPlayer()) { nex.animation(); } }
  @Subscribe public void onProjectileMoved(net.runelite.api.events.ProjectileMoved event)
  { if(nexReady()) { nex.projectile(event.getProjectile()); } }
  @Subscribe public void onGraphicChanged(net.runelite.api.events.GraphicChanged event)
@@ -471,7 +471,9 @@ public class IronpathPlugin extends Plugin
 		pendingOwned.keySet().removeIf(key->!stats.records.containsKey(key));
 		for(var summary:nexSession.recent())
 		{
-			if(summary.outcome!=com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE) { continue; }
+			// Incomplete segments still need worker-built action diagnostics for the controlled check.
+			// NexOwnedEvaluator retains its COMPLETE-only numerical-comparison gate.
+			if(summary.outcome!=com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE && summary.actions.signals.isEmpty()) { continue; }
 			var initial=nexSession.record(summary.key);
 			if(initial==null) { continue; }
 			if(initial.inputs==null) { initial=nexSession.freezeInputs(summary.key,new com.ironpath.advisor.NexEvaluation(account,preferences,catalog)); }

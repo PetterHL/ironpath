@@ -1,5 +1,12 @@
 # IronPath
 
+**24 October 2026: development build 0.31.0 — N3-ACTION, for review.**
+Bounded Fang action/clock candidates and typed food/Death Charge success signals
+now reach the frozen one-copy report (`nex-evidence-4`). Smoke preserves bounded
+pre-start clock context; ambiguous/zero impacts remain visible. All mappings are
+provisional pending the [short controlled check](docs/validation/nex-action-evidence.md#short-controlled-client-check--pending).
+Automatic advice remains unavailable; N3-ADVICE is the next separate delivery.
+
 **23 October 2026: development build 0.30.0 — N3 evidence validation.**
 The declared fixed-ring model now pauses regeneration at full special energy.
 Repeat projectile getter counters expose later availability without changing

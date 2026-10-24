@@ -14,8 +14,18 @@
 
 ## Current delivery
 
+- **N3-ACTION 0.31.0** is implemented for review from main `9a2b592` after the
+  explicitly authorized PR #54 merge. Read docs/validation/nex-action-evidence.md.
+  Preserve bounded typed messages, Fang signal/settled-state distinctions,
+  provisional inference/rejection reasons, unknown initial readiness, pre-smoke
+  clock context, zero/ambiguous impacts and frozen schema-4 action export.
+  Incomplete segments with actions receive guarded worker diagnostics without
+  numerical choices; the controlled check does not require a complete kill.
+  Controlled client mapping validation is unperformed. No automatic advice or
+  full-plan gate is enabled. N3-ADVICE follows supported mapping evidence.
+
 - **24 October 2026 Nex decision:** keep Nex Trio MP2; no Vardorvis pivot.
-  TASKS.md owns the sequence: review/integrate #54, implement N3-ACTION, validate
+  TASKS.md owns the sequence: #54 is integrated; review N3-ACTION, validate
   supported mappings, then deliver N3-ADVICE's ordinary Fang equipment comparison
   at fixed weapon/style/tempo. Read docs/research/nex-action-evidence.md.
   Reuse the existing observer, package search, combat kernels, frozen reports and
@@ -23,11 +33,11 @@
   not unknown-state guards: observed signals and inferred attacks/readiness must
   stay distinct. A scoped result needs its own validated support; unresolved
   full-plan resource gates must not block independent ordinary-damage outputs.
-  The current 0.30.0 runtime still has all eight automatic gaps. Keep declared
+  The 0.31.0 runtime retains all eight full-plan automatic gaps. Keep declared
   scenarios unchecked and full finite-plan gates intact. Defer ranged/spec
   expansion, N4 and other bosses until the first useful automatic slice.
-  This documentation follow-up belongs in existing PR #54; start the next
-  implementation from current main after its integration.
+  The roadmap documentation was integrated through PR #54; implementation
+  branches start from current main.
 
 - N3 evidence validation **0.30.0** starts from integrated main `1fe77cb` after
   PRs #50/#51/#53 merged on 23 October. Read docs/research/n3-evidence-validation.md

@@ -9,7 +9,8 @@ Integration does not establish live-client or player acceptance.
 
 ## Current baseline and order
 
-Main baseline: **0.29.0**, `1fe77cb`, including merged PR #50 (`289f371`),
+Main baseline: **0.30.0**, `9a2b592`, including merged PR #54 (`9a2b592`),
+PR #50 (`289f371`),
 PR #51 (`43d20a1`) and PR #53 (`1fe77cb`) above the complete 0.23.3 lineage.
 Merge ancestry preserves all deliveries. Covered PRs/branches are retired only
 after their heads are verified as ancestors of main; no unique work is discarded.
@@ -22,8 +23,8 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Integrated | **N3 decision support (0.27.0), PR #50** | Declared per-attack conditions, Magic-type Voidwaker under Deflect Melee, supplies, minion/Zaros windows, finite spell runes, scoped costs/routes and frozen public target evidence |
 | Integrated | **Nex observation (0.28.3), PR #51** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
 | Integrated: issue [#52](https://github.com/PetterHL/ironpath/issues/52), PR [#53](https://github.com/PetterHL/ironpath/pull/53) | **Nex damage coverage / projectile source evidence (0.29.0)** | One live kill confirms object reuse (487/513 callbacks), retains all 171 own impacts and matches per-target damage minus healing to 5,400 HP. [Evidence and limits](docs/validation/nex-damage-observation.md#live-one-copy-check--23-october-2026). Projectile/HUD attribution, resource semantics and broader lifecycle acceptance remain open |
-| For review: [PR #54](https://github.com/PetterHL/ironpath/pull/54) | **N3 evidence validation (0.30.0)** | Full-cap clock correction, diagnostic repeat-source counters and the 24 October Nex delivery decision. No automatic recommendation yet |
-| Next, after #54 integration | **N3-ACTION: action evidence and attack clock** | One implementation PR: bounded Fang attack state, food/DC messages, consumer-ready timeline and controlled mapping check |
+| Integrated: [PR #54](https://github.com/PetterHL/ironpath/pull/54) | **N3 evidence validation (0.30.0)** | Full-cap clock correction, diagnostic repeat-source counters and the 24 October Nex delivery decision. No automatic recommendation yet |
+| For review, 0.31.0 | **N3-ACTION: action evidence and attack clock** | One implementation PR: bounded Fang attack state, food/DC messages, consumer-ready timeline and controlled mapping check |
 | First product milestone, after supported mappings are validated | **N3-ADVICE: scoped automatic Nex comparison** | Ordinary Fang equipment changes at fixed weapon/style/tempo, using the same supported attack sample and per-result uncertainty |
 | After the first useful comparison | **Broader N3 automatic recommendations** | Ranged attribution and finite spec/DC/supply plans remain gated; solve dependencies as needed for each added output |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
@@ -68,34 +69,37 @@ Decisions:
   contribution until the first slice works. UNKNOWN first-flight sources stay
   UNKNOWN. Vardorvis is a source reference only; no second-boss adapter now.
 
-### N3-ACTION — Next implementation PR
+### N3-ACTION — 0.31.0 implementation for review
 
-Start from current main **after PR #54 is integrated**. This is one cohesive
-implementation PR, not another research-only or counter-only delivery.
+Implemented from main `9a2b592` after the authorized PR #54 merge.
+[Contract, verification and controlled client procedure](docs/validation/nex-action-evidence.md).
+Code review and live mapping promotion remain separate.
 
-- [ ] Extend the existing Nex observer with allowlisted food and normal/upgraded
+- [x] Extend the existing Nex observer with allowlisted food and normal/upgraded
   DC success messages, including the relevant game-message types. Normalize tags,
   retain typed events with tick/source/confidence, and never store raw chat/names.
   Preserve Nex phase parsing and distinguish unrelated/player/plugin messages.
-- [ ] Implement the bounded Fang attack-state/cooldown model using local animation,
+- [x] Implement the bounded Fang attack-state/cooldown model using local animation,
   target identity, weapon/style and reconciled tick state. Cover continuing
   animations, blocking, rejected clicks, weapon swaps and food delay. Retain misses
   and zero hits; ambiguous launches/impacts remain ambiguous.
-- [ ] Preserve unknown initial readiness and bounded pre-start context; smoke is
+- [x] Preserve unknown initial readiness and bounded pre-start context; smoke is
   not a cooldown reset. Keep lifecycle, identity, buffer, overflow and worker
   guards. Do not deduplicate legitimate equal same-tick events by text alone.
-- [ ] Export a frozen, inspectable action timeline through the existing report:
+- [x] Export a frozen, inspectable action timeline through the existing report:
   observed signals, inferred attacks, confidence/rejection reasons, cooldown and
   food/DC events. It must be usable by N3-ADVICE, not just aggregate counters.
-- [ ] Test accepted/rejected/repeating attacks, misses, block/movement, swaps,
+- [x] Test accepted/rejected/repeating attacks, misses, block/movement, swaps,
   eat/attack ordering, normal/upgraded DC, unrelated chat, unknown pre-start state,
   ambiguous impacts and reset/overflow. Run the prescribed pinned and normal
   builds and existing offline review; update schema/model versions as needed.
-- [ ] Provide one short controlled client procedure comparing a known sequence
+- [x] Provide one short controlled client procedure comparing a known sequence
   of Fang attacks, eating and DC casts with the exported timeline. A fresh full
   Nex kill is not required for those basic mappings; Nex-specific phase/target
   support still needs encounter evidence before N3-ADVICE promotes it.
   Record exact agreements/disagreements and leave untested mappings provisional.
+- [ ] Execute the controlled client procedure and record mapping agreements or
+  disagreements. All 0.31.0 mappings remain provisional; no promotion is claimed.
 
 **Done for code review:** the event model, consumer-ready timeline and meaningful
 replays/builds are delivered in one PR with the short client procedure. **Done

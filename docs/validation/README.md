@@ -1,5 +1,10 @@
 # Validation records
 
+24 October 2026: **0.31.0 N3-ACTION, for review** —
+[action/clock contract, automated verification and pending controlled procedure](nex-action-evidence.md).
+PR #54 is integrated in main `9a2b592`; mappings remain provisional and no automatic
+advice is enabled.
+
 Build **0.30.0**: [N3 evidence-validation status](n3-evidence-validation.md), from
 main 0.29.0 including merged PRs #50/#51/#53. All automatic recommendation gates
 remain; the fixed-ring full-cap clock and repeat projectile getter diagnostics
