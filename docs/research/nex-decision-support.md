@@ -7,6 +7,10 @@ model `nex-spec-damage-3`, resources `nex-spec-resources-2`, supplies
 adapter `nex-public-5`, presentation projection `nex-plan-support-2`, knowledge
 `n3-decision-1`. Catalogue schema 14 and preference schema 4 are unchanged.
 
+Build **0.30.1** advances supplies to `nex-supplies-2`: karambwan delays potion
+admission by three ticks as well as both food timers.
+[Correction and verification](../validation/karambwan-potion-cooldown.md).
+
 The [0.28.0 observation follow-up](nex-observation.md) adds candidate HP/launch/
 resource capture and recorded-tick drafts. The 0.27.0 contract below remains the
 declared-plan baseline; candidate readings do not confirm hypothetical impacts.
@@ -161,7 +165,8 @@ league, prayer-item or internal-charge behaviour is assumed.
 
 Normal food, potion, karambwan is the declared same-tick order, followed by the
 existing cast/death/attack ordering. Normal food, combo food and potion admission
-have bounded separate timers; drinks require at least three ticks between doses.
+have bounded separate timers; drinks require at least three ticks after either
+a potion or karambwan. Karambwan leaves the preceding same-tick potion valid.
 Food adds its delay to an outstanding weapon cooldown. Idle eating creates no
 invented lost attack. Same-tick shark/karambwan adds both penalties to an outstanding
 cooldown. Rejected attacks still spend no ammo/energy. Shared events affect each

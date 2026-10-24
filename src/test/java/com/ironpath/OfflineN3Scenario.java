@@ -82,7 +82,7 @@ final class OfflineN3Scenario
 				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("report-viewport-"+font+".png"),225,600,"n3-copy-report",List.of("n3-copy-report","n3-report-scroll"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
 				edt(()->{
 					PanelPreview.click(r.panel,"Food & potions");
-					for(var entry:Map.of("SHARK","1","KARAMBWAN","1","BREW","0","RESTORE","3").entrySet())
+					for(var entry:Map.of("SHARK","1","KARAMBWAN","1","BREW","0","RESTORE","4").entrySet())
 					{ NexScenarioPanelTest.named(r.panel,"n3-supply-"+entry.getKey(),JTextField.class).setText(entry.getValue()); }
 					PanelPreview.click(r.panel,"Compare this plan");
 				}); r.settle();
@@ -112,7 +112,7 @@ final class OfflineN3Scenario
 					report.check("Food shifts outstanding cooldown "+font,true,evaluation.plan.resources.ordinaryAttacks<finished[0].comparison.actualToOwned.before.plan.resources.ordinaryAttacks);
 					PanelPreview.click(r.panel,"Copy plan report");
 					String text=NexScenarioPanelTest.named(r.panel,"n3-report",JTextArea.class).getText();
-					report.check("Supply and cost report retains explicit assumptions "+font,true,text.contains("Declared supply actions=[0:BREW, 1:SHARK, 1:KARAMBWAN, 3:RESTORE]") && text.contains("gp=400"));
+					report.check("Supply and cost report retains explicit assumptions "+font,true,text.contains("Declared supply actions=[0:BREW, 1:SHARK, 1:KARAMBWAN, 4:RESTORE]") && text.contains("gp=400") && text.contains("nex-supplies-2"));
 				});
 				capture(r,output,"supply-results",font,report);
 				edt(()->{

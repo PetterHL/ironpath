@@ -5,6 +5,10 @@
 PR #54 is integrated in main `9a2b592`; mappings remain provisional and no automatic
 advice is enabled.
 
+Build **0.30.1**: [karambwan potion-cooldown correction](karambwan-potion-cooldown.md)
+on integrated main `9a2b592`. Declared karambwan uses also advance potion readiness;
+the same-tick food/potion/combo order and three-tick boundary remain supported.
+
 Build **0.30.0**: [N3 evidence-validation status](n3-evidence-validation.md), from
 main 0.29.0 including merged PRs #50/#51/#53. All automatic recommendation gates
 remain; the fixed-ring full-cap clock and repeat projectile getter diagnostics

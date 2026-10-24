@@ -9,9 +9,8 @@ Integration does not establish live-client or player acceptance.
 
 ## Current baseline and order
 
-Main baseline: **0.30.0**, `9a2b592`, including merged PR #54 (`9a2b592`),
-PR #50 (`289f371`),
-PR #51 (`43d20a1`) and PR #53 (`1fe77cb`) above the complete 0.23.3 lineage.
+Main baseline: **0.30.1**, `022e3e7`, including merged PR #56 and PR #54 (`9a2b592`),
+PR #50 (`289f371`), PR #51 (`43d20a1`) and PR #53 (`1fe77cb`) above the complete 0.23.3 lineage.
 Merge ancestry preserves all deliveries. Covered PRs/branches are retired only
 after their heads are verified as ancestors of main; no unique work is discarded.
 
@@ -24,6 +23,7 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Integrated | **Nex observation (0.28.3), PR #51** | Bounded HP/launch/resource candidates, settled state, start quantities and recorded-tick drafts; live mapping remains open |
 | Integrated: issue [#52](https://github.com/PetterHL/ironpath/issues/52), PR [#53](https://github.com/PetterHL/ironpath/pull/53) | **Nex damage coverage / projectile source evidence (0.29.0)** | One live kill confirms object reuse (487/513 callbacks), retains all 171 own impacts and matches per-target damage minus healing to 5,400 HP. [Evidence and limits](docs/validation/nex-damage-observation.md#live-one-copy-check--23-october-2026). Projectile/HUD attribution, resource semantics and broader lifecycle acceptance remain open |
 | Integrated: [PR #54](https://github.com/PetterHL/ironpath/pull/54) | **N3 evidence validation (0.30.0)** | Full-cap clock correction, diagnostic repeat-source counters and the 24 October Nex delivery decision. No automatic recommendation yet |
+| Integrated: [PR #56](https://github.com/PetterHL/ironpath/pull/56) | **Karambwan potion cooldown (0.30.1)** | Reject potions one/two ticks after karambwan; retain the three-tick boundary and same-tick combos. [Verification](docs/validation/karambwan-potion-cooldown.md) |
 | For review, 0.31.0 | **N3-ACTION: action evidence and attack clock** | One implementation PR: bounded Fang attack state, food/DC messages, consumer-ready timeline and controlled mapping check |
 | First product milestone, after supported mappings are validated | **N3-ADVICE: scoped automatic Nex comparison** | Ordinary Fang equipment changes at fixed weapon/style/tempo, using the same supported attack sample and per-result uncertainty |
 | After the first useful comparison | **Broader N3 automatic recommendations** | Ranged attribution and finite spec/DC/supply plans remain gated; solve dependencies as needed for each added output |

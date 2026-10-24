@@ -5,7 +5,7 @@ import java.util.*;
 /** Explicit finite supply uses. Inventory changes never create uses, healing policies or attack evidence. */
 public final class NexSupplies
 {
-	public static final String VERSION="nex-supplies-1";
+	public static final String VERSION="nex-supplies-2";
 	public enum Kind
 	{
 		SHARK("Shark",3,385), KARAMBWAN("Cooked karambwan",2,3144),
@@ -50,14 +50,14 @@ public final class NexSupplies
 		{
 			if(u.tick<last || u.tick>=end) { throw new IllegalArgumentException("Supply actions must be ordered within the window"); }
 			if(u.kind.potion())
-			{ if(u.tick<potionReady) { throw new IllegalArgumentException("Leave at least 3 ticks between potions"); } potionReady=u.tick+3; }
+			{ if(u.tick<potionReady) { throw new IllegalArgumentException("Leave at least 3 ticks after a potion or karambwan before drinking"); } potionReady=u.tick+3; }
 			else if(u.kind==Kind.SHARK)
 			{ if(u.tick<foodReady) { throw new IllegalArgumentException("Leave at least 3 ticks between normal foods"); } foodReady=u.tick+3; }
 			else
 			{
 				if(u.tick<comboReady)
 				{ throw new IllegalArgumentException("Karambwan requires its eating cooldown or a same-tick normal-food combo"); }
-				comboReady=foodReady=u.tick+3;
+				comboReady=foodReady=potionReady=u.tick+3;
 			}
 			last=u.tick;
 		}
