@@ -95,7 +95,19 @@ final class OfflineLifecycleScenarios
 
 	private static void incomplete(OfflinePluginReplay r, Path output, int font, ReviewReport report) throws Exception
 	{
-		var summary = r.fight(12, 20, 60, false); r.settle();
+		var summary = r.fight(12, 20, 60, false,offset->{
+			if(offset==4)
+			{
+				org.mockito.Mockito.when(r.local.getAnimation()).thenReturn(9471);
+				var event=new net.runelite.api.events.AnimationChanged(); event.setActor(r.local); r.plugin.onAnimationChanged(event);
+			}
+			if(offset==6) { r.plugin.onChatMessage(new net.runelite.api.events.ChatMessage(null,net.runelite.api.ChatMessageType.SPAM,"","You eat the shark.","",0)); }
+			if(offset==7) { r.plugin.onChatMessage(new net.runelite.api.events.ChatMessage(null,net.runelite.api.ChatMessageType.GAMEMESSAGE,"","Upon the death of your next two foes, some of your special attack energy will be restored.","",0)); }
+		}); r.settle();
+		var diagnostic=r.plugin.nexSession.record(summary.key).calculation;
+		report.check("Incomplete segment gets worker action diagnostics",true,diagnostic!=null);
+		report.check("Incomplete segment still has no numerical choices",true,diagnostic.choices.isEmpty());
+		report.check("Incomplete segment preserves provisional Fang attack",1L,diagnostic.observations.actions.entries.stream().filter(com.ironpath.nex.NexActionTimeline.Entry::attack).count());
 		report.check("Exit without corroboration remains censored", Outcome.CENSORED, summary.outcome);
 		report.check("Excluded attempt reason", "Arena left before correlated completion", summary.reason);
 		report.check("Incomplete kill does not enter complete averages", 0, r.plugin.nexSession.stats().n);
@@ -297,6 +309,8 @@ final class OfflineLifecycleScenarios
 			PanelPreview.click(r.panel,"Copy report now");
 			report.check("Clipboard failure keeps selectable report "+font,true,PanelPreview.text(r.panel).contains("Clipboard unavailable or busy"));
 			String text=exportText(r);
+			if(r.plugin.nexSession.stats().last==null && r.plugin.nexSession.stats().lastAttempt!=null)
+			{ report.check("Incomplete segment exports action timeline without a complete kill "+font,true,text.contains("ACTION_SIGNAL") && text.contains("FOOD_SHARK") && text.contains("DC_UPGRADED")); }
 			report.check("Synthetic provenance in production report "+font,true,text.contains("SYNTHETIC_OFFLINE"));
 			report.check("Report has no profile/roster identity "+font,false,text.contains("offline-synthetic-a") || text.contains("offline-synthetic-b") || text.contains("NEX@"));
 			try { java.nio.file.Files.writeString(output.resolve("diagnostic-report-"+font+".txt"),text); }

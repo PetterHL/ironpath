@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /** Bounded deterministic Nex evidence machine. The adapter supplies reviewed signals and spawn keys. */
 public final class NexCapture
 {
-	public static final String VERSION="nex-public-9";
+	public static final String VERSION="nex-public-10";
 	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, MAX_SIGNALS=32,
 		END_GRACE=5, END_WAIT=20;
 	private final Consumer<NexSummary> sink;
@@ -25,6 +25,8 @@ public final class NexCapture
 	private final List<NexObservations.Health> health=new ArrayList<>();
 	private final Map<NexObservations.HudCheck,Integer> hudChecks=new EnumMap<>(NexObservations.HudCheck.class);
 	private boolean observationsTruncated;
+	private final List<NexActions.Signal> actions=new ArrayList<>();
+	private boolean actionsTruncated;
 	private final NexCallbackDiagnostics.Builder callbacks=new NexCallbackDiagnostics.Builder();
 	public void callback(NexCallbackDiagnostics.Target target,NexCallbackDiagnostics.Stage stage,int amount)
 	{ if(active()) { callbacks.add(target,stage,amount); } }
@@ -70,6 +72,7 @@ public final class NexCapture
 			|| unclassified>0 || damage.values().stream().anyMatch(d->d.total>0) || !event(tick)) { return false; }
 		beforeStart.addAll(timeline); timeline.clear(); damage.clear(); hitKeys.clear(); gaps.clear(); gear.clear();
 		clearObservations();
+		actions.removeIf(a->a.tick<tick-NexActions.PRE_TICKS);
 		start=tick; lastSample=tick-1; sampled=0; fullStart=true; smokeTick=tick;
 		phase="SMOKE"; phases.add(phase); continuous=true; this.roster=roster; rosterStable=roster!=null;
 		baselineGaps();
@@ -180,6 +183,16 @@ public final class NexCapture
 		if(full) { observationsTruncated=true; return false; }
 		return event(tick);
 	}
+	/** Action rows have a separate bound; diagnostic overflow cannot censor the main capture. */
+	public void actionTruncated() { if(active()) { actionsTruncated=true; } }
+	public void action(NexActions.Signal signal)
+	{
+		if(!active() || signal.tick<start-NexActions.PRE_TICKS || death>=0 && signal.tick>death) { return; }
+		if(actions.size()>=NexActions.MAX) { actionsTruncated=true; return; }
+		actions.add(signal);
+	}
+	public NexSummary.Sample actionSample(int tick,CombatState state,String target,int animation,NexTargetState targetState)
+	{ return new NexSummary.Sample(tick,active()?phase:"UNKNOWN",active()?window:"UNKNOWN",target,"unclassified",animation,state,targetState); }
 	public void launch(int tick,int cycle,long order,int animation,CombatState state,String target,NexTargetState targetState,
 		NexObservations.Weapon weapon,NexObservations.Attack attack)
 	{
@@ -229,7 +242,7 @@ public final class NexCapture
 	}
 	public void abort(int tick, Outcome outcome, String reason)
 	{ if (active()) { finish(outcome,reason,Math.max(start,tick)); } }
-	public void clear() { method=null; timeline.clear(); beforeStart.clear(); damage.clear(); hitKeys.clear(); signals.clear(); gaps.clear(); phases.clear(); gear.clear(); clearObservations(); boundaryTick=death=barrierEnd=smokeTick=observedSmoke=-1; sampled=events=unclassified=0; }
+	public void clear() { method=null; timeline.clear(); beforeStart.clear(); damage.clear(); hitKeys.clear(); signals.clear(); gaps.clear(); phases.clear(); gear.clear(); clearObservations(); actions.clear(); actionsTruncated=false; boundaryTick=death=barrierEnd=smokeTick=observedSmoke=-1; sampled=events=unclassified=0; }
 	private void finish(Outcome outcome, String reason, int end)
 	{
 		String cohort=VERSION+":"+method.cohort()+":"+gear+":"+(rosterStable?roster:"unmatched-"+key);
@@ -239,7 +252,7 @@ public final class NexCapture
 		timeline.forEach(s->setups.add(new NexComparability.Setup(s.role,s.state)));
 		NexComparability comparability=new NexComparability(VERSION,setups,roster,rosterStable);
 		NexObservations observations=new NexObservations(launches,resourceSignals,flights,impacts,health,observationsTruncated,hudChecks,callbacks.snapshot());
-		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps,signals,beforeStart,context,comparability,observations));
+		sink.accept(new NexSummary(key,start,end,sampled,Math.max(1,end-start),unclassified,outcome,reason,cohort,method.cohort(),timeline,damage,gaps,signals,beforeStart,context,comparability,observations,new NexActions(actions,actionsTruncated)));
 		clear();
 	}
 }

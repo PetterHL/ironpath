@@ -58,6 +58,7 @@ public final class NexSummary
 	public final NexContext context;
 	public final NexComparability comparability;
 	public final NexObservations observations;
+	public final NexActions actions;
 	public NexSummary(long key, int start, int end, int sampled, int expected, int unclassified,
 		Outcome outcome, String reason, String cohort, String method, List<Sample> timeline,
 		Map<String,Damage> damage, Set<String> gaps)
@@ -77,7 +78,12 @@ public final class NexSummary
 	public NexSummary(long key,int start,int end,int sampled,int expected,int unclassified,Outcome outcome,String reason,
 		String cohort,String method,List<Sample> timeline,Map<String,Damage> damage,Set<String> gaps,Signals signals,List<Sample> beforeStart,
 		NexContext context,NexComparability comparability,NexObservations observations)
+	{ this(key,start,end,sampled,expected,unclassified,outcome,reason,cohort,method,timeline,damage,gaps,signals,beforeStart,context,comparability,observations,NexActions.EMPTY); }
+	public NexSummary(long key,int start,int end,int sampled,int expected,int unclassified,Outcome outcome,String reason,
+		String cohort,String method,List<Sample> timeline,Map<String,Damage> damage,Set<String> gaps,Signals signals,List<Sample> beforeStart,
+		NexContext context,NexComparability comparability,NexObservations observations,NexActions actions)
 	{
+		this.actions=java.util.Objects.requireNonNull(actions);
 		this.observations=java.util.Objects.requireNonNull(observations);
 		this.key=key; startTick=start; endTick=end; sampledTicks=sampled; expectedTicks=expected;
 		unclassifiedHits=unclassified; this.outcome=outcome; this.reason=reason; this.cohort=cohort; this.method=method;

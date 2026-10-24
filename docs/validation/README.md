@@ -1,5 +1,10 @@
 # Validation records
 
+24 October 2026: **0.31.0 N3-ACTION, for review** —
+[action/clock contract, automated verification and pending controlled procedure](nex-action-evidence.md).
+PR #54 is integrated in main `9a2b592`; mappings remain provisional and no automatic
+advice is enabled.
+
 Build **0.30.1**: [karambwan potion-cooldown correction](karambwan-potion-cooldown.md)
 on integrated main `9a2b592`. Declared karambwan uses also advance potion readiness;
 the same-tick food/potion/combo order and three-tick boundary remain supported.

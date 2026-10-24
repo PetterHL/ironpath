@@ -9,7 +9,7 @@ import java.util.*;
 final class NexReport
 {
 	// Narrative retains its old budget. Evidence is separately bounded by 2,048 callbacks
-	// and 1,024 samples, numeric fields/fixed vocabularies, and deduplicated states.
+	// plus 4,096 action signals and 1,024 samples, numeric fields/fixed vocabularies, and deduplicated states.
 	static final int MAX_NARRATIVE_CHARS=24000, MAX_CHARS=8_000_000;
 	enum Provenance { LIVE_PUBLIC_CLIENT, SYNTHETIC_OFFLINE }
 	enum State { READY, PENDING, NO_ACCOUNT, NO_KILL, PAUSED, RESET, NOT_READY }
@@ -62,6 +62,9 @@ final class NexReport
 		{ out.add("Calculation unavailable/pending for K1. No other kill's result exported."); return new NexReport(out,evidence); }
 		out.add("Report-local calculation: C1; immutable calculation revision: "+result.revision);
 		out.addAll(result.observations.overview);
+		out.add("Action timeline: "+NexActionTimeline.VERSION+"; signals="+result.observations.actions.entries.size()
+			+"; provisional Fang inferences="+result.observations.actions.entries.stream().filter(NexActionTimeline.Entry::attack).count()
+			+"; truncated="+result.observations.actions.truncated+". Inspect ACTION_SIGNAL rows and actionTimeline in the evidence JSON. Mappings remain provisional; no automatic advice.");
 		observation(out,summary,result);
 		evidence=result.observations.export;
 		out.add("Automatic N3 recommendation gaps: "+NexPlanSupport.automaticGaps());

@@ -20,6 +20,8 @@ final class OfflineN3Scenario
 			{
 				r.carried.put(385,1L); r.carried.put(3144,1L); r.carried.put(6685,1L); r.carried.put(3024,1L);
 				r.fight(30,20,60,true,offset->{
+					if(offset==6) { r.plugin.onChatMessage(new net.runelite.api.events.ChatMessage(null,net.runelite.api.ChatMessageType.SPAM,"","You eat the shark.","",0)); }
+					if(offset==7) { r.plugin.onChatMessage(new net.runelite.api.events.ChatMessage(null,net.runelite.api.ChatMessageType.GAMEMESSAGE,"","Upon the death of your next two foes, some of your special attack energy will be restored.","",0)); }
 					if(offset==4)
 					{
 						when(r.local.getAnimation()).thenReturn(9471);
@@ -30,6 +32,8 @@ final class OfflineN3Scenario
 				report.check("Server-agreed smoke callback energy "+font,Integer.valueOf(1000),r.plugin.ownedResult.observations.startEnergy);
 				var observed=r.plugin.ownedResult.summary.observations.launches.get(0);
 				report.check("Settled callback preserves same launch inputs "+font,com.ironpath.nex.NexObservationReview.Reconciliation.SAME_INPUTS,r.plugin.ownedResult.observations.reconciled.get(observed));
+				report.check("One provisional Fang attack, no timer-only repeats "+font,1L,r.plugin.ownedResult.observations.actions.entries.stream().filter(com.ironpath.nex.NexActionTimeline.Entry::attack).count());
+				report.check("Food success survives public handler to worker "+font,1L,r.plugin.ownedResult.observations.actions.entries.stream().filter(e->e.signal.kind==com.ironpath.nex.NexActions.Kind.FOOD_SHARK).count());
 				final NexScenarioPanel[] panel={null};
 				edt(()->{
 					PanelPreview.click(r.panel,"Compare with owned gear"); PanelPreview.combo(r.panel,"nex-owned-support-filter").setSelectedItem("All states");
@@ -127,6 +131,7 @@ final class OfflineN3Scenario
 					PanelPreview.click(r.panel,"Copy report now");
 					String copied=NexScenarioPanelTest.named(r.panel,"nex-report-text",JTextArea.class).getText();
 					report.check("Default copy includes whole-capture health and HUD checks "+font,true,copied.contains("Health target=NEX;") && copied.contains("HUD checks=") && copied.contains("RuneLite client version:"));
+					report.check("Whole-copy exports provisional action timeline "+font,true,copied.contains("nex-fang-clock-1") && copied.contains("ACTION_SIGNAL") && copied.contains("DC_UPGRADED") && copied.contains("FOOD_SHARK") && copied.contains("PROVISIONAL_REQUIRES_CONTROLLED_CLIENT_CHECK"));
 					pages.setSelectedIndex(1); PanelPreview.click(r.panel,"Copy report now");
 					report.check("Copied evidence is independent of UI event page "+font,true,copied.equals(NexScenarioPanelTest.named(r.panel,"nex-report-text",JTextArea.class).getText()));
 					try { java.nio.file.Files.writeString(output.resolve("observation-report-"+font+".txt"),copied); } catch(Exception ex) { throw new IllegalStateException(ex); }
@@ -135,8 +140,10 @@ final class OfflineN3Scenario
 				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("observation-events-viewport-"+font+".png"),225,600,"nex-observation-page",List.of("nex-observation-page"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
 				edt(()->PanelPreview.closeSection(r.panel,"Diagnostics"));
 				var firstSource=finished[0].source;
+				String frozenActions=r.plugin.ownedResult.observations.export;
 				r.fight(35,40,40,true); r.settle();
 				report.check("Next kill cannot mutate frozen launch evidence "+font,1,firstSource.summary.observations.launches.size());
+				report.check("Frozen action messages survive next kill "+font,true,new com.ironpath.nex.NexObservationReview(firstSource.summary).export.equals(frozenActions));
 				edt(()->{
 					var same=(NexScenarioPanel)PanelPreview.children(r.panel).stream().filter(c->c instanceof NexScenarioPanel).findFirst().orElseThrow();
 					report.check("New kill preserves original plan inputs "+font,true,same==panel[0] && same.source==firstSource);

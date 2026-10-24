@@ -26,6 +26,7 @@ public final class NexObservationExport
 		for(var f:o.flights) { origin(f.order,f.cycle); }
 		for(var h:o.impacts) { origin(h.order,h.cycle); }
 		for(var h:o.health) { origin(h.order,h.cycle); }
+		for(var a:summary.actions.signals) { origin(a.order,a.cycle); }
 		for(int i=0;i<o.launches.size();i++)
 		{
 			var l=o.launches.get(i); var e=event("LAUNCH",l.sample.tick,l.cycle,l.order,l.sample.target);
@@ -55,6 +56,18 @@ public final class NexObservationExport
 		}
 		for(var h:o.health)
 		{ var e=event("HEALTH",h.tick,h.cycle,h.order,h.target); e.add("targetState",targetState(h.targetState)); events.add(e); }
+		for(var row:review.actions.entries)
+		{
+			var a=row.signal; var e=event("ACTION_SIGNAL",a.tick,a.cycle,a.order,a.sample.target);
+			e.addProperty("kind",a.kind.name()); e.addProperty("source",a.source.name());
+			e.addProperty("sampleGap",row.sampleGap.name()); e.addProperty("confidence",row.confidence.name()); e.addProperty("reason",row.reason.name());
+			e.addProperty("frame",a.frame); e.addProperty("moving",a.moving); e.addProperty("preStart",a.tick<summary.startTick);
+			e.addProperty("readinessBefore",row.readiness.name());
+			e.addProperty("readyBeforeTick",row.readyBefore==null?null:row.readyBefore-summary.startTick);
+			e.addProperty("readyAfterTick",row.readyAfter==null?null:row.readyAfter-summary.startTick);
+			// Orders are rebased below with the ordinary evidence; references are rebased after sorting.
+			e.addProperty("settledOrder",row.settledOrder); sample(e,a.sample); events.add(e);
+		}
 		events.sort(Comparator.comparingLong(e->e.get("order").getAsLong()));
 		if(!events.isEmpty()) { baseOrder=events.get(0).get("order").getAsLong(); baseCycle=events.get(0).get("cycle").getAsInt(); }
 		JsonArray retained=new JsonArray(); JsonObject previousPoll=null; int compressed=0;
@@ -62,6 +75,7 @@ public final class NexObservationExport
 		{
 			long order=e.get("order").getAsLong(); int cycle=e.get("cycle").getAsInt();
 			e.addProperty("order",order-baseOrder); e.addProperty("cycle",(long)cycle-baseCycle);
+			if(e.has("settledOrder") && !e.get("settledOrder").isJsonNull()) { e.addProperty("settledOrder",e.get("settledOrder").getAsLong()-baseOrder); }
 			if("TICK_RESOURCES".equals(e.get("type").getAsString()))
 			{
 				JsonObject payload=e.deepCopy(); payload.remove("tick"); payload.remove("cycle"); payload.remove("order");
@@ -70,13 +84,25 @@ public final class NexObservationExport
 			}
 			retained.add(e);
 		}
-		JsonObject root=new JsonObject(); root.addProperty("schema","nex-evidence-3"); root.addProperty("kill","K1");
+		JsonObject root=new JsonObject(); root.addProperty("schema","nex-evidence-4"); root.addProperty("kill","K1");
 		root.addProperty("timing","tick relative to measured start; cycle/order relative to first retained callback; samples have tick only");
-		root.addProperty("scope","All retained allowlisted observations; correlations remain unvalidated candidates. Zero impacts are observed zero damage, not inferred attacks. No opportunity, consumption or proc inference.");
+		root.addProperty("scope","All retained allowlisted observations; correlations remain unvalidated candidates. Zero impacts are observed zero damage, not inferred attacks. No legal-opportunity or proc inference; separately labeled provisional action-clock inferences follow.");
 		root.addProperty("measuredEndTick",summary.endTick-summary.startTick); root.addProperty("captureTruncated",o.truncated);
 		root.addProperty("correlationLimited",review.correlationLimited); root.addProperty("retainedCallbacks",events.size());
 		root.addProperty("unchangedPollsOmitted",compressed); root.addProperty("exportedCallbacks",retained.size()); root.addProperty("exportOmissions",0); root.addProperty("exportComplete",true);
 		root.add("events",retained);
+		JsonObject action=new JsonObject(); action.addProperty("model",NexActionTimeline.VERSION); action.addProperty("evidence",NexActions.VERSION);
+		action.addProperty("mappingStatus","PROVISIONAL_REQUIRES_CONTROLLED_CLIENT_CHECK");
+		action.addProperty("initialReadiness","UNKNOWN"); action.addProperty("truncated",review.actions.truncated);
+		action.addProperty("scope","Fang stab animation/cycle candidates only; 5-tick inferred clock, shark +3 and karambwan +2 delays. No message is not no consumption. Smoke never resets readiness. Availability is not an executed attack or missed opportunity. Unique temporal hit candidates are not ownership proof. No proc, expiry, finite stock or advice inferred.");
+		JsonArray actionImpacts=new JsonArray();
+		for(int i=0;i<review.actions.impacts.size();i++)
+		{
+			var link=review.actions.impacts.get(i); JsonObject e=new JsonObject(); e.addProperty("impact","I"+(i+1));
+			JsonArray candidates=new JsonArray(); link.candidateOrders.forEach(k->candidates.add(k-baseOrder)); e.add("actionOrders",candidates);
+			e.addProperty("status",link.ambiguous?"AMBIGUOUS_OR_UNMATCHED":"UNIQUE_TEMPORAL_CANDIDATE"); actionImpacts.add(e);
+		}
+		action.add("impacts",actionImpacts); root.add("actionTimeline",action);
 		root.addProperty("damageCoverage","UNVERIFIED");
 		root.addProperty("wholeKillContributionPercent",(Number)null);
 		root.addProperty("observedLocalDamage",summary.localDamage()); root.addProperty("observedTotalDamage",summary.totalDamage());

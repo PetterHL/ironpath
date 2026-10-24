@@ -87,7 +87,7 @@ public class NexDamageObservationTest
 		assertTrue(review.matches.get(0).candidates.isEmpty());
 		String ui=String.join("\n",review.window.page(0)); assertTrue(ui.contains("source=UNKNOWN"));
 		var json=new JsonParser().parse(review.export).getAsJsonObject();
-		assertEquals("nex-evidence-3",json.get("schema").getAsString()); assertFalse(review.export.contains("localSource"));
+		assertEquals("nex-evidence-4",json.get("schema").getAsString()); assertFalse(review.export.contains("localSource"));
 		assertTrue(review.export.contains("\"source\":\"UNKNOWN\""));
 		assertEquals("UNVERIFIED",json.get("damageCoverage").getAsString()); assertTrue(json.get("wholeKillContributionPercent").isJsonNull());
 		tally(summary,NEX,PROJECTILE_REPEAT_LOCAL_SOURCE,1,0);

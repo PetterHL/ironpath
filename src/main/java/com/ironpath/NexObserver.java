@@ -7,6 +7,7 @@ import com.ironpath.nex.NexSession;
 import com.ironpath.nex.NexTargetState;
 import com.ironpath.nex.NexHealth;
 import com.ironpath.nex.NexObservations;
+import com.ironpath.nex.NexActions;
 import com.ironpath.nex.NexCallbackDiagnostics;
 import static com.ironpath.nex.NexCallbackDiagnostics.Stage.*;
 import com.ironpath.preferences.NexMethod;
@@ -30,6 +31,8 @@ final class NexObserver
 	private final Set<Projectile> projectiles=Collections.newSetFromMap(new IdentityHashMap<>());
 	private final Map<ActorSpotAnim,Integer> effects=new IdentityHashMap<>();
 	private long callbackOrder;
+	private final java.util.Deque<NexActions.Signal> actionContext=new ArrayDeque<>();
+	private boolean actionContextTruncated;
 	private NPC hudTarget;
 	private int hudTick=-1,hudCycle=-1,hudDefinition=-1,hudHp=-1,hudMaximum=-1,hudUpdateTick=-1;
 	private final List<String> signals=new ArrayList<>();
@@ -98,10 +101,10 @@ final class NexObserver
 	/** Same public arena evidence used to revalidate a bank return, independent of preference IO readiness. */
 	synchronized void confirmArenaSource() { arenaObserved=true; }
 	synchronized void clearActive()
-	{ capture.clear(); targets.clear(); hits.clear(); projectiles.clear(); effects.clear(); resetHud(); signals.clear(); boss=null; attempted=arenaObserved=false; bossGone=bossForm=-1; barrier=-1; boundary=smoke=-100; view=Integer.MIN_VALUE; rosterTick=Integer.MIN_VALUE; cachedRoster=null; }
+	{ capture.clear(); actionContext.clear(); actionContextTruncated=false; targets.clear(); hits.clear(); projectiles.clear(); effects.clear(); resetHud(); signals.clear(); boss=null; attempted=arenaObserved=false; bossGone=bossForm=-1; barrier=-1; boundary=smoke=-100; view=Integer.MIN_VALUE; rosterTick=Integer.MIN_VALUE; cachedRoster=null; }
 	private void invalidateHud() { hudTarget=null; hudTick=hudCycle=hudDefinition=hudHp=hudMaximum=-1; }
 	private void resetHud() { invalidateHud(); hudUpdateTick=-1; }
-	synchronized void interactingChanged(Actor actor) { if(actor==client.getLocalPlayer()) { resetHud(); } }
+	synchronized void interactingChanged(Actor actor) { if(actor==client.getLocalPlayer()) { resetHud(); action(NexActions.Kind.INTERACTION,NexActions.Source.LOCAL_INTERACTION); } }
 	private void signal(String value)
 	{
 		String entry="tick "+client.getTickCount()+" · "+value;
@@ -126,7 +129,7 @@ final class NexObserver
 		if (bossId(actor.getId()))
 		{
 			if (boss!=null && boss!=actor)
-			{ capture.abort(client.getTickCount(),Outcome.CENSORED,"Nex spawn identity replaced"); targets.clear(); projectiles.clear(); effects.clear(); resetHud(); boundary=smoke=-100; }
+			{ capture.abort(client.getTickCount(),Outcome.CENSORED,"Nex spawn identity replaced"); targets.clear(); actionContext.clear(); actionContextTruncated=false; projectiles.clear(); effects.clear(); resetHud(); boundary=smoke=-100; }
 			if(boss!=actor || bossForm!=actor.getId()) { signal("Nex form "+actor.getId()+(boss!=actor?" (new actor)":" (same actor)")); }
 			if(boss!=actor) { attempted=false; }
 			bossForm=actor.getId();
@@ -177,9 +180,15 @@ final class NexObserver
 	}
 	synchronized void chat(ChatMessageType type, String message)
 	{
-		if (type!=ChatMessageType.NPC_SAY && type!=ChatMessageType.GAMEMESSAGE || message==null) { return; }
+		if(!enabled || message==null || message.length()>512) { return; }
+		if(type!=ChatMessageType.NPC_SAY && type!=ChatMessageType.GAMEMESSAGE && type!=ChatMessageType.SPAM) { return; }
 		String text=message.replaceAll("<[^>]+>","").trim();
-		if (text.startsWith("Nex|") || text.startsWith("Nex:")) { overhead(boss,text.substring(4).trim()); }
+		if(type==ChatMessageType.GAMEMESSAGE || type==ChatMessageType.SPAM)
+		{
+			var kind=NexActions.message(text);
+			if(kind!=null) { action(kind,type==ChatMessageType.SPAM?NexActions.Source.SPAM_MESSAGE:NexActions.Source.GAME_MESSAGE); }
+		}
+		if (type!=ChatMessageType.SPAM && (text.startsWith("Nex|") || text.startsWith("Nex:"))) { overhead(boss,text.substring(4).trim()); }
 	}
 	synchronized void overhead(Actor actor, String raw)
 	{
@@ -226,6 +235,7 @@ final class NexObserver
 		if (capture.active() && (!sameView(local) || !sameView(boss)))
 		{ capture.abort(tick,Outcome.CENSORED,"World-view identity changed"); clearActive(); return; }
 		startIfReady(true);
+		action(NexActions.Kind.SETTLED,NexActions.Source.GAME_TICK);
 		var settled=sample(-1);
 		if(capture.active())
 		{
@@ -249,6 +259,9 @@ final class NexObserver
 		if(!smokeStart && !allowPartial && boundary!=tick) { return; }
 		hits.clear(); projectiles.clear(); effects.clear(); resetHud(); attempted=true;
 		capture.start(tick,smokeStart,method,roster(),defaults);
+		actionContext.stream().filter(a->a.tick>=tick-NexActions.PRE_TICKS).forEach(capture::action);
+		if(actionContextTruncated) { capture.actionTruncated(); }
+		actionContext.clear(); actionContextTruncated=false;
 		if(boundary>=0 && boundary<=tick) { capture.barrierStart(boundary); }
 		signals.forEach(capture::signal);
 		signals.clear();
@@ -274,6 +287,32 @@ final class NexObserver
 		}
 		return roster.isEmpty()?null:String.join(",",roster);
 	}
+	/** Freeze public scalars on the client thread, including bounded arena pre-start context. */
+	private void action(NexActions.Kind kind,NexActions.Source source)
+	{
+		if(!enabled || !inArena()) { return; }
+		Player local=client.getLocalPlayer(); if(!sameView(local)) { return; }
+		NPC npc=local.getInteracting() instanceof NPC?(NPC)local.getInteracting():null;
+		String target=sameView(npc)?targets.get(npc):null;
+		int tick=client.getTickCount(), animation=local.getAnimation();
+		var sample=capture.actionSample(tick,reader.read(),target,animation,target==null?NexTargetState.UNKNOWN:targetState(npc));
+		var signal=new NexActions.Signal(kind,source,tick,client.getGameCycle(),++callbackOrder,animation,local.getAnimationFrame(),movingPose(local),sample);
+		if(capture.active()) { capture.action(signal); }
+		else if(!attempted)
+		{
+			while(!actionContext.isEmpty() && actionContext.peekFirst().tick<tick-NexActions.PRE_TICKS) { actionContext.removeFirst(); }
+			if(actionContext.size()>=NexActions.PRE_MAX) { actionContext.removeFirst(); actionContextTruncated=true; }
+			actionContext.addLast(signal);
+		}
+	}
+	private static boolean movingPose(Player local)
+	{
+		int pose=local.getPoseAnimation();
+		return pose>=0 && pose!=local.getIdlePoseAnimation() && (pose==local.getWalkAnimation() || pose==local.getRunAnimation()
+			|| pose==local.getWalkRotateLeft() || pose==local.getWalkRotateRight() || pose==local.getWalkRotate180());
+	}
+	synchronized void animation() { action(NexActions.Kind.ANIMATION,NexActions.Source.LOCAL_ANIMATION); sampleAnimation(); }
+	private void sampleAnimation() { Player local=client.getLocalPlayer(); if(local!=null) { sample(local.getAnimation()); } }
 	synchronized com.ironpath.encounter.CombatState sample(int animation)
 	{
 		if (!enabled || !capture.active()) { return null; }

@@ -6,7 +6,23 @@ This is a source review and product decision, not a fresh gameplay validation.
 [TASKS.md](../../TASKS.md#nex-delivery-decision--24-october-2026) is the only active
 backlog. It schedules N3-ACTION, then N3-ADVICE. Nex Trio MP2 remains the pilot.
 
-## Concrete missing input
+## 0.31.0 implementation follow-up
+
+N3-ACTION is now implemented from merged main `9a2b592`. The existing observer
+captures typed food/DC messages and bounded local Fang signals; the existing
+worker builds the provisional action clock and exports it in the same frozen
+report. [Exact contract, verification and pending controlled client check](../validation/nex-action-evidence.md).
+The source review below describes its original baseline. All new mappings are
+provisional; N3-ADVICE and mapping promotion remain separate.
+
+This implementation is independently authored. No external plugin code, tests,
+dataset or UI was copied. Message text and timing facts were cross-checked with
+the pinned references below and the existing catalogue (Fang IDs 26219/27246,
+five ticks, stab buttons 0/1/3). Public RuneLite 1.13.2 supplies animation/frame,
+pose, interaction and typed chat readings; those contracts do not certify an
+executed attack. No new runtime dependency or third-party code notice is needed.
+
+## Concrete missing input at the reviewed baseline
 
 IronPath's [NexObserver.chat](https://github.com/PetterHL/ironpath/blob/be6015aa19c6d6886dd4792ec6579a77de12a0c3/src/main/java/com/ironpath/NexObserver.java)
 currently accepts NPC_SAY/GAMEMESSAGE and forwards only Nex-prefixed phase text.

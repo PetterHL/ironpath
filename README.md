@@ -1,5 +1,12 @@
 # IronPath
 
+**24 October 2026: development build 0.31.0 — N3-ACTION, for review.**
+Bounded Fang action/clock candidates and typed food/Death Charge success signals
+now reach the frozen one-copy report (`nex-evidence-4`). Smoke preserves bounded
+pre-start clock context; ambiguous/zero impacts remain visible. All mappings are
+provisional pending the [short controlled check](docs/validation/nex-action-evidence.md#short-controlled-client-check--pending).
+Automatic advice remains unavailable; N3-ADVICE is the next separate delivery.
+
 **24 October 2026: development build 0.30.1 — karambwan potion cooldown.**
 Declared karambwan uses now delay the next potion by three ticks, preserving
 same-tick shark → potion → karambwan ordering. The offline supply fixture uses
