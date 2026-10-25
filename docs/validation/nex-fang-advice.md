@@ -113,8 +113,11 @@ Parsed both production copied reports: schema 5, one included provisional Fang
 action, **94 complete-package pairs**, including **14 negative alternatives**,
 and resolving explicit action indices. Existing page-independent copy, next-kill
 freezing, reset/identity/lifecycle and stale-publication checks pass. Whitespace
-and relative Markdown file targets pass. The delivery PR records the exact source
-revision and CI status; build reports/PNGs remain generated artifacts outside Git.
+and relative Markdown file targets pass. Verified implementation commit:
+`5d7be55`. Build reports/PNGs remain generated artifacts outside Git.
+CI has not run for this delivery: automatic approval review rejected the GitHub
+push because explicit destination authorization was absent. The local branch is
+ready; push and PR creation await explicit user authorization.
 
 The genuine Fire cape preview sprite (6570) was retrieved from RuneLite's item
 icon service on 25 October; its hash/provenance is in the retained sprite manifest
