@@ -14,15 +14,28 @@
 
 ## Current delivery
 
-- **N3-ACTION 0.31.0** is implemented for review from main `9a2b592` after the
-  explicitly authorized PR #54 merge. Read docs/validation/nex-action-evidence.md.
+- **N3-ADVICE 0.32.0** implements a provisional fixed-Fang equipment preview from
+  integrated main `2018144` (PR #55). On 25 October the user explicitly authorized
+  implementation before the controlled mapping check. Do not treat that as live
+  mapping promotion. Read docs/validation/nex-fang-advice.md. Reuse N2's bounded
+  complete-package search with the captured weapon/style/tempo fixed, and the
+  existing damage kernels. Keep the same action sample for each paired result,
+  zero/missing/ambiguous impact evidence, explicit exclusions, all-positive-HP
+  paired bounds, base-stat assumptions and schema-5 frozen export. Unknown windows,
+  unsupported forms, incomplete/truncated captures and missing gear withhold the
+  dependent preview. All eight full-plan gaps, unchecked declarations and N4
+  boundaries remain. Controlled client/Nex acceptance is still unperformed.
+
+- **N3-ACTION 0.31.0** is integrated through PR #55 in main `2018144`, originally
+  implemented from `9a2b592`. Read docs/validation/nex-action-evidence.md.
   Preserve bounded typed messages, Fang signal/settled-state distinctions,
   provisional inference/rejection reasons, unknown initial readiness, pre-smoke
   clock context, zero/ambiguous impacts and frozen schema-4 action export.
   Incomplete segments with actions receive guarded worker diagnostics without
   numerical choices; the controlled check does not require a complete kill.
   Controlled client mapping validation is unperformed. No automatic advice or
-  full-plan gate is enabled. N3-ADVICE follows supported mapping evidence.
+  full-plan gate is enabled there. N3-ADVICE promotion follows supported mapping evidence;
+  the explicitly authorized provisional preview above may be implemented earlier.
 
 - **24 October 2026 Nex decision:** keep Nex Trio MP2; no Vardorvis pivot.
   TASKS.md owns the sequence: #54 is integrated; review N3-ACTION, validate

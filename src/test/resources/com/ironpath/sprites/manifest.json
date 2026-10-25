@@ -87,6 +87,14 @@
       "sha256": "4f3a1db6c1e6b6a5f2ea2f24c1783533ec1af35cf1fb5d085bd51e3aa6d03684",
       "width": 36,
       "height": 32
+    },
+    {
+      "id": 6570,
+      "source": "https://static.runelite.net/cache/item/icon/6570.png",
+      "sha256": "93a5fba995c8a4356bee31855710e9c28ff1b2dcc3c198889bf0f9f2c95bd29a",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-25"
     }
   ]
 }

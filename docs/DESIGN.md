@@ -8,6 +8,12 @@ preserves previous decisions and evidence.
 
 ## Product contract
 
+Build 0.32.0 adds a worker-built provisional fixed-Fang equipment preview through
+the existing frozen `NexOwnedResult`, Compare setups and one-copy report. Paired
+damage bounds use identical action samples and all positive pre-impact HP;
+ordinary base-stat/window assumptions remain explicit and unvalidated.
+[Contract](validation/nex-fang-advice.md). Full finite-plan gates are unchanged.
+
 For a selected boss/raid and method, help the player use owned equipment, food,
 potions and spells better; identify relevant new upgrades; explain their effect
 on that play. Observe automatically, remember explicit choices, and permit focused

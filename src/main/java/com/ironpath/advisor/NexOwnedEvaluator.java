@@ -32,7 +32,9 @@ public final class NexOwnedEvaluator
 	{ return evaluate(summary,account,prefs,()->true); }
 	public NexOwnedResult evaluate(NexSummary summary, AccountSnapshot account, Preferences prefs,java.util.function.BooleanSupplier current)
 	{
-		if(summary==null || summary.outcome!=Outcome.COMPLETE) { return new NexOwnedResult(summary,List.of(),prefs.nex); }
+		if(summary==null) { return new NexOwnedResult(null,List.of(),prefs.nex); }
+		if(summary.outcome!=Outcome.COMPLETE)
+		{ return new NexOwnedResult(summary,List.of(),prefs.nex,Map.of(),summary.context,0,0,VERSION,NexFangAdvice.evaluate(summary,account,prefs,this,current)); }
 		List<NexOwnedResult.Choice> choices=new ArrayList<>(); Set<List<Object>> seen=new HashSet<>();
 		for(NexSummary.Sample s:summary.timeline)
 		{
@@ -72,10 +74,56 @@ public final class NexOwnedEvaluator
 		Map<String,Truth> unlocks=new TreeMap<>();
 		for(MeleeItem item:catalog.melee.items)
 		{ if(item.equipFact!=null) { unlocks.put(item.equipFact,AccountFacts.planning(account,prefs,item.equipFact)); } }
-		return new NexOwnedResult(summary,choices,prefs.nex,unlocks);
+		return new NexOwnedResult(summary,choices,prefs.nex,unlocks,summary.context,0,0,VERSION,
+			NexFangAdvice.evaluate(summary,account,prefs,this,current));
+	}
+	/** Same complete-package search, restricted to the captured Fang and style. */
+	List<NexOwnedResult.Choice> fangChoices(NexSummary.Sample s,AccountSnapshot account,Preferences prefs,
+		java.util.function.BooleanSupplier current)
+	{
+		CombatSetup before=setup(s,s.state.slots);
+		String gap=contextGap(s); if(gap==null) { gap=validate(s,before,account,prefs,false); }
+		Integer weaponLock=prefs.nex.locks.get("melee/weapon");
+		if(weaponLock!=null && !weaponLock.equals(s.state.slots.get("weapon"))) { gap="Fixed Fang conflicts with weapon lock"; }
+		if(gap!=null) { return List.of(new NexOwnedResult.Choice(s,null,null,gap,true,List.of())); }
+		Set<Integer> pool=new TreeSet<>(); s.state.slots.values().stream().filter(id->id>0).forEach(pool::add);
+		if(s.state.inventory!=null) { s.state.inventory.forEach((id,n)->{ if(n>0) { pool.add(id); } }); }
+		List<NexOwnedResult.Choice> choices=new ArrayList<>();
+		choices.add(search(s,account,prefs,before,pool,new ArrayList<>(),false,current,true));
+		if(account.bank.known())
+		{
+			pool.addAll(account.bank.value());
+			choices.add(search(s,account,prefs,before,pool,new ArrayList<>(),true,current,true));
+		}
+		return List.copyOf(choices);
+	}
+	/** One exact hypothetical item on the owned baseline. Equip/lock/input checks still apply. */
+	List<ComparisonResult> fangUpgrades(NexSummary.Sample sample,CombatSetup owned,AccountSnapshot account,Preferences prefs)
+	{
+		var state=sample.state;
+		var baseline=new CombatState(owned.slots,state.realLevels,state.visibleLevels,state.prayers,state.style,
+			state.specialEnergy,state.specialSelected,state.inventory,state.resources);
+		var s=new NexSummary.Sample(sample.tick,sample.phase,sample.window,sample.target,"melee",sample.animation,baseline,sample.targetState);
+		List<ComparisonResult> upgrades=new ArrayList<>();
+		for(MeleeItem item:catalog.melee.items)
+		{
+			if(item.slot.equals("weapon") || item.slot.equals("ring") || Objects.equals(owned.slots.get(item.slot),item.id)
+				|| state.slots.containsValue(item.id) || state.inventory!=null && state.inventory.getOrDefault(item.id,0L)>0
+				|| account.bank.known() && account.bank.value().contains(item.id)) { continue; }
+			Map<String,Integer> slots=new HashMap<>(owned.slots); slots.put(item.slot,item.id);
+			try
+			{
+				var pair=compare(s,setup(s,slots),account,prefs,true,Set.of(item.id));
+				if(pair.before!=null && pair.after!=null) { upgrades.add(pair); }
+			} catch(IllegalArgumentException invalid) { /* Unsupported forms retain no fabricated number. */ }
+		}
+		return List.copyOf(upgrades);
 	}
 	private NexOwnedResult.Choice search(NexSummary.Sample s,AccountSnapshot account,Preferences prefs,CombatSetup before,
 		Set<Integer> pool,List<String> coverage,boolean nextTrip,java.util.function.BooleanSupplier current)
+	{ return search(s,account,prefs,before,pool,coverage,nextTrip,current,false); }
+	private NexOwnedResult.Choice search(NexSummary.Sample s,AccountSnapshot account,Preferences prefs,CombatSetup before,
+		Set<Integer> pool,List<String> coverage,boolean nextTrip,java.util.function.BooleanSupplier current,boolean fixedWeapon)
 	{
 			Search search=new Search(s,account,prefs,before,nextTrip,current);
 			List<List<Integer>> options=new ArrayList<>();
@@ -86,6 +134,7 @@ public final class NexOwnedEvaluator
 				if(slot.equals("shield")) { ids.add(0); } // Only accepted when forced by a two-handed weapon or observed empty.
 				Integer lock=slot.equals("ring")?Integer.valueOf(25975):prefs.nex.locks.get(s.role+"/"+slot);
 				if(lock!=null) { ids.clear(); ids.add(lock); }
+				if(fixedWeapon && slot.equals("weapon")) { ids.clear(); ids.add(before.slots.get(slot)); }
 				options.add(new ArrayList<>(ids));
 			}
 			search.walk(0,new LinkedHashMap<>(),options,pool);
@@ -116,12 +165,14 @@ public final class NexOwnedEvaluator
 	public ComparisonResult compare(NexSummary.Sample sample, CombatSetup candidate, AccountSnapshot account, Preferences prefs)
 	{ return compare(sample,candidate,account,prefs,false); }
 	private ComparisonResult compare(NexSummary.Sample sample, CombatSetup candidate, AccountSnapshot account, Preferences prefs,boolean nextTrip)
+	{ return compare(sample,candidate,account,prefs,nextTrip,Set.of()); }
+	private ComparisonResult compare(NexSummary.Sample sample, CombatSetup candidate, AccountSnapshot account, Preferences prefs,boolean nextTrip,Set<Integer> hypothetical)
 	{
 		CombatSetup before=null; String gap=contextGap(sample);
 		try
 		{
 			if(gap==null) { before=setup(sample,sample.state.slots); gap=validate(sample,before,account,prefs,false); }
-			if(gap==null) { gap=validate(sample,candidate,account,prefs,true,nextTrip); }
+			if(gap==null) { gap=validate(sample,candidate,account,prefs,true,nextTrip,hypothetical); }
 		}
 		catch(IllegalArgumentException ex) { gap=ex.getMessage(); }
 		EnumMap<ComparisonResult.Metric,PoweredMagic.Status> support=new EnumMap<>(ComparisonResult.Metric.class);
@@ -189,6 +240,8 @@ public final class NexOwnedEvaluator
 	private String validate(NexSummary.Sample s,CombatSetup setup,AccountSnapshot account,Preferences prefs,boolean proposed)
 	{ return validate(s,setup,account,prefs,proposed,false); }
 	private String validate(NexSummary.Sample s,CombatSetup setup,AccountSnapshot account,Preferences prefs,boolean proposed,boolean nextTrip)
+	{ return validate(s,setup,account,prefs,proposed,nextTrip,Set.of()); }
+	private String validate(NexSummary.Sample s,CombatSetup setup,AccountSnapshot account,Preferences prefs,boolean proposed,boolean nextTrip,Set<Integer> hypothetical)
 	{
 		if(setup==null || !setup.target.equals(target.id) || setup.family!=(s.role.equals("melee")?CombatSetup.Family.MELEE:CombatSetup.Family.RANGED)) { return "Incompatible role or target"; }
 		if(!setup.slots.keySet().equals(new HashSet<>(PoweredMagic.SLOTS))) { return "Complete observed slots required"; }
@@ -225,7 +278,7 @@ public final class NexOwnedEvaluator
 				Integer lock=slot.equals("ring")?Integer.valueOf(25975):prefs.nex.locks.get(s.role+"/"+slot);
 				if(lock!=null && !lock.equals(id)) { return "Planning lock conflicts in "+slot; }
 				if(id>0 && !s.state.slots.containsValue(id) && (s.state.inventory==null || s.state.inventory.getOrDefault(id,0L)<1)
-					&& !(nextTrip && account.bank.known() && account.bank.value().contains(id))) { return "Item "+id+" not carried at this state; bank/manual ownership is not inventory availability"; }
+					&& !hypothetical.contains(id) && !(nextTrip && account.bank.known() && account.bank.value().contains(id))) { return "Item "+id+" not carried at this state; bank/manual ownership is not inventory availability"; }
 			}
 			if(id==0) { continue; }
 			Map<String,Integer> requirements;

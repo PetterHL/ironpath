@@ -1,5 +1,10 @@
 # Validation records
 
+25 October 2026: **0.32.0 N3-ADVICE, provisional implementation for review** —
+[same-sample Fang equipment preview and paired HP bounds](nex-fang-advice.md).
+The user authorized early implementation; controlled mappings and captured
+Nex-window acceptance remain pending. No validated recommendation is claimed.
+
 24 October 2026: **0.31.0 N3-ACTION, for review** —
 [action/clock contract, automated verification and pending controlled procedure](nex-action-evidence.md).
 PR #54 is integrated in main `9a2b592`; mappings remain provisional and no automatic

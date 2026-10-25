@@ -1,5 +1,13 @@
 # IronPath
 
+**25 October 2026: development build 0.32.0 — provisional N3-ADVICE.**
+Compare setups now derives fixed-Fang equipment alternatives from the frozen
+action sample, including carried gear, conditional bank preparation and single
+hypothetical items on an owned baseline. Expected-damage intervals use paired
+HP uncertainty and keep negative alternatives. Mappings, ordinary windows and
+base-stat assumptions remain unvalidated; this is an explicitly provisional
+preview. [Implementation and verification](docs/validation/nex-fang-advice.md).
+
 **24 October 2026: development build 0.31.0 — N3-ACTION, for review.**
 Bounded Fang action/clock candidates and typed food/Death Charge success signals
 now reach the frozen one-copy report (`nex-evidence-4`). Smoke preserves bounded

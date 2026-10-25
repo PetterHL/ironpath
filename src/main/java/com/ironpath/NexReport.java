@@ -64,7 +64,10 @@ final class NexReport
 		out.addAll(result.observations.overview);
 		out.add("Action timeline: "+NexActionTimeline.VERSION+"; signals="+result.observations.actions.entries.size()
 			+"; provisional Fang inferences="+result.observations.actions.entries.stream().filter(NexActionTimeline.Entry::attack).count()
-			+"; truncated="+result.observations.actions.truncated+". Inspect ACTION_SIGNAL rows and actionTimeline in the evidence JSON. Mappings remain provisional; no automatic advice.");
+			+"; truncated="+result.observations.actions.truncated+". Inspect ACTION_SIGNAL rows and actionTimeline in the evidence JSON. Mappings remain provisional; no validated automatic advice.");
+		out.add("Fang equipment preview: "+NexFangAdvice.VERSION+"; status="+NexFangAdvice.STATUS
+			+"; included="+result.advice.included.size()+"; excluded="+result.advice.excluded.size()+"; comparisons="+result.advice.rows.size()
+			+"; blockers="+result.advice.blockers+". Full frozen pairs and actionIndices (explicit ACTION_SIGNAL.actionIndex) are in fangAdvice JSON. All positive pre-impact HP; paired integer-breakpoint bounds; base target stats and ordinary damage assumed. No live mapping promotion or whole-kill extrapolation.");
 		observation(out,summary,result);
 		evidence=result.observations.export;
 		out.add("Automatic N3 recommendation gaps: "+NexPlanSupport.automaticGaps());

@@ -1,5 +1,12 @@
 # Encounter-first UX
 
+Build 0.32.0 adds **Fang equipment / Provisional · base stats** inside Compare
+setups, with a damage interval, included Fang count, fixed tempo, origin and
+selectable complete-package alternatives. Zero/negative alternatives remain
+selectable. Fang details opens existing Diagnostics for exclusions and the
+conditional calculation basis; the one-copy report freezes all pairs.
+[Preview contract and pending live acceptance](validation/nex-fang-advice.md).
+
 Build **0.29.0** shows **Unverified** under Damage contribution until whole-kill
 coverage is established. Diagnostics keeps the scoped recorded numerator,
 denominator and hitsplat ratio; complete timing and independent gear/resource

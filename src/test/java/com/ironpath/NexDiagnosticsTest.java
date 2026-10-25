@@ -99,7 +99,7 @@ public class NexDiagnosticsTest
 		assertTrue(first.contains("relative cycle=60; relative order=2; target=T1/NEX"));
 		assertFalse(first.contains(PRIVATE)); assertTrue(first.contains("outside=31"));
 		String middle=NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.READY,null,1).format();
-		assertTrue(middle.contains("\"schema\":\"nex-evidence-4\"")); assertTrue(middle.contains("\"value\":509"));
+		assertTrue(middle.contains("\"schema\":\"nex-evidence-5\"")); assertTrue(middle.contains("\"value\":509"));
 		assertEquals(middle,NexReport.snapshot(summary,result,0,0,catalog,NexReport.Provenance.SYNTHETIC_OFFLINE,NexReport.State.READY,null,0).format());
 		assertFalse(middle.contains("Projectile F1")); assertFalse(middle.contains(PRIVATE)); assertTrue(middle.length()<=NexReport.MAX_CHARS);
 		assertEquals(window.page(3),window.page(Integer.MAX_VALUE));
@@ -151,7 +151,7 @@ public class NexDiagnosticsTest
 			panel.render("Observed",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Calculation details");
 			PanelPreview.combo(panel,"nex-observation-page").setSelectedIndex(1);
-			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("\"schema\":\"nex-evidence-4\""));
+			PanelPreview.click(panel,"Copy report now"); assertTrue(copied.get().contains("\"schema\":\"nex-evidence-5\""));
 			panel.render("Refresh",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
 			assertEquals(1,PanelPreview.combo(panel,"nex-observation-page").getSelectedIndex());
 			panel.render("Nex session paused",NexOwnedFixtures.account(null),Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);

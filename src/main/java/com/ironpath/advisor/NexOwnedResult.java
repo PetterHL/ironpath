@@ -56,6 +56,7 @@ public final class NexOwnedResult
 	public final List<Choice> choices;
 	public final com.ironpath.nex.NexResourceReview resources;
 	public final com.ironpath.nex.NexObservationReview observations;
+	public final NexFangAdvice advice;
 	public final Map<String,Integer> gaps;
 	public NexOwnedResult(NexSummary summary, List<Choice> choices)
 	{ this(summary,choices,null); }
@@ -66,14 +67,18 @@ public final class NexOwnedResult
 	{ this(summary,choices,planning,scenarioUnlocks,summary==null?com.ironpath.nex.NexContext.UNKNOWN:summary.context,0,0,NexOwnedEvaluator.VERSION); }
 	public NexOwnedResult(NexSummary summary,List<Choice> choices,com.ironpath.preferences.NexMethod planning,
 		Map<String,com.ironpath.model.Truth> scenarioUnlocks,com.ironpath.nex.NexContext context,long contextRevision,long inputRevision,String modelRevision)
+	{ this(summary,choices,planning,scenarioUnlocks,context,contextRevision,inputRevision,modelRevision,NexFangAdvice.unavailable(summary)); }
+	public NexOwnedResult(NexSummary summary,List<Choice> choices,com.ironpath.preferences.NexMethod planning,
+		Map<String,com.ironpath.model.Truth> scenarioUnlocks,com.ironpath.nex.NexContext context,long contextRevision,long inputRevision,String modelRevision,NexFangAdvice advice)
 	{
+		this.advice=java.util.Objects.requireNonNull(advice);
 		this.scenarioUnlocks=Map.copyOf(scenarioUnlocks);
 		revision=REVISIONS.incrementAndGet(); this.planning=planning;
 		this.context=context; this.contextRevision=contextRevision; this.inputRevision=inputRevision; this.modelRevision=modelRevision;
 		this.summary=summary; this.choices=List.copyOf(choices);
 		// Constructed with the frozen post-kill result on the existing guarded worker.
 		resources=summary==null?null:com.ironpath.nex.NexResourceReview.from(summary);
-		observations=summary==null?null:new com.ironpath.nex.NexObservationReview(summary);
+		observations=summary==null?null:new com.ironpath.nex.NexObservationReview(summary,advice);
 		Map<String,Integer> counts=new LinkedHashMap<>();
 		for(Choice choice:choices) { if(!choice.supported()) { counts.merge(choice.gapReason(),1,Integer::sum); } }
 		gaps=Collections.unmodifiableMap(counts);

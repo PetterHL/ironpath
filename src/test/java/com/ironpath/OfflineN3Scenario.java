@@ -34,6 +34,13 @@ final class OfflineN3Scenario
 				report.check("Settled callback preserves same launch inputs "+font,com.ironpath.nex.NexObservationReview.Reconciliation.SAME_INPUTS,r.plugin.ownedResult.observations.reconciled.get(observed));
 				report.check("One provisional Fang attack, no timer-only repeats "+font,1L,r.plugin.ownedResult.observations.actions.entries.stream().filter(com.ironpath.nex.NexActionTimeline.Entry::attack).count());
 				report.check("Food success survives public handler to worker "+font,1L,r.plugin.ownedResult.observations.actions.entries.stream().filter(e->e.signal.kind==com.ironpath.nex.NexActions.Kind.FOOD_SHARK).count());
+				var advice=r.plugin.ownedResult.advice;
+				report.check("Automatic Fang sample from captured actions "+font,1,advice.included.size());
+				report.check("Automatic Fang complete-package pairs "+font,true,!advice.rows.isEmpty());
+				report.check("Automatic Fang remains provisional "+font,false,advice.json().get("validated").getAsBoolean());
+				String frozenAdvice=advice.json().toString();
+				capture(r,output,"fang-advice",font,report);
+				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("fang-advice-viewport-"+font+".png"),225,600,"nex-fang-gain",List.of("nex-fang-gain","nex-fang-sample","nex-fang-details"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
 				final NexScenarioPanel[] panel={null};
 				edt(()->{
 					PanelPreview.click(r.panel,"Compare with owned gear"); PanelPreview.combo(r.panel,"nex-owned-support-filter").setSelectedItem("All states");
@@ -143,7 +150,8 @@ final class OfflineN3Scenario
 				String frozenActions=r.plugin.ownedResult.observations.export;
 				r.fight(35,40,40,true); r.settle();
 				report.check("Next kill cannot mutate frozen launch evidence "+font,1,firstSource.summary.observations.launches.size());
-				report.check("Frozen action messages survive next kill "+font,true,new com.ironpath.nex.NexObservationReview(firstSource.summary).export.equals(frozenActions));
+				report.check("Frozen action messages survive next kill "+font,true,new com.ironpath.nex.NexObservationReview(firstSource.summary,firstSource.advice).export.equals(frozenActions));
+				report.check("Next kill preserves frozen Fang preview "+font,true,frozenAdvice.equals(firstSource.advice.json().toString()));
 				edt(()->{
 					var same=(NexScenarioPanel)PanelPreview.children(r.panel).stream().filter(c->c instanceof NexScenarioPanel).findFirst().orElseThrow();
 					report.check("New kill preserves original plan inputs "+font,true,same==panel[0] && same.source==firstSource);
