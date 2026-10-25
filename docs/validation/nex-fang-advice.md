@@ -115,9 +115,10 @@ and resolving explicit action indices. Existing page-independent copy, next-kill
 freezing, reset/identity/lifecycle and stale-publication checks pass. Whitespace
 and relative Markdown file targets pass. Verified implementation commit:
 `5d7be55`. Build reports/PNGs remain generated artifacts outside Git.
-CI has not run for this delivery: automatic approval review rejected the GitHub
-push because explicit destination authorization was absent. The local branch is
-ready; push and PR creation await explicit user authorization.
+The user explicitly authorized GitHub branch push and PR creation on 25 October,
+resolving the initial automatic approval rejection. The delivery PR will record
+the exact head revision and current CI/artifact links. Live acceptance and merge
+remain separate.
 
 The genuine Fire cape preview sprite (6570) was retrieved from RuneLite's item
 icon service on 25 October; its hash/provenance is in the retained sprite manifest
