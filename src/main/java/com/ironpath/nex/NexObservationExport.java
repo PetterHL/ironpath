@@ -99,7 +99,7 @@ public final class NexObservationExport
 		JsonObject action=new JsonObject(); action.addProperty("model",NexActionTimeline.VERSION); action.addProperty("evidence",NexActions.VERSION);
 		action.addProperty("mappingStatus","PROVISIONAL_REQUIRES_CONTROLLED_CLIENT_CHECK");
 		action.addProperty("initialReadiness","UNKNOWN"); action.addProperty("truncated",review.actions.truncated);
-		action.addProperty("scope","Fang stab animation/cycle candidates only; 5-tick inferred clock, shark +3 and karambwan +2 delays. No message is not no consumption. Smoke never resets readiness. Availability is not an executed attack or missed opportunity. Unique temporal hit candidates are not ownership proof. No proc, expiry, finite stock or advice inferred.");
+		action.addProperty("scope","Fang stab animation/cycle candidates only; 5-tick inferred clock, shark/manta ray +3 and karambwan +2 delays. No message is not no consumption. Smoke never resets readiness. Availability is not an executed attack or missed opportunity. Unique temporal hit candidates are not ownership proof. No proc, expiry, finite stock or advice inferred.");
 		JsonArray actionImpacts=new JsonArray();
 		for(int i=0;i<review.actions.impacts.size();i++)
 		{

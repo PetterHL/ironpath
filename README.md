@@ -1,5 +1,12 @@
 # IronPath
 
+**25 October 2026: development build 0.32.1 — Fang client-test follow-up.**
+Stable positive HP/Prayer changes no longer discard an ordinary Fang candidate
+or fragment compatible equipment samples. Manta ray has its own typed food
+signal; exact DC success text can also arrive through the game-engine channel.
+All mappings and base-stat previews remain provisional.
+[Evidence, corrections and verification](docs/validation/nex-fang-action-followup.md).
+
 **25 October 2026: development build 0.32.0 — provisional N3-ADVICE.**
 Compare setups now derives fixed-Fang equipment alternatives from the frozen
 action sample, including carried gear, conditional bank preparation and single

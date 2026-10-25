@@ -25,7 +25,7 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Integrated: [PR #54](https://github.com/PetterHL/ironpath/pull/54) | **N3 evidence validation (0.30.0)** | Full-cap clock correction, diagnostic repeat-source counters and the 24 October Nex delivery decision. No automatic recommendation yet |
 | Integrated: [PR #56](https://github.com/PetterHL/ironpath/pull/56) | **Karambwan potion cooldown (0.30.1)** | Reject potions one/two ticks after karambwan; retain the three-tick boundary and same-tick combos. [Verification](docs/validation/karambwan-potion-cooldown.md) |
 | Integrated, 0.31.0 / PR #55 | **N3-ACTION: action evidence and attack clock** | Bounded Fang state, food/DC messages and frozen timeline; controlled client mapping check remains pending |
-| Implementation for review, 0.32.0 | **N3-ADVICE: provisional automatic Fang preview** | User authorized early implementation on 25 October. Same-sample equipment pairs and paired HP bounds; mapping/window/base-stat assumptions remain provisional. Product acceptance still requires captured Nex evidence |
+| PR #57, 0.32.1 follow-up | **N3-ADVICE: provisional automatic Fang preview** | One supplied 0.32.0 live report and separate screenshot confirm export/calculation/UI paths; scoped resource/grouping and message corrections follow. Mapping/window/base-stat assumptions and product acceptance remain open |
 | After the first useful comparison | **Broader N3 automatic recommendations** | Ranged attribution and finite spec/DC/supply plans remain gated; solve dependencies as needed for each added output |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
@@ -113,6 +113,11 @@ diagnostics project or silently label it confirmed.
 explicitly requested proceeding with N3-ADVICE on 25 October despite the pending
 controlled check. This authorizes the provisional implementation below, without
 promoting any mapping or declaring product acceptance. [Contract and verification](docs/validation/nex-fang-advice.md).
+
+The supplied client report motivates the **0.32.1** [reconciliation/message
+follow-up](docs/validation/nex-fang-action-followup.md) on the same open PR #57.
+It accepts one bounded conditional export/calculation path and visible client
+card, while controlled mapping/window acceptance remains unchecked.
 
 Follow N3-ACTION with a post-kill comparison in the existing Compare setups panel:
 

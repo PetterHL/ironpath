@@ -28,6 +28,50 @@ public class NexActionTimelineTest
 	NexSummary finish(int tick) { capture.abort(tick,Outcome.CENSORED,"synthetic"); return out.get(out.size()-1); }
 	List<NexActionTimeline.Entry> attacks(NexActionTimeline t)
 	{ return t.entries.stream().filter(NexActionTimeline.Entry::attack).collect(java.util.stream.Collectors.toList()); }
+	private CombatState resources(int hp,int prayer)
+	{
+		return new CombatState(fang.slots,Map.of("ATTACK",99,"STRENGTH",99,"HITPOINTS",99,"PRAYER",99),
+			Map.of("ATTACK",118,"STRENGTH",118,"HITPOINTS",hp,"PRAYER",prayer),Set.of("PIETY"),0,1000,false);
+	}
+	@Test public void positivePlayerHpAndPrayerPointChangesPreserveCallbackAndFrameRestart()
+	{
+		start(0); signal(0,ANIMATION,9471,0,resources(95,40),"NEX@test",false);
+		signal(0,SETTLED,9471,0,resources(81,39),"NEX@test",false);
+		for(int tick=1;tick<5;tick++) { signal(tick,SETTLED,9471,tick,resources(81-tick,39-tick),"NEX@test",false); }
+		signal(5,SETTLED,9471,0,resources(99,33),"NEX@test",false);
+		var rows=attacks(new NexActionTimeline(finish(6)));
+		assertEquals(2,rows.size()); assertEquals(ANIMATION_CALLBACK,rows.get(0).reason);
+		assertEquals(FRAME_RESTART,rows.get(1).reason); assertEquals(Integer.valueOf(10),rows.get(1).readyAfter);
+		assertEquals(Integer.valueOf(95),rows.get(0).signal.sample.state.visibleLevels.get("HITPOINTS"));
+	}
+	@Test public void offensiveStatsAndActivePrayerChangesStillRejectReconciliation()
+	{
+		var before=resources(95,40);
+		for(String changed:List.of("ATTACK","STRENGTH","active prayer"))
+		{
+			var levels=new HashMap<>(resources(81,39).visibleLevels);
+			if(!changed.equals("active prayer")) { levels.put(changed,100); }
+			var after=new CombatState(before.slots,before.realLevels,levels,
+				changed.equals("active prayer")?Set.of():before.prayers,0,1000,false);
+			start(0); signal(0,ANIMATION,9471,0,before,"NEX@test",false); signal(0,SETTLED,9471,0,after,"NEX@test",false);
+			var t=new NexActionTimeline(finish(1)); assertTrue(changed,attacks(t).isEmpty());
+			assertEquals(changed,SETTLED_INPUTS_CHANGED,t.entries.get(0).reason);
+		}
+	}
+	@Test public void zeroAndUnreadPlayerResourceTransitionsRemainAmbiguous()
+	{
+		var before=resources(95,40);
+		for(String resource:List.of("HITPOINTS","PRAYER"))
+		for(boolean unread:List.of(false,true))
+		{
+			var levels=new HashMap<>(before.visibleLevels);
+			if(unread) { levels.remove(resource); } else { levels.put(resource,0); }
+			var after=new CombatState(before.slots,before.realLevels,levels,before.prayers,0,1000,false);
+			start(0); signal(0,ANIMATION,9471,0,before,"NEX@test",false); signal(0,SETTLED,9471,0,after,"NEX@test",false);
+			var t=new NexActionTimeline(finish(1)); assertTrue(attacks(t).isEmpty());
+			assertEquals(SETTLED_INPUTS_CHANGED,t.entries.get(0).reason);
+		}
+	}
 	@Test public void unknownInitialClockRepeatsBlocksAndAvailableTicksNeverManufactureAttacks()
 	{
 		start(0); attack(0);
@@ -57,10 +101,20 @@ public class NexActionTimelineTest
 		assertEquals(2,attacks(t).size()); assertEquals(Integer.valueOf(12),attacks(t).get(1).readyBefore);
 		assertEquals(2,t.entries.stream().filter(e->e.signal.kind==FOOD_KARAMBWAN).count());
 	}
+	@Test public void mantaRaySuccessAddsThreeTicksWithoutReclassifyingUnknownFood()
+	{
+		assertEquals(FOOD_MANTA_RAY,NexActions.message("You eat the manta ray."));
+		assertEquals(FOOD_UNKNOWN,NexActions.message("You eat the monkfish."));
+		assertNull(NexActions.message("You drink some of your Saradomin brew."));
+		start(0); attack(0); signal(1,SETTLED); signal(1,FOOD_MANTA_RAY);
+		for(int tick=2;tick<8;tick++) { signal(tick,SETTLED); }
+		attack(8); var t=new NexActionTimeline(finish(9));
+		assertEquals(2,attacks(t).size()); assertEquals(Integer.valueOf(8),attacks(t).get(1).readyBefore);
+	}
 	@Test public void eatAndAttackSameTickAreAmbiguousInEitherCallbackOrder()
 	{
 		for(int tick:List.of(0,3,5,10))
-		for(var food:List.of(FOOD_SHARK,FOOD_KARAMBWAN,FOOD_UNKNOWN))
+		for(var food:List.of(FOOD_SHARK,FOOD_MANTA_RAY,FOOD_KARAMBWAN,FOOD_UNKNOWN))
 		for(boolean eatFirst:List.of(true,false))
 		{
 			start(0);
@@ -78,7 +132,7 @@ public class NexActionTimelineTest
 	}
 	@Test public void sharkAndKarambwanAfterExpiredCooldownDoNotDelayTheNextAttack()
 	{
-		for(var food:List.of(FOOD_SHARK,FOOD_KARAMBWAN))
+		for(var food:List.of(FOOD_SHARK,FOOD_MANTA_RAY,FOOD_KARAMBWAN))
 		for(int tick:List.of(5,10))
 		{
 			start(0); attack(0); for(int i=1;i<=tick;i++) { signal(i,SETTLED); }

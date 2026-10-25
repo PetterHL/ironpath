@@ -107,9 +107,33 @@ public class NexObserverTest
 		assertEquals(1,s.actions.signals.stream().filter(a->a.kind==com.ironpath.nex.NexActions.Kind.FOOD_UNKNOWN).count());
 		assertTrue(s.timeline.stream().anyMatch(a->a.phase.equals("SHADOW")));
 		String export=new com.ironpath.nex.NexObservationReview(s).export;
-		assertTrue(export.contains("FOOD_SHARK")); assertTrue(export.contains("SPAM_MESSAGE")); assertTrue(export.contains("nex-fang-clock-1"));
+		assertTrue(export.contains("FOOD_SHARK")); assertTrue(export.contains("SPAM_MESSAGE")); assertTrue(export.contains(com.ironpath.nex.NexActionTimeline.VERSION));
 		assertFalse(export.contains("Upon the death")); assertFalse(export.contains("unrelated private")); assertFalse(export.contains("synthetic roster"));
 		assertFalse(export.contains("NEX@")); assertFalse(export.contains("monkfish"));
+	}
+	@Test public void engineMessagesAdmitOnlyExactDeathChargeAndMantaRayKeepsItsOwnTypedSignal()
+	{
+		observer.tick(); observer.overhead(boss,"Fill my soul with smoke!");
+		String normal="Upon the death of your next foe, some of your special attack energy will be restored.";
+		String upgraded="Upon the death of your next two foes, some of your special attack energy will be restored.";
+		observer.chat(ChatMessageType.ENGINE,"<col=00ff00>"+normal+"</col>");
+		observer.chat(ChatMessageType.ENGINE,upgraded);
+		observer.chat(ChatMessageType.ENGINE,"You eat the manta ray.");
+		observer.chat(ChatMessageType.ENGINE,"Nex: Darken my shadow!");
+		for(var type:List.of(ChatMessageType.PUBLICCHAT,ChatMessageType.PRIVATECHAT,ChatMessageType.CONSOLE,
+			ChatMessageType.NPC_SAY,ChatMessageType.DIALOG,ChatMessageType.MESBOX,ChatMessageType.PLAYERRELATED))
+		{ observer.chat(type,upgraded); observer.chat(type,"You eat the manta ray."); }
+		observer.chat(ChatMessageType.SPAM,"You eat the manta ray.");
+		observer.chat(ChatMessageType.GAMEMESSAGE,"You eat the manta ray.");
+		observer.transition(); var summary=session.recent().get(0);
+		assertEquals(2,summary.actions.signals.stream().filter(a->a.source==com.ironpath.nex.NexActions.Source.ENGINE_MESSAGE).count());
+		assertEquals(2,summary.actions.signals.stream().filter(a->a.kind==com.ironpath.nex.NexActions.Kind.FOOD_MANTA_RAY).count());
+		assertEquals(1,summary.actions.signals.stream().filter(a->a.kind==com.ironpath.nex.NexActions.Kind.DC_NORMAL).count());
+		assertEquals(1,summary.actions.signals.stream().filter(a->a.kind==com.ironpath.nex.NexActions.Kind.DC_UPGRADED).count());
+		assertFalse(summary.timeline.stream().anyMatch(s->s.phase.equals("SHADOW")));
+		String report=new com.ironpath.nex.NexObservationReview(summary).export;
+		assertTrue(report.contains("ENGINE_MESSAGE")); assertTrue(report.contains("FOOD_MANTA_RAY"));
+		assertFalse(report.contains("You eat")); assertFalse(report.contains("Upon the death"));
 	}
 	@Test public void arenaPrestartActionsAndSmokeDoNotResetTheFangClockButLifecycleDoes()
 	{

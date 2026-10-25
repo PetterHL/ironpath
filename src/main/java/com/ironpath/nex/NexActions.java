@@ -5,10 +5,10 @@ import java.util.*;
 /** Bounded scalar action evidence. No chat text, menu intent, actors or item names. */
 public final class NexActions
 {
-	public static final String VERSION="nex-actions-1";
+	public static final String VERSION="nex-actions-2";
 	public static final int MAX=4096, PRE_TICKS=10, PRE_MAX=128;
-	public enum Kind { ANIMATION, SETTLED, INTERACTION, FOOD_SHARK, FOOD_KARAMBWAN, FOOD_UNKNOWN, DC_NORMAL, DC_UPGRADED }
-	public enum Source { LOCAL_ANIMATION, GAME_TICK, LOCAL_INTERACTION, GAME_MESSAGE, SPAM_MESSAGE }
+	public enum Kind { ANIMATION, SETTLED, INTERACTION, FOOD_SHARK, FOOD_MANTA_RAY, FOOD_KARAMBWAN, FOOD_UNKNOWN, DC_NORMAL, DC_UPGRADED }
+	public enum Source { LOCAL_ANIMATION, GAME_TICK, LOCAL_INTERACTION, GAME_MESSAGE, SPAM_MESSAGE, ENGINE_MESSAGE }
 	public static final class Signal
 	{
 		public final Kind kind;
@@ -38,6 +38,7 @@ public final class NexActions
 		switch(text)
 		{
 			case "You eat the shark.": return Kind.FOOD_SHARK;
+			case "You eat the manta ray.": return Kind.FOOD_MANTA_RAY;
 			case "You eat the karambwan.": return Kind.FOOD_KARAMBWAN;
 			case "You eat the food.": return Kind.FOOD_UNKNOWN;
 			case "Upon the death of your next foe, some of your special attack energy will be restored.": return Kind.DC_NORMAL;

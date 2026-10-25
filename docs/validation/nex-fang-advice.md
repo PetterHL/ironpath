@@ -1,5 +1,9 @@
 # N3-ADVICE provisional Fang equipment preview
 
+Build **0.32.1** follows the supplied client report with bounded resource-input,
+grouping and action-message corrections. [Evidence and follow-up verification](nex-fang-action-followup.md).
+The original 0.32.0 delivery record below retains its scope and results.
+
 25 October 2026. Development build **0.32.0**, based on integrated main
 `2018144` / PR #55. The user explicitly authorized implementing N3-ADVICE before
 the pending controlled mapping check. This delivers a **provisional preview**;

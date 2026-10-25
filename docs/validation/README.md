@@ -1,5 +1,8 @@
 # Validation records
 
+25 October 2026: **0.32.1 Fang client-test follow-up** —
+[supplied-report findings, scoped corrections and remaining checks](nex-fang-action-followup.md).
+
 25 October 2026: **0.32.0 N3-ADVICE, provisional implementation for review** —
 [same-sample Fang equipment preview and paired HP bounds](nex-fang-advice.md).
 The user authorized early implementation; controlled mappings and captured

@@ -11,7 +11,7 @@ import java.util.function.BooleanSupplier;
 /** Worker-only fixed-tempo equipment preview. Provisional signals never become validated attacks. */
 public final class NexFangAdvice
 {
-	public static final String VERSION="nex-fang-advice-1";
+	public static final String VERSION="nex-fang-advice-2";
 	public static final String STATUS="PROVISIONAL_MAPPING_AND_BASE_STATS";
 	// Computational bound, with explicit exclusions rather than a claim of complete coverage.
 	private static final int MAX_GROUPS=64;
@@ -78,7 +78,7 @@ public final class NexFangAdvice
 				:row.signal.tick<summary.startTick || row.signal.tick>=summary.endTick?Gap.OUTSIDE_MEASURED_INTERVAL
 				:!row.attack()?Gap.AMBIGUOUS_ATTACK:contextGap(s);
 			if(gap!=null) { excluded.put(i,gap); continue; }
-			List<Object> key=List.of(s.phase,s.window,s.target,s.state);
+			List<Object> key=List.of(s.phase,s.window,s.target,evaluator.fangGroupInputs(s));
 			if(!groups.containsKey(key) && groups.size()>=MAX_GROUPS) { excluded.put(i,Gap.WORK_LIMIT); continue; }
 			groups.computeIfAbsent(key,k->new ArrayList<>()).add(i);
 		}

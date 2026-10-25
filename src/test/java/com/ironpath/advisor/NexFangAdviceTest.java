@@ -139,4 +139,41 @@ public class NexFangAdviceTest
 		assertThrows(UnsupportedOperationException.class,()->result.advice.rows.clear());
 		assertThrows(UnsupportedOperationException.class,()->result.advice.included.clear());
 	}
+	@Test public void incidentalPlayerResourceChangesKeepTheSameCallbackPackageInTheAdviceSample()
+	{
+		signal(5,NexActions.Kind.ANIMATION,"SHADOW","FEAR_THE_SHADOW","NEX@test",NexTargetState.Form.NEX,gear);
+		var visible=new HashMap<>(gear.visibleLevels); visible.put("HITPOINTS",81); visible.put("PRAYER",98);
+		var settled=new CombatState(gear.slots,gear.realLevels,visible,gear.prayers,gear.style,gear.specialEnergy,false,gear.inventory,gear.resources);
+		signal(5,NexActions.Kind.SETTLED,"SHADOW","FEAR_THE_SHADOW","NEX@test",NexTargetState.Form.NEX,settled);
+		var result=evaluate(summary(Outcome.COMPLETE,false,List.of()),Preferences.EMPTY);
+		assertEquals(1,result.advice.included.size()); assertFalse(result.advice.rows.isEmpty());
+		for(var row:result.advice.rows) { assertSame(gear,row.sample.state); assertEquals(List.of(0),row.actionIndices); }
+		assertEquals(Integer.valueOf(99),result.advice.rows.get(0).sample.state.visibleLevels.get("HITPOINTS"));
+	}
+	@Test public void resourcePollingDoesNotSplitIdenticalOffenceAndAvailableGearAcrossAttacks()
+	{
+		var first=gear; attack(5);
+		for(int tick=6;tick<10;tick++) { signal(tick,NexActions.Kind.SETTLED,"SHADOW","FEAR_THE_SHADOW","NEX@test",NexTargetState.Form.NEX,gear); }
+		var visible=new HashMap<>(gear.visibleLevels); visible.put("HITPOINTS",60); visible.put("PRAYER",90);
+		var resources=new HashMap<>(gear.resources); resources.put("death-charge-active",1); resources.put("quiver-splinters-raw",0);
+		var inventory=new HashMap<>(gear.inventory); inventory.put(385,5L); // Supply units cannot change equip availability.
+		gear=new CombatState(gear.slots,gear.realLevels,visible,gear.prayers,gear.style,500,false,inventory,resources);
+		attack(10); var result=evaluate(summary(Outcome.COMPLETE,false,List.of()),Preferences.EMPTY);
+		assertEquals(2,result.advice.included.size());
+		for(var row:result.advice.rows) { assertSame(first,row.sample.state); assertEquals(List.of(0,6),row.actionIndices); }
+	}
+	@Test public void newlyAvailableEquipmentCannotLeakBackIntoAnEarlierAttackGroup()
+	{
+		gear=state(melee(),Map.of()); attack(5);
+		for(int tick=6;tick<10;tick++) { signal(tick,NexActions.Kind.SETTLED,"SHADOW","FEAR_THE_SHADOW","NEX@test",NexTargetState.Form.NEX,gear); }
+		gear=state(melee(),Map.of(24780,1L)); attack(10);
+		var result=evaluate(summary(Outcome.COMPLETE,false,List.of()),Preferences.EMPTY);
+		assertEquals(2,result.advice.included.size());
+		for(var row:result.advice.rows)
+		{
+			assertEquals(1,row.actionIndices.size());
+			if(row.kind==NexFangAdvice.Kind.CARRIED && row.actionIndices.contains(0)) { assertNotEquals(Integer.valueOf(24780),row.pair.afterSetup.slots.get("neck")); }
+		}
+		assertTrue(result.advice.rows.stream().anyMatch(r->r.kind==NexFangAdvice.Kind.CARRIED && r.actionIndices.contains(6) && r.pair.afterSetup.slots.get("neck")==24780));
+	}
 }

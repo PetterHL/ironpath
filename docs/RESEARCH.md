@@ -1,5 +1,10 @@
 # Evidence and research index
 
+25 October: [Fang client-test follow-up](validation/nex-fang-action-followup.md)
+records the input-comparison defect, exact manta-ray class, public ENGINE message
+contract and the unproven source of missing live DC messages. Source pins and
+projection limits are explicit; mappings remain provisional.
+
 25 October: [Provisional N3-ADVICE](validation/nex-fang-advice.md) connects frozen
 Fang action candidates to the existing complete-package search and discrete
 damage kernels. All-positive-HP paired bounds are independently enumerated;

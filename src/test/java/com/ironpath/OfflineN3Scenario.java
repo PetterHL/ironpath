@@ -21,7 +21,7 @@ final class OfflineN3Scenario
 				r.carried.put(385,1L); r.carried.put(3144,1L); r.carried.put(6685,1L); r.carried.put(3024,1L);
 				r.fight(30,20,60,true,offset->{
 					if(offset==6) { r.plugin.onChatMessage(new net.runelite.api.events.ChatMessage(null,net.runelite.api.ChatMessageType.SPAM,"","You eat the shark.","",0)); }
-					if(offset==7) { r.plugin.onChatMessage(new net.runelite.api.events.ChatMessage(null,net.runelite.api.ChatMessageType.GAMEMESSAGE,"","Upon the death of your next two foes, some of your special attack energy will be restored.","",0)); }
+					if(offset==7) { r.plugin.onChatMessage(new net.runelite.api.events.ChatMessage(null,net.runelite.api.ChatMessageType.ENGINE,"","Upon the death of your next two foes, some of your special attack energy will be restored.","",0)); }
 					if(offset==4)
 					{
 						when(r.local.getAnimation()).thenReturn(9471);
@@ -138,7 +138,7 @@ final class OfflineN3Scenario
 					PanelPreview.click(r.panel,"Copy report now");
 					String copied=NexScenarioPanelTest.named(r.panel,"nex-report-text",JTextArea.class).getText();
 					report.check("Default copy includes whole-capture health and HUD checks "+font,true,copied.contains("Health target=NEX;") && copied.contains("HUD checks=") && copied.contains("RuneLite client version:"));
-					report.check("Whole-copy exports provisional action timeline "+font,true,copied.contains("nex-fang-clock-1") && copied.contains("ACTION_SIGNAL") && copied.contains("DC_UPGRADED") && copied.contains("FOOD_SHARK") && copied.contains("PROVISIONAL_REQUIRES_CONTROLLED_CLIENT_CHECK"));
+					report.check("Whole-copy exports provisional action timeline "+font,true,copied.contains(com.ironpath.nex.NexActionTimeline.VERSION) && copied.contains("ACTION_SIGNAL") && copied.contains("DC_UPGRADED") && copied.contains("ENGINE_MESSAGE") && copied.contains("FOOD_SHARK") && copied.contains("PROVISIONAL_REQUIRES_CONTROLLED_CLIENT_CHECK"));
 					pages.setSelectedIndex(1); PanelPreview.click(r.panel,"Copy report now");
 					report.check("Copied evidence is independent of UI event page "+font,true,copied.equals(NexScenarioPanelTest.named(r.panel,"nex-report-text",JTextArea.class).getText()));
 					try { java.nio.file.Files.writeString(output.resolve("observation-report-"+font+".txt"),copied); } catch(Exception ex) { throw new IllegalStateException(ex); }

@@ -14,6 +14,13 @@
 
 ## Current delivery
 
+- **N3-ADVICE 0.32.1** follows one supplied 0.32.0 live report and a separate
+  native screenshot on open PR #57. Read docs/validation/nex-fang-action-followup.md.
+  Preserve resource-aware Fang reconciliation, compatible offence/gear grouping,
+  manta-ray typed +3 delay, exact ENGINE-only DC candidates, and frozen clock/
+  action model revisions. Raw captures stay outside Git. The source channel of
+  missing live DC messages is unproven; no mapping or full-plan promotion follows.
+
 - **N3-ADVICE 0.32.0** implements a provisional fixed-Fang equipment preview from
   integrated main `2018144` (PR #55). On 25 October the user explicitly authorized
   implementation before the controlled mapping check. Do not treat that as live

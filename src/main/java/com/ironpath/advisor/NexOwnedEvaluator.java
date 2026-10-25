@@ -77,6 +77,17 @@ public final class NexOwnedEvaluator
 		return new NexOwnedResult(summary,choices,prefs.nex,unlocks,summary.context,0,0,VERSION,
 			NexFangAdvice.evaluate(summary,account,prefs,this,current));
 	}
+	/** Frozen offence and equip-availability inputs for a compatible fixed-Fang sample. */
+	List<Object> fangGroupInputs(NexSummary.Sample sample)
+	{
+		var state=sample.state; Set<Integer> carriedAlternatives=new TreeSet<>();
+		if(state.inventory!=null)
+		{ state.inventory.forEach((id,n)->{ if(n>0 && melee.containsKey(id)) { carriedAlternatives.add(id); } }); }
+		// Match the inputs consumed by ordinary melee and the shared package validator.
+		// Incidental HP/Prayer, energy, dose counts and quiver polls cannot split this fixed-Fang sample.
+		return Arrays.asList(state.slots,state.realLevels,state.visibleLevels.get("ATTACK"),state.visibleLevels.get("STRENGTH"),
+			state.prayers,state.style,state.inventory!=null,Set.copyOf(carriedAlternatives),state.resources.getOrDefault("inventory-slots-used",-1));
+	}
 	/** Same complete-package search, restricted to the captured Fang and style. */
 	List<NexOwnedResult.Choice> fangChoices(NexSummary.Sample s,AccountSnapshot account,Preferences prefs,
 		java.util.function.BooleanSupplier current)
