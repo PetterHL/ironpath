@@ -79,7 +79,7 @@ final class OfflineLifecycleScenarios
 		report.check("Unknown energy changes carry an explicit gap", true, result.resources.gaps.stream().anyMatch(g -> g.contains("energy readings are unavailable")));
 		capture(r, output, "main", font, report);
 		onEdt(() -> {
-			PanelPreview.click(r.panel, "Compare with owned gear");
+			PanelPreview.click(r.panel, "Base-stat comparisons");
 			PanelPreview.combo(r.panel, "nex-owned-support-filter").setSelectedItem("Unavailable comparisons");
 			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("ranged");
 			report.check("Unknown ammo has visible scoped explanation", true, PanelPreview.text(r.panel).contains("No comparison available"));
@@ -261,7 +261,7 @@ final class OfflineLifecycleScenarios
 	{
 		var first = r.fight(20, 20, 60, true); r.settle();
 		onEdt(() -> {
-			PanelPreview.click(r.panel, "Compare with owned gear");
+			PanelPreview.click(r.panel, "Base-stat comparisons");
 			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("melee");
 			JComboBox<?> pairs = PanelPreview.combo(r.panel, "nex-owned-pair");
 			int bloodFury = -1;
@@ -291,7 +291,7 @@ final class OfflineLifecycleScenarios
 		onEdt(() -> {
 			PanelPreview.click(r.panel, "Back to encounter");
 			report.check("Returning shows the latest complete timing", true, PanelPreview.text(r.panel).contains("Last kill") && PanelPreview.text(r.panel).contains("24.0 s"));
-			PanelPreview.click(r.panel, "Compare with owned gear");
+			PanelPreview.click(r.panel, "Base-stat comparisons");
 			report.check("Reopening comparisons selects the latest kill", true, PanelPreview.text(r.panel).contains("Owned gear · kill #" + third.key));
 		});
 		capture(r, output, "latest-comparison", font, report);

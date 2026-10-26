@@ -1,5 +1,30 @@
 # Encounter-first UX
 
+Build 0.32.3 shows **No expected damage change** for an exact-zero Fang result.
+Single-item alternatives name the replaced item; all supported results show
+**Max hit before → after**. Small nonzero gains/losses must not round to a scalar
++0.00, and a zero interval endpoint has no positive sign. Keep numerical bounds
+and independent zero/negative alternatives intact. [Verification](validation/nex-fang-zero-display.md).
+
+Build 0.32.2 keeps **Fang equipment / Provisional · base stats** as the only
+automatic comparison card inside Compare setups. **Base-stat comparisons**
+opens the existing per-state theoretical DPS results, complete gear alternatives
+and optional declared planner. Retire the old homepage DPS highlight cards,
+More/Fewer comparisons and the Inspect wrapper. Keep Kill details alongside the
+explicit comparison action. Session counts are in Diagnostics; tracking and
+Clear session remain directly accessible. [Verification](validation/nex-sidebar-cleanup.md).
+Active capture shows **Tracking kill…** with recorded seconds and the observed
+phase underneath. The lightweight heartbeat advances only with captured ticks;
+it preserves current detail/editor/report views. An unobserved smoke start reads
+**Start unconfirmed**. Loading is reserved for actual arrival/reload verification.
+
+Build 0.32.0 added the Fang preview inside Compare
+setups, with a damage interval, included Fang count, fixed tempo, origin and
+selectable complete-package alternatives. Zero/negative alternatives remain
+selectable. Its Diagnostics action opens existing Diagnostics for exclusions and the
+conditional calculation basis; the one-copy report freezes all pairs.
+[Preview contract and pending live acceptance](validation/nex-fang-advice.md).
+
 Build **0.29.0** shows **Unverified** under Damage contribution until whole-kill
 coverage is established. Diagnostics keeps the scoped recorded numerator,
 denominator and hitsplat ratio; complete timing and independent gear/resource
@@ -7,8 +32,8 @@ results remain available. Export `nex-evidence-2` carries typed projectile sourc
 and bounded callback boundary counts/sums. [Contract](research/nex-damage-observation.md).
 
 
-Current presentation decisions: **19 October 2026, sidebar simplification / build 0.23.3**,
-retaining the complete PR #48 approved UI (0.23.2).
+Current presentation decisions: **26 October 2026, Fang-first cleanup / build 0.32.2**,
+retaining PR #48's section layout and the 0.23.3 sidebar simplification.
 [TASKS](../TASKS.md) is the sole backlog. This guidance supersedes earlier requests
 for scope/assumption paragraphs beside cards or in ordinary details. Historical
 validation records retain their original screenshots and acceptance boundaries.
@@ -45,7 +70,7 @@ Identity/world/reset/eviction guards discard unavailable evidence and stale acti
 
 Encounter shows the last complete duration and **Damage contribution**, optional
 matched mean/count, a compact confirmed/unconfirmed team/method strip, **Compare
-setups** cards, inspection actions and session controls. Incomplete attempts
+setups** Fang card, detail actions and session controls. Incomplete attempts
 stay separate; pending/no-comparison/no-positive states use one brief status.
 No forced focus/navigation or live combat coaching.
 
@@ -94,7 +119,7 @@ unchanged.
 | Per-kill apply | Apply to this kill |
 | Capture toggle | Kill tracking: On / Off; Turn on / off kill tracking |
 | Reset / counts | Clear session / Session stats |
-| Owned comparisons | Compare with owned gear |
+| Per-state theoretical offence | Base-stat comparisons |
 | Package detail / proposed option | Compare gear / Proposed gear setup |
 | Quiver / identical package | Selected quiver ammo / Same gear · no change |
 | Resource review / planner | Spec energy & Death Charge / Plan specs & gear |

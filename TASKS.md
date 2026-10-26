@@ -1,6 +1,6 @@
 # IronPath active work
 
-Updated **24 October 2026**. This is the **only active backlog and roadmap**.
+Updated **26 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized merging the complete 0.23.3 delivery into main and cleaning
 up covered PRs/branches on 19 October. This includes CTX1 #43, native UI1 #46,
@@ -9,7 +9,7 @@ Integration does not establish live-client or player acceptance.
 
 ## Current baseline and order
 
-Main baseline: **0.30.1**, `022e3e7`, including merged PR #56 and PR #54 (`9a2b592`),
+Main baseline: **0.31.0**, `2018144`, including merged PR #55, PR #56 and PR #54 (`9a2b592`),
 PR #50 (`289f371`), PR #51 (`43d20a1`) and PR #53 (`1fe77cb`) above the complete 0.23.3 lineage.
 Merge ancestry preserves all deliveries. Covered PRs/branches are retired only
 after their heads are verified as ancestors of main; no unique work is discarded.
@@ -24,8 +24,8 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Integrated: issue [#52](https://github.com/PetterHL/ironpath/issues/52), PR [#53](https://github.com/PetterHL/ironpath/pull/53) | **Nex damage coverage / projectile source evidence (0.29.0)** | One live kill confirms object reuse (487/513 callbacks), retains all 171 own impacts and matches per-target damage minus healing to 5,400 HP. [Evidence and limits](docs/validation/nex-damage-observation.md#live-one-copy-check--23-october-2026). Projectile/HUD attribution, resource semantics and broader lifecycle acceptance remain open |
 | Integrated: [PR #54](https://github.com/PetterHL/ironpath/pull/54) | **N3 evidence validation (0.30.0)** | Full-cap clock correction, diagnostic repeat-source counters and the 24 October Nex delivery decision. No automatic recommendation yet |
 | Integrated: [PR #56](https://github.com/PetterHL/ironpath/pull/56) | **Karambwan potion cooldown (0.30.1)** | Reject potions one/two ticks after karambwan; retain the three-tick boundary and same-tick combos. [Verification](docs/validation/karambwan-potion-cooldown.md) |
-| For review, 0.31.0 | **N3-ACTION: action evidence and attack clock** | One implementation PR: bounded Fang attack state, food/DC messages, consumer-ready timeline and controlled mapping check |
-| First product milestone, after supported mappings are validated | **N3-ADVICE: scoped automatic Nex comparison** | Ordinary Fang equipment changes at fixed weapon/style/tempo, using the same supported attack sample and per-result uncertainty |
+| Integrated, 0.31.0 / PR #55 | **N3-ACTION: action evidence and attack clock** | Bounded Fang state, food/DC messages and frozen timeline; controlled client mapping check remains pending |
+| PR #57, 0.32.2 follow-up | **N3-ADVICE: provisional automatic Fang preview** | 0.32.1 corrects resources/grouping and messages after one supplied 0.32.0 report. 0.32.2 retires duplicate homepage DPS cards and keeps the older calculations behind Base-stat comparisons before the next client test. Mapping/window/base-stat assumptions and product acceptance remain open |
 | After the first useful comparison | **Broader N3 automatic recommendations** | Ranged attribution and finite spec/DC/supply plans remain gated; solve dependencies as needed for each added output |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
@@ -109,25 +109,57 @@ diagnostics project or silently label it confirmed.
 
 ### N3-ADVICE — First useful automatic result
 
+**0.32.0 implementation for review**, from integrated main `2018144`. The user
+explicitly requested proceeding with N3-ADVICE on 25 October despite the pending
+controlled check. This authorizes the provisional implementation below, without
+promoting any mapping or declaring product acceptance. [Contract and verification](docs/validation/nex-fang-advice.md).
+
+The supplied client report motivates the **0.32.1** [reconciliation/message
+follow-up](docs/validation/nex-fang-action-followup.md) on the same open PR #57.
+It accepts one bounded conditional export/calculation path and visible client
+card, while controlled mapping/window acceptance remains unchecked.
+
+The user's 26 October cleanup request adds **0.32.2** before the next test:
+Fang-first main comparison, explicit Base-stat comparisons, session counts in
+Diagnostics, a separately frozen Fang detail selection, and Tracking kill with
+live recorded time/phase after the user's status follow-up. [Cleanup and checks](docs/validation/nex-sidebar-cleanup.md).
+
+The [matched 0.32.2 client check](docs/validation/nex-fang-live-0322.md) confirms
+the active status/time/phase, grouped two-attack sample, complete export and
+displayed Avernic bounds for one 294.6-second kill. Only 2 of 20 provisional
+inferences pass current context support. The next scoped review is ordinary/
+special-window coverage and the missing typed DC message source, using this
+existing evidence; do not admit UNKNOWN windows or require another full kill
+before analysis. Controlled mapping/window and useful-coverage acceptance remain open.
+
+**0.32.3** [clarifies scalar zero comparisons](docs/validation/nex-fang-zero-display.md)
+after a separate three-attack Bandos screenshot: exact-zero wording, the replaced
+item and max hit before/after. Small signed changes and zero interval endpoints
+remain distinct. This changes presentation, not window support or acceptance.
+
 Follow N3-ACTION with a post-kill comparison in the existing Compare setups panel:
 
-- [ ] Automatically construct actual versus relevant owned/hypothetical equipment
+- [x] Automatically construct actual versus relevant owned/hypothetical equipment
   packages for supported ordinary Fang attacks, holding weapon/style/tempo and
   compatible observed conditions fixed. Reuse N2 search and existing arithmetic;
   do not build a second calculator or require per-kill declaration forms.
-- [ ] Compare expected damage for the **same supported attack sample**. Include
+- [x] Compare expected damage for the **same provisional attack sample**. Include
   zero-damage/missed attacks; selection must not depend on damage landing.
   Show the number of included attacks and exclusions/ambiguity in Details or the
   report. Do not extrapolate the subset to whole-kill damage or changed rotations.
-- [ ] Require valid target/phase/overhead and relevant input support. For uncertain
+- [x] Gate target/phase/overhead and relevant package inputs for the provisional
+  base-stat ordinary-damage preview; unknown windows and unsupported forms stay out. For uncertain
   HP, evaluate the paired comparison over the same feasible states, including
   mechanic breakpoints; endpoints alone need a proof of sufficiency. Preserve
   negative gains and support gaps. Unresolved resource inputs block only results
   that actually depend on them.
-- [ ] Deliver an end-to-end frozen replay from captured action evidence to one
+- [x] Deliver an end-to-end frozen replay from captured action evidence to one
   correctly scoped equipment result, plus unknown/unsupported/ambiguous and
-  zero-hit cases. Validate supported Nex windows against a short captured segment.
-  Show concise results in the existing panel; provenance belongs in Diagnostics.
+  zero-hit cases. Show concise results in the existing panel; provenance belongs
+  in Diagnostics and whole-capture schema-5 JSON.
+- [ ] Execute the controlled mappings check and validate supported Nex windows
+  against a short captured segment. Base target-stat assumptions and unknown
+  impact-time HP remain explicit; no validated automatic recommendation is claimed.
 
 **Product acceptance:** a supported Nex segment automatically produces a useful
 Fang equipment comparison with coverage and defensible uncertainty. An unsupported

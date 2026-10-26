@@ -18,11 +18,11 @@ public final class NexEvaluation
 	{
 		this.account=java.util.Objects.requireNonNull(account); this.preferences=java.util.Objects.requireNonNull(preferences);
 		this.catalog=java.util.Objects.requireNonNull(catalog);
-		modelRevision=NexOwnedEvaluator.VERSION+"/"+MeleeModel.VERSION+"/"+RangedModel.VERSION+"/"+catalog.version+"/"+com.ironpath.nex.NexContext.VERSION;
+		modelRevision=NexOwnedEvaluator.VERSION+"/"+MeleeModel.VERSION+"/"+RangedModel.VERSION+"/"+catalog.version+"/"+com.ironpath.nex.NexContext.VERSION+"/"+NexFangAdvice.VERSION+"/"+com.ironpath.nex.NexActionTimeline.VERSION+"/"+com.ironpath.nex.NexActions.VERSION;
 	}
 	public NexOwnedResult evaluate(NexRecord record,java.util.function.BooleanSupplier current)
 	{
 		NexOwnedResult arithmetic=new NexOwnedEvaluator(catalog).evaluate(record.summary,account,preferences,current);
-		return new NexOwnedResult(record.summary,arithmetic.choices,preferences.nex,arithmetic.scenarioUnlocks,record.context,record.revision,revision,modelRevision);
+		return new NexOwnedResult(record.summary,arithmetic.choices,preferences.nex,arithmetic.scenarioUnlocks,record.context,record.revision,revision,modelRevision,arithmetic.advice);
 	}
 }

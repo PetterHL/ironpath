@@ -53,23 +53,10 @@ final class NexPresentation
 		{ changed.put("quiver projectile",pair.afterSetup.loadedAmmo>0?pair.afterSetup.loadedAmmo:pair.afterSetup.slots.getOrDefault("ammo",-1)); }
 		return Collections.unmodifiableMap(changed);
 	}
-	static String scope(NexOwnedResult.Choice choice)
-	{
-		String phase=choice.actual.phase.toLowerCase(Locale.ROOT).replace('_',' ');
-		return Character.toUpperCase(choice.actual.role.charAt(0))+choice.actual.role.substring(1)+" · "+phase;
-	}
 	static String origin(NexOwnedResult.Choice choice,ComparisonResult pair)
 	{
 		if(choice.bankPreparation) { return "Bank gear"; }
 		return changedItems(pair).values().stream().filter(id->id>0).allMatch(choice.actual.state.slots::containsValue)?"Equipped gear":"Inventory gear";
-	}
-	static String reason(ComparisonResult pair)
-	{
-		boolean hit=pair.after.maxHit>pair.before.maxHit, accuracy=pair.available(ComparisonResult.Metric.HIT_CHANCE) && pair.after.hitChance>pair.before.hitChance;
-		if(hit && accuracy) { return "Higher max hit and accuracy."; }
-		if(hit) { return "Higher max hit."; }
-		if(accuracy) { return "Higher accuracy."; }
-		return "More damage in this setup.";
 	}
 	static String contextValue(com.ironpath.nex.NexContext context)
 	{

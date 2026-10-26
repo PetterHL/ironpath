@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /** Bounded deterministic Nex evidence machine. The adapter supplies reviewed signals and spawn keys. */
 public final class NexCapture
 {
-	public static final String VERSION="nex-public-10";
+	public static final String VERSION="nex-public-11";
 	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, MAX_SIGNALS=32,
 		END_GRACE=5, END_WAIT=20;
 	private final Consumer<NexSummary> sink;
@@ -42,6 +42,18 @@ public final class NexCapture
 	public NexCapture(Consumer<NexSummary> sink) { this.sink=sink; }
 	public boolean active() { return method!=null; }
 	public long key() { return key; }
+	/** Client-thread scalar snapshot for the recording indicator, without exposing the live trace. */
+	public Progress progress()
+	{ return active()?new Progress(key,Math.max(0,(death>=0?death:last)-start),phase,fullStart):null; }
+	public static final class Progress
+	{
+		public final long key;
+		public final int elapsedTicks;
+		public final String phase;
+		public final boolean smokeObserved;
+		private Progress(long key,int elapsedTicks,String phase,boolean smokeObserved)
+		{ this.key=key; this.elapsedTicks=elapsedTicks; this.phase=phase; this.smokeObserved=smokeObserved; }
+	}
 	/** A true start flag denotes an actually observed smoke announcement, never arena entry. */
 	public void start(int tick, boolean smokeObserved, NexMethod method, String roster)
 	{ start(tick,smokeObserved,method,roster,NexContext.PILOT); }

@@ -26,6 +26,8 @@ public final class NexObservationReview
 	public final String export;
 	public final NexActionTimeline actions;
 	public NexObservationReview(NexSummary summary)
+	{ this(summary,com.ironpath.advisor.NexFangAdvice.unavailable(summary)); }
+	public NexObservationReview(NexSummary summary,com.ironpath.advisor.NexFangAdvice advice)
 	{
 		Map<NexObservations.Launch,Reconciliation> settled=new LinkedHashMap<>();
 		for(var launch:summary.observations.launches)
@@ -86,7 +88,7 @@ public final class NexObservationReview
 		window=new NexObservationWindow(summary,this);
 		overview=NexObservationSummary.from(summary);
 		actions=new NexActionTimeline(summary);
-		export=NexObservationExport.from(summary,this);
+		export=NexObservationExport.from(summary,this,advice);
 	}
 	/** Same target/phase/package/current levels, not worn duration or impact-time equipment. */
 	public static boolean sameState(NexSummary.Sample a,NexSummary.Sample b)

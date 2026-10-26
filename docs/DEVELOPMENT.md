@@ -84,6 +84,10 @@ old assertion without fresh evidence. Raw user logs remain outside version contr
 
 ## Verification by responsibility
 
+- N3-ADVICE 0.32.0: [fixed-Fang preview contract and verification](validation/nex-fang-advice.md).
+  The existing `nex-n3-plan` scenario now emits full-height and 225 × 600
+  `fang-advice` PNGs at fonts 12/20, alongside the same frozen observation report.
+  Its JSON includes all alternatives and action references, regardless of selection.
 - Retained combat arithmetic: original melee/ranged/magic cases and oracle corpora.
 - Refactors: affected source/read/observer/comparison tests plus normal test/build.
 - Privacy: unknown state, profile/character changes, stale workers/images/actions,

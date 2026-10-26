@@ -1,5 +1,22 @@
 # Validation records
 
+26 October 2026: **0.32.3 exact-zero Fang display** —
+[three-attack Bandos reproduction, explicit zero wording and before/after context](nex-fang-zero-display.md).
+
+26 October 2026: **0.32.2 matched client report and screenshot** —
+[active status confirmed, grouped sample and Avernic range verified; coverage/DC gaps remain](nex-fang-live-0322.md).
+
+26 October 2026: **0.32.2 sidebar cleanup before client testing** —
+[Fang-first main view, explicit base-stat comparisons and retained guards](nex-sidebar-cleanup.md).
+
+25 October 2026: **0.32.1 Fang client-test follow-up** —
+[supplied-report findings, scoped corrections and remaining checks](nex-fang-action-followup.md).
+
+25 October 2026: **0.32.0 N3-ADVICE, provisional implementation for review** —
+[same-sample Fang equipment preview and paired HP bounds](nex-fang-advice.md).
+The user authorized early implementation; controlled mappings and captured
+Nex-window acceptance remain pending. No validated recommendation is claimed.
+
 24 October 2026: **0.31.0 N3-ACTION, for review** —
 [action/clock contract, automated verification and pending controlled procedure](nex-action-evidence.md).
 PR #54 is integrated in main `9a2b592`; mappings remain provisional and no automatic

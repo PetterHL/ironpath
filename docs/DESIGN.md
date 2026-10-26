@@ -8,6 +8,21 @@ preserves previous decisions and evidence.
 
 ## Product contract
 
+Build 0.32.2 makes the worker-built provisional fixed-Fang equipment preview the
+sole automatic main comparison. Base-stat comparisons opens the existing
+per-state theoretical offence and optional declared planner. The former DPS
+highlight cards and More/Fewer comparisons are retired; session counts live in
+Diagnostics. [Cleanup](validation/nex-sidebar-cleanup.md).
+Active capture has an immutable scalar time/phase heartbeat; its lightweight
+Swing update preserves existing views. Full status publication follows account
+reads and only painted states enter the status cache.
+
+Build 0.32.0 added the preview through
+the existing frozen `NexOwnedResult`, Compare setups and one-copy report. Paired
+damage bounds use identical action samples and all positive pre-impact HP;
+ordinary base-stat/window assumptions remain explicit and unvalidated.
+[Contract](validation/nex-fang-advice.md). Full finite-plan gates are unchanged.
+
 For a selected boss/raid and method, help the player use owned equipment, food,
 potions and spells better; identify relevant new upgrades; explain their effect
 on that play. Observe automatically, remember explicit choices, and permit focused
@@ -44,11 +59,12 @@ owned gear. Missing support blocks dependent claims. Explicit supported pairwise
 comparisons remain useful even when a broader optimum is unknown. Never discard
 an item silently to manufacture a weaker baseline.
 
-## Current presentation (19 October 2026)
+## Current presentation (26 October 2026)
 
 PR #48’s approved follow-up uses one native Encounter sidebar: Last kill stays
-above independent collapsible Compare setups (open), Team & method, Gear & method,
-Gear & unlocks and Diagnostics (initially closed, Diagnostics last). Persistent
+above independent collapsible Compare setups (open), Team & method and Diagnostics
+(initially closed, Diagnostics last). The former Gear & method / Gear & unlocks
+sections remain removed. Persistent
 headers/editor/report subtrees retain expansion, draft, selection and scroll. A
 non-private in-memory session scope distinguishes verified travel from hard
 identity/world/reset boundaries; suspended evidence stays hidden and exports clear.

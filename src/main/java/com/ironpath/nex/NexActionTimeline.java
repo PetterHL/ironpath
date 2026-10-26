@@ -6,7 +6,7 @@ import static com.ironpath.nex.NexActions.Kind.*;
 /** Worker-only, provisional Fang clock. Availability never creates an attack or missed opportunity. */
 public final class NexActionTimeline
 {
-	public static final String VERSION="nex-fang-clock-1";
+	public static final String VERSION="nex-fang-clock-2";
 	public enum Confidence { OBSERVED_SIGNAL, PROVISIONAL_INFERENCE, EXCLUDED, AMBIGUOUS }
 	public enum Reason { MESSAGE, NO_ATTACK_SIGNAL, CONTINUING_ANIMATION, ANIMATION_CALLBACK, FRAME_RESTART,
 		UNSUPPORTED_WEAPON_STYLE, SPECIAL_SELECTED, NO_TARGET, MOVING, COOLDOWN, REPEATED_SIGNAL,
@@ -62,7 +62,7 @@ public final class NexActionTimeline
 			{
 				reason=Reason.MESSAGE;
 				if(s.kind==FOOD_UNKNOWN) { ready=null; }
-				else if(ready!=null && s.tick<ready) { ready+=s.kind==FOOD_SHARK?3:2; }
+				else if(ready!=null && s.tick<ready) { ready+=s.kind==FOOD_KARAMBWAN?2:3; }
 			}
 			else if(s.kind==DC_NORMAL || s.kind==DC_UPGRADED) { reason=Reason.MESSAGE; }
 			else
@@ -138,7 +138,7 @@ public final class NexActionTimeline
 		return SampleGap.MAPPING_UNVALIDATED;
 	}
 
-	private static boolean food(NexActions.Kind k) { return k==FOOD_SHARK || k==FOOD_KARAMBWAN || k==FOOD_UNKNOWN; }
+	private static boolean food(NexActions.Kind k) { return k==FOOD_SHARK || k==FOOD_MANTA_RAY || k==FOOD_KARAMBWAN || k==FOOD_UNKNOWN; }
 	private static boolean fang(NexActions.Signal s) { return Set.of(26219,27246).contains(s.sample.state.slots.getOrDefault("weapon",-1)); }
 	private static boolean sameWeaponStyle(NexActions.Signal a,NexActions.Signal b)
 	{ return Objects.equals(a.sample.state.slots.get("weapon"),b.sample.state.slots.get("weapon")) && Objects.equals(a.sample.state.style,b.sample.state.style); }
@@ -147,6 +147,17 @@ public final class NexActionTimeline
 		var x=a.sample.state; var y=b.sample.state;
 		return Objects.equals(a.sample.target,b.sample.target) && a.sample.phase.equals(b.sample.phase) && a.sample.window.equals(b.sample.window)
 			&& a.sample.targetState.form==b.sample.targetState.form && x.slots.equals(y.slots) && Objects.equals(x.style,y.style)
-			&& x.visibleLevels.equals(y.visibleLevels) && x.realLevels.equals(y.realLevels) && x.prayers.equals(y.prayers) && x.specialSelected==y.specialSelected;
+			&& sameVisibleInputs(x.visibleLevels,y.visibleLevels) && x.realLevels.equals(y.realLevels) && x.prayers.equals(y.prayers) && x.specialSelected==y.specialSelected;
+	}
+	private static boolean sameVisibleInputs(Map<String,Integer> a,Map<String,Integer> b)
+	{
+		var x=new HashMap<>(a); var y=new HashMap<>(b);
+		// Known positive player HP / Prayer points do not enter ordinary Fang offence.
+		// Keep zero/unread transitions guarded, and compare active prayer flags separately.
+		for(String resource:List.of("HITPOINTS","PRAYER"))
+		{
+			if(a.getOrDefault(resource,0)>0 && b.getOrDefault(resource,0)>0) { x.remove(resource); y.remove(resource); }
+		}
+		return x.equals(y);
 	}
 }

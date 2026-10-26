@@ -66,7 +66,8 @@ public class IronpathPlugin extends Plugin
 	NexObserver nex;
 	private long lastNexRevision;
 	private boolean lastCaptureActive;
-	private NexPanel.TrackingStatus lastTrackingStatus;
+	private volatile NexPanel.TrackingStatus lastTrackingStatus;
+	private volatile com.ironpath.nex.NexCapture.Progress latestTrackingProgress;
 	volatile com.ironpath.advisor.NexOwnedResult ownedResult;
 	private volatile long ownedTicket;
 	private final java.util.Map<Long,com.ironpath.nex.NexRecord> pendingOwned=new java.util.concurrent.ConcurrentHashMap<>();
@@ -82,6 +83,7 @@ public class IronpathPlugin extends Plugin
 	protected void startUp()
 	{
 		clearOwned();
+		lastTrackingStatus=null; latestTrackingProgress=null;
 		running = true;
 		long startup = ++lifecycle;
 		session.clear();
@@ -121,6 +123,7 @@ public class IronpathPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		latestTrackingProgress=null;
 		clearOwned();
 		running = false;
 		++lifecycle;
@@ -210,6 +213,7 @@ public class IronpathPlugin extends Plugin
 
 	private void clearLive(String reason)
 	{
+		lastTrackingStatus=null; latestTrackingProgress=null;
 		clearOwned();
 		session.clear(); // Immediate token invalidation even if a profile event arrives off-thread.
 		render(reason, null);
@@ -258,13 +262,17 @@ public class IronpathPlugin extends Plugin
 		if (nexReady()) { nex.method(session.preferences().nex); nex.defaults(session.preferences().nexContext); nex.tick(); }
 		boolean activeChanged=lastCaptureActive!=nex.capture.active();
 		boolean statusChanged=lastTrackingStatus!=trackingStatus(session.snapshot());
-		if (lastNexRevision!=nexSession.revision() || activeChanged || statusChanged)
+		boolean refresh=lastNexRevision!=nexSession.revision() || activeChanged || statusChanged;
+		if (refresh)
 		{
 			lastNexRevision=nexSession.revision();
 			lastCaptureActive=nex.capture.active();
-			if (!lastCaptureActive || activeChanged || statusChanged) { render("Nex session updated locally.",session.snapshot()); }
 		}
-		if (!dirty) { return; }
+		if (!dirty)
+		{
+			if(refresh && (!lastCaptureActive || activeChanged || statusChanged)) { render("Nex session updated locally.",session.snapshot()); }
+			publishTrackingProgress(); return;
+		}
 		long token = session.generation();
 		AccountSnapshot previous = session.snapshot();
 		Observation<Set<Integer>> bank = previous == null ? Observation.unknown() : previous.bank;
@@ -279,7 +287,21 @@ public class IronpathPlugin extends Plugin
 		AccountSnapshot snapshot = reader.read(bank, bankQuantities);
 		if (!session.publish(token, identity(), snapshot)) { return; }
 		dirty = false;
-		if(nex==null || !nex.capture.active()) { render("Observed locally.", snapshot); }
+		// Publish the full status after the coalesced account read. Publishing before it
+		// invalidated the queued ACTIVE view, leaving the prior loading label on screen.
+		if(nex==null || !nex.capture.active() || activeChanged || statusChanged) { render("Observed locally.", snapshot); }
+		publishTrackingProgress();
+	}
+	private void publishTrackingProgress()
+	{
+		var progress=nex==null?null:nex.capture.progress(); latestTrackingProgress=progress;
+		if(progress==null) { return; }
+		long token=session.generation(), revision=nexSession.revision(); String expectedIdentity=session.identity();
+		SwingUtilities.invokeLater(()->{
+			if(!running || panel==null || latestTrackingProgress!=progress || !session.accepts(token,expectedIdentity)
+				|| nexSession.revision()!=revision || nexSession.suspended()) { return; }
+			panel.updateTrackingProgress(progress);
+		});
 	}
 
 	private void clearUnavailable(String message)
@@ -389,7 +411,8 @@ public class IronpathPlugin extends Plugin
 		String expectedIdentity=session.identity(); Preferences preferences=session.preferences();
 		String storage=session.storageStatus(); var stats=nexSession.stats();
 		boolean enabled=nex!=null && nex.enabled(), active=nex!=null && nex.capture.active();
-		NexPanel.TrackingStatus tracking=trackingStatus(snapshot); lastTrackingStatus=tracking;
+		var progress=active && client.isClientThread()?nex.capture.progress():null;
+		NexPanel.TrackingStatus tracking=trackingStatus(snapshot);
 		var owned=ownedResult;
 		NexPanel.Actions actions=snapshot==null || !session.preferencesLoaded()?null:new NexPanel.Actions()
 		{
@@ -430,7 +453,8 @@ public class IronpathPlugin extends Plugin
 		SwingUtilities.invokeLater(()->{
 			if(!running || panel==null || !session.currentView(token,revision) || session.snapshot()!=snapshot || nexSession.revision()!=nexRevision
 				|| (nex!=null && nex.capture.active())!=active) { return; }
-			panel.render(message,snapshot,preferences,catalog,stats,enabled,actions,storage,owned,active,tracking);
+			panel.render(message,snapshot,preferences,catalog,stats,enabled,actions,storage,owned,active,tracking,progress);
+			lastTrackingStatus=tracking;
 		});
 	}
 	private NexPanel.TrackingStatus trackingStatus(AccountSnapshot snapshot)
@@ -446,8 +470,8 @@ public class IronpathPlugin extends Plugin
 		if(nexSession.suspended()) { return nexSession.awaitingArena()?NexPanel.TrackingStatus.LOADING:NexPanel.TrackingStatus.BANK; }
 		if(snapshot==null) { return NexPanel.TrackingStatus.ACCOUNT; }
 		if(!session.preferencesLoaded()) { return NexPanel.TrackingStatus.SETTINGS_LOADING; }
-		if(!session.writable()) { return NexPanel.TrackingStatus.SETTINGS_UNAVAILABLE; }
 		if(nex!=null && nex.capture.active()) { return NexPanel.TrackingStatus.ACTIVE; }
+		if(!session.writable()) { return NexPanel.TrackingStatus.SETTINGS_UNAVAILABLE; }
 		return nex!=null && nex.inArena()?NexPanel.TrackingStatus.READY:NexPanel.TrackingStatus.OUTSIDE;
 	}
 	private void clearOwned()

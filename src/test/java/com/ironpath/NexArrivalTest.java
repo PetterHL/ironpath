@@ -55,4 +55,44 @@ public class NexArrivalTest
 			r.tick(); r.settle(); status(r,"Settings unavailable · editing disabled");
 		}
 	}
+	@Test public void delayedPaintingAndDirtyAccountReadsCannotLeaveTheRecordingStatusBehind() throws Exception
+	{
+		for(int font:java.util.List.of(12,20))
+		try(var r=new OfflinePluginReplay(font))
+		{
+			var blocked=new java.util.concurrent.CountDownLatch(1);
+			var release=new java.util.concurrent.CountDownLatch(1);
+			SwingUtilities.invokeLater(()->{
+				blocked.countDown();
+				try { if(!release.await(10,java.util.concurrent.TimeUnit.SECONDS)) { throw new AssertionError("Client replay did not release EDT"); } }
+				catch(InterruptedException ex) { Thread.currentThread().interrupt(); throw new AssertionError(ex); }
+			});
+			try
+			{
+				assertTrue(blocked.await(10,java.util.concurrent.TimeUnit.SECONDS));
+				r.barrier(3); r.overhead("Fill my soul with smoke!");
+				for(int i=0;i<2;i++)
+				{
+					r.plugin.onItemContainerChanged(new ItemContainerChanged(net.runelite.api.gameval.InventoryID.WORN,r.client.getItemContainer(net.runelite.api.gameval.InventoryID.WORN)));
+					r.tick();
+				}
+			}
+			finally { release.countDown(); }
+			r.edt(); status(r,"Tracking kill…");
+			final JTextArea[] progress={null};
+			SwingUtilities.invokeAndWait(()->{
+				progress[0]=NexScenarioPanelTest.named(r.panel,"nex-tracking-progress",JTextArea.class);
+				assertEquals("1.2 s · Smoke",progress[0].getText());
+			});
+			r.tick(); r.edt();
+			SwingUtilities.invokeAndWait(()->{
+				assertSame("A heartbeat must preserve the existing view",progress[0],NexScenarioPanelTest.named(r.panel,"nex-tracking-progress",JTextArea.class));
+				assertEquals("1.8 s · Smoke",progress[0].getText());
+			});
+			r.overhead("Darken my shadow!"); r.tick(); r.edt();
+			SwingUtilities.invokeAndWait(()->assertEquals("2.4 s · Shadow",progress[0].getText()));
+			r.loading(); r.edt(); status(r,"Loading encounter…");
+			SwingUtilities.invokeAndWait(()->assertFalse(com.ironpath.dev.PanelPreview.children(r.panel).stream().anyMatch(c->"nex-tracking-progress".equals(c.getName()))));
+		}
+	}
 }

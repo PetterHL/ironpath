@@ -1,5 +1,16 @@
 # Evidence and research index
 
+25 October: [Fang client-test follow-up](validation/nex-fang-action-followup.md)
+records the input-comparison defect, exact manta-ray class, public ENGINE message
+contract and the unproven source of missing live DC messages. Source pins and
+projection limits are explicit; mappings remain provisional.
+
+25 October: [Provisional N3-ADVICE](validation/nex-fang-advice.md) connects frozen
+Fang action candidates to the existing complete-package search and discrete
+damage kernels. All-positive-HP paired bounds are independently enumerated;
+existing catalogue/source pins are reused. The user authorized early implementation,
+while mapping/window/stat agreement and product acceptance remain pending.
+
 24 October: [Nex action evidence and delivery decision](research/nex-action-evidence.md)
 records pinned attack-timer, food, Death Charge and combat-comparison patterns,
 including rejected ownership/HP shortcuts. Nex remains the pilot. TASKS.md

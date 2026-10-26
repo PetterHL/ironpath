@@ -3,7 +3,7 @@ package com.ironpath;
 import com.google.gson.Gson;
 import com.ironpath.advisor.*;
 import com.ironpath.dev.PanelPreview;
-import com.ironpath.nex.NexSession;
+import com.ironpath.nex.*;
 import com.ironpath.preferences.*;
 import java.awt.image.BufferedImage;
 import java.security.MessageDigest;
@@ -46,10 +46,16 @@ public class NexSpritesTest
 		doAnswer(call->{ ((Runnable)call.getArgument(0)).run(); return null; }).when(clientThread).invokeLater(any(Runnable.class));
 		var delayed=new AsyncBufferedImage(clientThread,36,32,BufferedImage.TYPE_INT_ARGB);
 		when(items.getImage(anyInt())).thenAnswer(call->new AsyncBufferedImage(clientThread,36,32,BufferedImage.TYPE_INT_ARGB));
-		when(items.getImage(11212)).thenReturn(delayed);
+		when(items.getImage(6570)).thenReturn(delayed);
 		var catalog=KnowledgeCatalog.load(new Gson());
-		var sample=NexOwnedFixtures.sample("ranged",NexOwnedFixtures.state(NexOwnedFixtures.ranged(),Map.of(11212,200L)));
-		var summary=NexOwnedFixtures.summary(List.of(sample)); var account=NexOwnedFixtures.account(null);
+		var sample=new NexSummary.Sample(5,"SHADOW","FEAR_THE_SHADOW","NEX@test","melee",9471,
+			NexOwnedFixtures.state(NexOwnedFixtures.melee(),Map.of()),new NexTargetState(NexTargetState.Form.NEX,1,30));
+		var signals=List.of(
+			new NexActions.Signal(NexActions.Kind.ANIMATION,NexActions.Source.LOCAL_ANIMATION,5,150,1,9471,0,false,sample),
+			new NexActions.Signal(NexActions.Kind.SETTLED,NexActions.Source.GAME_TICK,5,150,2,9471,0,false,sample));
+		var summary=new NexSummary(1,0,100,100,100,0,com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE,"synthetic",NexMethod.ID,NexMethod.ID,
+			List.of(sample),Map.of(),Set.of(),null,List.of(),NexContext.UNKNOWN,null,NexObservations.EMPTY,new NexActions(signals,false));
+		var account=NexOwnedFixtures.account(null);
 		var result=new NexOwnedEvaluator(catalog).evaluate(summary,account,Preferences.EMPTY);
 		var session=new NexSession(); session.select("test",301); session.add(summary);
 		AtomicReference<JLabel> selected=new AtomicReference<>(); AtomicReference<NexPanel> rendered=new AtomicReference<>();
@@ -61,10 +67,12 @@ public class NexSpritesTest
 			};
 			currentActions.set(actions);
 			var panel=new NexPanel(items); rendered.set(panel); panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions,"",result);
-			var label=(JLabel)PanelPreview.children(panel).stream().filter(c->"nex-item-sprite-11212".equals(c.getName())).findFirst().orElseThrow();
-			selected.set(label); assertSame(delayed,((ImageIcon)label.getIcon()).getImage()); verify(items).getImage(11212);
+			for(int i=0;i<result.advice.rows.size();i++)
+			{ if(NexPresentation.changedItems(result.advice.rows.get(i).pair).equals(Map.of("cape",6570))) { PanelPreview.combo(panel,"nex-fang-alternative").setSelectedIndex(i); break; } }
+			var label=(JLabel)PanelPreview.children(panel).stream().filter(c->"nex-item-sprite-6570".equals(c.getName())).findFirst().orElseThrow();
+			selected.set(label); assertSame(delayed,((ImageIcon)label.getIcon()).getImage()); verify(items,atLeastOnce()).getImage(6570);
 		});
-		var graphics=delayed.createGraphics(); try { graphics.drawImage(OfflineSprites.read(11212),0,0,null); } finally { graphics.dispose(); }
+		var graphics=delayed.createGraphics(); try { graphics.drawImage(OfflineSprites.read(6570),0,0,null); } finally { graphics.dispose(); }
 		delayed.loaded();
 		var late=new AsyncBufferedImage(clientThread,36,32,BufferedImage.TYPE_INT_ARGB);
 		AtomicReference<JLabel> stale=new AtomicReference<>();
@@ -72,9 +80,9 @@ public class NexSpritesTest
 			JLabel label=selected.get(); BufferedImage painted=new BufferedImage(40,36,BufferedImage.TYPE_INT_ARGB);
 			var g=painted.createGraphics(); try { label.setSize(40,36); label.paint(g); } finally { g.dispose(); }
 			assertTrue("Production getImage/addTo paints recognizable nonempty art",visiblePixels(painted)>0);
-			var panel=rendered.get(); when(items.getImage(11212)).thenReturn(late);
+			var panel=rendered.get(); when(items.getImage(6570)).thenReturn(late);
 			panel.render("Account refreshed",account,Preferences.EMPTY,catalog,session.stats(),true,currentActions.get(),"",result);
-			JLabel pending=(JLabel)PanelPreview.children(panel).stream().filter(c->"nex-item-sprite-11212".equals(c.getName())).findFirst().orElseThrow(); stale.set(pending);
+			JLabel pending=(JLabel)PanelPreview.children(panel).stream().filter(c->"nex-item-sprite-6570".equals(c.getName())).findFirst().orElseThrow(); stale.set(pending);
 			Icon old=pending.getIcon();
 			panel.render("Identity changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"");
 			pending.setIcon(new ImageIcon(OfflineSprites.read(20997)));
@@ -82,7 +90,7 @@ public class NexSpritesTest
 			assertFalse("Cleared account has no item images",PanelPreview.children(panel).stream().anyMatch(c->c instanceof JLabel && ((JLabel)c).getIcon()!=null));
 		});
 		// Complete a genuinely pending production addTo callback after identity clearing.
-		var lateGraphics=late.createGraphics(); try { lateGraphics.drawImage(OfflineSprites.read(11212),0,0,null); } finally { lateGraphics.dispose(); }
+		var lateGraphics=late.createGraphics(); try { lateGraphics.drawImage(OfflineSprites.read(6570),0,0,null); } finally { lateGraphics.dispose(); }
 		late.loaded(); SwingUtilities.invokeAndWait(()->assertFalse(PanelPreview.children(rendered.get()).contains(stale.get())));
 	}
 	private static long visiblePixels(BufferedImage image)

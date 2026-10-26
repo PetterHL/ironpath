@@ -16,8 +16,10 @@ public final class NexObservationExport
 	private int baseCycle;
 	private NexObservationExport(NexSummary summary) { this.summary=summary; }
 	public static String from(NexSummary summary,NexObservationReview review)
-	{ return new NexObservationExport(summary).build(review).toString(); }
-	private JsonObject build(NexObservationReview review)
+	{ return from(summary,review,com.ironpath.advisor.NexFangAdvice.unavailable(summary)); }
+	public static String from(NexSummary summary,NexObservationReview review,com.ironpath.advisor.NexFangAdvice advice)
+	{ return new NexObservationExport(summary).build(review,advice).toString(); }
+	private JsonObject build(NexObservationReview review,com.ironpath.advisor.NexFangAdvice advice)
 	{
 		var o=summary.observations;
 		baseOrder=Long.MAX_VALUE;
@@ -56,9 +58,11 @@ public final class NexObservationExport
 		}
 		for(var h:o.health)
 		{ var e=event("HEALTH",h.tick,h.cycle,h.order,h.target); e.add("targetState",targetState(h.targetState)); events.add(e); }
+		int actionIndex=0;
 		for(var row:review.actions.entries)
 		{
 			var a=row.signal; var e=event("ACTION_SIGNAL",a.tick,a.cycle,a.order,a.sample.target);
+			e.addProperty("actionIndex",actionIndex++);
 			e.addProperty("kind",a.kind.name()); e.addProperty("source",a.source.name());
 			e.addProperty("sampleGap",row.sampleGap.name()); e.addProperty("confidence",row.confidence.name()); e.addProperty("reason",row.reason.name());
 			e.addProperty("frame",a.frame); e.addProperty("moving",a.moving); e.addProperty("preStart",a.tick<summary.startTick);
@@ -84,7 +88,8 @@ public final class NexObservationExport
 			}
 			retained.add(e);
 		}
-		JsonObject root=new JsonObject(); root.addProperty("schema","nex-evidence-4"); root.addProperty("kill","K1");
+		JsonObject root=new JsonObject(); root.addProperty("schema","nex-evidence-5"); root.addProperty("kill","K1");
+		root.add("fangAdvice",advice.json());
 		root.addProperty("timing","tick relative to measured start; cycle/order relative to first retained callback; samples have tick only");
 		root.addProperty("scope","All retained allowlisted observations; correlations remain unvalidated candidates. Zero impacts are observed zero damage, not inferred attacks. No legal-opportunity or proc inference; separately labeled provisional action-clock inferences follow.");
 		root.addProperty("measuredEndTick",summary.endTick-summary.startTick); root.addProperty("captureTruncated",o.truncated);
@@ -94,7 +99,7 @@ public final class NexObservationExport
 		JsonObject action=new JsonObject(); action.addProperty("model",NexActionTimeline.VERSION); action.addProperty("evidence",NexActions.VERSION);
 		action.addProperty("mappingStatus","PROVISIONAL_REQUIRES_CONTROLLED_CLIENT_CHECK");
 		action.addProperty("initialReadiness","UNKNOWN"); action.addProperty("truncated",review.actions.truncated);
-		action.addProperty("scope","Fang stab animation/cycle candidates only; 5-tick inferred clock, shark +3 and karambwan +2 delays. No message is not no consumption. Smoke never resets readiness. Availability is not an executed attack or missed opportunity. Unique temporal hit candidates are not ownership proof. No proc, expiry, finite stock or advice inferred.");
+		action.addProperty("scope","Fang stab animation/cycle candidates only; 5-tick inferred clock, shark/manta ray +3 and karambwan +2 delays. No message is not no consumption. Smoke never resets readiness. Availability is not an executed attack or missed opportunity. Unique temporal hit candidates are not ownership proof. No proc, expiry, finite stock or advice inferred.");
 		JsonArray actionImpacts=new JsonArray();
 		for(int i=0;i<review.actions.impacts.size();i++)
 		{

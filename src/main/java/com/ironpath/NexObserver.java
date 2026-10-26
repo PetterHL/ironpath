@@ -181,8 +181,15 @@ final class NexObserver
 	synchronized void chat(ChatMessageType type, String message)
 	{
 		if(!enabled || message==null || message.length()>512) { return; }
-		if(type!=ChatMessageType.NPC_SAY && type!=ChatMessageType.GAMEMESSAGE && type!=ChatMessageType.SPAM) { return; }
+		if(type!=ChatMessageType.NPC_SAY && type!=ChatMessageType.GAMEMESSAGE && type!=ChatMessageType.SPAM && type!=ChatMessageType.ENGINE) { return; }
 		String text=message.replaceAll("<[^>]+>","").trim();
+		if(type==ChatMessageType.ENGINE)
+		{
+			// Pinned public ENGINE contract is a game-engine message. Admit only exact DC success text.
+			var kind=NexActions.message(text);
+			if(kind==NexActions.Kind.DC_NORMAL || kind==NexActions.Kind.DC_UPGRADED) { action(kind,NexActions.Source.ENGINE_MESSAGE); }
+			return;
+		}
 		if(type==ChatMessageType.GAMEMESSAGE || type==ChatMessageType.SPAM)
 		{
 			var kind=NexActions.message(text);
