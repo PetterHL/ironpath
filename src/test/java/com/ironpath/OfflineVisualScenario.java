@@ -44,20 +44,14 @@ final class OfflineVisualScenario
 					report.check("Whole-kill contribution is unverified "+font,"Unverified",NexScenarioPanelTest.named(r.panel,"nex-share",JTextArea.class).getText());
 					PanelPreview.capture(r.panel,output.resolve("main-"+font+".png"),225,report);
 					concise(r,"Encounter",font,report);
-					for(var card:cards)
-					{
-						var metric=NexScenarioPanelTest.named(r.panel,"nex-card-metric-"+card.choiceIndex,JTextArea.class);
-						if(!PanelPreview.visible(metric)) { continue; }
-						var surface=NexScenarioPanelTest.named(r.panel,"nex-equipment-card-"+card.choiceIndex,JPanel.class);
-						var bounds=SwingUtilities.convertRectangle(metric,new java.awt.Rectangle(0,0,metric.getWidth(),metric.getHeight()),surface);
-						report.check("Centred card metric "+card.choiceIndex+" / "+font,true,Math.abs(bounds.getCenterX()-surface.getWidth()/2.0)<=2);
-					}
+					report.check("Main keeps theoretical percentages behind explicit action "+font,false,PanelPreview.text(r.panel).contains("DPS"));
 					PanelPreview.viewport(r.panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-duration","nex-share","nex-edit-context"),report);
 					PanelPreview.viewport(r.panel,output.resolve("secondary-collapsed-viewport-"+font+".png"),225,600,"nex-section-team",List.of("nex-section-team","nex-section-diagnostics"),report);
-					PanelPreview.click(r.panel,"More comparisons ("+(cards.size()-2)+")");
+					PanelPreview.click(r.panel,"Base-stat comparisons");
+					PanelPreview.combo(r.panel,"nex-owned-state").setSelectedIndex(2);
 					PanelPreview.capture(r.panel,output.resolve("expanded-"+font+".png"),225,report);
-					int third=cards.get(2).choiceIndex;
-					PanelPreview.viewport(r.panel,output.resolve("expanded-viewport-"+font+".png"),225,600,"nex-equipment-card-"+third,List.of("nex-card-metric-"+third,"nex-card-scope-"+third),report);
+					PanelPreview.viewport(r.panel,output.resolve("expanded-viewport-"+font+".png"),225,600,"nex-owned-state",List.of("nex-base-stat-gain","nex-owned-state","nex-owned-pair"),report);
+					PanelPreview.click(r.panel,"Back to encounter");
 					PanelPreview.click(r.panel,"Edit team & method");
 					preview(r,output,"team",font,report);
 					PanelPreview.closeSection(r.panel,"Team & method");
@@ -82,7 +76,7 @@ final class OfflineVisualScenario
 					report.check("Manual gear sections remain absent "+font,false,PanelPreview.children(r.panel).stream().anyMatch(c->"nex-section-gear".equals(c.getName()) || "nex-section-unlocks".equals(c.getName())));
 					report.check("Normal corrections omit timestamps/provenance "+font,false,PanelPreview.text(r.panel).contains("manual planning confirmation"));
 					report.check("Observed Rigour still wins over saved false correction "+font,com.ironpath.model.Truth.TRUE,com.ironpath.advisor.AccountFacts.planning(r.plugin.session.snapshot(),r.plugin.session.preferences(),"rigour"));
-					PanelPreview.click(r.panel,"Compare with owned gear"); PanelPreview.click(r.panel,"Plan specs & gear");
+					PanelPreview.click(r.panel,"Base-stat comparisons"); PanelPreview.click(r.panel,"Plan specs & gear");
 					NexScenarioPanelTest.fill(r.panel); NexScenarioPanelTest.named(r.panel,"n3-horizon",JTextField.class).setText("4000"); PanelPreview.click(r.panel,"Compare this plan");
 					report.check("Invalid window shows its actionable bound "+font,true,PanelPreview.text(r.panel).contains("Window length: enter a whole number from 1 to 3000"));
 					PanelPreview.capture(r.panel,output.resolve("invalid-window-"+font+".png"),225,report);

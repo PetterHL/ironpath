@@ -36,6 +36,8 @@ final class NexPanel extends PluginPanel
 	private final NexReport.Provenance provenance;
 	private NexSummary diagnosticSummary;
 	private NexOwnedResult diagnosticOwned, inspectedCalculation;
+	private NexOwnedResult diagnosticFangResult;
+	private int diagnosticFangSelection;
 	private com.ironpath.nex.NexRecord diagnosticRecord;
 	private NexSummary contextTarget;
 	private NexContextEditor contextEditor;
@@ -48,7 +50,7 @@ final class NexPanel extends PluginPanel
 	private NexScenarioPanel scenarioPanel;
 	private java.util.function.Consumer<Runnable> scenarioExecutor;
 	private boolean scenarioAllowed;
-	private boolean moreComparisons, sessionTools, calculationDetailsExpanded;
+	private boolean calculationDetailsExpanded;
 	private NexSummary adviceSource;
 	private int adviceSelection;
 	private NexSummary calculationDetailsSummary;
@@ -72,6 +74,8 @@ final class NexPanel extends PluginPanel
 	private CollapsibleSection compare,team,diagnostic;
 	private Long visibleScope;
 	private boolean editingDefaults;
+	private JTextArea trackingProgress;
+	private long trackingCapture=-1;
 
 	enum TrackingStatus
 	{
@@ -93,6 +97,8 @@ final class NexPanel extends PluginPanel
 		render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active,tracking);
 	}
 	void render(String status,AccountSnapshot account,Preferences prefs,KnowledgeCatalog catalog,NexSession.Stats stats,boolean enabled,Actions actions,String storage,NexOwnedResult owned,boolean active,TrackingStatus tracking)
+	{ render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active,tracking,null); }
+	void render(String status,AccountSnapshot account,Preferences prefs,KnowledgeCatalog catalog,NexSession.Stats stats,boolean enabled,Actions actions,String storage,NexOwnedResult owned,boolean active,TrackingStatus tracking,com.ironpath.nex.NexCapture.Progress progress)
 	{
 		if(!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
 		var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
@@ -177,6 +183,13 @@ final class NexPanel extends PluginPanel
 		summaryBody.setFont(getFont()); summaryBody.removeAll(); content=summaryBody;
 		PanelWidgets.centeredLabel(content,"Encounter · Nex",true,2,ColorScheme.TEXT_COLOR);
 		text(tracking.label); content.getComponent(content.getComponentCount()-1).setName("nex-tracking-status");
+		trackingProgress=null; trackingCapture=-1;
+		if(tracking==TrackingStatus.ACTIVE && active && progress!=null)
+		{
+			trackingCapture=progress.key;
+			trackingProgress=PanelWidgets.centeredLabel(content,progressLabel(progress),false,0,PanelWidgets.BENEFIT);
+			trackingProgress.setName("nex-tracking-progress");
+		}
 		if(available && !paused)
 		{
 			if(!active && stats.attempts==0 && stats.resetReason!=null) { text("Session cleared"); }
@@ -211,30 +224,13 @@ final class NexPanel extends PluginPanel
 				if(!coherent(stats.record(stats.last),owned)) { text("Recalculating…"); }
 				else
 				{
-					if(!owned.advice.rows.isEmpty()) { fangAdvice(owned,catalog,contextValid,redraw); }
-					List<NexPresentation.Card> cards=NexPresentation.cards(owned);
-					if(cards.isEmpty()) { text(owned.choices.stream().anyMatch(c->c.supported())?"No improvement found in supported setups.":"No comparison available"); }
-					JPanel further=ownedBody(); further.setVisible(moreComparisons);
-					for(int cardIndex=0;cardIndex<cards.size();cardIndex++)
-					{
-						var card=cards.get(cardIndex);
-						JPanel surface=PanelWidgets.card(cardIndex<2?content:further,"nex-equipment-card-"+card.choiceIndex);
-						equipmentCard(surface,card,catalog,contextValid,()->{ openOwned(owned,card.choiceIndex,card.pairIndex); redraw.run(); });
-					}
-					if(cards.size()>2)
-					{
-						button(content,moreComparisons?"Fewer comparisons":"More comparisons ("+(cards.size()-2)+")",()->{ if(contextValid.getAsBoolean()) { moreComparisons=!moreComparisons; redraw.run(); } }).setName("nex-more-comparisons");
-						content.add(further);
-					}
-					if(owned.advice.rows.isEmpty()) { fangAdvice(owned,catalog,contextValid,redraw); }
+					fangAdvice(owned,catalog,contextValid,redraw);
 				}
-				JPanel inspection=PanelWidgets.card(content,"nex-inspection-actions");
-				PanelWidgets.centeredLabel(inspection,"Inspect",true,0,PanelWidgets.MUTED);
-				JPanel links=new ActionLinks(); links.setFont(getFont()); inspection.add(links);
+				JPanel links=new ActionLinks(); links.setFont(getFont()); content.add(links);
 				if(coherent(stats.record(stats.last),owned))
 				{
-					JButton comparisons=button(links,"Comparisons",()->{ if(contextValid.getAsBoolean()) { openOwned(owned,0,0); redraw.run(); } });
-					comparisons.setName("nex-owned"); comparisons.setToolTipText("Compare with owned gear");
+					JButton comparisons=button(links,"Base-stat comparisons",()->{ if(contextValid.getAsBoolean()) { openOwned(owned,0,0); redraw.run(); } });
+					comparisons.setName("nex-owned");
 				}
 				JButton details=button(links,"Kill details",()->{
 					if(contextValid.getAsBoolean()) { openDetails(stats.last,owned!=null && owned.summary==stats.last?owned:null); redraw.run(); }
@@ -270,8 +266,6 @@ final class NexPanel extends PluginPanel
 			JPanel controls=new ActionLinks(); controls.setFont(getFont()); content.add(controls);
 			button(controls,enabled?"Kill tracking: On":"Kill tracking: Off",()->{ if(valid.getAsBoolean()) { actions.enable(!enabled); } }).setToolTipText(enabled?"Turn off kill tracking":"Turn on kill tracking");
 			button(controls,"Clear session",()->{ if(view==currentView && actions.current()) { actions.reset(); } }).setName("nex-reset");
-			button(controls,"Session stats",()->{ if(contextValid.getAsBoolean()) { sessionTools=!sessionTools; redraw.run(); } });
-			if(sessionTools && !paused) { text(stats.complete+" complete · "+stats.failed+" failed · "+stats.censored+" excluded"); }
 		}
 		content=diagnostic.body; clearBody(content,reportScroll);
 		if(diagnostic.expanded() && available && !paused)
@@ -283,6 +277,7 @@ final class NexPanel extends PluginPanel
 			if(diagnosticOwned!=null && !coherent(diagnosticRecord,diagnosticOwned)) { diagnosticOwned=null; }
 			selectDiagnosticDefault();
 		}
+		if(diagnosticFangResult!=diagnosticOwned) { diagnosticFangResult=null; }
 		NexReport.State state=paused?NexReport.State.PAUSED:account==null?NexReport.State.NO_ACCOUNT:!available?NexReport.State.NOT_READY:
 			stats.attempts==0 && stats.resetReason!=null?NexReport.State.RESET:diagnosticSummary==null?NexReport.State.NO_KILL:
 			diagnosticOwned==null && diagnosticSummary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE?NexReport.State.PENDING:NexReport.State.READY;
@@ -297,10 +292,23 @@ final class NexPanel extends PluginPanel
 	}
 	private static void clearBody(JPanel body,JComponent retained)
 	{ for(var c:body.getComponents()) { if(c!=retained) { body.remove(c); } } }
+	void updateTrackingProgress(com.ironpath.nex.NexCapture.Progress progress)
+	{
+		if(!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
+		if(trackingProgress==null || progress==null || trackingCapture!=progress.key) { return; }
+		String label=progressLabel(progress);
+		if(!label.equals(trackingProgress.getText())) { trackingProgress.setText(label); revalidate(); repaint(); }
+	}
+	private static String progressLabel(com.ironpath.nex.NexCapture.Progress progress)
+	{
+		String scope=!progress.smokeObserved?"Start unconfirmed":progress.phase.equals("UNKNOWN")?"Phase unknown":
+			progress.phase.substring(0,1)+progress.phase.substring(1).toLowerCase(Locale.ROOT);
+		return String.format(Locale.ROOT,"%.1f s · %s",progress.elapsedTicks*0.6,scope);
+	}
 	private void selectDiagnostics(NexSummary summary,NexOwnedResult result,int choice,int pair,boolean pending)
 	{
 		boolean changed=diagnosticSummary!=summary || diagnosticOwned!=result || diagnosticChoice!=choice || diagnosticPair!=pair;
-		if(changed) { clearReport(); }
+		if(changed) { clearReport(); diagnosticFangResult=null; }
 		if(diagnosticSummary!=summary) { diagnosticRecord=null; }
 		diagnosticSummary=summary; diagnosticOwned=result; diagnosticChoice=choice; diagnosticPair=pair; diagnosticDefaultPending=pending;
 		if(changed && updateDiagnostics!=null) { SwingUtilities.invokeLater(updateDiagnostics); }
@@ -328,24 +336,6 @@ final class NexPanel extends PluginPanel
 		else { PanelWidgets.centeredLabel(metric,caption,false,0,PanelWidgets.MUTED); }
 		metric.getAccessibleContext().setAccessibleName(caption+": "+value);
 		parent.add(metric);
-	}
-	private void equipmentCard(JPanel surface,NexPresentation.Card card,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid,Runnable inspect)
-	{
-		var choice=card.choice; var changed=NexPresentation.changedItems(card.pair);
-		String title=changed.size()==1?name(changed.values().iterator().next(),catalog):changed.size()+"-item package";
-		if(changed.size()==1) { item(surface,changed.values().iterator().next(),title,valid); }
-		else
-		{
-			JPanel sprites=new ActionLinks(); sprites.setFont(getFont());
-			changed.values().stream().filter(id->id>0).distinct().limit(3).forEach(id->sprites.add(sprite(id,valid)));
-			surface.add(sprites); PanelWidgets.centeredLabel(surface,title,true,0,ColorScheme.TEXT_COLOR);
-		}
-		PanelWidgets.centeredLabel(surface,NexOwnedResult.headline(card.pair).replace("theoretical DPS","DPS"),true,5,PanelWidgets.BENEFIT).setName("nex-card-metric-"+card.choiceIndex);
-		PanelWidgets.centeredLabel(surface,"Modelled · "+NexPresentation.scope(choice).toLowerCase(Locale.ROOT),false,0,PanelWidgets.MUTED).setName("nex-card-scope-"+card.choiceIndex);
-		PanelWidgets.centeredLabel(surface,NexPresentation.origin(choice,card.pair),false,0,PanelWidgets.MUTED);
-		JPanel footer=new ActionLinks(); footer.setFont(getFont()); surface.add(footer);
-		JButton details=button(footer,"Details →",()->{ if(valid.getAsBoolean()) { inspect.run(); } });
-		details.setToolTipText("Compare gear"); details.setName("nex-card-"+card.choiceIndex); details.getAccessibleContext().setAccessibleName("Compare gear: "+title);
 	}
 	private void fangAdvice(NexOwnedResult result,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid,Runnable redraw)
 	{
@@ -392,9 +382,10 @@ final class NexPanel extends PluginPanel
 		PanelWidgets.centeredLabel(card,row.actionIndices.size()+(row.actionIndices.size()==1?" Fang attack":" Fang attacks")+" · fixed tempo",false,0,PanelWidgets.MUTED).setName("nex-fang-sample");
 		PanelWidgets.centeredLabel(card,row.kind==com.ironpath.advisor.NexFangAdvice.Kind.UPGRADE?"Hypothetical gear · vs owned":
 			row.kind==com.ironpath.advisor.NexFangAdvice.Kind.BANK_PREPARATION?"Bank gear · next trip":changed.isEmpty()?"Equipped gear":"Inventory gear",false,0,PanelWidgets.MUTED);
-		JButton details=button(card,"Fang details →",()->{
+		JButton details=button(card,"Diagnostics →",()->{
 			if(!valid.getAsBoolean()) { return; }
 			selectDiagnostics(result.summary,result,0,0,false); diagnostic.expand(true);
+			diagnosticFangResult=result; diagnosticFangSelection=adviceSelection;
 			calculationDetailsSummary=result.summary; calculationDetailsExpanded=true; redraw.run();
 		}); details.setName("nex-fang-details");
 	}
@@ -476,6 +467,7 @@ final class NexPanel extends PluginPanel
 		PanelWidgets.label(content,"Build "+BuildInfo.VERSION,false,0,PanelWidgets.MUTED);
 		boolean hidden=state==NexReport.State.PAUSED || state==NexReport.State.NO_ACCOUNT || state==NexReport.State.NOT_READY || state==NexReport.State.RESET;
 		text(status);
+		if(!hidden) { text(stats.complete+" complete · "+stats.failed+" failed · "+stats.censored+" excluded"); }
 		prefs.confirmations.forEach((key,value)->text((catalog==null?key:catalog.factChoices().getOrDefault(key,key))+": "+value.evidence()));
 		if(stats.resetReason!=null) { text("Previous session cleared: "+stats.resetReason); }
 		NexSummary summary=hidden?null:diagnosticSummary; NexOwnedResult result=hidden?null:diagnosticOwned;
@@ -530,10 +522,10 @@ final class NexPanel extends PluginPanel
 		{
 			PanelWidgets.text(basis,"Fang preview: "+result.advice.included.size()+" included attacks; "+result.advice.excluded.size()+" excluded candidates; "+result.advice.ambiguousImpacts+" ambiguous impacts; "+result.advice.zeroImpacts+" recorded zero impacts. Impact amounts never select the attack sample.");
 			PanelWidgets.text(basis,"Fang mappings/windows and base target stats remain unvalidated assumptions. Same weapon/style/5-tick tempo. Damage bounds pair both setups at every positive integer HP breakpoint; no later HP reading narrows pre-impact HP. Independent alternatives; bank/hypothetical gear needs next-trip packing. See fangAdvice in Copy report for every pair and excluded action.");
-			if(adviceSource==summary && adviceSelection<result.advice.rows.size())
+			if(diagnosticFangResult==result && diagnosticFangSelection<result.advice.rows.size())
 			{
-				var selected=result.advice.rows.get(adviceSelection);
-				PanelWidgets.text(basis,"Selected Fang alternative "+(adviceSelection+1)+" · "+selected.kind+" · "+selected.sample.phase+" / "+selected.sample.window
+				var selected=result.advice.rows.get(diagnosticFangSelection);
+				PanelWidgets.text(basis,"Selected Fang alternative "+(diagnosticFangSelection+1)+" · "+selected.kind+" · "+selected.sample.phase+" / "+selected.sample.window
 					+" · "+selected.actionIndices.size()+" attacks: "+selected.headline()+". Min/max/accuracy before="+selected.pair.before.minHit+"/"+selected.pair.before.maxHit+"/"+selected.pair.before.hitChance
 					+"; after="+selected.pair.after.minHit+"/"+selected.pair.after.maxHit+"/"+selected.pair.after.hitChance+". Owned baseline is selected by uncapped ordinary offence, not an HP-dependent optimum. Full set effects, healing and defence benefits are outside this offence comparison.");
 			}
@@ -626,7 +618,7 @@ final class NexPanel extends PluginPanel
 
 	private void ownedDetails(NexOwnedResult result,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid)
 	{
-		heading("Compare with owned gear");
+		heading("Base-stat comparisons");
 		text("Owned gear · kill #"+result.summary.key);
 		JPanel resources=ownedBody(); resources.setVisible(false);
 		button(content,"Spec energy & Death Charge",()->{
@@ -665,7 +657,7 @@ final class NexPanel extends PluginPanel
 					options.setToolTipText(options.getSelectedItem().toString());
 					options.getAccessibleContext().setAccessibleName("Gear comparison");
 					PanelWidgets.centeredLabel(value,ownedPairIndex==0?"Proposed gear setup":"Owned alternative",true,0,ColorScheme.TEXT_COLOR);
-					PanelWidgets.centeredLabel(value,NexOwnedResult.headline(pair),true,0,ColorScheme.TEXT_COLOR);
+					PanelWidgets.centeredLabel(value,NexOwnedResult.headline(pair),true,0,ColorScheme.TEXT_COLOR).setName("nex-base-stat-gain");
 					PanelWidgets.text(value,changes(pair,catalog));
 					PanelWidgets.centeredLabel(value,NexPresentation.origin(c,pair),false,0,PanelWidgets.MUTED);
 					PanelWidgets.text(value,"Actual ammo slot: "+name(pair.beforeSetup.slots.get("ammo"),catalog));
@@ -796,8 +788,6 @@ final class NexPanel extends PluginPanel
 		else if(storage.startsWith("Loading")) { text("Loading settings…"); }
 	}
 
-	private void item(int id, KnowledgeCatalog catalog, java.util.function.BooleanSupplier valid)
-	{ item(content,id,name(id,catalog),valid); }
 	private void item(JPanel parent,int id,String title,java.util.function.BooleanSupplier valid)
 	{
 		JLabel image=sprite(id,valid);

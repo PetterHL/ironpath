@@ -265,7 +265,7 @@ public class NexPanelTest
 				session.clear(); session.select("a",301); session.add(summary);
 				var panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
-				button(panel,"Compare with owned gear").doClick();
+				button(panel,"Base-stat comparisons").doClick();
 				assertFalse(shown(panel).contains("Sampled energy changes"));
 				button(panel,"Spec energy & Death Charge").doClick();
 				assertTrue(shown(panel).contains("Spec energy & Death Charge · kill #1"));
@@ -307,8 +307,8 @@ public class NexPanelTest
 				session.clear(); session.select("a",301); session.add(summary);
 				NexPanel panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
-				assertTrue(shown(panel).contains(" DPS")); capture(panel,"owned-main-"+(int)font);
-				button(panel,"Compare with owned gear").doClick(); capture(panel,"owned-details-"+(int)font);
+				assertFalse(shown(panel).contains(" DPS")); capture(panel,"owned-main-"+(int)font);
+				button(panel,"Base-stat comparisons").doClick(); capture(panel,"owned-details-"+(int)font);
 				assertTrue(shown(panel).contains("Selected quiver ammo: Amethyst arrow"));
 				assertTrue(shown(panel).contains("ammo slot: Ancient blessing"));
 				button(panel,"Full gear setups").doClick(); capture(panel,"owned-basis-"+(int)font);
@@ -322,7 +322,7 @@ public class NexPanelTest
 				panel.render("New kill",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",fresh);
 				assertTrue(shown(panel).contains("Owned gear · kill #1"));
 				assertTrue(shown(panel).contains("Amulet of blood fury"));
-				button(panel,"Back to encounter").doClick(); button(panel,"Compare with owned gear").doClick();
+				button(panel,"Back to encounter").doClick(); button(panel,"Base-stat comparisons").doClick();
 				assertTrue(shown(panel).contains("Owned gear · kill #2"));
 				panel.render("Profile changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"",null);
 				assertFalse(shown(panel).contains("Ancient blessing")); assertFalse(shown(panel).contains("Blood fury"));
@@ -350,7 +350,7 @@ public class NexPanelTest
 				assertEquals(2,result.choices.stream().filter(c->c.supported()).count());
 			var panel=new NexPanel(null);
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
-			button(panel,"Compare with owned gear").doClick();
+			button(panel,"Base-stat comparisons").doClick();
 			button(panel,"Full gear setups").doClick();
 			assertTrue(shown(panel).contains("Infernal cape (l)")); assertTrue(shown(panel).contains("Dragon defender (l)"));
 			button(panel,"Spec energy & Death Charge").doClick();
@@ -397,7 +397,7 @@ public class NexPanelTest
 				com.ironpath.dev.PanelPreview.openSection(panel,"Diagnostics"); button(panel,"Calculation details").doClick();
 				assertTrue(shown(panel).contains("Supported scenarios: carried 2, bank preparation 1. Unavailable: 1"));
 				com.ironpath.dev.PanelPreview.encounter(panel);
-				button(panel,"Compare with owned gear").doClick();
+				button(panel,"Base-stat comparisons").doClick();
 				JComboBox<?> role=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-role-filter".equals(c.getName())).findFirst().orElseThrow();
 				JComboBox<?> support=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-support-filter".equals(c.getName())).findFirst().orElseThrow();
 				JComboBox<?> states=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-state".equals(c.getName())).findFirst().orElseThrow();

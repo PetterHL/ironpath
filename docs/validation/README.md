@@ -1,5 +1,8 @@
 # Validation records
 
+26 October 2026: **0.32.2 sidebar cleanup before client testing** —
+[Fang-first main view, explicit base-stat comparisons and retained guards](nex-sidebar-cleanup.md).
+
 25 October 2026: **0.32.1 Fang client-test follow-up** —
 [supplied-report findings, scoped corrections and remaining checks](nex-fang-action-followup.md).
 

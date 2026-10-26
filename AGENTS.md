@@ -14,6 +14,18 @@
 
 ## Current delivery
 
+- **Sidebar cleanup 0.32.2** follows the user's 26 October request to remove
+  overlapping older presentation before the next client test. Read
+  docs/validation/nex-sidebar-cleanup.md. Fang equipment is the sole automatic
+  main comparison. Keep per-state theoretical offence and the declared planner
+  behind Base-stat comparisons; do not restore the old DPS highlight cards or
+  More/Fewer comparisons controls. Session counts belong in Diagnostics.
+  Active capture shows Tracking kill with a lightweight recorded-time/phase
+  heartbeat. Publish full views after account reads and acknowledge tracking
+  status only after painting; preserve unknown smoke starts and queued-update
+  identity/scope/capture guards. Never rebuild the sidebar on every capture tick.
+  This changes presentation, not numeric support or frozen-report selection.
+
 - **N3-ADVICE 0.32.1** follows one supplied 0.32.0 live report and a separate
   native screenshot on open PR #57. Read docs/validation/nex-fang-action-followup.md.
   Preserve resource-aware Fang reconciliation, compatible offence/gear grouping,

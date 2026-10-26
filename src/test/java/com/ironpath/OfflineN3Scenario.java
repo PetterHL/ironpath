@@ -20,6 +20,13 @@ final class OfflineN3Scenario
 			{
 				r.carried.put(385,1L); r.carried.put(3144,1L); r.carried.put(6685,1L); r.carried.put(3024,1L);
 				r.fight(30,20,60,true,offset->{
+					if(offset==5) { try {
+						r.edt(); capture(r,output,"active-tracking",font,report);
+						edt(()->{ try {
+							report.check("Active kill status is visible "+font,"Tracking kill…",NexScenarioPanelTest.named(r.panel,"nex-tracking-status",JTextArea.class).getText());
+							PanelPreview.viewport(r.panel,output.resolve("active-tracking-viewport-"+font+".png"),225,600,null,List.of("nex-tracking-status","nex-tracking-progress"),report);
+						} catch(Exception ex) { throw new IllegalStateException(ex); } });
+					} catch(Exception ex) { throw new IllegalStateException(ex); } }
 					if(offset==6) { r.plugin.onChatMessage(new net.runelite.api.events.ChatMessage(null,net.runelite.api.ChatMessageType.SPAM,"","You eat the shark.","",0)); }
 					if(offset==7) { r.plugin.onChatMessage(new net.runelite.api.events.ChatMessage(null,net.runelite.api.ChatMessageType.ENGINE,"","Upon the death of your next two foes, some of your special attack energy will be restored.","",0)); }
 					if(offset==4)
@@ -40,10 +47,13 @@ final class OfflineN3Scenario
 				report.check("Automatic Fang remains provisional "+font,false,advice.json().get("validated").getAsBoolean());
 				String frozenAdvice=advice.json().toString();
 				capture(r,output,"fang-advice",font,report);
-				edt(()->{ try { PanelPreview.viewport(r.panel,output.resolve("fang-advice-viewport-"+font+".png"),225,600,"nex-fang-gain",List.of("nex-fang-gain","nex-fang-sample","nex-fang-details"),report); } catch(Exception ex) { throw new IllegalStateException(ex); } });
+				edt(()->{ try {
+					report.check("Main Fang preview has no competing theoretical DPS card "+font,false,PanelPreview.text(r.panel).contains("DPS"));
+					PanelPreview.viewport(r.panel,output.resolve("fang-advice-viewport-"+font+".png"),225,600,"nex-fang-gain",List.of("nex-fang-gain","nex-fang-sample","nex-fang-details"),report);
+				} catch(Exception ex) { throw new IllegalStateException(ex); } });
 				final NexScenarioPanel[] panel={null};
 				edt(()->{
-					PanelPreview.click(r.panel,"Compare with owned gear"); PanelPreview.combo(r.panel,"nex-owned-support-filter").setSelectedItem("All states");
+					PanelPreview.click(r.panel,"Base-stat comparisons"); PanelPreview.combo(r.panel,"nex-owned-support-filter").setSelectedItem("All states");
 					PanelPreview.click(r.panel,"Spec energy & Death Charge"); PanelPreview.click(r.panel,"Natural-restoration examples");
 				});
 				report.check("N3A three bounded natural-restoration examples "+font,3,r.plugin.ownedResult.resources.scenarios.examples.size());
@@ -178,7 +188,7 @@ final class OfflineN3Scenario
 			} }); r.settle();
 			final NexScenarioPanel[] planner={null};
 			edt(()->{
-				PanelPreview.click(r.panel,"Compare with owned gear"); PanelPreview.combo(r.panel,"nex-owned-support-filter").setSelectedItem("All states");
+				PanelPreview.click(r.panel,"Base-stat comparisons"); PanelPreview.combo(r.panel,"nex-owned-support-filter").setSelectedItem("All states");
 				int selected=-1;
 				for(int i=0;i<r.plugin.ownedResult.choices.size();i++)
 				{ var s=r.plugin.ownedResult.choices.get(i).actual; if(s.phase.equals("ZAROS") && s.targetState.overhead()==com.ironpath.nex.NexTargetState.Overhead.SOUL_SPLIT) { selected=i; break; } }

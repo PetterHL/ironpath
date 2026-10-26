@@ -42,6 +42,18 @@ public final class NexCapture
 	public NexCapture(Consumer<NexSummary> sink) { this.sink=sink; }
 	public boolean active() { return method!=null; }
 	public long key() { return key; }
+	/** Client-thread scalar snapshot for the recording indicator, without exposing the live trace. */
+	public Progress progress()
+	{ return active()?new Progress(key,Math.max(0,(death>=0?death:last)-start),phase,fullStart):null; }
+	public static final class Progress
+	{
+		public final long key;
+		public final int elapsedTicks;
+		public final String phase;
+		public final boolean smokeObserved;
+		private Progress(long key,int elapsedTicks,String phase,boolean smokeObserved)
+		{ this.key=key; this.elapsedTicks=elapsedTicks; this.phase=phase; this.smokeObserved=smokeObserved; }
+	}
 	/** A true start flag denotes an actually observed smoke announcement, never arena entry. */
 	public void start(int tick, boolean smokeObserved, NexMethod method, String roster)
 	{ start(tick,smokeObserved,method,roster,NexContext.PILOT); }

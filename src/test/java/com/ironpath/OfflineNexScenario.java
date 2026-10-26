@@ -229,13 +229,12 @@ final class OfflineNexScenario extends OfflineNexClient
 			var nonPositive=new NexOwnedResult(result.summary,result.choices.stream().filter(c->NexPresentation.cards(new NexOwnedResult(result.summary,List.of(c))).isEmpty()).collect(java.util.stream.Collectors.toList()),result.planning);
 			panel.render("Synthetic offline scenario", NexOwnedFixtures.account(null), prefs, catalog, session.stats(), true, actions, "Synthetic; no preference IO", nonPositive);
 			report.check("No-positive fixture retains supported alternatives "+font,true,nonPositive.choices.stream().anyMatch(c->c.supported()));
-			report.check("No-positive main shows one plain empty state "+font,true,PanelPreview.text(panel).contains("No improvement found") && !PanelPreview.text(panel).contains(" DPS"));
+			report.check("No-positive state retains a guarded Fang card "+font,true,PanelPreview.text(panel).contains("No supported Fang sample") && !PanelPreview.text(panel).contains(" DPS"));
 			capture(panel,output,"no-improvement-main",font,report);
 			panel.render("Synthetic offline scenario", NexOwnedFixtures.account(null), prefs, catalog, session.stats(), true, actions, "Synthetic; no preference IO", result);
 			report.check("Main view " + font + "px shows measured kill", true, PanelPreview.text(panel).contains("Last kill") && PanelPreview.text(panel).contains("18.0 s"));
 			capture(panel, output, "main", font, report);
-			int firstCard=NexPresentation.cards(result).get(0).choiceIndex;
-			PanelPreview.viewport(panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-duration","nex-edit-context","nex-card-metric-"+firstCard,"nex-card-scope-"+firstCard),report);
+			PanelPreview.viewport(panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-duration","nex-edit-context","nex-fang-advice"),report);
 			PanelPreview.openSection(panel,"Diagnostics"); capture(panel,output,"diagnostics",font,report);
 			PanelPreview.viewport(panel,output.resolve("diagnostics-viewport-"+font+".png"),225,600,"nex-section-diagnostics",List.of("nex-copy-report"),report);
 			PanelPreview.click(panel,"Copy report now");
@@ -246,7 +245,7 @@ final class OfflineNexScenario extends OfflineNexClient
 			java.nio.file.Files.writeString(output.resolve("diagnostic-report-"+font+".txt"),exported);
 			capture(panel,output,"selectable-report",font,report);
 			PanelPreview.encounter(panel);
-			PanelPreview.click(panel, "Compare with owned gear");
+			PanelPreview.click(panel, "Base-stat comparisons");
 			PanelPreview.combo(panel, "nex-owned-role-filter").setSelectedItem("ranged");
 			report.check("Comparison view " + font + "px preserves projectile", true, PanelPreview.text(panel).contains("Selected quiver ammo: Amethyst arrow"));
 			capture(panel, output, "comparison", font, report);

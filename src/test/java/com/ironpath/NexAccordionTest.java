@@ -43,7 +43,7 @@ public class NexAccordionTest
 			JButton team=header(panel,"team"); team.getActionMap().get("activate").actionPerformed(new java.awt.event.ActionEvent(team,0,"ENTER"));
 			assertTrue(team.getAccessibleContext().getAccessibleStateSet().contains(AccessibleState.EXPANDED));
 			JTextField count=named(panel,"nex-context-count",JTextField.class); count.setText("7"); draft.set(count);
-			PanelPreview.click(panel,"Compare with owned gear"); PanelPreview.click(panel,"Plan specs & gear");
+			PanelPreview.click(panel,"Base-stat comparisons"); PanelPreview.click(panel,"Plan specs & gear");
 			var plan=(NexScenarioPanel)PanelPreview.children(panel).stream().filter(c->c instanceof NexScenarioPanel).findFirst().orElseThrow(); planner.set(plan);
 			named(plan,"n3-horizon",JTextField.class).setText("37");
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");

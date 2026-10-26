@@ -252,7 +252,7 @@ public class NexDiagnosticsTest
 		assertEquals(3072,json.getAsJsonArray("states").size()); assertEquals(0,json.get("unchangedPollsOmitted").getAsInt());
 		assertTrue(text.length()<=NexReport.MAX_CHARS); assertFalse(text.contains(PRIVATE));
 	}
-	@Test public void compactCardsExpandWithoutDroppingAlternativesAndKeepSelectionWhenReturningFromDiagnostics() throws Exception
+	@Test public void baseStatComparisonsStayBehindTheirActionAndKeepAllAlternativesAndSelection() throws Exception
 	{
 		List<NexSummary.Sample> samples=new ArrayList<>();
 		for(String missing:List.of("none","head","neck"))
@@ -267,18 +267,24 @@ public class NexDiagnosticsTest
 			var panel=new NexPanel(null); var account=NexOwnedFixtures.account(null);
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
 			assertTrue(expandedSection(panel,"nex-section-compare")); assertFalse(expandedSection(panel,"nex-section-diagnostics"));
-			assertEquals(2,visibleCards(panel));
-			PanelPreview.click(panel,"More comparisons ("+(cards.size()-2)+")"); assertEquals(cards.size(),visibleCards(panel));
-			panel.render("Account refresh",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
-			assertEquals("Expansion survives refresh",cards.size(),visibleCards(panel));
+			assertEquals(0,visibleCards(panel)); assertFalse(PanelPreview.text(panel).contains("DPS"));
+			PanelPreview.click(panel,"Base-stat comparisons");
+			assertTrue(PanelPreview.text(panel).contains("theoretical DPS"));
 			var third=cards.get(2);
-			((JButton)PanelPreview.children(panel).stream().filter(c->("nex-card-"+third.choiceIndex).equals(c.getName())).findFirst().orElseThrow()).doClick();
+			assertEquals(result.choices.stream().filter(c->c.supported()).count(),PanelPreview.combo(panel,"nex-owned-state").getItemCount());
+			var states=PanelPreview.combo(panel,"nex-owned-state");
+			for(int i=0;i<states.getItemCount();i++)
+			{ if(states.getItemAt(i).toString().startsWith((third.choiceIndex+1)+":")) { states.setSelectedIndex(i); break; } }
+			PanelPreview.combo(panel,"nex-owned-pair").setSelectedIndex(third.pairIndex);
+			String selected=PanelPreview.combo(panel,"nex-owned-state").getSelectedItem().toString();
+			panel.render("Account refresh",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			assertEquals(selected,PanelPreview.combo(panel,"nex-owned-state").getSelectedItem());
 			assertEquals(third.pairIndex,PanelPreview.combo(panel,"nex-owned-pair").getSelectedIndex());
 			PanelPreview.openSection(panel,"Diagnostics"); assertTrue(expandedSection(panel,"nex-section-diagnostics"));
 			PanelPreview.closeSection(panel,"Diagnostics");
 			assertEquals(third.pairIndex,PanelPreview.combo(panel,"nex-owned-pair").getSelectedIndex());
-			PanelPreview.click(panel,"Back to encounter"); assertEquals(cards.size(),visibleCards(panel));
-			PanelPreview.click(panel,"Fewer comparisons"); assertEquals(2,visibleCards(panel));
+			PanelPreview.click(panel,"Back to encounter"); assertEquals(0,visibleCards(panel));
+			assertFalse(PanelPreview.text(panel).contains("DPS"));
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Calculation details");
 			assertTrue(PanelPreview.text(panel).contains("build "+BuildInfo.VERSION));
 			assertTrue(PanelPreview.text(panel).contains("Independent state comparisons"));
@@ -286,6 +292,45 @@ public class NexDiagnosticsTest
 	}
 	private static long visibleCards(NexPanel panel)
 	{ return PanelPreview.children(panel).stream().filter(c->c.getName()!=null && c.getName().startsWith("nex-equipment-card-") && PanelPreview.visible(c)).count(); }
+	@Test public void selectedFangDetailsStayFrozenAcrossAnotherKillAndClearOnReset() throws Exception
+	{
+		for(int font:List.of(12,20))
+		try(var r=new OfflinePluginReplay(font))
+		{
+			java.util.function.IntConsumer attack=offset->{ if(offset==4) {
+				org.mockito.Mockito.when(r.local.getAnimation()).thenReturn(9471);
+				var event=new net.runelite.api.events.AnimationChanged(); event.setActor(r.local); r.plugin.onAnimationChanged(event);
+			} };
+			var first=r.fight(30,20,60,true,attack); r.settle();
+			var original=r.plugin.ownedResult; int[] selected={-1};
+			SwingUtilities.invokeAndWait(()->{
+				var alternatives=PanelPreview.combo(r.panel,"nex-fang-alternative");
+				assertTrue(alternatives.getItemCount()>1);
+				for(int i=0;i<original.advice.rows.size();i++)
+				{ if(i!=alternatives.getSelectedIndex() && NexPresentation.changedItems(original.advice.rows.get(i).pair).isEmpty()) { selected[0]=i; break; } }
+				assertTrue("Inspect a nondefault unchanged-gear alternative",selected[0]>=0); alternatives.setSelectedIndex(selected[0]);
+				PanelPreview.click(r.panel,"Diagnostics →");
+				assertTrue(PanelPreview.text(r.panel).contains("Selected Fang alternative "+(selected[0]+1)+" · "));
+			});
+			r.fight(35,40,40,true,attack); r.settle();
+			assertNotSame(original,r.plugin.ownedResult);
+			assertFalse("The new kill must replace the main Fang selector",r.plugin.ownedResult.advice.rows.isEmpty());
+			SwingUtilities.invokeAndWait(()->{
+				String details=PanelPreview.text(r.panel);
+				assertTrue(details.contains("Frozen kill #"+first.key+" · "));
+				assertTrue(details.contains("Selected Fang alternative "+(selected[0]+1)+" · "));
+				assertTrue(details.contains(original.advice.rows.get(selected[0]).headline()));
+				PanelPreview.click(r.panel,"Copy report now");
+				String exported=area(r.panel).getText();
+				assertTrue(exported.contains(original.advice.json().get("model").getAsString()));
+				PanelPreview.click(r.panel,"Clear session");
+			}); r.callbacks.drain(); OfflinePluginReplay.edt();
+			SwingUtilities.invokeAndWait(()->{
+				assertFalse(PanelPreview.text(r.panel).contains("Selected Fang alternative"));
+				assertFalse(PanelPreview.text(r.panel).contains("Frozen kill #"+first.key));
+			});
+		}
+	}
 	private static boolean expandedSection(NexPanel panel,String name)
 	{ return ((JButton)PanelPreview.children(panel).stream().filter(c->name.equals(c.getName())).findFirst().orElseThrow()).isSelected(); }
 	@Test public void diagnosticCalculationDetailsSurviveAccountRefreshesUntilTheSelectedKillChanges() throws Exception
@@ -309,7 +354,7 @@ public class NexDiagnosticsTest
 			assertTrue("A newer kill does not replace frozen Diagnostics or its disclosure",PanelPreview.text(panel).contains("State coverage"));
 			PanelPreview.closeSection(panel,"Diagnostics"); PanelPreview.openSection(panel,"Diagnostics");
 			assertTrue("Toggling the section keeps the frozen disclosure",PanelPreview.text(panel).contains("State coverage"));
-			PanelPreview.encounter(panel); PanelPreview.click(panel,"Compare with owned gear"); PanelPreview.openSection(panel,"Diagnostics");
+			PanelPreview.encounter(panel); PanelPreview.click(panel,"Base-stat comparisons"); PanelPreview.openSection(panel,"Diagnostics");
 			assertFalse("A different selected kill starts collapsed",PanelPreview.text(panel).contains("State coverage"));
 			PanelPreview.click(panel,"Calculation details");
 			panel.render("Logged out",null,Preferences.EMPTY,catalog,session.stats(),true,null,"");
@@ -392,9 +437,11 @@ public class NexDiagnosticsTest
 			var account=NexOwnedFixtures.account(null); var copied=new AtomicReference<String>();
 			var panel=new NexPanel(null,text->{ copied.set(text); throw new IllegalStateException("busy"); },NexReport.Provenance.SYNTHETIC_OFFLINE);
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",original);
-			assertTrue(PanelPreview.text(panel).contains("Dragon arrow")); assertFalse(PanelPreview.text(panel).contains("Twisted bow"));
+			assertFalse(PanelPreview.text(panel).contains("DPS"));
 			assertFalse(PanelPreview.text(panel).contains("No matched average")); assertFalse(PanelPreview.text(panel).contains("Session mean"));
-			PanelPreview.click(panel,"Compare gear"); PanelPreview.openSection(panel,"Diagnostics");
+			PanelPreview.click(panel,"Base-stat comparisons");
+			assertTrue(PanelPreview.text(panel).contains("Dragon arrow"));
+			PanelPreview.openSection(panel,"Diagnostics");
 			PanelPreview.click(panel,"Copy report now");
 			assertTrue(PanelPreview.text(panel).contains("Clipboard unavailable or busy"));
 			var area=area(panel); assertTrue(area.isFocusable()); assertFalse(area.isEditable());
@@ -420,7 +467,7 @@ public class NexDiagnosticsTest
 			PanelPreview.encounter(panel);
 			assertEquals("Collapsing Diagnostics preserves the selected report", frozen,area.getText());
 			assertFalse(PanelPreview.visible(area));
-			PanelPreview.click(panel,"Compare with owned gear");
+			PanelPreview.click(panel,"Base-stat comparisons");
 			assertEquals("Changing selection clears the previous report widget","",area.getText());
 			PanelPreview.combo(panel,"nex-owned-support-filter").setSelectedItem("Unavailable comparisons");
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");

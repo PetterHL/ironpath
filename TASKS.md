@@ -1,6 +1,6 @@
 # IronPath active work
 
-Updated **25 October 2026**. This is the **only active backlog and roadmap**.
+Updated **26 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized merging the complete 0.23.3 delivery into main and cleaning
 up covered PRs/branches on 19 October. This includes CTX1 #43, native UI1 #46,
@@ -25,7 +25,7 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Integrated: [PR #54](https://github.com/PetterHL/ironpath/pull/54) | **N3 evidence validation (0.30.0)** | Full-cap clock correction, diagnostic repeat-source counters and the 24 October Nex delivery decision. No automatic recommendation yet |
 | Integrated: [PR #56](https://github.com/PetterHL/ironpath/pull/56) | **Karambwan potion cooldown (0.30.1)** | Reject potions one/two ticks after karambwan; retain the three-tick boundary and same-tick combos. [Verification](docs/validation/karambwan-potion-cooldown.md) |
 | Integrated, 0.31.0 / PR #55 | **N3-ACTION: action evidence and attack clock** | Bounded Fang state, food/DC messages and frozen timeline; controlled client mapping check remains pending |
-| PR #57, 0.32.1 follow-up | **N3-ADVICE: provisional automatic Fang preview** | One supplied 0.32.0 live report and separate screenshot confirm export/calculation/UI paths; scoped resource/grouping and message corrections follow. Mapping/window/base-stat assumptions and product acceptance remain open |
+| PR #57, 0.32.2 follow-up | **N3-ADVICE: provisional automatic Fang preview** | 0.32.1 corrects resources/grouping and messages after one supplied 0.32.0 report. 0.32.2 retires duplicate homepage DPS cards and keeps the older calculations behind Base-stat comparisons before the next client test. Mapping/window/base-stat assumptions and product acceptance remain open |
 | After the first useful comparison | **Broader N3 automatic recommendations** | Ranged attribution and finite spec/DC/supply plans remain gated; solve dependencies as needed for each added output |
 | After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
@@ -118,6 +118,11 @@ The supplied client report motivates the **0.32.1** [reconciliation/message
 follow-up](docs/validation/nex-fang-action-followup.md) on the same open PR #57.
 It accepts one bounded conditional export/calculation path and visible client
 card, while controlled mapping/window acceptance remains unchecked.
+
+The user's 26 October cleanup request adds **0.32.2** before the next test:
+Fang-first main comparison, explicit Base-stat comparisons, session counts in
+Diagnostics, a separately frozen Fang detail selection, and Tracking kill with
+live recorded time/phase after the user's status follow-up. [Cleanup and checks](docs/validation/nex-sidebar-cleanup.md).
 
 Follow N3-ACTION with a post-kill comparison in the existing Compare setups panel:
 
