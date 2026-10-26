@@ -1,5 +1,8 @@
 # Validation records
 
+26 October 2026: **0.32.2 matched client report and screenshot** —
+[active status confirmed, grouped sample and Avernic range verified; coverage/DC gaps remain](nex-fang-live-0322.md).
+
 26 October 2026: **0.32.2 sidebar cleanup before client testing** —
 [Fang-first main view, explicit base-stat comparisons and retained guards](nex-sidebar-cleanup.md).
 

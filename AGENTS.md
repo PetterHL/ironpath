@@ -14,6 +14,15 @@
 
 ## Current delivery
 
+- **0.32.2 matched live check, 26 October:** read
+  docs/validation/nex-fang-live-0322.md. The user confirms active Tracking kill,
+  time and phase. The report/screenshot match at 294.6 s; two compatible attacks
+  share 98 rows and the displayed Avernic range matches independent arithmetic.
+  Only 2 of 20 provisional inferences pass context support. Ordinary/special
+  window boundaries and missing typed DC messages remain unresolved; no broad
+  mapping, contribution or full-plan promotion follows. Review the existing
+  evidence before requesting another complete kill.
+
 - **Sidebar cleanup 0.32.2** follows the user's 26 October request to remove
   overlapping older presentation before the next client test. Read
   docs/validation/nex-sidebar-cleanup.md. Fang equipment is the sole automatic

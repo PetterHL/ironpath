@@ -12,6 +12,8 @@ and optional declared spec/resource planner. Session counts are in Diagnostics.
 During capture, **Tracking kill…** shows advancing recorded time and phase.
 An unobserved smoke start stays explicitly unconfirmed.
 [Cleanup and verification](docs/validation/nex-sidebar-cleanup.md).
+[Matched live check](docs/validation/nex-fang-live-0322.md): active status/time/
+phase are confirmed for one kill; Fang coverage and DC message gaps remain open.
 
 After a completed kill, Compare setups shows equipment alternatives for the
 same supported ordinary Fang action sample, at the same weapon, style and tempo.

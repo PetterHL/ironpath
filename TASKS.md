@@ -124,6 +124,14 @@ Fang-first main comparison, explicit Base-stat comparisons, session counts in
 Diagnostics, a separately frozen Fang detail selection, and Tracking kill with
 live recorded time/phase after the user's status follow-up. [Cleanup and checks](docs/validation/nex-sidebar-cleanup.md).
 
+The [matched 0.32.2 client check](docs/validation/nex-fang-live-0322.md) confirms
+the active status/time/phase, grouped two-attack sample, complete export and
+displayed Avernic bounds for one 294.6-second kill. Only 2 of 20 provisional
+inferences pass current context support. The next scoped review is ordinary/
+special-window coverage and the missing typed DC message source, using this
+existing evidence; do not admit UNKNOWN windows or require another full kill
+before analysis. Controlled mapping/window and useful-coverage acceptance remain open.
+
 Follow N3-ACTION with a post-kill comparison in the existing Compare setups panel:
 
 - [x] Automatically construct actual versus relevant owned/hypothetical equipment

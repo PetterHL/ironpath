@@ -84,5 +84,7 @@ Diagnostics and Back; lifecycle, frozen report and planner checks remain intact.
 DEV1 includes native 225px views at fonts 12 and 20, plus actual 600px viewports
 for the main Fang card, explicit base-stat comparisons and active capture.
 
-Live client/player acceptance, including manta-ray and DC message checks, is
-still pending. No merge or Plugin Hub publication is authorized by this cleanup.
+The subsequent [matched client check](nex-fang-live-0322.md) confirms active
+Tracking kill/time/phase and the cleaned main card for one run. Broader
+client/player acceptance, including manta-ray and DC message checks, remains
+pending. No merge or Plugin Hub publication is authorized by this cleanup.
