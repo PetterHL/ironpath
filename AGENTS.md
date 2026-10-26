@@ -14,6 +14,15 @@
 
 ## Current delivery
 
+- **0.32.3 Fang zero-display correction:** read
+  docs/validation/nex-fang-zero-display.md. An additional three-attack Bandos
+  screenshot shows a scalar +0.00, not the earlier two-attack negative interval.
+  Keep those results distinct. Exact zero reads No expected damage change;
+  small nonzero changes retain their sign, and numerical residue at a zero
+  range endpoint must not look like a gain. Show the replaced item and max hit
+  before/after. Raw bounds, fixed Fang/sample selection and all support gates
+  remain unchanged. Max-hit equality alone does not prove equal Fang damage.
+
 - **0.32.2 matched live check, 26 October:** read
   docs/validation/nex-fang-live-0322.md. The user confirms active Tracking kill,
   time and phase. The report/screenshot match at 294.6 s; two compatible attacks

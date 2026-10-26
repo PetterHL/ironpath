@@ -371,7 +371,12 @@ final class NexPanel extends PluginPanel
 		options.getAccessibleContext().setAccessibleName("Fang equipment alternative");
 		options.addActionListener(e->{ if(valid.getAsBoolean()) { adviceSelection=options.getSelectedIndex(); redraw.run(); } });
 		var changed=NexPresentation.changedItems(row.pair);
-		if(changed.size()==1) { item(card,changed.values().iterator().next(),name(changed.values().iterator().next(),catalog),valid); }
+		if(changed.size()==1)
+		{
+			var change=changed.entrySet().iterator().next();
+			item(card,change.getValue(),name(change.getValue(),catalog),valid);
+			PanelWidgets.centeredLabel(card,"Replaces "+name(row.pair.beforeSetup.slots.getOrDefault(change.getKey(),-1),catalog),false,0,PanelWidgets.MUTED).setName("nex-fang-replaces");
+		}
 		else if(!changed.isEmpty())
 		{
 			JPanel sprites=new ActionLinks(); sprites.setFont(getFont()); card.add(sprites);
@@ -379,6 +384,7 @@ final class NexPanel extends PluginPanel
 			PanelWidgets.centeredLabel(card,changed.size()+"-item package",true,0,ColorScheme.TEXT_COLOR);
 		}
 		PanelWidgets.centeredLabel(card,row.headline(),true,2,ColorScheme.TEXT_COLOR).setName("nex-fang-gain");
+		PanelWidgets.centeredLabel(card,"Max hit "+row.pair.before.maxHit+" → "+row.pair.after.maxHit,false,0,PanelWidgets.MUTED).setName("nex-fang-max-hit");
 		PanelWidgets.centeredLabel(card,row.actionIndices.size()+(row.actionIndices.size()==1?" Fang attack":" Fang attacks")+" · fixed tempo",false,0,PanelWidgets.MUTED).setName("nex-fang-sample");
 		PanelWidgets.centeredLabel(card,row.kind==com.ironpath.advisor.NexFangAdvice.Kind.UPGRADE?"Hypothetical gear · vs owned":
 			row.kind==com.ironpath.advisor.NexFangAdvice.Kind.BANK_PREPARATION?"Bank gear · next trip":changed.isEmpty()?"Equipped gear":"Inventory gear",false,0,PanelWidgets.MUTED);

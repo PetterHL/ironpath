@@ -27,7 +27,7 @@ dependencies {
 }
 
 group = 'com.ironpath'
-version = '0.32.2'
+version = '0.32.3'
 
 tasks.named('processResources') {
 	inputs.property('pluginVersion', project.version.toString())

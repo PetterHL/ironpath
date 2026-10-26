@@ -132,6 +132,11 @@ special-window coverage and the missing typed DC message source, using this
 existing evidence; do not admit UNKNOWN windows or require another full kill
 before analysis. Controlled mapping/window and useful-coverage acceptance remain open.
 
+**0.32.3** [clarifies scalar zero comparisons](docs/validation/nex-fang-zero-display.md)
+after a separate three-attack Bandos screenshot: exact-zero wording, the replaced
+item and max hit before/after. Small signed changes and zero interval endpoints
+remain distinct. This changes presentation, not window support or acceptance.
+
 Follow N3-ACTION with a post-kill comparison in the existing Compare setups panel:
 
 - [x] Automatically construct actual versus relevant owned/hypothetical equipment

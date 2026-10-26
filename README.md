@@ -5,7 +5,11 @@ you play. The current pilot is **Nex / Trio MP2 / one kill per trip**, with
 Lightbearer throughout and assumed upgraded Death Charge. Gear, switches,
 levels and active prayers are observed automatically; no setup form is required.
 
-**Development build 0.32.2:** the main comparison is the provisional **Fang
+**Development build 0.32.3:** exact-zero Fang comparisons read **No expected
+damage change**, with the replaced item and max hit before/after visible.
+Small nonzero changes retain their direction. [Display correction](docs/validation/nex-fang-zero-display.md).
+
+The main comparison is the provisional **Fang
 equipment** preview. The older theoretical DPS cards have been removed from the
 homepage. **Base-stat comparisons** opens the retained per-state gear comparisons
 and optional declared spec/resource planner. Session counts are in Diagnostics.

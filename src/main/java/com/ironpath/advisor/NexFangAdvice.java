@@ -40,8 +40,22 @@ public final class NexFangAdvice
 		}
 		public String headline()
 		{
-			return Math.abs(gain.upper-gain.lower)<1e-9?String.format(Locale.ROOT,"%+.2f expected damage",gain.lower)
-				:String.format(Locale.ROOT,"%+.2f to %+.2f expected damage",Math.floor(gain.lower*100)/100,Math.ceil(gain.upper*100)/100);
+			if(gain.lower==0 && gain.upper==0) { return "No expected damage change"; }
+			if(Math.abs(gain.upper-gain.lower)<1e-9)
+			{
+				if(Math.abs(gain.lower)<0.005)
+				{ return gain.lower>=0?"<0.01 expected gain":gain.upper<=0?"<0.01 expected loss":"<0.01 expected damage change"; }
+				return String.format(Locale.ROOT,"%+.2f expected damage",gain.lower);
+			}
+			return boundLabel(gain.lower,true)+" to "+boundLabel(gain.upper,false)+" expected damage";
+		}
+		private static String boundLabel(double value,boolean lower)
+		{
+			// Numerical residue at zero must not become +0.01 or a signed -0.00.
+			// Exact exported bounds remain untouched.
+			if(Math.abs(value)<1e-9) { value=0; }
+			double rounded=(lower?Math.floor(value*100):Math.ceil(value*100))/100;
+			return rounded==0?"0.00":String.format(Locale.ROOT,"%+.2f",rounded);
 		}
 	}
 	public final List<Row> rows;

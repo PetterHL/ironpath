@@ -1,5 +1,11 @@
 # Encounter-first UX
 
+Build 0.32.3 shows **No expected damage change** for an exact-zero Fang result.
+Single-item alternatives name the replaced item; all supported results show
+**Max hit before → after**. Small nonzero gains/losses must not round to a scalar
++0.00, and a zero interval endpoint has no positive sign. Keep numerical bounds
+and independent zero/negative alternatives intact. [Verification](validation/nex-fang-zero-display.md).
+
 Build 0.32.2 keeps **Fang equipment / Provisional · base stats** as the only
 automatic comparison card inside Compare setups. **Base-stat comparisons**
 opens the existing per-state theoretical DPS results, complete gear alternatives

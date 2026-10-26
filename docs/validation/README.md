@@ -1,5 +1,8 @@
 # Validation records
 
+26 October 2026: **0.32.3 exact-zero Fang display** —
+[three-attack Bandos reproduction, explicit zero wording and before/after context](nex-fang-zero-display.md).
+
 26 October 2026: **0.32.2 matched client report and screenshot** —
 [active status confirmed, grouped sample and Avernic range verified; coverage/DC gaps remain](nex-fang-live-0322.md).
 

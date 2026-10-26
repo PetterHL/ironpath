@@ -90,6 +90,48 @@ public class NexFangAdviceTest
 		var same=NexFangAdvice.pairedBounds(before,before); assertEquals(0,same.lower,0); assertEquals(0,same.upper,0);
 		assertEquals(0,NexFangAdvice.pairedBounds(metrics(0,0,0),metrics(0,0,0)).upper,0);
 	}
+	@Test public void lowerBodyStrengthCanPreserveTheSameDamageAcrossThreeFangAttacks()
+	{
+		var slots=new HashMap<>(melee()); slots.put("body",26384); slots.put("cape",24224); slots.put("shield",24143);
+		for(int level:List.of(118,117,114))
+		{
+			signals.clear(); var base=state(slots,Map.of()); var levels=new HashMap<>(base.visibleLevels);
+			levels.put("ATTACK",level); levels.put("STRENGTH",level);
+			gear=new CombatState(base.slots,base.realLevels,levels,base.prayers,base.style,base.specialEnergy,false,base.inventory,base.resources);
+			for(int tick=5;tick<=15;tick++)
+			{
+				if(tick%5==0) { attack(tick); }
+				else { signal(tick,NexActions.Kind.SETTLED,"SHADOW","FEAR_THE_SHADOW","NEX@test",NexTargetState.Form.NEX,gear); }
+			}
+			var result=new NexOwnedEvaluator(catalog).evaluate(summary(Outcome.COMPLETE,false,List.of()),account(null),Preferences.EMPTY);
+			var row=result.advice.rows.stream().filter(r->r.pair.afterSetup.slots.get("body")==11832).findFirst().orElseThrow();
+			assertEquals(3,row.actionIndices.size()); assertEquals(Integer.valueOf(26384),row.pair.beforeSetup.slots.get("body"));
+			if(level==118)
+			{
+				assertEquals(47,row.pair.before.maxHit); assertEquals(47,row.pair.after.maxHit);
+				assertEquals(row.pair.before.minHit,row.pair.after.minHit); assertEquals(row.pair.before.hitChance,row.pair.after.hitChance,0);
+				assertEquals(0,row.gain.lower,0); assertEquals(0,row.gain.upper,0);
+				assertEquals("No expected damage change",row.headline());
+			}
+			else
+			{
+				assertTrue(row.gain.lower<0); assertEquals(0,row.gain.upper,1e-10);
+				assertTrue(row.headline().endsWith("to 0.00 expected damage"));
+				assertFalse(row.headline().contains("+0.01")); assertFalse(row.headline().contains("-0.00"));
+				if(level==114) { assertEquals(row.pair.before.maxHit,row.pair.after.maxHit); assertTrue(row.pair.after.minHit<row.pair.before.minHit); }
+			}
+		}
+	}
+	@Test public void tinyRealGainsAndLossesAreNotDisplayedAsExactZero()
+	{
+		for(double chance:List.of(0.504,0.496))
+		{
+			var pair=new ComparisonResult(null,null,metrics(1,1,0.5),metrics(1,1,chance),null,Map.of(),"synthetic","synthetic","synthetic",List.of(),false,Map.of());
+			var row=new NexFangAdvice.Row(NexFangAdvice.Kind.CARRIED,null,pair,List.of(0),false);
+			assertEquals(chance-0.5,row.gain.lower,1e-12);
+			assertEquals(chance>0.5?"<0.01 expected gain":"<0.01 expected loss",row.headline());
+		}
+	}
 	private static PoweredMagic.Metrics metrics(int min,int max,double chance)
 	{ return new PoweredMagic.Metrics(min,max,chance,0,0,0,0,0,0,0,5); }
 	private static double oracle(int min,int max,double chance,int hp)

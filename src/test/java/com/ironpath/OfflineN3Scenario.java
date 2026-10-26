@@ -49,7 +49,7 @@ final class OfflineN3Scenario
 				capture(r,output,"fang-advice",font,report);
 				edt(()->{ try {
 					report.check("Main Fang preview has no competing theoretical DPS card "+font,false,PanelPreview.text(r.panel).contains("DPS"));
-					PanelPreview.viewport(r.panel,output.resolve("fang-advice-viewport-"+font+".png"),225,600,"nex-fang-gain",List.of("nex-fang-gain","nex-fang-sample","nex-fang-details"),report);
+					PanelPreview.viewport(r.panel,output.resolve("fang-advice-viewport-"+font+".png"),225,600,"nex-fang-gain",List.of("nex-fang-gain","nex-fang-max-hit","nex-fang-sample","nex-fang-details"),report);
 				} catch(Exception ex) { throw new IllegalStateException(ex); } });
 				final NexScenarioPanel[] panel={null};
 				edt(()->{
@@ -174,7 +174,38 @@ final class OfflineN3Scenario
 				edt(()->report.check("Reset cannot resurrect scenario report "+font,false,PanelPreview.text(r.panel).contains("Conditional plan results")));
 				capture(r,output,"reset-pending",font,report);
 			}
-			zaros(output,report,font);
+			zeroDamage(output,report,font); zaros(output,report,font);
+		}
+	}
+	private static void zeroDamage(Path output,ReviewReport report,int font) throws Exception
+	{
+		try(var r=new OfflinePluginReplay(font))
+		{
+			r.carried.remove(11832); // This is the explicitly hypothetical Bandos alternative.
+			r.fight(30,20,60,true,offset->{ if(offset==4) {
+				r.worn=new LinkedHashMap<>(com.ironpath.advisor.NexOwnedFixtures.melee());
+				r.worn.put("body",26384); r.worn.put("cape",24224); r.worn.put("shield",24143);
+				r.plugin.onItemContainerChanged(new net.runelite.api.events.ItemContainerChanged(net.runelite.api.gameval.InventoryID.WORN,r.client.getItemContainer(net.runelite.api.gameval.InventoryID.WORN)));
+				when(r.local.getAnimation()).thenReturn(9471);
+				var event=new net.runelite.api.events.AnimationChanged(); event.setActor(r.local); r.plugin.onAnimationChanged(event);
+			} }); r.settle();
+			edt(()->{
+				var rows=r.plugin.ownedResult.advice.rows; int selected=-1;
+				for(int i=0;i<rows.size();i++)
+				{ var p=rows.get(i).pair; if(p.beforeSetup.slots.get("body")==26384 && p.afterSetup.slots.get("body")==11832) { selected=i; break; } }
+				if(selected<0) { throw new IllegalStateException("No Torva-to-Bandos comparison"); }
+				var row=rows.get(selected);
+				report.near("Bandos has zero paired offence change at this breakpoint "+font,0,row.gain.lower,0);
+				report.near("Bandos upper bound is also zero "+font,0,row.gain.upper,0);
+				PanelPreview.combo(r.panel,"nex-fang-alternative").setSelectedIndex(selected);
+				report.check("Exact zero has an explicit label "+font,"No expected damage change",NexScenarioPanelTest.named(r.panel,"nex-fang-gain",JTextArea.class).getText());
+				report.check("The replaced item is named "+font,"Replaces Torva platebody",NexScenarioPanelTest.named(r.panel,"nex-fang-replaces",JTextArea.class).getText());
+				report.check("Max-hit equality is visible "+font,"Max hit 47 → 47",NexScenarioPanelTest.named(r.panel,"nex-fang-max-hit",JTextArea.class).getText());
+			});
+			capture(r,output,"fang-zero-damage",font,report);
+			edt(()->{ try {
+				PanelPreview.viewport(r.panel,output.resolve("fang-zero-damage-viewport-"+font+".png"),225,600,"nex-fang-replaces",List.of("nex-fang-replaces","nex-fang-gain","nex-fang-max-hit","nex-fang-sample","nex-fang-details"),report);
+			} catch(Exception ex) { throw new IllegalStateException(ex); } });
 		}
 	}
 	private static void zaros(Path output,ReviewReport report,int font) throws Exception
