@@ -408,3 +408,12 @@ PNGs, `impact-hp-viewport-*` / `impact-zaros-viewport-*` native 225 × 600 views
 and matching `impact-report-*.txt` schema-5 exports. Public-event replay includes
 missing-row unknowns, shared complete-package conditions, new-kill freezing,
 edited pending work and Reset. [Verification and open limits](validation/nex-impact-conditions.md).
+
+## Issue #58 equipment review
+
+`nex-n3-plan` generates `fang-advice-*` (compact list), `equipment-expanded-*`,
+`fang-advice-viewport-*` and `fang-zero-damage-*` at fonts 12 and 20. Inspect the
+signed damage, shared observed baseline, defensive alternatives and unsupported
+contribution/time/supplies, then inspect How this was compared and the frozen report.
+The main role control says Melee; ranged/spec without supported attack evidence
+show no fabricated result. Run the normal full commands above after final changes.

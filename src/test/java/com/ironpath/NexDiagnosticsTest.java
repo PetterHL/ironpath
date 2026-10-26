@@ -307,9 +307,9 @@ public class NexDiagnosticsTest
 				var alternatives=PanelPreview.combo(r.panel,"nex-fang-alternative");
 				assertTrue(alternatives.getItemCount()>1);
 				for(int i=0;i<original.advice.rows.size();i++)
-				{ if(i!=alternatives.getSelectedIndex() && NexPresentation.changedItems(original.advice.rows.get(i).pair).isEmpty()) { selected[0]=i; break; } }
-				assertTrue("Inspect a nondefault unchanged-gear alternative",selected[0]>=0); alternatives.setSelectedIndex(selected[0]);
-				PanelPreview.click(r.panel,"Diagnostics →");
+				{ if(i!=alternatives.getSelectedIndex() && !NexPresentation.changedItems(original.advice.rows.get(i).pair).isEmpty()) { selected[0]=i; break; } }
+				assertTrue("Inspect a nondefault equipment alternative",selected[0]>=0); alternatives.setSelectedIndex(selected[0]); PanelPreview.click(r.panel,"Add item");
+				PanelPreview.click(r.panel,"How this was compared");
 				assertTrue(PanelPreview.text(r.panel).contains("Selected Fang alternative "+(selected[0]+1)+" · "));
 			});
 			r.fight(35,40,40,true,attack); r.settle();
@@ -317,6 +317,7 @@ public class NexDiagnosticsTest
 			assertFalse("The new kill must replace the main Fang selector",r.plugin.ownedResult.advice.rows.isEmpty());
 			SwingUtilities.invokeAndWait(()->{
 				String details=PanelPreview.text(r.panel);
+				assertTrue("An open equipment comparison stays frozen across another kill",details.contains("Comparing previous kill"));
 				assertTrue(details.contains("Frozen kill #"+first.key+" · "));
 				assertTrue(details.contains("Selected Fang alternative "+(selected[0]+1)+" · "));
 				assertTrue(details.contains(original.advice.rows.get(selected[0]).headline()));

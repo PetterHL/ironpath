@@ -14,6 +14,19 @@
 
 ## Current delivery
 
+- **Issue #58, 26 October 2026 / 0.33.0:** the user explicitly requested
+  implementation of the revised encounter advice design. This supersedes older
+  HP-clipped intervals, prominent ownership categories and blanket prohibitions
+  on theoretical contribution/time outputs. Read docs/validation/encounter-equipment-advice.md.
+  Ordinary damage uses the full accuracy-weighted distribution. Every displayed
+  alternative shares its observed sample baseline. Curated encounter/role candidates
+  and manual additions do not restrict the actual carried-package search. Keep
+  role weighting, verified same-pool contribution and duration support independent;
+  provisional partial Fang samples cannot establish whole-kill gain. Retain all
+  action mapping, finite-plan, privacy and lifecycle guards. PR #57 is an unmerged
+  dependency; deliver #58 separately for review, without remote merge or publication.
+
+
 - **0.32.3 Fang zero-display correction:** read
   docs/validation/nex-fang-zero-display.md. An additional three-attack Bandos
   screenshot shows a scalar +0.00, not the earlier two-attack negative interval.

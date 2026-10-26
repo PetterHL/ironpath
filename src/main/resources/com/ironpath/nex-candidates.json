@@ -1,0 +1,828 @@
+{
+  "encounter": "nex",
+  "source": "https://oldschool.runescape.wiki/w/Nex/Strategies",
+  "revision": "indexed-search-2026-10-26",
+  "reviewed": "2026-10-26",
+  "items": [
+    {
+      "id": 26382,
+      "name": "Torva full helm",
+      "slot": "head",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 24271,
+      "name": "Neitiznot faceguard",
+      "slot": "head",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 12931,
+      "name": "Serpentine helm",
+      "slot": "head",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 29010,
+      "name": "Eclipse moon helm",
+      "slot": "head",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 29801,
+      "name": "Amulet of rancour",
+      "slot": "neck",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 19553,
+      "name": "Amulet of torture",
+      "slot": "neck",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 24780,
+      "name": "Amulet of blood fury",
+      "slot": "neck",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 21295,
+      "name": "Infernal cape",
+      "slot": "cape",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 6570,
+      "name": "Fire cape",
+      "slot": "cape",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 26384,
+      "name": "Torva platebody",
+      "slot": "body",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 27238,
+      "name": "Masori body (f)",
+      "slot": "body",
+      "method": "any",
+      "roles": [
+        "MELEE",
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE",
+      "defensive": true
+    },
+    {
+      "id": 11832,
+      "name": "Bandos chestplate",
+      "slot": "body",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 29004,
+      "name": "Eclipse moon chestplate",
+      "slot": "body",
+      "method": "any",
+      "roles": [
+        "MELEE",
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 29280,
+      "name": "Mixed hide top",
+      "slot": "body",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 26386,
+      "name": "Torva platelegs",
+      "slot": "legs",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 27241,
+      "name": "Masori chaps (f)",
+      "slot": "legs",
+      "method": "any",
+      "roles": [
+        "MELEE",
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE",
+      "defensive": true
+    },
+    {
+      "id": 11834,
+      "name": "Bandos tassets",
+      "slot": "legs",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 29007,
+      "name": "Eclipse moon tassets",
+      "slot": "legs",
+      "method": "any",
+      "roles": [
+        "MELEE",
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 29283,
+      "name": "Mixed hide legs",
+      "slot": "legs",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 26219,
+      "name": "Osmumten's fang",
+      "slot": "weapon",
+      "method": "any",
+      "roles": [
+        "MELEE",
+        "SPECIAL"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 22322,
+      "name": "Avernic defender",
+      "slot": "shield",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 12954,
+      "name": "Dragon defender",
+      "slot": "shield",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 22981,
+      "name": "Ferocious gloves",
+      "slot": "hands",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 7462,
+      "name": "Barrows gloves",
+      "slot": "hands",
+      "method": "any",
+      "roles": [
+        "MELEE",
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 31097,
+      "name": "Avernic treads (max)",
+      "slot": "feet",
+      "method": "any",
+      "roles": [
+        "MELEE",
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 13239,
+      "name": "Primordial boots",
+      "slot": "feet",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 29806,
+      "name": "Aranea boots",
+      "slot": "feet",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 25975,
+      "name": "Lightbearer",
+      "slot": "ring",
+      "method": "any",
+      "roles": [
+        "MELEE",
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 28307,
+      "name": "Ultor ring",
+      "slot": "ring",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 11773,
+      "name": "Berserker ring (i)",
+      "slot": "ring",
+      "method": "nex-trio-mp2-one-kill",
+      "roles": [
+        "MELEE"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 27235,
+      "name": "Masori mask (f)",
+      "slot": "head",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 11826,
+      "name": "Armadyl helmet",
+      "slot": "head",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 11865,
+      "name": "Slayer helmet (i)",
+      "slot": "head",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 12496,
+      "name": "Ancient coif",
+      "slot": "head",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 33639,
+      "name": "Necklace of rupture",
+      "slot": "neck",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 19547,
+      "name": "Necklace of anguish",
+      "slot": "neck",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 6585,
+      "name": "Amulet of fury",
+      "slot": "neck",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 28949,
+      "name": "Dizana's quiver",
+      "slot": "cape",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 22109,
+      "name": "Ava's assembler",
+      "slot": "cape",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 13342,
+      "name": "Max cape",
+      "slot": "cape",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 9757,
+      "name": "Ranging cape(t)",
+      "slot": "cape",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 11828,
+      "name": "Armadyl chestplate",
+      "slot": "body",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 4736,
+      "name": "Karil's leathertop",
+      "slot": "body",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 12492,
+      "name": "Ancient d'hide body",
+      "slot": "body",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 11830,
+      "name": "Armadyl chainskirt",
+      "slot": "legs",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 4738,
+      "name": "Karil's leatherskirt",
+      "slot": "legs",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 12494,
+      "name": "Ancient chaps",
+      "slot": "legs",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 26374,
+      "name": "Zaryte crossbow",
+      "slot": "weapon",
+      "method": "any",
+      "roles": [
+        "RANGED",
+        "SPECIAL"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately. Compatible bolts and finite ammo/spec resources required for plans.",
+      "ammoKind": "BOLTS"
+    },
+    {
+      "id": 20997,
+      "name": "Twisted bow",
+      "slot": "weapon",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately. Requires compatible arrows; minion/reaver ranged switch.",
+      "ammoKind": "ARROWS"
+    },
+    {
+      "id": 11785,
+      "name": "Armadyl crossbow",
+      "slot": "weapon",
+      "method": "any",
+      "roles": [
+        "RANGED",
+        "SPECIAL"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately. Compatible bolts and finite ammo/spec resources required for plans.",
+      "ammoKind": "BOLTS"
+    },
+    {
+      "id": 12926,
+      "name": "Toxic blowpipe",
+      "slot": "weapon",
+      "method": "any",
+      "roles": [
+        "RANGED",
+        "SPECIAL"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately. Loaded darts/scales; minion/reaver switch.",
+      "ammoKind": "DARTS_AND_SCALES"
+    },
+    {
+      "id": 21012,
+      "name": "Dragon hunter crossbow",
+      "slot": "weapon",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately. Compatible bolts and finite ammo/spec resources required for plans.",
+      "ammoKind": "BOLTS"
+    },
+    {
+      "id": 21902,
+      "name": "Dragon crossbow",
+      "slot": "weapon",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately. Compatible bolts and finite ammo/spec resources required for plans.",
+      "ammoKind": "BOLTS"
+    },
+    {
+      "id": 21000,
+      "name": "Twisted buckler",
+      "slot": "shield",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 22002,
+      "name": "Dragonfire ward",
+      "slot": "shield",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 11926,
+      "name": "Odium ward",
+      "slot": "shield",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 21944,
+      "name": "Ruby dragon bolts (e)",
+      "slot": "ammo",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 33595,
+      "name": "Seeking dragon arrow",
+      "slot": "ammo",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 9242,
+      "name": "Ruby bolts (e)",
+      "slot": "ammo",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 26235,
+      "name": "Zaryte vambraces",
+      "slot": "hands",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 12490,
+      "name": "Ancient bracers",
+      "slot": "hands",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 13237,
+      "name": "Pegasian boots",
+      "slot": "feet",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 19921,
+      "name": "Ancient d'hide boots",
+      "slot": "feet",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 28310,
+      "name": "Venator ring",
+      "slot": "ring",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 11771,
+      "name": "Archers ring (i)",
+      "slot": "ring",
+      "method": "any",
+      "roles": [
+        "RANGED"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 27690,
+      "name": "Voidwaker",
+      "slot": "weapon",
+      "method": "any",
+      "roles": [
+        "SPECIAL"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    },
+    {
+      "id": 29577,
+      "name": "Burning claws",
+      "slot": "weapon",
+      "method": "any",
+      "roles": [
+        "SPECIAL"
+      ],
+      "requiredCompanions": [],
+      "conditions": "Complete compatible package; exact equip requirements and model support checked separately.",
+      "ammoKind": "NONE"
+    }
+  ],
+  "methods": [
+    "nex-trio-mp2-one-kill"
+  ]
+}

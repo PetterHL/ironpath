@@ -1,5 +1,8 @@
 # Validation records
 
+[Issue #58: encounter equipment advice, 0.33.0](encounter-equipment-advice.md)
+records the revised metric, candidate baseline, effort policy, estimate guards and native review.
+
 26 October 2026: **0.32.3 exact-zero Fang display** —
 [three-attack Bandos reproduction, explicit zero wording and before/after context](nex-fang-zero-display.md).
 

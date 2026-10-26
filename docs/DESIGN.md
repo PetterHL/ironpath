@@ -1,5 +1,13 @@
 # IronPath design
 
+Issue #58 (26 October 2026), build **0.33.0**, supersedes conflicting older
+HP-interval, ownership-label and blanket time-estimate guidance below. Current
+ordinary comparisons use the full accuracy-weighted damage distribution, one
+observed baseline per sample, a unified equipment list and role-specific curated
+candidates plus manual additions. Independent resource, mapping and lifecycle
+guards remain. [Implementation, sources and validation](validation/encounter-equipment-advice.md).
+
+
 Decision: 15 October 2026. **Encounter and method become the primary product
 context.** The user approved this transition and the Nex pilot. This replaces the
 old account-wide automatic-grind homepage and optional recent-boss direction.

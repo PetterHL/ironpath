@@ -1,5 +1,13 @@
 # Evidence and research index
 
+Issue #58 (26 October 2026), build **0.33.0**, supersedes conflicting older
+HP-interval, ownership-label and blanket time-estimate guidance below. Current
+ordinary comparisons use the full accuracy-weighted damage distribution, one
+observed baseline per sample, a unified equipment list and role-specific curated
+candidates plus manual additions. Independent resource, mapping and lifecycle
+guards remain. [Implementation, sources and validation](validation/encounter-equipment-advice.md).
+
+
 25 October: [Fang client-test follow-up](validation/nex-fang-action-followup.md)
 records the input-comparison defect, exact manta-ray class, public ENGINE message
 contract and the unproven source of missing live DC messages. Source pins and

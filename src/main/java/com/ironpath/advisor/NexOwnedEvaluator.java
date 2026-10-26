@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 /** Ordinary post-kill pairwise offence and complete carried-package search; no global progression policy. */
 public final class NexOwnedEvaluator
 {
-	public static final String VERSION="nex-owned-1";
+	public static final String VERSION="nex-owned-2";
+	KnowledgeCatalog catalog() { return catalog; }
 	// Computational guard, not a gear quota. A truncated search is explicitly not an optimum.
 	private static final int MAX_SEARCH_NODES=100000;
 	private final KnowledgeCatalog catalog;
@@ -108,20 +109,18 @@ public final class NexOwnedEvaluator
 		}
 		return List.copyOf(choices);
 	}
-	/** One exact hypothetical item on the owned baseline. Equip/lock/input checks still apply. */
-	List<ComparisonResult> fangUpgrades(NexSummary.Sample sample,CombatSetup owned,AccountSnapshot account,Preferences prefs)
+	/** One exact hypothetical item on the observed baseline. Equip/lock/input checks still apply. */
+	List<ComparisonResult> fangUpgrades(NexSummary.Sample sample,CombatSetup observed,AccountSnapshot account,Preferences prefs)
 	{
 		var state=sample.state;
-		var baseline=new CombatState(owned.slots,state.realLevels,state.visibleLevels,state.prayers,state.style,
+		var baseline=new CombatState(observed.slots,state.realLevels,state.visibleLevels,state.prayers,state.style,
 			state.specialEnergy,state.specialSelected,state.inventory,state.resources);
 		var s=new NexSummary.Sample(sample.tick,sample.phase,sample.window,sample.target,"melee",sample.animation,baseline,sample.targetState);
 		List<ComparisonResult> upgrades=new ArrayList<>();
 		for(MeleeItem item:catalog.melee.items)
 		{
-			if(item.slot.equals("weapon") || item.slot.equals("ring") || Objects.equals(owned.slots.get(item.slot),item.id)
-				|| state.slots.containsValue(item.id) || state.inventory!=null && state.inventory.getOrDefault(item.id,0L)>0
-				|| account.bank.known() && account.bank.value().contains(item.id)) { continue; }
-			Map<String,Integer> slots=new HashMap<>(owned.slots); slots.put(item.slot,item.id);
+			if(item.slot.equals("weapon") || item.slot.equals("ring") || Objects.equals(observed.slots.get(item.slot),item.id)) { continue; }
+			Map<String,Integer> slots=new HashMap<>(observed.slots); slots.put(item.slot,item.id);
 			try
 			{
 				var pair=compare(s,setup(s,slots),account,prefs,true,Set.of(item.id));

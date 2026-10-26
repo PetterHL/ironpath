@@ -81,7 +81,7 @@ final class OfflineLifecycleScenarios
 		onEdt(() -> {
 			PanelPreview.click(r.panel, "Base-stat comparisons");
 			PanelPreview.combo(r.panel, "nex-owned-support-filter").setSelectedItem("Unavailable comparisons");
-			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("ranged");
+			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("Ranged");
 			report.check("Unknown ammo has visible scoped explanation", true, PanelPreview.text(r.panel).contains("No comparison available"));
 		});
 		capture(r, output, "unknown-ammo", font, report);
@@ -262,7 +262,7 @@ final class OfflineLifecycleScenarios
 		var first = r.fight(20, 20, 60, true); r.settle();
 		onEdt(() -> {
 			PanelPreview.click(r.panel, "Base-stat comparisons");
-			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("melee");
+			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("Melee");
 			JComboBox<?> pairs = PanelPreview.combo(r.panel, "nex-owned-pair");
 			int bloodFury = -1;
 			for (int i = 0; i < pairs.getItemCount(); i++) { if (pairs.getItemAt(i).toString().toLowerCase(java.util.Locale.ROOT).contains("blood fury")) { bloodFury = i; break; } }

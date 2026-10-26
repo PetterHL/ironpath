@@ -402,19 +402,19 @@ public class NexPanelTest
 				JComboBox<?> support=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-support-filter".equals(c.getName())).findFirst().orElseThrow();
 				JComboBox<?> states=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-state".equals(c.getName())).findFirst().orElseThrow();
 				assertEquals(3,states.getItemCount());
-				role.setSelectedItem("melee"); assertEquals(1,states.getItemCount());
+				role.setSelectedItem("Melee"); assertEquals(1,states.getItemCount());
 				support.setSelectedItem("All states"); assertEquals(2,states.getItemCount());
 				support.setSelectedItem("Unavailable comparisons"); assertEquals(1,states.getItemCount());
 				assertTrue(shown(panel).contains("No comparison available"));
 				assertFalse(shown(panel).contains("Target unknown or minion"));
 				capture(panel,"owned-filter-gaps-"+(int)font);
-				role.setSelectedItem("ranged"); assertEquals(0,states.getItemCount()); assertFalse(states.isEnabled());
+				role.setSelectedItem("Ranged"); assertEquals(0,states.getItemCount()); assertFalse(states.isEnabled());
 				assertTrue(shown(panel).contains("No matching comparisons"));
 				support.setSelectedItem("All states"); assertEquals(2,states.getItemCount()); assertTrue(states.isEnabled());
 				states.setSelectedIndex(1); assertTrue(shown(panel).contains("Bank gear"));
 				capture(panel,"owned-filter-bank-"+(int)font);
 				panel.render("Identity changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"",null);
-				role.setSelectedItem("melee"); support.setSelectedItem("All states");
+				role.setSelectedItem("Melee"); support.setSelectedItem("All states");
 				assertFalse(shown(panel).contains("Owned equipment")); assertFalse(shown(panel).contains("Target unknown or minion"));
 			}
 		} catch(Exception ex) { throw new RuntimeException(ex); } });

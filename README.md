@@ -5,34 +5,29 @@ you play. The current pilot is **Nex / Trio MP2 / one kill per trip**, with
 Lightbearer throughout and assumed upgraded Death Charge. Gear, switches,
 levels and active prayers are observed automatically; no setup form is required.
 
-**Development build 0.32.3:** exact-zero Fang comparisons read **No expected
-damage change**, with the replaced item and max hit before/after visible.
-Small nonzero changes retain their direction. [Display correction](docs/validation/nex-fang-zero-display.md).
+**Development build 0.33.0:** Compare setups uses **Melee**, **Ranged** and
+**Special attacks**, with a compact equipment list and expandable comparisons.
+Ordinary damage includes accuracy and the complete damage distribution without
+clipping against remaining target HP. Positive, zero and negative alternatives
+share the observed baseline. **Add comparison item** extends the Nex strategy-table
+suggestions. Ironman ordering combines supported damage benefit with remaining
+acquisition work; no GE prices or acquisition-hour score is shown.
 
-The main comparison is the provisional **Fang
-equipment** preview. The older theoretical DPS cards have been removed from the
-homepage. **Base-stat comparisons** opens the retained per-state gear comparisons
-and optional declared spec/resource planner. Session counts are in Diagnostics.
-During capture, **Tracking kill…** shows advancing recorded time and phase.
-An unobserved smoke start stays explicitly unconfirmed.
-[Cleanup and verification](docs/validation/nex-sidebar-cleanup.md).
-[Matched live check](docs/validation/nex-fang-live-0322.md): active status/time/
-phase are confirmed for one kill; Fang coverage and DC message gaps remain open.
+The current automatic numerical slice remains ordinary fixed-weapon/style/tempo
+melee samples. Ranged and special attack attribution remain unavailable. Open
+**How this was compared** for sample scope, provisional mapping status, acquisition
+checks and missing inputs. Whole-encounter damage weighting and verified contribution
+are unavailable in current captures, so dependent contribution/time values read
+**Not estimated**. The constant-throughput estimate model is implemented for supported
+inputs; supplies also remain **Not estimated** without a consumption model.
+Damage contribution above the list remains **Unverified**.
+[Scope, sources and validation](docs/validation/encounter-equipment-advice.md).
 
-After a completed kill, Compare setups shows equipment alternatives for the
-same supported ordinary Fang action sample, at the same weapon, style and tempo.
-It keeps carried gear, conditional bank preparation and hypothetical upgrades
-separate. Expected-damage bounds retain zero and negative alternatives. Food
-signals include manta ray; exact Death Charge messages are captured from the
-supported game-message channels.
-
-The preview remains **provisional**: action mappings, supported Nex windows and
-base target stats are not fully validated. There is no whole-kill extrapolation,
-automatic spec recommendation or team-time estimate. Damage contribution remains
-**Unverified**. The optional planner uses explicitly declared inputs and does not
-turn observations into confirmed attack, supply or Death Charge plans.
-[Preview contract](docs/validation/nex-fang-advice.md) ·
-[Latest live findings and corrections](docs/validation/nex-fang-action-followup.md).
+**Base-stat comparisons** retains the per-state comparisons and optional declared
+spec/resource planner. During capture, **Tracking kill…** advances recorded time
+and phase; an unobserved smoke start stays unconfirmed. All finite-plan resource
+guards remain intact. [Earlier matched live check](docs/validation/nex-fang-live-0322.md)
+validates status/time for one kill, not current advice coverage or DC mappings.
 
 Last kill stays above the collapsible **Compare setups**, **Team & method** and
 **Diagnostics** sections. Optional context corrections preserve frozen gear and

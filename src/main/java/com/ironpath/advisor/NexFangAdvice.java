@@ -11,7 +11,7 @@ import java.util.function.BooleanSupplier;
 /** Worker-only fixed-tempo equipment preview. Provisional signals never become validated attacks. */
 public final class NexFangAdvice
 {
-	public static final String VERSION="nex-fang-advice-2";
+	public static final String VERSION="nex-fang-advice-3";
 	public static final String STATUS="PROVISIONAL_MAPPING_AND_BASE_STATS";
 	// Computational bound, with explicit exclusions rather than a claim of complete coverage.
 	private static final int MAX_GROUPS=64;
@@ -22,7 +22,6 @@ public final class NexFangAdvice
 	{
 		public final double lower,upper;
 		Range(double lower,double upper) { this.lower=lower; this.upper=upper; }
-		Range times(int n) { return new Range(lower*n,upper*n); }
 	}
 	public static final class Row
 	{
@@ -33,30 +32,31 @@ public final class NexFangAdvice
 		public final List<Integer> actionIndices;
 		public final Range gain;
 		public final boolean exhaustive;
+		public final double beforeDamage,afterDamage;
+		public final Double damageGain;
+		public final IronmanOrder.Work work;
+		public final EncounterImpact.Estimate impact;
 		Row(Kind kind,NexSummary.Sample sample,ComparisonResult pair,List<Integer> indices,boolean exhaustive)
 		{
-			this.kind=kind; this.sample=sample; this.pair=pair; actionIndices=List.copyOf(indices);
-			gain=pairedBounds(pair.before,pair.after).times(indices.size()); this.exhaustive=exhaustive;
+			this(kind,sample,pair,indices,exhaustive,new IronmanOrder.Work(6,"Acquisition evidence unavailable"));
+		}
+		Row(Kind kind,NexSummary.Sample sample,ComparisonResult pair,List<Integer> indices,boolean exhaustive,IronmanOrder.Work work)
+		{
+			this.work=work; this.kind=kind; this.sample=sample; this.pair=pair; actionIndices=List.copyOf(indices);
+			beforeDamage=potential(pair.before)*indices.size(); afterDamage=potential(pair.after)*indices.size();
+			gain=new Range(afterDamage-beforeDamage,afterDamage-beforeDamage); this.exhaustive=exhaustive;
+			damageGain=beforeDamage>0?gain.lower/beforeDamage:null;
+			// Provisional Fang samples do not establish the damage mix or whole-kill contribution.
+			impact=EncounterImpact.estimate(null,EncounterImpact.weighted(null,damageGain,false,true),null,null);
 		}
 		public String headline()
 		{
-			if(gain.lower==0 && gain.upper==0) { return "No expected damage change"; }
-			if(Math.abs(gain.upper-gain.lower)<1e-9)
-			{
-				if(Math.abs(gain.lower)<0.005)
-				{ return gain.lower>=0?"<0.01 expected gain":gain.upper<=0?"<0.01 expected loss":"<0.01 expected damage change"; }
-				return String.format(Locale.ROOT,"%+.2f expected damage",gain.lower);
-			}
-			return boundLabel(gain.lower,true)+" to "+boundLabel(gain.upper,false)+" expected damage";
+			if(gain.lower==0) { return "No damage change"; }
+			if(damageGain==null) { return String.format(Locale.ROOT,"%+.2f damage",gain.lower); }
+			double pct=100*damageGain;
+			return Math.abs(pct)<0.05?(pct<0?"−":"+")+"<0.1% damage":String.format(Locale.ROOT,"%+.1f%% damage",pct);
 		}
-		private static String boundLabel(double value,boolean lower)
-		{
-			// Numerical residue at zero must not become +0.01 or a signed -0.00.
-			// Exact exported bounds remain untouched.
-			if(Math.abs(value)<1e-9) { value=0; }
-			double rounded=(lower?Math.floor(value*100):Math.ceil(value*100))/100;
-			return rounded==0?"0.00":String.format(Locale.ROOT,"%+.2f",rounded);
-		}
+
 	}
 	public final List<Row> rows;
 	/** One reason for each excluded candidate; not a percentage of kill damage/time. */
@@ -113,17 +113,24 @@ public final class NexFangAdvice
 					if(!choice.supported() || !fixed(choice.comparison)) { continue; }
 					if(owned==null || choice.comparison.after.dps>owned.comparison.after.dps) { owned=choice; }
 					Kind kind=choice.bankPreparation?Kind.BANK_PREPARATION:Kind.CARRIED;
-					groupRows.add(new Row(kind,sample,choice.comparison,indices,choice.exhaustive));
+					groupRows.add(new Row(kind,sample,choice.comparison,indices,choice.exhaustive,IronmanOrder.work(choice.comparison,evaluator.catalog(),account,prefs)));
 					for(var pair:choice.alternatives)
 					{
 						if(fixed(pair) && !pair.afterSetup.slots.equals(choice.proposed.slots))
-						{ groupRows.add(new Row(kind,sample,pair,indices,false)); }
+						{ groupRows.add(new Row(kind,sample,pair,indices,false,IronmanOrder.work(pair,evaluator.catalog(),account,prefs))); }
 					}
 				}
 				if(owned==null) { indices.forEach(i->excluded.put(i,Gap.PACKAGE_INPUTS)); continue; }
-				for(var pair:evaluator.fangUpgrades(sample,owned.proposed,account,prefs))
-				{ if(fixed(pair)) { groupRows.add(new Row(Kind.UPGRADE,sample,pair,indices,false)); } }
-				included.addAll(indices); rows.addAll(groupRows);
+				for(var pair:evaluator.fangUpgrades(sample,evaluator.setup(sample,sample.state.slots),account,prefs))
+				{ if(fixed(pair)) { groupRows.add(new Row(Kind.UPGRADE,sample,pair,indices,false,IronmanOrder.work(pair,evaluator.catalog(),account,prefs))); } }
+				// One shared observed baseline. Duplicate ownership paths stay internal.
+				Map<Map<String,Integer>,Row> unique=new LinkedHashMap<>();
+				for(Row r:groupRows) { unique.putIfAbsent(r.pair.afterSetup.slots,r); }
+				var ordered=new ArrayList<>(unique.values());
+				ordered.sort(Comparator.comparingInt((Row r)->r.gain.lower>1e-9?0:1)
+					.thenComparingDouble(r->-IronmanOrder.priority(r.damageGain==null?0:r.damageGain,r.work.tier))
+					.thenComparing(r->new TreeMap<>(r.pair.afterSetup.slots).toString()));
+				included.addAll(indices); rows.addAll(ordered);
 			}
 			catch(IllegalArgumentException invalid) { indices.forEach(i->excluded.put(i,Gap.PACKAGE_INPUTS)); }
 		}
@@ -147,29 +154,16 @@ public final class NexFangAdvice
 		if(!Set.of("NONE","FEAR_THE_SHADOW").contains(s.window)) { return Gap.UNSUPPORTED_WINDOW; }
 		return null;
 	}
-	/** All positive pre-impact HP, paired at every integer breakpoint. Beyond both maxima the
-	 * expectations are constant. No bar midpoint, callback HP or expected-damage HP trajectory. */
+	/** Unclipped ordinary attack distribution, including accuracy and successful zero-to-one rolls. */
+	public static double potential(PoweredMagic.Metrics m)
+	{
+		return SpecAttackModel.ordinary(m.minHit,m.maxHit,m.hitChance,false,
+			new SpecAttackModel.Limit(100000,100000),VERSION).expectedDamage;
+	}
+	/** Scalar compatibility for report consumers. Remaining HP is deliberately not an input. */
 	public static Range pairedBounds(PoweredMagic.Metrics before,PoweredMagic.Metrics after)
-	{
-		double[] b=expectations(before),a=expectations(after);
-		double lo=Double.POSITIVE_INFINITY,hi=Double.NEGATIVE_INFINITY;
-		for(int hp=1;hp<Math.max(b.length,a.length);hp++)
-		{
-			double delta=a[Math.min(hp,a.length-1)]-b[Math.min(hp,b.length-1)];
-			lo=Math.min(lo,delta); hi=Math.max(hi,delta);
-		}
-		return new Range(lo,hi);
-	}
-	private static double[] expectations(PoweredMagic.Metrics m)
-	{
-		var damage=SpecAttackModel.ordinary(m.minHit,m.maxHit,m.hitChance,false,new SpecAttackModel.Limit(100000,100000),VERSION);
-		double[] probabilities=new double[Math.max(1,damage.maximum)+1];
-		for(var outcome:damage.outcomes) { probabilities[outcome.damage]+=outcome.probability; }
-		double tail=0; double[] tails=new double[probabilities.length],expected=new double[probabilities.length];
-		for(int d=probabilities.length-1;d>=1;d--) { tail+=probabilities[d]; tails[d]=tail; }
-		for(int hp=1;hp<expected.length;hp++) { expected[hp]=expected[hp-1]+tails[hp]; }
-		return expected;
-	}
+	{ double delta=potential(after)-potential(before); return new Range(delta,delta); }
+
 	public JsonObject json()
 	{
 		JsonObject out=new JsonObject(); out.addProperty("model",VERSION); out.addProperty("status",STATUS);
@@ -177,7 +171,10 @@ public final class NexFangAdvice
 		out.addProperty("sampleReferences","actionIndices reference explicit ACTION_SIGNAL.actionIndex values, independent of callback sorting");
 		out.addProperty("validated",false); out.addProperty("candidates",candidates); out.addProperty("included",included.size());
 		out.addProperty("ambiguousImpacts",ambiguousImpacts); out.addProperty("zeroImpacts",zeroImpacts);
-		out.addProperty("scope","Independent equipment alternatives on identical provisional Fang samples, fixed weapon/style/5-tick tempo; base Nex stats, ordinary untransformed damage. HP unknown: all positive integer pre-impact HP, paired at every damage breakpoint; above both maxima constant. Sum bounds are conservative outer bounds, not a feasible HP trajectory. Mapping/window/base-stat assumptions unvalidated. No observed-damage subtraction, whole-kill extrapolation, seconds, spec, DC or resource plan.");
+		var candidates=EncounterCandidates.nex();
+		out.addProperty("candidateSource",candidates.source); out.addProperty("candidateRevision",candidates.revision);
+		out.addProperty("ordering",IronmanOrder.VERSION);
+		out.addProperty("scope","Independent equipment alternatives on identical provisional Fang samples, fixed weapon/style/5-tick tempo; base Nex stats, ordinary untransformed damage. Potential damage uses the unclipped ordinary distribution, including accuracy; remaining HP is not an input. All alternatives use the observed setup. Mapping/window/base-stat assumptions unvalidated. No observed-damage subtraction or whole-kill extrapolation. Contribution/time require independent supported whole-encounter weighting and contribution; unavailable here. No spec, DC or resource plan.");
 		JsonArray blocked=new JsonArray(); blockers.stream().sorted().forEach(g->blocked.add(g.name())); out.add("blockers",blocked);
 		JsonArray omissions=new JsonArray(); excluded.forEach((index,gap)->{ JsonObject e=new JsonObject(); e.addProperty("actionIndex",index); e.addProperty("reason",gap.name()); omissions.add(e); }); out.add("exclusions",omissions);
 		JsonArray results=new JsonArray();
@@ -186,6 +183,11 @@ public final class NexFangAdvice
 			JsonObject r=new JsonObject(); r.addProperty("kind",row.kind.name());
 			r.addProperty("phase",row.sample.phase); r.addProperty("window",row.sample.window);
 			JsonArray indices=new JsonArray(); row.actionIndices.forEach(indices::add); r.add("actionIndices",indices);
+			r.addProperty("damageBefore",row.beforeDamage); r.addProperty("damageAfter",row.afterDamage);
+			r.addProperty("damageGain",row.damageGain); r.addProperty("metric","unclipped ordinary potential damage");
+			r.addProperty("acquisitionTier",row.work.tier); r.addProperty("acquisitionReason",row.work.reason);
+			r.addProperty("impactModel",EncounterImpact.VERSION); r.addProperty("impactGap",row.impact.gap);
+			r.addProperty("suppliesGap","Incoming-damage and consumption model unavailable");
 			r.addProperty("gainLower",row.gain.lower); r.addProperty("gainUpper",row.gain.upper); r.addProperty("exhaustivePackageSearch",row.exhaustive);
 			r.add("beforeSlots",slots(row.pair.beforeSetup)); r.add("afterSlots",slots(row.pair.afterSetup));
 			r.addProperty("beforeMin",row.pair.before.minHit); r.addProperty("beforeMax",row.pair.before.maxHit); r.addProperty("beforeAccuracy",row.pair.before.hitChance);

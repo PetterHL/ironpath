@@ -7,6 +7,29 @@ up covered PRs/branches on 19 October. This includes CTX1 #43, native UI1 #46,
 PR #48's current presentation/follow-up fixes and PR #49's sidebar simplification.
 Integration does not establish live-client or player acceptance.
 
+## Accepted scope — issue #58, 26 October 2026
+
+The user requested implementation of [#58](https://github.com/PetterHL/ironpath/issues/58).
+Build **0.33.0** follows open PR #57 `ed58691816ad262d720cc2ebca3526b72755c153`
+on top of main `2018144`; preserve that dependency and deliver a separate review PR.
+No remote merge or Plugin Hub publication is authorized.
+
+This decision supersedes earlier HP-driven damage intervals, ownership headings,
+and the blanket N4 scheduling restriction on lightweight theoretical estimates.
+Use ordinary potential damage including accuracy, one observed baseline per sample,
+Nex Ranged/Hybrid strategy-table suggestions, manual additions, signed defensive
+alternatives and qualitative Ironman effort-aware ordering. The contribution/time
+model requires supported encounter-weighted personal gain and verified same-pool
+share; current partial provisional samples supply neither. Independent damage
+remains available. Supplies stay Not estimated until incoming damage/consumption
+support exists. Ranged/spec attribution and full finite-plan gates remain open.
+
+Current implementation, evidence and remaining live checks are recorded in
+[the validation report](docs/validation/encounter-equipment-advice.md), not a second backlog.
+The remaining sequence is review #57/#58, validate mappings/coverage and usefulness,
+then broaden supported weighting, ranged/spec and supply outputs. More encounters
+reuse the candidate schema and estimate service; no second catalogue or simulator.
+
 ## Current baseline and order
 
 Main baseline: **0.31.0**, `2018144`, including merged PR #55, PR #56 and PR #54 (`9a2b592`),
@@ -27,7 +50,7 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Integrated, 0.31.0 / PR #55 | **N3-ACTION: action evidence and attack clock** | Bounded Fang state, food/DC messages and frozen timeline; controlled client mapping check remains pending |
 | PR #57, 0.32.2 follow-up | **N3-ADVICE: provisional automatic Fang preview** | 0.32.1 corrects resources/grouping and messages after one supplied 0.32.0 report. 0.32.2 retires duplicate homepage DPS cards and keeps the older calculations behind Base-stat comparisons before the next client test. Mapping/window/base-stat assumptions and product acceptance remain open |
 | After the first useful comparison | **Broader N3 automatic recommendations** | Ranged attribution and finite spec/DC/supply plans remain gated; solve dependencies as needed for each added output |
-| After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
+| Issue #58, 0.33.0 for review | **Theoretical contribution/team-time estimates** | Formula service implemented with independent support gates; current automatic whole-encounter weighting/share remain unavailable |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
 
 Deliver future changes through focused PRs; no automatic merge or Plugin Hub publication.
@@ -577,6 +600,12 @@ Reuses the N3A/B/C runtime caller, package factory and catalogue; no second engi
 
 
 ## N4 — Validate personal contribution and team-time estimates
+
+Issue #58 authorizes the lightweight theoretical model now, independently of a full
+simulator. Build 0.33.0 implements the formula and support guards; current automatic
+whole-encounter weighting and contribution remain unsupported. Older implementation
+restrictions below retain their historical scope only.
+
 
 Use only a bounded method model supported by N1–N3 evidence. Account for phase/
 target damage, finite HP, rounding/overkill, mandatory windows, team damage and

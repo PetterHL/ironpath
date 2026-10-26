@@ -1,7 +1,15 @@
 # Capability and evidence inventory
 
+Issue #58 (26 October 2026), build **0.33.0**, supersedes conflicting older
+HP-interval, ownership-label and blanket time-estimate guidance below. Current
+ordinary comparisons use the full accuracy-weighted damage distribution, one
+observed baseline per sample, a unified equipment list and role-specific curated
+candidates plus manual additions. Independent resource, mapping and lifecycle
+guards remain. [Implementation, sources and validation](validation/encounter-equipment-advice.md).
+
+
 16 October 2026. This file records support and gaps; [TASKS](../TASKS.md) owns work.
-Current knowledge is `n3-observation-1` (0.28.2 for review); catalogue schema 14 and preferences schema 4 (future context defaults plus explicit Nex method/locks; schemas 1–3 migrate without kill confirmation).
+Current knowledge is `n3-equipment-advice-1` (0.33.0 for review); catalogue schema 14 and preferences schema 4 (future context defaults plus explicit Nex method/locks; schemas 1–3 migrate without kill confirmation).
 
 The [observation follow-up](research/nex-observation.md) adds five reviewed maximum
 HP facts to the same target records (Nex 3400; named minions 500). These bound
@@ -42,7 +50,7 @@ the retained implementation; it does not claim Nex recommendations are ready.
 | Food/pots/spells | Six finite supply families plus Death Charge Magic/rune checks and scoped costs; no consumption attribution, healing/survival or rune substitution | N3 0.25.0 for review |
 | Zaros | Declared fixed or per-attack overhead/Defence/Magic and independent HP/caps; Magic-type Voidwaker under declared Deflect Melee; frozen public forms/health ratios; unknown dynamic effects and ordinary melee deflection retain gaps | N3 0.27.0 for review |
 | Editable context | Optional typed per-kill annotations, inherited future defaults, frozen evaluation inputs and descriptive matching; no new combat mechanic | CTX1 included in main 0.23.3; live acceptance open |
-| Personal share / team seconds | No validated counterfactual | N4 |
+| Personal share / team seconds | Guarded theoretical model implemented; automatic whole-encounter weighting/share remain unsupported | Issue #58 / N4 validation |
 
 Track observation, phase offence, personal contribution and team time independently.
 Publish supported/eligible fractions and specific important omissions. Unreviewed
