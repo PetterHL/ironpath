@@ -127,8 +127,16 @@ The finite spec/DC/ammo/supply planner retains all eight automatic gaps.
 ## Validation
 
 Targeted model, diagnostics, frozen-history, sprites and native N3 review were
-run with JDK 11.0.32.1+1 / Gradle 8.10 / pinned RuneLite 1.13.2. Final full-command
-results are recorded below after completion.
+run with JDK 11.0.32.1+1 / Gradle 8.10 / pinned RuneLite 1.13.2.
+[PR #59](https://github.com/PetterHL/ironpath/pull/59) records the tested revisions,
+actual final counts, compatibility version and current CI/artifact links.
+
+Required full commands:
+
+```sh
+./gradlew -PruneLiteVersion=1.13.2 test build offlineReview --args=all --no-daemon
+./gradlew test build --no-daemon
+```
 
 The revised zero fixture keeps the observed defender consistent with its explicit
 synthetic planning lock. The original mismatch would require a combined change;
