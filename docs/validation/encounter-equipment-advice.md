@@ -76,13 +76,28 @@ and the separate artwork terms apply.
 
 ## Ironman ordering
 
-`ironman-order-1` reuses reviewed catalogue routes, acquisition path predicates,
+`ironman-order-2` reuses reviewed catalogue routes, acquisition path predicates,
 method profiles, unlocks, skills and observed components. An already observed
 item has no acquisition work. Confirmed acquisition components can shorten work
 to assembly; required quantities and skill gates remain explicit. Missing data
 receives an unknown tier, never free acquisition. Failed independent drop rolls
 are not an input. The worst remaining tier in a combined package is conservative;
 shared allocation/assembly details remain in the source route text.
+
+PR #59's 27 October review follow-up evaluates `USABLE` through observed exact
+items, their equipment levels and recursive use conditions. Remaining-work ranking
+starts at path outputs, stops at completed downstream stages, combines required
+dependencies and selects the least demanding supported alternative. Remaining
+`ASSEMBLY` prerequisite nodes retain known-unmet and unknown gates; possession
+of a damaged Torva piece and components does not establish 90 Smithing. Owned
+unstrung/strung zenyte amulets bypass shard acquisition and earlier Crafting work,
+while the final Magic requirement still applies. Routine assembly supplies and
+shared allocations remain explicit checks, not a confirmed executable recipe.
+
+Six focused regression tests cover Nex crossbow readiness, extra/recursive usable
+conditions and unknowns, Torva Smithing, downstream zenyte stages, the NPC singing
+alternative and confirmed acquisition quantities. The original implementation
+failed the focused Nex method, usable predicate, Torva skill and zenyte cases.
 
 Positive damage changes precede sidegrades/downgrades. Within that grouping, the
 internal ordering is `log2(1 + 100 × max(0, gain)) - 0.5 × remainingWorkTier`.
