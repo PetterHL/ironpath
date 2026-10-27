@@ -277,6 +277,35 @@ public class NexObserverTest
 		assertTrue(s.timeline.stream().anyMatch(x->x.window.equals("FEAR_THE_SHADOW")));
 		observer.tick(); assertEquals(1,session.recent().size());
 	}
+	@Test public void spawningAroundOneCompletedKillDoesNotCreateExtraAttempts()
+	{
+		// An initial active-arena reading can be present while Nex is still spawning.
+		barrier.set(3); when(boss.getId()).thenReturn(NpcID.NEX_SPAWNING);
+		observer.tick(); tick.set(1); observer.transition();
+		// The one actual encounter has all the independently required completion signals.
+		tick.set(2); when(boss.getId()).thenReturn(NpcID.NEX); observer.tick();
+		observer.overhead(boss,"Fill my soul with smoke!"); phasesAndEnd();
+		// A fresh spawning actor and a new 2 -> 3 barrier reading are not another fight.
+		NPC respawn=npc(NpcID.NEX_SPAWNING,3); npcs.clear(); npcs.add(respawn);
+		tick.set(37); barrier.set(3); observer.tick();
+		tick.set(38); observer.transition();
+		assertEquals("One real kill, without excluded waiting/respawn captures",1,session.recent().size());
+		assertEquals(Outcome.COMPLETE,session.recent().get(0).outcome);
+		assertEquals(1,session.stats().complete); assertEquals(0,session.stats().censored);
+		assertSame(session.stats().last,session.stats().lastAttempt);
+	}
+	@Test public void smokeOnSpawningFormStartsImmediatelyAndKeepsPrestartActionContext()
+	{
+		barrier.set(3); when(boss.getId()).thenReturn(NpcID.NEX_SPAWNING);
+		observer.tick(); observer.chat(ChatMessageType.SPAM,"You eat the shark.");
+		assertFalse("Spawning plus an arena reading is not combat start",observer.capture.active());
+		tick.set(1); observer.overhead(boss,"Fill my soul with smoke!");
+		assertTrue("Smoke is authoritative even before the NPC getter transforms",observer.capture.active());
+		when(boss.getId()).thenReturn(NpcID.NEX); phasesAndEnd();
+		assertEquals(1,session.recent().size()); var summary=session.recent().get(0);
+		assertEquals(Outcome.COMPLETE,summary.outcome); assertEquals(1,summary.startTick);
+		assertEquals(1,summary.actions.signals.stream().filter(a->a.kind==com.ironpath.nex.NexActions.Kind.FOOD_SHARK && a.tick==0).count());
+	}
 	@Test public void midKillEnableAndDeathDoNotCreateFalseCompletionsOrRepeatedAttempts()
 	{
 		barrier.set(3); observer.tick(); assertTrue(observer.capture.active()); phasesAndEnd();

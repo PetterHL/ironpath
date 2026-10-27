@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /** Bounded deterministic Nex evidence machine. The adapter supplies reviewed signals and spawn keys. */
 public final class NexCapture
 {
-	public static final String VERSION="nex-public-11";
+	public static final String VERSION="nex-public-12";
 	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, MAX_SIGNALS=32,
 		END_GRACE=5, END_WAIT=20;
 	private final Consumer<NexSummary> sink;

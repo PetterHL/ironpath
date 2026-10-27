@@ -1,6 +1,6 @@
 # IronPath active work
 
-Updated **26 October 2026**. This is the **only active backlog and roadmap**.
+Updated **28 October 2026**. This is the **only active backlog and roadmap**.
 Start new work from current main; do not continue retired stacked branches.
 The user authorized merging the complete 0.23.3 delivery into main and cleaning
 up covered PRs/branches on 19 October. This includes CTX1 #43, native UI1 #46,
@@ -26,6 +26,9 @@ support exists. Ranged/spec attribution and full finite-plan gates remain open.
 
 Current implementation, evidence and remaining live checks are recorded in
 [the validation report](docs/validation/encounter-equipment-advice.md), not a second backlog.
+The **0.33.1** [spawning follow-up](docs/validation/nex-spawning-attempts.md) fixes
+spurious partial captures around one completed kill on the same PR #59. It does
+not widen Fang window support or promote gameplay mappings.
 The remaining sequence is review #57/#58, validate mappings/coverage and usefulness,
 then broaden supported weighting, ranged/spec and supply outputs. More encounters
 reuse the candidate schema and estimate service; no second catalogue or simulator.

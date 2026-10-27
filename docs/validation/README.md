@@ -1,5 +1,7 @@
 # Validation records
 
+[Nex spawning attempts correction, 0.33.1](nex-spawning-attempts.md)
+
 [Issue #58: encounter equipment advice, 0.33.0](encounter-equipment-advice.md)
 records the revised metric, candidate baseline, effort policy, estimate guards and native review.
 

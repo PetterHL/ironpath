@@ -14,6 +14,13 @@
 
 ## Current delivery
 
+- **0.33.1 spawning follow-up, 28 October 2026:** the user confirms one ordinary
+  completed kill despite two additional excluded attempts. Read
+  docs/validation/nex-spawning-attempts.md. A spawning NPC and arena reading alone
+  cannot start a partial capture; actual smoke still starts immediately, including
+  before the NPC getter transforms. Preserve mid-kill capture, incomplete-action
+  diagnostics, pre-start context and all completion/window support guards.
+
 - **Issue #58, 26 October 2026 / 0.33.0:** the user explicitly requested
   implementation of the revised encounter advice design. This supersedes older
   HP-clipped intervals, prominent ownership categories and blanket prohibitions

@@ -263,6 +263,10 @@ final class NexObserver
 		}
 		if(attempted || boss==null || (barrier!=3 && !(smokeStart && barrier==2))
 			|| boss.getId()==NpcID.NEX_DYING || !sameView(client.getLocalPlayer())) { return; }
+		// An active-arena reading can outlive a kill or arrive while Nex is spawning.
+		// Keep bounded pre-start actions, but do not turn that waiting into an attempt.
+		// The smoke callback remains authoritative if the NPC getter has not transformed yet.
+		if(!smokeStart && boss.getId()==NpcID.NEX_SPAWNING) { return; }
 		if(!smokeStart && !allowPartial && boundary!=tick) { return; }
 		hits.clear(); projectiles.clear(); effects.clear(); resetHud(); attempted=true;
 		capture.start(tick,smokeStart,method,roster(),defaults);
