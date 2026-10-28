@@ -15,6 +15,7 @@ public final class NexSession
 	private boolean suspended, atBank, returning, arenaReload;
 	private long revision, scope;
 	public synchronized long revision() { return revision; }
+	public synchronized long scope() { return scope; }
 	public synchronized boolean suspended() { return suspended; }
 	public synchronized boolean accepts(String identity,int world)
 	{ return this.identity!=null && this.identity.equals(identity) && this.world==world && !suspended; }
@@ -39,6 +40,13 @@ public final class NexSession
 	{
 		NexRecord record=record(key); if(record==null || record.inputs!=null) { return record; }
 		record=record.inputs(inputs); records.put(key,record); return record;
+	}
+	/** Keep the captured account/gear basis while applying new planning settings. Old worker results fail publication. */
+	public synchronized NexRecord planning(long key,com.ironpath.preferences.Preferences preferences)
+	{
+		NexRecord old=record(key);
+		if(old==null || old.inputs==null || old.inputs.uses(preferences)) { return old; }
+		NexRecord next=old.inputs(old.inputs.withPreferences(preferences)); records.put(key,next); ++revision; return next;
 	}
 	public synchronized boolean publish(NexRecord expected,com.ironpath.advisor.NexOwnedResult result)
 	{

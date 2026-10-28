@@ -5,41 +5,44 @@ you play. The current pilot is **Nex / Trio MP2 / one kill per trip**, with
 Lightbearer throughout and assumed upgraded Death Charge. Gear, switches,
 levels and active prayers are observed automatically; no setup form is required.
 
-**Development build 0.32.3:** exact-zero Fang comparisons read **No expected
-damage change**, with the replaced item and max hit before/after visible.
-Small nonzero changes retain their direction. [Display correction](docs/validation/nex-fang-zero-display.md).
+**Development build 0.34.0:** completed kills retain their loadouts, levels,
+prayers and encounter readings for reusable comparisons. Open alternatives or
+change Team & method without another kill. Useful partial loadouts can also be
+opened with **Compare recorded setup**. A new kill supplies the next basis.
 
-The main comparison is the provisional **Fang
-equipment** preview. The older theoretical DPS cards have been removed from the
-homepage. **Base-stat comparisons** opens the retained per-state gear comparisons
-and optional declared spec/resource planner. Session counts are in Diagnostics.
-During capture, **Tracking kill…** shows advancing recorded time and phase.
-An unobserved smoke start stays explicitly unconfirmed.
-[Cleanup and verification](docs/validation/nex-sidebar-cleanup.md).
-[Matched live check](docs/validation/nex-fang-live-0322.md): active status/time/
-phase are confirmed for one kill; Fang coverage and DC message gaps remain open.
+**Damage contribution** shows your recorded damage divided by total recorded
+Nex + named-minion damage. **Compare setups** offers Melee, Ranged and supported
+Voidwaker/Zaryte crossbow Special attacks using the existing combat kernels and
+legal equipment search. Missing attack mappings or Death Charge/supply details
+do not block independent equipment results. Exact unknown equipment stays unknown;
+hypothetical upgrades are never treated as owned.
 
-After a completed kill, Compare setups shows equipment alternatives for the
-same supported ordinary Fang action sample, at the same weapon, style and tempo.
-It keeps carried gear, conditional bank preparation and hypothetical upgrades
-separate. Expected-damage bounds retain zero and negative alternatives. Food
-signals include manta ray; exact Death Charge messages are captured from the
-supported game-message channels.
+Expanded comparisons show role DPS/damage, **Estimated contribution** and
+**Estimated team time saved**. The estimates use recorded share/time, unchanged
+teammates and a method damage mix (MP2 70/20/10, RP2 15/75/10 for melee/ranged/spec).
+When damage is unread, equal team share is used. Base Nex stats, representative
+ruby-bolt HP and equal-energy specials keep the model practical. Partial captures
+supply gear comparisons without pretending their interval is a complete kill.
+Empty supply estimates are omitted. **How this was compared** opens the calculation
+basis and limitations in Diagnostics.
+[Implementation and validation](docs/validation/nex-practical-estimates.md).
 
-The preview remains **provisional**: action mappings, supported Nex windows and
-base target stats are not fully validated. There is no whole-kill extrapolation,
-automatic spec recommendation or team-time estimate. Damage contribution remains
-**Unverified**. The optional planner uses explicitly declared inputs and does not
-turn observations into confirmed attack, supply or Death Charge plans.
-[Preview contract](docs/validation/nex-fang-advice.md) ·
-[Latest live findings and corrections](docs/validation/nex-fang-action-followup.md).
+**Diagnostics → Copy report now** retains the bounded session overview, frozen
+selected evidence and build provenance. No new kill is required for review.
+
+**Base-stat comparisons** retains the per-state comparisons and optional declared
+spec/resource planner. During capture, **Tracking kill…** advances recorded time
+and phase; an unobserved smoke start stays unconfirmed. All finite-plan resource
+guards remain intact. [Earlier matched live check](docs/validation/nex-fang-live-0322.md)
+validates status/time for one kill, not current advice coverage or DC mappings.
 
 Last kill stays above the collapsible **Compare setups**, **Team & method** and
 **Diagnostics** sections. Optional context corrections preserve frozen gear and
 calculation inputs. Diagnostics contains the build version, exclusions, captured
 evidence and **Copy report now**, with selectable text if the clipboard fails.
-Reports bind to the selected kill; open that kill's details before copying when
-checking a particular result.
+One copy includes the bounded session overview regardless of the selected kill.
+Copy while evidence is visible; the copied text is self-contained after logout.
+A paused report includes runtime readings while session evidence stays hidden.
 
 Completed history stays in memory across recognized bank trips and remains hidden
 until the same account/profile/world is verified. Logout, identity/world changes,

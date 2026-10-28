@@ -1,5 +1,34 @@
 # Encounter-first UX
 
+28 October 2026: the [practical-estimates decision](../TASKS.md#current-delivery--practical-estimates-28-october-2026)
+supersedes older validation gates and unavailable-output wording below. Frozen
+loadout scenarios, recorded contribution and role-weighted time estimates are
+available without complete attack attribution. [Current implementation](validation/nex-practical-estimates.md).
+
+Build **0.33.3** makes **Diagnostics → Copy report now** the single troubleshooting
+step. A current bounded overview includes every visible retained capture interval,
+start source/form, exclusion and signal offsets, runtime bank/pause facts and build
+revision/working-tree state. Intervals are not asserted to be player attempts.
+The selected calculation remains frozen in a separate section; background refresh
+preserves selectable text, focus and scroll. An explicit copy refreshes the overview.
+Paused sessions export typed runtime facts but no retained evidence; logout/reset
+still clear memory. No automatic saving/upload or new normal-gameplay controls.
+[Procedure](TROUBLESHOOTING.md) · [Validation](validation/nex-support-report.md).
+
+Build **0.33.2** separates the latest recorded attempt from the frozen report in
+Diagnostics. Its fixed exclusion reason is visible without expanding Calculation
+details; **Use last attempt** explicitly selects that record. An older comparison
+can remain open while the selected report stays on the chosen attempt.
+[Verification and live findings](validation/nex-report-selection.md).
+
+Issue #58 (26 October 2026), build **0.33.0**, supersedes conflicting older
+HP-interval, ownership-label and blanket time-estimate guidance below. Current
+ordinary comparisons use the full accuracy-weighted damage distribution, one
+observed baseline per sample, a unified equipment list and role-specific curated
+candidates plus manual additions. Independent resource, mapping and lifecycle
+guards remain. [Implementation, sources and validation](validation/encounter-equipment-advice.md).
+
+
 Build 0.32.3 shows **No expected damage change** for an exact-zero Fang result.
 Single-item alternatives name the replaced item; all supported results show
 **Max hit before → after**. Small nonzero gains/losses must not round to a scalar
@@ -32,7 +61,7 @@ results remain available. Export `nex-evidence-2` carries typed projectile sourc
 and bounded callback boundary counts/sums. [Contract](research/nex-damage-observation.md).
 
 
-Current presentation decisions: **26 October 2026, Fang-first cleanup / build 0.32.2**,
+Previous presentation decisions: **26 October 2026, Fang-first cleanup / build 0.32.2**,
 retaining PR #48's section layout and the 0.23.3 sidebar simplification.
 [TASKS](../TASKS.md) is the sole backlog. This guidance supersedes earlier requests
 for scope/assumption paragraphs beside cards or in ordinary details. Historical
@@ -70,7 +99,7 @@ Identity/world/reset/eviction guards discard unavailable evidence and stale acti
 
 Encounter shows the last complete duration and **Damage contribution**, optional
 matched mean/count, a compact confirmed/unconfirmed team/method strip, **Compare
-setups** Fang card, detail actions and session controls. Incomplete attempts
+setups** equipment list, detail actions and session controls. Incomplete attempts
 stay separate; pending/no-comparison/no-positive states use one brief status.
 No forced focus/navigation or live combat coaching.
 
@@ -89,8 +118,8 @@ unsupported world and unavailable settings have distinct brief reasons. Detailed
 transitions belong in Diagnostics.
 
 Normal cards and details show item/package identity, the supported result and
-controls. Keep short role/phase and origin labels where they identify the result:
-**Equipped gear**, **Inventory gear**, **Bank gear**, **Hypothetical gear**.
+controls. Role labels are Melee, Ranged, Magic or Special attacks as applicable. Ownership
+labels and availability provenance belong in calculation details, not normal rows.
 Equipped means actually worn; inventory includes carried items. Search all the
 same complete carried packages. Do not relabel inventory as equipped or infer
 usable stock/packing from bank presence. Keep exact names, IDs and variants.
@@ -104,7 +133,7 @@ Supported zero/negative alternatives remain available through comparison control
 **Damage contribution** retains its label and displays **Unverified**. Recorded
 Nex/named-minion local/total damage and its unchanged ratio belong in Diagnostics
 with unverified whole-kill coverage. Do not use a coverage threshold or HP-bar
-loss as an inferred denominator. No new attribution/contribution mathematics.
+loss as an inferred denominator. Theoretical estimates remain separate from this unverified observed ratio.
 
 ## Language and settings
 

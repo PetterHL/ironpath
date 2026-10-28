@@ -2,6 +2,23 @@
 
 ## Current authority
 
+- **28 October 2026 product decision / 0.34.0 takes precedence over all older
+  delivery and validation restrictions below and in linked documents.** Continue
+  PR #59 (`ef74891`) with its unmerged #57 dependency, preserving both. Use the
+  last frozen loadouts/stats/prayers for repeatable equipment calculations and
+  new planning settings; a new kill refreshes that basis. Partial captures are
+  useful. Base-Nex theoretical offence, method damage-mix defaults, recorded
+  damage share and constant-throughput contribution/time estimates are authorized
+  without complete attack attribution, server contribution or a full simulator.
+  Weight role-only improvements before estimating the whole kill. Keep short
+  English results; assumptions/gaps belong in Diagnostics, empty supply fields
+  are omitted. No new confirmation UI or fresh-kill validation gate. Preserve
+  correct arithmetic, legal gear, exact ownership, encounter mechanics, immutable
+  evidence and identity/stale-result guards. Run affected regressions and the
+  normal build once; additional runs need a concrete change/failure. Merge and
+  Plugin Hub publication remain separate. Older evidence reports are historical,
+  not requirements to restore Unverified/Not estimated or defer ranged/specs.
+
 - The user approved the encounter-and-method pivot and transition on 15 October
   2026. This supersedes the old account-wide/no-goal-first product direction,
   progression ranking requirements, parallel AD1/R roadmap and optional-boss-only
@@ -13,6 +30,46 @@
 - Code, UI, documents and commits are English; discussion with Petter may be Norwegian.
 
 ## Current delivery
+
+- **0.33.3 troubleshooting, 28 October 2026:** follow docs/TROUBLESHOOTING.md
+  before requesting client work or attributing a live defect. One Copy report now
+  exports all visible retained capture-interval summaries plus the frozen selection;
+  no selection/Calculation details dance is needed. Check exact build provenance,
+  completeness, runtime readings and the actual exclusion before proposing a fix.
+  Keep observed evidence, hypotheses and synthetic reproduction distinct. Matching
+  counts alone cannot establish the live cause. Do not request another complete
+  kill until existing evidence and controlled offline reproduction are exhausted.
+  Preserve memory-only lifetime, hidden-session, identity and stale-action guards;
+  logout must not be delayed to keep an already copied report useful. No automatic
+  file logging/upload or publication of private diagnostic text. Read
+  docs/validation/nex-support-report.md for the implementation and synthetic checks.
+
+- **0.33.2 report selection, 28 October 2026:** read
+  docs/validation/nex-report-selection.md. Diagnostics separates latest-attempt
+  status/reason from its frozen selected report and offers Use last attempt.
+  Rebuilding an older comparison must not overwrite an explicitly selected report;
+  deliberate comparison actions can select their own report. Keep hidden-session,
+  stale-action, frozen-input and allowlisted-reason guards. No capture promotion.
+
+- **0.33.1 spawning follow-up, 28 October 2026:** the user confirms one ordinary
+  completed kill despite two additional excluded attempts. Read
+  docs/validation/nex-spawning-attempts.md. A spawning NPC and arena reading alone
+  cannot start a partial capture; actual smoke still starts immediately, including
+  before the NPC getter transforms. Preserve mid-kill capture, incomplete-action
+  diagnostics, pre-start context and all completion/window support guards.
+
+- **Issue #58, 26 October 2026 / 0.33.0:** the user explicitly requested
+  implementation of the revised encounter advice design. This supersedes older
+  HP-clipped intervals, prominent ownership categories and blanket prohibitions
+  on theoretical contribution/time outputs. Read docs/validation/encounter-equipment-advice.md.
+  Ordinary damage uses the full accuracy-weighted distribution. Every displayed
+  alternative shares its observed sample baseline. Curated encounter/role candidates
+  and manual additions do not restrict the actual carried-package search. Keep
+  role weighting, verified same-pool contribution and duration support independent;
+  provisional partial Fang samples cannot establish whole-kill gain. Retain all
+  action mapping, finite-plan, privacy and lifecycle guards. PR #57 is an unmerged
+  dependency; deliver #58 separately for review, without remote merge or publication.
+
 
 - **0.32.3 Fang zero-display correction:** read
   docs/validation/nex-fang-zero-display.md. An additional three-attack Bandos
@@ -184,7 +241,7 @@
   shared delays/conditions, proposal locks, frozen input and request/view guards.
 - The user authorized the 19 October main consolidation of PR #49, including
   main/N3 #45, CTX1 #43 `2fe5342`, UI1 #46 `d5b14db` and PR #48 `836e1e9`.
-  Preserve their full ancestry and the sidebar simplification. Start new work from
+  Preserve their full ancestry and the sidebar simplification. The current PR #59 work continues from its head; otherwise start from
   main; retire only branch heads already included there. Future merges and Plugin
   Hub publication need separate authorization. Live acceptance remains open.
 - Keep genuine preview sprites/test boundaries and Jagex provenance/notices.

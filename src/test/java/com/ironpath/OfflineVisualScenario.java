@@ -41,10 +41,10 @@ final class OfflineVisualScenario
 				report.check("At least one multi-item package "+font,true,cards.stream().anyMatch(c->NexPresentation.changedItems(c.pair).size()>1));
 				report.check("Unsupported owned weapon remains an explicit coverage gap "+font,true,cards.stream().anyMatch(c->c.choice.coverage.stream().anyMatch(gap->gap.contains("not modelled"))));
 				SwingUtilities.invokeAndWait(()->{ try {
-					report.check("Whole-kill contribution is unverified "+font,"Unverified",NexScenarioPanelTest.named(r.panel,"nex-share",JTextArea.class).getText());
+					report.check("Recorded damage contribution "+font,String.format(java.util.Locale.ROOT,"%.1f%%",r.plugin.nexSession.stats().last.share()),NexScenarioPanelTest.named(r.panel,"nex-share",JTextArea.class).getText());
 					PanelPreview.capture(r.panel,output.resolve("main-"+font+".png"),225,report);
 					concise(r,"Encounter",font,report);
-					report.check("Main keeps theoretical percentages behind explicit action "+font,false,PanelPreview.text(r.panel).contains("DPS"));
+					report.check("Main exposes practical equipment rates "+font,true,PanelPreview.text(r.panel).contains("DPS"));
 					PanelPreview.viewport(r.panel,output.resolve("encounter-viewport-"+font+".png"),225,600,null,List.of("nex-duration","nex-share","nex-edit-context"),report);
 					PanelPreview.viewport(r.panel,output.resolve("secondary-collapsed-viewport-"+font+".png"),225,600,"nex-section-team",List.of("nex-section-team","nex-section-diagnostics"),report);
 					PanelPreview.click(r.panel,"Base-stat comparisons");

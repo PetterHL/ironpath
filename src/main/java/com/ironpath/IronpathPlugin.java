@@ -67,6 +67,7 @@ public class IronpathPlugin extends Plugin
 	private long lastNexRevision;
 	private boolean lastCaptureActive;
 	private volatile NexPanel.TrackingStatus lastTrackingStatus;
+	private volatile NexSupportReport.Runtime supportRuntime=NexSupportReport.Runtime.UNKNOWN;
 	private volatile com.ironpath.nex.NexCapture.Progress latestTrackingProgress;
 	volatile com.ironpath.advisor.NexOwnedResult ownedResult;
 	private volatile long ownedTicket;
@@ -260,6 +261,7 @@ public class IronpathPlugin extends Plugin
 		// Revalidation can precede a slow settings read. Keep its verified departure source in either case.
 		if(arena && !nexSession.suspended()) { nex.confirmArenaSource(); }
 		if (nexReady()) { nex.method(session.preferences().nex); nex.defaults(session.preferences().nexContext); nex.tick(); }
+		supportRuntime=readSupportRuntime();
 		boolean activeChanged=lastCaptureActive!=nex.capture.active();
 		boolean statusChanged=lastTrackingStatus!=trackingStatus(session.snapshot());
 		boolean refresh=lastNexRevision!=nexSession.revision() || activeChanged || statusChanged;
@@ -410,6 +412,7 @@ public class IronpathPlugin extends Plugin
 		long token=session.generation(), revision=session.revision(), nexRevision=nexSession.revision();
 		String expectedIdentity=session.identity(); Preferences preferences=session.preferences();
 		String storage=session.storageStatus(); var stats=nexSession.stats();
+		supportRuntime=readSupportRuntime(); var runtime=supportRuntime;
 		boolean enabled=nex!=null && nex.enabled(), active=nex!=null && nex.capture.active();
 		var progress=active && client.isClientThread()?nex.capture.progress():null;
 		NexPanel.TrackingStatus tracking=trackingStatus(snapshot);
@@ -418,6 +421,8 @@ public class IronpathPlugin extends Plugin
 		{
 			public boolean current() { return running && session.currentView(token,revision) && session.snapshot()==snapshot && nexSession.revision()==nexRevision; }
 			public boolean contextCurrent() { return running && session.accepts(token,expectedIdentity) && session.preferencesLoaded() && nexSession.revision()==nexRevision; }
+			public NexSupportReport.Frame supportFrame(NexSupportReport.Frame fallback)
+			{ return contextCurrent()?new NexSupportReport.Frame(nexSession.stats(),supportRuntime):null; }
 			public boolean canEdit() { return session.writable(); }
 			public void executeScenario(Runnable task) { if(current()) { executor.execute(task); } }
 			public void method(com.ironpath.preferences.NexMethod method)
@@ -453,9 +458,21 @@ public class IronpathPlugin extends Plugin
 		SwingUtilities.invokeLater(()->{
 			if(!running || panel==null || !session.currentView(token,revision) || session.snapshot()!=snapshot || nexSession.revision()!=nexRevision
 				|| (nex!=null && nex.capture.active())!=active) { return; }
-			panel.render(message,snapshot,preferences,catalog,stats,enabled,actions,storage,owned,active,tracking,progress);
+			panel.render(message,snapshot,preferences,catalog,stats,enabled,actions,storage,owned,active,tracking,progress,runtime);
 			lastTrackingStatus=tracking;
 		});
+	}
+	/** Client-thread readings only. EDT report copying consumes the immutable cached scalars. */
+	private NexSupportReport.Runtime readSupportRuntime()
+	{
+		if(!client.isClientThread()) { return NexSupportReport.Runtime.UNKNOWN; }
+		long scope=nexSession.scope(); var gameState=client.getGameState();
+		if(gameState!=GameState.LOGGED_IN)
+		{ return new NexSupportReport.Runtime(scope,gameState,null,com.ironpath.model.Truth.UNKNOWN,null,com.ironpath.model.Truth.UNKNOWN,com.ironpath.model.Truth.UNKNOWN,nex!=null && nex.capture.active(),nexSession.awaitingArena()); }
+		var bank=client.getWidget(InterfaceID.Bankmain.ITEMS); int barrier=client.getVarbitValue(VarbitID.NEX_BARRIER);
+		return new NexSupportReport.Runtime(scope,gameState,client.getTickCount(),bank!=null && !bank.isHidden()?com.ironpath.model.Truth.TRUE:com.ironpath.model.Truth.FALSE,
+			barrier,nexArenaScene(barrier)?com.ironpath.model.Truth.TRUE:com.ironpath.model.Truth.FALSE,identity()!=null?com.ironpath.model.Truth.TRUE:com.ironpath.model.Truth.FALSE,
+			nex!=null && nex.capture.active(),nexSession.awaitingArena());
 	}
 	private NexPanel.TrackingStatus trackingStatus(AccountSnapshot snapshot)
 	{
@@ -495,12 +512,12 @@ public class IronpathPlugin extends Plugin
 		pendingOwned.keySet().removeIf(key->!stats.records.containsKey(key));
 		for(var summary:nexSession.recent())
 		{
-			// Incomplete segments still need worker-built action diagnostics for the controlled check.
-			// NexOwnedEvaluator retains its COMPLETE-only numerical-comparison gate.
-			if(summary.outcome!=com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE && summary.actions.signals.isEmpty()) { continue; }
+			// Partial loadouts remain useful independently of attack attribution.
+			if(summary.timeline.isEmpty() && summary.actions.signals.isEmpty()) { continue; }
 			var initial=nexSession.record(summary.key);
 			if(initial==null) { continue; }
 			if(initial.inputs==null) { initial=nexSession.freezeInputs(summary.key,new com.ironpath.advisor.NexEvaluation(account,preferences,catalog)); }
+			else if(summary==stats.last || summary==stats.lastAttempt) { initial=nexSession.planning(summary.key,preferences); }
 			final var record=initial;
 			if(record==null) { continue; }
 			if(record.calculation!=null || pendingOwned.get(summary.key)==record) { continue; }

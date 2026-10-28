@@ -464,8 +464,17 @@ public class ObservationLifecycleTest
 		when(client.getVarbitValue(VarbitID.NEX_BARRIER)).thenReturn(2); when(client.getTickCount()).thenReturn(2000);
 		tick(); tick(); tick(); assertTrue(plugin.nexSession.suspended()); assertTrue(plugin.nexSession.recent().isEmpty());
 		assertFalse(plugin.nex.capture.active());
+		String pausedReport=copySupportReport();
+		assertTrue(pausedReport.contains("status: PAUSED"));
+		assertTrue(pausedReport.contains("bank visible=FALSE"));
+		assertTrue(pausedReport.contains("session suspended=true; awaiting arena=false; capture active=false"));
+		assertFalse(pausedReport.contains("Attempt A"));
 		observeBank(); tick(); assertFalse(plugin.nexSession.suspended()); assertSame(complete,plugin.nexSession.stats().last);
 		assertEquals(1,plugin.nexSession.stats().complete); assertEquals(0,plugin.nexSession.stats().n);
+		String bankReport=copySupportReport();
+		assertTrue(bankReport.contains("bank visible=TRUE"));
+		assertTrue(bankReport.contains("session suspended=false"));
+		assertTrue(bankReport.contains("Attempt A1: outcome=COMPLETE"));
 		SwingUtilities.invokeAndWait(()->{});
 		var navigation=org.mockito.ArgumentCaptor.forClass(net.runelite.client.ui.NavigationButton.class);
 		verify(plugin.toolbar).addNavigation(navigation.capture());
@@ -474,6 +483,17 @@ public class ObservationLifecycleTest
 		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(null); plugin.onGameStateChanged(loggedIn);
 		when(client.getTickCount()).thenReturn(4000); tick(); tick();
 		assertFalse(plugin.nexSession.suspended()); assertSame(complete,plugin.nexSession.stats().last);
+	}
+	private String copySupportReport() throws Exception
+	{
+		var copied=new java.util.concurrent.atomic.AtomicReference<String>();
+		SwingUtilities.invokeAndWait(()->{
+			com.ironpath.dev.PanelPreview.openSection(panel,"Diagnostics");
+			com.ironpath.dev.PanelPreview.click(panel,"Copy report now");
+			var area=NexScenarioPanelTest.named(panel,"nex-report-text",javax.swing.JTextArea.class);
+			assertNotNull(area); copied.set(area.getText());
+		});
+		return copied.get();
 	}
 	private static String panelText(java.awt.Component component)
 	{

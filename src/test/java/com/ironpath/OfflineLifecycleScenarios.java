@@ -81,7 +81,7 @@ final class OfflineLifecycleScenarios
 		onEdt(() -> {
 			PanelPreview.click(r.panel, "Base-stat comparisons");
 			PanelPreview.combo(r.panel, "nex-owned-support-filter").setSelectedItem("Unavailable comparisons");
-			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("ranged");
+			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("Ranged");
 			report.check("Unknown ammo has visible scoped explanation", true, PanelPreview.text(r.panel).contains("No comparison available"));
 		});
 		capture(r, output, "unknown-ammo", font, report);
@@ -262,7 +262,7 @@ final class OfflineLifecycleScenarios
 		var first = r.fight(20, 20, 60, true); r.settle();
 		onEdt(() -> {
 			PanelPreview.click(r.panel, "Base-stat comparisons");
-			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("melee");
+			PanelPreview.combo(r.panel, "nex-owned-role-filter").setSelectedItem("Melee");
 			JComboBox<?> pairs = PanelPreview.combo(r.panel, "nex-owned-pair");
 			int bloodFury = -1;
 			for (int i = 0; i < pairs.getItemCount(); i++) { if (pairs.getItemAt(i).toString().toLowerCase(java.util.Locale.ROOT).contains("blood fury")) { bloodFury = i; break; } }
@@ -295,6 +295,31 @@ final class OfflineLifecycleScenarios
 			report.check("Reopening comparisons selects the latest kill", true, PanelPreview.text(r.panel).contains("Owned gear · kill #" + third.key));
 		});
 		capture(r, output, "latest-comparison", font, report);
+		final String[] completeReport={null};
+		onEdt(()->{ PanelPreview.openSection(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Copy report now"); completeReport[0]=exportText(r); });
+		var excluded=r.fight(12,20,60,false); r.settle();
+		report.check("A later partial capture is retained independently "+font,Outcome.CENSORED,excluded.outcome);
+		onEdt(()->{
+			report.check("Latest excluded status is visible without changing report target "+font,true,PanelPreview.text(r.panel).contains("Latest attempt #"+excluded.key+" · CENSORED"));
+			report.check("Latest exclusion reason is visible above Calculation details "+font,true,PanelPreview.text(r.panel).contains("Exclusion: Arena left before correlated completion"));
+			PanelPreview.click(r.panel,"Copy report now");
+			report.check("New status leaves selected complete report frozen "+font,NexSupportReport.selected(completeReport[0]),NexSupportReport.selected(exportText(r)));
+			report.check("One copy includes the latest exclusion while complete report stays selected "+font,true,exportText(r).contains("Attempt A4: outcome=CENSORED; exclusion=Arena left before correlated completion"));
+		});
+		capture(r,output,"latest-attempt-status",font,report);
+		onEdt(()->{
+			try { PanelPreview.viewport(r.panel,output.resolve("latest-attempt-status-viewport-"+font+".png"),225,600,"nex-latest-attempt",List.of("nex-report-last-attempt","nex-copy-report"),report); }
+			catch(Exception ex) { throw new IllegalStateException(ex); }
+			PanelPreview.click(r.panel,"Use last attempt"); PanelPreview.click(r.panel,"Copy report now");
+			report.check("Explicit report target becomes the excluded attempt "+font,true,PanelPreview.text(r.panel).contains("Report record #"+excluded.key+" · CENSORED"));
+			report.check("Selected report carries the latest exclusion "+font,true,exportText(r).contains("outcome: CENSORED; exclusion: Arena left before correlated completion"));
+			report.check("Selected attempt never borrows the earlier comparison "+font,false,exportText(r).contains("Candidate slots"));
+		});
+		capture(r,output,"latest-attempt-selected",font,report);
+		onEdt(()->{
+			try { PanelPreview.viewport(r.panel,output.resolve("latest-attempt-selected-viewport-"+font+".png"),225,600,"nex-latest-attempt",List.of("nex-copy-report"),report); }
+			catch(Exception ex) { throw new IllegalStateException(ex); }
+		});
 	}
 
 	private static String exportText(OfflinePluginReplay r)

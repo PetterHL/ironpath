@@ -142,9 +142,9 @@ final class OfflineContextScenarios
 				report.check("Historical edit does not censor another active attempt",true,r.plugin.nex.capture.active() && activeKey==r.plugin.nex.capture.key());
 				var corrected=r.plugin.nexSession.record(first.key).calculation;
 				report.check("Corrected old calculation publishes during the new attempt",1L,corrected.contextRevision);
-				report.check("Old calculation retains its exact input revision",inputRevision,corrected.inputRevision);
+				report.check("Planning change replaces the input revision while reusing captured account evidence",true,inputRevision!=corrected.inputRevision);
 				report.check("New bank data cannot enter a context-only correction",false,corrected.choices.stream().anyMatch(c->c.bankPreparation));
-				report.check("Frozen planning choices survive a newer preference",original.planning.locks,corrected.planning.locks);
+				report.check("Recalculation uses the newly selected planning choices",r.plugin.session.preferences().nex.locks,corrected.planning.locks);
 				report.near("Corrected ordinary arithmetic still matches original",original.choices.get(0).comparison.after.dps,corrected.choices.get(0).comparison.after.dps,0);
 				capture(r,output,"historical-edit-active",font,report);
 			}
@@ -177,7 +177,7 @@ final class OfflineContextScenarios
 			report.check(state+" reaches the clipboard boundary",attempts+1,r.clipboardWrites.size());
 			report.check(state+" copy reveals selectable text",true,PanelPreview.visible(area));
 			String text=area.getText(); var calculation=r.plugin.nexSession.record(key).calculation;
-			report.check(state+" selects the older frozen kill",true,PanelPreview.text(r.panel).contains("Frozen kill #"+key));
+			report.check(state+" selects the older frozen kill",true,PanelPreview.text(r.panel).contains("Report record #"+key));
 			report.check(state+" preserves context/input/calculation revisions",true,text.contains("Effective context revision: "+revision+";")
 				&& text.contains("Calculation context/input revisions: "+revision+" / "+calculation.inputRevision+";")
 				&& text.contains("immutable calculation revision: "+calculation.revision));
@@ -255,7 +255,7 @@ final class OfflineContextScenarios
 	{
 		edt(()->{
 			PanelPreview.openSection(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Copy report now"); String text=reportText(r);
-			report.check("Displayed diagnostic kill stays selected",true,PanelPreview.text(r.panel).contains("Frozen kill #"+key));
+			report.check("Displayed diagnostic kill stays selected",true,PanelPreview.text(r.panel).contains("Report record #"+key));
 			report.check("Report and selected context revision agree",true,text.contains("Effective context revision: "+revision+";") && text.contains("Calculation context/input revisions: "+revision+" /"));
 			report.check("Corrected report includes no account or roster identity",false,text.contains("offline-synthetic") || text.contains("synthetic member") || text.contains("NEX@"));
 			try { Files.writeString(output.resolve("corrected-report-"+font+".txt"),text); } catch(Exception ex) { throw new IllegalStateException(ex); }

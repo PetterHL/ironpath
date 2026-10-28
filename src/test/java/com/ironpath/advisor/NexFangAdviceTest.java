@@ -61,10 +61,13 @@ public class NexFangAdviceTest
 			var row=noImpacts.advice.rows.get(i); var other=withImpacts.advice.rows.get(i);
 			assertEquals(List.of(0,6),row.actionIndices); assertEquals(row.gain.lower,other.gain.lower,0); assertEquals(row.gain.upper,other.gain.upper,0);
 			assertEquals(Integer.valueOf(26219),row.pair.beforeSetup.slots.get("weapon"));
+			assertEquals("Every alternative retains the complete observed baseline",gear.slots,row.pair.beforeSetup.slots);
 			assertEquals(row.pair.beforeSetup.slots.get("weapon"),row.pair.afterSetup.slots.get("weapon"));
 			assertEquals(row.pair.beforeSetup.meleeStyle,row.pair.afterSetup.meleeStyle); assertEquals(5,row.pair.after.attackTicks);
 		}
 		assertFalse(noImpacts.advice.json().get("validated").getAsBoolean());
+		assertTrue(noImpacts.advice.rows.stream().anyMatch(r->r.pair.afterSetup.slots.get("body")==27238 && r.gain.lower<0));
+		assertTrue(noImpacts.advice.rows.stream().allMatch(r->r.impact.contribution==null && r.impact.secondsSaved==null));
 		assertEquals(NexFangAdvice.STATUS,noImpacts.advice.json().get("status").getAsString());
 		var json=new Gson().fromJson(noImpacts.observations.export,com.google.gson.JsonObject.class);
 		assertEquals("nex-evidence-5",json.get("schema").getAsString());
@@ -75,20 +78,18 @@ public class NexFangAdviceTest
 		for(var index:pair.getAsJsonObject().getAsJsonArray("actionIndices"))
 		{ assertEquals("PROVISIONAL_INFERENCE",actions.get(index.getAsInt()).get("confidence").getAsString()); }
 	}
-	@Test public void uncertaintyFindsInteriorPairedExtremaAndNeverSubtractsIndependentRanges()
+	@Test public void potentialDamageNeverShrinksWithRemainingHp()
 	{
 		var before=metrics(0,8,1); var after=metrics(0,20,0.6);
-		var actual=NexFangAdvice.pairedBounds(before,after);
-		double lo=Double.POSITIVE_INFINITY,hi=Double.NEGATIVE_INFINITY; int minHp=0;
-		for(int hp=1;hp<=100;hp++)
+		// Independently enumerate the complete ordinary distribution, even at HP 1 and 3.
+		double expected=oracle(0,20,0.6,100)-oracle(0,8,1,100);
+		for(int hp:List.of(1,3,100))
 		{
-			double delta=oracle(0,20,0.6,hp)-oracle(0,8,1,hp);
-			if(delta<lo) { lo=delta; minHp=hp; } hi=Math.max(hi,delta);
+			assertTrue(oracle(0,20,0.6,hp)<NexFangAdvice.potential(after) || hp==100);
+			assertEquals(expected,NexFangAdvice.pairedBounds(before,after).lower,1e-12);
+			assertEquals(expected,NexFangAdvice.pairedBounds(before,after).upper,1e-12);
 		}
-		assertTrue("Minimum must be inside HP range, not at either endpoint",minHp>1 && minHp<100);
-		assertEquals(lo,actual.lower,1e-12); assertEquals(hi,actual.upper,1e-12);
-		var same=NexFangAdvice.pairedBounds(before,before); assertEquals(0,same.lower,0); assertEquals(0,same.upper,0);
-		assertEquals(0,NexFangAdvice.pairedBounds(metrics(0,0,0),metrics(0,0,0)).upper,0);
+		assertEquals(0,NexFangAdvice.pairedBounds(before,before).lower,0);
 	}
 	@Test public void lowerBodyStrengthCanPreserveTheSameDamageAcrossThreeFangAttacks()
 	{
@@ -111,12 +112,12 @@ public class NexFangAdviceTest
 				assertEquals(47,row.pair.before.maxHit); assertEquals(47,row.pair.after.maxHit);
 				assertEquals(row.pair.before.minHit,row.pair.after.minHit); assertEquals(row.pair.before.hitChance,row.pair.after.hitChance,0);
 				assertEquals(0,row.gain.lower,0); assertEquals(0,row.gain.upper,0);
-				assertEquals("No expected damage change",row.headline());
+				assertEquals("No damage change",row.headline());
 			}
 			else
 			{
-				assertTrue(row.gain.lower<0); assertEquals(0,row.gain.upper,1e-10);
-				assertTrue(row.headline().endsWith("to 0.00 expected damage"));
+				assertTrue(row.gain.lower<0); assertEquals(row.gain.lower,row.gain.upper,0);
+				assertTrue(row.headline().startsWith("-"));
 				assertFalse(row.headline().contains("+0.01")); assertFalse(row.headline().contains("-0.00"));
 				if(level==114) { assertEquals(row.pair.before.maxHit,row.pair.after.maxHit); assertTrue(row.pair.after.minHit<row.pair.before.minHit); }
 			}
@@ -129,7 +130,7 @@ public class NexFangAdviceTest
 			var pair=new ComparisonResult(null,null,metrics(1,1,0.5),metrics(1,1,chance),null,Map.of(),"synthetic","synthetic","synthetic",List.of(),false,Map.of());
 			var row=new NexFangAdvice.Row(NexFangAdvice.Kind.CARRIED,null,pair,List.of(0),false);
 			assertEquals(chance-0.5,row.gain.lower,1e-12);
-			assertEquals(chance>0.5?"<0.01 expected gain":"<0.01 expected loss",row.headline());
+			assertEquals(chance>0.5?"+0.8% damage":"-0.8% damage",row.headline());
 		}
 	}
 	private static PoweredMagic.Metrics metrics(int min,int max,double chance)

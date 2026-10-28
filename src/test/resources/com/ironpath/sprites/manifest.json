@@ -103,6 +103,238 @@
       "width": 36,
       "height": 32,
       "retrieved": "2026-10-26"
+    },
+    {
+      "id": 7462,
+      "source": "https://static.runelite.net/cache/item/icon/7462.png",
+      "sha256": "129f941d8a94a9c311a38d1efe66ec29cdcf6bc5d8a48e7ff8fd32c80baa0451",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 11773,
+      "source": "https://static.runelite.net/cache/item/icon/11773.png",
+      "sha256": "6207ad5fc1f25d4c527118d9fe022fccc46998f53cc111aeb4fe7979e2c39f48",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 11834,
+      "source": "https://static.runelite.net/cache/item/icon/11834.png",
+      "sha256": "acae945f2780ef295ec47a714c9f741520ff87179b48197cea9cabe420604594",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 12931,
+      "source": "https://static.runelite.net/cache/item/icon/12931.png",
+      "sha256": "7efbef2582e24e935c3efe00b43b29471849630e23e68da95d112c4383e968d0",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 13239,
+      "source": "https://static.runelite.net/cache/item/icon/13239.png",
+      "sha256": "cc653ba73d23744b010d4f886b8e418bbcae1c28eedd2ddc66db0d4ff1c39da5",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 19553,
+      "source": "https://static.runelite.net/cache/item/icon/19553.png",
+      "sha256": "e1ee28051beaa992cf2fe39b8107e5f68056ffe116301583ffef940f9ca00b22",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 21295,
+      "source": "https://static.runelite.net/cache/item/icon/21295.png",
+      "sha256": "59476df88ddf708273df4b5e03b96665bc52a3a23082935c3cf1f6bd36c15326",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 22322,
+      "source": "https://static.runelite.net/cache/item/icon/22322.png",
+      "sha256": "305e5c367e6eadb0c2c34641972ada86c83d3e8ea04742fd019c1766eb82cac6",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 22981,
+      "source": "https://static.runelite.net/cache/item/icon/22981.png",
+      "sha256": "8c0ac44a0d9248dde3384476f521bc3502e91dea4da0e1ddb18db5fc93314845",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 24143,
+      "source": "https://static.runelite.net/cache/item/icon/24143.png",
+      "sha256": "4532f225b61595fd1d93fbd137f65e93f9623f70c8758b761df445eb7a3bfea0",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 24224,
+      "source": "https://static.runelite.net/cache/item/icon/24224.png",
+      "sha256": "59476df88ddf708273df4b5e03b96665bc52a3a23082935c3cf1f6bd36c15326",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 25975,
+      "source": "https://static.runelite.net/cache/item/icon/25975.png",
+      "sha256": "65e4de74440a546aa7a40c6467085709b4890f9738ce6820efb0d1cc3fb8a277",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 26382,
+      "source": "https://static.runelite.net/cache/item/icon/26382.png",
+      "sha256": "c1d63385c67f6f301c9811e25c8d0262002a24d8bbc048284592c311e4aee8d5",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 26384,
+      "source": "https://static.runelite.net/cache/item/icon/26384.png",
+      "sha256": "4b8174fb1fcaac20e3cd591358af6aa8a33f3db03b8511b1ac344bc639654937",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 26386,
+      "source": "https://static.runelite.net/cache/item/icon/26386.png",
+      "sha256": "d9ad6d302a3d239d1e07f479cd22289728ce91867d6b97e31b4a06bcfaff0c55",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 27241,
+      "source": "https://static.runelite.net/cache/item/icon/27241.png",
+      "sha256": "da3e80998e886abadb8425808fc0ff186ca78a4fe389a1581aa6c4e4d23310ba",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 27246,
+      "source": "https://static.runelite.net/cache/item/icon/27246.png",
+      "sha256": "62741398cc4be6b782b5e54b9b946be9b1f074aadf6d19bb058ae5d97c348dfe",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 28307,
+      "source": "https://static.runelite.net/cache/item/icon/28307.png",
+      "sha256": "c30bdee5cdd9e95b14128517451d8848547df80354dd155d5d13ae80f3fbd8d3",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 29280,
+      "source": "https://static.runelite.net/cache/item/icon/29280.png",
+      "sha256": "6cbd24671300dc8768f11032da2ef264c394aa377bdd7717044679768c8fb702",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 29283,
+      "source": "https://static.runelite.net/cache/item/icon/29283.png",
+      "sha256": "c8ab89acdd6970b400d9b05d087b0c19a2cb05599a75f45d31ddf5c307a132d7",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 29806,
+      "source": "https://static.runelite.net/cache/item/icon/29806.png",
+      "sha256": "47e01c752665870a63bfe2a620c04fa6982909c3afc3c52a885b5ad8d85c1f0a",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 31097,
+      "source": "https://static.runelite.net/cache/item/icon/31097.png",
+      "sha256": "919860534e309d12b90bd5bee1a3154c83c3177b65e9bb99fbc38aa8666b9cfb",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 29004,
+      "source": "https://static.runelite.net/cache/item/icon/29004.png",
+      "sha256": "b24119810721d52ae674d6ad5dd57ffc5569c9b139459131592c9edbe5027861",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 29007,
+      "source": "https://static.runelite.net/cache/item/icon/29007.png",
+      "sha256": "ede960804a3c5dc7d099e0de421a37549d16f6abf94c2a1992e56afcd65ae8a0",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 29010,
+      "source": "https://static.runelite.net/cache/item/icon/29010.png",
+      "sha256": "f57aebaa6728f3ea4c457eb088f76eea82e1552c3bcc87526bcdf2c4fdd5c884",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 28949,
+      "source": "https://static.runelite.net/cache/item/icon/28949.png",
+      "sha256": "6a23960a059d6362b193e32505a85dffcfb5a9dec3111dd9c55e286ecd0a2736",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-26"
+    },
+    {
+      "id": 33595,
+      "source": "https://static.runelite.net/cache/item/icon/33595.png",
+      "sha256": "58fa1145b5bf75ef3f35cbeeae215cfb069b25b76805cc30c3a93ac8dca1203d",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-28"
+    },
+    {
+      "id": 26235,
+      "source": "https://static.runelite.net/cache/item/icon/26235.png",
+      "sha256": "c999edae7a924af723e6d988ec558edc2743863ad3d6f1238f3ac87e93309815",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-28"
+    },
+    {
+      "id": 33639,
+      "source": "https://static.runelite.net/cache/item/icon/33639.png",
+      "sha256": "d92ab5c4b02e41ad4ccb19d3d67d500f9e198c739deba099db09192da45a8750",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-28"
     }
   ]
 }

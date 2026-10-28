@@ -10,7 +10,7 @@ import java.util.Set;
 public final class NexSummary
 {
 	public static final String TIMER = "Observed Nex smoke announcement to Nex death/dying; game ticks × 0.6. Not calibrated to the game timer.";
-	public static final String DAMAGE_SCOPE = "Observed mine / (mine + other) damage hitsplats on Nex + Fumus/Umbra/Cruor/Glacies; healing and unclassified types excluded. Whole-kill coverage UNVERIFIED; this ratio is not whole-kill damage contribution or loot credit; thralls/DoT/overkill may differ.";
+	public static final String DAMAGE_SCOPE = "Observed mine / (mine + other) damage hitsplats on Nex + Fumus/Umbra/Cruor/Glacies; healing and unclassified types excluded. Damage contribution uses this recorded ratio; it is not server loot credit; thralls/DoT/overkill may differ.";
 	public static final class Sample
 	{
 		public final int tick, animation;
@@ -27,6 +27,21 @@ public final class NexSummary
 		public final long local, total;
 		public Damage(long local, long total) { this.local=local; this.total=total; }
 	}
+	public enum StartSource { UNKNOWN, SMOKE_ANNOUNCEMENT, ARENA_BARRIER_TRANSITION, ACTIVE_ARENA_POLL }
+	/** Scalar capture origin, distinct from the later smoke-anchored measurement start. */
+	public static final class Origin
+	{
+		public static final Origin UNKNOWN=new Origin(null,StartSource.UNKNOWN,NexTargetState.Form.UNKNOWN,null);
+		public final Integer tick,barrier;
+		public final StartSource source;
+		public final NexTargetState.Form form;
+		public Origin(Integer tick,StartSource source,NexTargetState.Form form,Integer barrier)
+		{
+			this.tick=tick; this.source=source==null?StartSource.UNKNOWN:source;
+			this.form=form==null?NexTargetState.Form.UNKNOWN:form;
+			this.barrier=barrier!=null && barrier>=0 && barrier<=3?barrier:null;
+		}
+	}
 	/** Exact observed signals, for explaining capture eligibility without reconstructing events. */
 	public static final class Signals
 	{
@@ -35,14 +50,19 @@ public final class NexSummary
 		public final Set<String> phases;
 		public final Integer observedSmokeTick;
 		public final List<String> trace;
+		public final Origin origin;
 		public Signals(Integer boundaryTick,Integer smokeTick,Integer deathTick,Integer barrierEndTick,boolean continuous,Set<String> phases)
 		{ this(boundaryTick,smokeTick,deathTick,barrierEndTick,continuous,phases,smokeTick,List.of()); }
 		public Signals(Integer boundaryTick,Integer smokeTick,Integer deathTick,Integer barrierEndTick,boolean continuous,Set<String> phases,
 			Integer observedSmokeTick,List<String> trace)
+		{ this(boundaryTick,smokeTick,deathTick,barrierEndTick,continuous,phases,observedSmokeTick,trace,Origin.UNKNOWN); }
+		public Signals(Integer boundaryTick,Integer smokeTick,Integer deathTick,Integer barrierEndTick,boolean continuous,Set<String> phases,
+			Integer observedSmokeTick,List<String> trace,Origin origin)
 		{
 			this.boundaryTick=boundaryTick; this.smokeTick=smokeTick; this.deathTick=deathTick; this.barrierEndTick=barrierEndTick;
 			this.continuous=continuous; this.phases=Set.copyOf(phases);
 			this.observedSmokeTick=observedSmokeTick; this.trace=List.copyOf(trace);
+			this.origin=java.util.Objects.requireNonNull(origin);
 		}
 	}
 	public final long key;
@@ -96,6 +116,6 @@ public final class NexSummary
 	public double seconds() { return Math.max(0,endTick-startTick)*0.6; }
 	public long localDamage() { return damage.values().stream().mapToLong(d->d.local).sum(); }
 	public long totalDamage() { return damage.values().stream().mapToLong(d->d.total).sum(); }
-	/** Ratio of recorded classified payloads only; no whole-kill coverage or contribution support. */
+	/** Damage contribution within the recorded Nex + named-minion damage pool. */
 	public Double share() { return totalDamage()==0 ? null : 100.0*localDamage()/totalDamage(); }
 }

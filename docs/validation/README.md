@@ -1,5 +1,15 @@
 # Validation records
 
+[One-copy troubleshooting, 0.33.3](nex-support-report.md) records current session
+overviews, frozen selection, typed origins/runtime facts and synthetic privacy/lifecycle checks.
+
+[Nex report selection and live equipment check, 0.33.2](nex-report-selection.md)
+
+[Nex spawning attempts correction, 0.33.1](nex-spawning-attempts.md)
+
+[Issue #58: encounter equipment advice, 0.33.0](encounter-equipment-advice.md)
+records the revised metric, candidate baseline, effort policy, estimate guards and native review.
+
 26 October 2026: **0.32.3 exact-zero Fang display** —
 [three-attack Bandos reproduction, explicit zero wording and before/after context](nex-fang-zero-display.md).
 

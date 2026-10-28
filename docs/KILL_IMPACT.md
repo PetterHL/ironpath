@@ -1,5 +1,18 @@
 # Observation and kill-impact contract
 
+28 October 2026: the [practical-estimates decision](../TASKS.md#current-delivery--practical-estimates-28-october-2026)
+supersedes older validation gates and unavailable-output wording below. Frozen
+loadout scenarios, recorded contribution and role-weighted time estimates are
+available without complete attack attribution. [Current implementation](validation/nex-practical-estimates.md).
+
+Issue #58 (26 October 2026), build **0.33.0**, supersedes conflicting older
+HP-interval, ownership-label and blanket time-estimate guidance below. Current
+ordinary comparisons use the full accuracy-weighted damage distribution, one
+observed baseline per sample, a unified equipment list and role-specific curated
+candidates plus manual additions. Independent resource, mapping and lifecycle
+guards remain. [Implementation, sources and validation](validation/encounter-equipment-advice.md).
+
+
 Current direction: Nex Trio MP2 pilot, 15 October 2026. Delivery lives only in
 [TASKS](../TASKS.md). The [previous research](archive/pre-nex-20261015/KILL_IMPACT.md)
 retains its source work; the former optional-boss product placement is superseded.

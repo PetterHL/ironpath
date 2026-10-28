@@ -285,10 +285,10 @@ public class NexPanelTest
 					base.unclassifiedHits,base.outcome,base.reason,base.cohort,base.method,base.timeline,base.damage,base.gaps,base.signals,base.beforeStart);
 				session.add(next);
 				panel.render("New result",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",new com.ironpath.advisor.NexOwnedResult(next,List.of()));
-				assertTrue(shown(panel).contains("Frozen kill #1"));
+				assertTrue(shown(panel).contains("Report record #1"));
 				assertTrue(shown(panel).contains("Spec energy & Death Charge · kill #1"));
 				panel.render("Profile changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"local",null);
-				assertFalse(shown(panel).contains("energy 100.0%")); assertFalse(shown(panel).contains("Frozen kill #"));
+				assertFalse(shown(panel).contains("energy 100.0%")); assertFalse(shown(panel).contains("Report record #"));
 			}
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
@@ -307,7 +307,7 @@ public class NexPanelTest
 				session.clear(); session.select("a",301); session.add(summary);
 				NexPanel panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
-				assertFalse(shown(panel).contains(" DPS")); capture(panel,"owned-main-"+(int)font);
+				assertTrue(shown(panel).contains(" DPS")); capture(panel,"owned-main-"+(int)font);
 				button(panel,"Base-stat comparisons").doClick(); capture(panel,"owned-details-"+(int)font);
 				assertTrue(shown(panel).contains("Selected quiver ammo: Amethyst arrow"));
 				assertTrue(shown(panel).contains("ammo slot: Ancient blessing"));
@@ -372,7 +372,7 @@ public class NexPanelTest
 			session.revalidate("a",301,50,true,false); session.add(next);
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",
 				new com.ironpath.advisor.NexOwnedResult(next,List.of()));
-			assertTrue(shown(panel).contains("Frozen kill #1"));
+			assertTrue(shown(panel).contains("Report record #1"));
 				button(panel,"Calculation details").doClick();
 				assertTrue(shown(panel),shown(panel).contains("Target unknown or minion"));
 			assertTrue(shown(panel).contains("First recorded energy 100.0% · last recorded 50.0%"));
@@ -402,19 +402,19 @@ public class NexPanelTest
 				JComboBox<?> support=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-support-filter".equals(c.getName())).findFirst().orElseThrow();
 				JComboBox<?> states=(JComboBox<?>)children(panel).stream().filter(c->"nex-owned-state".equals(c.getName())).findFirst().orElseThrow();
 				assertEquals(3,states.getItemCount());
-				role.setSelectedItem("melee"); assertEquals(1,states.getItemCount());
+				role.setSelectedItem("Melee"); assertEquals(1,states.getItemCount());
 				support.setSelectedItem("All states"); assertEquals(2,states.getItemCount());
 				support.setSelectedItem("Unavailable comparisons"); assertEquals(1,states.getItemCount());
 				assertTrue(shown(panel).contains("No comparison available"));
 				assertFalse(shown(panel).contains("Target unknown or minion"));
 				capture(panel,"owned-filter-gaps-"+(int)font);
-				role.setSelectedItem("ranged"); assertEquals(0,states.getItemCount()); assertFalse(states.isEnabled());
+				role.setSelectedItem("Ranged"); assertEquals(0,states.getItemCount()); assertFalse(states.isEnabled());
 				assertTrue(shown(panel).contains("No matching comparisons"));
 				support.setSelectedItem("All states"); assertEquals(2,states.getItemCount()); assertTrue(states.isEnabled());
 				states.setSelectedIndex(1); assertTrue(shown(panel).contains("Bank gear"));
 				capture(panel,"owned-filter-bank-"+(int)font);
 				panel.render("Identity changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"",null);
-				role.setSelectedItem("melee"); support.setSelectedItem("All states");
+				role.setSelectedItem("Melee"); support.setSelectedItem("All states");
 				assertFalse(shown(panel).contains("Owned equipment")); assertFalse(shown(panel).contains("Target unknown or minion"));
 			}
 		} catch(Exception ex) { throw new RuntimeException(ex); } });

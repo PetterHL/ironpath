@@ -263,9 +263,15 @@ final class NexObserver
 		}
 		if(attempted || boss==null || (barrier!=3 && !(smokeStart && barrier==2))
 			|| boss.getId()==NpcID.NEX_DYING || !sameView(client.getLocalPlayer())) { return; }
+		// An active-arena reading can outlive a kill or arrive while Nex is spawning.
+		// Keep bounded pre-start actions, but do not turn that waiting into an attempt.
+		// The smoke callback remains authoritative if the NPC getter has not transformed yet.
+		if(!smokeStart && boss.getId()==NpcID.NEX_SPAWNING) { return; }
 		if(!smokeStart && !allowPartial && boundary!=tick) { return; }
 		hits.clear(); projectiles.clear(); effects.clear(); resetHud(); attempted=true;
-		capture.start(tick,smokeStart,method,roster(),defaults);
+		var source=smokeStart?com.ironpath.nex.NexSummary.StartSource.SMOKE_ANNOUNCEMENT:boundary==tick?
+			com.ironpath.nex.NexSummary.StartSource.ARENA_BARRIER_TRANSITION:com.ironpath.nex.NexSummary.StartSource.ACTIVE_ARENA_POLL;
+		capture.start(tick,smokeStart,method,roster(),defaults,new com.ironpath.nex.NexSummary.Origin(tick,source,form(boss.getId()),barrier));
 		actionContext.stream().filter(a->a.tick>=tick-NexActions.PRE_TICKS).forEach(capture::action);
 		if(actionContextTruncated) { capture.actionTruncated(); }
 		actionContext.clear(); actionContextTruncated=false;
@@ -352,16 +358,7 @@ final class NexObserver
 	}
 	private NexTargetState targetState(NPC npc)
 	{
-		NexTargetState.Form form;
-		switch(npc.getId())
-		{
-			case NpcID.NEX: form=NexTargetState.Form.NEX; break;
-			case NpcID.NEX_SPAWNING: form=NexTargetState.Form.SPAWNING; break;
-			case NpcID.NEX_SOULSPLIT: form=NexTargetState.Form.SOUL_SPLIT; break;
-			case NpcID.NEX_DEFLECT: form=NexTargetState.Form.DEFLECT_MELEE; break;
-			case NpcID.NEX_DYING: form=NexTargetState.Form.DYING; break;
-			default: form=NexTargetState.Form.MINION;
-		}
+		NexTargetState.Form form=form(npc.getId());
 		String target=targets.get(npc);
 		// Normal permanent-world maxima, independently reviewed; no party scaling or inferred maximum.
 		NexHealth hp=NexHealth.bar(npc.getHealthRatio(),npc.getHealthScale(),targetMaxima.getOrDefault(bossId(npc.getId())?NpcID.NEX:npc.getId(),0),
@@ -374,6 +371,18 @@ final class NexObserver
 			&& hudDefinition==client.getVarpValue(net.runelite.api.gameval.VarPlayerID.HPBAR_HUD_NPC))
 		{ hp=NexHealth.hud(hudHp,hudMaximum,hudTick,hudCycle,target,hudDefinition,view); }
 		return new NexTargetState(form,npc.getHealthRatio(),npc.getHealthScale(),hp);
+	}
+	private static NexTargetState.Form form(int id)
+	{
+		switch(id)
+		{
+			case NpcID.NEX: return NexTargetState.Form.NEX;
+			case NpcID.NEX_SPAWNING: return NexTargetState.Form.SPAWNING;
+			case NpcID.NEX_SOULSPLIT: return NexTargetState.Form.SOUL_SPLIT;
+			case NpcID.NEX_DEFLECT: return NexTargetState.Form.DEFLECT_MELEE;
+			case NpcID.NEX_DYING: return NexTargetState.Form.DYING;
+			default: return NexTargetState.Form.MINION;
+		}
 	}
 	/** A definition ID never supplies a spawn identity. Bind only at the actual HUD script callback. */
 	private boolean hudVisible()

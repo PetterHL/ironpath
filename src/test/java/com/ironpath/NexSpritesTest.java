@@ -67,8 +67,8 @@ public class NexSpritesTest
 			};
 			currentActions.set(actions);
 			var panel=new NexPanel(items); rendered.set(panel); panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions,"",result);
-			for(int i=0;i<result.advice.rows.size();i++)
-			{ if(NexPresentation.changedItems(result.advice.rows.get(i).pair).equals(Map.of("cape",6570))) { PanelPreview.combo(panel,"nex-fang-alternative").setSelectedIndex(i); break; } }
+			for(int i=0;i<result.equipment.rows.size();i++)
+			{ if(NexPresentation.changedItems(result.equipment.rows.get(i).pair).equals(Map.of("cape",6570))) { PanelPreview.combo(panel,"nex-fang-alternative").setSelectedIndex(i); PanelPreview.click(panel,"Add item"); break; } }
 			var label=(JLabel)PanelPreview.children(panel).stream().filter(c->"nex-item-sprite-6570".equals(c.getName())).findFirst().orElseThrow();
 			selected.set(label); assertSame(delayed,((ImageIcon)label.getIcon()).getImage()); verify(items,atLeastOnce()).getImage(6570);
 		});

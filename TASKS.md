@@ -1,11 +1,66 @@
 # IronPath active work
 
-Updated **26 October 2026**. This is the **only active backlog and roadmap**.
-Start new work from current main; do not continue retired stacked branches.
+Updated **28 October 2026**. This is the **only active backlog and roadmap**.
+Current work continues from PR #59 and its #57 dependency; do not restart from older main.
 The user authorized merging the complete 0.23.3 delivery into main and cleaning
 up covered PRs/branches on 19 October. This includes CTX1 #43, native UI1 #46,
 PR #48's current presentation/follow-up fixes and PR #49's sidebar simplification.
 Integration does not establish live-client or player acceptance.
+
+## Current delivery — practical estimates, 28 October 2026
+
+This decision supersedes conflicting validation and scheduling requirements in
+all older sections below. Continue #59 at `ef74891` with #57 retained; no merge or
+Plugin Hub publication is authorized.
+
+- [x] Reuse frozen kill loadouts/stats/prayers for equipment comparisons and
+  recalculate after planning/context changes; retain stale-result/account guards.
+- [x] Show recorded own/total Nex + named-minion damage under Damage contribution.
+- [x] Offer base-Nex melee/ranged and supported special equipment scenarios even
+  without attributed attacks, including useful loadouts from partial captures.
+- [x] Connect recorded damage share/time and consistent MP2/RP2 damage-mix defaults
+  to the existing contribution/time formulas, weighting each role's improvement.
+- [x] Keep concise English results, omit empty supplies, put assumptions in existing
+  Diagnostics/reports; preserve legal packages and ownership distinctions.
+- [x] Affected regressions and normal build pass: 481 tests. Concise results are in
+  docs/validation/nex-practical-estimates.md. Existing live reports suffice.
+
+## Accepted scope — issue #58, 26 October 2026
+
+The user requested implementation of [#58](https://github.com/PetterHL/ironpath/issues/58).
+Build **0.33.0** follows open PR #57 `ed58691816ad262d720cc2ebca3526b72755c153`
+on top of main `2018144`; preserve that dependency and deliver a separate review PR.
+No remote merge or Plugin Hub publication is authorized.
+
+This decision supersedes earlier HP-driven damage intervals, ownership headings,
+and the blanket N4 scheduling restriction on lightweight theoretical estimates.
+Use ordinary potential damage including accuracy, one observed baseline per sample,
+Nex Ranged/Hybrid strategy-table suggestions, manual additions, signed defensive
+alternatives and qualitative Ironman effort-aware ordering. The contribution/time
+model requires supported encounter-weighted personal gain and verified same-pool
+share; current partial provisional samples supply neither. Independent damage
+remains available. Supplies stay Not estimated until incoming damage/consumption
+support exists. Ranged/spec attribution and full finite-plan gates remain open.
+
+Current implementation, evidence and remaining live checks are recorded in
+[the validation report](docs/validation/encounter-equipment-advice.md), not a second backlog.
+The **0.33.1** [spawning follow-up](docs/validation/nex-spawning-attempts.md) fixes
+spurious partial captures around one completed kill on the same PR #59. It does
+not widen Fang window support or promote gameplay mappings.
+The **0.33.2** [report selection follow-up](docs/validation/nex-report-selection.md)
+shows the latest exclusion directly and preserves explicit report selection across
+older comparison redraws. The remaining live exclusion cause is still unconfirmed.
+The remaining sequence is review #57/#58, validate mappings/coverage and usefulness,
+then broaden supported weighting, ranged/spec and supply outputs. More encounters
+reuse the candidate schema and estimate service; no second catalogue or simulator.
+
+**0.33.3 troubleshooting:** replace repeated client navigation with one bounded
+copy of all visible retained intervals, typed start/exclusion/runtime facts and
+build provenance, independently of the frozen selected calculation. Follow the
+[evidence-first procedure](docs/TROUBLESHOOTING.md); inspect existing evidence and
+offline reproduction before any further client request. This is diagnostic
+delivery, not acceptance of an underlying live exclusion fix.
+[Implementation and checks](docs/validation/nex-support-report.md).
 
 ## Current baseline and order
 
@@ -27,7 +82,7 @@ after their heads are verified as ancestors of main; no unique work is discarded
 | Integrated, 0.31.0 / PR #55 | **N3-ACTION: action evidence and attack clock** | Bounded Fang state, food/DC messages and frozen timeline; controlled client mapping check remains pending |
 | PR #57, 0.32.2 follow-up | **N3-ADVICE: provisional automatic Fang preview** | 0.32.1 corrects resources/grouping and messages after one supplied 0.32.0 report. 0.32.2 retires duplicate homepage DPS cards and keeps the older calculations behind Base-stat comparisons before the next client test. Mapping/window/base-stat assumptions and product acceptance remain open |
 | After the first useful comparison | **Broader N3 automatic recommendations** | Ranged attribution and finite spec/DC/supply plans remain gated; solve dependencies as needed for each added output |
-| After N1–N3 validation | **N4 contribution/team-time estimates** | Not implemented/validated |
+| Issue #58, 0.33.0 for review | **Theoretical contribution/team-time estimates** | Formula service implemented with independent support gates; current automatic whole-encounter weighting/share remain unavailable |
 | Later | More methods/bosses, optional recorder and screenshot export | Separate roadmap work |
 
 Deliver future changes through focused PRs; no automatic merge or Plugin Hub publication.
@@ -577,6 +632,12 @@ Reuses the N3A/B/C runtime caller, package factory and catalogue; no second engi
 
 
 ## N4 — Validate personal contribution and team-time estimates
+
+Issue #58 authorizes the lightweight theoretical model now, independently of a full
+simulator. Build 0.33.0 implements the formula and support guards; current automatic
+whole-encounter weighting and contribution remain unsupported. Older implementation
+restrictions below retain their historical scope only.
+
 
 Use only a bounded method model supported by N1–N3 evidence. Account for phase/
 target damage, finite HP, rounding/overkill, mandatory windows, team damage and

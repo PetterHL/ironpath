@@ -1,7 +1,7 @@
 {
   "schemaVersion": 14,
-  "knowledgeVersion": "n3-observation-1",
-  "reviewed": "2026-10-20",
+  "knowledgeVersion": "n3-equipment-advice-1",
+  "reviewed": "2026-10-26",
   "sources": [
     {
       "id": "rigour",
@@ -19575,6 +19575,31 @@
         "nex-cruor",
         "nex-glacies"
       ]
+    },
+    {
+      "id": "n3-advice-melee-facts",
+      "url": "https://github.com/weirdgloop/osrs-dps-calc/blob/89c3e25b344aea90d0189746e4b5f73dde0f0383/cdn/json/equipment.json",
+      "author": "OSRS Wiki contributors; Weird Gloop development reference",
+      "type": "bounded ordinary melee item facts",
+      "revision": "89c3e25b344aea90d0189746e4b5f73dde0f0383",
+      "accessed": "2026-10-26",
+      "reviewed": "2026-10-26",
+      "reuseBasis": "Independently recorded ordinary attack/strength facts for eight Nex table alternatives. No implementation, prose, images or bulk dataset copied.",
+      "licence": "GPL development reference and Wiki-derived facts; no expressive content redistributed.",
+      "decisions": [],
+      "items": [
+        29010,
+        27238,
+        29004,
+        29280,
+        27241,
+        29007,
+        29283,
+        29806
+      ],
+      "models": [],
+      "routes": [],
+      "contexts": []
     }
   ],
   "decisions": [
@@ -31983,6 +32008,66 @@
         "sources": [
           "r3b-kraken-tentacle",
           "item-ids"
+        ]
+      },
+      {
+        "id": 29010,
+        "label": "Eclipse moon helm",
+        "skill": "RANGED",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "n3-advice-melee-facts"
+        ]
+      },
+      {
+        "id": 29004,
+        "label": "Eclipse moon chestplate",
+        "skill": "RANGED",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "n3-advice-melee-facts"
+        ]
+      },
+      {
+        "id": 29280,
+        "label": "Mixed hide top",
+        "skill": "DEFENCE",
+        "level": 50,
+        "crystal": false,
+        "sources": [
+          "n3-advice-melee-facts"
+        ]
+      },
+      {
+        "id": 29007,
+        "label": "Eclipse moon tassets",
+        "skill": "RANGED",
+        "level": 75,
+        "crystal": false,
+        "sources": [
+          "n3-advice-melee-facts"
+        ]
+      },
+      {
+        "id": 29283,
+        "label": "Mixed hide legs",
+        "skill": "RANGED",
+        "level": 60,
+        "crystal": false,
+        "sources": [
+          "n3-advice-melee-facts"
+        ]
+      },
+      {
+        "id": 29806,
+        "label": "Aranea boots",
+        "skill": "DEFENCE",
+        "level": 1,
+        "crystal": false,
+        "sources": [
+          "n3-advice-melee-facts"
         ]
       }
     ],
@@ -57255,6 +57340,170 @@
         ],
         "family": "ORDINARY",
         "effect": "NONE"
+      },
+      {
+        "id": 29010,
+        "label": "Eclipse moon helm",
+        "slot": "head",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 3,
+        "requirements": {
+          "DEFENCE": 50,
+          "RANGED": 75
+        },
+        "sources": [
+          "n3-advice-melee-facts"
+        ],
+        "effect": "NONE",
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY"
+      },
+      {
+        "id": 27238,
+        "label": "Masori body (f)",
+        "slot": "body",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 0,
+        "requirements": {
+          "RANGED": 80,
+          "DEFENCE": 80
+        },
+        "sources": [
+          "n3-advice-melee-facts"
+        ],
+        "effect": "NONE",
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY"
+      },
+      {
+        "id": 29004,
+        "label": "Eclipse moon chestplate",
+        "slot": "body",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 3,
+        "requirements": {
+          "DEFENCE": 50,
+          "RANGED": 75
+        },
+        "sources": [
+          "n3-advice-melee-facts"
+        ],
+        "effect": "NONE",
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY"
+      },
+      {
+        "id": 29280,
+        "label": "Mixed hide top",
+        "slot": "body",
+        "stab": 4,
+        "slash": -2,
+        "crush": -3,
+        "strength": 2,
+        "requirements": {
+          "DEFENCE": 50,
+          "RANGED": 60
+        },
+        "sources": [
+          "n3-advice-melee-facts"
+        ],
+        "effect": "NONE",
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY"
+      },
+      {
+        "id": 27241,
+        "label": "Masori chaps (f)",
+        "slot": "legs",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 0,
+        "requirements": {
+          "RANGED": 80,
+          "DEFENCE": 80
+        },
+        "sources": [
+          "n3-advice-melee-facts"
+        ],
+        "effect": "NONE",
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY"
+      },
+      {
+        "id": 29007,
+        "label": "Eclipse moon tassets",
+        "slot": "legs",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 1,
+        "requirements": {
+          "DEFENCE": 50,
+          "RANGED": 75
+        },
+        "sources": [
+          "n3-advice-melee-facts"
+        ],
+        "effect": "NONE",
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY"
+      },
+      {
+        "id": 29283,
+        "label": "Mixed hide legs",
+        "slot": "legs",
+        "stab": 3,
+        "slash": -1,
+        "crush": -2,
+        "strength": 0,
+        "requirements": {
+          "RANGED": 60
+        },
+        "sources": [
+          "n3-advice-melee-facts"
+        ],
+        "effect": "NONE",
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY"
+      },
+      {
+        "id": 29806,
+        "label": "Aranea boots",
+        "slot": "feet",
+        "stab": 0,
+        "slash": 0,
+        "crush": 0,
+        "strength": 4,
+        "requirements": {},
+        "sources": [
+          "n3-advice-melee-facts"
+        ],
+        "effect": "NONE",
+        "ticks": 0,
+        "twoHanded": false,
+        "styles": [],
+        "family": "ORDINARY"
       }
     ],
     "unsupportedWeapons": {

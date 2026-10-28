@@ -22,6 +22,7 @@ final class NexPanel extends PluginPanel
 	{
 		boolean current();
 		default boolean contextCurrent() { return current(); }
+		default NexSupportReport.Frame supportFrame(NexSupportReport.Frame fallback) { return fallback; }
 		boolean canEdit();
 		void method(NexMethod method);
 		void confirm(String key, Boolean value);
@@ -47,12 +48,19 @@ final class NexPanel extends PluginPanel
 	private JTextArea reportArea;
 	private JScrollPane reportScroll;
 	private String reportFeedback="";
+	private NexSupportReport.Runtime diagnosticRuntime=NexSupportReport.Runtime.UNKNOWN;
 	private NexScenarioPanel scenarioPanel;
 	private java.util.function.Consumer<Runnable> scenarioExecutor;
 	private boolean scenarioAllowed;
 	private boolean calculationDetailsExpanded;
 	private NexSummary adviceSource;
-	private int adviceSelection;
+	private NexOwnedResult adviceInspection;
+	private int adviceSelection=-1;
+	private int adviceGroup;
+	private String adviceRole="Melee";
+	private boolean adviceAll;
+	private final Set<Integer> manualAdvice=new HashSet<>();
+	private static final com.ironpath.advisor.EncounterCandidates CANDIDATES=com.ironpath.advisor.EncounterCandidates.nex();
 	private NexSummary calculationDetailsSummary;
 
 	private NexSummary inspected;
@@ -99,8 +107,11 @@ final class NexPanel extends PluginPanel
 	void render(String status,AccountSnapshot account,Preferences prefs,KnowledgeCatalog catalog,NexSession.Stats stats,boolean enabled,Actions actions,String storage,NexOwnedResult owned,boolean active,TrackingStatus tracking)
 	{ render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active,tracking,null); }
 	void render(String status,AccountSnapshot account,Preferences prefs,KnowledgeCatalog catalog,NexSession.Stats stats,boolean enabled,Actions actions,String storage,NexOwnedResult owned,boolean active,TrackingStatus tracking,com.ironpath.nex.NexCapture.Progress progress)
+	{ render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active,tracking,progress,NexSupportReport.Runtime.UNKNOWN); }
+	void render(String status,AccountSnapshot account,Preferences prefs,KnowledgeCatalog catalog,NexSession.Stats stats,boolean enabled,Actions actions,String storage,NexOwnedResult owned,boolean active,TrackingStatus tracking,com.ironpath.nex.NexCapture.Progress progress,NexSupportReport.Runtime runtime)
 	{
 		if(!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
+		diagnosticRuntime=runtime;
 		var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
 		java.awt.Point position=nextPosition!=null?nextPosition:viewport==null?null:viewport.getViewPosition(); nextPosition=null;
 		long currentView=++view;
@@ -118,7 +129,7 @@ final class NexPanel extends PluginPanel
 			contextTarget=null; contextEditor=null; scenarioPanel=null; ownedIndex=0; ownedPairIndex=0;
 			returnPosition=null; diagnosticDefaultPending=true; calculationDetailsSummary=null; calculationDetailsExpanded=false;
 			observationSummary=null; observationPage=0;
-			adviceSource=null; adviceSelection=0;
+			adviceSource=null; adviceInspection=null; adviceSelection=-1; adviceGroup=0; adviceRole="Melee"; adviceAll=false; manualAdvice.clear();
 			editingDefaults=false;
 			ownedRoleFilter="All roles"; ownedSupportFilter="Supported comparisons"; clearReport();
 			suspendedPosition=null; position=new java.awt.Point();
@@ -131,6 +142,8 @@ final class NexPanel extends PluginPanel
 		visibleScope=stats.scope;
 		if(available && !paused)
 		{
+			if(adviceInspection!=null && (!retained(stats,adviceInspection.summary)
+				|| !coherent(stats.record(adviceInspection.summary),adviceInspection))) { adviceInspection=null; }
 			if(inspected!=null && !retained(stats,inspected)) { inspected=null; inspectedCalculation=null; }
 			if(inspectedOwned!=null && !retained(stats,inspectedOwned.summary)) { inspectedOwned=null; scenarioPanel=null; }
 			if(contextTarget!=null && !retained(stats,contextTarget)) { contextTarget=null; contextEditor=null; if(team!=null) { team.expand(false); } }
@@ -151,7 +164,7 @@ final class NexPanel extends PluginPanel
 		if(available && !paused && stats.last!=null) { stats.last.timeline.forEach(sample->names.putAll(sample.state.itemNames)); }
 		if(available && !paused && inspected!=null) { inspected.timeline.forEach(sample->names.putAll(sample.state.itemNames)); }
 		displayNames=Map.copyOf(names);
-		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active,tracking);
+		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active,tracking,progress,runtime);
 		java.util.function.BooleanSupplier valid=()->view==currentView && available && !paused && actions.current();
 		java.util.function.BooleanSupplier contextValid=()->view==currentView && available && !paused && actions.contextCurrent();
 		if(summaryBody==null)
@@ -200,7 +213,7 @@ final class NexPanel extends PluginPanel
 				boolean enlarged=getFont().getSize()>=18;
 				JPanel metrics=PanelWidgets.column(kill); kill.add(metrics);
 				killMetric(metrics,String.format(Locale.ROOT,"%.1f s",stats.last.seconds()),enlarged?"Time":"Duration","nex-duration",enlarged);
-				killMetric(metrics,"Unverified","Damage contribution","nex-share",enlarged);
+				killMetric(metrics,stats.last.share()==null?"—":String.format(Locale.ROOT,"%.1f%%",stats.last.share()),"Damage contribution","nex-share",enlarged);
 				if(stats.n>1) { PanelWidgets.text(kill,aggregateLabel(stats)); }
 				if(inspectedOwned==null && inspected==null) { context(stats.record(stats.last),redraw,contextValid); }
 			}
@@ -218,10 +231,23 @@ final class NexPanel extends PluginPanel
 		else
 		{
 			if(stats.lastAttempt!=null && stats.lastAttempt!=stats.last)
-			{ text("Incomplete attempt"); button(content,"Last attempt details",()->{ if(contextValid.getAsBoolean()) { openDetails(stats.lastAttempt,null); redraw.run(); } }); }
-			if(stats.last!=null)
+			{ text("Incomplete attempt");
+				var partial=stats.record(stats.lastAttempt);
+				if(partial!=null && partial.calculation!=null && !partial.calculation.equipment.rows.isEmpty())
+				{ button(content,"Compare recorded setup",()->{ if(contextValid.getAsBoolean()) { adviceInspection=partial.calculation; redraw.run(); } }); }
+				button(content,"Last attempt details",()->{ if(contextValid.getAsBoolean()) { openDetails(stats.lastAttempt,null); redraw.run(); } }); }
+			if(stats.last!=null || adviceInspection!=null)
 			{
-				if(!coherent(stats.record(stats.last),owned)) { text("Recalculating…"); }
+				if(adviceInspection!=null)
+				{
+					if(adviceInspection.summary!=stats.last)
+					{
+						text(adviceInspection.summary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE?"Comparing previous kill":"Comparing recorded setup");
+						button(content,stats.last==null?"Back to encounter":"Latest kill",()->{ if(contextValid.getAsBoolean()) { adviceInspection=null; adviceSelection=-1; redraw.run(); } });
+					}
+					fangAdvice(adviceInspection,catalog,contextValid,redraw);
+				}
+				else if(!coherent(stats.record(stats.last),owned)) { text("Recalculating…"); }
 				else
 				{
 					fangAdvice(owned,catalog,contextValid,redraw);
@@ -281,7 +307,7 @@ final class NexPanel extends PluginPanel
 		NexReport.State state=paused?NexReport.State.PAUSED:account==null?NexReport.State.NO_ACCOUNT:!available?NexReport.State.NOT_READY:
 			stats.attempts==0 && stats.resetReason!=null?NexReport.State.RESET:diagnosticSummary==null?NexReport.State.NO_KILL:
 			diagnosticOwned==null && diagnosticSummary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE?NexReport.State.PENDING:NexReport.State.READY;
-		diagnostics(status,stats,prefs,catalog,state,()->view==currentView && (actions==null || actions.contextCurrent()));
+		diagnostics(status,stats,prefs,catalog,state,tracking,actions,()->view==currentView && (actions==null || actions.contextCurrent()));
 		content=this; updateDiagnostics=()->{ if(view==currentView) { redraw.run(); } }; revalidate(); repaint();
 		java.awt.Point restorePosition=position;
 		if(viewport!=null && restorePosition!=null) { SwingUtilities.invokeLater(()->{
@@ -339,74 +365,101 @@ final class NexPanel extends PluginPanel
 	}
 	private void fangAdvice(NexOwnedResult result,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid,Runnable redraw)
 	{
-		var advice=result.advice;
-		JPanel card=PanelWidgets.card(content,"nex-fang-advice");
-		PanelWidgets.centeredLabel(card,"Fang equipment",true,0,ColorScheme.TEXT_COLOR);
-		PanelWidgets.centeredLabel(card,"Provisional · base stats",false,0,PanelWidgets.MUTED);
-		if(advice.rows.isEmpty())
-		{
-			PanelWidgets.text(card,"No supported Fang sample");
-			PanelWidgets.text(card,advice.blockers.contains(com.ironpath.advisor.NexFangAdvice.Gap.TRUNCATED)?"Action evidence truncated":
-				advice.excluded.isEmpty()?"No ordinary Fang attacks captured":fangGap(advice.excluded.values().iterator().next()));
-			return;
-		}
+		var advice=result.equipment;
 		if(adviceSource!=result.summary)
+		{ adviceSource=result.summary; adviceSelection=-1; adviceGroup=0; manualAdvice.clear(); }
+		PanelWidgets.centeredLabel(content,"Combat role",false,0,PanelWidgets.MUTED);
+		JComboBox<String> role=new JComboBox<>(new String[]{"Melee","Ranged","Special attacks"});
+		role.setName("nex-combat-role"); role.setSelectedItem(adviceRole); role.setFont(getFont()); addControl(role);
+		role.addActionListener(e->{ if(valid.getAsBoolean()) { adviceRole=(String)role.getSelectedItem(); adviceGroup=0; adviceSelection=-1; redraw.run(); } });
+		PanelWidgets.centeredLabel(content,"Recommended upgrades",true,0,ColorScheme.TEXT_COLOR);
+		String selectedRole=adviceRole.equals("Melee")?"melee":adviceRole.equals("Ranged")?"ranged":"spec";
+		if(advice.rows.stream().noneMatch(r->r.role.equals(selectedRole)))
+		{ text("No captured "+adviceRole.toLowerCase(Locale.ROOT)+" setup"); return; }
+		List<com.ironpath.nex.NexSummary.Sample> groups=new ArrayList<>();
+		for(var row:advice.rows) { if(row.role.equals(selectedRole) && !groups.contains(row.sample)) { groups.add(row.sample); } }
+		adviceGroup=Math.min(adviceGroup,groups.size()-1);
+		if(groups.size()>1)
 		{
-			adviceSource=result.summary; adviceSelection=0;
-			for(int i=0;i<advice.rows.size();i++) { if(advice.rows.get(i).gain.lower>1e-9) { adviceSelection=i; break; } }
+			PanelWidgets.centeredLabel(content,"Comparison setup",false,0,PanelWidgets.MUTED);
+			JComboBox<String> group=new JComboBox<>(); group.setName("nex-advice-context"); group.setFont(getFont());
+			for(int i=0;i<groups.size();i++) { group.addItem("Setup "+(i+1)+" · "+name(groups.get(i).state.slots.getOrDefault("weapon",0),catalog)); }
+			group.setSelectedIndex(adviceGroup); addControl(group);
+			group.addActionListener(e->{ if(valid.getAsBoolean()) { adviceGroup=group.getSelectedIndex(); adviceSelection=-1; redraw.run(); } });
 		}
-		adviceSelection=Math.min(adviceSelection,advice.rows.size()-1);
-		var row=advice.rows.get(adviceSelection);
-		JComboBox<String> options=new JComboBox<>(); options.setName("nex-fang-alternative"); options.setFont(getFont());
-		options.setAlignmentX(LEFT_ALIGNMENT);
+		var sample=groups.get(adviceGroup);
+		Set<Integer> suggested=new HashSet<>(CANDIDATES.suggestions("nex","nex-trio-mp2-one-kill",com.ironpath.advisor.EncounterCandidates.Role.valueOf(selectedRole.equals("spec")?"SPECIAL":selectedRole.toUpperCase(Locale.ROOT)),manualAdvice));
+		if(selectedRole.equals("spec")) { suggested.addAll(CANDIDATES.suggestions("nex","nex-trio-mp2-one-kill",com.ironpath.advisor.EncounterCandidates.Role.valueOf(sample.role.toUpperCase(Locale.ROOT)),manualAdvice)); }
+		JCheckBox all=new JCheckBox("Include sidegrades & downgrades",adviceAll); all.setFont(getFont()); all.setName("nex-advice-all");
+		// Wrapping native checkbox text is handled by a narrow-font-safe separate label.
+		all.setText("All alternatives"); all.setToolTipText("Include defensive alternatives, sidegrades and downgrades"); addControl(all);
+		all.addActionListener(e->{ if(valid.getAsBoolean()) { adviceAll=all.isSelected(); redraw.run(); } });
 		for(int i=0;i<advice.rows.size();i++)
 		{
-			var alternative=advice.rows.get(i); var changed=NexPresentation.changedItems(alternative.pair);
-			String label=changed.size()==1?name(changed.values().iterator().next(),catalog):changed.isEmpty()?"Unchanged gear":changed.size()+"-item package";
-			options.addItem((i+1)+" · "+label);
+			var row=advice.rows.get(i); if(row.sample!=sample || !row.role.equals(selectedRole)) { continue; }
+			var changed=NexPresentation.changedItems(row.pair); if(changed.isEmpty() && i!=adviceSelection) { continue; }
+			boolean observed=row.kind!=com.ironpath.advisor.NexFangAdvice.Kind.UPGRADE;
+			if(!observed && !changed.values().stream().allMatch(suggested::contains)) { continue; }
+			boolean defensive=CANDIDATES.items.stream().anyMatch(item->item.defensive && changed.containsValue(item.id));
+			if(!adviceAll && !defensive && row.gain.lower<=1e-9 && i!=adviceSelection) { continue; }
+			int index=i; JPanel card=PanelWidgets.card(content,"nex-advice-row-"+i);
+			String title=changed.size()==1?name(changed.values().iterator().next(),catalog):changed.isEmpty()?"Current setup":changed.size()+"-item package";
+			if(changed.size()==1) { item(card,changed.values().iterator().next(),title,valid); }
+			else { PanelWidgets.centeredLabel(card,title,true,0,ColorScheme.TEXT_COLOR); }
+			PanelWidgets.centeredLabel(card,row.headline(),true,0,ColorScheme.TEXT_COLOR);
+			JButton open=button(card,adviceSelection==i?"Close comparison ▴":"Open comparison ▾",()->{
+				if(valid.getAsBoolean())
+				{ adviceSelection=adviceSelection==index?-1:index; adviceInspection=adviceSelection<0?null:result; redraw.run(); }
+			}); open.setName("nex-advice-open-"+i);
+			if(adviceSelection!=i) { continue; }
+			if(changed.size()==1)
+			{
+				var change=changed.entrySet().iterator().next();
+				PanelWidgets.centeredLabel(card,"Replaces "+name(row.pair.beforeSetup.slots.get(change.getKey()),catalog),false,0,PanelWidgets.MUTED).setName("nex-fang-replaces");
+			}
+			else
+			{
+				for(var change:changed.entrySet()) { PanelWidgets.text(card,name(row.pair.beforeSetup.slots.get(change.getKey()),catalog)+" → "+name(change.getValue(),catalog)); }
+			}
+			PanelWidgets.centeredLabel(card,row.headline(),true,2,ColorScheme.TEXT_COLOR).setName("nex-fang-gain");
+			PanelWidgets.centeredLabel(card,"Max hit "+row.pair.before.maxHit+" → "+row.pair.after.maxHit,false,0,PanelWidgets.MUTED).setName("nex-fang-max-hit");
+			if(row.impact.contribution!=null)
+			{
+				PanelWidgets.centeredLabel(card,"Estimated contribution",false,0,PanelWidgets.MUTED);
+				PanelWidgets.centeredLabel(card,String.format(Locale.ROOT,"%.1f%%",100*row.impact.contribution),true,0,ColorScheme.TEXT_COLOR);
+			}
+			if(row.impact.secondsSaved!=null)
+			{
+				PanelWidgets.centeredLabel(card,"Estimated team time saved",false,0,PanelWidgets.MUTED);
+				PanelWidgets.centeredLabel(card,String.format(Locale.ROOT,"%+.1f s",row.impact.secondsSaved),true,0,ColorScheme.TEXT_COLOR);
+			}
+			JButton details=button(card,"How this was compared",()->{
+				if(!valid.getAsBoolean()) { return; }
+				selectDiagnostics(result.summary,result,0,0,false); diagnostic.expand(true);
+				diagnosticFangResult=result; diagnosticFangSelection=index;
+				calculationDetailsSummary=result.summary; calculationDetailsExpanded=true; redraw.run();
+			}); details.setName("nex-fang-details");
 		}
-		options.setSelectedIndex(adviceSelection); options.setMaximumSize(new Dimension(PANEL_WIDTH-24,Math.max(28,options.getPreferredSize().height)));
-		options.setPreferredSize(new Dimension(PANEL_WIDTH-24,options.getPreferredSize().height)); card.add(options);
-		options.setMinimumSize(new Dimension(0,options.getPreferredSize().height)); options.setToolTipText(options.getSelectedItem().toString());
-		options.getAccessibleContext().setAccessibleName("Fang equipment alternative");
-		options.addActionListener(e->{ if(valid.getAsBoolean()) { adviceSelection=options.getSelectedIndex(); redraw.run(); } });
-		var changed=NexPresentation.changedItems(row.pair);
-		if(changed.size()==1)
+		PanelWidgets.centeredLabel(content,"Add comparison item",false,0,PanelWidgets.MUTED);
+		JComboBox<String> manual=new JComboBox<>(); manual.setName("nex-fang-alternative"); manual.setFont(getFont());
+		List<Integer> manualIndices=new ArrayList<>();
+		for(int i=0;i<advice.rows.size();i++)
 		{
-			var change=changed.entrySet().iterator().next();
-			item(card,change.getValue(),name(change.getValue(),catalog),valid);
-			PanelWidgets.centeredLabel(card,"Replaces "+name(row.pair.beforeSetup.slots.getOrDefault(change.getKey(),-1),catalog),false,0,PanelWidgets.MUTED).setName("nex-fang-replaces");
+			var row=advice.rows.get(i); if(!row.role.equals(selectedRole)) { continue; } manualIndices.add(i); var changed=NexPresentation.changedItems(row.pair);
+			manual.addItem((i+1)+" · "+(changed.size()==1?name(changed.values().iterator().next(),catalog):changed.isEmpty()?"Current setup":changed.size()+"-item package")+" · setup "+(groups.indexOf(row.sample)+1));
 		}
-		else if(!changed.isEmpty())
-		{
-			JPanel sprites=new ActionLinks(); sprites.setFont(getFont()); card.add(sprites);
-			changed.values().stream().filter(id->id>0).distinct().limit(3).forEach(id->sprites.add(sprite(id,valid)));
-			PanelWidgets.centeredLabel(card,changed.size()+"-item package",true,0,ColorScheme.TEXT_COLOR);
-		}
-		PanelWidgets.centeredLabel(card,row.headline(),true,2,ColorScheme.TEXT_COLOR).setName("nex-fang-gain");
-		PanelWidgets.centeredLabel(card,"Max hit "+row.pair.before.maxHit+" → "+row.pair.after.maxHit,false,0,PanelWidgets.MUTED).setName("nex-fang-max-hit");
-		PanelWidgets.centeredLabel(card,row.actionIndices.size()+(row.actionIndices.size()==1?" Fang attack":" Fang attacks")+" · fixed tempo",false,0,PanelWidgets.MUTED).setName("nex-fang-sample");
-		PanelWidgets.centeredLabel(card,row.kind==com.ironpath.advisor.NexFangAdvice.Kind.UPGRADE?"Hypothetical gear · vs owned":
-			row.kind==com.ironpath.advisor.NexFangAdvice.Kind.BANK_PREPARATION?"Bank gear · next trip":changed.isEmpty()?"Equipped gear":"Inventory gear",false,0,PanelWidgets.MUTED);
-		JButton details=button(card,"Diagnostics →",()->{
+		addControl(manual);
+		button(content,"Add item",()->{
 			if(!valid.getAsBoolean()) { return; }
-			selectDiagnostics(result.summary,result,0,0,false); diagnostic.expand(true);
-			diagnosticFangResult=result; diagnosticFangSelection=adviceSelection;
-			calculationDetailsSummary=result.summary; calculationDetailsExpanded=true; redraw.run();
-		}); details.setName("nex-fang-details");
+			adviceInspection=result; adviceSelection=manualIndices.get(manual.getSelectedIndex()); var row=advice.rows.get(adviceSelection);
+			manualAdvice.addAll(NexPresentation.changedItems(row.pair).values()); adviceGroup=groups.indexOf(row.sample); redraw.run();
+		}).setName("nex-advice-add");
 	}
-	private static String fangGap(com.ironpath.advisor.NexFangAdvice.Gap gap)
+
+	private static String roleLabel(String role)
 	{
-		switch(gap)
-		{
-			case UNKNOWN_PHASE: return "Nex phase unknown";
-			case UNSUPPORTED_TARGET: return "Nex target form unsupported";
-			case UNSUPPORTED_WINDOW: return "Ordinary Nex window unknown";
-			case PACKAGE_INPUTS: return "Gear or equip requirements unavailable";
-			case AMBIGUOUS_ATTACK: return "Fang attack evidence ambiguous";
-			case WORK_LIMIT: return "Comparison work limit reached";
-			default: return "No Fang sample within the complete kill";
-		}
+		switch(role) { case "melee": return "Melee"; case "ranged": return "Ranged";
+			case "magic": return "Magic"; case "spec candidate": case "spec": return "Special attacks"; default: return "Unknown"; }
 	}
 	private void context(com.ironpath.nex.NexRecord record,Runnable redraw,java.util.function.BooleanSupplier valid)
 	{
@@ -467,7 +520,7 @@ final class NexPanel extends PluginPanel
 		}
 		diagnosticDefaultPending=false;
 	}
-	private void diagnostics(String status,NexSession.Stats stats,Preferences prefs,KnowledgeCatalog catalog,NexReport.State state,java.util.function.BooleanSupplier valid)
+	private void diagnostics(String status,NexSession.Stats stats,Preferences prefs,KnowledgeCatalog catalog,NexReport.State state,TrackingStatus tracking,Actions actions,java.util.function.BooleanSupplier valid)
 	{
 
 		PanelWidgets.label(content,"Build "+BuildInfo.VERSION,false,0,PanelWidgets.MUTED);
@@ -477,16 +530,39 @@ final class NexPanel extends PluginPanel
 		prefs.confirmations.forEach((key,value)->text((catalog==null?key:catalog.factChoices().getOrDefault(key,key))+": "+value.evidence()));
 		if(stats.resetReason!=null) { text("Previous session cleared: "+stats.resetReason); }
 		NexSummary summary=hidden?null:diagnosticSummary; NexOwnedResult result=hidden?null:diagnosticOwned;
-		if(summary!=null) { text("Frozen kill #"+summary.key+" · "+summary.outcome); }
+		var latest=stats.lastAttempt;
+		if(!hidden && latest!=null && (latest!=summary || latest.outcome!=com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE))
+		{
+			JPanel latestStatus=PanelWidgets.card(content,"nex-latest-attempt");
+			PanelWidgets.text(latestStatus,"Latest attempt #"+latest.key+" · "+latest.outcome);
+			if(latest.outcome!=com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE)
+			{ PanelWidgets.text(latestStatus,"Exclusion: "+NexReport.exclusion(latest)); }
+			if(latest!=summary)
+			{
+				button(latestStatus,"Use last attempt",()->{
+					if(!valid.getAsBoolean()) { return; }
+					var record=stats.record(latest); if(record==null) { return; }
+					selectDiagnostics(latest,record.calculation,0,0,true);
+					if(updateDiagnostics!=null) { updateDiagnostics.run(); }
+				}).setName("nex-report-last-attempt");
+			}
+		}
+		if(summary!=null) { text("Report record #"+summary.key+" · "+summary.outcome); }
 		else { text("No visible kill evidence"); }
 		if(!hidden && summary!=observationSummary) { observationSummary=summary; observationPage=0; }
 		String report=NexReport.snapshot(summary,result,diagnosticChoice,diagnosticPair,catalog,provenance,state,hidden?null:diagnosticRecord,observationPage).format();
-		if(reportArea!=null && !report.equals(reportArea.getText())) { clearReport(); }
+		long selectedRevision=diagnosticRecord==null?0:diagnosticRecord.revision;
+		var fallback=new NexSupportReport.Frame(stats,diagnosticRuntime);
+		String initialReport=NexSupportReport.snapshot(fallback,stats.scope,summary,selectedRevision,report,provenance,state,tracking);
+		if(reportArea!=null && !hidden && !report.equals(NexSupportReport.selected(reportArea.getText()))) { clearReport(); }
 		PanelWidgets.text(content,reportFeedback); final JTextArea feedback=(JTextArea)content.getComponent(content.getComponentCount()-1);
 		button(content,"Copy report now",()->{
 			if(!valid.getAsBoolean() || reportArea==null) { return; }
-			reportArea.setText(report); reportArea.setCaretPosition(0); reportArea.getParent().getParent().setVisible(true);
-			try { clipboard.copy(report); reportFeedback="Report copied. Selectable text is below."; }
+			var frame=actions==null?fallback:actions.supportFrame(fallback);
+			if(frame==null || !valid.getAsBoolean()) { return; }
+			String copied=NexSupportReport.snapshot(frame,stats.scope,summary,selectedRevision,report,provenance,state,tracking);
+			reportArea.setText(copied); reportArea.setCaretPosition(0); reportArea.getParent().getParent().setVisible(true);
+			try { clipboard.copy(copied); reportFeedback="Report copied. Session overview included."; }
 			catch(java.awt.HeadlessException | IllegalStateException | SecurityException ex)
 			{ reportFeedback="Clipboard unavailable or busy. Select the report below and copy it manually."; }
 			feedback.setText(reportFeedback);
@@ -517,7 +593,7 @@ final class NexPanel extends PluginPanel
 			result.gaps.entrySet().stream().sorted(Map.Entry.comparingByKey()).limit(8).forEach(e->PanelWidgets.text(missing,e.getValue()+" · "+NexReport.gapLabel(e.getKey())));
 			if(result.gaps.size()>8) { PanelWidgets.text(missing,"More gaps remain in comparison details."); }
 		}
-		PanelWidgets.text(missing,"Team-time estimates unavailable.");
+		if(result!=null) { PanelWidgets.text(missing,result.equipment.rows.size()+" reusable equipment scenarios; role-weighted contribution/time estimates."); }
 		if(summary!=calculationDetailsSummary) { calculationDetailsSummary=summary; calculationDetailsExpanded=false; }
 		JPanel basis=ownedBody(); basis.setName("nex-calculation-details"); basis.setVisible(calculationDetailsExpanded);
 		button(content,"Calculation details",()->{ if(valid.getAsBoolean()) { calculationDetailsExpanded=!calculationDetailsExpanded; basis.setVisible(calculationDetailsExpanded); revalidate(); repaint(); } });
@@ -526,21 +602,23 @@ final class NexPanel extends PluginPanel
 		PanelWidgets.text(basis,"Knowledge "+(catalog==null?"unavailable":catalog.version));
 		if(result!=null)
 		{
+			PanelWidgets.text(basis,com.ironpath.advisor.NexEquipmentAdvice.BASIS);
+			for(String gap:result.equipment.gaps) { PanelWidgets.text(basis,gap); }
 			PanelWidgets.text(basis,"Fang preview: "+result.advice.included.size()+" included attacks; "+result.advice.excluded.size()+" excluded candidates; "+result.advice.ambiguousImpacts+" ambiguous impacts; "+result.advice.zeroImpacts+" recorded zero impacts. Impact amounts never select the attack sample.");
-			PanelWidgets.text(basis,"Fang mappings/windows and base target stats remain unvalidated assumptions. Same weapon/style/5-tick tempo. Damage bounds pair both setups at every positive integer HP breakpoint; no later HP reading narrows pre-impact HP. Independent alternatives; bank/hypothetical gear needs next-trip packing. See fangAdvice in Copy report for every pair and excluded action.");
-			if(diagnosticFangResult==result && diagnosticFangSelection<result.advice.rows.size())
+			PanelWidgets.text(basis,"Attack mappings/windows and base target stats remain unvalidated assumptions. Same weapon/style/5-tick tempo. Damage includes accuracy and the full ordinary distribution without remaining-HP clipping. Independent alternatives; bank/hypothetical gear needs next-trip packing. See fangAdvice in Copy report for every pair and excluded action.");
+			if(diagnosticFangResult==result && diagnosticFangSelection<result.equipment.rows.size())
 			{
-				var selected=result.advice.rows.get(diagnosticFangSelection);
-				PanelWidgets.text(basis,"Selected Fang alternative "+(diagnosticFangSelection+1)+" · "+selected.kind+" · "+selected.sample.phase+" / "+selected.sample.window
-					+" · "+selected.actionIndices.size()+" attacks: "+selected.headline()+". Min/max/accuracy before="+selected.pair.before.minHit+"/"+selected.pair.before.maxHit+"/"+selected.pair.before.hitChance
-					+"; after="+selected.pair.after.minHit+"/"+selected.pair.after.maxHit+"/"+selected.pair.after.hitChance+". Owned baseline is selected by uncapped ordinary offence, not an HP-dependent optimum. Full set effects, healing and defence benefits are outside this offence comparison.");
+				var selected=result.equipment.rows.get(diagnosticFangSelection);
+				PanelWidgets.text(basis,"Selected equipment alternative "+(diagnosticFangSelection+1)+" · "+selected.kind+" · "+selected.sample.phase+" / "+selected.sample.window
+					+" · "+selected.role+": "+selected.headline()+". Min/max/accuracy before="+selected.pair.before.minHit+"/"+selected.pair.before.maxHit+"/"+selected.pair.before.hitChance
+					+"; after="+selected.pair.after.minHit+"/"+selected.pair.after.maxHit+"/"+selected.pair.after.hitChance+". Baseline is the actually observed equipment for every alternative in this sample. Damage gain is weighted by the method role share before estimating contribution/time. Supplies are omitted. Constant-throughput estimates use s*(1+g)/(1+s*g), T/(1+s*g), with unchanged teammates, damage pool and behaviour. Role gain must first be weighted into overall gain. Fixed waits can reduce time savings. Acquisition: "+selected.work.reason+". Ordering uses diminishing damage benefit minus a fixed remaining-work penalty; no objective-best claim.");
 			}
 		}
 		PanelWidgets.text(basis,"Pilot planning scope: Trio MP2 · one kill per trip.");
 		PanelWidgets.text(basis,"Default team & method: "+prefs.nexContext.label()+"\n"+prefs.nexContext.provenance());
 		if(diagnosticRecord!=null && !hidden) { PanelWidgets.text(basis,diagnosticRecord.context.provenance()); }
 		NexHelp.populate(basis);
-		PanelWidgets.text(basis,"Timing: smoke → death/dying. Damage contribution unavailable: whole-kill coverage unverified.");
+		PanelWidgets.text(basis,"Timing: smoke → death/dying. Damage contribution is the recorded local/total damage ratio.");
 		if(summary!=null)
 		{
 			PanelWidgets.text(basis,"Recorded damage: "+summary.localDamage()+" local / "+summary.totalDamage()+" total; observed hitsplat ratio "+(summary.share()==null?"unavailable":String.format(Locale.ROOT,"%.2f%%",summary.share()))+". Nex + named minions only; healing/unclassified excluded. Whole-kill coverage unverified.");
@@ -605,7 +683,7 @@ final class NexPanel extends PluginPanel
 		button(content,"Show selectable report",()->{ if(valid.getAsBoolean() && reportArea!=null) { reportArea.getParent().getParent().setVisible(!reportArea.getParent().getParent().isVisible()); revalidate(); repaint(); } });
 		if(reportArea==null)
 		{
-			reportArea=new JTextArea(report) {
+			reportArea=new JTextArea(initialReport) {
 				@Override public void scrollRectToVisible(java.awt.Rectangle bounds) { if(isFocusOwner()) { super.scrollRectToVisible(bounds); } }
 			}; reportArea.setName("nex-report-text"); reportArea.setEditable(false); reportArea.setLineWrap(true); reportArea.setWrapStyleWord(true); reportArea.setFont(getFont());
 			reportArea.getAccessibleContext().setAccessibleName("Sanitized diagnostic report"); reportArea.setCaretPosition(0);
@@ -633,7 +711,7 @@ final class NexPanel extends PluginPanel
 		NexResourcesPanel.populate(resources,result.resources,valid,()->{ revalidate(); repaint(); }); content.add(resources);
 		if(result.choices.isEmpty()) { text("No complete captured setup to compare."); return; }
 		List<String> roles=new ArrayList<>(); roles.add("All roles");
-		result.choices.stream().map(c->c.actual.role).distinct().sorted().forEach(roles::add);
+		result.choices.stream().map(c->roleLabel(c.actual.role)).distinct().sorted().forEach(roles::add);
 		JComboBox<String> role=new JComboBox<>(roles.toArray(new String[0])); role.setName("nex-owned-role-filter");
 		role.setSelectedItem(ownedRoleFilter); addControl(role);
 		JComboBox<String> support=new JComboBox<>(new String[]{"Supported comparisons","All states","Unavailable comparisons"});
@@ -641,11 +719,17 @@ final class NexPanel extends PluginPanel
 		JComboBox<String> states=new JComboBox<>(); states.setName("nex-owned-state");
 		List<Integer> indices=new ArrayList<>(); boolean[] filling={false}; addControl(states);
 		JPanel detail=ownedBody(); content.add(detail);
+		boolean[] rebuilding={true};
+		Runnable selectReport=()->{
+			// Rebuilding an older open comparison must not undo an explicit report target.
+			if(!rebuilding[0] || diagnosticSummary==result.summary)
+			{ selectDiagnostics(result.summary,result,ownedIndex,ownedPairIndex,false); }
+		};
 		Runnable show=()->{
 			if(!valid.getAsBoolean() || filling[0] || states.getSelectedIndex()<0) { return; }
 			int selected=indices.get(states.getSelectedIndex());
 			if(ownedIndex!=selected) { ownedPairIndex=0; }
-			ownedIndex=selected; selectDiagnostics(result.summary,result,ownedIndex,ownedPairIndex,false); if(scenarioPanel!=null) { scenarioPanel.detach(); } detail.removeAll();
+			ownedIndex=selected; selectReport.run(); if(scenarioPanel!=null) { scenarioPanel.detach(); } detail.removeAll();
 			var c=result.choices.get(ownedIndex);
 			PanelWidgets.centeredLabel(detail,c.bankPreparation?"Bank gear":"Captured gear",false,0,PanelWidgets.MUTED);
 			if(!c.supported()) { PanelWidgets.text(detail,"No comparison available"); scenario(detail,result,catalog,valid); }
@@ -659,7 +743,7 @@ final class NexPanel extends PluginPanel
 				options.setMaximumSize(new Dimension(PANEL_WIDTH-12,Math.max(28,options.getPreferredSize().height))); detail.add(options);
 				JPanel value=ownedBody(); detail.add(value);
 				Runnable compare=()->{
-					if(!valid.getAsBoolean()) { return; } ownedPairIndex=options.getSelectedIndex(); selectDiagnostics(result.summary,result,ownedIndex,ownedPairIndex,false); value.removeAll(); var pair=pairs.get(ownedPairIndex);
+					if(!valid.getAsBoolean()) { return; } ownedPairIndex=options.getSelectedIndex(); selectReport.run(); value.removeAll(); var pair=pairs.get(ownedPairIndex);
 					options.setToolTipText(options.getSelectedItem().toString());
 					options.getAccessibleContext().setAccessibleName("Gear comparison");
 					PanelWidgets.centeredLabel(value,ownedPairIndex==0?"Proposed gear setup":"Owned alternative",true,0,ColorScheme.TEXT_COLOR);
@@ -689,20 +773,20 @@ final class NexPanel extends PluginPanel
 			for(int i=0;i<result.choices.size();i++)
 			{
 				var c=result.choices.get(i);
-				if(!ownedRoleFilter.equals("All roles") && !ownedRoleFilter.equals(c.actual.role)) { continue; }
+				if(!ownedRoleFilter.equals("All roles") && !ownedRoleFilter.equals(roleLabel(c.actual.role))) { continue; }
 				if(ownedSupportFilter.equals("Supported comparisons") && !c.supported()
 					|| ownedSupportFilter.equals("Unavailable comparisons") && c.supported()) { continue; }
-				indices.add(i); states.addItem((i+1)+": "+c.actual.role+" · tick "+c.actual.tick+" · "+c.actual.phase
+				indices.add(i); states.addItem((i+1)+": "+roleLabel(c.actual.role)+" · tick "+c.actual.tick+" · "+c.actual.phase
 					+(c.actual.phase.equals("ZAROS")?" · "+c.actual.targetState.overhead():"")+(c.bankPreparation?" · bank preparation":" · carried"));
 			}
 			if(!indices.isEmpty()) { states.setSelectedIndex(Math.max(0,indices.indexOf(ownedIndex))); }
 			filling[0]=false; states.setEnabled(!indices.isEmpty());
 			if(indices.isEmpty())
-			{ ownedIndex=-1; ownedPairIndex=0; selectDiagnostics(result.summary,result,-1,0,false); if(scenarioPanel!=null) { scenarioPanel.detach(); } detail.removeAll(); PanelWidgets.text(detail,"No matching comparisons"); }
+			{ ownedIndex=-1; ownedPairIndex=0; selectReport.run(); if(scenarioPanel!=null) { scenarioPanel.detach(); } detail.removeAll(); PanelWidgets.text(detail,"No matching comparisons"); }
 			else { show.run(); }
 			detail.revalidate(); revalidate(); repaint();
 		};
-		states.addActionListener(e->show.run()); role.addActionListener(e->filter.run()); support.addActionListener(e->filter.run()); filter.run();
+		states.addActionListener(e->show.run()); role.addActionListener(e->filter.run()); support.addActionListener(e->filter.run()); filter.run(); rebuilding[0]=false;
 	}
 	private void scenario(JPanel parent,NexOwnedResult result,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid)
 	{
