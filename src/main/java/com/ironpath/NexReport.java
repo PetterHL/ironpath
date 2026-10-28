@@ -169,13 +169,14 @@ final class NexReport
 			+"; unmatched="+r.matches.stream().filter(m->m.candidates.isEmpty()).count()+"; zero hits="+o.impacts.stream().filter(h->h.amount==0).count()+". All candidates remain unvalidated, including singleton matches and other owned damage sources.");
 		out.add("DC end effects/charge loss do not distinguish proc from expiry. Full-energy regeneration remains a client test item.");
 	}
-	private static String exclusion(NexSummary summary)
+	static String exclusion(NexSummary summary)
 	{
 		if(summary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE) { return "none"; }
 		// Exact known adapter reasons or fixed incomplete-signal tokens; never echo arbitrary text.
 		if(Set.of("Method or planning locks changed during capture","Left arena or scene loading during active capture",
 			"Nex spawn identity replaced","Target identity limit","Unreviewed Nex transformation","Arena left before correlated completion",
-			"Local player died/unavailable","Nex despawned without correlated completion","World-view identity changed","Hit identity limit","Player death").contains(summary.reason))
+			"Local player died/unavailable","Nex despawned without correlated completion","World-view identity changed","Hit identity limit","Player death",
+			"State buffer limit reached","Capture event/time limit reached").contains(summary.reason))
 		{ return summary.reason; }
 		List<String> missing=new ArrayList<>();
 		for(String token:List.of("smoke start not observed before combat","tick or worn-state coverage interrupted","Nex death/dying not observed",

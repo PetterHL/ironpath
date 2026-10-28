@@ -5,7 +5,12 @@ you play. The current pilot is **Nex / Trio MP2 / one kill per trip**, with
 Lightbearer throughout and assumed upgraded Death Charge. Gear, switches,
 levels and active prayers are observed automatically; no setup form is required.
 
-**Development build 0.33.1:** spawning Nex no longer starts a partial attempt from
+**Development build 0.33.2:** Diagnostics shows the latest attempt's exclusion
+separately from the frozen report. **Use last attempt** selects it directly;
+an older open comparison cannot overwrite that selection during refresh.
+[Report selection and live evidence](docs/validation/nex-report-selection.md).
+
+Spawning Nex no longer starts a partial attempt from
 an arena reading alone. [Spawning/respawn correction](docs/validation/nex-spawning-attempts.md).
 Compare setups uses **Melee**, **Ranged** and
 **Special attacks**, with a compact equipment list and expandable comparisons.

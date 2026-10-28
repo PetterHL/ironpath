@@ -1,5 +1,11 @@
 # Encounter-first UX
 
+Build **0.33.2** separates the latest recorded attempt from the frozen report in
+Diagnostics. Its fixed exclusion reason is visible without expanding Calculation
+details; **Use last attempt** explicitly selects that record. An older comparison
+can remain open while the selected report stays on the chosen attempt.
+[Verification and live findings](validation/nex-report-selection.md).
+
 Issue #58 (26 October 2026), build **0.33.0**, supersedes conflicting older
 HP-interval, ownership-label and blanket time-estimate guidance below. Current
 ordinary comparisons use the full accuracy-weighted damage distribution, one

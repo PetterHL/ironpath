@@ -318,7 +318,7 @@ public class NexDiagnosticsTest
 			SwingUtilities.invokeAndWait(()->{
 				String details=PanelPreview.text(r.panel);
 				assertTrue("An open equipment comparison stays frozen across another kill",details.contains("Comparing previous kill"));
-				assertTrue(details.contains("Frozen kill #"+first.key+" · "));
+				assertTrue(details.contains("Report record #"+first.key+" · "));
 				assertTrue(details.contains("Selected Fang alternative "+(selected[0]+1)+" · "));
 				assertTrue(details.contains(original.advice.rows.get(selected[0]).headline()));
 				PanelPreview.click(r.panel,"Copy report now");
@@ -328,7 +328,7 @@ public class NexDiagnosticsTest
 			}); r.callbacks.drain(); OfflinePluginReplay.edt();
 			SwingUtilities.invokeAndWait(()->{
 				assertFalse(PanelPreview.text(r.panel).contains("Selected Fang alternative"));
-				assertFalse(PanelPreview.text(r.panel).contains("Frozen kill #"+first.key));
+				assertFalse(PanelPreview.text(r.panel).contains("Report record #"+first.key));
 			});
 		}
 	}
@@ -380,7 +380,7 @@ public class NexDiagnosticsTest
 			PanelPreview.closeSection(panel,"Diagnostics"); PanelPreview.click(panel,"Kill and calculation details");
 			assertEquals("Explicit selection clears the previous export immediately","",old.getText());
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
-			assertTrue(PanelPreview.text(panel).contains("Frozen kill #2"));
+			assertTrue(PanelPreview.text(panel).contains("Report record #2"));
 			assertTrue(copied.get().contains("immutable calculation revision: "+secondResult.revision));
 			assertNotEquals(frozen,copied.get());
 			PanelPreview.click(panel,"Back to encounter"); PanelPreview.closeSection(panel,"Diagnostics"); old=area(panel);
@@ -389,9 +389,67 @@ public class NexDiagnosticsTest
 			panel.render("Incomplete attempt",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",secondResult);
 			PanelPreview.click(panel,"Last attempt details"); assertEquals("",old.getText());
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
-			assertTrue(PanelPreview.text(panel).contains("Frozen kill #3")); assertTrue(copied.get().contains("CENSORED"));
+			assertTrue(PanelPreview.text(panel).contains("Report record #3")); assertTrue(copied.get().contains("CENSORED"));
 			assertFalse("An attempt cannot export the previous kill's calculation",copied.get().contains("immutable calculation revision:"));
 		});
+	}
+	@Test public void lastAttemptReasonIsVisibleWithoutChangingTheFrozenReportUntilSelected() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			var first=summary(1,true); var result=evaluate(first);
+			var session=new NexSession(); session.select("synthetic",301); session.add(first);
+			var copied=new AtomicReference<String>(); var panel=new NexPanel(null,copied::set,NexReport.Provenance.SYNTHETIC_OFFLINE);
+			var account=NexOwnedFixtures.account(null);
+			panel.render("Complete",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			PanelPreview.click(panel,"Base-stat comparisons");
+			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
+			String frozen=copied.get(); JTextArea old=area(panel);
+			var attempt=new NexSummary(2,110,120,10,10,0,Outcome.CENSORED,"State buffer limit reached",first.cohort,first.method,List.of(),Map.of(),Set.of());
+			session.add(attempt);
+			panel.render("Updated",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			String visible=PanelPreview.text(panel);
+			assertTrue(visible.contains("Latest attempt #2 · CENSORED"));
+			assertTrue("Reason does not require Calculation details",visible.contains("Exclusion: State buffer limit reached"));
+			assertTrue(visible.contains("Report record #1 · COMPLETE"));
+			PanelPreview.click(panel,"Copy report now"); assertEquals(frozen,copied.get());
+			PanelPreview.click(panel,"Use last attempt"); assertEquals("",old.getText());
+			PanelPreview.click(panel,"Copy report now"); String excluded=copied.get();
+			assertTrue(PanelPreview.text(panel).contains("Report record #2 · CENSORED"));
+			assertTrue(excluded.contains("outcome: CENSORED; exclusion: State buffer limit reached"));
+			assertFalse(excluded.contains("immutable calculation revision:"));
+			session.add(summary(3,false));
+			panel.render("Another kill",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",null);
+			PanelPreview.click(panel,"Copy report now"); assertEquals("Explicit attempt selection stays frozen",excluded,copied.get());
+		});
+	}
+	@Test public void lastAttemptControlsAndReasonAreHiddenDuringSuspension() throws Exception
+	{
+		SwingUtilities.invokeAndWait(()->{
+			var first=summary(1,true); var result=evaluate(first);
+			var attempt=new NexSummary(2,110,120,10,10,0,Outcome.CENSORED,"Arena left before correlated completion",first.cohort,first.method,List.of(),Map.of(),Set.of());
+			var session=new NexSession(); session.select("synthetic",301); session.add(first); session.add(attempt);
+			var copied=new AtomicReference<String>(); var panel=new NexPanel(null,copied::set,NexReport.Provenance.SYNTHETIC_OFFLINE);
+			var account=NexOwnedFixtures.account(null);
+			panel.render("Ready",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			PanelPreview.openSection(panel,"Diagnostics");
+			JButton stale=(JButton)PanelPreview.children(panel).stream().filter(c->"nex-report-last-attempt".equals(c.getName())).findFirst().orElseThrow();
+			panel.render("Nex session paused",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",result);
+			assertFalse(PanelPreview.text(panel).contains("Latest attempt #"));
+			assertFalse(PanelPreview.text(panel).contains("Arena left before correlated completion"));
+			stale.doClick(0); assertNull(copied.get());
+			PanelPreview.click(panel,"Copy report now");
+			assertTrue(copied.get().contains("PAUSED")); assertFalse(copied.get().contains("CENSORED"));
+		});
+	}
+	@Test public void captureLimitReasonsAreAllowlistedWithoutExportingArbitraryReasonText()
+	{
+		for(String reason:List.of("State buffer limit reached","Capture event/time limit reached",PRIVATE))
+		{
+			var summary=new NexSummary(1,0,100,100,100,0,Outcome.CENSORED,reason,PRIVATE,PRIVATE,List.of(),Map.of(),Set.of());
+			String text=report(summary,null,0,0,NexReport.State.READY).format();
+			assertFalse(text.contains(PRIVATE));
+			assertTrue(text.contains("exclusion: "+(reason.equals(PRIVATE)?"unclassified capture exclusion":reason)));
+		}
 	}
 	@Test public void hiddenOrMismatchedResultsCannotBeExported()
 	{

@@ -14,6 +14,13 @@
 
 ## Current delivery
 
+- **0.33.2 report selection, 28 October 2026:** read
+  docs/validation/nex-report-selection.md. Diagnostics separates latest-attempt
+  status/reason from its frozen selected report and offers Use last attempt.
+  Rebuilding an older comparison must not overwrite an explicitly selected report;
+  deliberate comparison actions can select their own report. Keep hidden-session,
+  stale-action, frozen-input and allowlisted-reason guards. No capture promotion.
+
 - **0.33.1 spawning follow-up, 28 October 2026:** the user confirms one ordinary
   completed kill despite two additional excluded attempts. Read
   docs/validation/nex-spawning-attempts.md. A spawning NPC and arena reading alone

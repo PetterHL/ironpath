@@ -177,7 +177,7 @@ final class OfflineContextScenarios
 			report.check(state+" reaches the clipboard boundary",attempts+1,r.clipboardWrites.size());
 			report.check(state+" copy reveals selectable text",true,PanelPreview.visible(area));
 			String text=area.getText(); var calculation=r.plugin.nexSession.record(key).calculation;
-			report.check(state+" selects the older frozen kill",true,PanelPreview.text(r.panel).contains("Frozen kill #"+key));
+			report.check(state+" selects the older frozen kill",true,PanelPreview.text(r.panel).contains("Report record #"+key));
 			report.check(state+" preserves context/input/calculation revisions",true,text.contains("Effective context revision: "+revision+";")
 				&& text.contains("Calculation context/input revisions: "+revision+" / "+calculation.inputRevision+";")
 				&& text.contains("immutable calculation revision: "+calculation.revision));
@@ -255,7 +255,7 @@ final class OfflineContextScenarios
 	{
 		edt(()->{
 			PanelPreview.openSection(r.panel,"Diagnostics"); PanelPreview.click(r.panel,"Copy report now"); String text=reportText(r);
-			report.check("Displayed diagnostic kill stays selected",true,PanelPreview.text(r.panel).contains("Frozen kill #"+key));
+			report.check("Displayed diagnostic kill stays selected",true,PanelPreview.text(r.panel).contains("Report record #"+key));
 			report.check("Report and selected context revision agree",true,text.contains("Effective context revision: "+revision+";") && text.contains("Calculation context/input revisions: "+revision+" /"));
 			report.check("Corrected report includes no account or roster identity",false,text.contains("offline-synthetic") || text.contains("synthetic member") || text.contains("NEX@"));
 			try { Files.writeString(output.resolve("corrected-report-"+font+".txt"),text); } catch(Exception ex) { throw new IllegalStateException(ex); }

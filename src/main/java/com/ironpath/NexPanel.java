@@ -536,7 +536,24 @@ final class NexPanel extends PluginPanel
 		prefs.confirmations.forEach((key,value)->text((catalog==null?key:catalog.factChoices().getOrDefault(key,key))+": "+value.evidence()));
 		if(stats.resetReason!=null) { text("Previous session cleared: "+stats.resetReason); }
 		NexSummary summary=hidden?null:diagnosticSummary; NexOwnedResult result=hidden?null:diagnosticOwned;
-		if(summary!=null) { text("Frozen kill #"+summary.key+" · "+summary.outcome); }
+		var latest=stats.lastAttempt;
+		if(!hidden && latest!=null && (latest!=summary || latest.outcome!=com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE))
+		{
+			JPanel latestStatus=PanelWidgets.card(content,"nex-latest-attempt");
+			PanelWidgets.text(latestStatus,"Latest attempt #"+latest.key+" · "+latest.outcome);
+			if(latest.outcome!=com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE)
+			{ PanelWidgets.text(latestStatus,"Exclusion: "+NexReport.exclusion(latest)); }
+			if(latest!=summary)
+			{
+				button(latestStatus,"Use last attempt",()->{
+					if(!valid.getAsBoolean()) { return; }
+					var record=stats.record(latest); if(record==null) { return; }
+					selectDiagnostics(latest,record.calculation,0,0,true);
+					if(updateDiagnostics!=null) { updateDiagnostics.run(); }
+				}).setName("nex-report-last-attempt");
+			}
+		}
+		if(summary!=null) { text("Report record #"+summary.key+" · "+summary.outcome); }
 		else { text("No visible kill evidence"); }
 		if(!hidden && summary!=observationSummary) { observationSummary=summary; observationPage=0; }
 		String report=NexReport.snapshot(summary,result,diagnosticChoice,diagnosticPair,catalog,provenance,state,hidden?null:diagnosticRecord,observationPage).format();
@@ -700,11 +717,17 @@ final class NexPanel extends PluginPanel
 		JComboBox<String> states=new JComboBox<>(); states.setName("nex-owned-state");
 		List<Integer> indices=new ArrayList<>(); boolean[] filling={false}; addControl(states);
 		JPanel detail=ownedBody(); content.add(detail);
+		boolean[] rebuilding={true};
+		Runnable selectReport=()->{
+			// Rebuilding an older open comparison must not undo an explicit report target.
+			if(!rebuilding[0] || diagnosticSummary==result.summary)
+			{ selectDiagnostics(result.summary,result,ownedIndex,ownedPairIndex,false); }
+		};
 		Runnable show=()->{
 			if(!valid.getAsBoolean() || filling[0] || states.getSelectedIndex()<0) { return; }
 			int selected=indices.get(states.getSelectedIndex());
 			if(ownedIndex!=selected) { ownedPairIndex=0; }
-			ownedIndex=selected; selectDiagnostics(result.summary,result,ownedIndex,ownedPairIndex,false); if(scenarioPanel!=null) { scenarioPanel.detach(); } detail.removeAll();
+			ownedIndex=selected; selectReport.run(); if(scenarioPanel!=null) { scenarioPanel.detach(); } detail.removeAll();
 			var c=result.choices.get(ownedIndex);
 			PanelWidgets.centeredLabel(detail,c.bankPreparation?"Bank gear":"Captured gear",false,0,PanelWidgets.MUTED);
 			if(!c.supported()) { PanelWidgets.text(detail,"No comparison available"); scenario(detail,result,catalog,valid); }
@@ -718,7 +741,7 @@ final class NexPanel extends PluginPanel
 				options.setMaximumSize(new Dimension(PANEL_WIDTH-12,Math.max(28,options.getPreferredSize().height))); detail.add(options);
 				JPanel value=ownedBody(); detail.add(value);
 				Runnable compare=()->{
-					if(!valid.getAsBoolean()) { return; } ownedPairIndex=options.getSelectedIndex(); selectDiagnostics(result.summary,result,ownedIndex,ownedPairIndex,false); value.removeAll(); var pair=pairs.get(ownedPairIndex);
+					if(!valid.getAsBoolean()) { return; } ownedPairIndex=options.getSelectedIndex(); selectReport.run(); value.removeAll(); var pair=pairs.get(ownedPairIndex);
 					options.setToolTipText(options.getSelectedItem().toString());
 					options.getAccessibleContext().setAccessibleName("Gear comparison");
 					PanelWidgets.centeredLabel(value,ownedPairIndex==0?"Proposed gear setup":"Owned alternative",true,0,ColorScheme.TEXT_COLOR);
@@ -757,11 +780,11 @@ final class NexPanel extends PluginPanel
 			if(!indices.isEmpty()) { states.setSelectedIndex(Math.max(0,indices.indexOf(ownedIndex))); }
 			filling[0]=false; states.setEnabled(!indices.isEmpty());
 			if(indices.isEmpty())
-			{ ownedIndex=-1; ownedPairIndex=0; selectDiagnostics(result.summary,result,-1,0,false); if(scenarioPanel!=null) { scenarioPanel.detach(); } detail.removeAll(); PanelWidgets.text(detail,"No matching comparisons"); }
+			{ ownedIndex=-1; ownedPairIndex=0; selectReport.run(); if(scenarioPanel!=null) { scenarioPanel.detach(); } detail.removeAll(); PanelWidgets.text(detail,"No matching comparisons"); }
 			else { show.run(); }
 			detail.revalidate(); revalidate(); repaint();
 		};
-		states.addActionListener(e->show.run()); role.addActionListener(e->filter.run()); support.addActionListener(e->filter.run()); filter.run();
+		states.addActionListener(e->show.run()); role.addActionListener(e->filter.run()); support.addActionListener(e->filter.run()); filter.run(); rebuilding[0]=false;
 	}
 	private void scenario(JPanel parent,NexOwnedResult result,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid)
 	{

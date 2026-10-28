@@ -1,5 +1,7 @@
 # Validation records
 
+[Nex report selection and live equipment check, 0.33.2](nex-report-selection.md)
+
 [Nex spawning attempts correction, 0.33.1](nex-spawning-attempts.md)
 
 [Issue #58: encounter equipment advice, 0.33.0](encounter-equipment-advice.md)

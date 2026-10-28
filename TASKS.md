@@ -29,6 +29,9 @@ Current implementation, evidence and remaining live checks are recorded in
 The **0.33.1** [spawning follow-up](docs/validation/nex-spawning-attempts.md) fixes
 spurious partial captures around one completed kill on the same PR #59. It does
 not widen Fang window support or promote gameplay mappings.
+The **0.33.2** [report selection follow-up](docs/validation/nex-report-selection.md)
+shows the latest exclusion directly and preserves explicit report selection across
+older comparison redraws. The remaining live exclusion cause is still unconfirmed.
 The remaining sequence is review #57/#58, validate mappings/coverage and usefulness,
 then broaden supported weighting, ranged/spec and supply outputs. More encounters
 reuse the candidate schema and estimate service; no second catalogue or simulator.

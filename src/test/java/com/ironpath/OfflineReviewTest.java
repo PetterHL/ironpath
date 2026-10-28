@@ -60,7 +60,7 @@ public class OfflineReviewTest
 	@Test public void bankTripRetainsHistoryAndAcceptsNextKill() throws Exception { lifecycle("nex-bank-trip", 10); }
 	@Test public void pendingIdentityPublicationCannotOverwriteFreshWork() throws Exception { lifecycle("nex-identity-pending", 6); }
 	@Test public void resetCancelsPendingWorkWithoutPreventingFreshPublication() throws Exception { lifecycle("nex-reset-pending", 6); }
-	@Test public void newResultsPreserveInspectedHistory() throws Exception { lifecycle("nex-frozen-history", 8); }
+	@Test public void newResultsPreserveInspectedHistory() throws Exception { lifecycle("nex-frozen-history", 16); }
 	@Test public void longBankTripAndNearbyNexPreserveHistoryWithoutWeakeningIdentityGuards() throws Exception { lifecycle("nex-bank-long-trip", 8); }
 	@Test public void arenaReloadResumesCaptureWithoutABankVisit() throws Exception { lifecycle("nex-arena-reload", 4); }
 	@Test public void contextCorrectionsReconcileConfirmedCohorts() throws Exception { context("nex-context"); }

@@ -285,10 +285,10 @@ public class NexPanelTest
 					base.unclassifiedHits,base.outcome,base.reason,base.cohort,base.method,base.timeline,base.damage,base.gaps,base.signals,base.beforeStart);
 				session.add(next);
 				panel.render("New result",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",new com.ironpath.advisor.NexOwnedResult(next,List.of()));
-				assertTrue(shown(panel).contains("Frozen kill #1"));
+				assertTrue(shown(panel).contains("Report record #1"));
 				assertTrue(shown(panel).contains("Spec energy & Death Charge · kill #1"));
 				panel.render("Profile changed",null,Preferences.EMPTY,catalog,session.stats(),true,null,"local",null);
-				assertFalse(shown(panel).contains("energy 100.0%")); assertFalse(shown(panel).contains("Frozen kill #"));
+				assertFalse(shown(panel).contains("energy 100.0%")); assertFalse(shown(panel).contains("Report record #"));
 			}
 		} catch(Exception ex) { throw new RuntimeException(ex); } });
 	}
@@ -372,7 +372,7 @@ public class NexPanelTest
 			session.revalidate("a",301,50,true,false); session.add(next);
 			panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",
 				new com.ironpath.advisor.NexOwnedResult(next,List.of()));
-			assertTrue(shown(panel).contains("Frozen kill #1"));
+			assertTrue(shown(panel).contains("Report record #1"));
 				button(panel,"Calculation details").doClick();
 				assertTrue(shown(panel),shown(panel).contains("Target unknown or minion"));
 			assertTrue(shown(panel).contains("First recorded energy 100.0% · last recorded 50.0%"));
