@@ -36,6 +36,14 @@ The remaining sequence is review #57/#58, validate mappings/coverage and usefuln
 then broaden supported weighting, ranged/spec and supply outputs. More encounters
 reuse the candidate schema and estimate service; no second catalogue or simulator.
 
+**0.33.3 troubleshooting:** replace repeated client navigation with one bounded
+copy of all visible retained intervals, typed start/exclusion/runtime facts and
+build provenance, independently of the frozen selected calculation. Follow the
+[evidence-first procedure](docs/TROUBLESHOOTING.md); inspect existing evidence and
+offline reproduction before any further client request. This is diagnostic
+delivery, not acceptance of an underlying live exclusion fix.
+[Implementation and checks](docs/validation/nex-support-report.md).
+
 ## Current baseline and order
 
 Main baseline: **0.31.0**, `2018144`, including merged PR #55, PR #56 and PR #54 (`9a2b592`),

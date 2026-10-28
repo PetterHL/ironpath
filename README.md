@@ -5,10 +5,12 @@ you play. The current pilot is **Nex / Trio MP2 / one kill per trip**, with
 Lightbearer throughout and assumed upgraded Death Charge. Gear, switches,
 levels and active prayers are observed automatically; no setup form is required.
 
-**Development build 0.33.2:** Diagnostics shows the latest attempt's exclusion
-separately from the frozen report. **Use last attempt** selects it directly;
-an older open comparison cannot overwrite that selection during refresh.
-[Report selection and live evidence](docs/validation/nex-report-selection.md).
+**Development build 0.33.3:** **Diagnostics → Copy report now** includes a current
+overview of every retained capture interval, its start source and exclusion reason,
+bank/pause readings and exact build provenance. The selected calculation stays
+frozen in its own section. No record switching or Calculation details is required.
+[Troubleshooting procedure](docs/TROUBLESHOOTING.md) ·
+[Implementation and synthetic validation](docs/validation/nex-support-report.md).
 
 Spawning Nex no longer starts a partial attempt from
 an arena reading alone. [Spawning/respawn correction](docs/validation/nex-spawning-attempts.md).
@@ -40,8 +42,9 @@ Last kill stays above the collapsible **Compare setups**, **Team & method** and
 **Diagnostics** sections. Optional context corrections preserve frozen gear and
 calculation inputs. Diagnostics contains the build version, exclusions, captured
 evidence and **Copy report now**, with selectable text if the clipboard fails.
-Reports bind to the selected kill; open that kill's details before copying when
-checking a particular result.
+One copy includes the bounded session overview regardless of the selected kill.
+Copy while evidence is visible; the copied text is self-contained after logout.
+A paused report includes runtime readings while session evidence stays hidden.
 
 Completed history stays in memory across recognized bank trips and remains hidden
 until the same account/profile/world is verified. Logout, identity/world changes,

@@ -172,6 +172,7 @@ final class NexReport
 	static String exclusion(NexSummary summary)
 	{
 		if(summary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE) { return "none"; }
+		if(summary.reason==null) { return "unclassified capture exclusion"; }
 		// Exact known adapter reasons or fixed incomplete-signal tokens; never echo arbitrary text.
 		if(Set.of("Method or planning locks changed during capture","Left arena or scene loading during active capture",
 			"Nex spawn identity replaced","Target identity limit","Unreviewed Nex transformation","Arena left before correlated completion",

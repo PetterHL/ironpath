@@ -1,5 +1,8 @@
 # Validation records
 
+[One-copy troubleshooting, 0.33.3](nex-support-report.md) records current session
+overviews, frozen selection, typed origins/runtime facts and synthetic privacy/lifecycle checks.
+
 [Nex report selection and live equipment check, 0.33.2](nex-report-selection.md)
 
 [Nex spawning attempts correction, 0.33.1](nex-spawning-attempts.md)

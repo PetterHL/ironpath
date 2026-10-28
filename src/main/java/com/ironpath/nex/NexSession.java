@@ -15,6 +15,7 @@ public final class NexSession
 	private boolean suspended, atBank, returning, arenaReload;
 	private long revision, scope;
 	public synchronized long revision() { return revision; }
+	public synchronized long scope() { return scope; }
 	public synchronized boolean suspended() { return suspended; }
 	public synchronized boolean accepts(String identity,int world)
 	{ return this.identity!=null && this.identity.equals(identity) && this.world==world && !suspended; }

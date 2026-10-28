@@ -14,6 +14,19 @@
 
 ## Current delivery
 
+- **0.33.3 troubleshooting, 28 October 2026:** follow docs/TROUBLESHOOTING.md
+  before requesting client work or attributing a live defect. One Copy report now
+  exports all visible retained capture-interval summaries plus the frozen selection;
+  no selection/Calculation details dance is needed. Check exact build provenance,
+  completeness, runtime readings and the actual exclusion before proposing a fix.
+  Keep observed evidence, hypotheses and synthetic reproduction distinct. Matching
+  counts alone cannot establish the live cause. Do not request another complete
+  kill until existing evidence and controlled offline reproduction are exhausted.
+  Preserve memory-only lifetime, hidden-session, identity and stale-action guards;
+  logout must not be delayed to keep an already copied report useful. No automatic
+  file logging/upload or publication of private diagnostic text. Read
+  docs/validation/nex-support-report.md for the implementation and synthetic checks.
+
 - **0.33.2 report selection, 28 October 2026:** read
   docs/validation/nex-report-selection.md. Diagnostics separates latest-attempt
   status/reason from its frozen selected report and offers Use last attempt.

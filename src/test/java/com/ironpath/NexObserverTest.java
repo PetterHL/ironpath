@@ -201,6 +201,10 @@ public class NexObserverTest
 		assertNull(summary.signals.boundaryTick);
 		assertEquals(Integer.valueOf(21),summary.signals.smokeTick);
 		assertEquals(Integer.valueOf(98),summary.signals.barrierEndTick);
+		assertEquals(com.ironpath.nex.NexSummary.StartSource.ACTIVE_ARENA_POLL,summary.signals.origin.source);
+		assertEquals(Integer.valueOf(0),summary.signals.origin.tick);
+		assertEquals(NexTargetState.Form.NEX,summary.signals.origin.form);
+		assertEquals(Integer.valueOf(3),summary.signals.origin.barrier);
 	}
 	@Test public void smokeCallbackCapturesInitialStateBeforeFollowingGameTick()
 	{
@@ -234,6 +238,8 @@ public class NexObserverTest
 		assertTrue(observer.capture.active()); observer.overhead(boss,"Fill my soul with smoke!");
 		phasesAndEnd(); var summary=session.recent().get(0);
 		assertEquals(Outcome.COMPLETE,summary.outcome); assertEquals(1,summary.startTick);
+		assertEquals(com.ironpath.nex.NexSummary.StartSource.ARENA_BARRIER_TRANSITION,summary.signals.origin.source);
+		assertEquals(NexTargetState.Form.NEX,summary.signals.origin.form);
 		assertEquals("UNKNOWN",summary.beforeStart.get(0).phase);
 		assertEquals("SMOKE",summary.timeline.get(0).phase);
 		assertEquals(Integer.valueOf(1),summary.signals.smokeTick);
@@ -305,6 +311,8 @@ public class NexObserverTest
 		assertEquals(1,session.recent().size()); var summary=session.recent().get(0);
 		assertEquals(Outcome.COMPLETE,summary.outcome); assertEquals(1,summary.startTick);
 		assertEquals(1,summary.actions.signals.stream().filter(a->a.kind==com.ironpath.nex.NexActions.Kind.FOOD_SHARK && a.tick==0).count());
+		assertEquals(com.ironpath.nex.NexSummary.StartSource.SMOKE_ANNOUNCEMENT,summary.signals.origin.source);
+		assertEquals(NexTargetState.Form.SPAWNING,summary.signals.origin.form);
 	}
 	@Test public void midKillEnableAndDeathDoNotCreateFalseCompletionsOrRepeatedAttempts()
 	{

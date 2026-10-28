@@ -376,7 +376,7 @@ public class NexDiagnosticsTest
 			PanelPreview.closeSection(panel,"Diagnostics"); session.add(second);
 			panel.render("Second result",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",secondResult);
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
-			assertEquals("Background results keep the frozen target",frozen,copied.get());
+			assertEquals("Background results keep the frozen target",NexSupportReport.selected(frozen),NexSupportReport.selected(copied.get()));
 			PanelPreview.closeSection(panel,"Diagnostics"); PanelPreview.click(panel,"Kill and calculation details");
 			assertEquals("Explicit selection clears the previous export immediately","",old.getText());
 			PanelPreview.openSection(panel,"Diagnostics"); PanelPreview.click(panel,"Copy report now");
@@ -411,7 +411,8 @@ public class NexDiagnosticsTest
 			assertTrue(visible.contains("Latest attempt #2 · CENSORED"));
 			assertTrue("Reason does not require Calculation details",visible.contains("Exclusion: State buffer limit reached"));
 			assertTrue(visible.contains("Report record #1 · COMPLETE"));
-			PanelPreview.click(panel,"Copy report now"); assertEquals(frozen,copied.get());
+			PanelPreview.click(panel,"Copy report now"); assertEquals(NexSupportReport.selected(frozen),NexSupportReport.selected(copied.get()));
+			assertTrue("One copy includes the other excluded record without switching target",copied.get().contains("Attempt A2: outcome=CENSORED; exclusion=State buffer limit reached"));
 			PanelPreview.click(panel,"Use last attempt"); assertEquals("",old.getText());
 			PanelPreview.click(panel,"Copy report now"); String excluded=copied.get();
 			assertTrue(PanelPreview.text(panel).contains("Report record #2 · CENSORED"));
@@ -419,7 +420,7 @@ public class NexDiagnosticsTest
 			assertFalse(excluded.contains("immutable calculation revision:"));
 			session.add(summary(3,false));
 			panel.render("Another kill",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"",null);
-			PanelPreview.click(panel,"Copy report now"); assertEquals("Explicit attempt selection stays frozen",excluded,copied.get());
+			PanelPreview.click(panel,"Copy report now"); assertEquals("Explicit attempt selection stays frozen",NexSupportReport.selected(excluded),NexSupportReport.selected(copied.get()));
 		});
 	}
 	@Test public void lastAttemptControlsAndReasonAreHiddenDuringSuspension() throws Exception
@@ -522,9 +523,12 @@ public class NexDiagnosticsTest
 			panel.render("New kill",account,Preferences.EMPTY.nex(NexMethod.PILOT.lock("ranged/ammo",0)),catalog,session.stats(),true,actions(),"local",next);
 			assertReportInteraction(panel,area,frozen,position,detachments.get());
 			copied.set("unchanged"); stale.doClick(); assertEquals("unchanged",copied.get());
-			PanelPreview.click(panel,"Copy report now"); assertEquals(frozen,copied.get());
+			PanelPreview.click(panel,"Copy report now");
+			assertEquals(NexSupportReport.selected(frozen),NexSupportReport.selected(copied.get()));
+			assertTrue("An explicit copy refreshes the overview",copied.get().contains("Overview records: 2/2; complete=true"));
+			String refreshed=copied.get();
 			PanelPreview.encounter(panel);
-			assertEquals("Collapsing Diagnostics preserves the selected report", frozen,area.getText());
+			assertEquals("Collapsing Diagnostics preserves the copied report",refreshed,area.getText());
 			assertFalse(PanelPreview.visible(area));
 			PanelPreview.click(panel,"Base-stat comparisons");
 			assertEquals("Changing selection clears the previous report widget","",area.getText());

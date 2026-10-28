@@ -1,5 +1,15 @@
 # Encounter-first UX
 
+Build **0.33.3** makes **Diagnostics → Copy report now** the single troubleshooting
+step. A current bounded overview includes every visible retained capture interval,
+start source/form, exclusion and signal offsets, runtime bank/pause facts and build
+revision/working-tree state. Intervals are not asserted to be player attempts.
+The selected calculation remains frozen in a separate section; background refresh
+preserves selectable text, focus and scroll. An explicit copy refreshes the overview.
+Paused sessions export typed runtime facts but no retained evidence; logout/reset
+still clear memory. No automatic saving/upload or new normal-gameplay controls.
+[Procedure](TROUBLESHOOTING.md) · [Validation](validation/nex-support-report.md).
+
 Build **0.33.2** separates the latest recorded attempt from the frozen report in
 Diagnostics. Its fixed exclusion reason is visible without expanding Calculation
 details; **Use last attempt** explicitly selects that record. An older comparison

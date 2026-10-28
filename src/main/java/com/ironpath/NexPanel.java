@@ -22,6 +22,7 @@ final class NexPanel extends PluginPanel
 	{
 		boolean current();
 		default boolean contextCurrent() { return current(); }
+		default NexSupportReport.Frame supportFrame(NexSupportReport.Frame fallback) { return fallback; }
 		boolean canEdit();
 		void method(NexMethod method);
 		void confirm(String key, Boolean value);
@@ -47,6 +48,7 @@ final class NexPanel extends PluginPanel
 	private JTextArea reportArea;
 	private JScrollPane reportScroll;
 	private String reportFeedback="";
+	private NexSupportReport.Runtime diagnosticRuntime=NexSupportReport.Runtime.UNKNOWN;
 	private NexScenarioPanel scenarioPanel;
 	private java.util.function.Consumer<Runnable> scenarioExecutor;
 	private boolean scenarioAllowed;
@@ -105,8 +107,11 @@ final class NexPanel extends PluginPanel
 	void render(String status,AccountSnapshot account,Preferences prefs,KnowledgeCatalog catalog,NexSession.Stats stats,boolean enabled,Actions actions,String storage,NexOwnedResult owned,boolean active,TrackingStatus tracking)
 	{ render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active,tracking,null); }
 	void render(String status,AccountSnapshot account,Preferences prefs,KnowledgeCatalog catalog,NexSession.Stats stats,boolean enabled,Actions actions,String storage,NexOwnedResult owned,boolean active,TrackingStatus tracking,com.ironpath.nex.NexCapture.Progress progress)
+	{ render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active,tracking,progress,NexSupportReport.Runtime.UNKNOWN); }
+	void render(String status,AccountSnapshot account,Preferences prefs,KnowledgeCatalog catalog,NexSession.Stats stats,boolean enabled,Actions actions,String storage,NexOwnedResult owned,boolean active,TrackingStatus tracking,com.ironpath.nex.NexCapture.Progress progress,NexSupportReport.Runtime runtime)
 	{
 		if(!SwingUtilities.isEventDispatchThread()) { throw new IllegalStateException("Swing thread required"); }
+		diagnosticRuntime=runtime;
 		var viewport=(JViewport)SwingUtilities.getAncestorOfClass(JViewport.class,this);
 		java.awt.Point position=nextPosition!=null?nextPosition:viewport==null?null:viewport.getViewPosition(); nextPosition=null;
 		long currentView=++view;
@@ -159,7 +164,7 @@ final class NexPanel extends PluginPanel
 		if(available && !paused && stats.last!=null) { stats.last.timeline.forEach(sample->names.putAll(sample.state.itemNames)); }
 		if(available && !paused && inspected!=null) { inspected.timeline.forEach(sample->names.putAll(sample.state.itemNames)); }
 		displayNames=Map.copyOf(names);
-		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active,tracking);
+		Runnable redraw=()->render(status,account,prefs,catalog,stats,enabled,actions,storage,owned,active,tracking,progress,runtime);
 		java.util.function.BooleanSupplier valid=()->view==currentView && available && !paused && actions.current();
 		java.util.function.BooleanSupplier contextValid=()->view==currentView && available && !paused && actions.contextCurrent();
 		if(summaryBody==null)
@@ -298,7 +303,7 @@ final class NexPanel extends PluginPanel
 		NexReport.State state=paused?NexReport.State.PAUSED:account==null?NexReport.State.NO_ACCOUNT:!available?NexReport.State.NOT_READY:
 			stats.attempts==0 && stats.resetReason!=null?NexReport.State.RESET:diagnosticSummary==null?NexReport.State.NO_KILL:
 			diagnosticOwned==null && diagnosticSummary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE?NexReport.State.PENDING:NexReport.State.READY;
-		diagnostics(status,stats,prefs,catalog,state,()->view==currentView && (actions==null || actions.contextCurrent()));
+		diagnostics(status,stats,prefs,catalog,state,tracking,actions,()->view==currentView && (actions==null || actions.contextCurrent()));
 		content=this; updateDiagnostics=()->{ if(view==currentView) { redraw.run(); } }; revalidate(); repaint();
 		java.awt.Point restorePosition=position;
 		if(viewport!=null && restorePosition!=null) { SwingUtilities.invokeLater(()->{
@@ -526,7 +531,7 @@ final class NexPanel extends PluginPanel
 		}
 		diagnosticDefaultPending=false;
 	}
-	private void diagnostics(String status,NexSession.Stats stats,Preferences prefs,KnowledgeCatalog catalog,NexReport.State state,java.util.function.BooleanSupplier valid)
+	private void diagnostics(String status,NexSession.Stats stats,Preferences prefs,KnowledgeCatalog catalog,NexReport.State state,TrackingStatus tracking,Actions actions,java.util.function.BooleanSupplier valid)
 	{
 
 		PanelWidgets.label(content,"Build "+BuildInfo.VERSION,false,0,PanelWidgets.MUTED);
@@ -557,12 +562,18 @@ final class NexPanel extends PluginPanel
 		else { text("No visible kill evidence"); }
 		if(!hidden && summary!=observationSummary) { observationSummary=summary; observationPage=0; }
 		String report=NexReport.snapshot(summary,result,diagnosticChoice,diagnosticPair,catalog,provenance,state,hidden?null:diagnosticRecord,observationPage).format();
-		if(reportArea!=null && !report.equals(reportArea.getText())) { clearReport(); }
+		long selectedRevision=diagnosticRecord==null?0:diagnosticRecord.revision;
+		var fallback=new NexSupportReport.Frame(stats,diagnosticRuntime);
+		String initialReport=NexSupportReport.snapshot(fallback,stats.scope,summary,selectedRevision,report,provenance,state,tracking);
+		if(reportArea!=null && !hidden && !report.equals(NexSupportReport.selected(reportArea.getText()))) { clearReport(); }
 		PanelWidgets.text(content,reportFeedback); final JTextArea feedback=(JTextArea)content.getComponent(content.getComponentCount()-1);
 		button(content,"Copy report now",()->{
 			if(!valid.getAsBoolean() || reportArea==null) { return; }
-			reportArea.setText(report); reportArea.setCaretPosition(0); reportArea.getParent().getParent().setVisible(true);
-			try { clipboard.copy(report); reportFeedback="Report copied. Selectable text is below."; }
+			var frame=actions==null?fallback:actions.supportFrame(fallback);
+			if(frame==null || !valid.getAsBoolean()) { return; }
+			String copied=NexSupportReport.snapshot(frame,stats.scope,summary,selectedRevision,report,provenance,state,tracking);
+			reportArea.setText(copied); reportArea.setCaretPosition(0); reportArea.getParent().getParent().setVisible(true);
+			try { clipboard.copy(copied); reportFeedback="Report copied. Session overview included."; }
 			catch(java.awt.HeadlessException | IllegalStateException | SecurityException ex)
 			{ reportFeedback="Clipboard unavailable or busy. Select the report below and copy it manually."; }
 			feedback.setText(reportFeedback);
@@ -681,7 +692,7 @@ final class NexPanel extends PluginPanel
 		button(content,"Show selectable report",()->{ if(valid.getAsBoolean() && reportArea!=null) { reportArea.getParent().getParent().setVisible(!reportArea.getParent().getParent().isVisible()); revalidate(); repaint(); } });
 		if(reportArea==null)
 		{
-			reportArea=new JTextArea(report) {
+			reportArea=new JTextArea(initialReport) {
 				@Override public void scrollRectToVisible(java.awt.Rectangle bounds) { if(isFocusOwner()) { super.scrollRectToVisible(bounds); } }
 			}; reportArea.setName("nex-report-text"); reportArea.setEditable(false); reportArea.setLineWrap(true); reportArea.setWrapStyleWord(true); reportArea.setFont(getFont());
 			reportArea.getAccessibleContext().setAccessibleName("Sanitized diagnostic report"); reportArea.setCaretPosition(0);

@@ -27,12 +27,31 @@ dependencies {
 }
 
 group = 'com.ironpath'
-version = '0.33.2'
+version = '0.33.3'
+
+// Build-time provenance only; the plugin never runs Git or reads the working tree.
+def gitValue = { List<String> args ->
+	try {
+		def output = providers.exec {
+			workingDir projectDir
+			commandLine(['git'] + args)
+			ignoreExitValue = true
+		}
+		return output.result.get().exitValue == 0 ? output.standardOutput.asText.get().trim() : null
+	} catch (Exception ignored) { return null }
+}
+def sourceRevision = providers.provider { gitValue(['rev-parse', 'HEAD']) ?: 'unknown' }
+def sourceWorktree = providers.provider {
+	def status = gitValue(['status', '--porcelain', '--untracked-files=normal'])
+	return status == null ? 'UNKNOWN' : status.isEmpty() ? 'CLEAN' : 'DIRTY'
+}
 
 tasks.named('processResources') {
 	inputs.property('pluginVersion', project.version.toString())
+	inputs.property('sourceRevision', sourceRevision)
+	inputs.property('sourceWorktree', sourceWorktree)
 	filesMatching('com/ironpath/build.properties') {
-		expand(pluginVersion: project.version.toString())
+		expand(pluginVersion: project.version.toString(), sourceRevision: sourceRevision.get(), sourceWorktree: sourceWorktree.get())
 	}
 }
 

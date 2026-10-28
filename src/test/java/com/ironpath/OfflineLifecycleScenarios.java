@@ -303,7 +303,8 @@ final class OfflineLifecycleScenarios
 			report.check("Latest excluded status is visible without changing report target "+font,true,PanelPreview.text(r.panel).contains("Latest attempt #"+excluded.key+" · CENSORED"));
 			report.check("Latest exclusion reason is visible above Calculation details "+font,true,PanelPreview.text(r.panel).contains("Exclusion: Arena left before correlated completion"));
 			PanelPreview.click(r.panel,"Copy report now");
-			report.check("New status leaves selected complete report frozen "+font,completeReport[0],exportText(r));
+			report.check("New status leaves selected complete report frozen "+font,NexSupportReport.selected(completeReport[0]),NexSupportReport.selected(exportText(r)));
+			report.check("One copy includes the latest exclusion while complete report stays selected "+font,true,exportText(r).contains("Attempt A4: outcome=CENSORED; exclusion=Arena left before correlated completion"));
 		});
 		capture(r,output,"latest-attempt-status",font,report);
 		onEdt(()->{

@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /** Bounded deterministic Nex evidence machine. The adapter supplies reviewed signals and spawn keys. */
 public final class NexCapture
 {
-	public static final String VERSION="nex-public-12";
+	public static final String VERSION="nex-public-13";
 	public static final int MAX_TICKS=3000, MAX_SAMPLES=1024, MAX_EVENTS=20000, MAX_SIGNALS=32,
 		END_GRACE=5, END_WAIT=20;
 	private final Consumer<NexSummary> sink;
@@ -34,6 +34,7 @@ public final class NexCapture
 	private long serial, key;
 	private volatile NexMethod method;
 	private NexContext context;
+	private NexSummary.Origin captureOrigin=NexSummary.Origin.UNKNOWN;
 	private int origin, start, last, sampled, lastSample, boundaryTick=-1, death=-1, barrierEnd=-1,
 		smokeTick=-1, observedSmoke=-1, events, unclassified;
 	private String phase="UNKNOWN", window="UNKNOWN", roster;
@@ -58,10 +59,13 @@ public final class NexCapture
 	public void start(int tick, boolean smokeObserved, NexMethod method, String roster)
 	{ start(tick,smokeObserved,method,roster,NexContext.PILOT); }
 	public void start(int tick,boolean smokeObserved,NexMethod method,String roster,NexContext defaults)
+	{ start(tick,smokeObserved,method,roster,defaults,new NexSummary.Origin(tick,NexSummary.StartSource.UNKNOWN,NexTargetState.Form.UNKNOWN,null)); }
+	public void start(int tick,boolean smokeObserved,NexMethod method,String roster,NexContext defaults,NexSummary.Origin captureOrigin)
 	{
 		if (active()) { abort(tick,Outcome.CENSORED,"New encounter before completion"); }
 		this.method=Objects.requireNonNull(method); key=++serial; origin=start=last=tick; lastSample=tick-1;
 		this.context=Objects.requireNonNull(defaults).inherited();
+		this.captureOrigin=Objects.requireNonNull(captureOrigin);
 		this.roster=roster; fullStart=smokeObserved; continuous=true; rosterStable=roster!=null;
 		smokeTick=observedSmoke=smokeObserved?tick:-1;
 		phase=fullStart?"SMOKE":"UNKNOWN"; window="UNKNOWN";
@@ -254,12 +258,12 @@ public final class NexCapture
 	}
 	public void abort(int tick, Outcome outcome, String reason)
 	{ if (active()) { finish(outcome,reason,Math.max(start,tick)); } }
-	public void clear() { method=null; timeline.clear(); beforeStart.clear(); damage.clear(); hitKeys.clear(); signals.clear(); gaps.clear(); phases.clear(); gear.clear(); clearObservations(); actions.clear(); actionsTruncated=false; boundaryTick=death=barrierEnd=smokeTick=observedSmoke=-1; sampled=events=unclassified=0; }
+	public void clear() { method=null; captureOrigin=NexSummary.Origin.UNKNOWN; timeline.clear(); beforeStart.clear(); damage.clear(); hitKeys.clear(); signals.clear(); gaps.clear(); phases.clear(); gear.clear(); clearObservations(); actions.clear(); actionsTruncated=false; boundaryTick=death=barrierEnd=smokeTick=observedSmoke=-1; sampled=events=unclassified=0; }
 	private void finish(Outcome outcome, String reason, int end)
 	{
 		String cohort=VERSION+":"+method.cohort()+":"+gear+":"+(rosterStable?roster:"unmatched-"+key);
 		NexSummary.Signals signals=new NexSummary.Signals(boundaryTick<0?null:boundaryTick,smokeTick<0?null:smokeTick,
-			death<0?null:death,barrierEnd<0?null:barrierEnd,continuous,phases,observedSmoke<0?null:observedSmoke,this.signals);
+			death<0?null:death,barrierEnd<0?null:barrierEnd,continuous,phases,observedSmoke<0?null:observedSmoke,this.signals,captureOrigin);
 		Set<NexComparability.Setup> setups=new HashSet<>();
 		timeline.forEach(s->setups.add(new NexComparability.Setup(s.role,s.state)));
 		NexComparability comparability=new NexComparability(VERSION,setups,roster,rosterStable);
