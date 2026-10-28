@@ -44,7 +44,7 @@ final class NexReport
 		long contextRevision=record!=null && record.summary==summary?record.revision:result!=null && result.summary==summary?result.contextRevision:0;
 		out.add("Attempt-start context (defaults): "+summary.context.label()+"; "+summary.context.provenance());
 		out.add("Effective context revision: "+contextRevision+"; "+context.label()+"; "+context.provenance());
-		out.add("Output support: observed duration retained; whole-kill damage contribution unavailable (coverage unverified); conditional ordinary arithmetic uses captured state and frozen planning inputs. Pilot context confirmed="+context.pilot()+". Automatic method recommendations and team-time estimates unavailable.");
+		out.add("Output support: recorded damage contribution and practical equipment estimates use frozen loadouts and planning inputs. Pilot context confirmed="+context.pilot()+". Role-weighted constant-throughput estimates are in equipmentEstimates JSON.");
 		out.add("Comparability: "+(record==null?"not evaluated":record.exclusion()==null?"eligible for descriptive matching; count alone is insufficient":record.exclusion())+". Planning locks are not observed performance; roster identities omitted.");
 		out.add("Timer: "+summary.timerScope+"; duration seconds: "+summary.seconds());
 		out.add("Damage scope: "+NexSummary.DAMAGE_SCOPE);
@@ -69,7 +69,9 @@ final class NexReport
 			+"; included="+result.advice.included.size()+"; excluded="+result.advice.excluded.size()+"; comparisons="+result.advice.rows.size()
 			+"; blockers="+result.advice.blockers+". Full frozen pairs and actionIndices (explicit ACTION_SIGNAL.actionIndex) are in fangAdvice JSON. All positive pre-impact HP; paired integer-breakpoint bounds; base target stats and ordinary damage assumed. No live mapping promotion or whole-kill extrapolation.");
 		observation(out,summary,result);
-		evidence=result.observations.export;
+		var evidenceJson=new com.google.gson.JsonParser().parse(result.observations.export).getAsJsonObject();
+		evidenceJson.add("equipmentEstimates",result.equipment.json());
+		evidence=evidenceJson.toString();
 		out.add("Automatic N3 recommendation gaps: "+NexPlanSupport.automaticGaps());
 		var resources=result.resources; var scenarios=resources.scenarios;
 		out.add("Resource evidence (tenths percent): first="+resources.firstEnergy+"; last="+resources.lastEnergy

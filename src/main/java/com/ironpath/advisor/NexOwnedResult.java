@@ -57,6 +57,7 @@ public final class NexOwnedResult
 	public final com.ironpath.nex.NexResourceReview resources;
 	public final com.ironpath.nex.NexObservationReview observations;
 	public final NexFangAdvice advice;
+	public final NexEquipmentAdvice equipment;
 	public final Map<String,Integer> gaps;
 	public NexOwnedResult(NexSummary summary, List<Choice> choices)
 	{ this(summary,choices,null); }
@@ -70,7 +71,12 @@ public final class NexOwnedResult
 	{ this(summary,choices,planning,scenarioUnlocks,context,contextRevision,inputRevision,modelRevision,NexFangAdvice.unavailable(summary)); }
 	public NexOwnedResult(NexSummary summary,List<Choice> choices,com.ironpath.preferences.NexMethod planning,
 		Map<String,com.ironpath.model.Truth> scenarioUnlocks,com.ironpath.nex.NexContext context,long contextRevision,long inputRevision,String modelRevision,NexFangAdvice advice)
+	{ this(summary,choices,planning,scenarioUnlocks,context,contextRevision,inputRevision,modelRevision,advice,NexEquipmentAdvice.empty()); }
+	public NexOwnedResult(NexSummary summary,List<Choice> choices,com.ironpath.preferences.NexMethod planning,
+		Map<String,com.ironpath.model.Truth> scenarioUnlocks,com.ironpath.nex.NexContext context,long contextRevision,long inputRevision,String modelRevision,
+		NexFangAdvice advice,NexEquipmentAdvice equipment)
 	{
+		this.equipment=java.util.Objects.requireNonNull(equipment);
 		this.advice=java.util.Objects.requireNonNull(advice);
 		this.scenarioUnlocks=Map.copyOf(scenarioUnlocks);
 		revision=REVISIONS.incrementAndGet(); this.planning=planning;

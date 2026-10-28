@@ -311,6 +311,30 @@
       "width": 36,
       "height": 32,
       "retrieved": "2026-10-26"
+    },
+    {
+      "id": 33595,
+      "source": "https://static.runelite.net/cache/item/icon/33595.png",
+      "sha256": "58fa1145b5bf75ef3f35cbeeae215cfb069b25b76805cc30c3a93ac8dca1203d",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-28"
+    },
+    {
+      "id": 26235,
+      "source": "https://static.runelite.net/cache/item/icon/26235.png",
+      "sha256": "c999edae7a924af723e6d988ec558edc2743863ad3d6f1238f3ac87e93309815",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-28"
+    },
+    {
+      "id": 33639,
+      "source": "https://static.runelite.net/cache/item/icon/33639.png",
+      "sha256": "d92ab5c4b02e41ad4ccb19d3d67d500f9e198c739deba099db09192da45a8750",
+      "width": 36,
+      "height": 32,
+      "retrieved": "2026-10-28"
     }
   ]
 }

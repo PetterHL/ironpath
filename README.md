@@ -5,32 +5,30 @@ you play. The current pilot is **Nex / Trio MP2 / one kill per trip**, with
 Lightbearer throughout and assumed upgraded Death Charge. Gear, switches,
 levels and active prayers are observed automatically; no setup form is required.
 
-**Development build 0.33.3:** **Diagnostics → Copy report now** includes a current
-overview of every retained capture interval, its start source and exclusion reason,
-bank/pause readings and exact build provenance. The selected calculation stays
-frozen in its own section. No record switching or Calculation details is required.
-[Troubleshooting procedure](docs/TROUBLESHOOTING.md) ·
-[Implementation and synthetic validation](docs/validation/nex-support-report.md).
+**Development build 0.34.0:** completed kills retain their loadouts, levels,
+prayers and encounter readings for reusable comparisons. Open alternatives or
+change Team & method without another kill. Useful partial loadouts can also be
+opened with **Compare recorded setup**. A new kill supplies the next basis.
 
-Spawning Nex no longer starts a partial attempt from
-an arena reading alone. [Spawning/respawn correction](docs/validation/nex-spawning-attempts.md).
-Compare setups uses **Melee**, **Ranged** and
-**Special attacks**, with a compact equipment list and expandable comparisons.
-Ordinary damage includes accuracy and the complete damage distribution without
-clipping against remaining target HP. Positive, zero and negative alternatives
-share the observed baseline. **Add comparison item** extends the Nex strategy-table
-suggestions. Ironman ordering combines supported damage benefit with remaining
-acquisition work; no GE prices or acquisition-hour score is shown.
+**Damage contribution** shows your recorded damage divided by total recorded
+Nex + named-minion damage. **Compare setups** offers Melee, Ranged and supported
+Voidwaker/Zaryte crossbow Special attacks using the existing combat kernels and
+legal equipment search. Missing attack mappings or Death Charge/supply details
+do not block independent equipment results. Exact unknown equipment stays unknown;
+hypothetical upgrades are never treated as owned.
 
-The current automatic numerical slice remains ordinary fixed-weapon/style/tempo
-melee samples. Ranged and special attack attribution remain unavailable. Open
-**How this was compared** for sample scope, provisional mapping status, acquisition
-checks and missing inputs. Whole-encounter damage weighting and verified contribution
-are unavailable in current captures, so dependent contribution/time values read
-**Not estimated**. The constant-throughput estimate model is implemented for supported
-inputs; supplies also remain **Not estimated** without a consumption model.
-Damage contribution above the list remains **Unverified**.
-[Scope, sources and validation](docs/validation/encounter-equipment-advice.md).
+Expanded comparisons show role DPS/damage, **Estimated contribution** and
+**Estimated team time saved**. The estimates use recorded share/time, unchanged
+teammates and a method damage mix (MP2 70/20/10, RP2 15/75/10 for melee/ranged/spec).
+When damage is unread, equal team share is used. Base Nex stats, representative
+ruby-bolt HP and equal-energy specials keep the model practical. Partial captures
+supply gear comparisons without pretending their interval is a complete kill.
+Empty supply estimates are omitted. **How this was compared** opens the calculation
+basis and limitations in Diagnostics.
+[Implementation and validation](docs/validation/nex-practical-estimates.md).
+
+**Diagnostics → Copy report now** retains the bounded session overview, frozen
+selected evidence and build provenance. No new kill is required for review.
 
 **Base-stat comparisons** retains the per-state comparisons and optional declared
 spec/resource planner. During capture, **Tracking kill…** advances recorded time

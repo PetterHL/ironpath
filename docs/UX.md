@@ -1,5 +1,10 @@
 # Encounter-first UX
 
+28 October 2026: the [practical-estimates decision](../TASKS.md#current-delivery--practical-estimates-28-october-2026)
+supersedes older validation gates and unavailable-output wording below. Frozen
+loadout scenarios, recorded contribution and role-weighted time estimates are
+available without complete attack attribution. [Current implementation](validation/nex-practical-estimates.md).
+
 Build **0.33.3** makes **Diagnostics → Copy report now** the single troubleshooting
 step. A current bounded overview includes every visible retained capture interval,
 start source/form, exclusion and signal offsets, runtime bank/pause facts and build

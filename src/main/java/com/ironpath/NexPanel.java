@@ -213,7 +213,7 @@ final class NexPanel extends PluginPanel
 				boolean enlarged=getFont().getSize()>=18;
 				JPanel metrics=PanelWidgets.column(kill); kill.add(metrics);
 				killMetric(metrics,String.format(Locale.ROOT,"%.1f s",stats.last.seconds()),enlarged?"Time":"Duration","nex-duration",enlarged);
-				killMetric(metrics,"Unverified","Damage contribution","nex-share",enlarged);
+				killMetric(metrics,stats.last.share()==null?"—":String.format(Locale.ROOT,"%.1f%%",stats.last.share()),"Damage contribution","nex-share",enlarged);
 				if(stats.n>1) { PanelWidgets.text(kill,aggregateLabel(stats)); }
 				if(inspectedOwned==null && inspected==null) { context(stats.record(stats.last),redraw,contextValid); }
 			}
@@ -231,15 +231,19 @@ final class NexPanel extends PluginPanel
 		else
 		{
 			if(stats.lastAttempt!=null && stats.lastAttempt!=stats.last)
-			{ text("Incomplete attempt"); button(content,"Last attempt details",()->{ if(contextValid.getAsBoolean()) { openDetails(stats.lastAttempt,null); redraw.run(); } }); }
-			if(stats.last!=null)
+			{ text("Incomplete attempt");
+				var partial=stats.record(stats.lastAttempt);
+				if(partial!=null && partial.calculation!=null && !partial.calculation.equipment.rows.isEmpty())
+				{ button(content,"Compare recorded setup",()->{ if(contextValid.getAsBoolean()) { adviceInspection=partial.calculation; redraw.run(); } }); }
+				button(content,"Last attempt details",()->{ if(contextValid.getAsBoolean()) { openDetails(stats.lastAttempt,null); redraw.run(); } }); }
+			if(stats.last!=null || adviceInspection!=null)
 			{
 				if(adviceInspection!=null)
 				{
 					if(adviceInspection.summary!=stats.last)
 					{
-						text("Comparing previous kill");
-						button(content,"Latest kill",()->{ if(contextValid.getAsBoolean()) { adviceInspection=null; adviceSelection=-1; redraw.run(); } });
+						text(adviceInspection.summary.outcome==com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE?"Comparing previous kill":"Comparing recorded setup");
+						button(content,stats.last==null?"Back to encounter":"Latest kill",()->{ if(contextValid.getAsBoolean()) { adviceInspection=null; adviceSelection=-1; redraw.run(); } });
 					}
 					fangAdvice(adviceInspection,catalog,contextValid,redraw);
 				}
@@ -361,46 +365,38 @@ final class NexPanel extends PluginPanel
 	}
 	private void fangAdvice(NexOwnedResult result,KnowledgeCatalog catalog,java.util.function.BooleanSupplier valid,Runnable redraw)
 	{
-		var advice=result.advice;
+		var advice=result.equipment;
 		if(adviceSource!=result.summary)
 		{ adviceSource=result.summary; adviceSelection=-1; adviceGroup=0; manualAdvice.clear(); }
 		PanelWidgets.centeredLabel(content,"Combat role",false,0,PanelWidgets.MUTED);
 		JComboBox<String> role=new JComboBox<>(new String[]{"Melee","Ranged","Special attacks"});
 		role.setName("nex-combat-role"); role.setSelectedItem(adviceRole); role.setFont(getFont()); addControl(role);
-		role.addActionListener(e->{ if(valid.getAsBoolean()) { adviceRole=(String)role.getSelectedItem(); redraw.run(); } });
+		role.addActionListener(e->{ if(valid.getAsBoolean()) { adviceRole=(String)role.getSelectedItem(); adviceGroup=0; adviceSelection=-1; redraw.run(); } });
 		PanelWidgets.centeredLabel(content,"Recommended upgrades",true,0,ColorScheme.TEXT_COLOR);
-		if(!adviceRole.equals("Melee"))
-		{
-			text("No supported attack sample");
-			return;
-		}
-		if(advice.rows.isEmpty())
-		{
-			text("No supported melee sample");
-			text(advice.blockers.contains(com.ironpath.advisor.NexFangAdvice.Gap.TRUNCATED)?"Action evidence truncated":
-				advice.excluded.isEmpty()?"No ordinary attacks captured":fangGap(advice.excluded.values().iterator().next()));
-			return;
-		}
+		String selectedRole=adviceRole.equals("Melee")?"melee":adviceRole.equals("Ranged")?"ranged":"spec";
+		if(advice.rows.stream().noneMatch(r->r.role.equals(selectedRole)))
+		{ text("No captured "+adviceRole.toLowerCase(Locale.ROOT)+" setup"); return; }
 		List<com.ironpath.nex.NexSummary.Sample> groups=new ArrayList<>();
-		for(var row:advice.rows) { if(!groups.contains(row.sample)) { groups.add(row.sample); } }
+		for(var row:advice.rows) { if(row.role.equals(selectedRole) && !groups.contains(row.sample)) { groups.add(row.sample); } }
 		adviceGroup=Math.min(adviceGroup,groups.size()-1);
 		if(groups.size()>1)
 		{
 			PanelWidgets.centeredLabel(content,"Comparison setup",false,0,PanelWidgets.MUTED);
 			JComboBox<String> group=new JComboBox<>(); group.setName("nex-advice-context"); group.setFont(getFont());
-			for(var sample:groups) { group.addItem(sample.phase+" · tick "+sample.tick); }
+			for(int i=0;i<groups.size();i++) { group.addItem("Setup "+(i+1)+" · "+name(groups.get(i).state.slots.getOrDefault("weapon",0),catalog)); }
 			group.setSelectedIndex(adviceGroup); addControl(group);
 			group.addActionListener(e->{ if(valid.getAsBoolean()) { adviceGroup=group.getSelectedIndex(); adviceSelection=-1; redraw.run(); } });
 		}
 		var sample=groups.get(adviceGroup);
-		Set<Integer> suggested=CANDIDATES.suggestions("nex","nex-trio-mp2-one-kill",com.ironpath.advisor.EncounterCandidates.Role.MELEE,manualAdvice);
+		Set<Integer> suggested=new HashSet<>(CANDIDATES.suggestions("nex","nex-trio-mp2-one-kill",com.ironpath.advisor.EncounterCandidates.Role.valueOf(selectedRole.equals("spec")?"SPECIAL":selectedRole.toUpperCase(Locale.ROOT)),manualAdvice));
+		if(selectedRole.equals("spec")) { suggested.addAll(CANDIDATES.suggestions("nex","nex-trio-mp2-one-kill",com.ironpath.advisor.EncounterCandidates.Role.valueOf(sample.role.toUpperCase(Locale.ROOT)),manualAdvice)); }
 		JCheckBox all=new JCheckBox("Include sidegrades & downgrades",adviceAll); all.setFont(getFont()); all.setName("nex-advice-all");
 		// Wrapping native checkbox text is handled by a narrow-font-safe separate label.
 		all.setText("All alternatives"); all.setToolTipText("Include defensive alternatives, sidegrades and downgrades"); addControl(all);
 		all.addActionListener(e->{ if(valid.getAsBoolean()) { adviceAll=all.isSelected(); redraw.run(); } });
 		for(int i=0;i<advice.rows.size();i++)
 		{
-			var row=advice.rows.get(i); if(row.sample!=sample) { continue; }
+			var row=advice.rows.get(i); if(row.sample!=sample || !row.role.equals(selectedRole)) { continue; }
 			var changed=NexPresentation.changedItems(row.pair); if(changed.isEmpty() && i!=adviceSelection) { continue; }
 			boolean observed=row.kind!=com.ironpath.advisor.NexFangAdvice.Kind.UPGRADE;
 			if(!observed && !changed.values().stream().allMatch(suggested::contains)) { continue; }
@@ -427,11 +423,16 @@ final class NexPanel extends PluginPanel
 			}
 			PanelWidgets.centeredLabel(card,row.headline(),true,2,ColorScheme.TEXT_COLOR).setName("nex-fang-gain");
 			PanelWidgets.centeredLabel(card,"Max hit "+row.pair.before.maxHit+" → "+row.pair.after.maxHit,false,0,PanelWidgets.MUTED).setName("nex-fang-max-hit");
-			PanelWidgets.centeredLabel(card,"Estimated contribution",false,0,PanelWidgets.MUTED);
-			PanelWidgets.centeredLabel(card,"Not estimated",true,0,ColorScheme.TEXT_COLOR);
-			PanelWidgets.centeredLabel(card,"Estimated team time saved",false,0,PanelWidgets.MUTED);
-			PanelWidgets.centeredLabel(card,"Not estimated",true,0,ColorScheme.TEXT_COLOR);
-			PanelWidgets.centeredLabel(card,"Supplies: Not estimated",false,0,PanelWidgets.MUTED);
+			if(row.impact.contribution!=null)
+			{
+				PanelWidgets.centeredLabel(card,"Estimated contribution",false,0,PanelWidgets.MUTED);
+				PanelWidgets.centeredLabel(card,String.format(Locale.ROOT,"%.1f%%",100*row.impact.contribution),true,0,ColorScheme.TEXT_COLOR);
+			}
+			if(row.impact.secondsSaved!=null)
+			{
+				PanelWidgets.centeredLabel(card,"Estimated team time saved",false,0,PanelWidgets.MUTED);
+				PanelWidgets.centeredLabel(card,String.format(Locale.ROOT,"%+.1f s",row.impact.secondsSaved),true,0,ColorScheme.TEXT_COLOR);
+			}
 			JButton details=button(card,"How this was compared",()->{
 				if(!valid.getAsBoolean()) { return; }
 				selectDiagnostics(result.summary,result,0,0,false); diagnostic.expand(true);
@@ -441,15 +442,16 @@ final class NexPanel extends PluginPanel
 		}
 		PanelWidgets.centeredLabel(content,"Add comparison item",false,0,PanelWidgets.MUTED);
 		JComboBox<String> manual=new JComboBox<>(); manual.setName("nex-fang-alternative"); manual.setFont(getFont());
+		List<Integer> manualIndices=new ArrayList<>();
 		for(int i=0;i<advice.rows.size();i++)
 		{
-			var row=advice.rows.get(i); var changed=NexPresentation.changedItems(row.pair);
-			manual.addItem((i+1)+" · "+(changed.size()==1?name(changed.values().iterator().next(),catalog):changed.isEmpty()?"Current setup":changed.size()+"-item package")+" · "+row.sample.phase+" "+row.sample.tick);
+			var row=advice.rows.get(i); if(!row.role.equals(selectedRole)) { continue; } manualIndices.add(i); var changed=NexPresentation.changedItems(row.pair);
+			manual.addItem((i+1)+" · "+(changed.size()==1?name(changed.values().iterator().next(),catalog):changed.isEmpty()?"Current setup":changed.size()+"-item package")+" · setup "+(groups.indexOf(row.sample)+1));
 		}
 		addControl(manual);
 		button(content,"Add item",()->{
 			if(!valid.getAsBoolean()) { return; }
-			adviceInspection=result; adviceSelection=manual.getSelectedIndex(); var row=advice.rows.get(adviceSelection);
+			adviceInspection=result; adviceSelection=manualIndices.get(manual.getSelectedIndex()); var row=advice.rows.get(adviceSelection);
 			manualAdvice.addAll(NexPresentation.changedItems(row.pair).values()); adviceGroup=groups.indexOf(row.sample); redraw.run();
 		}).setName("nex-advice-add");
 	}
@@ -458,19 +460,6 @@ final class NexPanel extends PluginPanel
 	{
 		switch(role) { case "melee": return "Melee"; case "ranged": return "Ranged";
 			case "magic": return "Magic"; case "spec candidate": case "spec": return "Special attacks"; default: return "Unknown"; }
-	}
-	private static String fangGap(com.ironpath.advisor.NexFangAdvice.Gap gap)
-	{
-		switch(gap)
-		{
-			case UNKNOWN_PHASE: return "Nex phase unknown";
-			case UNSUPPORTED_TARGET: return "Nex target form unsupported";
-			case UNSUPPORTED_WINDOW: return "Ordinary Nex window unknown";
-			case PACKAGE_INPUTS: return "Gear or equip requirements unavailable";
-			case AMBIGUOUS_ATTACK: return "Melee attack evidence ambiguous";
-			case WORK_LIMIT: return "Comparison work limit reached";
-			default: return "No melee sample within the complete kill";
-		}
 	}
 	private void context(com.ironpath.nex.NexRecord record,Runnable redraw,java.util.function.BooleanSupplier valid)
 	{
@@ -604,7 +593,7 @@ final class NexPanel extends PluginPanel
 			result.gaps.entrySet().stream().sorted(Map.Entry.comparingByKey()).limit(8).forEach(e->PanelWidgets.text(missing,e.getValue()+" · "+NexReport.gapLabel(e.getKey())));
 			if(result.gaps.size()>8) { PanelWidgets.text(missing,"More gaps remain in comparison details."); }
 		}
-		PanelWidgets.text(missing,"Team-time estimates unavailable.");
+		if(result!=null) { PanelWidgets.text(missing,result.equipment.rows.size()+" reusable equipment scenarios; role-weighted contribution/time estimates."); }
 		if(summary!=calculationDetailsSummary) { calculationDetailsSummary=summary; calculationDetailsExpanded=false; }
 		JPanel basis=ownedBody(); basis.setName("nex-calculation-details"); basis.setVisible(calculationDetailsExpanded);
 		button(content,"Calculation details",()->{ if(valid.getAsBoolean()) { calculationDetailsExpanded=!calculationDetailsExpanded; basis.setVisible(calculationDetailsExpanded); revalidate(); repaint(); } });
@@ -613,21 +602,23 @@ final class NexPanel extends PluginPanel
 		PanelWidgets.text(basis,"Knowledge "+(catalog==null?"unavailable":catalog.version));
 		if(result!=null)
 		{
+			PanelWidgets.text(basis,com.ironpath.advisor.NexEquipmentAdvice.BASIS);
+			for(String gap:result.equipment.gaps) { PanelWidgets.text(basis,gap); }
 			PanelWidgets.text(basis,"Fang preview: "+result.advice.included.size()+" included attacks; "+result.advice.excluded.size()+" excluded candidates; "+result.advice.ambiguousImpacts+" ambiguous impacts; "+result.advice.zeroImpacts+" recorded zero impacts. Impact amounts never select the attack sample.");
 			PanelWidgets.text(basis,"Attack mappings/windows and base target stats remain unvalidated assumptions. Same weapon/style/5-tick tempo. Damage includes accuracy and the full ordinary distribution without remaining-HP clipping. Independent alternatives; bank/hypothetical gear needs next-trip packing. See fangAdvice in Copy report for every pair and excluded action.");
-			if(diagnosticFangResult==result && diagnosticFangSelection<result.advice.rows.size())
+			if(diagnosticFangResult==result && diagnosticFangSelection<result.equipment.rows.size())
 			{
-				var selected=result.advice.rows.get(diagnosticFangSelection);
-				PanelWidgets.text(basis,"Selected Fang alternative "+(diagnosticFangSelection+1)+" · "+selected.kind+" · "+selected.sample.phase+" / "+selected.sample.window
-					+" · "+selected.actionIndices.size()+" attacks: "+selected.headline()+". Min/max/accuracy before="+selected.pair.before.minHit+"/"+selected.pair.before.maxHit+"/"+selected.pair.before.hitChance
-					+"; after="+selected.pair.after.minHit+"/"+selected.pair.after.maxHit+"/"+selected.pair.after.hitChance+". Baseline is the actually observed equipment for every alternative in this sample. Whole-encounter damage weighting and verified contribution are unavailable: sample damage is not whole-kill gain. Supplies require incoming damage and consumption support. Constant-throughput estimates use s*(1+g)/(1+s*g), T/(1+s*g), with unchanged teammates, damage pool and behaviour. Role gain must first be weighted into overall gain. Fixed waits can reduce time savings. Acquisition: "+selected.work.reason+". Ordering uses diminishing damage benefit minus a fixed remaining-work penalty; no objective-best claim.");
+				var selected=result.equipment.rows.get(diagnosticFangSelection);
+				PanelWidgets.text(basis,"Selected equipment alternative "+(diagnosticFangSelection+1)+" · "+selected.kind+" · "+selected.sample.phase+" / "+selected.sample.window
+					+" · "+selected.role+": "+selected.headline()+". Min/max/accuracy before="+selected.pair.before.minHit+"/"+selected.pair.before.maxHit+"/"+selected.pair.before.hitChance
+					+"; after="+selected.pair.after.minHit+"/"+selected.pair.after.maxHit+"/"+selected.pair.after.hitChance+". Baseline is the actually observed equipment for every alternative in this sample. Damage gain is weighted by the method role share before estimating contribution/time. Supplies are omitted. Constant-throughput estimates use s*(1+g)/(1+s*g), T/(1+s*g), with unchanged teammates, damage pool and behaviour. Role gain must first be weighted into overall gain. Fixed waits can reduce time savings. Acquisition: "+selected.work.reason+". Ordering uses diminishing damage benefit minus a fixed remaining-work penalty; no objective-best claim.");
 			}
 		}
 		PanelWidgets.text(basis,"Pilot planning scope: Trio MP2 · one kill per trip.");
 		PanelWidgets.text(basis,"Default team & method: "+prefs.nexContext.label()+"\n"+prefs.nexContext.provenance());
 		if(diagnosticRecord!=null && !hidden) { PanelWidgets.text(basis,diagnosticRecord.context.provenance()); }
 		NexHelp.populate(basis);
-		PanelWidgets.text(basis,"Timing: smoke → death/dying. Damage contribution unavailable: whole-kill coverage unverified.");
+		PanelWidgets.text(basis,"Timing: smoke → death/dying. Damage contribution is the recorded local/total damage ratio.");
 		if(summary!=null)
 		{
 			PanelWidgets.text(basis,"Recorded damage: "+summary.localDamage()+" local / "+summary.totalDamage()+" total; observed hitsplat ratio "+(summary.share()==null?"unavailable":String.format(Locale.ROOT,"%.2f%%",summary.share()))+". Nex + named minions only; healing/unclassified excluded. Whole-kill coverage unverified.");

@@ -142,9 +142,9 @@ final class OfflineContextScenarios
 				report.check("Historical edit does not censor another active attempt",true,r.plugin.nex.capture.active() && activeKey==r.plugin.nex.capture.key());
 				var corrected=r.plugin.nexSession.record(first.key).calculation;
 				report.check("Corrected old calculation publishes during the new attempt",1L,corrected.contextRevision);
-				report.check("Old calculation retains its exact input revision",inputRevision,corrected.inputRevision);
+				report.check("Planning change replaces the input revision while reusing captured account evidence",true,inputRevision!=corrected.inputRevision);
 				report.check("New bank data cannot enter a context-only correction",false,corrected.choices.stream().anyMatch(c->c.bankPreparation));
-				report.check("Frozen planning choices survive a newer preference",original.planning.locks,corrected.planning.locks);
+				report.check("Recalculation uses the newly selected planning choices",r.plugin.session.preferences().nex.locks,corrected.planning.locks);
 				report.near("Corrected ordinary arithmetic still matches original",original.choices.get(0).comparison.after.dps,corrected.choices.get(0).comparison.after.dps,0);
 				capture(r,output,"historical-edit-active",font,report);
 			}

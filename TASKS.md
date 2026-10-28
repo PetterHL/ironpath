@@ -1,11 +1,29 @@
 # IronPath active work
 
 Updated **28 October 2026**. This is the **only active backlog and roadmap**.
-Start new work from current main; do not continue retired stacked branches.
+Current work continues from PR #59 and its #57 dependency; do not restart from older main.
 The user authorized merging the complete 0.23.3 delivery into main and cleaning
 up covered PRs/branches on 19 October. This includes CTX1 #43, native UI1 #46,
 PR #48's current presentation/follow-up fixes and PR #49's sidebar simplification.
 Integration does not establish live-client or player acceptance.
+
+## Current delivery — practical estimates, 28 October 2026
+
+This decision supersedes conflicting validation and scheduling requirements in
+all older sections below. Continue #59 at `ef74891` with #57 retained; no merge or
+Plugin Hub publication is authorized.
+
+- [x] Reuse frozen kill loadouts/stats/prayers for equipment comparisons and
+  recalculate after planning/context changes; retain stale-result/account guards.
+- [x] Show recorded own/total Nex + named-minion damage under Damage contribution.
+- [x] Offer base-Nex melee/ranged and supported special equipment scenarios even
+  without attributed attacks, including useful loadouts from partial captures.
+- [x] Connect recorded damage share/time and consistent MP2/RP2 damage-mix defaults
+  to the existing contribution/time formulas, weighting each role's improvement.
+- [x] Keep concise English results, omit empty supplies, put assumptions in existing
+  Diagnostics/reports; preserve legal packages and ownership distinctions.
+- [x] Affected regressions and normal build pass: 481 tests. Concise results are in
+  docs/validation/nex-practical-estimates.md. Existing live reports suffice.
 
 ## Accepted scope — issue #58, 26 October 2026
 

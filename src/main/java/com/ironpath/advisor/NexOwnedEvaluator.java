@@ -17,12 +17,15 @@ public final class NexOwnedEvaluator
 	// Computational guard, not a gear quota. A truncated search is explicitly not an optimum.
 	private static final int MAX_SEARCH_NODES=100000;
 	private final KnowledgeCatalog catalog;
+	private final boolean practical,special;
 	private final NexPackageFactory packages;
 	private final Map<Integer,MeleeItem> melee;
 	private final Map<Integer,RangedItem> ranged;
 	private final TargetProfile target;
-	public NexOwnedEvaluator(KnowledgeCatalog catalog)
+	public NexOwnedEvaluator(KnowledgeCatalog catalog) { this(catalog,false,false); }
+	NexOwnedEvaluator(KnowledgeCatalog catalog,boolean practical,boolean special)
 	{
+		this.practical=practical; this.special=special;
 		this.catalog=catalog; packages=new NexPackageFactory(catalog);
 		melee=catalog.melee.items.stream().collect(Collectors.toUnmodifiableMap(i->i.id,i->i));
 		ranged=catalog.ranged.items.stream().collect(Collectors.toUnmodifiableMap(i->i.id,i->i));
@@ -32,10 +35,12 @@ public final class NexOwnedEvaluator
 	public NexOwnedResult evaluate(NexSummary summary, AccountSnapshot account, Preferences prefs)
 	{ return evaluate(summary,account,prefs,()->true); }
 	public NexOwnedResult evaluate(NexSummary summary, AccountSnapshot account, Preferences prefs,java.util.function.BooleanSupplier current)
+	{ return evaluate(summary,account,prefs,current,summary==null?com.ironpath.nex.NexContext.UNKNOWN:summary.context); }
+	NexOwnedResult evaluate(NexSummary summary,AccountSnapshot account,Preferences prefs,java.util.function.BooleanSupplier current,com.ironpath.nex.NexContext context)
 	{
 		if(summary==null) { return new NexOwnedResult(null,List.of(),prefs.nex); }
 		if(summary.outcome!=Outcome.COMPLETE)
-		{ return new NexOwnedResult(summary,List.of(),prefs.nex,Map.of(),summary.context,0,0,VERSION,NexFangAdvice.evaluate(summary,account,prefs,this,current)); }
+		{ return new NexOwnedResult(summary,List.of(),prefs.nex,Map.of(),summary.context,0,0,VERSION,NexFangAdvice.evaluate(summary,account,prefs,this,current),NexEquipmentAdvice.evaluate(summary,account,prefs,catalog,current,context)); }
 		List<NexOwnedResult.Choice> choices=new ArrayList<>(); Set<List<Object>> seen=new HashSet<>();
 		for(NexSummary.Sample s:summary.timeline)
 		{
@@ -76,7 +81,7 @@ public final class NexOwnedEvaluator
 		for(MeleeItem item:catalog.melee.items)
 		{ if(item.equipFact!=null) { unlocks.put(item.equipFact,AccountFacts.planning(account,prefs,item.equipFact)); } }
 		return new NexOwnedResult(summary,choices,prefs.nex,unlocks,summary.context,0,0,VERSION,
-			NexFangAdvice.evaluate(summary,account,prefs,this,current));
+			NexFangAdvice.evaluate(summary,account,prefs,this,current),NexEquipmentAdvice.evaluate(summary,account,prefs,catalog,current,context));
 	}
 	/** Frozen offence and equip-availability inputs for a compatible fixed-Fang sample. */
 	List<Object> fangGroupInputs(NexSummary.Sample sample)
@@ -94,18 +99,18 @@ public final class NexOwnedEvaluator
 		java.util.function.BooleanSupplier current)
 	{
 		CombatSetup before=setup(s,s.state.slots);
-		String gap=contextGap(s); if(gap==null) { gap=validate(s,before,account,prefs,false); }
+		String gap=practical?null:contextGap(s); if(gap==null) { gap=validate(s,before,account,prefs,false); }
 		Integer weaponLock=prefs.nex.locks.get("melee/weapon");
-		if(weaponLock!=null && !weaponLock.equals(s.state.slots.get("weapon"))) { gap="Fixed Fang conflicts with weapon lock"; }
+		if(!practical && weaponLock!=null && !weaponLock.equals(s.state.slots.get("weapon"))) { gap="Fixed Fang conflicts with weapon lock"; }
 		if(gap!=null) { return List.of(new NexOwnedResult.Choice(s,null,null,gap,true,List.of())); }
 		Set<Integer> pool=new TreeSet<>(); s.state.slots.values().stream().filter(id->id>0).forEach(pool::add);
 		if(s.state.inventory!=null) { s.state.inventory.forEach((id,n)->{ if(n>0) { pool.add(id); } }); }
 		List<NexOwnedResult.Choice> choices=new ArrayList<>();
-		choices.add(search(s,account,prefs,before,pool,new ArrayList<>(),false,current,true));
+		choices.add(search(s,account,prefs,before,pool,new ArrayList<>(),false,current,!practical || special));
 		if(account.bank.known())
 		{
 			pool.addAll(account.bank.value());
-			choices.add(search(s,account,prefs,before,pool,new ArrayList<>(),true,current,true));
+			choices.add(search(s,account,prefs,before,pool,new ArrayList<>(),true,current,!practical || special));
 		}
 		return List.copyOf(choices);
 	}
@@ -119,8 +124,9 @@ public final class NexOwnedEvaluator
 		List<ComparisonResult> upgrades=new ArrayList<>();
 		for(MeleeItem item:catalog.melee.items)
 		{
-			if(item.slot.equals("weapon") || item.slot.equals("ring") || Objects.equals(observed.slots.get(item.slot),item.id)) { continue; }
+			if((item.slot.equals("weapon") && (!practical || special)) || item.slot.equals("ring") || Objects.equals(observed.slots.get(item.slot),item.id)) { continue; }
 			Map<String,Integer> slots=new HashMap<>(observed.slots); slots.put(item.slot,item.id);
+			if(item.slot.equals("weapon") && item.twoHanded) { slots.put("shield",0); }
 			try
 			{
 				var pair=compare(s,setup(s,slots),account,prefs,true,Set.of(item.id));
@@ -142,7 +148,7 @@ public final class NexOwnedEvaluator
 				TreeSet<Integer> ids=new TreeSet<>(); ids.add(before.slots.get(slot));
 				for(int id:pool) { if(slot.equals(slot(s.role,id))) { ids.add(id); } }
 				if(slot.equals("shield")) { ids.add(0); } // Only accepted when forced by a two-handed weapon or observed empty.
-				Integer lock=slot.equals("ring")?Integer.valueOf(25975):prefs.nex.locks.get(s.role+"/"+slot);
+				Integer lock=slot.equals("ring")?Integer.valueOf(25975):prefs.nex.locks.get((special?"spec":s.role)+"/"+slot);
 				if(lock!=null) { ids.clear(); ids.add(lock); }
 				if(fixedWeapon && slot.equals("weapon")) { ids.clear(); ids.add(before.slots.get(slot)); }
 				options.add(new ArrayList<>(ids));
@@ -178,7 +184,7 @@ public final class NexOwnedEvaluator
 	{ return compare(sample,candidate,account,prefs,nextTrip,Set.of()); }
 	private ComparisonResult compare(NexSummary.Sample sample, CombatSetup candidate, AccountSnapshot account, Preferences prefs,boolean nextTrip,Set<Integer> hypothetical)
 	{
-		CombatSetup before=null; String gap=contextGap(sample);
+		CombatSetup before=null; String gap=practical?null:contextGap(sample);
 		try
 		{
 			if(gap==null) { before=setup(sample,sample.state.slots); gap=validate(sample,before,account,prefs,false); }
@@ -211,6 +217,7 @@ public final class NexOwnedEvaluator
 		}
 		sourceIds.addAll(sample.role.equals("melee")?catalog.melee.sources:catalog.ranged.sources);
 		assumptions.add("Models "+VERSION+" / "+(sample.role.equals("melee")?MeleeModel.VERSION:RangedModel.VERSION)+"; knowledge "+catalog.version+"; reviewed sources "+sourceIds.stream().map(id->id+"@"+catalog.sources.get(id).revision).collect(Collectors.joining(", ")));
+		if(practical) { assumptions.clear(); assumptions.add(NexEquipmentAdvice.BASIS); assumptions.add("Captured loadout/stat reference at tick "+sample.tick+"; hypothetical item forms are upgrades, not owned stock."); }
 		return new ComparisonResult(before,candidate,b,a,target,support,gap==null?"Conditional ordinary offence; not measured Nex performance":gap,
 			VERSION,catalog.version,assumptions,true,gap==null?Map.of():Map.of(ComparisonResult.Metric.THEORETICAL_DPS,gap));
 	}
@@ -230,7 +237,7 @@ public final class NexOwnedEvaluator
 			RangedItem cape=ranged.get(slots.get("cape"));
 			int id=s.state.resources.getOrDefault("quiver-ammo-id-raw",-1);
 			if(cape==null || !cape.label.toLowerCase(Locale.ROOT).contains("quiver") || !RangedModel.compatible(weapon,ranged.get(id))
-				|| s.state.resources.getOrDefault("quiver-ammo-quantity-raw",-1)<1) { throw new IllegalArgumentException("Compatible quiver ammunition and quantity unread"); }
+				|| !practical && s.state.resources.getOrDefault("quiver-ammo-quantity-raw",-1)<1) { throw new IllegalArgumentException("Compatible quiver ammunition and quantity unread"); }
 			loadedAmmo=id;
 		}
 		return packages.build(false,slots,origins,s.state.style,s.state.prayers,loadedAmmo);
@@ -285,7 +292,7 @@ public final class NexOwnedEvaluator
 			Integer id=setup.slots.get(slot); if(id==null || id<0) { return "Unknown "+slot+" contribution"; }
 			if(proposed)
 			{
-				Integer lock=slot.equals("ring")?Integer.valueOf(25975):prefs.nex.locks.get(s.role+"/"+slot);
+				Integer lock=slot.equals("ring")?Integer.valueOf(25975):prefs.nex.locks.get((special?"spec":s.role)+"/"+slot);
 				if(lock!=null && !lock.equals(id)) { return "Planning lock conflicts in "+slot; }
 				if(id>0 && !s.state.slots.containsValue(id) && (s.state.inventory==null || s.state.inventory.getOrDefault(id,0L)<1)
 					&& !hypothetical.contains(id) && !(nextTrip && account.bank.known() && account.bank.value().contains(id))) { return "Item "+id+" not carried at this state; bank/manual ownership is not inventory availability"; }
@@ -311,8 +318,8 @@ public final class NexOwnedEvaluator
 			else
 			{
 				RangedItem item=ranged.get(id); if(item==null || !slot.equals(item.slot)) { return "Unreviewed ranged contribution: "+slot+" item "+id; }
-				if(item.boltEffect) { return "Enchanted bolt HP/proc effects belong to N3"; }
-				if(item.chargedQuiver && item.id!=28955 && item.id!=28957
+				if(item.boltEffect && !practical) { return "Enchanted bolt HP/proc effects belong to N3"; }
+				if(!practical && item.chargedQuiver && item.id!=28955 && item.id!=28957
 					&& s.state.resources.getOrDefault("quiver-splinters-raw",-1)<1) { return "Non-blessed quiver splinter stock unread or empty"; }
 				requirements=item.requirements;
 			}
@@ -330,9 +337,9 @@ public final class NexOwnedEvaluator
 			{
 				RangedItem ammo=ranged.get(setup.loadedAmmo>0?setup.loadedAmmo:setup.slots.get("ammo"));
 				if(!RangedModel.compatible(weapon,ammo)) { return "Incompatible or unknown ammunition"; }
-				if(ammo.boltEffect) { return "Enchanted bolt HP/proc effects require the N3 package plan, including selected quiver ammunition"; }
-				if(Objects.equals(s.state.slots.get("ammo"),ammo.id) && s.state.resources.getOrDefault("worn-ammo-quantity",-1)<1) { return "Worn ammunition quantity unread or empty"; }
-				if(setup.loadedAmmo>0 && (setup.loadedAmmo!=s.state.resources.getOrDefault("quiver-ammo-id-raw",-1)
+				if(ammo.boltEffect && !practical) { return "Enchanted bolt HP/proc effects require the N3 package plan, including selected quiver ammunition"; }
+				if(!practical && Objects.equals(s.state.slots.get("ammo"),ammo.id) && s.state.resources.getOrDefault("worn-ammo-quantity",-1)<1) { return "Worn ammunition quantity unread or empty"; }
+				if(!practical && setup.loadedAmmo>0 && (setup.loadedAmmo!=s.state.resources.getOrDefault("quiver-ammo-id-raw",-1)
 					|| s.state.resources.getOrDefault("quiver-ammo-quantity-raw",-1)<1)) { return "Selected quiver projectile is not observed"; }
 			}
 		}
@@ -340,8 +347,56 @@ public final class NexOwnedEvaluator
 		return null;
 	}
 	private PoweredMagic.Metrics metrics(NexSummary.Sample s, CombatSetup setup)
-	{ return s.role.equals("melee")?MeleeModel.calculateVisible(s.state.visibleLevels.get("ATTACK"),s.state.visibleLevels.get("STRENGTH"),setup,target,melee)
-		:RangedModel.calculateVisible(s.state.visibleLevels.get("RANGED"),setup,target,ranged); }
+	{
+		if(practical && s.role.equals("ranged") && s.state.resources.getOrDefault("quiver-splinters-raw",-1)==0)
+		{
+			int cape=setup.slots.get("cape");
+			if(cape==28949 || cape==28953)
+			{
+				var slots=new HashMap<>(setup.slots); slots.put("cape",cape==28953?28951:28947);
+				setup=setup.rangedCopy(slots,setup.provenance,setup.target,setup.loadedAmmo);
+			}
+		}
+		PoweredMagic.Metrics m=s.role.equals("melee")?MeleeModel.calculateVisible(s.state.visibleLevels.get("ATTACK"),s.state.visibleLevels.get("STRENGTH"),setup,target,melee)
+			:RangedModel.calculateVisible(s.state.visibleLevels.get("RANGED"),setup,target,ranged);
+		if(!practical) { return m; }
+		com.ironpath.nex.SpecAttackModel.Damage damage=null;
+		var limit=new com.ironpath.nex.SpecAttackModel.Limit(2000,100000);
+		if(special && s.role.equals("melee"))
+		{
+			if(setup.slots.get("weapon")!=27690) { throw new IllegalArgumentException("Special model requires Voidwaker"); }
+			damage=com.ironpath.nex.SpecAttackModel.voidwaker(m.maxHit,limit,"Base Nex; Voidwaker package");
+		}
+		else if(s.role.equals("ranged"))
+		{
+			int ammo=setup.loadedAmmo>0?setup.loadedAmmo:setup.slots.get("ammo");
+			com.ironpath.nex.SpecAttackModel.Bolt bolt=ammo==9242 || ammo==21944?com.ironpath.nex.SpecAttackModel.Bolt.RUBY
+				:ammo==9243 || ammo==21946?com.ironpath.nex.SpecAttackModel.Bolt.DIAMOND:null;
+			if(special && (setup.slots.get("weapon")!=26374 || bolt==null)) { throw new IllegalArgumentException("Special model requires Zaryte crossbow and ruby/diamond bolts"); }
+			if(bolt!=null) { damage=com.ironpath.nex.SpecAttackModel.crossbow(m.maxHit,m.attackRoll,m.defenceRoll,bolt,
+				setup.slots.get("weapon")==26374,special,false,99,true,limit,"Base Nex; 2000 target HP, 99 player HP, no Kandarin bonus"); }
+		}
+		if(damage==null) { return m; }
+		return new PoweredMagic.Metrics(damage.minimum,damage.maximum,special && s.role.equals("melee")?1:special?PoweredMagic.hitChance(m.attackRoll*2,m.defenceRoll):m.hitChance,damage.expectedDamage/(m.attackTicks*0.6),
+			m.visibleMagic,m.effectiveMagic,m.attackBonus,m.damagePercent,m.attackRoll,m.defenceRoll,m.attackTicks);
+	}
+	/** Same package search and validation, evaluated as a base-Nex scenario rather than an attributed attack. */
+	List<NexOwnedResult.Choice> equipmentChoices(NexSummary.Sample sample,AccountSnapshot account,Preferences prefs,java.util.function.BooleanSupplier current)
+	{ return fangChoices(sample,account,prefs,current); }
+	List<ComparisonResult> equipmentUpgrades(NexSummary.Sample sample,AccountSnapshot account,Preferences prefs)
+	{
+		if(sample.role.equals("melee")) { return fangUpgrades(sample,setup(sample,sample.state.slots),account,prefs); }
+		List<ComparisonResult> out=new ArrayList<>();
+		for(RangedItem item:ranged.values())
+		{
+			if(item.slot.equals("ring") || special && item.slot.equals("weapon") || Objects.equals(sample.state.slots.get(item.slot),item.id)) { continue; }
+			Map<String,Integer> slots=new HashMap<>(sample.state.slots); slots.put(item.slot,item.id);
+			if(item.slot.equals("weapon") && item.twoHanded) { slots.put("shield",0); }
+			try { var pair=compare(sample,setup(sample,slots),account,prefs,true,Set.of(item.id)); if(pair.before!=null && pair.after!=null) { out.add(pair); } }
+			catch(IllegalArgumentException invalid) { /* Exact unknown forms remain unsupported. */ }
+		}
+		return out;
+	}
 	private final class Search
 	{
 		final NexSummary.Sample sample; final AccountSnapshot account; final Preferences prefs; final CombatSetup before;

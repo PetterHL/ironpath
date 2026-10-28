@@ -41,6 +41,13 @@ public final class NexSession
 		NexRecord record=record(key); if(record==null || record.inputs!=null) { return record; }
 		record=record.inputs(inputs); records.put(key,record); return record;
 	}
+	/** Keep the captured account/gear basis while applying new planning settings. Old worker results fail publication. */
+	public synchronized NexRecord planning(long key,com.ironpath.preferences.Preferences preferences)
+	{
+		NexRecord old=record(key);
+		if(old==null || old.inputs==null || old.inputs.uses(preferences)) { return old; }
+		NexRecord next=old.inputs(old.inputs.withPreferences(preferences)); records.put(key,next); ++revision; return next;
+	}
 	public synchronized boolean publish(NexRecord expected,com.ironpath.advisor.NexOwnedResult result)
 	{
 		NexRecord record=record(expected.summary.key);

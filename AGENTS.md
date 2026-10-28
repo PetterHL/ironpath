@@ -2,6 +2,23 @@
 
 ## Current authority
 
+- **28 October 2026 product decision / 0.34.0 takes precedence over all older
+  delivery and validation restrictions below and in linked documents.** Continue
+  PR #59 (`ef74891`) with its unmerged #57 dependency, preserving both. Use the
+  last frozen loadouts/stats/prayers for repeatable equipment calculations and
+  new planning settings; a new kill refreshes that basis. Partial captures are
+  useful. Base-Nex theoretical offence, method damage-mix defaults, recorded
+  damage share and constant-throughput contribution/time estimates are authorized
+  without complete attack attribution, server contribution or a full simulator.
+  Weight role-only improvements before estimating the whole kill. Keep short
+  English results; assumptions/gaps belong in Diagnostics, empty supply fields
+  are omitted. No new confirmation UI or fresh-kill validation gate. Preserve
+  correct arithmetic, legal gear, exact ownership, encounter mechanics, immutable
+  evidence and identity/stale-result guards. Run affected regressions and the
+  normal build once; additional runs need a concrete change/failure. Merge and
+  Plugin Hub publication remain separate. Older evidence reports are historical,
+  not requirements to restore Unverified/Not estimated or defer ranged/specs.
+
 - The user approved the encounter-and-method pivot and transition on 15 October
   2026. This supersedes the old account-wide/no-goal-first product direction,
   progression ranking requirements, parallel AD1/R roadmap and optional-boss-only
@@ -224,7 +241,7 @@
   shared delays/conditions, proposal locks, frozen input and request/view guards.
 - The user authorized the 19 October main consolidation of PR #49, including
   main/N3 #45, CTX1 #43 `2fe5342`, UI1 #46 `d5b14db` and PR #48 `836e1e9`.
-  Preserve their full ancestry and the sidebar simplification. Start new work from
+  Preserve their full ancestry and the sidebar simplification. The current PR #59 work continues from its head; otherwise start from
   main; retire only branch heads already included there. Future merges and Plugin
   Hub publication need separate authorization. Live acceptance remains open.
 - Keep genuine preview sprites/test boundaries and Jagex provenance/notices.

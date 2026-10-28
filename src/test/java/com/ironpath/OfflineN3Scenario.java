@@ -50,7 +50,7 @@ final class OfflineN3Scenario
 				edt(()->{ PanelPreview.combo(r.panel,"nex-fang-alternative").setSelectedIndex(0); PanelPreview.click(r.panel,"Add item"); });
 				capture(r,output,"equipment-expanded",font,report);
 				edt(()->{ try {
-					report.check("Main Fang preview has no competing theoretical DPS card "+font,false,PanelPreview.text(r.panel).contains("DPS"));
+					report.check("Main exposes reusable theoretical equipment rates "+font,true,PanelPreview.text(r.panel).contains("DPS"));
 					PanelPreview.viewport(r.panel,output.resolve("fang-advice-viewport-"+font+".png"),225,600,"nex-fang-gain",List.of("nex-fang-gain","nex-fang-max-hit","nex-fang-details"),report);
 				} catch(Exception ex) { throw new IllegalStateException(ex); } });
 				final NexScenarioPanel[] panel={null};
@@ -192,14 +192,16 @@ final class OfflineN3Scenario
 				var event=new net.runelite.api.events.AnimationChanged(); event.setActor(r.local); r.plugin.onAnimationChanged(event);
 			} }); r.settle();
 			edt(()->{
-				var rows=r.plugin.ownedResult.advice.rows; int selected=-1;
+				var rows=r.plugin.ownedResult.equipment.rows; int selected=-1;
 				for(int i=0;i<rows.size();i++)
 				{ var p=rows.get(i).pair; if(p.beforeSetup.slots.get("body")==26384 && p.afterSetup.slots.get("body")==11832) { selected=i; break; } }
 				if(selected<0) { throw new IllegalStateException("No Torva-to-Bandos comparison"); }
 				var row=rows.get(selected);
 				report.near("Bandos has zero paired offence change at this breakpoint "+font,0,row.gain.lower,0);
 				report.near("Bandos upper bound is also zero "+font,0,row.gain.upper,0);
-				PanelPreview.combo(r.panel,"nex-fang-alternative").setSelectedIndex(selected); PanelPreview.click(r.panel,"Add item");
+				var alternatives=PanelPreview.combo(r.panel,"nex-fang-alternative");
+				for(int i=0;i<alternatives.getItemCount();i++) { if(alternatives.getItemAt(i).toString().startsWith((selected+1)+" · ")) { alternatives.setSelectedIndex(i); break; } }
+				PanelPreview.click(r.panel,"Add item");
 				report.check("Exact zero has an explicit label "+font,"No damage change",NexScenarioPanelTest.named(r.panel,"nex-fang-gain",JTextArea.class).getText());
 				report.check("The replaced item is named "+font,"Replaces Torva platebody",NexScenarioPanelTest.named(r.panel,"nex-fang-replaces",JTextArea.class).getText());
 				report.check("Max-hit equality is visible "+font,"Max hit 47 → 47",NexScenarioPanelTest.named(r.panel,"nex-fang-max-hit",JTextArea.class).getText());

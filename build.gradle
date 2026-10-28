@@ -27,7 +27,7 @@ dependencies {
 }
 
 group = 'com.ironpath'
-version = '0.33.3'
+version = '0.34.0'
 
 // Build-time provenance only; the plugin never runs Git or reads the working tree.
 def gitValue = { List<String> args ->

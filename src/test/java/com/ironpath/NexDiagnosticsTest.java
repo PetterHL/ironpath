@@ -306,30 +306,58 @@ public class NexDiagnosticsTest
 			SwingUtilities.invokeAndWait(()->{
 				var alternatives=PanelPreview.combo(r.panel,"nex-fang-alternative");
 				assertTrue(alternatives.getItemCount()>1);
-				for(int i=0;i<original.advice.rows.size();i++)
-				{ if(i!=alternatives.getSelectedIndex() && !NexPresentation.changedItems(original.advice.rows.get(i).pair).isEmpty()) { selected[0]=i; break; } }
-				assertTrue("Inspect a nondefault equipment alternative",selected[0]>=0); alternatives.setSelectedIndex(selected[0]); PanelPreview.click(r.panel,"Add item");
+				int manualIndex=-1;
+				for(int i=1;i<alternatives.getItemCount();i++)
+				{
+					int row=Integer.parseInt(alternatives.getItemAt(i).toString().split(" · ",2)[0])-1;
+					if(!NexPresentation.changedItems(original.equipment.rows.get(row).pair).isEmpty()) { selected[0]=row; manualIndex=i; break; }
+				}
+				assertTrue("Inspect a nondefault equipment alternative",selected[0]>=0); alternatives.setSelectedIndex(manualIndex); PanelPreview.click(r.panel,"Add item");
 				PanelPreview.click(r.panel,"How this was compared");
-				assertTrue(PanelPreview.text(r.panel).contains("Selected Fang alternative "+(selected[0]+1)+" · "));
+				assertTrue(PanelPreview.text(r.panel),PanelPreview.text(r.panel).contains("Selected equipment alternative "+(selected[0]+1)+" · "));
 			});
 			r.fight(35,40,40,true,attack); r.settle();
 			assertNotSame(original,r.plugin.ownedResult);
-			assertFalse("The new kill must replace the main Fang selector",r.plugin.ownedResult.advice.rows.isEmpty());
+			assertFalse("The new kill must replace the main Fang selector",r.plugin.ownedResult.equipment.rows.isEmpty());
 			SwingUtilities.invokeAndWait(()->{
 				String details=PanelPreview.text(r.panel);
 				assertTrue("An open equipment comparison stays frozen across another kill",details.contains("Comparing previous kill"));
 				assertTrue(details.contains("Report record #"+first.key+" · "));
-				assertTrue(details.contains("Selected Fang alternative "+(selected[0]+1)+" · "));
-				assertTrue(details.contains(original.advice.rows.get(selected[0]).headline()));
+				assertTrue(details.contains("Selected equipment alternative "+(selected[0]+1)+" · "));
+				assertTrue(details.contains(original.equipment.rows.get(selected[0]).headline()));
 				PanelPreview.click(r.panel,"Copy report now");
 				String exported=area(r.panel).getText();
 				assertTrue(exported.contains(original.advice.json().get("model").getAsString()));
 				PanelPreview.click(r.panel,"Clear session");
 			}); r.callbacks.drain(); OfflinePluginReplay.edt();
 			SwingUtilities.invokeAndWait(()->{
-				assertFalse(PanelPreview.text(r.panel).contains("Selected Fang alternative"));
+				assertFalse(PanelPreview.text(r.panel).contains("Selected equipment alternative"));
 				assertFalse(PanelPreview.text(r.panel).contains("Report record #"+first.key));
 			});
+		}
+	}
+	@Test public void lastKillRemainsReusableAndShowsContributionAndEstimatesWithoutNewGameplay() throws Exception
+	{
+		try(var r=new OfflinePluginReplay(12))
+		{
+			var summary=r.fight(30,20,60,true); r.settle(); var first=r.plugin.ownedResult;
+			assertFalse(first.equipment.rows.isEmpty());
+			SwingUtilities.invokeAndWait(()->{
+				assertEquals(String.format(Locale.ROOT,"%.1f%%",summary.share()),NexScenarioPanelTest.named(r.panel,"nex-share",JTextArea.class).getText());
+				var open=(JButton)PanelPreview.children(r.panel).stream().filter(c->c instanceof JButton && PanelPreview.visible(c)
+					&& c.getName()!=null && c.getName().startsWith("nex-advice-open-")).findFirst().orElseThrow();
+				open.doClick(); String text=PanelPreview.text(r.panel);
+				assertTrue(text,text.contains("Estimated contribution")); assertTrue(text,text.contains("Estimated team time saved"));
+				assertFalse(text.contains("Not estimated")); assertFalse(text.contains("Unverified")); assertFalse(text.contains("Supplies:"));
+				PanelPreview.combo(r.panel,"nex-combat-role").setSelectedItem("Ranged");
+				assertTrue(PanelPreview.combo(r.panel,"nex-fang-alternative").getItemCount()>0);
+				PanelPreview.click(r.panel,"Add item"); assertTrue(PanelPreview.text(r.panel).contains("Estimated contribution"));
+				PanelPreview.combo(r.panel,"nex-combat-role").setSelectedItem("Melee");
+			});
+			r.changePreferences(p->p.nex(p.nex.lock("melee/body",11832)));
+			var next=r.plugin.ownedResult; assertSame(summary,next.summary); assertNotEquals(first.inputRevision,next.inputRevision);
+			assertFalse(next.equipment.rows.isEmpty());
+			assertTrue(next.equipment.rows.stream().filter(row->row.role.equals("melee")).allMatch(row->row.pair.afterSetup.slots.get("body")==11832));
 		}
 	}
 	private static boolean expandedSection(NexPanel panel,String name)

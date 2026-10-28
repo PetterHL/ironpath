@@ -512,12 +512,12 @@ public class IronpathPlugin extends Plugin
 		pendingOwned.keySet().removeIf(key->!stats.records.containsKey(key));
 		for(var summary:nexSession.recent())
 		{
-			// Incomplete segments still need worker-built action diagnostics for the controlled check.
-			// NexOwnedEvaluator retains its COMPLETE-only numerical-comparison gate.
-			if(summary.outcome!=com.ironpath.encounter.EncounterSummary.Outcome.COMPLETE && summary.actions.signals.isEmpty()) { continue; }
+			// Partial loadouts remain useful independently of attack attribution.
+			if(summary.timeline.isEmpty() && summary.actions.signals.isEmpty()) { continue; }
 			var initial=nexSession.record(summary.key);
 			if(initial==null) { continue; }
 			if(initial.inputs==null) { initial=nexSession.freezeInputs(summary.key,new com.ironpath.advisor.NexEvaluation(account,preferences,catalog)); }
+			else if(summary==stats.last || summary==stats.lastAttempt) { initial=nexSession.planning(summary.key,preferences); }
 			final var record=initial;
 			if(record==null) { continue; }
 			if(record.calculation!=null || pendingOwned.get(summary.key)==record) { continue; }

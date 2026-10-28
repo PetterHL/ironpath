@@ -226,10 +226,10 @@ final class OfflineNexScenario extends OfflineNexClient
 			panel.render("Synthetic offline scenario", NexOwnedFixtures.account(null), prefs, catalog, session.stats(), true, actions, "Synthetic; no preference IO", null);
 			report.check("Pending main withholds old comparisons "+font,true,PanelPreview.text(panel).contains("Recalculating…") && !PanelPreview.text(panel).contains(" DPS"));
 			capture(panel,output,"pending-main",font,report);
-			var nonPositive=new NexOwnedResult(result.summary,result.choices.stream().filter(c->NexPresentation.cards(new NexOwnedResult(result.summary,List.of(c))).isEmpty()).collect(java.util.stream.Collectors.toList()),result.planning);
+			var nonPositive=new NexOwnedResult(result.summary,result.choices.stream().filter(c->NexPresentation.cards(new NexOwnedResult(result.summary,List.of(c))).isEmpty()).collect(java.util.stream.Collectors.toList()),result.planning,result.scenarioUnlocks,result.context,result.contextRevision,result.inputRevision,result.modelRevision,result.advice,result.equipment);
 			panel.render("Synthetic offline scenario", NexOwnedFixtures.account(null), prefs, catalog, session.stats(), true, actions, "Synthetic; no preference IO", nonPositive);
 			report.check("No-positive fixture retains supported alternatives "+font,true,nonPositive.choices.stream().anyMatch(c->c.supported()));
-			report.check("No-positive state retains a guarded Fang card "+font,true,PanelPreview.text(panel).contains("No supported melee sample") && !PanelPreview.text(panel).contains(" DPS"));
+			report.check("Captured loadouts provide theoretical comparisons without attributed attacks "+font,true,PanelPreview.text(panel).contains(" DPS"));
 			capture(panel,output,"no-improvement-main",font,report);
 			panel.render("Synthetic offline scenario", NexOwnedFixtures.account(null), prefs, catalog, session.stats(), true, actions, "Synthetic; no preference IO", result);
 			report.check("Main view " + font + "px shows measured kill", true, PanelPreview.text(panel).contains("Last kill") && PanelPreview.text(panel).contains("18.0 s"));

@@ -307,7 +307,7 @@ public class NexPanelTest
 				session.clear(); session.select("a",301); session.add(summary);
 				NexPanel panel=new NexPanel(null); panel.setFont(panel.getFont().deriveFont(font));
 				panel.render("Observed",account,Preferences.EMPTY,catalog,session.stats(),true,actions(),"local",result);
-				assertFalse(shown(panel).contains(" DPS")); capture(panel,"owned-main-"+(int)font);
+				assertTrue(shown(panel).contains(" DPS")); capture(panel,"owned-main-"+(int)font);
 				button(panel,"Base-stat comparisons").doClick(); capture(panel,"owned-details-"+(int)font);
 				assertTrue(shown(panel).contains("Selected quiver ammo: Amethyst arrow"));
 				assertTrue(shown(panel).contains("ammo slot: Ancient blessing"));

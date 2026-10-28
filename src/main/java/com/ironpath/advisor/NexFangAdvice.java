@@ -36,25 +36,35 @@ public final class NexFangAdvice
 		public final Double damageGain;
 		public final IronmanOrder.Work work;
 		public final EncounterImpact.Estimate impact;
+		public final String role;
+		public final boolean theoretical;
+		public final double affectedShare;
 		Row(Kind kind,NexSummary.Sample sample,ComparisonResult pair,List<Integer> indices,boolean exhaustive)
 		{
 			this(kind,sample,pair,indices,exhaustive,new IronmanOrder.Work(6,"Acquisition evidence unavailable"));
 		}
 		Row(Kind kind,NexSummary.Sample sample,ComparisonResult pair,List<Integer> indices,boolean exhaustive,IronmanOrder.Work work)
 		{
+			this(kind,sample,pair,indices,exhaustive,work,null,sample==null?"melee":sample.role,null);
+		}
+		Row(Kind kind,NexSummary.Sample sample,ComparisonResult pair,List<Integer> indices,boolean exhaustive,IronmanOrder.Work work,NexSummary summary,String role,NexContext context)
+		{
+			this.role=role; theoretical=summary!=null;
 			this.work=work; this.kind=kind; this.sample=sample; this.pair=pair; actionIndices=List.copyOf(indices);
-			beforeDamage=potential(pair.before)*indices.size(); afterDamage=potential(pair.after)*indices.size();
+			beforeDamage=theoretical?pair.before.dps:potential(pair.before)*indices.size();
+			afterDamage=theoretical?pair.after.dps:potential(pair.after)*indices.size();
 			gain=new Range(afterDamage-beforeDamage,afterDamage-beforeDamage); this.exhaustive=exhaustive;
 			damageGain=beforeDamage>0?gain.lower/beforeDamage:null;
-			// Provisional Fang samples do not establish the damage mix or whole-kill contribution.
-			impact=EncounterImpact.estimate(null,EncounterImpact.weighted(null,damageGain,false,true),null,null);
+			affectedShare=theoretical?NexEquipmentAdvice.weight(context,role):0;
+			impact=theoretical?NexEquipmentAdvice.impact(summary,context,role,damageGain)
+				:EncounterImpact.estimate(null,null,null,null);
 		}
 		public String headline()
 		{
 			if(gain.lower==0) { return "No damage change"; }
 			if(damageGain==null) { return String.format(Locale.ROOT,"%+.2f damage",gain.lower); }
 			double pct=100*damageGain;
-			return Math.abs(pct)<0.05?(pct<0?"−":"+")+"<0.1% damage":String.format(Locale.ROOT,"%+.1f%% damage",pct);
+			return Math.abs(pct)<0.05?(pct<0?"−":"+")+"<0.1% damage":String.format(Locale.ROOT,theoretical && !role.equals("spec")?"%+.1f%% DPS":"%+.1f%% damage",pct);
 		}
 
 	}
